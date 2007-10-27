@@ -24,72 +24,36 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.io.Serializable;
 import java.util.Set;
 
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
+/**
+ * A ChildrenInfo is used to hold the list of children entries
+ * of a parent entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ChildrenInfo implements Serializable
 {
 
     private static final long serialVersionUID = -4642987611142312896L;
 
-    public static int COUNTER = 0;
+    /** The children initialized flag. */
+    protected volatile boolean childrenInitialized = false;
 
-    protected volatile boolean childrenInitialzed = false;
+    /** The children set. */
+    protected volatile Set<IEntry> childrenSet = null;
 
-    protected volatile Set childrenSet = null;
-
+    /** The has more children flag. */
     protected volatile boolean hasMoreChildren = false;
 
 
+    /**
+     * Creates a new instance of ChildrenInfo.
+     */
     public ChildrenInfo()
     {
-        COUNTER++;
-    }
-
-    class AliasOrReferral implements Serializable
-    {
-
-        private static final long serialVersionUID = -8339682035388780022L;
-
-        protected IBrowserConnection connection;
-
-        protected DN dn;
-
-
-        protected AliasOrReferral()
-        {
-        }
-
-
-        public AliasOrReferral( IBrowserConnection connection, DN dn )
-        {
-            this.connection = connection;
-            this.dn = dn;
-        }
-
-
-        public boolean equals( Object o ) throws ClassCastException
-        {
-            if ( o instanceof AliasOrReferral )
-            {
-                return this.toString().equals( ( ( AliasOrReferral ) o ).toString() );
-            }
-            return false;
-        }
-
-
-        public int hashCode()
-        {
-            return this.toString().hashCode();
-        }
-
-
-        public String toString()
-        {
-            return connection.hashCode() + "_" + dn.toString(); //$NON-NLS-1$
-        }
-
     }
 
 }

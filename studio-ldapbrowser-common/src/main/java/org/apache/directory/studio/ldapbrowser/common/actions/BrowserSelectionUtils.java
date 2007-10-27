@@ -131,19 +131,19 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
             else if ( obj instanceof IEntry )
             {
                 IEntry entry = ( IEntry ) obj;
-                exampleSearch.setConnection( entry.getBrowserConnection() );
+                exampleSearch.setBrowserConnection( entry.getBrowserConnection() );
                 exampleSearch.setSearchBase( entry.getDn() );
             }
             else if ( obj instanceof ISearchResult )
             {
                 ISearchResult searchResult = ( ISearchResult ) obj;
-                exampleSearch.setConnection( searchResult.getEntry().getBrowserConnection() );
+                exampleSearch.setBrowserConnection( searchResult.getEntry().getBrowserConnection() );
                 exampleSearch.setSearchBase( searchResult.getEntry().getDn() );
             }
             else if ( obj instanceof IBookmark )
             {
                 IBookmark bookmark = ( IBookmark ) obj;
-                exampleSearch.setConnection( bookmark.getBrowserConnection() );
+                exampleSearch.setBrowserConnection( bookmark.getBrowserConnection() );
                 exampleSearch.setSearchBase( bookmark.getDn() );
             }
 
@@ -187,7 +187,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
                     }
                 }
 
-                exampleSearch.setConnection( entry.getBrowserConnection() );
+                exampleSearch.setBrowserConnection( entry.getBrowserConnection() );
                 exampleSearch.setSearchBase( entry.getDn() );
                 StringBuffer filter = new StringBuffer();
                 if ( filterSet.size() > 1 )
@@ -213,7 +213,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
             else if ( obj instanceof IBrowserConnection )
             {
                 IBrowserConnection connection = ( IBrowserConnection ) obj;
-                exampleSearch.setConnection( connection );
+                exampleSearch.setBrowserConnection( connection );
                 if ( connection.getRootDSE().getChildrenCount() > 0 )
                 {
                     exampleSearch.setSearchBase( connection.getRootDSE().getChildren()[0].getDn() );
@@ -226,7 +226,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
             else if ( obj instanceof BrowserCategory )
             {
                 BrowserCategory cat = ( BrowserCategory ) obj;
-                exampleSearch.setConnection( cat.getParent() );
+                exampleSearch.setBrowserConnection( cat.getParent() );
                 if ( cat.getParent().getRootDSE().getChildrenCount() > 0 )
                 {
                     exampleSearch.setSearchBase( cat.getParent().getRootDSE().getChildren()[0].getDn() );

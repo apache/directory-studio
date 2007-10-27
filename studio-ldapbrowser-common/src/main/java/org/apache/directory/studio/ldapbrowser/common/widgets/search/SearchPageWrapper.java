@@ -652,7 +652,7 @@ public class SearchPageWrapper extends BrowserWidget
         if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() != null
             && browserConnectionWidget.getBrowserConnection() != search.getBrowserConnection() )
         {
-            search.setConnection( browserConnectionWidget.getBrowserConnection() );
+            search.setBrowserConnection( browserConnectionWidget.getBrowserConnection() );
             searchModified = true;
         }
         if ( searchBaseWidget != null && searchBaseWidget.getDn() != null

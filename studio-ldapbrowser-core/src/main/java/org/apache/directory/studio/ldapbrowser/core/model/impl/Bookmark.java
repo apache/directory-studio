@@ -133,6 +133,7 @@ public class Bookmark implements IBookmark
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;

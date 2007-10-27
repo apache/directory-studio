@@ -47,18 +47,29 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * An implementation of {@link IEntry} that just holds another instance
+ * of {@link IEntry} and delegates all method calls to this instance.
+ * It is used for bookmarks, alias and referral entries.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DelegateEntry implements IEntry, EntryUpdateListener
 {
 
     private static final long serialVersionUID = -4488685394817691963L;
 
-    // private IConnection connection;
+    /** The connection id. */
     private String connectionId;
 
+    /** The DN. */
     private DN dn;
 
+    /** The entry does not exist flag. */
     private boolean entryDoesNotExist;
 
+    /** The delegate. */
     private IEntry delegate;
 
 
@@ -67,6 +78,12 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
+    /**
+     * Creates a new instance of DelegateEntry.
+     * 
+     * @param connection the connection of the delegate
+     * @param dn the DN of the delegate
+     */
     public DelegateEntry( IBrowserConnection connection, DN dn )
     {
         this.connectionId = connection.getConnection().getId();
@@ -77,251 +94,420 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
+    /**
+     * Gets the delegate.
+     * 
+     * @return the delegate, may be null if the delegate doesn't exist.
+     */
     protected IEntry getDelegate()
     {
-        if ( this.delegate != null && !this.delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
+        if ( delegate != null
+            && !delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
         {
-            this.entryDoesNotExist = false;
-            this.delegate = null;
+            entryDoesNotExist = false;
+            delegate = null;
         }
         return delegate;
     }
 
 
+    /**
+     * Sets the delegate.
+     * 
+     * @param delegate the new delegate
+     */
     protected void setDelegate( IEntry delegate )
     {
         this.delegate = delegate;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IBrowserConnection getBrowserConnection()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getBrowserConnection();
+        }
         else
-            return BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( this.connectionId );
-        // return connection;
+        {
+            return BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( connectionId );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public DN getDn()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getDn();
+        }
         else
+        {
             return dn;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public URL getUrl()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getUrl();
+        }
         else
+        {
             return new URL( getBrowserConnection(), getDn() );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isAttributesInitialized()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isAttributesInitialized();
-        else if ( this.entryDoesNotExist )
+        }
+        else if ( entryDoesNotExist )
+        {
             return true;
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isChildrenInitialized()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isChildrenInitialized();
-        else if ( this.entryDoesNotExist )
+        }
+        else if ( entryDoesNotExist )
+        {
             return true;
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDirectoryEntry()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isDirectoryEntry();
+        }
         else
+        {
             return true;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addAttribute( IAttribute attributeToAdd )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().addAttribute( attributeToAdd );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addChild( IEntry childrenToAdd )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().addChild( childrenToAdd );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteAttribute( IAttribute attributeToDelete )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().deleteAttribute( attributeToDelete );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteChild( IEntry childrenToDelete )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().deleteChild( childrenToDelete );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute getAttribute( String attributeDescription )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getAttribute( attributeDescription );
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getAttributeWithSubtypes( attributeDescription );
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute[] getAttributes()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getAttributes();
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IEntry getParententry()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getParententry();
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public RDN getRdn()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getRdn();
+        }
         else
-            return this.dn.getRdn();
+        {
+            return dn.getRdn();
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IEntry[] getChildren()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getChildren();
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getChildrenCount()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getChildrenCount();
+        }
         else
+        {
             return -1;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getChildrenFilter()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getChildrenFilter();
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Subschema getSubschema()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().getSubschema();
+        }
         else
+        {
             return null;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasMoreChildren()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().hasMoreChildren();
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasParententry()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().hasParententry();
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasChildren()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().hasChildren();
+        }
         else
+        {
             return true;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isConsistent()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isConsistent();
+        }
         else
+        {
             return true;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setAttributesInitialized( boolean b )
     {
-
         if ( !b )
         {
-            if ( this.getDelegate() != null )
+            if ( getDelegate() != null )
             {
                 getDelegate().setAttributesInitialized( b );
             }
             setDelegate( null );
-            this.entryDoesNotExist = false;
+            entryDoesNotExist = false;
         }
         else
-        /* if(b) */{
-            if ( this.getDelegate() == null )
+        {
+            if ( getDelegate() == null )
             {
-                setDelegate( this.getBrowserConnection().getEntryFromCache( this.dn ) );
-                if ( this.getDelegate() == null )
+                setDelegate( getBrowserConnection().getEntryFromCache( dn ) );
+                if ( getDelegate() == null )
                 {
                     // entry doesn't exist!
-                    this.entryDoesNotExist = true;
+                    entryDoesNotExist = true;
                 }
             }
-            if ( this.getDelegate() != null )
+            if ( getDelegate() != null )
             {
                 getDelegate().setAttributesInitialized( b );
             }
@@ -329,58 +515,79 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setDirectoryEntry( boolean b )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setDirectoryEntry( b );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setHasMoreChildren( boolean b )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setHasMoreChildren( b );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setHasChildrenHint( boolean b )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setHasChildrenHint( b );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setChildrenFilter( String filter )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setChildrenFilter( filter );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setChildrenInitialized( boolean b )
     {
-
         if ( !b )
         {
-            if ( this.getDelegate() != null )
+            if ( getDelegate() != null )
             {
                 getDelegate().setChildrenInitialized( b );
             }
-            // setDelegate(null);
-            this.entryDoesNotExist = false;
+            entryDoesNotExist = false;
         }
         else
-        /* if(b) */{
+        {
             if ( this.getDelegate() == null )
             {
-                setDelegate( this.getBrowserConnection().getEntryFromCache( this.dn ) );
+                setDelegate( getBrowserConnection().getEntryFromCache( dn ) );
                 if ( this.getDelegate() == null )
                 {
                     // entry doesn't exist!
-                    this.entryDoesNotExist = true;
+                    entryDoesNotExist = true;
                 }
             }
-            if ( this.getDelegate() != null )
+            if ( getDelegate() != null )
             {
                 getDelegate().setChildrenInitialized( b );
             }
@@ -388,60 +595,97 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isAlias()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isAlias();
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setAlias( boolean b )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setAlias( b );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isReferral()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isReferral();
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setReferral( boolean b )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setReferral( b );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSubentry()
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             return getDelegate().isSubentry();
+        }
         else
+        {
             return false;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSubentry( boolean b )
     {
-        if ( this.getDelegate() != null )
+        if ( getDelegate() != null )
+        {
             getDelegate().setSubentry( b );
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
-
-        if ( event.getModifiedEntry() == this.getDelegate() )
+        if ( event.getModifiedEntry() == getDelegate() )
         {
-
             if ( event instanceof AttributeAddedEvent )
             {
                 AttributeAddedEvent e = ( AttributeAddedEvent ) event;
@@ -458,7 +702,6 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             }
             else if ( event instanceof AttributesInitializedEvent )
             {
-                AttributesInitializedEvent e = ( AttributesInitializedEvent ) event;
                 AttributesInitializedEvent delegateEvent = new AttributesInitializedEvent( this );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
@@ -476,21 +719,16 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
                     .getModifiedAttribute(), e.getDeletedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
-            // EntryAddedEvent
-            // EntryDeletedEvent
-            // EntryMovedEvent
-            // EntryRenamedEvent
             else if ( event instanceof ChildrenInitializedEvent )
             {
-                ChildrenInitializedEvent e = ( ChildrenInitializedEvent ) event;
                 ChildrenInitializedEvent delegateEvent = new ChildrenInitializedEvent( this );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueAddedEvent )
             {
                 ValueAddedEvent e = ( ValueAddedEvent ) event;
-                ValueAddedEvent delegateEvent = new ValueAddedEvent( e.getConnection(), this, e
-                    .getModifiedAttribute(), e.getAddedValue() );
+                ValueAddedEvent delegateEvent = new ValueAddedEvent( e.getConnection(), this, e.getModifiedAttribute(),
+                    e.getAddedValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
             else if ( event instanceof ValueDeletedEvent )
@@ -510,19 +748,20 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             else if ( event instanceof ValueRenamedEvent )
             {
                 ValueRenamedEvent e = ( ValueRenamedEvent ) event;
-                ValueRenamedEvent delegateEvent = new ValueRenamedEvent( e.getConnection(), this, e
-                    .getOldValue(), e.getNewValue() );
+                ValueRenamedEvent delegateEvent = new ValueRenamedEvent( e.getConnection(), this, e.getOldValue(), e
+                    .getNewValue() );
                 EventRegistry.fireEntryUpdated( delegateEvent, this );
             }
-            // ValuesSetEvent
-
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
-
         if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();

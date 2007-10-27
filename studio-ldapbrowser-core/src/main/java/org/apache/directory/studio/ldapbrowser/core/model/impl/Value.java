@@ -111,7 +111,7 @@ public class Value implements IValue
      */
     public IAttribute getAttribute()
     {
-        return this.attribute;
+        return attribute;
     }
 
 
@@ -120,7 +120,7 @@ public class Value implements IValue
      */
     public Object getRawValue()
     {
-        return this.rawValue;
+        return rawValue;
     }
 
 
@@ -130,21 +130,21 @@ public class Value implements IValue
     public String getStringValue()
     {
 
-        if ( this.rawValue == EMPTY_STRING_VALUE )
+        if ( rawValue == EMPTY_STRING_VALUE )
         {
             return EMPTY_STRING_VALUE.getStringValue();
         }
-        else if ( this.rawValue == EMPTY_BINARY_VALUE )
+        else if ( rawValue == EMPTY_BINARY_VALUE )
         {
             return EMPTY_BINARY_VALUE.getStringValue();
         }
-        else if ( this.rawValue instanceof String )
+        else if ( rawValue instanceof String )
         {
-            return ( String ) this.rawValue;
+            return ( String ) rawValue;
         }
-        else if ( this.rawValue instanceof byte[] )
+        else if ( rawValue instanceof byte[] )
         {
-            return LdifUtils.utf8decode( ( byte[] ) this.rawValue );
+            return LdifUtils.utf8decode( ( byte[] ) rawValue );
         }
         else
         {
@@ -158,21 +158,21 @@ public class Value implements IValue
      */
     public byte[] getBinaryValue()
     {
-        if ( this.rawValue == EMPTY_STRING_VALUE )
+        if ( rawValue == EMPTY_STRING_VALUE )
         {
             return EMPTY_STRING_VALUE.getBinaryValue();
         }
-        else if ( this.rawValue == EMPTY_BINARY_VALUE )
+        else if ( rawValue == EMPTY_BINARY_VALUE )
         {
             return EMPTY_BINARY_VALUE.getBinaryValue();
         }
-        else if ( this.rawValue instanceof byte[] )
+        else if ( rawValue instanceof byte[] )
         {
-            return ( byte[] ) this.rawValue;
+            return ( byte[] ) rawValue;
         }
-        else if ( this.rawValue instanceof String )
+        else if ( rawValue instanceof String )
         {
-            return LdifUtils.utf8encode( ( String ) this.rawValue );
+            return LdifUtils.utf8encode( ( String ) rawValue );
         }
         else
         {
@@ -186,7 +186,7 @@ public class Value implements IValue
      */
     public boolean isString()
     {
-        return this.rawValue == EMPTY_STRING_VALUE || this.attribute.isString();
+        return rawValue == EMPTY_STRING_VALUE || attribute.isString();
     }
 
 
@@ -195,7 +195,7 @@ public class Value implements IValue
      */
     public boolean isBinary()
     {
-        return this.rawValue == EMPTY_BINARY_VALUE || this.attribute.isBinary();
+        return rawValue == EMPTY_BINARY_VALUE || attribute.isBinary();
     }
 
 
@@ -204,7 +204,7 @@ public class Value implements IValue
      */
     public boolean isEmpty()
     {
-        return this.rawValue == EMPTY_STRING_VALUE || this.rawValue == EMPTY_BINARY_VALUE;
+        return rawValue == EMPTY_STRING_VALUE || rawValue == EMPTY_BINARY_VALUE;
     }
 
 
@@ -260,13 +260,14 @@ public class Value implements IValue
      */
     public String toString()
     {
-        return attribute + ":" + ( this.isString() ? this.getStringValue() : "BINARY" ); //$NON-NLS-1$ //$NON-NLS-2$
+        return attribute + ":" + ( isString() ? getStringValue() : "BINARY" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;

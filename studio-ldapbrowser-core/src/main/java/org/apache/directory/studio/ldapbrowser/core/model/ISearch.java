@@ -365,13 +365,13 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
 
     /**
-     * Sets the connection.
+     * Sets the browser connection.
      * 
      * Calling this method causes firing a search update event.
      * 
-     * @param connection the connection
+     * @param browserConnection the browser connection
      */
-    public abstract void setConnection( IBrowserConnection connection );
+    public abstract void setBrowserConnection( IBrowserConnection browserConnection );
 
 
     /**

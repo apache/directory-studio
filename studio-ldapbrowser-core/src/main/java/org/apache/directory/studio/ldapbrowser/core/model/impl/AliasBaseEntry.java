@@ -25,6 +25,13 @@ import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
+/**
+ * An {@link AliasBaseEntry} represents the target 
+ * (named by the aliasedObjectName attribute) of an alias entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AliasBaseEntry extends DelegateEntry
 {
 
@@ -36,6 +43,12 @@ public class AliasBaseEntry extends DelegateEntry
     }
 
 
+    /**
+     * Creates a new instance of AliasBaseEntry.
+     * 
+     * @param connection the connection of the alias
+     * @param dn the DN of the alias target
+     */
     public AliasBaseEntry( IBrowserConnection connection, DN dn )
     {
         super( connection, dn );

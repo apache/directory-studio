@@ -35,13 +35,21 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
+/**
+ * Default implementation of ISearchResult.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResult implements ISearchResult
 {
 
     private static final long serialVersionUID = -5658803569872619432L;
 
+    /** The search. */
     private ISearch search;
 
+    /** The entry. */
     private IEntry entry;
 
 
@@ -50,6 +58,12 @@ public class SearchResult implements ISearchResult
     }
 
 
+    /**
+     * Creates a new instance of SearchResult.
+     * 
+     * @param entry the entry
+     * @param search the search
+     */
     public SearchResult( IEntry entry, ISearch search )
     {
         this.entry = entry;
@@ -57,44 +71,63 @@ public class SearchResult implements ISearchResult
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public DN getDn()
     {
-        return this.entry.getDn();
+        return entry.getDn();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute[] getAttributes()
     {
-        ArrayList attributeList = new ArrayList();
-        for ( int i = 0; i < this.search.getReturningAttributes().length; i++ )
+        ArrayList<IAttribute> attributeList = new ArrayList<IAttribute>();
+        for ( int i = 0; i < search.getReturningAttributes().length; i++ )
         {
-            if ( this.entry.getAttribute( this.search.getReturningAttributes()[i] ) != null )
+            if ( entry.getAttribute( search.getReturningAttributes()[i] ) != null )
             {
-                attributeList.add( this.entry.getAttribute( this.search.getReturningAttributes()[i] ) );
+                attributeList.add( entry.getAttribute( search.getReturningAttributes()[i] ) );
             }
         }
-        return ( IAttribute[] ) attributeList.toArray( new IAttribute[attributeList.size()] );
+        return attributeList.toArray( new IAttribute[attributeList.size()] );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute getAttribute( String attributeDescription )
     {
-        return this.entry.getAttribute( attributeDescription );
+        return entry.getAttribute( attributeDescription );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
-        return this.entry.getAttributeWithSubtypes( attributeDescription );
+        return entry.getAttributeWithSubtypes( attributeDescription );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IEntry getEntry()
     {
-        return this.entry;
+        return entry;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;
@@ -104,11 +137,11 @@ public class SearchResult implements ISearchResult
         }
         if ( clazz.isAssignableFrom( Connection.class ) )
         {
-            return getConnection().getConnection();
+            return search.getBrowserConnection().getConnection();
         }
         if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
         {
-            return getConnection();
+            return search.getBrowserConnection();
         }
         if ( clazz.isAssignableFrom( IEntry.class ) )
         {
@@ -118,18 +151,18 @@ public class SearchResult implements ISearchResult
     }
 
 
-    public IBrowserConnection getConnection()
-    {
-        return this.search.getBrowserConnection();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public ISearch getSearch()
     {
-        return this.search;
+        return search;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSearch( ISearch search )
     {
         this.search = search;

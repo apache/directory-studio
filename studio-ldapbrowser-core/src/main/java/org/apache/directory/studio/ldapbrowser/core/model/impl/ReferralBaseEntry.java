@@ -25,6 +25,13 @@ import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
+/**
+ * An {@link ReferralBaseEntry} represents the target 
+ * (named by the ref attribute) of an referral entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ReferralBaseEntry extends DelegateEntry
 {
 
@@ -36,6 +43,12 @@ public class ReferralBaseEntry extends DelegateEntry
     }
 
 
+    /**
+     * Creates a new instance of ReferralBaseEntry.
+     * 
+     * @param connection the connection of the referral target
+     * @param dn the DN of the referral target
+     */
     public ReferralBaseEntry( IBrowserConnection connection, DN dn )
     {
         super( connection, dn );

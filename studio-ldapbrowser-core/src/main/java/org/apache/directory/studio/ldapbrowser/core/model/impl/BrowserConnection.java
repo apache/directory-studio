@@ -58,23 +58,32 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
     /** The connection. */
     private Connection connection;
-    
+
+    /** The root DSE. */
     private IRootDSE rootDSE;
 
+    /** The schema. */
     private Schema schema;
 
+    /** The search manager. */
     private SearchManager searchManager;
 
+    /** The bookmark manager. */
     private BookmarkManager bookmarkManager;
 
+    /** The dn to entry cache. */
     private volatile Map<String, IEntry> dnToEntryCache;
 
+    /** The entry to children filter map. */
     private volatile Map<IEntry, String> entryToChildrenFilterMap;
 
+    /** The entry to attribute info map. */
     private volatile Map<IEntry, AttributeInfo> entryToAttributeInfoMap;
 
+    /** The entry to children info map. */
     private volatile Map<IEntry, ChildrenInfo> entryToChildrenInfoMap;
 
+    /** The modification logger. */
     transient ModificationLogger modificationLogger;
 
 
@@ -86,8 +95,8 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     public BrowserConnection( org.apache.directory.studio.connection.core.Connection connection )
     {
         this.connection = connection;
-        
-        if( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_COUNT_LIMIT ) == null )
+
+        if ( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_COUNT_LIMIT ) == null )
         {
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT, 0 );
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, 0 );
@@ -107,7 +116,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         this.dnToEntryCache = new HashMap<String, IEntry>();
         this.entryToAttributeInfoMap = new HashMap<IEntry, AttributeInfo>();
         this.entryToChildrenInfoMap = new HashMap<IEntry, ChildrenInfo>();
-        
+
         this.schema = Schema.DEFAULT_SCHEMA;
         this.rootDSE = new RootDSE( this );
         cacheEntry( this.rootDSE );
@@ -116,10 +125,10 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
-    
-    
+
+
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getUrl()
+     * {@inheritDoc}
      */
     public URL getUrl()
     {
@@ -128,13 +137,13 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * Closes the connections, clears all caches
+     * CClears all caches.
      */
     private void clearCaches()
     {
         for ( int i = 0; i < getSearchManager().getSearchCount(); i++ )
         {
-            this.getSearchManager().getSearches()[i].setSearchResults( null );
+            getSearchManager().getSearches()[i].setSearchResults( null );
         }
 
         dnToEntryCache.clear();
@@ -150,15 +159,14 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
-
-
-
+    /**
+     * {@inheritDoc}
+     */
     public IEntry getEntryFromCache( DN dn )
     {
-
-        if ( this.dnToEntryCache != null && this.dnToEntryCache.containsKey( dn.toOidString( this.schema ) ) )
+        if ( dnToEntryCache != null && dnToEntryCache.containsKey( dn.toOidString( getSchema() ) ) )
         {
-            return dnToEntryCache.get( dn.toOidString( this.schema ) );
+            return dnToEntryCache.get( dn.toOidString( getSchema() ) );
         }
         if ( getRootDSE().getDn().equals( dn ) )
         {
@@ -167,10 +175,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         return null;
     }
 
-    
-    
+
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#isFetchBaseDNs()
+     * {@inheritDoc}
      */
     public boolean isFetchBaseDNs()
     {
@@ -179,7 +186,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setFetchBaseDNs(boolean)
+     * {@inheritDoc}
      */
     public void setFetchBaseDNs( boolean fetchBaseDNs )
     {
@@ -189,7 +196,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getBaseDN()
+     * {@inheritDoc}
      */
     public DN getBaseDN()
     {
@@ -205,7 +212,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setBaseDN(org.apache.directory.studio.ldapbrowser.core.model.DN)
+     * {@inheritDoc}
      */
     public void setBaseDN( DN baseDN )
     {
@@ -215,7 +222,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getCountLimit()
+     * {@inheritDoc}
      */
     public int getCountLimit()
     {
@@ -224,7 +231,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setCountLimit(int)
+     * {@inheritDoc}
      */
     public void setCountLimit( int countLimit )
     {
@@ -234,7 +241,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getAliasesDereferencingMethod()
+     * {@inheritDoc}
      */
     public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
@@ -245,7 +252,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setAliasesDereferencingMethod(AliasDereferencingMethod)
+     * {@inheritDoc}
      */
     public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
@@ -256,7 +263,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getReferralsHandlingMethod()
+     * {@inheritDoc}
      */
     public ReferralHandlingMethod getReferralsHandlingMethod()
     {
@@ -267,7 +274,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setReferralsHandlingMethod(ReferralHandlingMethod)
+     * {@inheritDoc}
      */
     public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
@@ -278,7 +285,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getTimeLimit()
+     * {@inheritDoc}
      */
     public int getTimeLimit()
     {
@@ -287,7 +294,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#setTimeLimit(int)
+     * {@inheritDoc}
      */
     public void setTimeLimit( int timeLimit )
     {
@@ -297,7 +304,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection#getRootDSE()
+     * {@inheritDoc}
      */
     public final IRootDSE getRootDSE()
     {
@@ -305,32 +312,26 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Schema getSchema()
     {
         return schema;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSchema( Schema schema )
     {
         this.schema = schema;
     }
 
 
-//    public BrowserConnectionParameter getConnectionParameter()
-//    {
-//        return browserConnectionParameter;
-//    }
-//
-//
-//    public void setConnectionParameter( BrowserConnectionParameter connectionParameter )
-//    {
-//        this.browserConnectionParameter = connectionParameter;
-//    }
-
-
     /**
-     * @see java.lang.Object#toString()
+     * This implementation returns the connection name
      */
     public String toString()
     {
@@ -338,32 +339,45 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public SearchManager getSearchManager()
     {
         return searchManager;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public BookmarkManager getBookmarkManager()
     {
         return bookmarkManager;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ModificationLogger getModificationLogger()
     {
         return modificationLogger;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
-
-        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
+        Class<?> clazz = ( Class<?> ) adapter;
+        if ( clazz.isAssignableFrom( ISearchPageScoreComputer.class ) )
         {
             return new LdapSearchPageScoreComputer();
         }
-        if ( adapter == IBrowserConnection.class )
+        if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
         {
             return this;
         }
@@ -372,18 +386,29 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void cacheEntry( IEntry entry )
     {
-        this.dnToEntryCache.put( entry.getDn().toOidString( this.schema ), entry );
+        dnToEntryCache.put( entry.getDn().toOidString( getSchema() ), entry );
     }
 
 
+    /**
+     * Removes the entry from the cache.
+     * 
+     * @param entry the entry to remove from cache
+     */
     protected void uncacheEntry( IEntry entry )
     {
-        this.dnToEntryCache.remove( entry.getDn().toOidString( this.schema ) );
+        dnToEntryCache.remove( entry.getDn().toOidString( getSchema() ) );
     }
-    
 
+
+    /**
+     * {@inheritDoc}
+     */
     public void uncacheEntryRecursive( IEntry entry )
     {
         IEntry[] children = entry.getChildren();
@@ -398,106 +423,178 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     }
 
 
+    /**
+     * Removes the entry from the cache.
+     * 
+     * @param dn the DN of the entry to remove from cache
+     */
     protected void uncacheEntry( DN dn )
     {
-        this.dnToEntryCache.remove( dn.toOidString( this.schema ) );
+        dnToEntryCache.remove( dn.toOidString( getSchema() ) );
     }
 
 
+    /**
+     * Gets the children filter of the entry.
+     * 
+     * @param entry the entry
+     * 
+     * @return the children filter of the entry, or null if no children filter is set
+     */
     protected String getChildrenFilter( IEntry entry )
     {
-        return this.entryToChildrenFilterMap == null ? null : this.entryToChildrenFilterMap.get( entry );
+        return entryToChildrenFilterMap == null ? null : entryToChildrenFilterMap.get( entry );
     }
 
 
+    /**
+     * Sets the children filter.
+     * 
+     * @param entry the entry
+     * @param childrenFilter the children filter, null to remove the children filter
+     */
     protected void setChildrenFilter( IEntry entry, String childrenFilter )
     {
-        if ( childrenFilter == null || "".equals( childrenFilter ) ) { //$NON-NLS-1$
-            this.entryToChildrenFilterMap.remove( entry );
+        if ( childrenFilter == null || "".equals( childrenFilter ) ) //$NON-NLS-1$
+        {
+            entryToChildrenFilterMap.remove( entry );
         }
         else
         {
-            this.entryToChildrenFilterMap.put( entry, childrenFilter );
-        }
-    }
-
-
-    protected AttributeInfo getAttributeInfo( IEntry entry )
-    {
-        return this.entryToAttributeInfoMap == null ? null : this.entryToAttributeInfoMap.get( entry );
-    }
-
-
-    protected void setAttributeInfo( IEntry entry, AttributeInfo ai )
-    {
-        if ( ai == null )
-        {
-            this.entryToAttributeInfoMap.remove( entry );
-        }
-        else
-        {
-            this.entryToAttributeInfoMap.put( entry, ai );
-        }
-    }
-
-
-    protected ChildrenInfo getChildrenInfo( IEntry entry )
-    {
-        return this.entryToChildrenInfoMap == null ? null : this.entryToChildrenInfoMap.get( entry );
-    }
-
-
-    protected void setChildrenInfo( IEntry entry, ChildrenInfo si )
-    {
-        if ( si == null )
-        {
-            this.entryToChildrenInfoMap.remove( entry );
-        }
-        else
-        {
-            this.entryToChildrenInfoMap.put( entry, si );
-        }
-    }
-
-
-    public Connection getConnection()
-    {
-        return connection;
-    }
-    
-    public void connectionAdded( org.apache.directory.studio.connection.core.Connection connection )
-    {
-    }
-    public void connectionRemoved( org.apache.directory.studio.connection.core.Connection connection )
-    {
-    }
-    public void connectionUpdated( org.apache.directory.studio.connection.core.Connection connection )
-    {
-    }
-    public void connectionOpened( org.apache.directory.studio.connection.core.Connection connection )
-    {
-        if(this.connection == connection)
-        {
-            new OpenBrowserConnectionsJob( this ).execute();
-            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
-                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
-            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent , this );
-        }
-    }
-    public void connectionClosed( org.apache.directory.studio.connection.core.Connection connection )
-    {
-        if(this.connection == connection)
-        {
-            clearCaches();
-            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
-                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
-            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent , this );
+            entryToChildrenFilterMap.put( entry, childrenFilter );
         }
     }
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * Gets the attribute info.
+     * 
+     * @param entry the entry
+     * 
+     * @return the attribute info, null if no attribute info exists
+     */
+    protected AttributeInfo getAttributeInfo( IEntry entry )
+    {
+        return entryToAttributeInfoMap == null ? null : entryToAttributeInfoMap.get( entry );
+    }
+
+
+    /**
+     * Sets the attribute info.
+     * 
+     * @param entry the entry
+     * @param ai the attribute info, null to remove the attribute info
+     */
+    protected void setAttributeInfo( IEntry entry, AttributeInfo ai )
+    {
+        if ( ai == null )
+        {
+            entryToAttributeInfoMap.remove( entry );
+        }
+        else
+        {
+            entryToAttributeInfoMap.put( entry, ai );
+        }
+    }
+
+
+    /**
+     * Gets the children info.
+     * 
+     * @param entry the entry
+     * 
+     * @return the children info, null if no children info exists
+     */
+    protected ChildrenInfo getChildrenInfo( IEntry entry )
+    {
+        return entryToChildrenInfoMap == null ? null : entryToChildrenInfoMap.get( entry );
+    }
+
+
+    /**
+     * Sets the children info.
+     * 
+     * @param entry the entry
+     * @param ci the children info, null to remove the children info
+     */
+    protected void setChildrenInfo( IEntry entry, ChildrenInfo ci )
+    {
+        if ( ci == null )
+        {
+            entryToChildrenInfoMap.remove( entry );
+        }
+        else
+        {
+            entryToChildrenInfoMap.put( entry, ci );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void connectionAdded( org.apache.directory.studio.connection.core.Connection connection )
+    {
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void connectionRemoved( org.apache.directory.studio.connection.core.Connection connection )
+    {
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void connectionUpdated( org.apache.directory.studio.connection.core.Connection connection )
+    {
+    }
+
+
+    /**
+     * This implementation opens the browser connection when the connection was opened.
+     */
+    public void connectionOpened( Connection connection )
+    {
+        if ( this.connection == connection )
+        {
+            new OpenBrowserConnectionsJob( this ).execute();
+            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
+                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
+            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
+        }
+    }
+
+
+    /**
+     * This implementation closes the browser connection when the connection was closed.
+     */
+    public void connectionClosed( Connection connection )
+    {
+        if ( this.connection == connection )
+        {
+            clearCaches();
+            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
+                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
+            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
+        }
+    }
+
+
+    /**
+     * This implementation does nothing.
      */
     public void connectionFolderModified( ConnectionFolder connectionFolder )
     {

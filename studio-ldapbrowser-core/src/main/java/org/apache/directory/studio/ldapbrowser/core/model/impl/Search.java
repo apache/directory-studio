@@ -182,7 +182,7 @@ public class Search implements ISearch
      */
     private void fireSearchUpdated( SearchUpdateEvent.EventDetail detail )
     {
-        if ( this.getName() != null && !"".equals( this.getName() ) ) { //$NON-NLS-1$
+        if ( getName() != null && !"".equals( getName() ) ) { //$NON-NLS-1$
             EventRegistry.fireSearchUpdated( new SearchUpdateEvent( this, detail ), this );
         }
     }
@@ -193,7 +193,7 @@ public class Search implements ISearch
      */
     public boolean isInitHasChildrenFlag()
     {
-        return this.searchParameter.isInitHasChildrenFlag();
+        return searchParameter.isInitHasChildrenFlag();
     }
 
 
@@ -202,7 +202,7 @@ public class Search implements ISearch
      */
     public boolean isInitAliasAndReferralFlag()
     {
-        return this.searchParameter.isInitAliasAndReferralFlag();
+        return searchParameter.isInitAliasAndReferralFlag();
     }
 
 
@@ -211,7 +211,7 @@ public class Search implements ISearch
      */
     public Control[] getControls()
     {
-        return this.searchParameter.getControls();
+        return searchParameter.getControls();
     }
 
 
@@ -220,7 +220,7 @@ public class Search implements ISearch
      */
     public int getCountLimit()
     {
-        return this.searchParameter.getCountLimit();
+        return searchParameter.getCountLimit();
     }
 
 
@@ -229,8 +229,8 @@ public class Search implements ISearch
      */
     public void setCountLimit( int countLimit )
     {
-        this.searchParameter.setCountLimit( countLimit );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setCountLimit( countLimit );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -239,7 +239,7 @@ public class Search implements ISearch
      */
     public String getFilter()
     {
-        return this.searchParameter.getFilter();
+        return searchParameter.getFilter();
     }
 
 
@@ -248,8 +248,8 @@ public class Search implements ISearch
      */
     public void setFilter( String filter )
     {
-        this.searchParameter.setFilter( filter );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setFilter( filter );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -258,7 +258,7 @@ public class Search implements ISearch
      */
     public String[] getReturningAttributes()
     {
-        return this.searchParameter.getReturningAttributes();
+        return searchParameter.getReturningAttributes();
     }
 
 
@@ -267,8 +267,8 @@ public class Search implements ISearch
      */
     public void setReturningAttributes( String[] returningAttributes )
     {
-        this.searchParameter.setReturningAttributes( returningAttributes );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setReturningAttributes( returningAttributes );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -277,7 +277,7 @@ public class Search implements ISearch
      */
     public SearchScope getScope()
     {
-        return this.searchParameter.getScope();
+        return searchParameter.getScope();
     }
 
 
@@ -286,8 +286,8 @@ public class Search implements ISearch
      */
     public void setScope( SearchScope scope )
     {
-        this.searchParameter.setScope( scope );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setScope( scope );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -296,7 +296,7 @@ public class Search implements ISearch
      */
     public AliasDereferencingMethod getAliasesDereferencingMethod()
     {
-        return this.searchParameter.getAliasesDereferencingMethod();
+        return searchParameter.getAliasesDereferencingMethod();
     }
 
 
@@ -305,8 +305,8 @@ public class Search implements ISearch
      */
     public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
     {
-        this.searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -315,7 +315,7 @@ public class Search implements ISearch
      */
     public ReferralHandlingMethod getReferralsHandlingMethod()
     {
-        return this.searchParameter.getReferralsHandlingMethod();
+        return searchParameter.getReferralsHandlingMethod();
     }
 
 
@@ -324,8 +324,8 @@ public class Search implements ISearch
      */
     public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
     {
-        this.searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -334,7 +334,7 @@ public class Search implements ISearch
      */
     public DN getSearchBase()
     {
-        return this.searchParameter.getSearchBase();
+        return searchParameter.getSearchBase();
     }
 
 
@@ -343,8 +343,8 @@ public class Search implements ISearch
      */
     public void setSearchBase( DN searchBase )
     {
-        this.searchParameter.setSearchBase( searchBase );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setSearchBase( searchBase );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -353,7 +353,7 @@ public class Search implements ISearch
      */
     public int getTimeLimit()
     {
-        return this.searchParameter.getTimeLimit();
+        return searchParameter.getTimeLimit();
     }
 
 
@@ -362,8 +362,8 @@ public class Search implements ISearch
      */
     public void setTimeLimit( int timeLimit )
     {
-        this.searchParameter.setTimeLimit( timeLimit );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setTimeLimit( timeLimit );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -372,7 +372,7 @@ public class Search implements ISearch
      */
     public String getName()
     {
-        return this.searchParameter.getName();
+        return searchParameter.getName();
     }
 
 
@@ -381,8 +381,8 @@ public class Search implements ISearch
      */
     public void setName( String searchName )
     {
-        this.searchParameter.setName( searchName );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_RENAMED );
+        searchParameter.setName( searchName );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_RENAMED );
     }
 
 
@@ -403,7 +403,7 @@ public class Search implements ISearch
         this.searchResults = searchResults;
         if ( searchResults != null )
         {
-            this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PERFORMED );
+            fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PERFORMED );
         }
     }
 
@@ -413,7 +413,7 @@ public class Search implements ISearch
      */
     public boolean isCountLimitExceeded()
     {
-        return this.countLimitExceeded;
+        return countLimitExceeded;
     }
 
 
@@ -423,7 +423,7 @@ public class Search implements ISearch
     public void setCountLimitExceeded( boolean countLimitExceeded )
     {
         this.countLimitExceeded = countLimitExceeded;
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PERFORMED );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PERFORMED );
     }
 
 
@@ -439,14 +439,14 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setConnection( IBrowserConnection connection )
+    public void setBrowserConnection( IBrowserConnection connection )
     {
         this.connection = connection;
-        this.searchParameter.setCountLimit( connection.getCountLimit() );
-        this.searchParameter.setTimeLimit( connection.getTimeLimit() );
-        this.searchParameter.setAliasesDereferencingMethod( connection.getAliasesDereferencingMethod() );
-        this.searchParameter.setReferralsHandlingMethod( connection.getReferralsHandlingMethod() );
-        this.fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+        searchParameter.setCountLimit( connection.getCountLimit() );
+        searchParameter.setTimeLimit( connection.getTimeLimit() );
+        searchParameter.setAliasesDereferencingMethod( connection.getAliasesDereferencingMethod() );
+        searchParameter.setReferralsHandlingMethod( connection.getReferralsHandlingMethod() );
+        fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
     }
 
 
@@ -455,7 +455,7 @@ public class Search implements ISearch
      */
     public String toString()
     {
-        return this.getName() + " (" + this.connection + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        return getName() + " (" + getBrowserConnection() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -464,10 +464,9 @@ public class Search implements ISearch
      */
     public Object clone()
     {
-        return new Search( this.getName(), this.getBrowserConnection(), this.getSearchBase(), this.getFilter(), this
-            .getReturningAttributes(), this.getScope(), this.getCountLimit(), this.getTimeLimit(), this
-            .getAliasesDereferencingMethod(), this.getReferralsHandlingMethod(), this.isInitHasChildrenFlag(), this
-            .isInitAliasAndReferralFlag(), this.getControls() );
+        return new Search( getName(), getBrowserConnection(), getSearchBase(), getFilter(), getReturningAttributes(),
+            getScope(), getCountLimit(), getTimeLimit(), getAliasesDereferencingMethod(), getReferralsHandlingMethod(),
+            isInitHasChildrenFlag(), isInitAliasAndReferralFlag(), getControls() );
     }
 
 
@@ -492,6 +491,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;

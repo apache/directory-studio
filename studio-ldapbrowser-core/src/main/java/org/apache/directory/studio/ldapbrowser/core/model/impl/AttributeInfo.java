@@ -25,26 +25,36 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 
 
+/**
+ * A ChildrenInfo is used to hold the list of attributes of an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeInfo implements Serializable
 {
 
     private static final long serialVersionUID = -298229262461058833L;
 
-    public static int COUNTER = 0;
+    /** The attributes initialized flag. */
+    protected volatile boolean attributesInitialized = false;
 
-    protected volatile boolean attributesInitialzed = false;
+    /** The attribute map. */
+    protected volatile Map<String, IAttribute> attributeMap = new LinkedHashMap<String, IAttribute>();
 
-    protected volatile Map attributeMap = new LinkedHashMap();
-
+    /** The subschema. */
     protected volatile Subschema subschema = null;
 
 
+    /**
+     * Creates a new instance of AttributeInfo.
+     */
     public AttributeInfo()
     {
-        COUNTER++;
     }
 
 }

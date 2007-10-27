@@ -44,18 +44,35 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDesc
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 
 
+/**
+ * An {@link DummyEntry} is an implementation if {@link IEntry} that doesn't 
+ * represent a directory entry. 
+ * 
+ * Most methods do nothing. It isn't possible to add child entries.
+ * It only contains a map for attributes and a connection to retrieve
+ * schema information. 
+ * 
+ * It is used for temporary {@link IEntry} objects, e.g. in the new entry wizard. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class DummyEntry implements IEntry
 {
 
     private static final long serialVersionUID = 4833907766031149971L;
 
+    /** The DN. */
     private DN dn;
 
+    /** The dummy connection. */
     private DummyConnection dummyConnection;
 
+    /** The connection id. */
     private String connectionId;
 
-    private Map attributeMap;
+    /** The attribute map. */
+    private Map<String, IAttribute> attributeMap;
 
 
     protected DummyEntry()
@@ -63,46 +80,66 @@ public class DummyEntry implements IEntry
     }
 
 
-    public DummyEntry( DN dn, IBrowserConnection connection )
+    /**
+     * Creates a new instance of DummyEntry.
+     * 
+     * @param dn the DN
+     * @param browserConnection the browser connection
+     */
+    public DummyEntry( DN dn, IBrowserConnection browserConnection )
     {
-        if ( connection instanceof DummyConnection )
+        if ( browserConnection instanceof DummyConnection )
         {
-            this.dummyConnection = ( DummyConnection ) connection;
+            this.dummyConnection = ( DummyConnection ) browserConnection;
         }
         else
         {
-            this.connectionId = connection.getConnection().getId();
+            this.connectionId = browserConnection.getConnection().getId();
         }
 
         this.dn = dn;
-        attributeMap = new LinkedHashMap();
+        attributeMap = new LinkedHashMap<String, IAttribute>();
     }
 
 
+    /**
+     * Sets the DN.
+     * 
+     * @param dn the new DN
+     */
     public void setDn( DN dn )
     {
         this.dn = dn;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addAttribute( IAttribute attributeToAdd )
     {
         attributeMap.put( attributeToAdd.getDescription().toLowerCase(), attributeToAdd );
-        EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getBrowserConnection(), this,
-            attributeToAdd ), this );
+        EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getBrowserConnection(),
+            this, attributeToAdd ), this );
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void addChild( IEntry childrenToAdd )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteAttribute( IAttribute attributeToDelete )
     {
         attributeMap.remove( attributeToDelete.getDescription().toLowerCase() );
-        EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getBrowserConnection(), this,
-            attributeToDelete ), this );
+        EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getBrowserConnection(),
+            this, attributeToDelete ), this );
     }
 
 
@@ -111,23 +148,25 @@ public class DummyEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute getAttribute( String attributeDescription )
     {
-        return ( IAttribute ) attributeMap.get( attributeDescription.toLowerCase() );
+        return attributeMap.get( attributeDescription.toLowerCase() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
-
         AttributeDescription ad = new AttributeDescription( attributeDescription );
 
-        List attributeList = new ArrayList();
-        Iterator iterator = attributeMap.values().iterator();
-        while ( iterator.hasNext() )
+        List<IAttribute> attributeList = new ArrayList<IAttribute>();
+        for ( IAttribute attribute : attributeList )
         {
-            IAttribute attribute = ( IAttribute ) iterator.next();
-
             AttributeDescription other = new AttributeDescription( attributeDescription );
             if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
             {
@@ -141,19 +180,25 @@ public class DummyEntry implements IEntry
         }
         else
         {
-            AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, ( IAttribute[] ) attributeList
+            AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, attributeList
                 .toArray( new IAttribute[attributeList.size()] ) );
             return ah;
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute[] getAttributes()
     {
-        return ( IAttribute[] ) attributeMap.values().toArray( new IAttribute[attributeMap.size()] );
+        return attributeMap.values().toArray( new IAttribute[attributeMap.size()] );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IBrowserConnection getBrowserConnection()
     {
         return dummyConnection != null ? dummyConnection : BrowserCorePlugin.getDefault().getConnectionManager()
@@ -161,106 +206,149 @@ public class DummyEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public DN getDn()
     {
         return dn;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public URL getUrl()
     {
         return new URL( getBrowserConnection(), getDn() );
     }
 
 
+    /**
+     * This implementation always returns null.
+     */
     public IEntry getParententry()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public RDN getRdn()
     {
         return dn.getRdn();
     }
 
 
+    /**
+     * This implementation always returns null.
+     */
     public IEntry[] getChildren()
     {
         return null;
     }
 
 
+    /**
+     * This implementation always returns -1.
+     */
     public int getChildrenCount()
     {
         return -1;
     }
 
 
+    /**
+     * This implementation always returns the empty string.
+     */
     public String getChildrenFilter()
     {
         return ""; //$NON-NLS-1$
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Subschema getSubschema()
     {
         return new Subschema( this );
     }
 
 
+    /**
+     * This implementation always returns false.
+     */
     public boolean hasMoreChildren()
     {
         return false;
     }
 
 
+    /**
+     * This implementation always returns false.
+     */
     public boolean hasParententry()
     {
         return false;
     }
 
 
+    /**
+     * This implementation always returns false.
+     */
     public boolean hasChildren()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isAlias()
     {
-        return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_ALIAS );
+        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_ALIAS );
     }
 
 
+    /**
+     * This implementation always returns true.
+     */
     public boolean isAttributesInitialized()
     {
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isConsistent()
     {
         // check empty attributes and empty values
-        Iterator attributeIterator = attributeMap.values().iterator();
+        Iterator<IAttribute> attributeIterator = attributeMap.values().iterator();
         while ( attributeIterator.hasNext() )
         {
-            IAttribute attribute = ( IAttribute ) attributeIterator.next();
+            IAttribute attribute = attributeIterator.next();
             if ( !attribute.isConsistent() )
                 return false;
         }
 
-        // check objectclass attribute
+        // check objectClass attribute
         if ( !attributeMap.containsKey( IAttribute.OBJECTCLASS_ATTRIBUTE.toLowerCase() ) )
         {
             return false;
         }
-        IAttribute ocAttribute = ( IAttribute ) attributeMap.get( IAttribute.OBJECTCLASS_ATTRIBUTE.toLowerCase() );
+        IAttribute ocAttribute = attributeMap.get( IAttribute.OBJECTCLASS_ATTRIBUTE.toLowerCase() );
         String[] ocValues = ocAttribute.getStringValues();
         boolean structuralObjectClassAvailable = false;
         for ( int i = 0; i < ocValues.length; i++ )
         {
-            ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
+            ObjectClassDescription ocd = this.getBrowserConnection().getSchema()
+                .getObjectClassDescription( ocValues[i] );
             if ( ocd.isStructural() )
             {
                 structuralObjectClassAvailable = true;
@@ -273,86 +361,131 @@ public class DummyEntry implements IEntry
         }
 
         // check must-attributes
-        String[] mustAttributeNames = this.getSubschema().getMustAttributeNames();
+        String[] mustAttributeNames = getSubschema().getMustAttributeNames();
         for ( int i = 0; i < mustAttributeNames.length; i++ )
         {
             if ( !attributeMap.containsKey( mustAttributeNames[i].toLowerCase() ) )
+            {
                 return false;
+            }
         }
 
         return true;
     }
 
 
+    /**
+     * This implementation always returns false.
+     */
     public boolean isDirectoryEntry()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isReferral()
     {
-        return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_REFERRAL );
+        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_REFERRAL );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSubentry()
     {
         return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_SUBENTRY );
     }
 
 
+    /**
+     * This implementation always returns false.
+     */
     public boolean isChildrenInitialized()
     {
         return false;
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setAlias( boolean b )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setAttributesInitialized( boolean b )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setDirectoryEntry( boolean isDirectoryEntry )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setHasMoreChildren( boolean b )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setHasChildrenHint( boolean b )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setReferral( boolean b )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setSubentry( boolean b )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setChildrenFilter( String filter )
     {
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
     public void setChildrenInitialized( boolean b )
     {
     }
 
 
+    /**
+     * This implementation always returns null.
+     */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;

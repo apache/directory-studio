@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +54,11 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 /**
  * Base implementation of the {@link IEntry} interface.
+ * 
+ * The class is optimized to save memory. It doesn't hold members to 
+ * its children or attributes. Instead the {@link ChildrenInfo} and 
+ * {@link AttributeInfo} instances are stored in a map in the 
+ * {@link BrowserConnection} instance.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -62,79 +66,98 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
 public abstract class AbstractEntry implements IEntry
 {
 
-    public static final int HAS_CHILDREN_HINT_FLAG = 1;
+    private static final int HAS_CHILDREN_HINT_FLAG = 1;
 
-    public static final int IS_DIRECTORY_ENTRY_FLAG = 2;
+    private static final int IS_DIRECTORY_ENTRY_FLAG = 2;
 
-    public static final int IS_ALIAS_FLAG = 4;
+    private static final int IS_ALIAS_FLAG = 4;
 
-    public static final int IS_REFERRAL_FLAG = 8;
+    private static final int IS_REFERRAL_FLAG = 8;
 
-    public static final int IS_SUBENTRY_FLAG = 16;
+    private static final int IS_SUBENTRY_FLAG = 16;
 
     private volatile int flags;
 
 
+    /**
+     * Creates a new instance of AbstractEntry.
+     */
     protected AbstractEntry()
     {
         this.flags = HAS_CHILDREN_HINT_FLAG;
     }
 
 
+    /**
+     * Sets the parent entry.
+     * 
+     * @param newParent the new parent entry
+     */
     protected abstract void setParent( IEntry newParent );
 
 
+    /**
+     * Sets the RDN.
+     * 
+     * @param newRdn the new RDN
+     */
     protected abstract void setRdn( RDN newRdn );
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addChild( IEntry childToAdd )
     {
-
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
         if ( ci == null )
         {
             ci = new ChildrenInfo();
-            this.getJNDIConnection().setChildrenInfo( this, ci );
+            getBrowserConnectionImpl().setChildrenInfo( this, ci );
         }
 
         if ( ci.childrenSet == null )
         {
-            ci.childrenSet = new LinkedHashSet();
+            ci.childrenSet = new LinkedHashSet<IEntry>();
         }
         ci.childrenSet.add( childToAdd );
-        this.entryModified( new EntryAddedEvent( childToAdd.getBrowserConnection(), childToAdd ) );
+        entryModified( new EntryAddedEvent( childToAdd.getBrowserConnection(), childToAdd ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteChild( IEntry childToDelete )
     {
-
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
 
         if ( ci != null )
         {
             ci.childrenSet.remove( childToDelete );
             if ( ci.childrenSet == null || ci.childrenSet.isEmpty() )
             {
-                this.getJNDIConnection().setChildrenInfo( this, null );
+                getBrowserConnectionImpl().setChildrenInfo( this, null );
             }
-            this.entryModified( new EntryDeletedEvent( this.getJNDIConnection(), childToDelete ) );
+            entryModified( new EntryDeletedEvent( getBrowserConnectionImpl(), childToDelete ) );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void addAttribute( IAttribute attributeToAdd ) throws IllegalArgumentException
     {
         String oidString = attributeToAdd.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null )
         {
             ai = new AttributeInfo();
-            this.getJNDIConnection().setAttributeInfo( this, ai );
+            getBrowserConnectionImpl().setAttributeInfo( this, ai );
         }
 
-        if ( !this.equals( attributeToAdd.getEntry() ) )
+        if ( !equals( attributeToAdd.getEntry() ) )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__attributes_entry_is_not_myself );
         }
@@ -145,24 +168,27 @@ public abstract class AbstractEntry implements IEntry
         else
         {
             ai.attributeMap.put( oidString.toLowerCase(), attributeToAdd );
-            this.entryModified( new AttributeAddedEvent( this.getJNDIConnection(), this, attributeToAdd ) );
+            entryModified( new AttributeAddedEvent( getBrowserConnectionImpl(), this, attributeToAdd ) );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteAttribute( IAttribute attributeToDelete ) throws IllegalArgumentException
     {
         String oidString = attributeToDelete.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( oidString.toLowerCase() ) )
         {
             IAttribute attribute = ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
             ai.attributeMap.remove( oidString.toLowerCase() );
             if ( ai.attributeMap.isEmpty() )
             {
-                this.getJNDIConnection().setAttributeInfo( this, null );
+                getBrowserConnectionImpl().setAttributeInfo( this, null );
             }
-            this.entryModified( new AttributeDeletedEvent( this.getJNDIConnection(), this, attribute ) );
+            entryModified( new AttributeDeletedEvent( getBrowserConnectionImpl(), this, attribute ) );
         }
         else
         {
@@ -171,10 +197,12 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isConsistent()
     {
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
-
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null || ai.attributeMap == null )
         {
             return isDirectoryEntry();
@@ -182,15 +210,15 @@ public abstract class AbstractEntry implements IEntry
 
         // check empty attributes and empty values
         Map<String, IAttribute> aiAttributeMap = new HashMap<String, IAttribute>( ai.attributeMap );
-        Iterator attributeIterator = aiAttributeMap.values().iterator();
-        while ( attributeIterator.hasNext() )
+        for ( IAttribute attribute : aiAttributeMap.values() )
         {
-            IAttribute attribute = ( IAttribute ) attributeIterator.next();
             if ( !attribute.isConsistent() )
+            {
                 return false;
+            }
         }
 
-        if ( !this.isDirectoryEntry() )
+        if ( !isDirectoryEntry() )
         {
             // check objectclass attribute
             if ( !ai.attributeMap.containsKey( IAttribute.OBJECTCLASS_ATTRIBUTE_OID.toLowerCase() ) )
@@ -203,7 +231,7 @@ public abstract class AbstractEntry implements IEntry
             boolean structuralObjectClassAvailable = false;
             for ( int i = 0; i < ocValues.length; i++ )
             {
-                ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
+                ObjectClassDescription ocd = getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
                 if ( ocd.isStructural() )
                 {
                     structuralObjectClassAvailable = true;
@@ -216,18 +244,13 @@ public abstract class AbstractEntry implements IEntry
             }
 
             // check must-attributes
-            // String[] mustAttributeNames =
-            // this.getSubschema().getMustAttributeNames();
-            // for(int i=0; i<mustAttributeNames.length; i++) {
-            // if(!ai.attributeMap.containsKey(mustAttributeNames[i].toLowerCase()))
-            // return false;
-            // }
-            AttributeTypeDescription[] mustAtds = this.getSubschema().getMustAttributeTypeDescriptions();
-            for ( int i = 0; i < mustAtds.length; i++ )
+            AttributeTypeDescription[] mustAtds = getSubschema().getMustAttributeTypeDescriptions();
+            for ( AttributeTypeDescription mustAtd : mustAtds )
             {
-                AttributeTypeDescription mustAtd = mustAtds[i];
                 if ( !ai.attributeMap.containsKey( mustAtd.getNumericOID().toLowerCase() ) )
+                {
                     return false;
+                }
             }
         }
 
@@ -235,99 +258,136 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDirectoryEntry()
     {
-        return ( this.flags & IS_DIRECTORY_ENTRY_FLAG ) != 0;
+        return ( flags & IS_DIRECTORY_ENTRY_FLAG ) != 0;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setDirectoryEntry( boolean isDirectoryEntry )
     {
         if ( isDirectoryEntry )
-            this.flags = this.flags | IS_DIRECTORY_ENTRY_FLAG;
+        {
+            flags = flags | IS_DIRECTORY_ENTRY_FLAG;
+        }
         else
-            this.flags = this.flags & ~IS_DIRECTORY_ENTRY_FLAG;
+        {
+            flags = flags & ~IS_DIRECTORY_ENTRY_FLAG;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isAlias()
     {
-        if ( ( this.flags & IS_ALIAS_FLAG ) != 0 )
+        if ( ( flags & IS_ALIAS_FLAG ) != 0 )
         {
             return true;
         }
 
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( this.getSubschema().getObjectClassNames() )
-                .contains( ObjectClassDescription.OC_ALIAS );
+            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_ALIAS );
         }
 
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setAlias( boolean b )
     {
         if ( b )
-            this.flags = this.flags | IS_ALIAS_FLAG;
+        {
+            flags = flags | IS_ALIAS_FLAG;
+        }
         else
-            this.flags = this.flags & ~IS_ALIAS_FLAG;
+        {
+            flags = flags & ~IS_ALIAS_FLAG;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isReferral()
     {
-        if ( ( this.flags & IS_REFERRAL_FLAG ) != 0 )
+        if ( ( flags & IS_REFERRAL_FLAG ) != 0 )
         {
             return true;
         }
 
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains(
-                ObjectClassDescription.OC_REFERRAL );
+            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_REFERRAL );
         }
 
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setReferral( boolean b )
     {
         if ( b )
-            this.flags = this.flags | IS_REFERRAL_FLAG;
+        {
+            flags = flags | IS_REFERRAL_FLAG;
+        }
         else
-            this.flags = this.flags & ~IS_REFERRAL_FLAG;
+        {
+            flags = flags & ~IS_REFERRAL_FLAG;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSubentry()
     {
-        if ( ( this.flags & IS_SUBENTRY_FLAG ) != 0 )
+        if ( ( flags & IS_SUBENTRY_FLAG ) != 0 )
         {
             return true;
         }
 
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains(
-                ObjectClassDescription.OC_SUBENTRY );
+            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_SUBENTRY );
         }
 
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSubentry( boolean b )
     {
         if ( b )
-            this.flags = this.flags | IS_SUBENTRY_FLAG;
+        {
+            flags = flags | IS_SUBENTRY_FLAG;
+        }
         else
-            this.flags = this.flags & ~IS_SUBENTRY_FLAG;
+        {
+            flags = flags & ~IS_SUBENTRY_FLAG;
+        }
     }
 
 
@@ -342,47 +402,58 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public RDN getRdn()
     {
-        return this.getDn().getRdn();
+        return getDn().getRdn();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isAttributesInitialized()
     {
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
-        return ai != null && ai.attributesInitialzed;
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
+        return ai != null && ai.attributesInitialized;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setAttributesInitialized( boolean b )
     {
-
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null && b )
         {
             ai = new AttributeInfo();
-            this.getJNDIConnection().setAttributeInfo( this, ai );
+            getBrowserConnectionImpl().setAttributeInfo( this, ai );
         }
 
         if ( ai != null )
         {
-            ai.attributesInitialzed = b;
+            ai.attributesInitialized = b;
         }
 
         if ( ai != null && !b )
         {
             ai.attributeMap.clear();
-            this.getJNDIConnection().setAttributeInfo( this, null );
+            getBrowserConnectionImpl().setAttributeInfo( this, null );
         }
 
-        this.entryModified( new AttributesInitializedEvent( this ) );
+        entryModified( new AttributesInitializedEvent( this ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute[] getAttributes()
     {
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null || ai.attributeMap == null )
         {
             return null;
@@ -394,9 +465,12 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute getAttribute( String attributeDescription )
     {
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null || ai.attributeMap == null )
         {
             return null;
@@ -410,17 +484,19 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
-
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null || ai.attributeMap == null )
         {
             return null;
         }
         else
         {
-            List attributeList = new ArrayList();
+            List<IAttribute> attributeList = new ArrayList<IAttribute>();
 
             IAttribute myAttribute = getAttribute( attributeDescription );
             if ( myAttribute != null )
@@ -429,12 +505,9 @@ public abstract class AbstractEntry implements IEntry
             }
 
             AttributeDescription ad = new AttributeDescription( attributeDescription );
-            Map clonedAttributeMap = new HashMap( ai.attributeMap );
-            Iterator iterator = clonedAttributeMap.values().iterator();
-            while ( iterator.hasNext() )
+            Map<String, IAttribute> clonedAttributeMap = new HashMap<String, IAttribute>( ai.attributeMap );
+            for ( IAttribute attribute : clonedAttributeMap.values() )
             {
-                IAttribute attribute = ( IAttribute ) iterator.next();
-
                 AttributeDescription other = attribute.getAttributeDescription();
                 if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
                 {
@@ -448,7 +521,7 @@ public abstract class AbstractEntry implements IEntry
             }
             else
             {
-                IAttribute[] attributes = ( IAttribute[] ) attributeList.toArray( new IAttribute[attributeList.size()] );
+                IAttribute[] attributes = attributeList.toArray( new IAttribute[attributeList.size()] );
                 AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, attributes );
                 return ah;
             }
@@ -456,13 +529,16 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Subschema getSubschema()
     {
-        AttributeInfo ai = this.getJNDIConnection().getAttributeInfo( this );
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai == null )
         {
             ai = new AttributeInfo();
-            this.getJNDIConnection().setAttributeInfo( this, ai );
+            getBrowserConnectionImpl().setAttributeInfo( this, ai );
         }
         if ( ai.subschema == null )
         {
@@ -473,18 +549,21 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setChildrenInitialized( boolean b )
     {
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
         if ( ci == null && b )
         {
             ci = new ChildrenInfo();
-            this.getJNDIConnection().setChildrenInfo( this, ci );
+            getBrowserConnectionImpl().setChildrenInfo( this, ci );
         }
 
         if ( ci != null )
         {
-            ci.childrenInitialzed = b;
+            ci.childrenInitialized = b;
         }
 
         if ( ci != null && !b )
@@ -493,20 +572,26 @@ public abstract class AbstractEntry implements IEntry
             {
                 ci.childrenSet.clear();
             }
-            this.getJNDIConnection().setChildrenInfo( this, null );
+            getBrowserConnectionImpl().setChildrenInfo( this, null );
         }
 
-        this.entryModified( new ChildrenInitializedEvent( this ) );
+        entryModified( new ChildrenInitializedEvent( this ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isChildrenInitialized()
     {
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
-        return ci != null && ci.childrenInitialzed;
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
+        return ci != null && ci.childrenInitialized;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public IEntry[] getChildren()
     {
         int count = getChildrenCount();
@@ -521,14 +606,14 @@ public abstract class AbstractEntry implements IEntry
         else
         {
             IEntry[] children = new IEntry[count];
-            ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+            ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
             int i = 0;
             if ( ci.childrenSet != null )
             {
-                Iterator it = ci.childrenSet.iterator();
-                for ( ; it.hasNext(); i++ )
+                for ( IEntry child : ci.childrenSet )
                 {
-                    children[i] = ( IEntry ) it.next();
+                    children[i] = child;
+                    i++;
                 }
             }
             return children;
@@ -536,13 +621,16 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getChildrenCount()
     {
         if ( isSubentry() )
         {
             return 0;
         }
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
         if ( ci == null )
         {
             return -1;
@@ -554,75 +642,110 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setHasMoreChildren( boolean b )
     {
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
         if ( ci == null )
         {
             ci = new ChildrenInfo();
-            this.getJNDIConnection().setChildrenInfo( this, ci );
+            getBrowserConnectionImpl().setChildrenInfo( this, ci );
         }
         ci.hasMoreChildren = b;
 
-        this.entryModified( new ChildrenInitializedEvent( this ) );
+        entryModified( new ChildrenInitializedEvent( this ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasMoreChildren()
     {
-        ChildrenInfo ci = this.getJNDIConnection().getChildrenInfo( this );
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
         return ci != null && ci.hasMoreChildren;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setHasChildrenHint( boolean b )
     {
         if ( b )
-            this.flags = this.flags | HAS_CHILDREN_HINT_FLAG;
+        {
+            flags = flags | HAS_CHILDREN_HINT_FLAG;
+        }
         else
-            this.flags = this.flags & ~HAS_CHILDREN_HINT_FLAG;
+        {
+            flags = flags & ~HAS_CHILDREN_HINT_FLAG;
+        }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasChildren()
     {
-        return ( this.flags & HAS_CHILDREN_HINT_FLAG ) != 0 || this.getChildrenCount() > 0;
+        return ( flags & HAS_CHILDREN_HINT_FLAG ) != 0 || getChildrenCount() > 0;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String getChildrenFilter()
     {
-        return this.getJNDIConnection().getChildrenFilter( this );
+        return getBrowserConnectionImpl().getChildrenFilter( this );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setChildrenFilter( String childrenFilter )
     {
-        this.getJNDIConnection().setChildrenFilter( this, childrenFilter );
+        getBrowserConnectionImpl().setChildrenFilter( this, childrenFilter );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasParententry()
     {
-        return this.getParententry() != null;
+        return getParententry() != null;
     }
 
 
-    private BrowserConnection getJNDIConnection()
+    /**
+     * Gets the browser connection implementation.
+     * 
+     * @return the browser connection implementation
+     */
+    private BrowserConnection getBrowserConnectionImpl()
     {
-        return ( BrowserConnection ) this.getBrowserConnection();
+        return ( BrowserConnection ) getBrowserConnection();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public String toString()
     {
-        return this.getDn().toString();
+        return getDn().toString();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o )
     {
-
         // check argument
         if ( o == null || !( o instanceof IEntry ) )
         {
@@ -631,11 +754,15 @@ public abstract class AbstractEntry implements IEntry
         IEntry e = ( IEntry ) o;
 
         // compare dn and connection
-        return this.getDn() == null ? e.getDn() == null : ( this.getDn().equals( e.getDn() ) && this.getBrowserConnection()
-            .equals( e.getBrowserConnection() ) );
+        return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
+            e.getBrowserConnection() ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         Class<?> clazz = ( Class<?> ) adapter;
@@ -649,7 +776,7 @@ public abstract class AbstractEntry implements IEntry
         }
         if ( clazz.isAssignableFrom( IBrowserConnection.class ) )
         {
-            return this.getBrowserConnection();
+            return getBrowserConnection();
         }
         if ( clazz.isAssignableFrom( IEntry.class ) )
         {
@@ -659,12 +786,9 @@ public abstract class AbstractEntry implements IEntry
     }
 
 
-    public IEntry getEntry()
-    {
-        return this;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public URL getUrl()
     {
         return new URL( getBrowserConnection(), getDn() );
