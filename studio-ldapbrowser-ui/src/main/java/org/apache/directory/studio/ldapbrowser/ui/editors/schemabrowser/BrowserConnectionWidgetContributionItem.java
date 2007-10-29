@@ -21,6 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
@@ -43,7 +48,7 @@ import org.eclipse.swt.widgets.ToolItem;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserConnectionWidgetContributionItem extends ContributionItem
+public class BrowserConnectionWidgetContributionItem extends ContributionItem implements ConnectionUpdateListener
 {
     /** The schema page */
     private SchemaPage schemaPage;
@@ -95,6 +100,8 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem
             }
         } );
 
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
+
         // Initializing the width for the toolbar item
         toolitem.setWidth( 250 );
 
@@ -107,6 +114,7 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem
      */
     public void dispose()
     {
+        ConnectionEventRegistry.removeConnectionUpdateListener( this );
         toolItemComposite.dispose();
         toolItemComposite = null;
         browserConnectionWidget = null;
@@ -185,4 +193,65 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem
         browserConnectionWidget.setEnabled( !schemaPage.isShowDefaultSchema() );
     }
 
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
+     */
+    public final void connectionUpdated( Connection connection )
+    {
+        IBrowserConnection selectedConnection = browserConnectionWidget.getBrowserConnection();
+        if ( connection.equals( selectedConnection.getConnection() ) )
+        {
+            browserConnectionWidget.setBrowserConnection( browserConnectionWidget.getBrowserConnection() );
+        }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionAdded( Connection connection )
+    {
+        // Nothing to do
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionRemoved( Connection connection )
+    {
+        IBrowserConnection selectedConnection = browserConnectionWidget.getBrowserConnection();
+        if ( connection.equals( selectedConnection.getConnection() ) )
+        {
+            schemaPage.getSchemaBrowser().setInput( new SchemaBrowserInput( null, null ) );
+        }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionOpened( Connection connection )
+    {
+        // Nothing to do
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
+        // Nothing to do
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+        // Nothing to do
+    }
 }
