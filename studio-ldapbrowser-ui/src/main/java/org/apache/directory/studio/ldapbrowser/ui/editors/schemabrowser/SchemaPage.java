@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
@@ -63,8 +62,8 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class SchemaPage
 {
 
-    /** The connection combo */
-    protected ConnectionComboContributionItem connectionCombo;
+    /** The connection widget */
+    protected BrowserConnectionWidgetContributionItem connectionCombo;
 
     /** The show default schema action */
     protected ShowDefaultSchemaAction showDefaultSchemaAction;
@@ -359,7 +358,7 @@ public abstract class SchemaPage
             }
         } );
 
-        connectionCombo = new ConnectionComboContributionItem( this );
+        connectionCombo = new BrowserConnectionWidgetContributionItem( this );
         this.form.getToolBarManager().add( connectionCombo );
         this.form.getToolBarManager().add( new Separator() );
         showDefaultSchemaAction = new ShowDefaultSchemaAction( schemaBrowser );
