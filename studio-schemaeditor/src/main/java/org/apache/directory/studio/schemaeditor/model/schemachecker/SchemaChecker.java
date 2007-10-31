@@ -86,7 +86,11 @@ public class SchemaChecker
     {
         public void attributeTypeAdded( AttributeTypeImpl at )
         {
+            List<?> deps = getAndDeleteDependencies( at );
+
             checkAttributeType( at );
+
+            checkDependencies( deps );
 
             notifyListeners();
         }
@@ -120,7 +124,11 @@ public class SchemaChecker
 
         public void objectClassAdded( ObjectClassImpl oc )
         {
+            List<?> deps = getAndDeleteDependencies( oc );
+
             checkObjectClass( oc );
+
+            checkDependencies( deps );
 
             notifyListeners();
         }
@@ -864,5 +872,59 @@ public class SchemaChecker
                 }
             }
         }
+    }
+
+
+    /**
+     * Gets the dependencies for the given schema object
+     * and deletes them from the tables.
+     *
+     * @param sc
+     *      the schema object
+     * @return
+     *      the dependencies for the given schema object
+     * and deletes them from the tables.
+     */
+    @SuppressWarnings("unchecked")
+    private List<Object> getAndDeleteDependencies( SchemaObject sc )
+    {
+        List<Object> deps = new ArrayList<Object>();
+
+        // Checking OID
+        String oid = sc.getOid();
+        if ( ( oid != null ) && ( !"".equals( oid ) ) )
+        {
+            List<Object> oidDependencies = ( List<Object> ) dependenciesMap.get( oid );
+            if ( oidDependencies != null )
+            {
+                deps.addAll( oidDependencies );
+                dependenciesMap.remove( oid );
+                for ( Object oidDependency : oidDependencies )
+                {
+                    dependsOnMap.remove( oidDependency, oid );
+                }
+            }
+        }
+
+        // Checking aliases
+        String[] aliases = sc.getNames();
+        if ( ( aliases != null ) && ( aliases.length > 0 ) )
+        {
+            for ( String alias : aliases )
+            {
+                List<Object> aliasDependencies = ( List<Object> ) dependenciesMap.get( alias );
+                if ( aliasDependencies != null )
+                {
+                    deps.addAll( aliasDependencies );
+                    dependenciesMap.remove( alias );
+                    for ( Object aliasDependency : aliasDependencies )
+                    {
+                        dependsOnMap.remove( aliasDependency, alias );
+                    }
+                }
+            }
+        }
+
+        return deps;
     }
 }
