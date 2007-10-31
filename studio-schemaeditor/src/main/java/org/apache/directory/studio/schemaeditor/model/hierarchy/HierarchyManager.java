@@ -554,28 +554,4 @@ public class HierarchyManager
         // Default
         return null;
     }
-
-
-    /**
-     * This method is called when a schema is added.
-     *
-     * @param schema
-     *      the added schema
-     */
-    public void schemaAdded( Schema schema )
-    {
-        // TODO implement
-    }
-
-
-    /**
-     * This method is called when a schema is removed.
-     *
-     * @param schema
-     *      the removed schema
-     */
-    public void schemaRemoved( Schema schema )
-    {
-        // TODO implement
-    }
 }
