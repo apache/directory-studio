@@ -21,11 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -124,7 +124,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
 
         BaseWidgetUtils.createLabel( innerComposite, "Bookmark Name:", 1 );
-        bookmarkNameText = BaseWidgetUtils.createText( innerComposite, entry.getDn().toString(), 2 );
+        bookmarkNameText = BaseWidgetUtils.createText( innerComposite, entry.getDn().getUpName(), 2 );
         bookmarkNameText.setFocus();
         bookmarkNameText.addModifyListener( new ModifyListener()
         {
@@ -158,7 +158,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
      * 
      * @return the bookmark dn
      */
-    public DN getBookmarkDn()
+    public LdapDN getBookmarkDn()
     {
         return bookmarkEntryWidget.getDn();
     }

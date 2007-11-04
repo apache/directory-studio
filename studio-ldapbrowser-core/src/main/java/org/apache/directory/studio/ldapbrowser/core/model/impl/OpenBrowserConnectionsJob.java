@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -28,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
@@ -144,7 +144,7 @@ public class OpenBrowserConnectionsJob extends AbstractNotificationJob
                 {
                     // check if schema is up-to-date
                     SearchParameter sp = new SearchParameter();
-                    sp.setSearchBase( new DN( rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
+                    sp.setSearchBase( new LdapDN( rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
                         .getStringValue() ) );
                     sp.setFilter( Schema.SCHEMA_FILTER );
                     sp.setScope( SearchScope.OBJECT );

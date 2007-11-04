@@ -24,6 +24,9 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
@@ -107,7 +110,7 @@ public class URL
      * @param connection the connection
      * @param dn the DN
      */
-    public URL( IBrowserConnection connection, DN dn )
+    public URL( IBrowserConnection connection, LdapDN dn )
     {
         this( connection );
 
@@ -116,7 +119,7 @@ public class URL
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_url );
         }
 
-        this.dn = dn.toString();
+        this.dn = dn.getUpName();
     }
 
 
@@ -485,7 +488,7 @@ public class URL
      * @return the dn
      * @throws NoSuchFieldException if not has dn
      */
-    public DN getDn() throws NoSuchFieldException
+    public LdapDN getDn() throws NoSuchFieldException
     {
         if ( dn == null )
         {
@@ -494,9 +497,9 @@ public class URL
 
         try
         {
-            return new DN( dn );
+            return new LdapDN( dn );
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
             throw new NoSuchFieldException( BrowserCoreMessages.model__url_no_dn );
         }

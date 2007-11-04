@@ -23,6 +23,9 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
@@ -45,7 +48,7 @@ public class SearchParameter implements Serializable
     private String name;
 
     /** The search base. */
-    private DN searchBase;
+    private LdapDN searchBase;
 
     /** The filter. */
     private String filter;
@@ -282,7 +285,7 @@ public class SearchParameter implements Serializable
      * 
      * @return the search base
      */
-    public DN getSearchBase()
+    public LdapDN getSearchBase()
     {
         return searchBase;
     }
@@ -293,13 +296,36 @@ public class SearchParameter implements Serializable
      * 
      * @param searchBase the search base
      */
-    public void setSearchBase( DN searchBase )
+    public void setSearchBase( LdapDN searchBase )
     {
         assert searchBase != null;
         this.searchBase = searchBase;
     }
 
 
+    /**
+     * Sets the search base, a null search base is not allowed.
+     * 
+     * @deprecated This method will be removed in the next version. The DN/RDN/RDNPart 
+     * classes are replaced with the shared-ldap LdapDN/Rdn/ATAV. This method just 
+     * remains to provide backward compatibility of the old browserconnections.xml
+     * file that stores searches and bookmarks.
+     * 
+     * @param searchBase the search base
+     */
+    public void setSearchBase( DN searchBase )
+    {
+        assert searchBase != null;
+        try
+        {
+            setSearchBase( new LdapDN( searchBase.toString() ) );
+        }
+        catch ( InvalidNameException e )
+        {
+        }
+    }
+    
+    
     /**
      * Gets the time limit in milliseconds, 0 means no limit.
      * 

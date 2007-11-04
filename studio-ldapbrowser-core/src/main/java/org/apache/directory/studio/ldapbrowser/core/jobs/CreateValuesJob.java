@@ -190,7 +190,7 @@ public class CreateValuesJob extends AbstractAttributeModificationJob
         if ( browserConnection.getConnection() != null )
         {
             // dn
-            String dn = entryToModify.getDn().toString();
+            String dn = entryToModify.getDn().getUpName();
 
             // modification items
             ModificationItem[] modificationItems = new ModificationItem[valuesToCreate.length];

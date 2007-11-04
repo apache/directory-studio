@@ -71,7 +71,7 @@ public class AttributeAddedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__added_att_to_dn, new String[]
-            { getAddedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
+            { getAddedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
     }
 
 }

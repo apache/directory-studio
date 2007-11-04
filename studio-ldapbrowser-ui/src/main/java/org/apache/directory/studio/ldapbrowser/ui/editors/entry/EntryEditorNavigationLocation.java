@@ -21,15 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
@@ -72,7 +73,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 }
                 else
                 {
-                    return "Entry " + eei.getEntryInput().getDn().toString();
+                    return "Entry " + eei.getEntryInput().getDn().getUpName();
                 }
             }
             else if ( eei.getSearchResultInput() != null )
@@ -83,7 +84,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 }
                 else
                 {
-                    return "Search Result " + eei.getSearchResultInput().getDn().toString();
+                    return "Search Result " + eei.getSearchResultInput().getDn().getUpName();
                 }
             }
             else if ( eei.getBookmarkInput() != null )
@@ -94,7 +95,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 }
                 else
                 {
-                    return "Bookmark " + eei.getBookmarkInput().getDn().toString();
+                    return "Bookmark " + eei.getBookmarkInput().getDn().getUpName();
                 }
             }
         }
@@ -114,14 +115,14 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             {
                 IEntry entry = eei.getEntryInput();
                 memento.putString( "TYPE", "IEntry" );
-                memento.putString( "DN", entry.getDn().toString() );
+                memento.putString( "DN", entry.getDn().getUpName() );
                 memento.putString( "CONNECTION", entry.getBrowserConnection().getConnection().getId() );
             }
             else if ( eei.getSearchResultInput() != null )
             {
                 ISearchResult searchResult = eei.getSearchResultInput();
                 memento.putString( "TYPE", "ISearchResult" );
-                memento.putString( "DN", searchResult.getDn().toString() );
+                memento.putString( "DN", searchResult.getDn().getUpName() );
                 memento.putString( "SEARCH", searchResult.getSearch().getName() );
                 memento.putString( "CONNECTION", searchResult.getSearch().getBrowserConnection().getConnection().getId() );
             }
@@ -149,7 +150,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             {
                 IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
                     memento.getString( "CONNECTION" ) );
-                DN dn = new DN( memento.getString( "DN" ) );
+                LdapDN dn = new LdapDN( memento.getString( "DN" ) );
                 IEntry entry = connection.getEntryFromCache( dn );
                 super.setInput( new EntryEditorInput( entry ) );
             }
@@ -159,7 +160,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                     memento.getString( "CONNECTION" ) );
                 ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
                 ISearchResult[] searchResults = search.getSearchResults();
-                DN dn = new DN( memento.getString( "DN" ) );
+                LdapDN dn = new LdapDN( memento.getString( "DN" ) );
                 for ( int i = 0; i < searchResults.length; i++ )
                 {
                     if ( dn.equals( searchResults[i].getDn() ) )
@@ -177,7 +178,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 super.setInput( new EntryEditorInput( bookmark ) );
             }
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
             e.printStackTrace();
         }

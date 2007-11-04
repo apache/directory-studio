@@ -37,6 +37,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -44,7 +45,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -58,6 +58,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
@@ -186,7 +187,7 @@ public class SearchJob extends AbstractNotificationJob
                     while ( !monitor.isCanceled() && enumeration.hasMore() )
                     {
                         SearchResult sr = enumeration.nextElement(); // TODO: referrals exception
-                        DN dn = JNDIUtils.getDn( sr );
+                        LdapDN dn = JNDIUtils.getDn( sr );
 
                         // get entry from cache or create it
                         IEntry entry = browserConnection.getEntryFromCache( dn );
@@ -271,7 +272,7 @@ public class SearchJob extends AbstractNotificationJob
     static NamingEnumeration<SearchResult> search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
-        String searchBase = parameter.getSearchBase().toString();
+        String searchBase = parameter.getSearchBase().getUpName();
         SearchControls controls = new SearchControls();
         switch ( parameter.getScope() )
         {
@@ -466,28 +467,29 @@ public class SearchJob extends AbstractNotificationJob
      * 
      * @return the created entry
      */
-    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, DN dn )
+    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, LdapDN dn )
     {
         IEntry entry = null;
 
         // build tree to parent
-        LinkedList<DN> parentDnList = new LinkedList<DN>();
-        DN parentDN = dn;
+        LinkedList<LdapDN> parentDnList = new LinkedList<LdapDN>();
+        LdapDN parentDN = dn;
         while ( parentDN != null && browserConnection.getEntryFromCache( parentDN ) == null )
         {
             parentDnList.addFirst( parentDN );
-            parentDN = parentDN.getParentDn();
+            parentDN = DnUtils.getParent( parentDN );
         }
-        for ( DN aDN : parentDnList )
+        for ( LdapDN aDN : parentDnList )
         {
-            if ( aDN.getParentDn() == null )
+            parentDN = DnUtils.getParent( aDN );
+            if ( parentDN == null )
             {
                 entry = new BaseDNEntry( aDN, browserConnection );
                 browserConnection.cacheEntry( entry );
             }
-            else if ( browserConnection.getEntryFromCache( aDN.getParentDn() ) != null )
+            else if ( browserConnection.getEntryFromCache( parentDN ) != null )
             {
-                IEntry parentEntry = browserConnection.getEntryFromCache( aDN.getParentDn() );
+                IEntry parentEntry = browserConnection.getEntryFromCache( parentDN );
                 entry = new Entry( parentEntry, aDN.getRdn() );
                 entry.setDirectoryEntry( true );
 

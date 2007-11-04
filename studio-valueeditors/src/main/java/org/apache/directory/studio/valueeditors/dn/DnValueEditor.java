@@ -21,12 +21,13 @@
 package org.apache.directory.studio.valueeditors.dn;
 
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -52,12 +53,12 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof DnValueEditorRawValueWrapper )
         {
             DnValueEditorRawValueWrapper wrapper = ( DnValueEditorRawValueWrapper ) value;
-            DN dn;
+            LdapDN dn;
             try
             {
-                dn = wrapper.dn != null ? new DN( wrapper.dn ) : null;
+                dn = wrapper.dn != null ? new LdapDN( wrapper.dn ) : null;
             }
-            catch ( NameException e )
+            catch ( InvalidNameException e )
             {
                 dn = null;
             }

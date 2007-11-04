@@ -36,9 +36,8 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -80,7 +79,7 @@ class SubtreeSpecificationDialog extends Dialog
     private IBrowserConnection connection;
 
     /** The subentry's DN */
-    private DN subentryDN;
+    private LdapDN subentryDN;
 
     /** Flag indicating if the refinement or filter widget should be visible */
     private boolean refinementOrFilterVisible;
@@ -122,7 +121,7 @@ class SubtreeSpecificationDialog extends Dialog
      * @param refinementOrFilterVisible
      *      true if the refinement of filter widget should be visible
      */
-    SubtreeSpecificationDialog( Shell shell, IBrowserConnection connection, DN subentryDN,
+    SubtreeSpecificationDialog( Shell shell, IBrowserConnection connection, LdapDN subentryDN,
         String initialSubtreeSpecification, boolean refinementOrFilterVisible )
     {
         super( shell );
@@ -212,16 +211,8 @@ class SubtreeSpecificationDialog extends Dialog
 
         BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.base" ), 1 ); //$NON-NLS-1$
 
-        DN base = null;
-        DN suffix = null;
-        try
-        {
-            base = new DN( subtreeSpecification.getBase().toNormName() );
-            suffix = subentryDN != null ? subentryDN.getParentDn() : null;
-        }
-        catch ( NameException e )
-        {
-        }
+        LdapDN base = subtreeSpecification.getBase();
+        LdapDN suffix = subentryDN != null ? DnUtils.getParent( subentryDN ) : null;
         entryWidget = new EntryWidget( connection, base, suffix );
         entryWidget.createWidget( composite );
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -498,7 +489,7 @@ class SubtreeSpecificationDialog extends Dialog
     {
         boolean valid = true;
 
-        DN base = entryWidget.getDn();
+        LdapDN base = entryWidget.getDn();
         valid &= base != null;
 
         String ss = buildSubreeSpecification();
@@ -538,7 +529,7 @@ class SubtreeSpecificationDialog extends Dialog
         sb.append( "{" ); //$NON-NLS-1$
 
         // Adding base
-        DN base = entryWidget.getDn();
+        LdapDN base = entryWidget.getDn();
         if ( base != null && !SubtreeValueEditor.EMPTY.equals( base.toString() ) )
         {
             sb.append( " base \"" + base.toString() + "\"," ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -660,18 +651,11 @@ class SubtreeSpecificationDialog extends Dialog
      */
     private void addValueExclusionsTable()
     {
-        DN chopBase = null;
-        try
+        LdapDN chopBase = subtreeSpecification.getBase();
+        if ( subentryDN != null && DnUtils.getParent( subentryDN ) != null )
         {
-            chopBase = new DN( subtreeSpecification.getBase().toNormName() );
-        }
-        catch ( NameException e )
-        {
-        }
-        if ( subentryDN != null && subentryDN.getParentDn() != null )
-        {
-            DN suffix = subentryDN != null ? subentryDN.getParentDn() : null;
-            chopBase = new DN( chopBase, suffix );
+            LdapDN suffix = subentryDN != null ? DnUtils.getParent( subentryDN ) : null;
+            chopBase = DnUtils.composeDn( chopBase, suffix );
         }
 
         ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, "" ); //$NON-NLS-1$
@@ -694,18 +678,11 @@ class SubtreeSpecificationDialog extends Dialog
         String oldValue = getSelectedValueExclusionsTable();
         if ( oldValue != null )
         {
-            DN chopBase = null;
-            try
+            LdapDN chopBase = subtreeSpecification.getBase();
+            if ( subentryDN != null && DnUtils.getParent( subentryDN ) != null )
             {
-                chopBase = new DN( subtreeSpecification.getBase().toNormName() );
-            }
-            catch ( NameException e )
-            {
-            }
-            if ( subentryDN != null && subentryDN.getParentDn() != null )
-            {
-                DN suffix = subentryDN != null ? subentryDN.getParentDn() : null;
-                chopBase = new DN( chopBase, suffix );
+                LdapDN suffix = subentryDN != null ? DnUtils.getParent( subentryDN ) : null;
+                chopBase = DnUtils.composeDn( chopBase, suffix );
             }
 
             ExclusionDialog dialog = new ExclusionDialog( getShell(), connection, chopBase, oldValue );

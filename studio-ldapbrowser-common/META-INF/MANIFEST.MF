@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.editors,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapbrowser.core

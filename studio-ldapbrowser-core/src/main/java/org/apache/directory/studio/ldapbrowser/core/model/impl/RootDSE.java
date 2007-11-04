@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.Arrays;
 
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -54,7 +54,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
      */
     public RootDSE( IBrowserConnection browserConnection )
     {
-        super( new DN(), browserConnection );
+        super( LdapDN.EMPTY_LDAPDN, browserConnection );
     }
 
 

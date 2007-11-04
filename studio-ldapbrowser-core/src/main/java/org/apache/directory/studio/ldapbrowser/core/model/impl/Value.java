@@ -21,13 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import java.util.Iterator;
+
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
@@ -304,11 +306,12 @@ public class Value implements IValue
      */
     public boolean isRdnPart()
     {
-        RDNPart[] parts = getAttribute().getEntry().getRdn().getParts();
-        for ( int p = 0; p < parts.length; p++ )
+        Iterator<AttributeTypeAndValue> atavIterator = getAttribute().getEntry().getRdn().iterator();
+        while(atavIterator.hasNext())
         {
-            if ( getAttribute().getDescription().equals( parts[p].getType() )
-                && getStringValue().equals( parts[p].getValue() ) )
+            AttributeTypeAndValue atav = atavIterator.next();
+            if ( getAttribute().getDescription().equals( atav.getUpType() )
+                && getStringValue().equals( atav.getUpValue() ) )
             {
                 return true;
             }

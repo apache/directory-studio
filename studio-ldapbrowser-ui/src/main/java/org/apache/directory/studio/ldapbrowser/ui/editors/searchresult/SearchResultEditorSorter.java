@@ -258,7 +258,8 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
 
         if ( attributeName == BrowserUIConstants.DN )
         {
-            return compare( entry1.getDn().toString(), entry2.getDn().toString() );
+            // compare normalized names
+            return compare( entry1.getDn().getNormName(), entry2.getDn().getNormName() );
         }
         else
         {

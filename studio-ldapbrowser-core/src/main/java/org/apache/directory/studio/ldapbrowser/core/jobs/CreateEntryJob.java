@@ -98,7 +98,7 @@ public class CreateEntryJob extends AbstractNotificationJob
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__create_entry_task_1, new String[]
-            { entryToCreate.getDn().toString() } ), 2 + 1 );
+            { entryToCreate.getDn().getUpName() } ), 2 + 1 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
@@ -147,7 +147,7 @@ public class CreateEntryJob extends AbstractNotificationJob
     static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor )
     {
         // dn
-        String dn = entryToCreate.getDn().toString();
+        String dn = entryToCreate.getDn().getUpName();
 
         // attributes
         Attributes jndiAttributes = new BasicAttributes();

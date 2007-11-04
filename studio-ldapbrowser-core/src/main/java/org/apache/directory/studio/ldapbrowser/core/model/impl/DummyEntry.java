@@ -28,17 +28,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
@@ -63,7 +63,7 @@ public class DummyEntry implements IEntry
     private static final long serialVersionUID = 4833907766031149971L;
 
     /** The DN. */
-    private DN dn;
+    private LdapDN dn;
 
     /** The dummy connection. */
     private DummyConnection dummyConnection;
@@ -86,7 +86,7 @@ public class DummyEntry implements IEntry
      * @param dn the DN
      * @param browserConnection the browser connection
      */
-    public DummyEntry( DN dn, IBrowserConnection browserConnection )
+    public DummyEntry( LdapDN dn, IBrowserConnection browserConnection )
     {
         if ( browserConnection instanceof DummyConnection )
         {
@@ -107,7 +107,7 @@ public class DummyEntry implements IEntry
      * 
      * @param dn the new DN
      */
-    public void setDn( DN dn )
+    public void setDn( LdapDN dn )
     {
         this.dn = dn;
     }
@@ -209,7 +209,7 @@ public class DummyEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public DN getDn()
+    public LdapDN getDn()
     {
         return dn;
     }
@@ -236,9 +236,10 @@ public class DummyEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
-        return dn.getRdn();
+        Rdn rdn = dn.getRdn();
+        return rdn == null ? new Rdn() : rdn;
     }
 
 

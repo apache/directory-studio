@@ -29,9 +29,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -104,10 +104,10 @@ public class EntryTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < entries.length; i++ )
                 {
-                    byte[] connectionId = entries[i].getBrowserConnection().getConnection().getId().getBytes();
+                    byte[] connectionId = entries[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" );
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] dn = entries[i].getDn().toString().getBytes();
+                    byte[] dn = entries[i].getDn().getUpName().getBytes( "UTF-8" );
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
                 }
@@ -161,7 +161,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             byte[] connectionId = new byte[size];
                             readIn.read( connectionId );
                             connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                                new String( connectionId ) );
+                                new String( connectionId, "UTF-8" ) );
                         }
 
                         IEntry entry = null;
@@ -170,7 +170,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new DN( new String( dn ) ) );
+                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) );
                         }
                         else
                         {

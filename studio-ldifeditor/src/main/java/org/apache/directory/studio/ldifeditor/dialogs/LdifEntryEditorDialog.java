@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldifeditor.dialogs;
 
 
+import javax.naming.InvalidNameException;
+
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
@@ -29,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryE
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
@@ -224,7 +225,7 @@ public class LdifEntryEditorDialog extends Dialog
             }
 
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
             e.printStackTrace();
         }

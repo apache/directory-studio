@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -83,13 +83,13 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
-                if ( value.isString() && new DN( value.getStringValue() ) != null )
+                if ( value.isString() && LdapDN.isValid( value.getStringValue() ) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN( value
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN( value
                         .getStringValue() ) );
                 }
             }
-            catch ( NameException e )
+            catch ( InvalidNameException e )
             {
                 // no valid DN
             }
@@ -100,13 +100,13 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedValues()[0];
-                if ( value.isString() && new DN( value.getStringValue() ) != null )
+                if ( value.isString() && LdapDN.isValid( value.getStringValue() ) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new DN( value
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN( value
                         .getStringValue() ) );
                 }
             }
-            catch ( NameException e )
+            catch ( InvalidNameException e )
             {
                 // no valid DN
             }

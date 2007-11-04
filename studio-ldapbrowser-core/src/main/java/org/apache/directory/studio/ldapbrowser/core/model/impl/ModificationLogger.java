@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import javax.naming.InvalidNameException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -42,12 +43,11 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.IModificationLogger;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModDnRecord;
@@ -60,6 +60,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpec
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**
@@ -316,21 +317,21 @@ public class ModificationLogger implements IModificationLogger
     {
         try
         {
-            DN dn = new DN( newDn );
-            RDN newrdn = dn.getRdn();
-            DN newsuperior = dn.getParentDn();
+            LdapDN dn = new LdapDN( newDn );
+            Rdn newrdn = dn.getRdn();
+            LdapDN newsuperior = DnUtils.getParent( dn );
 
             LdifChangeModDnRecord record = LdifChangeModDnRecord.create( oldDn );
             //record.addControl( controlLine );
-            record.setNewrdn( LdifNewrdnLine.create( newrdn.toString() ) );
+            record.setNewrdn( LdifNewrdnLine.create( newrdn.getUpName() ) );
             record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
-            record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.toString() ) );
+            record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getUpName() ) );
             record.finish( LdifSepLine.create() );
 
             String formattedString = record.toFormattedString();
             log( formattedString, ex );
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
         }
     }

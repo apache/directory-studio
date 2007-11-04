@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
@@ -40,7 +41,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -149,7 +149,7 @@ public class DeleteAction extends BrowserAction
                     {
                         message.append( BrowserCoreConstants.LINE_SEPARATOR );
                         message.append( "  - " );
-                        message.append( entries[i].getDn() );
+                        message.append( entries[i].getDn().getUpName() );
                     }
                 }
                 else
@@ -569,11 +569,12 @@ public class DeleteAction extends BrowserAction
             }
 
             // check if (part of) RDN is selected
-            RDNPart[] parts = this.getSelectedValues()[i].getAttribute().getEntry().getRdn().getParts();
-            for ( int p = 0; p < parts.length; p++ )
+            Iterator<AttributeTypeAndValue> atavIterator = this.getSelectedValues()[i].getAttribute().getEntry().getRdn().iterator();
+            while(atavIterator.hasNext())
             {
-                if ( getSelectedValues()[i].getAttribute().getDescription().equals( parts[p].getType() )
-                    && getSelectedValues()[i].getStringValue().equals( parts[p].getValue() ) )
+                AttributeTypeAndValue atav = atavIterator.next();
+                if ( getSelectedValues()[i].getAttribute().getDescription().equals( atav.getUpType() )
+                    && getSelectedValues()[i].getStringValue().equals( atav.getUpValue() ) )
                 {
                     throw new Exception();
                 }

@@ -21,14 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
-
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -52,7 +51,7 @@ public abstract class LocateInDitAction extends BrowserAction
         if ( connectionAndDn != null )
         {
             IBrowserConnection connection = connectionAndDn.connection;
-            DN dn = connectionAndDn.dn;
+            LdapDN dn = connectionAndDn.dn;
 
             IEntry entry = connection.getEntryFromCache( dn );
             if ( entry == null )
@@ -126,7 +125,7 @@ public abstract class LocateInDitAction extends BrowserAction
         private IBrowserConnection connection;
 
         /** The DN */
-        private DN dn;
+        private LdapDN dn;
 
 
         /**
@@ -135,7 +134,7 @@ public abstract class LocateInDitAction extends BrowserAction
          * @param connection the connection
          * @param dn the DN
          */
-        protected ConnectionAndDn( IBrowserConnection connection, DN dn )
+        protected ConnectionAndDn( IBrowserConnection connection, LdapDN dn )
         {
             this.connection = connection;
             this.dn = dn;

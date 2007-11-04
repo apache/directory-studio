@@ -133,13 +133,13 @@ public class PropertiesAction extends BrowserAction
         {
             element = ( IAdaptable ) getSelectedEntries()[0];
             pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
-            title = getSelectedEntries()[0].getDn().toString();
+            title = getSelectedEntries()[0].getDn().getUpName();
         }
         else if ( getSelectedSearchResults().length == 1 )
         {
             element = ( IAdaptable ) getSelectedSearchResults()[0];
             pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
-            title = getSelectedSearchResults()[0].getDn().toString();
+            title = getSelectedSearchResults()[0].getDn().getUpName();
         }
 
         if ( element != null )

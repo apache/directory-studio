@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -37,11 +39,9 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
@@ -64,7 +64,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     private String connectionId;
 
     /** The DN. */
-    private DN dn;
+    private LdapDN dn;
 
     /** The entry does not exist flag. */
     private boolean entryDoesNotExist;
@@ -84,7 +84,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
      * @param connection the connection of the delegate
      * @param dn the DN of the delegate
      */
-    public DelegateEntry( IBrowserConnection connection, DN dn )
+    public DelegateEntry( IBrowserConnection connection, LdapDN dn )
     {
         this.connectionId = connection.getConnection().getId();
         this.dn = dn;
@@ -141,7 +141,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
-    public DN getDn()
+    public LdapDN getDn()
     {
         if ( getDelegate() != null )
         {
@@ -341,7 +341,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         if ( getDelegate() != null )
         {
@@ -349,7 +349,8 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         }
         else
         {
-            return dn.getRdn();
+            Rdn rdn = dn.getRdn();
+            return rdn == null ? new Rdn() : rdn;
         }
     }
 

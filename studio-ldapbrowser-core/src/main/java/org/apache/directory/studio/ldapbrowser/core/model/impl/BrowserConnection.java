@@ -25,6 +25,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -35,13 +38,12 @@ import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
@@ -162,11 +164,12 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * {@inheritDoc}
      */
-    public IEntry getEntryFromCache( DN dn )
+    public IEntry getEntryFromCache( LdapDN dn )
     {
-        if ( dnToEntryCache != null && dnToEntryCache.containsKey( dn.toOidString( getSchema() ) ) )
+        String oidDn = DnUtils.getNormalizedOidString( dn, getSchema() );
+        if ( dnToEntryCache != null && dnToEntryCache.containsKey( oidDn ) )
         {
-            return dnToEntryCache.get( dn.toOidString( getSchema() ) );
+            return dnToEntryCache.get( oidDn );
         }
         if ( getRootDSE().getDn().equals( dn ) )
         {
@@ -198,13 +201,13 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * {@inheritDoc}
      */
-    public DN getBaseDN()
+    public LdapDN getBaseDN()
     {
         try
         {
-            return new DN( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
+            return new LdapDN( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_BASE_DN ) );
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
             return null;
         }
@@ -214,7 +217,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * {@inheritDoc}
      */
-    public void setBaseDN( DN baseDN )
+    public void setBaseDN( LdapDN baseDN )
     {
         connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, baseDN.toString() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
@@ -389,9 +392,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * {@inheritDoc}
      */
-    public void cacheEntry( IEntry entry )
+    public synchronized void cacheEntry( IEntry entry )
     {
-        dnToEntryCache.put( entry.getDn().toOidString( getSchema() ), entry );
+        dnToEntryCache.put( DnUtils.getNormalizedOidString( entry.getDn(), getSchema() ), entry );
     }
 
 
@@ -400,16 +403,16 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      * 
      * @param entry the entry to remove from cache
      */
-    protected void uncacheEntry( IEntry entry )
+    protected synchronized void uncacheEntry( IEntry entry )
     {
-        dnToEntryCache.remove( entry.getDn().toOidString( getSchema() ) );
+        dnToEntryCache.remove( DnUtils.getNormalizedOidString( entry.getDn(), getSchema() ) );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void uncacheEntryRecursive( IEntry entry )
+    public synchronized void uncacheEntryRecursive( IEntry entry )
     {
         IEntry[] children = entry.getChildren();
         if ( entry.getChildren() != null )
@@ -428,9 +431,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      * 
      * @param dn the DN of the entry to remove from cache
      */
-    protected void uncacheEntry( DN dn )
+    protected synchronized void uncacheEntry( LdapDN dn )
     {
-        dnToEntryCache.remove( dn.toOidString( getSchema() ) );
+        dnToEntryCache.remove( DnUtils.getNormalizedOidString( dn, getSchema() ) );
     }
 
 

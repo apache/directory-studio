@@ -731,7 +731,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
                     // dnLink.setText("<a>"+sr.getDn().toString()+"</a>");
                     dnLink.setData( sr );
-                    dnLink.setText( sr.getDn().toString() );
+                    dnLink.setText( sr.getDn().getUpName() );
                     dnLink.setUnderlined( true );
                     dnLink.setFont( item.getFont() );
                     dnLink.setForeground( item.getForeground() );

@@ -115,9 +115,8 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
         for ( int pi = 0; pi < entries.length && !monitor.isCanceled(); pi++ )
         {
-
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-                { this.entries[pi].getDn().toString() } ) );
+                { this.entries[pi].getDn().getUpName() } ) );
             monitor.worked( 1 );
 
             if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
@@ -161,7 +160,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
         {
             monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
                 new String[]
-                    { parent.getDn().toString() } ) );
+                    { parent.getDn().getUpName() } ) );
 
             // clear old children
             IEntry[] oldChildren = parent.getChildren();
@@ -199,7 +198,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             ISearchResult[] srs = search.getSearchResults();
             monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                 new String[]
-                    { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().toString() } ) );
+                    { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getUpName() } ) );
 
             // fill children in search result
             if ( srs != null && srs.length > 0 )
@@ -264,7 +263,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
                 monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
                     new String[]
                         { subSrs == null ? Integer.toString( 0 ) : Integer.toString( subSrs.length ),
-                            parent.getDn().toString() } ) );
+                            parent.getDn().getUpName() } ) );
                 // fill children in search result
                 if ( subSrs != null && subSrs.length > 0 )
                 {

@@ -21,11 +21,11 @@
 package org.apache.directory.studio.valueeditors.dn;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
@@ -55,7 +55,7 @@ public class DnDialog extends Dialog
     private IBrowserConnection connection;
 
     /** The dn. */
-    private DN dn;
+    private LdapDN dn;
 
 
     /**
@@ -65,7 +65,7 @@ public class DnDialog extends Dialog
      * @param connection the connection
      * @param dn the dn
      */
-    public DnDialog( Shell parentShell, IBrowserConnection connection, DN dn )
+    public DnDialog( Shell parentShell, IBrowserConnection connection, LdapDN dn )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -152,7 +152,7 @@ public class DnDialog extends Dialog
      * 
      * @return the dn
      */
-    public DN getDn()
+    public LdapDN getDn()
     {
         return dn;
     }

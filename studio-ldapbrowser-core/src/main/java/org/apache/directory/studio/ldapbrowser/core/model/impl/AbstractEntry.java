@@ -28,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
@@ -44,7 +45,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
@@ -101,7 +101,7 @@ public abstract class AbstractEntry implements IEntry
      * 
      * @param newRdn the new RDN
      */
-    protected abstract void setRdn( RDN newRdn );
+    protected abstract void setRdn( Rdn newRdn );
 
 
     /**
@@ -405,9 +405,10 @@ public abstract class AbstractEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
-        return getDn().getRdn();
+        Rdn rdn = getDn().getRdn();
+        return rdn == null ? new Rdn() : rdn;
     }
 
 
@@ -737,7 +738,7 @@ public abstract class AbstractEntry implements IEntry
      */
     public String toString()
     {
-        return getDn().toString();
+        return getDn().getUpName();
     }
 
 

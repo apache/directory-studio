@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
@@ -100,7 +100,7 @@ public class Schema implements Serializable
 
     private LdifContentRecord schemaRecord;
 
-    private DN dn;
+    private LdapDN dn;
 
     private String[] objectClasses;
 
@@ -204,7 +204,7 @@ public class Schema implements Serializable
     {
 
         this.setSchemaRecord( schemaRecord );
-        this.setDn( new DN( schemaRecord.getDnLine().getValueAsString() ) );
+        this.setDn( new LdapDN( schemaRecord.getDnLine().getValueAsString() ) );
 
         LdifAttrValLine[] lines = schemaRecord.getAttrVals();
         for ( int i = 0; i < lines.length; i++ )
@@ -299,13 +299,13 @@ public class Schema implements Serializable
      * 
      * @return the dn of the schema record, may be null
      */
-    public DN getDn()
+    public LdapDN getDn()
     {
         return dn;
     }
 
 
-    public void setDn( DN dn )
+    public void setDn( LdapDN dn )
     {
         this.dn = dn;
     }
@@ -732,7 +732,6 @@ public class Schema implements Serializable
      */
     public AttributeTypeDescription getAttributeTypeDescription( String description )
     {
-
         AttributeDescription ad = new AttributeDescription( description );
         String attributeType = ad.getParsedAttributeType();
 

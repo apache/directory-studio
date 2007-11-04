@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
@@ -49,7 +49,7 @@ public class ReferralBaseEntry extends DelegateEntry
      * @param connection the connection of the referral target
      * @param dn the DN of the referral target
      */
-    public ReferralBaseEntry( IBrowserConnection connection, DN dn )
+    public ReferralBaseEntry( IBrowserConnection connection, LdapDN dn )
     {
         super( connection, dn );
     }

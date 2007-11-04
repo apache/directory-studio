@@ -21,13 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateEntryJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -170,9 +169,8 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
         if ( selectedConnection != null )
         {
-//            selectedConnection.suspend();
             DummyConnection prototypeConnection = new DummyConnection( selectedConnection.getSchema() ); 
-            prototypeEntry = new DummyEntry( new DN(), prototypeConnection );
+            prototypeEntry = new DummyEntry( new LdapDN(), prototypeConnection );
         }
     }
 

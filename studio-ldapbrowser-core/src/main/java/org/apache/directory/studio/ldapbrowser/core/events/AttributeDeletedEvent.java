@@ -71,7 +71,7 @@ public class AttributeDeletedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__deleted_att_from_dn, new String[]
-            { getDeletedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
+            { getDeletedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
     }
     
 }

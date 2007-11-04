@@ -26,10 +26,10 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
@@ -200,19 +200,19 @@ public class CopyValueAction extends BrowserAction
         }
         else if ( getSelectedSearchResults().length > 0 )
         {
-            DN dn = getSelectedSearchResults()[0].getDn();
+            LdapDN dn = getSelectedSearchResults()[0].getDn();
 
             if ( mode == MODE_UTF8 )
             {
-                text.append( LdifUtils.utf8decode( dn.toString().getBytes() ) );
+                text.append( dn.getUpName() );
             }
             else if ( mode == MODE_BASE64 )
             {
-                text.append( LdifUtils.base64encode( dn.toString().getBytes() ) );
+                text.append( LdifUtils.base64encode( LdifUtils.utf8encode( dn.getUpName() ) ) );
             }
             else if ( mode == MODE_HEX )
             {
-                text.append( LdifUtils.hexEncode( dn.toString().getBytes() ) );
+                text.append( LdifUtils.hexEncode( LdifUtils.utf8encode( dn.getUpName() ) ) );
             }
             else if ( mode == MODE_LDIF )
             {

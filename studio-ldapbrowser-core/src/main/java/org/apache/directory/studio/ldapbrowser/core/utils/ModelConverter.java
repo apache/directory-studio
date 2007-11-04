@@ -24,13 +24,14 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 /**
  * Utilities to convert between models
  */
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
@@ -59,10 +60,10 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws NameException the name exception
+     * @throws InvalidNameException
      */
     public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IBrowserConnection connection )
-        throws NameException
+        throws InvalidNameException
     {
         return createIntern( ldifContentRecord, connection );
     }
@@ -76,10 +77,10 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws NameException the name exception
+     * @throws InvalidNameException
      */
     public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IBrowserConnection connection )
-        throws NameException
+        throws InvalidNameException
     {
         return createIntern( ldifChangeAddRecord, connection );
     }
@@ -93,15 +94,15 @@ public class ModelConverter
      *
      * @return the dummy entry
      *
-     * @throws NameException the name exception
+     * @throws InvalidNameException
      */
-    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws NameException
+    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws InvalidNameException
     {
         LdifPart[] parts = ldifRecord.getParts();
 
         EventRegistry.suspendEventFireingInCurrentThread();
 
-        DummyEntry entry = new DummyEntry( new DN( ldifRecord.getDnLine().getValueAsString() ), connection );
+        DummyEntry entry = new DummyEntry( new LdapDN( ldifRecord.getDnLine().getValueAsString() ), connection );
 
         for ( int i = 0; i < parts.length; i++ )
         {
@@ -161,7 +162,7 @@ public class ModelConverter
 
         // LdifChangeAddRecord record =
         // LdifChangeAddRecord.create(entry.getDn().toString());
-        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().toString() ) );
+        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getUpName() ) );
         if ( mustCreateChangeTypeLine )
         {
             addControls( record, entry );
@@ -211,7 +212,7 @@ public class ModelConverter
     public static LdifContentRecord entryToLdifContentRecord( IEntry entry )
     {
 
-        LdifContentRecord record = LdifContentRecord.create( entry.getDn().toString() );
+        LdifContentRecord record = LdifContentRecord.create( entry.getDn().getUpName() );
 
         IAttribute[] attributes = entry.getAttributes();
         for ( int i = 0; i < attributes.length; i++ )
@@ -277,9 +278,9 @@ public class ModelConverter
     }
 
 
-    public static LdifDnLine dnToLdifDnLine( DN dn )
+    public static LdifDnLine dnToLdifDnLine( LdapDN dn )
     {
-        LdifDnLine line = LdifDnLine.create( dn.toString() );
+        LdifDnLine line = LdifDnLine.create( dn.getUpName() );
         return line;
     }
 

@@ -28,19 +28,20 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
@@ -136,7 +137,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         for ( int pi = 0; pi < entries.length && !monitor.isCanceled(); pi++ )
         {
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-                { this.entries[pi].getDn().toString() } ) );
+                { this.entries[pi].getDn().getUpName() } ) );
             monitor.worked( 1 );
             if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
             {
@@ -209,7 +210,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_att,
             new String[]
-                { entry.getDn().toString() } ) );
+                { entry.getDn().getUpName() } ) );
 
         // entry.setAttributesInitialized(false, entry.getConnection());
 
@@ -293,7 +294,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         browserConnection.getRootDSE().setChildrenInitialized( false );
 
         // get well-known root DSE attributes, includes + and *
-        ISearch search = new Search( null, browserConnection, new DN(), ISearch.FILTER_TRUE,
+        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
             InitializeAttributesJob.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0,
             AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false,
             null );
@@ -302,17 +303,24 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         // get base DNs
         if( !browserConnection.isFetchBaseDNs() && browserConnection.getBaseDN() != null && !"".equals( browserConnection.getBaseDN().toString() ))
         {
-            // only add the specified base DN
-            DN dn = browserConnection.getBaseDN();
-            IEntry entry = new BaseDNEntry( new DN( dn ), browserConnection );
-            browserConnection.cacheEntry( entry );
-            browserConnection.getRootDSE().addChild( entry );
-            
-            // check if entry exists
-            // TODO: use browserConnection.getEntry( dn, monitor ) ??
-            search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT, 1, 0,
-                AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, true, null );
-            SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+            try
+            {
+                // only add the specified base DN
+                LdapDN dn = browserConnection.getBaseDN();
+                IEntry entry = new BaseDNEntry( new LdapDN( dn ), browserConnection );
+                browserConnection.cacheEntry( entry );
+                browserConnection.getRootDSE().addChild( entry );
+                
+                // check if entry exists
+                // TODO: use browserConnection.getEntry( dn, monitor ) ??
+                search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT, 1, 0,
+                    AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, true, null );
+                SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+            }
+            catch ( InvalidNameException e )
+            {
+                monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
+            }
         }
         else
         {
@@ -332,11 +340,11 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                 if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
                     try
                     {
-                        IEntry entry = new BaseDNEntry( new DN( namingContext ), browserConnection );
+                        IEntry entry = new BaseDNEntry( new LdapDN( namingContext ), browserConnection );
                         browserConnection.getRootDSE().addChild( entry );
                         browserConnection.cacheEntry( entry );
                     }
-                    catch ( Exception e )
+                    catch ( InvalidNameException e )
                     {
                         monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
                     }
@@ -344,7 +352,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                 else
                 {
                     // special handling of empty namingContext: perform a one-level search and add all result DNs to the set
-                    search = new Search( null, browserConnection, new DN(), ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0,
+                    search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0,
                         0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false, null );
                     SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
                     ISearchResult[] results = search.getSearchResults();
@@ -390,7 +398,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
     private static DirectoryMetadataEntry[] getDirectoryMetadataEntries( IBrowserConnection browserConnection, String metadataAttributeName )
     {
-        List<DN> metadataEntryList = new ArrayList<DN>();
+        List<LdapDN> metadataEntryList = new ArrayList<LdapDN>();
         IAttribute attribute = browserConnection.getRootDSE().getAttribute( metadataAttributeName );
         if ( attribute != null )
         {
@@ -399,9 +407,9 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             {
                 try
                 {
-                    metadataEntryList.add( new DN( values[i] ) );
+                    metadataEntryList.add( new LdapDN( values[i] ) );
                 }
-                catch ( NameException e )
+                catch ( InvalidNameException e )
                 {
                 }
             }

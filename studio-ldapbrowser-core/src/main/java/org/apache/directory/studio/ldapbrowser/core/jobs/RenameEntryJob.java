@@ -29,18 +29,19 @@ import java.util.Set;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**
@@ -59,7 +60,7 @@ public class RenameEntryJob extends AbstractNotificationJob
     private IEntry oldEntry;
 
     /** The new rdn. */
-    private RDN newRdn;
+    private Rdn newRdn;
 
     /** The delete old rdn flag. */
     private boolean deleteOldRdn;
@@ -78,7 +79,7 @@ public class RenameEntryJob extends AbstractNotificationJob
      * @param newRdn the new rdn
      * @param deleteOldRdn the delete old rdn flag
      */
-    public RenameEntryJob( IEntry entry, RDN newRdn, boolean deleteOldRdn )
+    public RenameEntryJob( IEntry entry, Rdn newRdn, boolean deleteOldRdn )
     {
         this.browserConnection = entry.getBrowserConnection();
         this.oldEntry = entry;
@@ -117,17 +118,17 @@ public class RenameEntryJob extends AbstractNotificationJob
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__rename_entry_task, new String[]
-            { oldEntry.getDn().toString() } ), 3 );
+            { oldEntry.getDn().getUpName() } ), 3 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
         IEntry parent = oldEntry.getParententry();
-        DN newDn = new DN( newRdn, parent.getDn() );
+        LdapDN newDn = DnUtils.composeDn( newRdn, parent.getDn() );
 
         // rename in directory
         // TODO: use manual/simulated rename, if rename of subtree is not
         // supported
-        renameEntry( browserConnection, oldEntry, newDn.toString(), deleteOldRdn, monitor );
+        renameEntry( browserConnection, oldEntry, newDn, deleteOldRdn, monitor );
 
         if ( !monitor.errorsReported() )
         {
@@ -205,15 +206,16 @@ public class RenameEntryJob extends AbstractNotificationJob
      * 
      * @param browserConnection the browser connection
      * @param oldEntry the old entry
-     * @param newDn the new dn
-     * @param deleteOldRdn the delete old rdn flag
+     * @param newDn the new DN
+     * @param deleteOldRdn the delete old RDN flag
      * @param monitor the progress monitor
      */
-    static void renameEntry( IBrowserConnection browserConnection, IEntry oldEntry, String newDn, boolean deleteOldRdn,
+    static void renameEntry( IBrowserConnection browserConnection, IEntry oldEntry, LdapDN newDn, boolean deleteOldRdn,
         StudioProgressMonitor monitor )
     {
         // dn
-        String oldDn = oldEntry.getDn().toString();
+        String oldDnString = oldEntry.getDn().getUpName();
+        String newDnString = newDn.getUpName();
 
         // controls
         Control[] controls = null;
@@ -223,7 +225,7 @@ public class RenameEntryJob extends AbstractNotificationJob
                 { new ManageReferralControl() };
         }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDn, newDn, deleteOldRdn, controls,
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, deleteOldRdn, controls,
             monitor );
     }
 

@@ -34,14 +34,13 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
@@ -266,7 +265,7 @@ public class ExportLdifJob extends AbstractEclipseJob
             try
             {
                 SearchResult sr = enumeration.next();
-                DN dn = JNDIUtils.getDn( sr );
+                LdapDN dn = JNDIUtils.getDn( sr );
                 LdifContentRecord record = LdifContentRecord.create( dn.toString() );
 
                 NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
@@ -297,14 +296,6 @@ public class ExportLdifJob extends AbstractEclipseJob
             catch ( NamingException e )
             {
                 throw JNDIUtils.createConnectionException( parameter, e );
-            }
-            catch ( NameException e )
-            {
-                throw new ConnectionException( e );
-            }
-            catch ( NoSuchFieldException e )
-            {
-                throw new ConnectionException( e );
             }
         }
     }

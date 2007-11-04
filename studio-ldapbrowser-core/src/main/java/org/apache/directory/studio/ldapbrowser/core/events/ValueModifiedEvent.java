@@ -107,7 +107,7 @@ public class ValueModifiedEvent extends EntryModificationEvent
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__replaced_oldval_by_newval_at_att_at_dn,
             new String[]
                 { getOldValue().getStringValue(), getNewValue().getStringValue(),
-                    getModifiedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
+                    getModifiedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
     }
 
 }

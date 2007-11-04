@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -29,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -141,7 +141,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         if ( templateButton.getSelection() )
         {
             final IBrowserConnection browserConnection = entryWidget.getBrowserConnection();
-            final DN dn = entryWidget.getDn();
+            final LdapDN dn = entryWidget.getDn();
             final IEntry[] templateEntries = new IEntry[1];
 
             if ( browserConnection == null )
@@ -218,7 +218,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
         else
         {
-            wizard.setPrototypeEntry( new DummyEntry( new DN(), new DummyConnection( wizard.getSelectedConnection().getSchema() ) ) );
+            wizard.setPrototypeEntry( new DummyEntry( new LdapDN(), new DummyConnection( wizard.getSelectedConnection().getSchema() ) ) );
         }
 
         return super.getNextPage();

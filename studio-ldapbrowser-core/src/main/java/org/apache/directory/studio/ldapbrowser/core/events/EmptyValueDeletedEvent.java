@@ -89,7 +89,7 @@ public class EmptyValueDeletedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__empty_value_deleted_from_att_at_dn, new String[]
-            { getModifiedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
+            { getModifiedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
     }
 
 }

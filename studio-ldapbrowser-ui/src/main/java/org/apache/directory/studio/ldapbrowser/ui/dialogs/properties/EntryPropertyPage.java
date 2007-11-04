@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -247,9 +246,9 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
         if ( !this.dnText.isDisposed() )
         {
 
-            this.setMessage( "Entry " + entry.getDn() );
+            this.setMessage( "Entry " + entry.getDn().getUpName() );
 
-            this.dnText.setText( entry.getDn().toString() );
+            this.dnText.setText( entry.getDn().getUpName() );
             this.urlText.setText( entry.getUrl().toString() );
             this.ctText.setText( getNonNullStringValue( entry
                 .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) ) );

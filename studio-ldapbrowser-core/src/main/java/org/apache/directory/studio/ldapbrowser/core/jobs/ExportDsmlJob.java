@@ -50,7 +50,6 @@ import org.apache.directory.shared.ldap.filter.PresenceNode;
 import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
-import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
@@ -140,7 +139,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             searchRequest.setProtocolOP( searchRequest );
 
             // DN
-            searchRequest.setBaseObject( new LdapDN( searchParameter.getSearchBase().toString() ) );
+            searchRequest.setBaseObject( searchParameter.getSearchBase( ) );
 
             // Scope
             SearchScope scope = searchParameter.getScope();

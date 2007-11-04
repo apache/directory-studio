@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 
 import java.util.Comparator;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -41,7 +41,7 @@ public class AttributeComparator implements Comparator
 
     public AttributeComparator( IBrowserConnection connection )
     {
-        this.dummyEntry = new DummyEntry( new DN(), connection );
+        this.dummyEntry = new DummyEntry( LdapDN.EMPTY_LDAPDN, connection );
     }
 
 

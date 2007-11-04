@@ -488,7 +488,7 @@ public class PasswordDialog extends Dialog
         {
             Connection connection = ( Connection ) entry.getBrowserConnection().getConnection().clone();
             connection.setName( null );
-            connection.setBindPrincipal( entry.getDn().toString() );
+            connection.setBindPrincipal( entry.getDn().getUpName() );
             connection.setBindPassword( testPasswordText.getText() );
             connection.setAuthMethod( AuthenticationMethod.SIMPLE );
 

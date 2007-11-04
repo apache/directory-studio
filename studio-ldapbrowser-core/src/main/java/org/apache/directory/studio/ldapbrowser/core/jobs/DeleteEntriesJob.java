@@ -104,7 +104,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
         monitor.beginTask( entriesToDelete.length == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__delete_entries_task_1, new String[]
-                { entriesToDelete[0].getDn().toString() } ) : BrowserCoreMessages.bind(
+                { entriesToDelete[0].getDn().getUpName() } ) : BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__delete_entries_task_n, new String[]
                 { Integer.toString( entriesToDelete.length ) } ), 2 + entriesToDelete.length );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -291,7 +291,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     static void deleteEntry( IBrowserConnection browserConnection, IEntry entry, StudioProgressMonitor monitor )
     {
         // dn
-        String dn = entry.getDn().toString();
+        String dn = entry.getDn().getUpName();
 
         // controls
         Control[] controls = null;

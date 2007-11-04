@@ -23,8 +23,13 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -35,9 +40,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
@@ -47,6 +49,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**
@@ -114,9 +117,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
     {
         monitor.beginTask( entriesToCopy.length == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__copy_entries_task_1, new String[]
-                { entriesToCopy[0].getDn().toString(), parent.getDn().toString() } ) : BrowserCoreMessages.bind(
+                { entriesToCopy[0].getDn().getUpName(), parent.getDn().getUpName() } ) : BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__copy_entries_task_n, new String[]
-                { Integer.toString( entriesToCopy.length ), parent.getDn().toString() } ), 2 + entriesToCopy.length );
+                { Integer.toString( entriesToCopy.length ), parent.getDn().getUpName() } ), 2 + entriesToCopy.length );
 
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -129,7 +132,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 IEntry entryToCopy = entriesToCopy[i];
 
                 if ( scope == SearchScope.OBJECT
-                    || !parent.getDn().toString().endsWith( entryToCopy.getDn().toString() ) )
+                    || !parent.getDn().getNormName().endsWith( entryToCopy.getDn().getNormName() ) )
                 {
                     num = copyEntryRecursive( entryToCopy, parent, scope, num, monitor );
                 }
@@ -198,7 +201,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 IAttribute[] attributesToCopy = entryToCopy.getAttributes();
 
                 // create new entry
-                RDN rdn = entryToCopy.getRdn();
+                Rdn rdn = entryToCopy.getRdn();
                 IEntry newEntry = new Entry( parent, rdn );
 
                 // change RDN if entry already exists
@@ -206,9 +209,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 IEntry testEntry = ReadEntryJob.getEntry( parent.getBrowserConnection(), newEntry.getDn(), testMonitor );
                 if ( testEntry != null )
                 {
-                    String rdnValue = rdn.getValue();
+                    Object rdnValue = rdn.getUpValue();
                     String newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, "", rdnValue ); //$NON-NLS-1$
-                    RDN newRdn = getNewRdn( rdn, newRdnValue );
+                    Rdn newRdn = getNewRdn( rdn, newRdnValue );
                     newEntry = new Entry( parent, newRdn );
                     testEntry = ReadEntryJob.getEntry( parent.getBrowserConnection(), newEntry.getDn(), testMonitor );
                     for ( int i = 2; testEntry != null; i++ )
@@ -241,18 +244,18 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 }
 
                 // check if RDN attributes ar present
-                RDN newRdn = newEntry.getRdn();
-                RDNPart[] oldRdnParts = rdn.getParts();
-                for ( int i = 0; i < oldRdnParts.length; i++ )
+                Rdn newRdn = newEntry.getRdn();
+                Iterator<AttributeTypeAndValue> atavIterator = newRdn.iterator();
+                while(atavIterator.hasNext())
                 {
-                    RDNPart part = oldRdnParts[i];
-                    IAttribute rdnAttribute = newEntry.getAttribute( part.getType() );
+                    AttributeTypeAndValue atav = atavIterator.next();
+                    IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
                     if ( rdnAttribute != null )
                     {
                         IValue[] values = rdnAttribute.getValues();
                         for ( int ii = 0; ii < values.length; ii++ )
                         {
-                            if ( part.getUnencodedValue().equals( values[ii].getRawValue() ) )
+                            if ( atav.getUpValue().equals( values[ii].getRawValue() ) )
                             {
                                 rdnAttribute.deleteValue( values[ii] );
                             }
@@ -263,16 +266,16 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         }
                     }
                 }
-                RDNPart[] newRdnParts = newRdn.getParts();
-                for ( int i = 0; i < newRdnParts.length; i++ )
+                atavIterator = newRdn.iterator();
+                while(atavIterator.hasNext())
                 {
-                    RDNPart part = newRdnParts[i];
-                    IAttribute rdnAttribute = newEntry.getAttribute( part.getType() );
+                    AttributeTypeAndValue atav = atavIterator.next();
+                    IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
                     if ( rdnAttribute == null )
                     {
-                        rdnAttribute = new Attribute( newEntry, part.getType() );
+                        rdnAttribute = new Attribute( newEntry, atav.getUpType() );
                         newEntry.addAttribute( rdnAttribute );
-                        rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ) );
+                        rdnAttribute.addValue( new Value( rdnAttribute, atav.getUpValue() ) );
                     }
                     else
                     {
@@ -280,7 +283,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         IValue[] values = rdnAttribute.getValues();
                         for ( int ii = 0; ii < values.length; ii++ )
                         {
-                            if ( part.getUnencodedValue().equals( values[ii].getStringValue() ) )
+                            if ( atav.getUpValue().equals( values[ii].getStringValue() ) )
                             {
                                 mustAdd = false;
                                 break;
@@ -288,7 +291,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         }
                         if ( mustAdd )
                         {
-                            rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ) );
+                            rdnAttribute.addValue( new Value( rdnAttribute, atav.getUpValue() ) );
                         }
                     }
                 }
@@ -352,15 +355,23 @@ public class CopyEntriesJob extends AbstractNotificationJob
      * @param newRdnValue the new rdn value
      * 
      * @return the new rdn
-     * 
-     * @throws NameException the name exception
+     * @throws InvalidNameException 
      */
-    private RDN getNewRdn( RDN rdn, String newRdnValue ) throws NameException
+    private Rdn getNewRdn( Rdn rdn, String newRdnValue ) throws InvalidNameException
     {
-        String[] names = rdn.getTypes();
-        String[] values = rdn.getValues();
-        values[0] = newRdnValue;
-        RDN newRdn = new RDN( names, values, true );
+        String[] rdnTypes = new String[rdn.size()];
+        String[] rdnValues = new String[rdn.size()];
+        int i = 0;
+        Iterator<AttributeTypeAndValue> atavIterator = rdn.iterator();
+        while(atavIterator.hasNext())
+        {
+            AttributeTypeAndValue atav = atavIterator.next();
+            rdnTypes[i] = atav.getUpType();
+            rdnValues[i] = ( String ) atav.getUpValue();
+            i++;
+        }
+        rdnValues[0] = newRdnValue;
+        Rdn newRdn = DnUtils.composeRdn( rdnTypes, rdnValues );
         return newRdn;
     }
 

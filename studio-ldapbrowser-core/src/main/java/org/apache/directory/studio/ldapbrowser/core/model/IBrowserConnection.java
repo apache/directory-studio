@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
@@ -226,7 +227,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the manually defined base ND
      */
-    public abstract DN getBaseDN();
+    public abstract LdapDN getBaseDN();
 
 
     /**
@@ -234,7 +235,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param baseDN the new base DN
      */
-    public abstract void setBaseDN( DN baseDN );
+    public abstract void setBaseDN( LdapDN baseDN );
 
 
     /**
@@ -356,7 +357,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the entry from cache or null if the entry isn't cached
      */
-    public abstract IEntry getEntryFromCache( DN dn );
+    public abstract IEntry getEntryFromCache( LdapDN dn );
 
 
     /**

@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -200,7 +200,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         if ( selectedEntry != null )
         {
             String name = mainPage.getBookmarkName();
-            DN dn = mainPage.getBookmarkDn();
+            LdapDN dn = mainPage.getBookmarkDn();
             IBookmark bookmark = new Bookmark( selectedEntry.getBrowserConnection(), dn, name );
             selectedEntry.getBrowserConnection().getBookmarkManager().addBookmark( bookmark );
         }

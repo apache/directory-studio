@@ -21,12 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -62,7 +63,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     private Button okButton;
 
     /** The parent DN. */
-    private DN parentDn;
+    private LdapDN parentDn;
 
     /** The simulate move flag. */
     private boolean simulateMove;
@@ -144,7 +145,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget = new DnBuilderWidget( false, true );
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
-        dnBuilderWidget.setInput( entries[0].getBrowserConnection(), null, null, entries[0].getDn().getParentDn() );
+        dnBuilderWidget.setInput( entries[0].getBrowserConnection(), null, null, DnUtils.getParent( entries[0].getDn() ) );
 
         simulateMoveButton = BaseWidgetUtils.createCheckbox( composite,
             "Simulate subtree moving by searching/adding/deleting recursively", 1 );
@@ -173,7 +174,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
      * 
      * @return the parent dn
      */
-    public DN getParentDn()
+    public LdapDN getParentDn()
     {
         return parentDn;
     }

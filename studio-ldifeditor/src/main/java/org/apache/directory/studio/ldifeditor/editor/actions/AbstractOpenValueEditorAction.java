@@ -21,9 +21,11 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -150,13 +152,13 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
         {
             try
             {
-                DummyEntry dummyEntry = new DummyEntry( new DN( dn ), connection );
+                DummyEntry dummyEntry = new DummyEntry( new LdapDN( dn ), connection );
                 Attribute dummyAttribute = new Attribute( dummyEntry, description );
                 Value dummyValue = new Value( dummyAttribute, value );
 
                 rawValue = valueEditor.getRawValue( dummyValue );
             }
-            catch ( NameException e )
+            catch ( InvalidNameException e )
             {
                 e.printStackTrace();
             }

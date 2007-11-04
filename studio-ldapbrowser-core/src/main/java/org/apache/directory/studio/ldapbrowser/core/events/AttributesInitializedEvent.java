@@ -54,7 +54,7 @@ public class AttributesInitializedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__dn_attributes_initialized, new String[]
-            { getModifiedEntry().getDn().toString() } );
+            { getModifiedEntry().getDn().getUpName() } );
     }
 
 }

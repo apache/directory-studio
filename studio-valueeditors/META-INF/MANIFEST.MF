@@ -8,6 +8,7 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapbrowser.core,

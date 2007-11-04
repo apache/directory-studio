@@ -23,14 +23,15 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -59,12 +60,12 @@ class ExclusionDialog extends Dialog
     private IBrowserConnection connection;
 
     /** The base. */
-    private DN base;
+    private LdapDN base;
 
-    /** The initial typ. */
+    /** The initial type. */
     private String initialType;
 
-    /** The inital DN */
+    /** The initial DN */
     private String initalDN;
 
     /** The return type */
@@ -91,7 +92,7 @@ class ExclusionDialog extends Dialog
      * @param base the base DN
      * @param exclusion the exclusion string
      */
-    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, DN base, String exclusion )
+    protected ExclusionDialog( Shell parentShell, IBrowserConnection connection, LdapDN base, String exclusion )
     {
         super( parentShell );
         this.connection = connection;
@@ -173,10 +174,10 @@ class ExclusionDialog extends Dialog
         entryWidget.createWidget( composite );
         try
         {
-            DN dn = new DN( initalDN );
+            LdapDN dn = new LdapDN( initalDN );
             entryWidget.setInput( connection, dn, base );
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
         }
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -198,7 +199,7 @@ class ExclusionDialog extends Dialog
      */
     private void validate()
     {
-        boolean valid = entryWidget.getDn() != null && entryWidget.getDn().getRdns().length > 0;
+        boolean valid = entryWidget.getDn() != null && entryWidget.getDn().size() > 0;
 
         if ( getButton( IDialogConstants.OK_ID ) != null )
         {

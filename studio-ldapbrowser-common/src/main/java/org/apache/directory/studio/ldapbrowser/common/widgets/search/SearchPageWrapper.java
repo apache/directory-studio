@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
@@ -573,7 +573,7 @@ public class SearchPageWrapper extends BrowserWidget
         if ( search.getBrowserConnection() != null )
         {
             IBrowserConnection browserConnection = search.getBrowserConnection();
-            DN searchBase = search.getSearchBase();
+            LdapDN searchBase = search.getSearchBase();
 
             if ( browserConnectionWidget != null )
             {

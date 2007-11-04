@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -103,18 +103,19 @@ public class ValuesTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < values.length; i++ )
                 {
-                    byte[] connectionId = values[i].getAttribute().getEntry().getBrowserConnection().getConnection().getId().getBytes();
+                    byte[] connectionId = values[i].getAttribute().getEntry().getBrowserConnection().getConnection()
+                        .getId().getBytes( "UTF-8" );
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] dn = values[i].getAttribute().getEntry().getDn().toString().getBytes();
+                    byte[] dn = values[i].getAttribute().getEntry().getDn().getUpName().getBytes( "UTF-8" );
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
-                    byte[] attributeName = values[i].getAttribute().getDescription().getBytes();
+                    byte[] attributeName = values[i].getAttribute().getDescription().getBytes( "UTF-8" );
                     writeOut.writeInt( attributeName.length );
                     writeOut.write( attributeName );
                     if ( values[i].isString() )
                     {
-                        byte[] value = values[i].getStringValue().getBytes();
+                        byte[] value = values[i].getStringValue().getBytes( "UTF-8" );
                         writeOut.writeBoolean( true );
                         writeOut.writeInt( value.length );
                         writeOut.write( value );
@@ -175,7 +176,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                             byte[] connectionId = new byte[size];
                             readIn.read( connectionId );
                             connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                                new String( connectionId ) );
+                                new String( connectionId, "UTF-8" ) );
                         }
 
                         IEntry entry = null;
@@ -184,7 +185,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new DN( new String( dn ) ) );
+                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) );
                         }
                         else
                         {
@@ -197,7 +198,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] attributeName = new byte[size];
                             readIn.read( attributeName );
-                            attribute = entry.getAttribute( new String( attributeName ) );
+                            attribute = entry.getAttribute( new String( attributeName, "UTF-8" ) );
                         }
                         else
                         {
@@ -211,7 +212,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] val = new byte[size];
                             readIn.read( val );
-                            String test = new String( val );
+                            String test = new String( val, "UTF-8" );
 
                             IValue[] values = attribute.getValues();
                             for ( int i = 0; i < values.length; i++ )

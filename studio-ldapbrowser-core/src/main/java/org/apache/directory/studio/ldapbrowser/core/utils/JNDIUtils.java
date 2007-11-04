@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
+
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketException;
@@ -30,37 +31,45 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.ReferralException;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
-
-
+/**
+ * Utility class for JNDI specific stuff.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class JNDIUtils
 {
 
-    public static DN getDn( javax.naming.directory.SearchResult sr ) throws NamingException,
-        NameException, NoSuchFieldException
+    /**
+     * Gets the LdapDN from a JNDI SearchResult object.
+     *
+     * @param sr the JNDI search result
+     * @return the LdapDN 
+     * @throws NamingException
+     */
+    public static LdapDN getDn( javax.naming.directory.SearchResult sr ) throws NamingException
     {
         String dn = sr.getNameInNamespace();
-        dn = unescapeJndiName( dn );
-        return new DN( dn );
+        LdapDN ldapDn = new LdapDN( unescapeJndiName( dn ) );
+        return ldapDn;
     }
 
 
     /**
      * Correct some JNDI encodings...
      * 
-     * @param name
-     * @return
+     * @param name the DN
+     * @return the modified DN
      */
     public static String unescapeJndiName( String name )
     {
-
         if ( name.startsWith( "\"" ) && name.endsWith( "\"" ) ) { //$NON-NLS-1$ //$NON-NLS-2$
             name = name.substring( 1, name.length() - 1 );
         }
@@ -78,17 +87,25 @@ public class JNDIUtils
     }
 
 
+    /**
+     * Creates a connection exception.
+     * 
+     * @param searchParameter the search parameter
+     * @param e the exception
+     * 
+     * @return the connection exception
+     */
     public static ConnectionException createConnectionException( SearchParameter searchParameter, Throwable e )
     {
         ConnectionException connectionException = null;
         ConnectionException lastException = null;
-    
+
         do
         {
             String message = e.getMessage() != null ? e.getMessage() : e.getClass().getName();
             int ldapStatusCode = -1;
             String[] referrals = null;
-    
+
             // get LDAP status code
             // [LDAP: error code 21 - telephoneNumber: value #0 invalid per
             // syntax]
@@ -103,7 +120,7 @@ public class JNDIUtils
                 {
                 }
             }
-    
+
             // special causes
             // java_io_IOException=I/O exception occurred: {0}
             // java_io_EOFException=End of file encountered: {0}
@@ -131,15 +148,14 @@ public class JNDIUtils
             }
             if ( e instanceof ReferralException )
             {
-    
                 message = "Referrals: "; //$NON-NLS-1$
                 ReferralException re;
-                ArrayList referralsList = new ArrayList();
-    
+                ArrayList<Object> referralsList = new ArrayList<Object>();
+
                 re = ( ReferralException ) e;
                 message += BrowserCoreConstants.LINE_SEPARATOR + re.getReferralInfo();
                 referralsList.add( re.getReferralInfo() );
-    
+
                 while ( re.skipReferral() )
                 {
                     try
@@ -161,15 +177,15 @@ public class JNDIUtils
                         }
                     }
                 }
-    
-                referrals = ( String[] ) referralsList.toArray( new String[referralsList.size()] );
+
+                referrals = referralsList.toArray( new String[referralsList.size()] );
             }
-    
+
             ConnectionException ce;
             if ( referrals != null )
             {
-                ce = new org.apache.directory.studio.ldapbrowser.core.model.ReferralException(
-                    searchParameter, referrals, ldapStatusCode, message, e );
+                ce = new org.apache.directory.studio.ldapbrowser.core.model.ReferralException( searchParameter,
+                    referrals, ldapStatusCode, message, e );
             }
             else
             {
@@ -184,14 +200,14 @@ public class JNDIUtils
             {
                 connectionException = lastException;
             }
-    
+
             // next cause
             e = e.getCause();
         }
         while ( e != null );
-    
+
         return connectionException;
-    
+
     }
 
 }

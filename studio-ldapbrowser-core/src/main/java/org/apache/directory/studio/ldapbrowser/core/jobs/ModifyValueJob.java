@@ -160,7 +160,7 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
         if ( browserConnection.getConnection() != null )
         {
             // dn
-            String dn = entry.getDn().toString();
+            String dn = entry.getDn().getUpName();
 
             // modification items
             // perform a replace if the current attribute is single-valued

@@ -21,10 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**
@@ -39,7 +40,7 @@ public class Entry extends AbstractEntry
     private static final long serialVersionUID = -4718107307581983276L;
 
     /** The RDN. */
-    protected RDN rdn;
+    protected Rdn rdn;
 
     /** The parent entry. */
     protected IEntry parent;
@@ -56,7 +57,7 @@ public class Entry extends AbstractEntry
      * @param parent the parent entry
      * @param rdn the RDN
      */
-    public Entry( IEntry parent, RDN rdn )
+    public Entry( IEntry parent, Rdn rdn )
     {
         assert parent != null;
         assert rdn != null;
@@ -70,7 +71,7 @@ public class Entry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#getRdn()
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         // performance opt.
         return rdn;
@@ -80,9 +81,9 @@ public class Entry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IEntry#getDn()
      */
-    public DN getDn()
+    public LdapDN getDn()
     {
-        DN dn = new DN( new RDN( rdn ), parent.getDn() );
+        LdapDN dn = DnUtils.composeDn( rdn, parent.getDn() );
         return dn;
     }
 
@@ -108,7 +109,7 @@ public class Entry extends AbstractEntry
     /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.impl.AbstractEntry#setRdn(org.apache.directory.studio.ldapbrowser.core.model.RDN)
      */
-    protected void setRdn( RDN newRdn )
+    protected void setRdn( Rdn newRdn )
     {
         this.rdn = newRdn;
     }

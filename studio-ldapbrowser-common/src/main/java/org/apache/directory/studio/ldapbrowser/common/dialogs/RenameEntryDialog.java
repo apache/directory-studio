@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -69,7 +69,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     private Button okButton;
 
     /** The new rdn. */
-    private RDN rdn;
+    private Rdn rdn;
 
     /** The delete old rdn flag. */
     private boolean deleteOldRdn;
@@ -195,7 +195,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
      * 
      * @return the rdn
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         return rdn;
     }

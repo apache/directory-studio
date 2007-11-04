@@ -31,6 +31,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -38,7 +39,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -47,6 +47,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
@@ -388,33 +389,63 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     private void saveBrowserConnections()
     {
-        Object[][] object = new Object[connectionMap.size()][3];
-
-        Iterator<IBrowserConnection> connectionIterator = connectionMap.values().iterator();
-        for ( int i = 0; connectionIterator.hasNext(); i++ )
+        // To avoid a corrupt file, save object to a temp file first 
+        try
         {
-            IBrowserConnection browserConnection = connectionIterator.next();
-            
-            ISearch[] searches = browserConnection.getSearchManager().getSearches();
-            SearchParameter[] searchParameters = new SearchParameter[searches.length];
-            for ( int k = 0; k < searches.length; k++ )
-            {
-                searchParameters[k] = searches[k].getSearchParameter();
-            }
-            
-            IBookmark[] bookmarks = browserConnection.getBookmarkManager().getBookmarks();
-            BookmarkParameter[] bookmarkParameters = new BookmarkParameter[bookmarks.length];
-            for ( int k = 0; k < bookmarks.length; k++ )
-            {
-                bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
-            }
-
-            object[i][0] = browserConnection.getConnection().getId();
-            object[i][1] = searchParameters;
-            object[i][2] = bookmarkParameters;
+            BrowserConnectionIO.save( new FileOutputStream( getBrowserConnectionStoreFileName() + "-temp" ), connectionMap );
+        }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
-        save( object, getBrowserConnectionStoreFileName() );
+        // move temp file to good file
+        File file = new File( getBrowserConnectionStoreFileName() );
+        File tempFile = new File( getBrowserConnectionStoreFileName() + "-temp" );
+        if ( file.exists() )
+        {
+            file.delete();
+        }
+
+        try
+        {
+            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
+            FileUtils.writeStringToFile( file, content, "UTF-8" );
+        }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+//        Object[][] object = new Object[connectionMap.size()][3];
+//
+//        Iterator<IBrowserConnection> connectionIterator = connectionMap.values().iterator();
+//        for ( int i = 0; connectionIterator.hasNext(); i++ )
+//        {
+//            IBrowserConnection browserConnection = connectionIterator.next();
+//            
+//            ISearch[] searches = browserConnection.getSearchManager().getSearches();
+//            SearchParameter[] searchParameters = new SearchParameter[searches.length];
+//            for ( int k = 0; k < searches.length; k++ )
+//            {
+//                searchParameters[k] = searches[k].getSearchParameter();
+//            }
+//            
+//            IBookmark[] bookmarks = browserConnection.getBookmarkManager().getBookmarks();
+//            BookmarkParameter[] bookmarkParameters = new BookmarkParameter[bookmarks.length];
+//            for ( int k = 0; k < bookmarks.length; k++ )
+//            {
+//                bookmarkParameters[k] = bookmarks[k].getBookmarkParameter();
+//            }
+//
+//            object[i][0] = browserConnection.getConnection().getId();
+//            object[i][1] = searchParameters;
+//            object[i][2] = bookmarkParameters;
+//        }
+//
+//        save( object, getBrowserConnectionStoreFileName() );
     }
 
 
@@ -465,64 +496,88 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             }
         }
         
+        // java.beans.XMLDecoder
         try
         {
-            Object[][] object = ( Object[][] ) this.load( getBrowserConnectionStoreFileName() );
-
-            if ( object != null )
+            String fileName = getBrowserConnectionStoreFileName();
+            File file = new File( fileName );
+            if ( file.exists() )
             {
-                try
+                String oldContent = FileUtils.readFileToString( file, "UTF-8" );
+                if(!oldContent.contains( "java.beans.XMLDecoder" ))
                 {
-                    for ( int i = 0; i < object.length; i++ )
+                    // new file format
+                    try
                     {
-                        String connectionId = ( String ) object[i][0];
-                        IBrowserConnection browserConnection = getBrowserConnectionById( connectionId );
-                        
-                        if( browserConnection != null )
+                        BrowserConnectionIO.load( new FileInputStream( getBrowserConnectionStoreFileName() ), connectionMap );
+                    }
+                    catch ( Exception e )
+                    {
+                        // If loading failed, try with temp file
+                        try
                         {
-                            if ( object[i].length > 0 )
-                            {
-                                SearchParameter[] searchParameters = ( SearchParameter[] ) object[i][1];
-                                for ( int k = 0; k < searchParameters.length; k++ )
-                                {
-                                    ISearch search = new Search( browserConnection, searchParameters[k] );
-                                    browserConnection.getSearchManager().addSearch( search );
-                                }
-                            }
-    
-                            if ( object[i].length > 1 )
-                            {
-                                BookmarkParameter[] bookmarkParameters = ( BookmarkParameter[] ) object[i][2];
-                                for ( int k = 0; k < bookmarkParameters.length; k++ )
-                                {
-                                    IBookmark bookmark = new Bookmark( browserConnection, bookmarkParameters[k] );
-                                    browserConnection.getBookmarkManager().addBookmark( bookmark );
-                                }
-                            }
-    
-//                            try
-//                            {
-//                                String schemaFilename = getSchemaCacheFileName( browserConnection.getName() );
-//                                FileReader reader = new FileReader( schemaFilename );
-//                                Schema schema = new Schema();
-//                                schema.loadFromLdif( reader );
-//                                browserConnection.setSchema( schema );
-//                            }
-//                            catch ( Exception e )
-//                            {
-//                            }
-    
+                            BrowserConnectionIO
+                                .load( new FileInputStream( getBrowserConnectionStoreFileName() + "-temp" ), connectionMap );
+                        }
+                        catch ( FileNotFoundException e1 )
+                        {
+                            // TODO Auto-generated catch block
+                            return;
+                        }
+                        catch ( ConnectionIOException e1 )
+                        {
+                            // TODO Auto-generated catch block
+                            return;
                         }
                     }
+                }
+                else 
+                {
+                    // old file format
+                    Object[][] object = ( Object[][] ) this.load( getBrowserConnectionStoreFileName() );
 
-                }
-                catch ( ArrayIndexOutOfBoundsException e )
-                {
-                    // Thrown by decoder.readObject(), signals EOF
-                }
-                catch ( Exception e )
-                {
-                    e.printStackTrace();
+                    if ( object != null )
+                    {
+                        try
+                        {
+                            for ( int i = 0; i < object.length; i++ )
+                            {
+                                String connectionId = ( String ) object[i][0];
+                                IBrowserConnection browserConnection = getBrowserConnectionById( connectionId );
+
+                                if ( browserConnection != null )
+                                {
+                                    if ( object[i].length > 0 )
+                                    {
+                                        SearchParameter[] searchParameters = ( SearchParameter[] ) object[i][1];
+                                        for ( int k = 0; k < searchParameters.length; k++ )
+                                        {
+                                            ISearch search = new Search( browserConnection, searchParameters[k] );
+                                            browserConnection.getSearchManager().addSearch( search );
+                                        }
+                                    }
+
+                                    if ( object[i].length > 1 )
+                                    {
+                                        BookmarkParameter[] bookmarkParameters = ( BookmarkParameter[] ) object[i][2];
+                                        for ( int k = 0; k < bookmarkParameters.length; k++ )
+                                        {
+                                            IBookmark bookmark = new Bookmark( browserConnection, bookmarkParameters[k] );
+                                            browserConnection.getBookmarkManager().addBookmark( bookmark );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch ( ArrayIndexOutOfBoundsException e )
+                        {
+                            // Thrown by decoder.readObject(), signals EOF
+                        }
+                        catch ( Exception e )
+                        {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
@@ -579,60 +634,6 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
     }
 
 
-    /**
-     * Saves an Object into a serialized XML file
-     *
-     * @param object
-     *      the object to save
-     * @param filename
-     *      the filename to save to
-     */
-    private synchronized void save( Object object, String filename )
-    {
-        XMLEncoder encoder = null;
-        try
-        {
-            // to avoid a corrupt file, save object to a temp file first 
-            String tempFilename = filename + "-temp";
-            Thread.currentThread().setContextClassLoader( getClass().getClassLoader() );
-            encoder = new XMLEncoder( new BufferedOutputStream( new FileOutputStream( tempFilename ) ) );
-            encoder.setPersistenceDelegate( SearchScope.class, new TypeSafeEnumPersistenceDelegate() );
-            encoder.setPersistenceDelegate( ReferralHandlingMethod.class, new TypeSafeEnumPersistenceDelegate() );
-            encoder.setPersistenceDelegate( AliasDereferencingMethod.class, new TypeSafeEnumPersistenceDelegate() );
-            encoder.setExceptionListener( new ExceptionListener()
-            {
-                public void exceptionThrown( Exception e )
-                {
-                    e.printStackTrace();
-                }
-            } );
-            encoder.writeObject( object );
-            encoder.close();
-
-            // move temp file to good file
-            File file = new File( filename );
-            File tempFile = new File( tempFilename );
-            if ( file.exists() )
-            {
-                file.delete();
-            }
-            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
-            FileUtils.writeStringToFile( file, content, "UTF-8" );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if ( encoder != null )
-            {
-                encoder.close();
-            }
-        }
-    }
-    
-    
     class TypeSafeEnumPersistenceDelegate extends PersistenceDelegate
     {
         protected boolean mutatesTo( Object oldInstance, Object newInstance )

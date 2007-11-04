@@ -21,12 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -293,7 +293,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             }
 
             // get DNs
-            DN[] dns = applyOnPage.getApplyOnDns();
+            LdapDN[] dns = applyOnPage.getApplyOnDns();
             if ( dns == null )
             {
                 if ( applyOnPage.getApplyOnSearch() != null )
@@ -307,7 +307,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                         if ( job.getExternalResult().isOK() )
                         {
                             ISearchResult[] srs = search.getSearchResults();
-                            dns = new DN[srs.length];
+                            dns = new LdapDN[srs.length];
                             for ( int i = 0; i < srs.length; i++ )
                             {
                                 dns[i] = srs[i].getDn();
@@ -319,12 +319,11 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
             if ( dns != null )
             {
-
                 StringBuffer ldif = new StringBuffer();
                 for ( int i = 0; i < dns.length; i++ )
                 {
                     ldif.append( "dn: " );
-                    ldif.append( dns[i].toString() );
+                    ldif.append( dns[i].getUpName() );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                     ldif.append( ldifFragment );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );

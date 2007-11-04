@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
@@ -45,7 +46,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @return the DN
      */
-    public DN getDn();
+    public LdapDN getDn();
 
 
     /**
@@ -53,7 +54,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @param dn the DN
      */
-    public void setDn( DN dn );
+    public void setDn( LdapDN dn );
 
 
     /**

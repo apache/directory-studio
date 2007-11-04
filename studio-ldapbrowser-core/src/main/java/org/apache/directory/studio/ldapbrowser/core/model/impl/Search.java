@@ -24,12 +24,12 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -141,7 +141,7 @@ public class Search implements ISearch
      * @param controls
      *                the controls
      */
-    public Search( String searchName, IBrowserConnection conn, DN searchBase, String filter,
+    public Search( String searchName, IBrowserConnection conn, LdapDN searchBase, String filter,
         String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
         boolean initHasChildrenFlag, boolean initAliasAndReferralsFlag, Control[] controls )
@@ -332,7 +332,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public DN getSearchBase()
+    public LdapDN getSearchBase()
     {
         return searchParameter.getSearchBase();
     }
@@ -341,7 +341,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public void setSearchBase( DN searchBase )
+    public void setSearchBase( LdapDN searchBase )
     {
         searchParameter.setSearchBase( searchBase );
         fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );

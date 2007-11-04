@@ -249,7 +249,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
 
-            public Object getResult()
+            public NamingEnumeration<SearchResult> getResult()
             {
                 return namingEnumeration;
             }
@@ -280,7 +280,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else if ( runnable.getResult() != null && runnable.getResult() instanceof NamingEnumeration )
         {
-            return ( NamingEnumeration<SearchResult> ) runnable.getResult();
+            return runnable.getResult();
         }
         else
         {
@@ -292,7 +292,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     /**
      * Modify attributes.
      * 
-     * @param dn the dn
+     * @param dn the DN
      * @param modificationItems the modification items
      * @param controls the controls
      * @param monitor the progress monitor
@@ -332,7 +332,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
 
-            public Object getResult()
+            public NamingEnumeration<SearchResult> getResult()
             {
                 return null;
             }
@@ -413,7 +413,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
 
-            public Object getResult()
+            public NamingEnumeration<SearchResult> getResult()
             {
                 return null;
             }
@@ -485,7 +485,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
 
-            public Object getResult()
+            public NamingEnumeration<SearchResult> getResult()
             {
                 return null;
             }
@@ -554,7 +554,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
 
-            public Object getResult()
+            public NamingEnumeration<SearchResult> getResult()
             {
                 return null;
             }
@@ -667,7 +667,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
 
-            public Object getResult()
+            public NamingEnumeration<SearchResult> getResult()
             {
                 return null;
             }
@@ -771,7 +771,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
 
 
-                public Object getResult()
+                public NamingEnumeration<SearchResult> getResult()
                 {
                     return null;
                 }
@@ -923,7 +923,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
          * 
          * @return the result
          */
-        Object getResult();
+        NamingEnumeration<SearchResult> getResult();
 
 
         /**

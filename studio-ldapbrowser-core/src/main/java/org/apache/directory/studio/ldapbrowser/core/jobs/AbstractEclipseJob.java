@@ -149,18 +149,6 @@ public abstract class AbstractEclipseJob extends Job
 
     public final void execute()
     {
-        // prevent from running the job if there are no connections 
-        Connection[] connections = getConnections();
-        for ( Connection connection : connections )
-        {
-            if(connection == null)
-            {
-                // TODO: logger
-                System.out.println( "Null connection: " + this.getClass().getName() );
-                return;
-            }
-        }
-        
         setUser( true );
         schedule();
     }
@@ -283,7 +271,7 @@ public abstract class AbstractEclipseJob extends Job
     protected static String getLockIdentifier( IEntry entry )
     {
         return getLockIdentifier( entry.getBrowserConnection() ) + "_"
-            + new StringBuffer( entry.getDn().toString() ).reverse().toString();
+            + new StringBuffer( entry.getDn().getNormName() ).reverse().toString();
     }
 
 
@@ -302,7 +290,7 @@ public abstract class AbstractEclipseJob extends Job
     protected static String getLockIdentifier( ISearch search )
     {
         return getLockIdentifier( search.getBrowserConnection() ) + "_"
-            + new StringBuffer( search.getSearchBase().toString() ).reverse().toString();
+            + new StringBuffer( search.getSearchBase().getNormName() ).reverse().toString();
     }
 
 

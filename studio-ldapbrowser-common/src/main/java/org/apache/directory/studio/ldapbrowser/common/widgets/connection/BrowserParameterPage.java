@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
@@ -30,9 +31,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.AliasesDere
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.LimitWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.ReferralsHandlingWidget;
 import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
@@ -297,11 +296,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         errorMessage = null;
         if ( !isAutoFetchBaseDns() )
         {
-            try
-            {
-                new DN( getBaseDN() );
-            }
-            catch ( NameException e )
+            if( !LdapDN.isValid( getBaseDN() ) )
             {
                 message = "Please enter a valid base DN.";
             }

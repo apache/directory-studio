@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -48,7 +48,7 @@ public class ReadEntryJob extends AbstractNotificationJob
     private IBrowserConnection browserConnection;
 
     /** The DN of the entry. */
-    private DN dn;
+    private LdapDN dn;
 
     /** The entry read from directory. */
     private IEntry readEntry;
@@ -60,7 +60,7 @@ public class ReadEntryJob extends AbstractNotificationJob
      * @param browserConnection the browser connection
      * @param dn the DN of the entry
      */
-    public ReadEntryJob( IBrowserConnection browserConnection, DN dn )
+    public ReadEntryJob( IBrowserConnection browserConnection, LdapDN dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
@@ -145,7 +145,7 @@ public class ReadEntryJob extends AbstractNotificationJob
      * 
      * @return the read entry
      */
-    static IEntry getEntry( IBrowserConnection browserConnection, DN dn, StudioProgressMonitor monitor )
+    static IEntry getEntry( IBrowserConnection browserConnection, LdapDN dn, StudioProgressMonitor monitor )
     {
         try
         {

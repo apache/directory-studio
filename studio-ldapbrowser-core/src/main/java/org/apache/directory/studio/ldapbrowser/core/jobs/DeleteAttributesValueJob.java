@@ -222,7 +222,7 @@ public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
         if ( browserConnection.getConnection() != null )
         {
             // dn
-            String dn = entry.getDn().toString();
+            String dn = entry.getDn().getUpName();
 
             // modification items
             List<ModificationItem> modificationItems = new ArrayList<ModificationItem>();

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.naming.InvalidNameException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
@@ -45,6 +46,7 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -52,10 +54,8 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeDeleteRecord;
@@ -71,6 +71,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifComment
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**
@@ -248,9 +249,9 @@ public class ImportLdifJob extends AbstractNotificationJob
                         importedCount++;
 
                         // update cache and adjust attribute/children initialization flags
-                        DN dn = new DN( record.getDnLine().getValueAsString() );
+                        LdapDN dn = new LdapDN( record.getDnLine().getValueAsString() );
                         IEntry entry = browserConnection.getEntryFromCache( dn );
-                        DN parentDn = dn.getParentDn();
+                        LdapDN parentDn = DnUtils.getParent( dn );
                         IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
 
                         if ( record instanceof LdifChangeDeleteRecord )
@@ -279,7 +280,7 @@ public class ImportLdifJob extends AbstractNotificationJob
                             LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
                             if ( modDnRecord.getNewsuperiorLine() != null )
                             {
-                                DN newSuperiorDn = new DN( modDnRecord.getNewsuperiorLine().getValueAsString() );
+                                LdapDN newSuperiorDn = new LdapDN( modDnRecord.getNewsuperiorLine().getValueAsString() );
                                 IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
                                 if ( newSuperiorEntry != null )
                                 {
@@ -452,19 +453,20 @@ public class ImportLdifJob extends AbstractNotificationJob
 
                 try
                 {
-                    DN newDn;
+                    LdapDN newDn;
                     if ( modDnRecord.getNewsuperiorLine() != null )
-                        newDn = new DN( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
+                        newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
                     else
                     {
-                        DN dnObject = new DN( dn );
-                        newDn = new DN( newRdn.toString(), dnObject.getParentDn().toString() );
+                        LdapDN dnObject = new LdapDN( dn );
+                        LdapDN parent = DnUtils.getParent( dnObject );
+                        newDn = DnUtils.composeDn( newRdn, parent.getUpName() );
                     }
 
                     browserConnection.getConnection().getJNDIConnectionWrapper().rename( dn, newDn.toString(),
                         deleteOldRdn, getControls( modDnRecord ), monitor );
                 }
-                catch ( NameException ne )
+                catch ( InvalidNameException ne )
                 {
                     throw new ConnectionException( ne );
                 }

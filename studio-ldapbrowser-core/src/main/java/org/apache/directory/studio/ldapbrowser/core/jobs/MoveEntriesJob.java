@@ -30,17 +30,18 @@ import java.util.Set;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**
@@ -128,12 +129,12 @@ public class MoveEntriesJob extends AbstractNotificationJob
         {
             IEntry oldEntry = oldEntries[i];
             IEntry oldParent = oldEntry.getParententry();
-            DN newDn = new DN( oldEntry.getRdn(), newParent.getDn() );
+            LdapDN newDn = DnUtils.composeDn( oldEntry.getRdn(), newParent.getDn() );
 
             // move in directory
             // TODO: use manual/simulated move, if move of subtree is not supported (JNDI)
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            moveEntry( browserConnection, oldEntry, newDn.toString(), monitor );
+            moveEntry( browserConnection, oldEntry, newDn, monitor );
             //connection.move( oldEntry, newParent.getDn(), monitor );
             int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
 
@@ -216,14 +217,15 @@ public class MoveEntriesJob extends AbstractNotificationJob
      * 
      * @param browserConnection the browser connection
      * @param oldEntry the old entry
-     * @param newDn the new dn
+     * @param newDn the new DN
      * @param monitor the progress monitor
      */
-    private void moveEntry( IBrowserConnection browserConnection, IEntry oldEntry, String newDn,
+    private void moveEntry( IBrowserConnection browserConnection, IEntry oldEntry, LdapDN newDn,
         StudioProgressMonitor monitor )
     {
         // dn
-        String oldDn = oldEntry.getDn().toString();
+        String oldDnString = oldEntry.getDn().getUpName();
+        String newDnString = newDn.getUpName();
 
         // controls
         Control[] controls = null;
@@ -233,7 +235,8 @@ public class MoveEntriesJob extends AbstractNotificationJob
                 { new ManageReferralControl() };
         }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDn, newDn, false, controls, monitor );
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, false, controls,
+            monitor );
     }
 
 }

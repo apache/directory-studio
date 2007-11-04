@@ -53,7 +53,7 @@ public class EntryAddedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__added_dn, new String[]
-            { getModifiedEntry().getDn().toString() } );
+            { getModifiedEntry().getDn().getUpName() } );
     }
 
 }
