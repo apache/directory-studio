@@ -194,6 +194,12 @@
 			    <para><emphasis role="strong">Toolbar</emphasis></para>
 			    <para>The toolbar of the Hierarchy view contains the following actions:
 				    <itemizedlist spacing="normal" mark="bullet">
+				    	<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-type.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Type Hierarchy</emphasis>: Shows the type hierarchy.
+						</listitem>
 						<listitem>
 							<imageobject>
 								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
@@ -217,6 +223,12 @@
 			    <para><emphasis role="strong">Menu</emphasis></para>
 			    <para>The menu of the Hierarchy view contains the following actions:
 				    <itemizedlist spacing="normal" mark="bullet">
+				    	<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-type.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Type Hierarchy</emphasis>: Shows the type hierarchy.
+						</listitem>
 						<listitem>
 							<imageobject>
 								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
@@ -303,6 +315,26 @@
 										</mediaobject>
 									</entry>
 									<entry>Object class (structural)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-hierarchy-selected.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type (current selection)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-hierarchy-selected.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (current selection)</entry>
 								</row>
 							</tbody>
 						</tgroup>
