@@ -485,12 +485,28 @@
 	        <section id="gettingstarted_views_schema">
 			    <title>Schema view</title>
 			    <para>This Schema view shows all the schemas of the currently opened project.</para>
-			    <para>Here is what the Schema view looks like:
+			    <para>The Schema view has two types of presentation:
+			    	<itemizedlist spacing="normal" mark="bullet">
+						<listitem>Flat (Default)</listitem>
+						<listitem>Hierarchical</listitem>
+					</itemizedlist>
+				</para>
+			    <para>Here is what the Schema view looks like in flat presentation:
 				    <screenshot>
 					    <mediaobject>
 						    <imageobject>
 							    <imagedata scale="50"
-							    	fileref="images/views_schema-view.png" format="PNG" />
+							    	fileref="images/views_schema-view-flat-presentation.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para>Here is what the Schema view looks like in hierarchical presentation:
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_schema-view-hierarchical-presentation.png" format="PNG" />
 						    </imageobject>
 					    </mediaobject>
 				    </screenshot>
@@ -538,6 +554,16 @@
 								<imagedata contentdepth="1em" fileref="images/icons_sorting.gif" format="GIF" />
 							</imageobject> - 
 							<emphasis>Sorting...</emphasis>: Opens the Sorting dialog for this view.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_sorting.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Schema Presentation.</emphasis>
+							<itemizedlist spacing="normal" mark="bullet">
+								<listitem><emphasis>Flat</emphasis>: Displays the Schema in flat presentation.</listitem>
+								<listitem><emphasis>Hierarchical</emphasis>: Displays the Schema in hierarchical presentation.</listitem>							
+							</itemizedlist>
 						</listitem>
 						<listitem>
 							<imageobject>
