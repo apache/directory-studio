@@ -907,7 +907,7 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_project-new.gif" format="GIF" />
 						</imageobject>
-						<emphasis role="strong">New Schema Project</emphasis> button.
+						<emphasis role="strong">New Schema Project</emphasis> button, or use the <emphasis role="strong">Strg-R</emphasis>.
 		    </para>
 		    <para>
 				The creation of a new Schema Project is a two-step process:
