@@ -1919,6 +1919,15 @@
 										</entry>
 										<entry>OID with no limit of characters</entry>
 									</row>
+									<row>
+										<entry>
+											Schema label
+										</entry>
+										<entry>
+											If the checkbox is checked the name of the schema of the element will be added to the label.
+										</entry>
+										<entry>Checked</entry>
+									</row>
 								</tbody>
 							</tgroup>
 						</informaltable>
