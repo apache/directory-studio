@@ -1059,7 +1059,7 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_schema-new.gif" format="GIF" />
 						</imageobject>
-						<emphasis role="strong">New Schema</emphasis> button (a project must be opened).
+						<emphasis role="strong">New Schema</emphasis> button (a project must be opened), or use the <emphasis role="strong">Strg-E</emphasis>.
 		    </para>
 		    <para>The following wizard appears:</para>
 		    <para>
