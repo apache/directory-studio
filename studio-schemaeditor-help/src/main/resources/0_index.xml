@@ -907,7 +907,7 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_project-new.gif" format="GIF" />
 						</imageobject>
-						<emphasis role="strong">New Schema Project</emphasis> button, or use the <emphasis role="strong">Strg-R</emphasis>.
+						<emphasis role="strong">New Schema Project</emphasis> button, or use the <emphasis role="strong">Strg-R</emphasis> shortcut.
 		    </para>
 		    <para>
 				The creation of a new Schema Project is a two-step process:
@@ -1059,7 +1059,7 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_schema-new.gif" format="GIF" />
 						</imageobject>
-						<emphasis role="strong">New Schema</emphasis> button (a project must be opened), or use the <emphasis role="strong">Strg-E</emphasis>.
+						<emphasis role="strong">New Schema</emphasis> button (a project must be opened), or use the <emphasis role="strong">Strg-E</emphasis> shorcut.
 		    </para>
 		    <para>The following wizard appears:</para>
 		    <para>
@@ -1296,13 +1296,16 @@
 							<imagedata contentdepth="1em"
 								fileref="images/icons_attribute-type-new.gif" format="GIF" />
 						</imageobject>
-                     	New Attribute Type</emphasis> button in the toolbar.</listitem> 
+                     	New Attribute Type</emphasis> button in the toolbar.</listitem>
                      <listitem>In the Workbench menu bar select <emphasis role="strong">File > New...</emphasis>  and choose 
                      	<imageobject>
 							<imagedata contentdepth="1em"
 								fileref="images/icons_attribute-type-new.gif" format="GIF" />
 						</imageobject>
                      	<emphasis role="strong"> New Attribute Type</emphasis></listitem> 
+                     <listitem>
+                     	You can also use the <emphasis role="strong">Strg-T</emphasis> shortcut.
+                     </listitem> 
                  </itemizedlist>
 		    </para>
 		    <para>
