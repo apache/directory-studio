@@ -1968,6 +1968,38 @@
 								<tbody>
 									<row>
 										<entry>
+											Label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as label for attribute types or object classes. 
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>All Aliases with limit of 50 characters</entry>
+									</row>
+									<row>
+										<entry>
+											Secondary label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as secondary label for attribute types or object classes.
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>OID with no limit of characters</entry>
+									</row>
+									<row>
+										<entry>
 											Schema label
 										</entry>
 										<entry>
