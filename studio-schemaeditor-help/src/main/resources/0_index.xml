@@ -946,14 +946,14 @@
 			<simplesect>
 				<title>Page 1</title>
 				<para>
-					The first page allows you to enter a project name.
+					The first page allows you to enter a project name and select the type of project.
 				</para>
 				<para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/tasks_new-project-wizard_name.png" format="PNG" />
+									fileref="images/tasks_new-project-wizard_page-1.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -982,13 +982,20 @@
 									</entry>
 									<entry>empty</entry>
 								</row>
+								<row>
+									<entry>Type</entry>
+									<entry>
+										The type of the project. Choose between Offline Schema and Online Schema from a Directory Server.
+									</entry>
+									<entry>Offline Schema</entry>
+								</row>
 							</tbody>
 						</tgroup>
 					</informaltable>
 				</para>
 			</simplesect>
 			<simplesect>
-				<title>Page 2</title>
+				<title>Page 2 - Offline Schema</title>
 				<para>
 					The second page allows you to select the 'core' schema files to import.
 				</para>
@@ -997,13 +1004,32 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/tasks_new-project-wizard-schemas.png" format="PNG" />
+									fileref="images/tasks_new-project-wizard_page-2_offline.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
 				</para>
 				<para>
-					Check the 'core' schema files you want to import.
+					Specify the type of server you want to work with and check the 'core' schema files you want to import.
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 2 - Online Schema from a Directory Server</title>
+				<para>
+					The second page allows you to select the connection to use to import the Schema.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-project-wizard_page-2_online.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					Choose a connection.
 				</para>
 			</simplesect>
 	    </section>
