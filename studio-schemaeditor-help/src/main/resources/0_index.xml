@@ -556,10 +556,7 @@
 							<emphasis>Sorting...</emphasis>: Opens the Sorting dialog for this view.
 						</listitem>
 						<listitem>
-							<imageobject>
-								<imagedata contentdepth="1em" fileref="images/icons_sorting.gif" format="GIF" />
-							</imageobject> - 
-							<emphasis>Schema Presentation.</emphasis>
+							<emphasis>Schema Presentation</emphasis>
 							<itemizedlist spacing="normal" mark="bullet">
 								<listitem><emphasis>Flat</emphasis>: Displays the Schema in flat presentation.</listitem>
 								<listitem><emphasis>Hierarchical</emphasis>: Displays the Schema in hierarchical presentation.</listitem>							
