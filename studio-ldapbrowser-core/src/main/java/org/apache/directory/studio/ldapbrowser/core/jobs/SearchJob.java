@@ -40,7 +40,10 @@ import javax.naming.ldap.Control;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -51,11 +54,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
@@ -170,6 +172,15 @@ public class SearchJob extends AbstractNotificationJob
     public static void searchAndUpdateModel( IBrowserConnection browserConnection, ISearch search,
         StudioProgressMonitor monitor )
     {
+        if ( browserConnection.getConnection() == null )
+        {
+            if ( search != null )
+            {
+                search.setSearchResults( new ISearchResult[0] );
+            }
+            return;
+        }
+        
         try
         {
             if ( !monitor.isCanceled() )
@@ -186,8 +197,17 @@ public class SearchJob extends AbstractNotificationJob
                     // iterate through the search result
                     while ( !monitor.isCanceled() && enumeration.hasMore() )
                     {
-                        SearchResult sr = enumeration.nextElement(); // TODO: referrals exception
+                        SearchResult sr = enumeration.next();
                         LdapDN dn = JNDIUtils.getDn( sr );
+                        boolean isReferral = false;
+                        if ( sr instanceof StudioSearchResult )
+                        {
+                            StudioSearchResult ssr = ( StudioSearchResult ) sr;
+                            isReferral = ssr.isReferral();
+                            Connection connection = ssr.getConnection();
+                            browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                                .getBrowserConnection( connection );
+                        }
 
                         // get entry from cache or create it
                         IEntry entry = browserConnection.getEntryFromCache( dn );
@@ -195,16 +215,20 @@ public class SearchJob extends AbstractNotificationJob
                         {
                             entry = createAndCacheEntry( browserConnection, dn );
                         }
-
+                        
                         // initialize special flags
                         initFlags( entry, sr, searchParameter );
 
                         // fill the attributes
                         fillAttributes( entry, sr, search.getSearchParameter() );
 
-                        searchResultList
-                            .add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult( entry,
-                                search ) );
+                        if(isReferral)
+                        {
+                            entry = new ReferralBaseEntry( browserConnection, dn );
+                        }
+                        
+                        searchResultList.add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult(
+                            entry, search ) );
 
                         monitor
                             .reportProgress( searchResultList.size() == 1 ? BrowserCoreMessages.model__retrieved_1_entry
@@ -220,28 +244,6 @@ public class SearchJob extends AbstractNotificationJob
                     if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
                     {
                         search.setCountLimitExceeded( true );
-                    }
-                    else if ( ce instanceof ReferralException )
-                    {
-                        if ( search.getReferralsHandlingMethod() == ReferralHandlingMethod.FOLLOW )
-                        {
-                            ReferralException re = ( ReferralException ) ce;
-                            ISearch[] referralSearches = re.getReferralSearches();
-                            for ( int i = 0; i < referralSearches.length; i++ )
-                            {
-                                ISearch referralSearch = referralSearches[i];
-
-                                searchAndUpdateModel( referralSearch.getBrowserConnection(), referralSearch, monitor );
-
-                                ISearchResult[] referralSearchResults = referralSearch.getSearchResults();
-                                for ( int j = 0; referralSearchResults != null && j < referralSearchResults.length; j++ )
-                                {
-                                    ISearchResult referralSearchResult = referralSearchResults[j];
-                                    referralSearchResult.setSearch( search );
-                                    searchResultList.add( referralSearchResult );
-                                }
-                            }
-                        }
                     }
                     else
                     {
@@ -307,7 +309,7 @@ public class SearchJob extends AbstractNotificationJob
         }
 
         NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-            searchBase, filter, controls, derefAliasMethod, handleReferralsMethod, ldapControls, monitor );
+            searchBase, filter, controls, derefAliasMethod, handleReferralsMethod, ldapControls, monitor, null );
         return result;
     }
 
@@ -338,16 +340,15 @@ public class SearchJob extends AbstractNotificationJob
 
     private static String getReferralsHandlingMethod( SearchParameter parameter )
     {
-        String m = "follow"; //$NON-NLS-1$
+        String m = JNDIConnectionWrapper.REFERRAL_FOLLOW; //$NON-NLS-1$
 
         switch ( parameter.getReferralsHandlingMethod() )
         {
             case IGNORE:
-                m = "ignore"; //$NON-NLS-1$
+                m = JNDIConnectionWrapper.REFERRAL_IGNORE; //$NON-NLS-1$
                 break;
             case FOLLOW:
-                // m = "follow"; //$NON-NLS-1$
-                m = "throw"; //$NON-NLS-1$
+                m = JNDIConnectionWrapper.REFERRAL_FOLLOW; //$NON-NLS-1$
                 break;
         }
 

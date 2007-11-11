@@ -25,14 +25,10 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
-import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.naming.ReferralException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -104,11 +100,9 @@ public class JNDIUtils
         {
             String message = e.getMessage() != null ? e.getMessage() : e.getClass().getName();
             int ldapStatusCode = -1;
-            String[] referrals = null;
 
             // get LDAP status code
-            // [LDAP: error code 21 - telephoneNumber: value #0 invalid per
-            // syntax]
+            // [LDAP: error code 21 - telephoneNumber: value #0 invalid per syntax]
             if ( message != null && message.startsWith( "[LDAP: error code " ) ) { //$NON-NLS-1$
                 int begin = "[LDAP: error code ".length(); //$NON-NLS-1$
                 int end = begin + 2;
@@ -146,51 +140,8 @@ public class JNDIUtils
             {
                 message = e.getMessage() + " (" + e.getMessage() + ")";; //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( e instanceof ReferralException )
-            {
-                message = "Referrals: "; //$NON-NLS-1$
-                ReferralException re;
-                ArrayList<Object> referralsList = new ArrayList<Object>();
 
-                re = ( ReferralException ) e;
-                message += BrowserCoreConstants.LINE_SEPARATOR + re.getReferralInfo();
-                referralsList.add( re.getReferralInfo() );
-
-                while ( re.skipReferral() )
-                {
-                    try
-                    {
-                        Context ctx = re.getReferralContext();
-                        ctx.list( "" ); //$NON-NLS-1$
-                    }
-                    catch ( NamingException e1 )
-                    {
-                        if ( e1 instanceof ReferralException )
-                        {
-                            re = ( ReferralException ) e1;
-                            message += BrowserCoreConstants.LINE_SEPARATOR + re.getReferralInfo();
-                            referralsList.add( re.getReferralInfo() );
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                referrals = referralsList.toArray( new String[referralsList.size()] );
-            }
-
-            ConnectionException ce;
-            if ( referrals != null )
-            {
-                ce = new org.apache.directory.studio.ldapbrowser.core.model.ReferralException( searchParameter,
-                    referrals, ldapStatusCode, message, e );
-            }
-            else
-            {
-                ce = new ConnectionException( ldapStatusCode, message, e );
-            }
+            ConnectionException ce = new ConnectionException( ldapStatusCode, message, e );
             if ( lastException != null )
             {
                 lastException.initCause( ce );

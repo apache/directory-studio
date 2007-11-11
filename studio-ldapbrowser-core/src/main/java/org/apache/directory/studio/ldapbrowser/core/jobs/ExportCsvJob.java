@@ -38,10 +38,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
@@ -223,24 +220,6 @@ public class ExportCsvJob extends AbstractEclipseJob
             if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
             {
                 // nothing
-            }
-            else if ( ce instanceof ReferralException )
-            {
-
-                if ( searchParameter.getReferralsHandlingMethod() == ReferralHandlingMethod.FOLLOW )
-                {
-                    ReferralException re = ( ReferralException ) ce;
-                    ISearch[] referralSearches = re.getReferralSearches();
-                    for ( int i = 0; i < referralSearches.length; i++ )
-                    {
-                        ISearch referralSearch = referralSearches[i];
-
-                        // export recursive
-                        exportToCsv( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(),
-                            bufferedWriter, count, monitor, attributes, attributeDelimiter, valueDelimiter,
-                            quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn );
-                    }
-                }
             }
             else
             {

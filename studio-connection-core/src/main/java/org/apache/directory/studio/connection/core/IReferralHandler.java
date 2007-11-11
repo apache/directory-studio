@@ -18,7 +18,10 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.model;
+package org.apache.directory.studio.connection.core;
+
+
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 
 
 /**
@@ -40,6 +43,6 @@ public interface IReferralHandler
      * @param referralURL the referral URL
      * @return the target connection
      */
-    public IBrowserConnection getReferralConnection( URL referralURL );
+    public Connection getReferralConnection( LdapURL referralURL );
 
 }

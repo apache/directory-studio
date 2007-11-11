@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.core;
 
 import org.apache.directory.studio.ldapbrowser.core.events.CoreEventRunner;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
-import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -41,9 +40,6 @@ public class BrowserCorePlugin extends Plugin
 
     /** The connection manager */
     private BrowserConnectionManager connectionManager;
-
-    /** The connection provider */
-    private IReferralHandler referralHandler;
 
     /** The preferences */
     private BrowserCorePreferences preferences;
@@ -136,30 +132,6 @@ public class BrowserCorePlugin extends Plugin
     public BrowserCorePreferences getCorePreferences()
     {
         return preferences;
-    }
-
-
-    /**
-     * Gets the ReferralHanlder
-     *
-     * @return
-     *      the ReferralHandler
-     */
-    public IReferralHandler getReferralHandler()
-    {
-        return referralHandler;
-    }
-
-
-    /**
-     * Sets the ReferralHandler
-     *
-     * @param referralHandler
-     *      the ReferralHandler to set
-     */
-    public void setReferralHandler( IReferralHandler referralHandler )
-    {
-        this.referralHandler = referralHandler;
     }
 
 

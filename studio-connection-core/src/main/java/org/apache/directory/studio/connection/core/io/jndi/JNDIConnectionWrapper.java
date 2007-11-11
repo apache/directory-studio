@@ -27,6 +27,8 @@ import javax.naming.Context;
 import javax.naming.InsufficientResourcesException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.PartialResultException;
+import javax.naming.ReferralException;
 import javax.naming.ServiceUnavailableException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.ModificationItem;
@@ -41,14 +43,18 @@ import javax.naming.ldap.StartTlsResponse;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IModificationLogger;
+import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 
 
@@ -90,7 +96,15 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
     private IModificationLogger modificationLogger;
 
+    /** JNDI constant for "throw" referrals handling */
+    public static final String REFERRAL_THROW = "throw";
+    
+    /** JNDI constant for "follow" referrals handling */
+    public static final String REFERRAL_FOLLOW = "follow";
 
+    /** JNDI constant for "ignore" referrals handling */
+    public static final String REFERRAL_IGNORE = "ignore";
+    
     /**
      * Creates a new instance of JNDIConnectionContext.
      * 
@@ -192,16 +206,17 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * @param searchBase the search base
      * @param filter the filter
      * @param searchControls the controls
-     * @param derefAliasMethod the deref alias method
-     * @param handleReferralsMethod the handle referrals method
-     * @param controls the ldap controls
+     * @param aliasesDereferencingMethod the aliases dereferencing method
+     * @param referralsHandlingMethod the referrals handling method
+     * @param controls the LDAP controls
      * @param monitor the progress monitor
+     * @param referralsInfo the referrals info
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
     public NamingEnumeration<SearchResult> search( final String searchBase, final String filter,
-        final SearchControls searchControls, final String derefAliasMethod, final String handleReferralsMethod,
-        final Control[] controls, final StudioProgressMonitor monitor )
+        final SearchControls searchControls, final String aliasesDereferencingMethod, final String referralsHandlingMethod,
+        final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         // start
         InnerRunnable runnable = new InnerRunnable()
@@ -215,26 +230,76 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 try
                 {
                     LdapContext searchCtx = context.newInstance( controls );
-                    try
-                    {
-                        searchCtx.addToEnvironment( "java.naming.ldap.derefAliases", derefAliasMethod ); //$NON-NLS-1$
-                        searchCtx.addToEnvironment( Context.REFERRAL, handleReferralsMethod );
+                    searchCtx.addToEnvironment( "java.naming.ldap.derefAliases", aliasesDereferencingMethod ); //$NON-NLS-1$
+                    
+                    // use "throw" if referrals handling is set to "follow" as we handle referrals manually
+                    String localReferralsHandlingMethod = REFERRAL_FOLLOW.equals( referralsHandlingMethod ) ? REFERRAL_THROW : referralsHandlingMethod;
+                    searchCtx.addToEnvironment( Context.REFERRAL, localReferralsHandlingMethod );
 
-                    }
-                    catch ( NamingException e )
+                    namingEnumeration = searchCtx.search( new LdapName( searchBase ), filter, searchControls );
+                    namingEnumeration = new StudioNamingEnumeration( connection, namingEnumeration, searchBase, filter,
+                        searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
+                        referralsInfo );
+                }
+                catch ( PartialResultException pre )
+                {
+                    if ( REFERRAL_IGNORE.equals( referralsHandlingMethod ) )
                     {
-                        namingException = e;
+                        // ignore
                     }
-
-                    try
+                    else
                     {
-                        namingEnumeration = searchCtx.search( new LdapName( searchBase ), filter, searchControls );
+                        namingException = pre;
                     }
-                    catch ( NamingException ne )
+                }
+                catch ( ReferralException re )
+                {
+                    if ( REFERRAL_IGNORE.equals( referralsHandlingMethod ) )
                     {
-                        namingException = ne;
+                        // ignore
                     }
-
+                    else if ( REFERRAL_FOLLOW.equals( referralsHandlingMethod ) )
+                    {
+                        ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
+                        LdapURL url = newReferralsInfo.getNext();
+                        if ( url != null )
+                        {
+                            Connection referralConnection = getReferralConnection( url );
+                            if ( referralConnection != null )
+                            {
+                                String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
+                                    .getUpName() : searchBase;
+                                String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
+                                    .getFilter() : filter;
+                                SearchControls referralSearchControls = new SearchControls();
+                                referralSearchControls.setSearchScope( url.getScope() > -1 ? url.getScope()
+                                    : searchControls.getSearchScope() );
+                                referralSearchControls.setReturningAttributes( url.getAttributes() != null ? url
+                                    .getAttributes().toArray( new String[url.getAttributes().size()] ) : searchControls
+                                    .getReturningAttributes() );
+                                referralSearchControls.setCountLimit( searchControls.getCountLimit() );
+                                referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
+                                referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
+                                referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
+    
+                                if ( referralConnection.getJNDIConnectionWrapper().isConnected() )
+                                {
+                                    referralConnection.getJNDIConnectionWrapper().connect( monitor );
+                                    referralConnection.getJNDIConnectionWrapper().bind( monitor );
+                                    ConnectionEventRegistry.fireConnectionOpened( referralConnection, this );
+                                }
+                                
+                                namingEnumeration = referralConnection.getJNDIConnectionWrapper().search(
+                                    referralSearchBase, referralFilter, referralSearchControls,
+                                    aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
+                                    newReferralsInfo );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        namingException = re;
+                    }
                 }
                 catch ( NamingException e )
                 {
@@ -286,6 +351,82 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             return null;
         }
+    }
+
+
+    /**
+     * Gets the referral connection from the given URL.
+     * 
+     * @param url the URL
+     * 
+     * @return the referral connection
+     */
+    static Connection getReferralConnection( LdapURL url )
+    {
+        Connection referralConnection = null;
+        IReferralHandler referralHandler = ConnectionCorePlugin.getDefault().getReferralHandler();
+        if ( referralHandler != null )
+        {
+            referralConnection = referralHandler.getReferralConnection( url );
+        }
+        return referralConnection;
+    }
+
+
+    /**
+     * Retrieves all referrals from the ReferralException and 
+     * creates or updates the ReferralsInfo.
+     * 
+     * @param referralException the referral exception
+     * @param initialReferralsInfo the initial referrals info, may be null
+     * 
+     * @return the created or updated referrals info
+     */
+    static ReferralsInfo handleReferralException( ReferralException referralException,
+        ReferralsInfo initialReferralsInfo )
+    {
+        if ( initialReferralsInfo == null )
+        {
+            initialReferralsInfo = new ReferralsInfo();
+        }
+
+        try
+        {
+            initialReferralsInfo.addReferralUrl( new LdapURL( ( String ) referralException.getReferralInfo() ) );
+        }
+        catch ( LdapURLEncodingException e )
+        {
+        }
+
+        while ( referralException.skipReferral() )
+        {
+            try
+            {
+                Context ctx = referralException.getReferralContext();
+                ctx.list( "" ); //$NON-NLS-1$
+            }
+            catch ( NamingException ne )
+            {
+                if ( ne instanceof ReferralException )
+                {
+                    referralException = ( ReferralException ) ne;
+                    try
+                    {
+                        initialReferralsInfo.addReferralUrl( new LdapURL( ( String ) referralException
+                            .getReferralInfo() ) );
+                    }
+                    catch ( LdapURLEncodingException e )
+                    {
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        return initialReferralsInfo;
     }
 
 

@@ -212,42 +212,10 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             new String[]
                 { entry.getDn().getUpName() } ) );
 
-        // entry.setAttributesInitialized(false, entry.getConnection());
-
         if ( entry instanceof IRootDSE )
         {
-//            IEntry[] oldChildren = entry.getChildren();
-//            for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
-//            {
-//                if ( oldChildren[i] != null )
-//                {
-//                    entry.deleteChild( oldChildren[i] );
-//                }
-//            }
-//            entry.setChildrenInitialized( false );
-            
             // special handling for Root DSE
             loadRootDSE( entry.getBrowserConnection(), monitor );
-            
-//            if ( !monitor.errorsReported() )
-//            {
-//                try
-//                {
-//                    monitor.reportProgress( BrowserCoreMessages.model__loading_rootdse );
-//                    loadRootDSE( entry.getBrowserConnection(), monitor );
-//                    monitor.worked( 1 );
-//                }
-//                catch ( Exception e )
-//                {
-//                    monitor.reportError( BrowserCoreMessages.model__error_loading_rootdse );
-//                    rootDSE = null;
-//                }
-//
-//                if ( monitor.errorsReported() )
-//                {
-//                    close();
-//                }
-//            }
             
         	entry.setAttributesInitialized( true );
         	entry.setChildrenInitialized( true );
@@ -276,12 +244,6 @@ public class InitializeAttributesJob extends AbstractNotificationJob
      */
     static void loadRootDSE( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
-//        if(rootDSE == null)
-//        {
-//            rootDSE = new RootDSE( this );
-//            cacheEntry( rootDSE );
-//        }
-        
         // delete old children
         IEntry[] oldChildren = browserConnection.getRootDSE().getChildren();
         for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
@@ -375,6 +337,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         }
         
         // get other metadata entries
+        // TODO: check all attributes if they are valid DNs
         String[] metadataAttributeNames = new String[]
             { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_CONFIGCONTEXT,
                 IRootDSE.ROOTDSE_ATTRIBUTE_DSANAME };

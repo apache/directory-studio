@@ -18,19 +18,17 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.common.dialogs;
+package org.apache.directory.studio.connection.ui.dialogs;
 
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -47,14 +45,20 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Dialog to select the connection of a referral.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SelectReferralConnectionDialog extends Dialog
 {
 
     private String title;
 
-    private URL referralUrl;
+    private LdapURL referralUrl;
 
-    private IBrowserConnection selectedConnection;
+    private Connection selectedConnection;
 
     private ConnectionConfiguration configuration;
 
@@ -65,7 +69,13 @@ public class SelectReferralConnectionDialog extends Dialog
     private ConnectionWidget mainWidget;
 
 
-    public SelectReferralConnectionDialog( Shell parentShell, URL referralUrl )
+    /**
+     * Creates a new instance of SelectReferralConnectionDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param referralUrl the referral URL
+     */
+    public SelectReferralConnectionDialog( Shell parentShell, LdapURL referralUrl )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -75,6 +85,9 @@ public class SelectReferralConnectionDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -82,37 +95,40 @@ public class SelectReferralConnectionDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean close()
     {
-        if ( this.mainWidget != null )
+        if ( mainWidget != null )
         {
-            this.configuration.dispose();
-            this.configuration = null;
-            this.actionGroup.deactivateGlobalActionHandlers();
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
+            configuration.dispose();
+            configuration = null;
+            actionGroup.deactivateGlobalActionHandlers();
+            actionGroup.dispose();
+            actionGroup = null;
+            universalListener.dispose();
+            universalListener = null;
+            mainWidget.dispose();
+            mainWidget = null;
         }
         return super.close();
     }
 
 
-    protected void okPressed()
-    {
-        super.okPressed();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     protected void cancelPressed()
     {
-        this.selectedConnection = null;
+        selectedConnection = null;
         super.cancelPressed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -120,9 +136,11 @@ public class SelectReferralConnectionDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridLayout gl = new GridLayout();
         composite.setLayout( gl );
@@ -135,24 +153,24 @@ public class SelectReferralConnectionDialog extends Dialog
             + referralUrl, 1 );
 
         // create configuration
-        this.configuration = new ConnectionConfiguration();
+        configuration = new ConnectionConfiguration();
 
         // create main widget
-        this.mainWidget = new ConnectionWidget( this.configuration, null );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
+        mainWidget = new ConnectionWidget( configuration, null );
+        mainWidget.createWidget( composite );
+        mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new ConnectionActionGroup( this.mainWidget, this.configuration );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
-        this.actionGroup.activateGlobalActionHandlers();
+        actionGroup = new ConnectionActionGroup( mainWidget, configuration );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
+        actionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        this.universalListener = new ConnectionUniversalListener( this.mainWidget.getViewer() );
+        universalListener = new ConnectionUniversalListener( mainWidget.getViewer() );
 
-        this.mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
@@ -161,16 +179,13 @@ public class SelectReferralConnectionDialog extends Dialog
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
                     if ( o instanceof Connection )
                     {
-                        Connection connection = ( Connection ) o;
-                        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
-                            .getBrowserConnection( connection );
-                        selectedConnection = browserConnection;
+                        selectedConnection = ( Connection ) o;
                     }
                 }
             }
         } );
 
-        this.mainWidget.getViewer().addDoubleClickListener( new IDoubleClickListener()
+        mainWidget.getViewer().addDoubleClickListener( new IDoubleClickListener()
         {
             public void doubleClick( DoubleClickEvent event )
             {
@@ -179,42 +194,43 @@ public class SelectReferralConnectionDialog extends Dialog
                     Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
                     if ( o instanceof Connection )
                     {
-                        Connection connection = ( Connection ) o;
-                        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
-                            .getBrowserConnection( connection );
-                        selectedConnection = browserConnection;
+                        selectedConnection = ( Connection ) o;
                     }
                 }
             }
         } );
 
-        if ( this.referralUrl != null )
+        if ( referralUrl != null )
         {
-            IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnections();
+            Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
             for ( int i = 0; i < connections.length; i++ )
             {
-                IBrowserConnection connection = connections[i];
-                URL connectionUrl = connection.getUrl();
+                Connection connection = connections[i];
+                LdapURL connectionUrl = connection.getUrl();
                 if ( connectionUrl != null && referralUrl.toString().startsWith( connectionUrl.toString() ) )
                 {
-                    this.mainWidget.getViewer().reveal( connection );
-                    this.mainWidget.getViewer().setSelection( new StructuredSelection( connection.getConnection() ), true );
+                    mainWidget.getViewer().reveal( connection );
+                    mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
                 }
             }
         }
 
         applyDialogFont( composite );
 
-        this.mainWidget.setFocus();
+        mainWidget.setFocus();
 
         return composite;
-
     }
 
 
-    public IBrowserConnection getReferralConnection()
+    /**
+     * Gets the referral connection.
+     * 
+     * @return the referral connection
+     */
+    public Connection getReferralConnection()
     {
-        return this.selectedConnection;
+        return selectedConnection;
     }
 
 }

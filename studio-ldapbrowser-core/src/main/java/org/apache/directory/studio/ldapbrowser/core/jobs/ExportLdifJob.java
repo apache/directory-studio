@@ -40,10 +40,7 @@ import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
@@ -189,22 +186,6 @@ public class ExportLdifJob extends AbstractEclipseJob
                 || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_ADMINLIMIT_EXCEEDED )
             {
                 // ignore
-            }
-            else if ( ce instanceof ReferralException )
-            {
-                if ( searchParameter.getReferralsHandlingMethod() == ReferralHandlingMethod.FOLLOW )
-                {
-                    ReferralException re = ( ReferralException ) ce;
-                    ISearch[] referralSearches = re.getReferralSearches();
-                    for ( int i = 0; i < referralSearches.length; i++ )
-                    {
-                        ISearch referralSearch = referralSearches[i];
-
-                        // export recursive
-                        export( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(), bufferedWriter,
-                            count, monitor );
-                    }
-                }
             }
             else
             {

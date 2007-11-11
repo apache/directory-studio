@@ -21,6 +21,8 @@
 package org.apache.directory.studio.connection.core;
 
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -193,6 +195,11 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     }
 
     
+    /**
+     * Gets the SASL realm.
+     * 
+     * @return the SASL realm
+     */
     public String getSaslRealm ()
     {
     	return connectionParameter.getSaslRealm();
@@ -282,6 +289,11 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     }
     
     
+    /**
+     * Sets the SASL realm.
+     * 
+     * @param realm the new SASL realm
+     */
     public void setSaslRealm (String realm)
     {
     	connectionParameter.setSaslRealm(realm);
@@ -292,6 +304,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     /**
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         //        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
@@ -304,6 +317,26 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         }
 
         return null;
+    }
+
+
+    /**
+     * Gets the LDAP URL.
+     * 
+     * @return the LDAP URL
+     */
+    public LdapURL getUrl()
+    {
+        String s = "ldap://" + getHost() + ":" + getPort();
+        LdapURL url = null;
+        try
+        {
+            url = new LdapURL( s );
+        }
+        catch ( LdapURLEncodingException e )
+        {
+        }
+        return url;
     }
 
 }

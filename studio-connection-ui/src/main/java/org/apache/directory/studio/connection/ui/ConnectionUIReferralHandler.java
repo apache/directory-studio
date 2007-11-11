@@ -18,40 +18,48 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.common;
+package org.apache.directory.studio.connection.ui;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectReferralConnectionDialog;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
-
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IReferralHandler;
+import org.apache.directory.studio.connection.ui.dialogs.SelectReferralConnectionDialog;
 import org.eclipse.ui.PlatformUI;
 
 
-public class BrowserCommonReferralHandler implements IReferralHandler
+/**
+ * Default implementation of {@link IReferralHandler}.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class ConnectionUIReferralHandler implements IReferralHandler
 {
 
-    private Map referralUrlToReferralConnectionCache = new HashMap();
+    /** The referral URL to referral connection cache. */
+    private Map<LdapURL, Connection> referralUrlToReferralConnectionCache = new HashMap<LdapURL, Connection>();
 
 
-    public IBrowserConnection getReferralConnection( final URL referralUrl )
+    /**
+     * {@inheritDoc}
+     */
+    public Connection getReferralConnection( final LdapURL referralUrl )
     {
-
         // check cache
         if ( referralUrlToReferralConnectionCache.containsKey( referralUrl ) )
         {
-            IBrowserConnection referralConnection = ( IBrowserConnection ) referralUrlToReferralConnectionCache.get( referralUrl );
+            Connection referralConnection = referralUrlToReferralConnectionCache.get( referralUrl );
             if ( referralConnection != null )
             {
-                IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnections();
+                Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
                 for ( int i = 0; i < connections.length; i++ )
                 {
-                    IBrowserConnection connection = connections[i];
+                    Connection connection = connections[i];
                     if ( referralConnection == connection )
                     {
                         return referralConnection;
@@ -63,7 +71,7 @@ public class BrowserCommonReferralHandler implements IReferralHandler
         referralUrlToReferralConnectionCache.remove( referralUrl );
 
         // open dialog
-        final IBrowserConnection[] referralConnection = new IBrowserConnection[1];
+        final Connection[] referralConnection = new Connection[1];
         PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
         {
             public void run()
@@ -72,7 +80,7 @@ public class BrowserCommonReferralHandler implements IReferralHandler
                     .getDisplay().getActiveShell(), referralUrl );
                 if ( dialog.open() == SelectReferralConnectionDialog.OK )
                 {
-                    IBrowserConnection connection = dialog.getReferralConnection();
+                    Connection connection = dialog.getReferralConnection();
                     referralUrlToReferralConnectionCache.put( referralUrl, connection );
                     referralConnection[0] = connection;
                 }

@@ -34,10 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ReferralException;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
@@ -244,24 +241,9 @@ public class ExportXlsJob extends AbstractEclipseJob
         }
         catch ( ConnectionException ce )
         {
-
             if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
             {
                 // nothing
-            }
-            else if ( ce instanceof ReferralException )
-            {
-                if ( searchParameter.getReferralsHandlingMethod() == ReferralHandlingMethod.FOLLOW )
-                {
-                    ReferralException re = ( ReferralException ) ce;
-                    ISearch[] referralSearches = re.getReferralSearches();
-                    for ( ISearch referralSearch : referralSearches )
-                    {
-                        // export recursive
-                        exportToXls( referralSearch.getBrowserConnection(), referralSearch.getSearchParameter(), sheet,
-                            headerRow, count, monitor, attributeNameMap, valueDelimiter, binaryEncoding, exportDn );
-                    }
-                }
             }
             else
             {

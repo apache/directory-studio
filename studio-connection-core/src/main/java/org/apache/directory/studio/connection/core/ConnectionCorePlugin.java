@@ -47,9 +47,11 @@ public class ConnectionCorePlugin extends Plugin
     /** The event runner. */
     private EventRunner eventRunner;
 
-    /** The credential provider */
+    /** The authentication handler */
     private IAuthHandler authHandler;
 
+    /** The referral handler */
+    private IReferralHandler referralHandler;
 
     /**
      * The constructor
@@ -160,10 +162,10 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
-     * Gets the AuthHandler
+     * Gets the authentication handler
      *
      * @return
-     *      the AuthHandler
+     *      the authentication handler
      */
     public IAuthHandler getAuthHandler()
     {
@@ -172,14 +174,38 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
-     * Sets the AuthHandler
+     * Sets the authentication handler
      *
      * @param authHandler
-     *      the authHandler to set
+     *      the authentication handler to set
      */
     public void setAuthHandler( IAuthHandler authHandler )
     {
         this.authHandler = authHandler;
+    }
+
+
+    /**
+     * Gets the referral handler
+     *
+     * @return
+     *      the referral handler
+     */
+    public IReferralHandler getReferralHandler()
+    {
+        return referralHandler;
+    }
+
+
+    /**
+     * Sets the referral handler
+     *
+     * @param referralHandler
+     *      the referral handler to set
+     */
+    public void setReferralHandler( IReferralHandler referralHandler )
+    {
+        this.referralHandler = referralHandler;
     }
 
 }

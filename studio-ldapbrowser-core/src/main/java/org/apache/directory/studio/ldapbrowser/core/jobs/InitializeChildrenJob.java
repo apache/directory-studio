@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -178,7 +179,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             AliasDereferencingMethod derefAliasMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
             ReferralHandlingMethod handleReferralsMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
             if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) )
+                BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS )
+                && parent.getBrowserConnection().getRootDSE().isControlSupported(
+                    IBrowserConnection.CONTROL_MANAGEDSAIT ) )
             {
                 scope = ( parent.isAlias() || parent.isReferral() ) ? SearchScope.OBJECT : SearchScope.ONELEVEL;
                 derefAliasMethod = parent.isAlias() ? AliasDereferencingMethod.FINDING
@@ -205,7 +208,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             {
 
                 /*
-                 * clearing old children before filling new subenties is
+                 * clearing old children before filling new children is
                  * necessary to handle aliases and referrals.
                  */
                 IEntry[] connChildren = parent.getChildren();

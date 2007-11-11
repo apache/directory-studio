@@ -105,7 +105,7 @@ public class ConnectionParameter
     /** The bind password. */
     private String bindPassword;
     
-    /** The SASL realm **/
+    /** The SASL realm. */
     private String saslRealm;
 
     /** The extended properties. */
@@ -132,6 +132,7 @@ public class ConnectionParameter
      * @param authMethod the authentication method
      * @param bindPrincipal the bind principal
      * @param bindPassword the bind password
+     * @param saslRealm the SASL realm
      * @param extendedProperties the extended properties
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
@@ -201,7 +202,8 @@ public class ConnectionParameter
     
     /**
      * Gets the SASL realm
-     * @return the sasl realm
+     * 
+     * @return the SASL realm
      */
     public String getSaslRealm (){
     	return saslRealm;
@@ -210,7 +212,8 @@ public class ConnectionParameter
     
     /**
      * Sets the SASL realm
-     * @param saslRealm the sasl realm
+     * 
+     * @param saslRealm the SASL realm
      */
     public void setSaslRealm (String saslRealm){
     	this.saslRealm = saslRealm;

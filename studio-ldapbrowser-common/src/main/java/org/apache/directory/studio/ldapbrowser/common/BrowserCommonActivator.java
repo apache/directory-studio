@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.common;
 import java.io.IOException;
 import java.net.URL;
 
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -141,8 +140,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
                 e.printStackTrace();
             }
         }
-
-        BrowserCorePlugin.getDefault().setReferralHandler( new BrowserCommonReferralHandler() );
     }
 
 

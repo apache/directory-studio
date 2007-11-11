@@ -8,6 +8,7 @@ Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.eclipse.ui.workbench.texteditor
 Eclipse-LazyStart: true
