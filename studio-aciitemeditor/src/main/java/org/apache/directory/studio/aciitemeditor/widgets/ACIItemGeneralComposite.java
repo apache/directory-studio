@@ -23,7 +23,7 @@ package org.apache.directory.studio.aciitemeditor.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.aci.AuthenticationLevel;
+import org.apache.directory.shared.ldap.constants.AuthenticationLevel;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;

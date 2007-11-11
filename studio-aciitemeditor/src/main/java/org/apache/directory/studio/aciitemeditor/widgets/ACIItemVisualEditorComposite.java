@@ -25,9 +25,9 @@ import java.util.Collection;
 
 import org.apache.directory.shared.ldap.aci.ACIItem;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
-import org.apache.directory.shared.ldap.aci.AuthenticationLevel;
 import org.apache.directory.shared.ldap.aci.ItemFirstACIItem;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
+import org.apache.directory.shared.ldap.constants.AuthenticationLevel;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -237,12 +237,12 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
             aciItem = null;
         }
 
-        StringBuffer buffer = new StringBuffer();
+        String aci = "";
         if ( aciItem != null )
         {
-            aciItem.printToBuffer( buffer );
+            aci = aciItem.toString();
         }
-        return buffer.toString();
+        return aci;
     }
 
 

@@ -41,11 +41,17 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.filter.AndNode;
+import org.apache.directory.shared.ldap.filter.ApproximateNode;
 import org.apache.directory.shared.ldap.filter.BranchNode;
+import org.apache.directory.shared.ldap.filter.EqualityNode;
 import org.apache.directory.shared.ldap.filter.ExprNode;
 import org.apache.directory.shared.ldap.filter.ExtensibleNode;
 import org.apache.directory.shared.ldap.filter.FilterParser;
-import org.apache.directory.shared.ldap.filter.FilterParserImpl;
+import org.apache.directory.shared.ldap.filter.GreaterEqNode;
+import org.apache.directory.shared.ldap.filter.LessEqNode;
+import org.apache.directory.shared.ldap.filter.NotNode;
+import org.apache.directory.shared.ldap.filter.OrNode;
 import org.apache.directory.shared.ldap.filter.PresenceNode;
 import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
@@ -253,10 +259,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     public static Filter convertToSharedLdapFilter( String filter ) throws IOException, ParseException,
         DecoderException
     {
-        FilterParser filterParser = new FilterParserImpl();
-
-        ExprNode exprNode = filterParser.parse( filter );
-
+        ExprNode exprNode = FilterParser.parse( filter );
         return convertToSharedLdapFilter( exprNode );
     }
 
@@ -278,36 +281,35 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             BranchNode branchNode = ( BranchNode ) exprNode;
 
-            switch ( branchNode.getOperator() )
+            if( branchNode instanceof AndNode )
             {
-                case AND:
-                    AndFilter andFilter = new AndFilter();
-                    sharedLdapFilter = andFilter;
-
-                    List<Filter> andFilters = iterateOnFilters( branchNode.getChildren() );
-                    for ( int i = 0; i < andFilters.size(); i++ )
-                    {
-                        andFilter.addFilter( andFilters.get( i ) );
-                    }
-                    break;
-
-                case OR:
-                    OrFilter orFilter = new OrFilter();
-                    sharedLdapFilter = orFilter;
-
-                    List<Filter> orFilters = iterateOnFilters( branchNode.getChildren() );
-                    for ( int i = 0; i < orFilters.size(); i++ )
-                    {
-                        orFilter.addFilter( orFilters.get( i ) );
-                    }
-                    break;
-                case NOT:
-                    NotFilter notFilter = new NotFilter();
-                    sharedLdapFilter = notFilter;
-
-                    List<Filter> notFilters = iterateOnFilters( branchNode.getChildren() );
-                    notFilter.setNotFilter( notFilters.get( 0 ) );
-                    break;
+                AndFilter andFilter = new AndFilter();
+                sharedLdapFilter = andFilter;
+                
+                List<Filter> andFilters = iterateOnFilters( branchNode.getChildren() );
+                for ( int i = 0; i < andFilters.size(); i++ )
+                {
+                    andFilter.addFilter( andFilters.get( i ) );
+                }
+            }
+            else if( branchNode instanceof OrNode )
+            {
+                OrFilter orFilter = new OrFilter();
+                sharedLdapFilter = orFilter;
+                
+                List<Filter> orFilters = iterateOnFilters( branchNode.getChildren() );
+                for ( int i = 0; i < orFilters.size(); i++ )
+                {
+                    orFilter.addFilter( orFilters.get( i ) );
+                }
+            }
+            else if( branchNode instanceof NotNode )
+            {
+                NotFilter notFilter = new NotFilter();
+                sharedLdapFilter = notFilter;
+                
+                List<Filter> notFilters = iterateOnFilters( branchNode.getChildren() );
+                notFilter.setNotFilter( notFilters.get( 0 ) );
             }
         }
         else if ( exprNode instanceof PresenceNode )
@@ -323,31 +325,29 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             SimpleNode simpleNode = ( SimpleNode ) exprNode;
 
-            switch ( simpleNode.getAssertionType() )
+            if ( simpleNode instanceof ApproximateNode )
             {
-                case APPROXIMATE:
-                    AttributeValueAssertionFilter approxMatchFilter = createAttributeValueAssertionFilter( simpleNode,
-                        LdapConstants.APPROX_MATCH_FILTER );
-                    sharedLdapFilter = approxMatchFilter;
-                    break;
-
-                case EQUALITY:
-                    AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter(
-                        simpleNode, LdapConstants.EQUALITY_MATCH_FILTER );
-                    sharedLdapFilter = equalityMatchFilter;
-                    break;
-
-                case GREATEREQ:
-                    AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter(
-                        simpleNode, LdapConstants.GREATER_OR_EQUAL_FILTER );
-                    sharedLdapFilter = greaterOrEqualFilter;
-                    break;
-
-                case LESSEQ:
-                    AttributeValueAssertionFilter lessOrEqualFilter = createAttributeValueAssertionFilter( simpleNode,
-                        LdapConstants.LESS_OR_EQUAL_FILTER );
-                    sharedLdapFilter = lessOrEqualFilter;
-                    break;
+                AttributeValueAssertionFilter approxMatchFilter = createAttributeValueAssertionFilter( simpleNode,
+                    LdapConstants.APPROX_MATCH_FILTER );
+                sharedLdapFilter = approxMatchFilter;
+            }
+            else if ( simpleNode instanceof EqualityNode )
+            {
+                AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter(
+                    simpleNode, LdapConstants.EQUALITY_MATCH_FILTER );
+                sharedLdapFilter = equalityMatchFilter;
+            }
+            else if ( simpleNode instanceof GreaterEqNode )
+            {
+                AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter(
+                    simpleNode, LdapConstants.GREATER_OR_EQUAL_FILTER );
+                sharedLdapFilter = greaterOrEqualFilter;
+            }
+            else if ( simpleNode instanceof LessEqNode )
+            {
+                AttributeValueAssertionFilter lessOrEqualFilter = createAttributeValueAssertionFilter( simpleNode,
+                    LdapConstants.LESS_OR_EQUAL_FILTER );
+                sharedLdapFilter = lessOrEqualFilter;
             }
         }
         else if ( exprNode instanceof ExtensibleNode )
@@ -357,7 +357,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             ExtensibleMatchFilter extensibleMatchFilter = new ExtensibleMatchFilter();
             sharedLdapFilter = extensibleMatchFilter;
 
-            extensibleMatchFilter.setDnAttributes( extensibleNode.dnAttributes() );
+            extensibleMatchFilter.setDnAttributes( extensibleNode.hasDnAttributes() );
             extensibleMatchFilter.setMatchingRule( extensibleNode.getMatchingRuleId() );
             extensibleMatchFilter.setMatchValue( extensibleNode.getValue() );
             extensibleMatchFilter.setType( extensibleNode.getAttribute() );
@@ -372,10 +372,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
             substringFilter.setType( substringNode.getAttribute() );
             substringFilter.setInitialSubstrings( substringNode.getInitial() );
             substringFilter.setFinalSubstrings( substringNode.getFinal() );
-            List anys = substringNode.getAny();
+            List<String> anys = substringNode.getAny();
             for ( int i = 0; i < anys.size(); i++ )
             {
-                substringFilter.addAnySubstrings( ( String ) anys.get( i ) );
+                substringFilter.addAnySubstrings( anys.get( i ) );
             }
         }
 

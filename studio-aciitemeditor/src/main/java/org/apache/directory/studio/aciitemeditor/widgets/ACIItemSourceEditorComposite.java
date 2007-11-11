@@ -146,12 +146,12 @@ public class ACIItemSourceEditorComposite extends Composite
         ACIItemParser parser = Activator.getDefault().getACIItemParser();
         ACIItem aciItem = parser.parse( input );
 
-        StringBuffer buffer = new StringBuffer();
+        String aci = "";
         if ( aciItem != null )
         {
-            aciItem.printToBuffer( buffer );
+            aci = aciItem.toString();
         }
-        return buffer.toString();
+        return aci;
     }
 
 

@@ -187,7 +187,7 @@ public class UserClassWrapper
             Collection<SubtreeSpecification> subtreeSpecifications = subtree.getSubtreeSpecifications();
             for ( SubtreeSpecification subtreeSpecification : subtreeSpecifications )
             {
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 subtreeSpecification.printToBuffer( buffer );
                 String s = buffer.toString();
                 values.add( s );

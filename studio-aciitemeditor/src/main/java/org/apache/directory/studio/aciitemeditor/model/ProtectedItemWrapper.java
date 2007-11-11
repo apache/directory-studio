@@ -233,9 +233,7 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == ProtectedItem.RangeOfValues.class )
         {
             ProtectedItem.RangeOfValues rov = ( ProtectedItem.RangeOfValues ) item;
-            StringBuffer buffer = new StringBuffer();
-            rov.getFilter().printToBuffer( buffer );
-            values.add( buffer.toString() );
+            values.add( rov.getFilter().toString() );
         }
         else if ( item.getClass() == ProtectedItem.MaxValueCount.class )
         {
@@ -243,9 +241,7 @@ public class ProtectedItemWrapper
             for ( Iterator it = mvc.iterator(); it.hasNext(); )
             {
                 ProtectedItem.MaxValueCountItem mvci = ( ProtectedItem.MaxValueCountItem ) it.next();
-                StringBuffer buffer = new StringBuffer();
-                mvci.printToBuffer( buffer );
-                values.add( buffer.toString() );
+                values.add( mvci.toString() );
             }
         }
         else if ( item.getClass() == ProtectedItem.MaxImmSub.class )
@@ -259,17 +255,13 @@ public class ProtectedItemWrapper
             for ( Iterator it = rb.iterator(); it.hasNext(); )
             {
                 ProtectedItem.RestrictedByItem rbi = ( ProtectedItem.RestrictedByItem ) it.next();
-                StringBuffer buffer = new StringBuffer();
-                rbi.printToBuffer( buffer );
-                values.add( buffer.toString() );
+                values.add( rbi.toString() );
             }
         }
         else if ( item.getClass() == ProtectedItem.Classes.class )
         {
             ProtectedItem.Classes classes = ( ProtectedItem.Classes ) item;
-            StringBuffer buffer = new StringBuffer();
-            classes.getClasses().printRefinementToBuffer( buffer );
-            values.add( buffer.toString() );
+            values.add( classes.toString() );
         }
 
     }

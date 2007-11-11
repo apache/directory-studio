@@ -182,7 +182,7 @@ class SubtreeSpecificationDialog extends Dialog
     {
         // set return value
         //returnValue = buildSubreeSpecification();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         subtreeSpecification.printToBuffer( sb );
         returnValue = sb.toString();
 
@@ -412,7 +412,7 @@ class SubtreeSpecificationDialog extends Dialog
         refinementText.setLayoutData( gd );
         try
         {
-            StringBuffer refinementBuffer = new StringBuffer();
+            StringBuilder refinementBuffer = new StringBuilder();
             if ( subtreeSpecification.getRefinement() != null )
             {
                 subtreeSpecification.getRefinement().printRefinementToBuffer( refinementBuffer );
@@ -434,12 +434,12 @@ class SubtreeSpecificationDialog extends Dialog
             .getString( "SubtreeValueEditor.SubtreeValueEditor.label.filter" ), 2 ); //$NON-NLS-1$
 
         // filter widget
-        StringBuffer filterBuffer = new StringBuffer();
+        String filter = "";
         if ( subtreeSpecification.getRefinement() != null )
         {
-            subtreeSpecification.getRefinement().printToBuffer( filterBuffer );
+            filter = subtreeSpecification.getRefinement().toString();
         }
-        filterWidget = new FilterWidget( connection, filterBuffer.toString().trim() );
+        filterWidget = new FilterWidget( connection, filter );
         filterWidget.createWidget( composite );
         filterButton.setSelection( !refinementButton.getSelection() );
         filterWidget.setEnabled( !refinementButton.getSelection() );
