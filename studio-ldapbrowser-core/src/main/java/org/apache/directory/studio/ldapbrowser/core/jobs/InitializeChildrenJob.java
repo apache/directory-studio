@@ -42,7 +42,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.Ali
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 
 
@@ -223,15 +222,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
                 for ( int i = 0; srs != null && i < srs.length; i++ )
                 {
-                    if ( parent.isReferral() )
-                    {
-                        ReferralBaseEntry referralBaseEntry = new ReferralBaseEntry( srs[i].getEntry().getBrowserConnection(),
-                            srs[i].getEntry().getDn() );
-                        parent.addChild( referralBaseEntry );
-                        // System.out.println("Ref: " +
-                        // referralBaseEntry.getUrl());
-                    }
-                    else if ( parent.isAlias() )
+                    if ( parent.isAlias() && !( srs[i].getEntry() instanceof AliasBaseEntry ) )
                     {
                         AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getBrowserConnection(), srs[i]
                             .getEntry().getDn() );

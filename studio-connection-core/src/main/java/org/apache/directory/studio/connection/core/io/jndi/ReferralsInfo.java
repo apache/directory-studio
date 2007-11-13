@@ -23,6 +23,9 @@ package org.apache.directory.studio.connection.core.io.jndi;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.LinkLoopException;
+import javax.naming.NamingException;
+
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 
 
@@ -53,15 +56,23 @@ public class ReferralsInfo
 
     /**
      * Adds the referral URL to the list of referrals to be processed.
-     * If the URL is already
+     * 
+     * If the URL is already in the list or if the URL was already processed
+     * a NamingException will be thrown
      * 
      * @param url the URL
+     * 
+     * @throws NamingException the naming exception
      */
-    public void addReferralUrl( LdapURL url )
+    public void addReferralUrl( LdapURL url ) throws NamingException
     {
         if ( !referralsToProcess.contains( url ) && !processedReferrals.contains( url ) )
         {
             referralsToProcess.add( url );
+        }
+        else
+        {
+            throw new LinkLoopException( "Loop detected: " + url.toString() );
         }
     }
 

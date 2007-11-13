@@ -93,6 +93,9 @@ public class JNDIUtils
      */
     public static ConnectionException createConnectionException( SearchParameter searchParameter, Throwable e )
     {
+    	// TODO: remove when improving error handling
+        e.printStackTrace();
+        
         ConnectionException connectionException = null;
         ConnectionException lastException = null;
 

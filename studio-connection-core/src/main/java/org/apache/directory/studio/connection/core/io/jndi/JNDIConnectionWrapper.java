@@ -260,40 +260,49 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
                     else if ( REFERRAL_FOLLOW.equals( referralsHandlingMethod ) )
                     {
-                        ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
-                        LdapURL url = newReferralsInfo.getNext();
-                        if ( url != null )
+                        try
                         {
-                            Connection referralConnection = getReferralConnection( url );
-                            if ( referralConnection != null )
+                            ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
+                            LdapURL url = newReferralsInfo.getNext();
+                            if ( url != null )
                             {
-                                String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
-                                    .getUpName() : searchBase;
-                                String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
-                                    .getFilter() : filter;
-                                SearchControls referralSearchControls = new SearchControls();
-                                referralSearchControls.setSearchScope( url.getScope() > -1 ? url.getScope()
-                                    : searchControls.getSearchScope() );
-                                referralSearchControls.setReturningAttributes( url.getAttributes() != null ? url
-                                    .getAttributes().toArray( new String[url.getAttributes().size()] ) : searchControls
-                                    .getReturningAttributes() );
-                                referralSearchControls.setCountLimit( searchControls.getCountLimit() );
-                                referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
-                                referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
-                                referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
-    
-                                if ( referralConnection.getJNDIConnectionWrapper().isConnected() )
+                                Connection referralConnection = getReferralConnection( url );
+                                if ( referralConnection != null )
                                 {
-                                    referralConnection.getJNDIConnectionWrapper().connect( monitor );
-                                    referralConnection.getJNDIConnectionWrapper().bind( monitor );
-                                    ConnectionEventRegistry.fireConnectionOpened( referralConnection, this );
+                                    String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url
+                                        .getDn().getUpName() : searchBase;
+                                    String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
+                                        .getFilter()
+                                        : filter;
+                                    SearchControls referralSearchControls = new SearchControls();
+                                    referralSearchControls.setSearchScope( url.getScope() > -1 ? url.getScope()
+                                        : searchControls.getSearchScope() );
+                                    referralSearchControls.setReturningAttributes( url.getAttributes() != null ? url
+                                        .getAttributes().toArray( new String[url.getAttributes().size()] )
+                                        : searchControls.getReturningAttributes() );
+                                    referralSearchControls.setCountLimit( searchControls.getCountLimit() );
+                                    referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
+                                    referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
+                                    referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
+
+                                    if ( referralConnection.getJNDIConnectionWrapper().isConnected() )
+                                    {
+                                        referralConnection.getJNDIConnectionWrapper().connect( monitor );
+                                        referralConnection.getJNDIConnectionWrapper().bind( monitor );
+                                        ConnectionEventRegistry.fireConnectionOpened( referralConnection, this );
+                                    }
+
+                                    namingEnumeration = referralConnection.getJNDIConnectionWrapper().search(
+                                        referralSearchBase, referralFilter, referralSearchControls,
+                                        aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
+                                        newReferralsInfo );
                                 }
-                                
-                                namingEnumeration = referralConnection.getJNDIConnectionWrapper().search(
-                                    referralSearchBase, referralFilter, referralSearchControls,
-                                    aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
-                                    newReferralsInfo );
                             }
+                        }
+                        catch ( NamingException e )
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
                     }
                     else
@@ -343,7 +352,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             monitor.reportError( runnable.getException().getMessage(), runnable.getException() );
             return null;
         }
-        else if ( runnable.getResult() != null && runnable.getResult() instanceof NamingEnumeration )
+        else if ( runnable.getResult() != null )
         {
             return runnable.getResult();
         }
@@ -383,7 +392,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * @return the created or updated referrals info
      */
     static ReferralsInfo handleReferralException( ReferralException referralException,
-        ReferralsInfo initialReferralsInfo )
+        ReferralsInfo initialReferralsInfo ) throws NamingException
     {
         if ( initialReferralsInfo == null )
         {

@@ -195,25 +195,32 @@ public class SearchJob extends AbstractNotificationJob
                     NamingEnumeration<SearchResult> enumeration = search( browserConnection, searchParameter, monitor );
 
                     // iterate through the search result
-                    while ( !monitor.isCanceled() && enumeration.hasMore() )
+                    while ( !monitor.isCanceled() && enumeration != null && enumeration.hasMore() )
                     {
                         SearchResult sr = enumeration.next();
                         LdapDN dn = JNDIUtils.getDn( sr );
                         boolean isReferral = false;
+                        IBrowserConnection resultBrowserConnection = browserConnection;
                         if ( sr instanceof StudioSearchResult )
                         {
                             StudioSearchResult ssr = ( StudioSearchResult ) sr;
+                            
                             isReferral = ssr.isReferral();
+                            
                             Connection connection = ssr.getConnection();
-                            browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                            IBrowserConnection bc = BrowserCorePlugin.getDefault().getConnectionManager()
                                 .getBrowserConnection( connection );
+                            if( bc != null )
+                            {
+                                resultBrowserConnection = bc;
+                            }
                         }
 
                         // get entry from cache or create it
-                        IEntry entry = browserConnection.getEntryFromCache( dn );
+                        IEntry entry = resultBrowserConnection.getEntryFromCache( dn );
                         if ( entry == null )
                         {
-                            entry = createAndCacheEntry( browserConnection, dn );
+                            entry = createAndCacheEntry( resultBrowserConnection, dn );
                         }
                         
                         // initialize special flags
@@ -221,10 +228,10 @@ public class SearchJob extends AbstractNotificationJob
 
                         // fill the attributes
                         fillAttributes( entry, sr, search.getSearchParameter() );
-
-                        if(isReferral)
+                        
+                        if ( isReferral  )
                         {
-                            entry = new ReferralBaseEntry( browserConnection, dn );
+                            entry = new ReferralBaseEntry( resultBrowserConnection, dn );
                         }
                         
                         searchResultList.add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult(

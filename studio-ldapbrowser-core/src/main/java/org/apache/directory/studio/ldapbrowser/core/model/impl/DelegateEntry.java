@@ -778,4 +778,21 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         return null;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals( Object o )
+    {
+        // check argument
+        if ( o == null || !( o instanceof IEntry ) )
+        {
+            return false;
+        }
+        IEntry e = ( IEntry ) o;
+
+        // compare dn and connection
+        return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
+            e.getBrowserConnection() ) );
+    }
 }

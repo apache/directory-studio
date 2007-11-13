@@ -88,8 +88,9 @@ public class AttributeDescription implements Serializable
         this.parsedAttributeType = attributeDescriptionComponents[0];
         this.parsedLangList = new ArrayList<String>();
         this.parsedOptionList = new ArrayList<String>();
-        for ( String component : attributeDescriptionComponents )
+        for ( int i = 1; i < attributeDescriptionComponents.length; i++ )
         {
+            String component = attributeDescriptionComponents[i];
             if ( component.startsWith( IAttribute.OPTION_LANG_PREFIX ) )
             {
                 this.parsedLangList.add( component );
