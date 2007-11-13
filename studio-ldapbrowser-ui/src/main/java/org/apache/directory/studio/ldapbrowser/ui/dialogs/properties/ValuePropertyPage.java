@@ -91,8 +91,8 @@ public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropert
 
         if ( value != null )
         {
-
-            super.setMessage( "Value " + Utils.shorten( value.toString(), 30 ) );
+            super.setMessage( "Value "
+                + org.apache.directory.studio.connection.core.Utils.shorten( value.toString(), 30 ) );
 
             descriptionText.setText( value.getAttribute().getDescription() );
             // valueText.setText(LdifUtils.mustEncode(value.getBinaryValue())?"Binary":value.getStringValue());

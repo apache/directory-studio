@@ -31,7 +31,8 @@ public class Utils
 {
 
     /**
-     * Shortens the given label to the given maximum length.
+     * Shortens the given label to the given maximum length
+     * and filters non-printable characters.
      * 
      * @param label the label
      * @param maxLength the max length
@@ -44,6 +45,8 @@ public class Utils
         {
             return null;
         }
+
+        // shorten label
         if ( maxLength < 3 )
         {
             return "...";
@@ -54,15 +57,22 @@ public class Utils
                 + label.substring( label.length() - maxLength / 2, label.length() );
 
         }
+
+        // filter non-printable characters
         StringBuffer sb = new StringBuffer( maxLength + 3 );
         for ( int i = 0; i < label.length(); i++ )
         {
             char c = label.charAt( i );
-            if ( c > 31 && c < 127 )
-                sb.append( c );
-            else
+            if ( Character.isISOControl( c ) )
+            {
                 sb.append( '.' );
+            }
+            else
+            {
+                sb.append( c );
+            }
         }
+
         return sb.toString();
     }
 

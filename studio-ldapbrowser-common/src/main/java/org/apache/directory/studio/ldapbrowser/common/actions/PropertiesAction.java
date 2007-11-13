@@ -22,8 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-
+import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;

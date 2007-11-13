@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.connection.core.Utils;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.events.ModifyEvent;

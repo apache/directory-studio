@@ -202,33 +202,4 @@ public class Utils
         return false;
     }
 
-
-    public static String shorten( String label, int maxLength )
-    {
-        if ( label == null )
-        {
-            return null;
-        }
-        if ( maxLength < 3 )
-        {
-            return "...";
-        }
-        if ( label.length() > maxLength )
-        {
-            label = label.substring( 0, maxLength / 2 ) + "..."
-                + label.substring( label.length() - maxLength / 2, label.length() );
-
-        }
-        StringBuffer sb = new StringBuffer( maxLength + 3 );
-        for ( int i = 0; i < label.length(); i++ )
-        {
-            char c = label.charAt( i );
-            if ( c > 31 && c < 127 )
-                sb.append( c );
-            else
-                sb.append( '.' );
-        }
-        return sb.toString();
-    }
-
 }
