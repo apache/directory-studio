@@ -38,6 +38,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
@@ -109,8 +110,8 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                     Connection[] connections = BrowserSelectionUtils.getConnections( selection );
                     if ( connections.length == 1 )
                     {
-                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
-                            connections[0] );
+                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                            .getBrowserConnection( connections[0] );
                         setInput( connection );
                     }
                     else
@@ -157,8 +158,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
                 IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                     IContextService.class );
-                contextActivation = contextService
-                    .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
+                contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
                 // org.eclipse.ui.contexts.dialogAndWindow
                 // org.eclipse.ui.contexts.window
                 // org.eclipse.ui.text_editor_context
@@ -363,7 +363,8 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         {
 
             IBrowserConnection currentConnection = viewer.getInput() instanceof IBrowserConnection ? ( IBrowserConnection ) viewer
-                .getInput() : null;
+                .getInput()
+                : null;
 
             // save expanded elements and selection
             if ( currentConnection != null )
@@ -401,8 +402,8 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      */
     public void connectionOpened( Connection connection )
     {
-        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
-            connection );
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
 
         // expand viewer
         viewer.refresh( browserConnection );
@@ -425,9 +426,9 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
      */
     public void connectionClosed( Connection connection )
     {
-        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
-            connection );
-        
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+
         viewer.collapseAll();
         connectionToExpandedElementsMap.remove( browserConnection );
         connectionToSelectedElementMap.remove( browserConnection );
@@ -510,12 +511,28 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             viewer.refresh( eme.getNewEntry(), true );
             viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
         }
+        else if ( event instanceof EntryDeletedEvent )
+        {
+            EntryDeletedEvent ede = ( EntryDeletedEvent ) event;
+            if ( ede.getModifiedEntry().getParententry() != null )
+            {
+                viewer.refresh( ede.getModifiedEntry(), true );
+                viewer.refresh( ede.getModifiedEntry().getParententry(), true );
+                viewer.setSelection( new StructuredSelection( ede.getModifiedEntry().getParententry() ), true );
+            }
+            else
+            {
+                viewer.refresh();
+            }
+        }
         else if ( event instanceof BulkModificationEvent )
         {
             viewer.refresh();
         }
-
-        viewer.refresh( event.getModifiedEntry(), true );
+        else
+        {
+            viewer.refresh( event.getModifiedEntry(), true );
+        }
     }
 
 }

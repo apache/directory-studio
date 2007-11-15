@@ -51,6 +51,18 @@ public class Control implements Serializable
         false, new byte[]
             { 0x01, 0x01, ( byte ) 0xFF } );
 
+    /**
+     * The Manage DSA IT control as defined in RFC 3296.
+     */
+    public static final Control MANAGEDSAIT_CONTROL = new Control( "Manage DSA IT Control", "2.16.840.1.113730.3.4.2",
+        false, null );
+
+    /**
+     * The Tree Delete control as defined in draft-armijo-ldap-treedelete-02.
+     */
+    public static final Control TREEDELETE_CONTROL = new Control( "Tree Delete Control", "1.2.840.113556.1.4.805",
+        false, null );
+
     /** The symbolic name. */
     private String name;
 

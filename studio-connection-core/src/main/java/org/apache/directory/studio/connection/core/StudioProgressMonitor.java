@@ -324,12 +324,21 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public Throwable getException()
     {
-
         if ( errorStatusList != null )
         {
             return errorStatusList.get( 0 ).getException();
         }
         return null;
+    }
+    
+    
+    /**
+     * Resets this status.
+     */
+    public void reset()
+    {
+        this.done = false;
+        this.errorStatusList = null;
     }
 
     /**

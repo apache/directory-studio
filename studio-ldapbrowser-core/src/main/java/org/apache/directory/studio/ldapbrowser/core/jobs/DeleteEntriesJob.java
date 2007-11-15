@@ -28,55 +28,91 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
+import javax.naming.ContextNotEmptyException;
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
+import javax.naming.ldap.BasicControl;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
+import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
-/*
- * Search+Delete vs. Delete+SearchOnError
+/**
+ * Job to delete entries.
  * 
- * Test for:
- * - delete leaf entry 100.000 times
- * - tree with 100.000 childs
- * - tree with 1000 childs each with 1000 childs 
- * 
+ * Deletes the entry recursively in a optimistic way:
+ * <ol>
+ * <li>Delete the entry
+ * <li>If that fails with error code 66 then perform a one-level search
+ *     and start from 1. for each entry. 
+ * </ol>
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
-
 public class DeleteEntriesJob extends AbstractNotificationJob
 {
 
     private IEntry[] entriesToDelete;
+    private boolean useTreeDeleteContol;
+    private boolean useManageDsaITControl;
+    private boolean useSubentriesControl;
 
-    private Set deletedEntriesSet = new HashSet();
+    private Set<IEntry> deletedEntriesSet;
 
-    private Set entriesToUpdateSet = new HashSet();
+    private Set<IEntry> entriesToUpdateSet;
 
-    private Set searchesToUpdateSet = new HashSet();
+    private Set<ISearch> searchesToUpdateSet;
 
 
-    public DeleteEntriesJob( final IEntry[] entriesToDelete )
+    /**
+     * Creates a new instance of DeleteEntriesJob. 
+     * 
+     * @param entriesToDelete the entries to delete
+     * @param useTreeDeleteContol true to use the Tree Delete Control
+     * @param useManageDsaITControl true to use the Manage DSA IT Control
+     * @param useSubentriesControl true to delete sub-entries
+     */
+    public DeleteEntriesJob( final IEntry[] entriesToDelete, boolean useTreeDeleteContol,
+        boolean useManageDsaITControl, boolean useSubentriesControl )
     {
         this.entriesToDelete = entriesToDelete;
+        this.useTreeDeleteContol = useTreeDeleteContol;
+        this.useManageDsaITControl = useManageDsaITControl;
+        this.useSubentriesControl = useSubentriesControl;
+
+        this.deletedEntriesSet = new HashSet<IEntry>();
+        this.entriesToUpdateSet = new HashSet<IEntry>();
+        this.searchesToUpdateSet = new HashSet<ISearch>();
+
         setName( entriesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
             : BrowserCoreMessages.jobs__delete_entries_name_n );
+    }
+
+
+    /**
+     * Creates a new instance of DeleteEntriesJob. 
+     * 
+     * @param entriesToDelete the entries to delete
+     */
+    public DeleteEntriesJob( final IEntry[] entriesToDelete )
+    {
+        this( entriesToDelete, false, false, false );
     }
 
 
@@ -93,7 +129,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<Object> l = new ArrayList<Object>();
         l.addAll( Arrays.asList( entriesToDelete ) );
         return l.toArray();
     }
@@ -101,7 +137,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( entriesToDelete.length == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__delete_entries_task_1, new String[]
                 { entriesToDelete[0].getDn().getUpName() } ) : BrowserCoreMessages.bind(
@@ -111,49 +146,65 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         monitor.worked( 1 );
 
         int num = 0;
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         for ( int i = 0; !monitor.isCanceled() && !monitor.errorsReported() && i < entriesToDelete.length; i++ )
         {
-
             IEntry entryToDelete = entriesToDelete[i];
-            IBrowserConnection connection = entryToDelete.getBrowserConnection();
+            IBrowserConnection browserConnection = entryToDelete.getBrowserConnection();
 
             // delete from directory
-            // TODO: use TreeDelete Control, if available
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            num = deleteEntryRecursive( entryToDelete, false, num, monitor );
+            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn().getUpName(), num,
+                dummyMonitor, monitor );
             int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            deletedEntriesSet.add( entryToDelete );
 
-            if ( errorStatusSize1 == errorStatusSize2 )
+            if ( !monitor.isCanceled() )
             {
-                // delete from parent
-                entryToDelete.getParententry().deleteChild( entryToDelete );
-                entriesToUpdateSet.add( entryToDelete.getParententry() );
-
-                // delete from searches
-                ISearch[] searches = connection.getSearchManager().getSearches();
-                for ( int j = 0; j < searches.length; j++ )
+                if ( errorStatusSize1 == errorStatusSize2 )
                 {
-                    ISearch search = searches[j];
-                    if ( search.getSearchResults() != null )
+                    // delete
+                    deletedEntriesSet.add( entryToDelete );
+                    entryToDelete.setChildrenInitialized( false );
+
+                    // delete from parent entry
+                    entriesToUpdateSet.add( entryToDelete.getParententry() );
+                    entryToDelete.getParententry().setChildrenInitialized( false );
+                    entryToDelete.getParententry().deleteChild( entryToDelete );
+
+                    // delete from searches
+                    ISearch[] searches = browserConnection.getSearchManager().getSearches();
+                    for ( ISearch search : searches )
                     {
-                        ISearchResult[] searchResults = search.getSearchResults();
-                        for ( int k = 0; k < searchResults.length; k++ )
+                        if ( search.getSearchResults() != null )
                         {
-                            ISearchResult result = searchResults[k];
-                            if ( entryToDelete.equals( result.getEntry() ) )
+                            ISearchResult[] searchResults = search.getSearchResults();
+                            List<ISearchResult> searchResultList = new ArrayList<ISearchResult>();
+                            searchResultList.addAll( Arrays.asList( searchResults ) );
+                            for ( Iterator<ISearchResult> it = searchResultList.iterator(); it.hasNext(); )
                             {
-                                ISearchResult[] newsrs = new ISearchResult[searchResults.length - 1];
-                                System.arraycopy( searchResults, 0, newsrs, 0, k );
-                                System.arraycopy( searchResults, k + 1, newsrs, k, searchResults.length - k - 1 );
-                                search.setSearchResults( newsrs );
-                                searchResults = newsrs;
-                                k--;
-                                searchesToUpdateSet.add( search );
+                                ISearchResult result = it.next();
+                                if ( entryToDelete.equals( result.getEntry() ) )
+                                {
+                                    it.remove();
+                                    searchesToUpdateSet.add( search );
+                                }
+                            }
+                            if ( searchesToUpdateSet.contains( search ) )
+                            {
+                                search.setSearchResults( searchResultList.toArray( new ISearchResult[searchResultList
+                                    .size()] ) );
                             }
                         }
                     }
                 }
+
+                // delete from cache
+                browserConnection.uncacheEntryRecursive( entryToDelete );
+            }
+            else
+            {
+                entriesToUpdateSet.add( entryToDelete );
+                entryToDelete.setChildrenInitialized( false );
             }
 
             monitor.worked( 1 );
@@ -161,101 +212,111 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    
-    private int deleteEntryRecursive( IBrowserConnection browserConnection, String dn, int numberOfDeletedEntries, StudioProgressMonitor monitor )
+    /**
+     * Deletes the entry recursively in a optimistic way:
+     * <ol>
+     * <li>Deletes the entry
+     * <li>If that fails then perform a one-level search and call the 
+     * method for each found entry
+     * </ol>
+     * 
+     * @param browserConnection the browser connection
+     * @param dn the DN to delete
+     * @param numberOfDeletedEntries the number of delted entries
+     * @param dummyMonitor the dummy monitor
+     * @param monitor the progress monitor
+     * @return the cululative number of deleted entries
+     */
+    private int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, String dn,
+        int numberOfDeletedEntries, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
-//        int numberInBatch;
-//        
-//        JNDIConnectionWrapper connectionWrapper = browserConnection.getConnection().getJNDIConnectionWrapper();
-//        
-//        SearchControls searchControls = new SearchControls();
-//        searchControls.setCountLimit( 1000 );
-//        searchControls.setReturningAttributes( new String[]
-//                                                          { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
-//        searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-//        
-//        connectionWrapper.search( dn, ISearch.FILTER_TRUE, searchControls, derefAliasMethod, handleReferralsMethod, controls, monitor )
-        
-        return 0;
-    }
-    
-    
-    private int deleteEntryRecursive( IEntry entry, boolean refInitialized, int numberOfDeletedEntries,
-        StudioProgressMonitor monitor )
-    {
-        try
+        // try to delete entry
+        dummyMonitor.reset();
+        deleteEntry( browserConnection, dn, useTreeDeleteContol, useManageDsaITControl, dummyMonitor );
+
+        if ( !dummyMonitor.errorsReported() )
         {
+            numberOfDeletedEntries++;
+            monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__deleted_n_entries,
+                new String[]
+                    { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
+        }
+        else if ( dummyMonitor.getException() instanceof ContextNotEmptyException )
+        {
+            // perform one-level search and delete recursively
+            // TODO: ManageDsaIT control
+            // TODO: Subentries search
             int numberInBatch;
+            dummyMonitor.reset();
             do
             {
                 numberInBatch = 0;
-                
-                // TODO: use JNDI here!!!
-                
-                SearchParameter subParam = new SearchParameter();
-                subParam.setSearchBase( entry.getDn() );
-                subParam.setFilter( ISearch.FILTER_TRUE );
-                subParam.setScope( SearchScope.ONELEVEL );
-                subParam.setAliasesDereferencingMethod( AliasDereferencingMethod.NEVER );
-                subParam.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
-                subParam.setReturningAttributes( new String[]
-                    { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
-                subParam.setCountLimit( 1000 );
-                ISearch search = new Search( entry.getBrowserConnection(), subParam );
-                SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
-                ISearchResult[] srs = search.getSearchResults();
-                for ( int i = 0; !monitor.isCanceled() && srs != null && i < srs.length; i++ )
+                SearchControls searchControls = new SearchControls();
+                searchControls.setCountLimit( 1000 );
+                searchControls.setReturningAttributes( new String[0] );
+                searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+                NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper()
+                    .search( dn, ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
+                        null, dummyMonitor, null );
+
+                try
                 {
-                    IEntry childEntry = srs[i].getEntry();
-                    numberOfDeletedEntries = this.deleteEntryRecursive( childEntry, true, numberOfDeletedEntries,
-                        monitor );
-                    numberInBatch++;
-                }
-            }
-            while ( numberInBatch > 0 && !monitor.isCanceled() && !monitor.errorsReported() );
-
-            if ( !monitor.isCanceled() && !monitor.errorsReported() )
-            {
-                // check for referrals
-                if ( !refInitialized )
-                {
-                    // TODO: use JNDI here!!!
-                    SearchParameter param = new SearchParameter();
-                    param.setSearchBase( entry.getDn() );
-                    param.setFilter( ISearch.FILTER_TRUE );
-                    param.setScope( SearchScope.OBJECT );
-                    param.setAliasesDereferencingMethod( AliasDereferencingMethod.NEVER );
-                    param.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
-                    param.setReturningAttributes( new String[]
-                        { IAttribute.OBJECTCLASS_ATTRIBUTE, IAttribute.REFERRAL_ATTRIBUTE } );
-                    ISearch search = new Search( entry.getBrowserConnection(), param );
-                    SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
-
-                    ISearchResult[] srs = search.getSearchResults();
-                    if ( !monitor.isCanceled() && srs != null && srs.length == 1 )
+                    // delete all child entries
+                    while ( !dummyMonitor.isCanceled() && result.hasMore() )
                     {
-                        entry = srs[0].getEntry();
+                        if ( dummyMonitor.errorsReported() )
+                        {
+                            throw dummyMonitor.getException();
+                        }
+
+                        SearchResult sr = result.next();
+                        LdapDN ldapDn = JNDIUtils.getDn( sr );
+                        String childDn = ldapDn.getUpName();
+
+                        numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn,
+                            numberOfDeletedEntries, dummyMonitor, monitor );
+                        numberInBatch++;
                     }
                 }
-
-                int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-                deleteEntry( entry.getBrowserConnection(), entry, monitor );
-                int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-
-                if ( errorStatusSize1 == errorStatusSize2 )
+                catch ( Throwable e )
                 {
-                    numberOfDeletedEntries++;
-                    monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__deleted_n_entries,
-                        new String[]
-                            { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
+                    ConnectionException ce = JNDIUtils.createConnectionException( null, e );
+
+                    if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
+                    {
+                        // continue with search
+                    }
+                    else
+                    {
+                        dummyMonitor.reportError( ce );
+                        break;
+                    }
                 }
             }
+            while ( numberInBatch > 0 && !monitor.isCanceled() && !dummyMonitor.errorsReported() );
 
+            // try to delete the entry again 
+            if ( !dummyMonitor.errorsReported() )
+            {
+                deleteEntry( browserConnection, dn, useTreeDeleteContol, useManageDsaITControl, dummyMonitor );
+            }
+            if ( !dummyMonitor.errorsReported() )
+            {
+                numberOfDeletedEntries++;
+                monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__deleted_n_entries,
+                    new String[]
+                        { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
+            }
         }
-        catch ( Exception e )
+        else
         {
-            monitor.reportError( e );
+            Throwable exception = dummyMonitor.getException();
+            // we have another exception
+            // report it to the dummy monitor if we are in the recursion
+            dummyMonitor.reportError( exception );
+            // also report it to the real monitor
+            monitor.reportError( exception );
         }
 
         return numberOfDeletedEntries;
@@ -264,20 +325,18 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     protected void runNotification()
     {
-        for ( Iterator it = deletedEntriesSet.iterator(); it.hasNext(); )
+        for ( IEntry entry : deletedEntriesSet )
         {
-            IEntry entry = ( IEntry ) it.next();
             EventRegistry.fireEntryUpdated( new EntryDeletedEvent( entry.getBrowserConnection(), entry ), this );
         }
-        for ( Iterator it = entriesToUpdateSet.iterator(); it.hasNext(); )
+        for ( IEntry parent : entriesToUpdateSet )
         {
-            IEntry parent = ( IEntry ) it.next();
             EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
         }
-        for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )
+        for ( ISearch search : searchesToUpdateSet )
         {
-            ISearch search = ( ISearch ) it.next();
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
+                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
         }
     }
 
@@ -288,20 +347,28 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             : BrowserCoreMessages.jobs__delete_entries_error_n;
     }
 
-    static void deleteEntry( IBrowserConnection browserConnection, IEntry entry, StudioProgressMonitor monitor )
-    {
-        // dn
-        String dn = entry.getDn().getUpName();
 
+    static void deleteEntry( IBrowserConnection browserConnection, String dn, boolean useTreeDeleteControl,
+        boolean useManageDsaITControl, StudioProgressMonitor monitor )
+    {
         // controls
-        Control[] controls = null;
-        if ( entry.isReferral() )
+        List<BasicControl> controls = new ArrayList<BasicControl>();
+        if ( useTreeDeleteControl )
         {
-            controls = new Control[]
-                { new ManageReferralControl() };
+            BasicControl treeDeleteControl = new BasicControl( Control.TREEDELETE_CONTROL.getOid(),
+                Control.TREEDELETE_CONTROL.isCritical(), Control.TREEDELETE_CONTROL.getControlValue() );
+            controls.add( treeDeleteControl );
+        }
+        if ( useManageDsaITControl )
+        {
+            BasicControl manageDsaITControl = new BasicControl( Control.MANAGEDSAIT_CONTROL.getOid(),
+                Control.MANAGEDSAIT_CONTROL.isCritical(), Control.MANAGEDSAIT_CONTROL.getControlValue() );
+            controls.add( manageDsaITControl );
         }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper()
-            .deleteEntry( dn, controls, monitor );
+        // delete entry
+        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn,
+            controls.toArray( new BasicControl[controls.size()] ), monitor );
     }
+
 }
