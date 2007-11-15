@@ -379,7 +379,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 {
                     dn = new LdapDN();
                 }
-                previewText.setText( dn.toString() );
+                previewText.setText( dn.getUpName() );
             }
         }
 
