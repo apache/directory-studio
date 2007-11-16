@@ -21,8 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.core.model.filter;
 
 
-import java.util.Iterator;
-
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
 
@@ -88,9 +86,8 @@ public class LdapOrFilterComponent extends LdapFilterComponent
     public String toString()
     {
         String s = startToken != null ? "|" : "";
-        for ( Iterator it = filterList.iterator(); it.hasNext(); )
+        for ( LdapFilter filter : filterList )
         {
-            LdapFilter filter = ( LdapFilter ) it.next();
             if ( filter != null )
             {
                 s += filter.toString();
