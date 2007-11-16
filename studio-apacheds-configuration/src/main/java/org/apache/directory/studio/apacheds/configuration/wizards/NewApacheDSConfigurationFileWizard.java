@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration.actions;
+package org.apache.directory.studio.apacheds.configuration.wizards;
 
 
 import org.apache.directory.studio.apacheds.configuration.Activator;
@@ -26,38 +26,47 @@ import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigura
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParser;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParserException;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the New Server Configuration Action.
+ * This class implements the New ApacheDS Configuration File Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewServerConfigurationAction extends Action implements IWorkbenchWindowActionDelegate
+public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWizard
 {
+    /** The window */
+    private IWorkbenchWindow window;
+
+
     /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
+     * @see org.eclipse.jface.wizard.Wizard#performFinish()
      */
-    public void run( IAction action )
+    public boolean performFinish()
     {
-        ServerConfigurationParser parser = new ServerConfigurationParser();
-        ServerConfiguration serverConfiguration = null;
-        
         try
         {
-            serverConfiguration = parser.parse( Activator.class.getResourceAsStream( "default-server.xml" ) );
+            ServerConfigurationParser parser = new ServerConfigurationParser();
+            ServerConfiguration serverConfiguration = parser.parse( Activator.class
+                .getResourceAsStream( "default-server.xml" ) );
+
+            IWorkbenchPage page = window.getActivePage();
+            page.openEditor( new ServerConfigurationEditorInput( serverConfiguration ), ServerConfigurationEditor.ID );
+        }
+        catch ( PartInitException e )
+        {
+            return false;
         }
         catch ( ServerConfigurationParserException e )
         {
@@ -66,43 +75,17 @@ public class NewServerConfigurationAction extends Action implements IWorkbenchWi
             messageBox.setText( "Error!" );
             messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
             messageBox.open();
-            return;
+            return false;
         }
-
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-        try
-        {
-            page.openEditor( new ServerConfigurationEditorInput( serverConfiguration ), ServerConfigurationEditor.ID );
-        }
-        catch ( PartInitException e )
-        {
-            Activator.getDefault().getLog().log(
-                new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getMessage(), e.getCause() ) );
-            return;
-        }
+        return true;
     }
 
 
     /* (non-Javadoc)
-     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+     * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
      */
-    public void selectionChanged( IAction action, ISelection selection )
+    public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
-     */
-    public void dispose()
-    {
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
-     */
-    public void init( IWorkbenchWindow window )
-    {
+        window = workbench.getActiveWorkbenchWindow();
     }
 }

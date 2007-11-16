@@ -20,10 +20,17 @@
 package org.apache.directory.studio.apacheds.configuration.editor;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import org.apache.directory.studio.apacheds.configuration.Activator;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParser;
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParserException;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationWriter;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationWriterException;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
@@ -31,9 +38,12 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
@@ -46,9 +56,6 @@ public class ServerConfigurationEditor extends FormEditor
 {
     /** The Editor ID */
     public static final String ID = "org.apache.directory.studio.apacheds.configuration.editor";
-
-    /** The editor input */
-    private IEditorInput input;
 
     /** The Server Configuration */
     private ServerConfiguration serverConfiguration;
@@ -69,10 +76,97 @@ public class ServerConfigurationEditor extends FormEditor
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.init( site, input );
-        this.input = input;
         setPartName( input.getName() );
-        serverConfiguration = ( ( ServerConfigurationEditorInput ) input ).getServerConfiguration();
-        dirty = serverConfiguration.getPath() == null;
+
+        if ( input instanceof FileEditorInput )
+        {
+            FileEditorInput fei = ( FileEditorInput ) input;
+
+            try
+            {
+                ServerConfigurationParser parser = new ServerConfigurationParser();
+                serverConfiguration = parser.parse( fei.getFile().getContents() );
+                serverConfiguration.setPath( fei.getFile().getFullPath().toOSString() );
+            }
+            catch ( ServerConfigurationParserException e )
+            {
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                messageBox.setText( "Error!" );
+                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+                messageBox.open();
+                return;
+            }
+            catch ( CoreException e )
+            {
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                messageBox.setText( "Error!" );
+                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+                messageBox.open();
+                return;
+            }
+        }
+        else if ( input instanceof IPathEditorInput )
+        {
+            IPathEditorInput ipei = ( IPathEditorInput ) input;
+            try
+            {
+                ServerConfigurationParser parser = new ServerConfigurationParser();
+                serverConfiguration = parser.parse( new FileInputStream( new File( ipei.getPath().toOSString() ) ) );
+                serverConfiguration.setPath( ipei.getPath().toOSString() );
+            }
+            catch ( ServerConfigurationParserException e )
+            {
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                messageBox.setText( "Error!" );
+                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+                messageBox.open();
+                return;
+            }
+            catch ( FileNotFoundException e )
+            {
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                messageBox.setText( "Error!" );
+                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+                messageBox.open();
+                return;
+            }
+        }
+        else if ( input instanceof ServerConfigurationEditorInput )
+        {
+            serverConfiguration = ( ( ServerConfigurationEditorInput ) input ).getServerConfiguration();
+            dirty = true;
+        }
+        else
+        {
+            try
+            {
+                ServerConfigurationParser parser = new ServerConfigurationParser();
+                serverConfiguration = parser.parse( new FileInputStream( new File( input.getToolTipText() ) ) );
+                serverConfiguration.setPath( input.getToolTipText() );
+            }
+            catch ( ServerConfigurationParserException e )
+            {
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                messageBox.setText( "Error!" );
+                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+                messageBox.open();
+                return;
+            }
+            catch ( FileNotFoundException e )
+            {
+                MessageBox messageBox = new MessageBox(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
+                messageBox.setText( "Error!" );
+                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+                messageBox.open();
+                return;
+            }
+        }
     }
 
 
@@ -138,7 +232,7 @@ public class ServerConfigurationEditor extends FormEditor
             // TODO Add the overwrite code...
 
             serverConfiguration.setPath( selectedFile );
-            setTitleToolTip( input.getToolTipText() );
+            setTitleToolTip( getEditorInput().getToolTipText() );
         }
 
         // Saving the ServerConfiguration to disk
@@ -170,6 +264,10 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSaveAs()
     {
+        SaveAsDialog dialog = new SaveAsDialog( Activator.getDefault().getWorkbench().getActiveWorkbenchWindow()
+            .getShell() );
+        dialog.setOriginalName( "Copy of" );
+        dialog.open();
     }
 
 
@@ -178,7 +276,7 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public boolean isSaveAsAllowed()
     {
-        return false;
+        return true;
     }
 
 
@@ -201,5 +299,17 @@ public class ServerConfigurationEditor extends FormEditor
     {
         this.dirty = dirty;
         editorDirtyStateChanged();
+    }
+
+
+    /**
+     * Gets the Server Configuration.
+     *
+     * @return
+     *      the Server Configuration
+     */
+    public ServerConfiguration getServerConfiguration()
+    {
+        return serverConfiguration;
     }
 }

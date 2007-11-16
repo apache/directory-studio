@@ -150,6 +150,24 @@ public class ServerConfigurationParser
         // Reading the 'Environment' Bean
         readEnvironmentBean( document, serverConfiguration );
 
+        // Reading the 'ChangePasswordConfiguration' Bean
+        readChangePasswordConfigurationBean( document, serverConfiguration );
+
+        // Reading the 'NTPConfiguration' Bean
+        readNTPConfigurationBean( document, serverConfiguration );
+
+        // Reading the 'DNSConfiguration' Bean
+        readDNSConfigurationBean( document, serverConfiguration );
+
+        // Reading the 'KDCConfiguration' Bean
+        readKDCConfigurationBean( document, serverConfiguration );
+
+        // Reading the 'LDAPSConfiguration' Bean
+        readLDAPSConfigurationBean( document, serverConfiguration );
+
+        // Reading the 'LDAPConfiguration' Bean
+        readLDAPConfigurationBean( document, serverConfiguration );
+
         // Reading the 'Configuration' Bean
         readConfigurationBean( document, serverConfiguration );
     }
@@ -186,8 +204,8 @@ public class ServerConfigurationParser
         if ( binaryAttributes != null )
         {
             String[] attributes = binaryAttributes.split( " " );
-            
-            for( String attribute : attributes)
+
+            for ( String attribute : attributes )
             {
                 serverConfiguration.addBinaryAttribute( attribute );
             }
@@ -213,7 +231,7 @@ public class ServerConfigurationParser
             Element propsElement = propertyElement.element( "props" );
             if ( propsElement != null )
             {
-                for ( Iterator i = propsElement.elementIterator( "prop" ); i.hasNext(); )
+                for ( Iterator<?> i = propsElement.elementIterator( "prop" ); i.hasNext(); )
                 {
                     Element propElement = ( Element ) i.next();
                     Attribute keyAttribute = propElement.attribute( "key" );
@@ -226,6 +244,272 @@ public class ServerConfigurationParser
         }
 
         return null;
+    }
+
+
+    /**
+     * Reads the "ChangePasswordConfiguration" Bean and store its values in the given ServerConfiguration.
+     *
+     * @param document
+     *      the document to use
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws BooleanFormatException 
+     * @throws NumberFormatException 
+     */
+    private void readChangePasswordConfigurationBean( Document document, ServerConfiguration serverConfiguration )
+        throws BooleanFormatException, NumberFormatException
+    {
+        Element changePasswordConfigurationBean = getBeanElementById( document, "changePasswordConfiguration" );
+
+        // Enabled
+        String enabled = readBeanProperty( "enabled", changePasswordConfigurationBean );
+        if ( enabled != null )
+        {
+            serverConfiguration.setEnableChangePassword( parseBoolean( enabled ) );
+        }
+
+        // IP Port
+        String ipPort = readBeanProperty( "ipPort", changePasswordConfigurationBean );
+        if ( ipPort != null )
+        {
+            serverConfiguration.setChangePasswordPort( Integer.parseInt( ipPort ) );
+        }
+    }
+
+
+    /**
+     * Reads the "NTPConfiguration" Bean and store its values in the given ServerConfiguration.
+     *
+     * @param document
+     *      the document to use
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws BooleanFormatException 
+     * @throws NumberFormatException 
+     */
+    private void readNTPConfigurationBean( Document document, ServerConfiguration serverConfiguration )
+        throws BooleanFormatException, NumberFormatException
+    {
+        Element ntpConfigurationBean = getBeanElementById( document, "ntpConfiguration" );
+
+        // Enabled
+        String enabled = readBeanProperty( "enabled", ntpConfigurationBean );
+        if ( enabled != null )
+        {
+            serverConfiguration.setEnableNtp( parseBoolean( enabled ) );
+        }
+
+        // IP Port
+        String ipPort = readBeanProperty( "ipPort", ntpConfigurationBean );
+        if ( ipPort != null )
+        {
+            serverConfiguration.setNtpPort( Integer.parseInt( ipPort ) );
+        }
+    }
+
+
+    /**
+     * Reads the "DNSConfiguration" Bean and store its values in the given ServerConfiguration.
+     *
+     * @param document
+     *      the document to use
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws BooleanFormatException 
+     * @throws NumberFormatException 
+     */
+    private void readDNSConfigurationBean( Document document, ServerConfiguration serverConfiguration )
+        throws BooleanFormatException, NumberFormatException
+    {
+        Element dnsConfigurationBean = getBeanElementById( document, "dnsConfiguration" );
+
+        // Enabled
+        String enabled = readBeanProperty( "enabled", dnsConfigurationBean );
+        if ( enabled != null )
+        {
+            serverConfiguration.setEnableDns( parseBoolean( enabled ) );
+        }
+
+        // IP Port
+        String ipPort = readBeanProperty( "ipPort", dnsConfigurationBean );
+        if ( ipPort != null )
+        {
+            serverConfiguration.setDnsPort( Integer.parseInt( ipPort ) );
+        }
+    }
+
+
+    /**
+     * Reads the "KDCConfiguration" Bean and store its values in the given ServerConfiguration.
+     *
+     * @param document
+     *      the document to use
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws BooleanFormatException 
+     * @throws NumberFormatException 
+     */
+    private void readKDCConfigurationBean( Document document, ServerConfiguration serverConfiguration )
+        throws BooleanFormatException, NumberFormatException
+    {
+        Element kdcConfigurationBean = getBeanElementById( document, "kdcConfiguration" );
+
+        // Enabled
+        String enabled = readBeanProperty( "enabled", kdcConfigurationBean );
+        if ( enabled != null )
+        {
+            serverConfiguration.setEnableKerberos( parseBoolean( enabled ) );
+        }
+
+        // IP Port
+        String ipPort = readBeanProperty( "ipPort", kdcConfigurationBean );
+        if ( ipPort != null )
+        {
+            serverConfiguration.setKerberosPort( Integer.parseInt( ipPort ) );
+        }
+    }
+
+
+    /**
+     * Reads the "LDAPSConfiguration" Bean and store its values in the given ServerConfiguration.
+     *
+     * @param document
+     *      the document to use
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws BooleanFormatException 
+     * @throws NumberFormatException 
+     */
+    private void readLDAPSConfigurationBean( Document document, ServerConfiguration serverConfiguration )
+        throws BooleanFormatException, NumberFormatException
+    {
+        Element ldapsConfiguration = getBeanElementById( document, "ldapsConfiguration" );
+
+        // Enabled
+        String enabled = readBeanProperty( "enabled", ldapsConfiguration );
+        if ( enabled != null )
+        {
+            serverConfiguration.setEnableLdaps( parseBoolean( enabled ) );
+        }
+
+        // IP Port
+        String ipPort = readBeanProperty( "ipPort", ldapsConfiguration );
+        if ( ipPort != null )
+        {
+            serverConfiguration.setLdapsPort( Integer.parseInt( ipPort ) );
+        }
+    }
+
+
+    /**
+     * Reads the "LDAPConfiguration" Bean and store its values in the given ServerConfiguration.
+     *
+     * @param document
+     *      the document to use
+     * @param serverConfiguration
+     *      the Server Configuration
+     * @throws BooleanFormatException 
+     * @throws NumberFormatException 
+     */
+    private void readLDAPConfigurationBean( Document document, ServerConfiguration serverConfiguration )
+        throws BooleanFormatException, NumberFormatException
+    {
+        Element ldapConfiguration = getBeanElementById( document, "ldapConfiguration" );
+
+        // IP Port
+        String ipPort = readBeanProperty( "ipPort", ldapConfiguration );
+        if ( ipPort != null )
+        {
+            serverConfiguration.setLdapPort( Integer.parseInt( ipPort ) );
+        }
+
+        // AllowAnonymousAccess
+        String allowAnonymousAccess = readBeanProperty( "allowAnonymousAccess", ldapConfiguration );
+        if ( allowAnonymousAccess != null )
+        {
+            serverConfiguration.setAllowAnonymousAccess( parseBoolean( allowAnonymousAccess ) );
+        }
+
+        //  Supported Mechanisms
+        Element supportedMechanismsElement = getBeanPropertyElement( "supportedMechanisms", ldapConfiguration );
+        if ( supportedMechanismsElement != null )
+        {
+            Element listElement = supportedMechanismsElement.element( "list" );
+            if ( listElement != null )
+            {
+                for ( Iterator<?> i = listElement.elementIterator( "value" ); i.hasNext(); )
+                {
+                    serverConfiguration.addSupportedMechanism( ( ( Element ) i.next() ).getTextTrim() );
+                }
+            }
+        }
+
+        // SASL Host
+        String saslHost = readBeanProperty( "saslHost", ldapConfiguration );
+        if ( saslHost != null )
+        {
+            serverConfiguration.setSaslHost( saslHost );
+        }
+
+        // SASL Principal
+        String saslPrincipal = readBeanProperty( "saslPrincipal", ldapConfiguration );
+        if ( saslPrincipal != null )
+        {
+            serverConfiguration.setSaslPrincipal( saslPrincipal );
+        }
+
+        // SASL QOP
+        Element saslQopElement = getBeanPropertyElement( "saslQop", ldapConfiguration );
+        if ( saslQopElement != null )
+        {
+            Element listElement = saslQopElement.element( "list" );
+            if ( listElement != null )
+            {
+                for ( Iterator<?> i = listElement.elementIterator( "value" ); i.hasNext(); )
+                {
+                    serverConfiguration.addSaslQop( ( ( Element ) i.next() ).getTextTrim() );
+                }
+            }
+        }
+
+        // SASL Realms
+        Element saslRealmsElement = getBeanPropertyElement( "saslRealms", ldapConfiguration );
+        if ( saslQopElement != null )
+        {
+            Element listElement = saslRealmsElement.element( "list" );
+            if ( listElement != null )
+            {
+                for ( Iterator<?> i = listElement.elementIterator( "value" ); i.hasNext(); )
+                {
+                    serverConfiguration.addSaslRealm( ( ( Element ) i.next() ).getTextTrim() );
+                }
+            }
+        }
+
+        // Search Base DN
+        String searchBaseDn = readBeanProperty( "searchBaseDn", ldapConfiguration );
+        if ( searchBaseDn != null )
+        {
+            serverConfiguration.setSearchBaseDn( searchBaseDn );
+        }
+
+        // MaxTimeLimit
+        String maxTimeLimit = readBeanProperty( "maxTimeLimit", ldapConfiguration );
+        if ( maxTimeLimit != null )
+        {
+            serverConfiguration.setMaxTimeLimit( Integer.parseInt( maxTimeLimit ) );
+        }
+
+        // MaxSizeLimit
+        String maxSizeLimit = readBeanProperty( "maxSizeLimit", ldapConfiguration );
+        if ( maxSizeLimit != null )
+        {
+            serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimit ) );
+        }
+
+        // ExtendedOperations
+        readExtendedOperations( ldapConfiguration, serverConfiguration );
     }
 
 
@@ -245,32 +529,11 @@ public class ServerConfigurationParser
     {
         Element configurationBean = getBeanElementById( document, "configuration" );
 
-        // LdapPort
-        String ldapPort = readBeanProperty( "ldapPort", configurationBean );
-        if ( ldapPort != null )
-        {
-            serverConfiguration.setPort( Integer.parseInt( ldapPort ) );
-        }
-
         // SynchPeriodMillis
         String synchPeriodMillis = readBeanProperty( "synchPeriodMillis", configurationBean );
         if ( synchPeriodMillis != null )
         {
             serverConfiguration.setSynchronizationPeriod( Long.parseLong( synchPeriodMillis ) );
-        }
-
-        // MaxTimeLimit
-        String maxTimeLimit = readBeanProperty( "maxTimeLimit", configurationBean );
-        if ( maxTimeLimit != null )
-        {
-            serverConfiguration.setMaxTimeLimit( Integer.parseInt( maxTimeLimit ) );
-        }
-
-        // MaxSizeLimit
-        String maxSizeLimit = readBeanProperty( "maxSizeLimit", configurationBean );
-        if ( maxSizeLimit != null )
-        {
-            serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimit ) );
         }
 
         // MaxThreads
@@ -294,28 +557,7 @@ public class ServerConfigurationParser
             serverConfiguration.setEnableAccessControl( parseBoolean( accessControlEnabled ) );
         }
 
-        // EnableNtp
-        String enableNtp = readBeanProperty( "enableNtp", configurationBean );
-        if ( enableNtp != null )
-        {
-            serverConfiguration.setEnableNTP( parseBoolean( enableNtp ) );
-        }
-
-        // EnableKerberos
-        String enableKerberos = readBeanProperty( "enableKerberos", configurationBean );
-        if ( enableKerberos != null )
-        {
-            serverConfiguration.setEnableKerberos( parseBoolean( enableKerberos ) );
-        }
-
-        // EnableChangePassword
-        String enableChangePassword = readBeanProperty( "enableChangePassword", configurationBean );
-        if ( enableChangePassword != null )
-        {
-            serverConfiguration.setEnableChangePassword( parseBoolean( enableChangePassword ) );
-        }
-
-        // EnableChangePassword
+        // EnableDenormalizeOpAttrs
         String denormalizeOpAttrsEnabled = readBeanProperty( "denormalizeOpAttrsEnabled", configurationBean );
         if ( denormalizeOpAttrsEnabled != null )
         {
@@ -343,9 +585,6 @@ public class ServerConfigurationParser
 
         // Interceptors
         readInterceptors( configurationBean, serverConfiguration );
-
-        // ExtendedOperations
-        readExtendedOperations( configurationBean, serverConfiguration );
     }
 
 
@@ -368,7 +607,7 @@ public class ServerConfigurationParser
             Element setElement = propertyElement.element( "set" );
             if ( setElement != null )
             {
-                for ( Iterator i = setElement.elementIterator( "ref" ); i.hasNext(); )
+                for ( Iterator<?> i = setElement.elementIterator( "ref" ); i.hasNext(); )
                 {
                     Element element = ( Element ) i.next();
                     Attribute beanAttribute = element.attribute( "bean" );
@@ -409,11 +648,11 @@ public class ServerConfigurationParser
             Partition partition = new Partition();
             partition.setSystemPartition( isSystemPartition );
 
-            // Name
-            String name = readBeanProperty( "name", partitionBean );
-            if ( name != null )
+            // ID
+            String partitionId = readBeanProperty( "id", partitionBean );
+            if ( partitionId != null )
             {
-                partition.setName( name );
+                partition.setId( partitionId );
             }
 
             // CacheSize
@@ -475,7 +714,7 @@ public class ServerConfigurationParser
             Element setElement = propertyElement.element( "set" );
             if ( setElement != null )
             {
-                for ( Iterator i = setElement.elementIterator( "bean" ); i.hasNext(); )
+                for ( Iterator<?> i = setElement.elementIterator( "bean" ); i.hasNext(); )
                 {
                     Element beanElement = ( Element ) i.next();
                     IndexedAttribute ia = readIndexedAttribute( beanElement );
@@ -621,7 +860,7 @@ public class ServerConfigurationParser
             Element listElement = propertyElement.element( "list" );
             if ( listElement != null )
             {
-                for ( Iterator i = listElement.elementIterator( "bean" ); i.hasNext(); )
+                for ( Iterator<?> i = listElement.elementIterator( "bean" ); i.hasNext(); )
                 {
                     Interceptor interceptor = readInterceptor( ( Element ) i.next() );
                     if ( interceptor != null )
@@ -650,25 +889,13 @@ public class ServerConfigurationParser
                 "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" ) )
         {
             String name = readBeanProperty( "name", element );
+            String interceptorClassName = readBeanProperty( "interceptorClassName", element );
 
-            for ( Iterator i = element.elementIterator( "property" ); i.hasNext(); )
+            if ( ( name != null ) && ( interceptorClassName != null ) )
             {
-                Element propertyElement = ( Element ) i.next();
-                Attribute nameAttribute = propertyElement.attribute( "name" );
-                if ( nameAttribute != null && ( nameAttribute.getValue().equals( "interceptor" ) ) )
-                {
-                    Element beanElement = propertyElement.element( "bean" );
-                    if ( beanElement != null )
-                    {
-                        Attribute beanClassAttribute = beanElement.attribute( "class" );
-                        if ( beanClassAttribute != null )
-                        {
-                            Interceptor interceptor = new Interceptor( name );
-                            interceptor.setClassType( beanClassAttribute.getValue() );
-                            return interceptor;
-                        }
-                    }
-                }
+                Interceptor interceptor = new Interceptor( name );
+                interceptor.setClassType( interceptorClassName );
+                return interceptor;
             }
         }
 
@@ -692,7 +919,7 @@ public class ServerConfigurationParser
             Element listElement = propertyElement.element( "list" );
             if ( listElement != null )
             {
-                for ( Iterator i = listElement.elementIterator( "bean" ); i.hasNext(); )
+                for ( Iterator<?> i = listElement.elementIterator( "bean" ); i.hasNext(); )
                 {
                     ExtendedOperation extendedOperation = readExtendedOperation( ( Element ) i.next() );
                     if ( extendedOperation != null )
@@ -737,7 +964,7 @@ public class ServerConfigurationParser
      */
     private Element getBeanElementById( Document document, String id )
     {
-        for ( Iterator i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
+        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
         {
             Element element = ( Element ) i.next();
             Attribute idAttribute = element.attribute( "id" );
@@ -795,7 +1022,7 @@ public class ServerConfigurationParser
      */
     private Element getBeanPropertyElement( String property, Element element )
     {
-        for ( Iterator i = element.elementIterator( "property" ); i.hasNext(); )
+        for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); )
         {
             Element propertyElement = ( Element ) i.next();
             Attribute nameAttribute = propertyElement.attribute( "name" );

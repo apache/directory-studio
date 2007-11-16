@@ -73,7 +73,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     /** The Details Page */
     private PartitionDetailsPage detailsPage;
 
-    private static final String NEW_NAME = "New Partition ";
+    private static final String NEW_ID = "New Partition ";
 
     // UI Fields
     private TableViewer viewer;
@@ -90,7 +90,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
     public PartitionsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ( ServerConfigurationEditorInput ) page.getEditorInput() ).getServerConfiguration();
+        serverConfiguration = ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
         partitions = serverConfiguration.getPartitions();
     }
 
@@ -196,7 +196,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         {
             public void widgetSelected( SelectionEvent e )
             {
-                Partition newPartition = new Partition( getNewName() );
+                Partition newPartition = new Partition( getNewId() );
                 partitions.add( newPartition );
                 viewer.refresh();
                 viewer.setSelection( new StructuredSelection( newPartition ) );
@@ -225,25 +225,25 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
-     * Gets a new Name for a new Extended Operation.
+     * Gets a new ID for a new Partition.
      *
      * @return 
-     *      a new Name for a new Extended Operation
+     *      a new ID for a new Partition
      */
-    private String getNewName()
+    private String getNewId()
     {
         int counter = 1;
-        String name = NEW_NAME;
+        String name = NEW_ID;
         boolean ok = false;
 
         while ( !ok )
         {
             ok = true;
-            name = NEW_NAME + counter;
+            name = NEW_ID + counter;
 
             for ( Partition partition : partitions )
             {
-                if ( partition.getName().equalsIgnoreCase( name ) )
+                if ( partition.getId().equalsIgnoreCase( name ) )
                 {
                     ok = false;
                 }

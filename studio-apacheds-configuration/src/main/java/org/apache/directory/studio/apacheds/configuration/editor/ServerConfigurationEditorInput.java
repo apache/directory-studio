@@ -76,7 +76,6 @@ public class ServerConfigurationEditorInput implements IEditorInput
         {
             return path;
         }
-
     }
 
 
@@ -119,6 +118,7 @@ public class ServerConfigurationEditorInput implements IEditorInput
     /* (non-Javadoc)
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */
+    @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
         return null;
@@ -130,10 +130,14 @@ public class ServerConfigurationEditorInput implements IEditorInput
      */
     public boolean equals( Object obj )
     {
+        if ( obj == null )
+        {
+            return false;
+        }
+        
         if ( obj instanceof ServerConfigurationEditorInput )
         {
             ServerConfigurationEditorInput input = ( ServerConfigurationEditorInput ) obj;
-
             if ( input.exists() && exists() )
             {
                 String inputPath = input.getServerConfiguration().getPath();
@@ -145,6 +149,7 @@ public class ServerConfigurationEditorInput implements IEditorInput
                 }
             }
         }
+        
         return false;
     }
 }

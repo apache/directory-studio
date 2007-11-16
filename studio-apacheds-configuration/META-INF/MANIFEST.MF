@@ -11,4 +11,7 @@ Bundle-ClassPath: .
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.forms,
- org.apache.directory.studio.jars
+ org.apache.directory.studio.jars,
+ org.eclipse.jface.text,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources
