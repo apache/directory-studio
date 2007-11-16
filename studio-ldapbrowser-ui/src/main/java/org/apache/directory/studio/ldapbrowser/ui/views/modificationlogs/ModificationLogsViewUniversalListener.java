@@ -57,6 +57,9 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
     /** The current input */
     private ModificationLogsViewInput input;
 
+    /** The last refresh timestamp. */
+    private long lastRefreshTimestamp;
+
     /** Listener that listens for selections of connections */
     private INullSelectionListener connectionSelectionListener = new INullSelectionListener()
     {
@@ -175,10 +178,16 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
      */
     public void entryUpdated( EntryModificationEvent event )
     {
-        if ( !( event instanceof AttributesInitializedEvent ) && !( event instanceof ChildrenInitializedEvent ) )
+        // performance optimization: refresh only once per second
+        long now = System.currentTimeMillis();
+        if ( lastRefreshTimestamp + 1000 < now )
         {
-            refreshInput();
-            scrollToNewest();
+            if ( !( event instanceof AttributesInitializedEvent ) && !( event instanceof ChildrenInitializedEvent ) )
+            {
+                refreshInput();
+                scrollToNewest();
+                lastRefreshTimestamp = now;
+            }
         }
     }
 
@@ -209,10 +218,10 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
         catch ( Exception e )
         {
         }
-
     }
-    
-	/**
+
+
+    /**
      * Clears the input and deletes the logfiles for it
      * 
      */
