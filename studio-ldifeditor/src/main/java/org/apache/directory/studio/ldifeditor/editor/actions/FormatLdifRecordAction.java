@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldifeditor.editor.actions;
 
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 
 import org.eclipse.jface.text.IDocument;
@@ -52,7 +53,7 @@ public class FormatLdifRecordAction extends AbstractLdifAction
             for ( int i = 0; i < containers.length; i++ )
             {
                 LdifContainer container = containers[i];
-                sb.append( container.toFormattedString() );
+                sb.append( container.toFormattedString( LdifUtils.getLdifFormatParameters() ) );
             }
 
             sb.append( old.substring( containers[containers.length - 1].getOffset()

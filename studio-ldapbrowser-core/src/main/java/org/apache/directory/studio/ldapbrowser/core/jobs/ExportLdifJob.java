@@ -49,6 +49,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 
 
 /**
@@ -146,11 +147,11 @@ public class ExportLdifJob extends AbstractEclipseJob
         try
         {
             AttributeComparator comparator = new AttributeComparator( browserConnection );
-            LdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
+            JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
             
-            while ( !monitor.isCanceled() && enumeration.hasNext( monitor ) )
+            while ( !monitor.isCanceled() && enumeration.hasNext() )
             {
-                LdifContainer container = enumeration.next( monitor );
+                LdifContainer container = enumeration.next();
 
                 if ( container instanceof LdifContentRecord )
                 {
@@ -167,7 +168,7 @@ public class ExportLdifJob extends AbstractEclipseJob
                         newRecord.addAttrVal( attrValLines[i] );
                     }
                     newRecord.finish( sepLine );
-                    String s = newRecord.toFormattedString();
+                    String s = newRecord.toFormattedString( LdifUtils.getLdifFormatParameters() );
 
                     // String s = record.toFormattedString();
                     bufferedWriter.write( s );
@@ -201,7 +202,7 @@ public class ExportLdifJob extends AbstractEclipseJob
     }
 
     
-    static LdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter, StudioProgressMonitor monitor )
+    static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter, StudioProgressMonitor monitor )
         throws ConnectionException
     {
         NamingEnumeration<SearchResult> result = SearchJob.search( browserConnection, parameter, monitor );
@@ -228,7 +229,7 @@ public class ExportLdifJob extends AbstractEclipseJob
         }
 
 
-        public boolean hasNext( StudioProgressMonitor monitor ) throws ConnectionException
+        public boolean hasNext() throws ConnectionException
         {
             try
             {
@@ -241,7 +242,7 @@ public class ExportLdifJob extends AbstractEclipseJob
         }
 
 
-        public LdifContainer next( StudioProgressMonitor monitor ) throws ConnectionException
+        public LdifContainer next() throws ConnectionException
         {
             try
             {

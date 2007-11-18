@@ -329,6 +329,25 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
 
+                // TODO: remove
+                ldif = new StringBuffer();
+                for(int i=1; i<=1000; i++)
+                {
+                    ldif.append("dn:cn=test"+i+",ou=test,dc=example,dc=com");
+                    ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    ldif.append("objectClass:top");
+                    ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    ldif.append("objectClass:person");
+                    ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    ldif.append("cn:test"+i);
+                    ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    ldif.append("sn:test"+i);
+                    ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
+                }
+                
+                
+                
                 if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF )
                 {
 

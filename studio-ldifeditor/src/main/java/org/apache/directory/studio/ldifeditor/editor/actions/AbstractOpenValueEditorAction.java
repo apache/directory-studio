@@ -41,6 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewrdnL
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
@@ -121,7 +122,8 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
                     try
                     {
-                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString() );
+                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( LdifUtils
+                            .getLdifFormatParameters() ) );
                     }
                     catch ( BadLocationException e )
                     {

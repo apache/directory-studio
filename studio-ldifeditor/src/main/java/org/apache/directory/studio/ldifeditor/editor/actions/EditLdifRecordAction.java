@@ -25,6 +25,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifCha
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.dialogs.LdifEntryEditorDialog;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
@@ -72,7 +73,7 @@ public class EditLdifRecordAction extends AbstractLdifAction
                 String old = document.get();
                 StringBuffer sb = new StringBuffer();
                 sb.append( old.substring( 0, container.getOffset() ) );
-                sb.append( record.toFormattedString() );
+                sb.append( record.toFormattedString( LdifUtils.getLdifFormatParameters() ) );
                 sb.append( old.substring( container.getOffset() + container.getLength(), old.length() ) );
                 document.set( sb.toString() );
             }

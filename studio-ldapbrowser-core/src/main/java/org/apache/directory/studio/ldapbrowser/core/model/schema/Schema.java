@@ -41,6 +41,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFormatParameters;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
@@ -152,9 +153,9 @@ public class Schema implements Serializable
         {
             LdifParser parser = new LdifParser();
             LdifEnumeration enumeration = parser.parse( reader );
-            if ( enumeration.hasNext( null ) )
+            if ( enumeration.hasNext() )
             {
-                LdifContainer container = enumeration.next( null );
+                LdifContainer container = enumeration.next();
                 if ( container instanceof LdifContentRecord )
                 {
                     LdifContentRecord schemaRecord = ( LdifContentRecord ) container;
@@ -191,7 +192,7 @@ public class Schema implements Serializable
     {
         try
         {
-            writer.write( this.getSchemaRecord().toFormattedString() );
+            writer.write( this.getSchemaRecord().toFormattedString( LdifFormatParameters.DEFAULT ) );
         }
         catch ( Exception e )
         {

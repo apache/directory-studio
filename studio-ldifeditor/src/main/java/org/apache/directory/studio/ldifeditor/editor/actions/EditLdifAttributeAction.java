@@ -41,6 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpec
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
@@ -171,12 +172,12 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
                             LdifModSpecSepLine newSepLine = LdifModSpecSepLine.create();
 
-                            String text = newTypeLine.toFormattedString();
+                            String text = newTypeLine.toFormattedString( LdifUtils.getLdifFormatParameters() );
                             for ( int j = 0; j < newAttrValLines.length; j++ )
                             {
-                                text += newAttrValLines[j].toFormattedString();
+                                text += newAttrValLines[j].toFormattedString( LdifUtils.getLdifFormatParameters() );
                             }
-                            text += newSepLine.toFormattedString();
+                            text += newSepLine.toFormattedString( LdifUtils.getLdifFormatParameters() );
                             try
                             {
                                 document.replace( modSpec.getOffset(), modSpec.getLength(), text );
@@ -193,7 +194,8 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                             LdifAttrValLine newLine = LdifAttrValLine.create( newAttributeDescription, oldValue );
                             try
                             {
-                                document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString() );
+                                document.replace( line.getOffset(), line.getLength(), newLine
+                                    .toFormattedString( LdifUtils.getLdifFormatParameters() ) );
                             }
                             catch ( BadLocationException e )
                             {

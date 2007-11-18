@@ -35,11 +35,11 @@ import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
@@ -195,10 +195,10 @@ public class ExportCsvJob extends AbstractEclipseJob
     {
         try
         {
-            LdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
-            while ( !monitor.isCanceled() && enumeration.hasNext( monitor ) )
+            JndiLdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
+            while ( !monitor.isCanceled() && enumeration.hasNext() )
             {
-                LdifContainer container = enumeration.next( monitor );
+                LdifContainer container = enumeration.next();
 
                 if ( container instanceof LdifContentRecord )
                 {

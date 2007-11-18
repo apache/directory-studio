@@ -193,7 +193,7 @@ public class CopyValueAction extends BrowserAction
                 }
                 else if ( mode == MODE_LDIF )
                 {
-                    text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString() );
+                    text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( LdifUtils.getLdifFormatParameters() ) );
                 }
 
             }
@@ -216,7 +216,7 @@ public class CopyValueAction extends BrowserAction
             }
             else if ( mode == MODE_LDIF )
             {
-                text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString() );
+                text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString( LdifUtils.getLdifFormatParameters() ) );
             }
         }
 

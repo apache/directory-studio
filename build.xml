@@ -217,11 +217,20 @@
             </fileset>
         </copy>
 
-	    <!-- Creation of the Jars Plugin -->
+        <!-- Creation of the Jars Plugin -->
         <ant dir="studio-jars" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${application.plugins}">
             <fileset dir="studio-jars/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDIF Parser Plugin -->
+        <ant dir="studio-ldif-parser" inheritAll="no" />
+        <!-- Copy of the LDIF Parser Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-ldif-parser/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -434,6 +443,7 @@
         <ant dir="studio-connection-core" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-connection-ui" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-ldif-parser" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-jars" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="retrieve-dependencies" />
@@ -462,6 +472,7 @@
         <ant dir="studio-connection-core" inheritAll="no" target="clean" />
         <ant dir="studio-connection-ui" inheritAll="no" target="clean" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="clean" />
+        <ant dir="studio-ldif-parser" inheritAll="no" target="clean" />
         <ant dir="studio-jars" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="clean" />

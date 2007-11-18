@@ -152,9 +152,9 @@ public class ReloadSchemasJob extends AbstractNotificationJob
                         IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
                 
                 LdifEnumeration le = ExportLdifJob.search( browserConnection, sp, monitor );
-                if ( le.hasNext( monitor ) )
+                if ( le.hasNext() )
                 {
-                    LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next( monitor );
+                    LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next();
                     Schema schema = new Schema();
                     schema.loadFromRecord( schemaRecord );
                     browserConnection.setSchema( schema );

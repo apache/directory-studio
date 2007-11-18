@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -40,7 +41,7 @@ public class FormatLdifDocumentAction extends AbstractLdifAction
         IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
         ISourceViewer sourceViewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
         int topIndex = sourceViewer.getTopIndex();
-        document.set( super.getLdifModel().toFormattedString() );
+        document.set( super.getLdifModel().toFormattedString( LdifUtils.getLdifFormatParameters() ) );
         sourceViewer.setTopIndex( topIndex );
     }
 

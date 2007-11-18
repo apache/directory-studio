@@ -27,7 +27,10 @@ import java.net.URLEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFormatParameters;
+import org.eclipse.core.runtime.Preferences;
 
 
 /**
@@ -239,4 +242,15 @@ public class LdifUtils
         return s;
     }
 
+    public static LdifFormatParameters getLdifFormatParameters()
+    {
+        Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
+        boolean spaceAfterColon = store.getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON );
+        int lineWidth = store.getInt( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH );
+        String lineSeparator = store.getString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR );
+        LdifFormatParameters ldifFormatParameters = new LdifFormatParameters( spaceAfterColon, lineWidth, lineSeparator );
+        return ldifFormatParameters;
+    }
+    
+    
 }

@@ -32,6 +32,7 @@
 		<ant dir="../studio-connection-ui" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-core" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-common" target="compile" inheritall="false" />
+		<ant dir="../studio-ldif-parser" target="compile" inheritall="false" />
 	</target>
 	
 	
@@ -51,6 +52,7 @@
 			<pathelement location="../studio-connection-ui/target/classes"/>
 			<pathelement location="../studio-ldapbrowser-core/target/classes"/>
 			<pathelement location="../studio-ldapbrowser-common/target/classes"/>
+			<pathelement location="../studio-ldif-parser/target/classes"/>
 		</path>
 	</target>
 	

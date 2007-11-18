@@ -48,6 +48,7 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.IModificationLogger;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFormatParameters;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModDnRecord;
@@ -84,7 +85,7 @@ public class ModificationLogger implements IModificationLogger
 
     /** The logger. */
     private Logger logger;
-
+    
 
     /**
      * Creates a new instance of ModificationLogger.
@@ -169,11 +170,13 @@ public class ModificationLogger implements IModificationLogger
 
             if ( ex != null )
             {
-                logger.log( Level.ALL, LdifCommentLine.create( "#!RESULT ERROR" ).toFormattedString() ); //$NON-NLS-1$
+                logger.log( Level.ALL, LdifCommentLine
+                    .create( "#!RESULT ERROR" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
             }
             else
             {
-                logger.log( Level.ALL, LdifCommentLine.create( "#!RESULT OK" ).toFormattedString() ); //$NON-NLS-1$
+                logger.log( Level.ALL, LdifCommentLine
+                    .create( "#!RESULT OK" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
             }
 
             logger
@@ -181,8 +184,9 @@ public class ModificationLogger implements IModificationLogger
                     Level.ALL,
                     LdifCommentLine
                         .create(
-                            "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
-            logger.log( Level.ALL, LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
+                            "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            logger.log( Level.ALL, LdifCommentLine
+                .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
 
             if ( ex != null )
             {
@@ -190,7 +194,7 @@ public class ModificationLogger implements IModificationLogger
                 errorComment = errorComment.replaceAll( "\r", " " ); //$NON-NLS-1$ //$NON-NLS-2$
                 errorComment = errorComment.replaceAll( "\n", " " ); //$NON-NLS-1$ //$NON-NLS-2$
                 LdifCommentLine errorCommentLine = LdifCommentLine.create( errorComment );
-                logger.log( Level.ALL, errorCommentLine.toFormattedString() );
+                logger.log( Level.ALL, errorCommentLine.toFormattedString( LdifFormatParameters.DEFAULT ) );
             }
 
             logger.log( Level.ALL, text );
@@ -229,7 +233,7 @@ public class ModificationLogger implements IModificationLogger
             }
             record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString();
+            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
             log( formattedString, ex );
         }
         catch ( NamingException e )
@@ -247,7 +251,7 @@ public class ModificationLogger implements IModificationLogger
         //record.addControl( controlLine );
         record.finish( LdifSepLine.create() );
 
-        String formattedString = record.toFormattedString();
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
         log( formattedString, ex );
     }
 
@@ -300,7 +304,7 @@ public class ModificationLogger implements IModificationLogger
             }
             record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString();
+            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
             log( formattedString, ex );
         }
         catch ( NamingException e )
@@ -328,7 +332,7 @@ public class ModificationLogger implements IModificationLogger
             record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getUpName() ) );
             record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString();
+            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
             log( formattedString, ex );
         }
         catch ( InvalidNameException e )

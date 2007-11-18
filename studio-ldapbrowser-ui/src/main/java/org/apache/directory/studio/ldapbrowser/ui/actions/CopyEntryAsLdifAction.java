@@ -34,6 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -164,7 +165,7 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
      */
     protected void serializeValue( IValue value, StringBuffer text )
     {
-        text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString() );
+        text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( LdifUtils.getLdifFormatParameters() ) );
     }
 
 
@@ -178,6 +179,6 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
      */
     protected void serializeDn( LdapDN dn, StringBuffer text )
     {
-        text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString() );
+        text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString( LdifUtils.getLdifFormatParameters() ) );
     }
 }

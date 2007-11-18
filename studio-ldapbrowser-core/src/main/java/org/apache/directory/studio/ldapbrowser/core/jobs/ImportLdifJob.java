@@ -57,6 +57,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
+import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFormatParameters;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModDnRecord;
@@ -72,6 +73,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControl
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 
 
 /**
@@ -235,9 +237,9 @@ public class ImportLdifJob extends AbstractNotificationJob
         int errorCount = 0;
         try
         {
-            while ( !monitor.isCanceled() && enumeration.hasNext( monitor ) )
+            while ( !monitor.isCanceled() && enumeration.hasNext() )
             {
-                LdifContainer container = enumeration.next( monitor );
+                LdifContainer container = enumeration.next();
 
                 if ( container instanceof LdifRecord )
                 {
@@ -515,6 +517,7 @@ public class ImportLdifJob extends AbstractNotificationJob
     {
         try
         {
+            LdifFormatParameters ldifFormatParameters = LdifUtils.getLdifFormatParameters();
             DateFormat df = new SimpleDateFormat( BrowserCoreConstants.DATEFORMAT );
 
             String errorComment = "#!ERROR " + exception.getMessage(); //$NON-NLS-1$
@@ -522,14 +525,16 @@ public class ImportLdifJob extends AbstractNotificationJob
             errorComment = errorComment.replaceAll( "\n", " " ); //$NON-NLS-1$ //$NON-NLS-2$
             LdifCommentLine errorCommentLine = LdifCommentLine.create( errorComment );
 
-            logWriter.write( LdifCommentLine.create( "#!RESULT ERROR" ).toFormattedString() ); //$NON-NLS-1$
+            logWriter.write( LdifCommentLine.create( "#!RESULT ERROR" )
+                .toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NL LdifFormatParameters.DEFAULTS-1$
             logWriter
                 .write( LdifCommentLine
                     .create(
-                        "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
-            logWriter.write( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
-            logWriter.write( errorCommentLine.toFormattedString() );
-            logWriter.write( record.toFormattedString() );
+                        "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            logWriter.write( LdifCommentLine
+                .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
+            logWriter.write( errorCommentLine.toFormattedString( LdifFormatParameters.DEFAULT ) );
+            logWriter.write( record.toFormattedString( ldifFormatParameters ) );
         }
         catch ( IOException ioe )
         {
@@ -551,14 +556,16 @@ public class ImportLdifJob extends AbstractNotificationJob
     {
         try
         {
+            LdifFormatParameters ldifFormatParameters = LdifUtils.getLdifFormatParameters();
             DateFormat df = new SimpleDateFormat( BrowserCoreConstants.DATEFORMAT );
-            logWriter.write( LdifCommentLine.create( "#!RESULT OK" ).toFormattedString() ); //$NON-NLS-1$
+            logWriter.write( LdifCommentLine.create( "#!RESULT OK" ).toFormattedString( ldifFormatParameters ) ); //$NON-NLS-1$
             logWriter
                 .write( LdifCommentLine
                     .create(
-                        "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString() ); //$NON-NLS-1$ //$NON-NLS-2$
-            logWriter.write( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ).toFormattedString() ); //$NON-NLS-1$
-            logWriter.write( record.toFormattedString() );
+                        "#!CONNECTION ldap://" + browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort() ).toFormattedString( ldifFormatParameters ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            logWriter.write( LdifCommentLine
+                .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( ldifFormatParameters ) ); //$NON-NLS-1$
+            logWriter.write( record.toFormattedString( ldifFormatParameters ) );
         }
         catch ( IOException ioe )
         {

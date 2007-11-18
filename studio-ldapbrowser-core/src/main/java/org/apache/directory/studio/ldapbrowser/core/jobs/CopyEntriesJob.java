@@ -179,6 +179,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
      */
     private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, SearchScope scope, int num, StudioProgressMonitor monitor )
     {
+        // TODO: use paged search
         try
         {
             // TODO: use JNDI here!!!
