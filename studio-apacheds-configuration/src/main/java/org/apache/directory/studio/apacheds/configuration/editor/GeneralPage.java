@@ -874,7 +874,7 @@ public class GeneralPage extends FormPage
         configuration.setSynchronizationPeriod( Long.parseLong( synchPeriodText.getText() ) );
         configuration.setMaxThreads( Integer.parseInt( maxThreadsText.getText() ) );
 
-        configuration.setSupportedMechanisms( new ArrayList<String>( ( Collection<? extends String> ) Arrays
+        configuration.setSupportedMechanisms( new ArrayList<String>( ( List<? extends String> ) Arrays
             .asList( supportedMechanismsTableViewer.getCheckedElements() ) ) );
 
         configuration.setAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
