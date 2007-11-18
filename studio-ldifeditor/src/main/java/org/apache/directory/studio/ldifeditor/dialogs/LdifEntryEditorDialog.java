@@ -32,13 +32,13 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryE
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;

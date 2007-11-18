@@ -32,8 +32,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
+import org.apache.directory.studio.ldifparser.parser.LdifParser;
 
 
 /**

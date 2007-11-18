@@ -40,14 +40,14 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFormatParameters;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.parser.LdifParser;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.parser.SchemaLexer;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.parser.SchemaParser;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.parser.LdifParser;
 
 
 public class Schema implements Serializable

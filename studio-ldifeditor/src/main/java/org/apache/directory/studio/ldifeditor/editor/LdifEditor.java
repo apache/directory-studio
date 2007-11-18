@@ -37,7 +37,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.actions.EditLdifAttributeAction;
@@ -48,6 +47,7 @@ import org.apache.directory.studio.ldifeditor.editor.actions.OpenBestValueEditor
 import org.apache.directory.studio.ldifeditor.editor.actions.OpenDefaultValueEditorAction;
 import org.apache.directory.studio.ldifeditor.editor.actions.OpenValueEditorAction;
 import org.apache.directory.studio.ldifeditor.editor.text.LdifPartitionScanner;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;

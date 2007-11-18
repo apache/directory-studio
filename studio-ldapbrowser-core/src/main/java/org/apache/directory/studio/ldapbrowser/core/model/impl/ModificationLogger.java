@@ -48,20 +48,20 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.IModificationLogger;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFormatParameters;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeDeleteRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModDnRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModifyRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifModSpec;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifCommentLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDeloldrdnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecSepLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewrdnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewsuperiorLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 
 /**

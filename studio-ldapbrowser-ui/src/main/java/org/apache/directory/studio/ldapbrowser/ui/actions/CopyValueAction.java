@@ -32,11 +32,11 @@ import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-
+import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -193,7 +193,7 @@ public class CopyValueAction extends BrowserAction
                 }
                 else if ( mode == MODE_LDIF )
                 {
-                    text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( LdifUtils.getLdifFormatParameters() ) );
+                    text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( Utils.getLdifFormatParameters() ) );
                 }
 
             }
@@ -216,7 +216,7 @@ public class CopyValueAction extends BrowserAction
             }
             else if ( mode == MODE_LDIF )
             {
-                text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString( LdifUtils.getLdifFormatParameters() ) );
+                text.append( ModelConverter.dnToLdifDnLine( dn ).toFormattedString( Utils.getLdifFormatParameters() ) );
             }
         }
 

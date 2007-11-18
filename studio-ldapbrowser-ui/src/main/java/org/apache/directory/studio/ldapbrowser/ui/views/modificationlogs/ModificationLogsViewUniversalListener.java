@@ -35,8 +35,8 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEven
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IWorkbenchPart;

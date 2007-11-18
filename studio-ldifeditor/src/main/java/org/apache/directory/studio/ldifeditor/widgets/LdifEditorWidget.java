@@ -23,11 +23,11 @@ package org.apache.directory.studio.ldifeditor.widgets;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
 import org.apache.directory.studio.ldifeditor.editor.LdifSourceViewerConfiguration;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.IDocument;

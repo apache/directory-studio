@@ -41,15 +41,15 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 
 /**
@@ -168,7 +168,7 @@ public class ExportLdifJob extends AbstractEclipseJob
                         newRecord.addAttrVal( attrValLines[i] );
                     }
                     newRecord.finish( sepLine );
-                    String s = newRecord.toFormattedString( LdifUtils.getLdifFormatParameters() );
+                    String s = newRecord.toFormattedString( Utils.getLdifFormatParameters() );
 
                     // String s = record.toFormattedString();
                     bufferedWriter.write( s );

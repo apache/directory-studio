@@ -21,14 +21,14 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.dialogs.LdifEntryEditorDialog;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.jface.text.IDocument;
 
 
@@ -73,7 +73,7 @@ public class EditLdifRecordAction extends AbstractLdifAction
                 String old = document.get();
                 StringBuffer sb = new StringBuffer();
                 sb.append( old.substring( 0, container.getOffset() ) );
-                sb.append( record.toFormattedString( LdifUtils.getLdifFormatParameters() ) );
+                sb.append( record.toFormattedString( Utils.getLdifFormatParameters() ) );
                 sb.append( old.substring( container.getOffset() + container.getLength(), old.length() ) );
                 document.set( sb.toString() );
             }

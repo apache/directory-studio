@@ -30,6 +30,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.eclipse.core.runtime.Preferences;
+
 
 public class Utils
 {
@@ -200,6 +206,17 @@ public class Utils
         }
 
         return false;
+    }
+
+
+    public static LdifFormatParameters getLdifFormatParameters()
+    {
+        Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
+        boolean spaceAfterColon = store.getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON );
+        int lineWidth = store.getInt( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH );
+        String lineSeparator = store.getString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR );
+        LdifFormatParameters ldifFormatParameters = new LdifFormatParameters( spaceAfterColon, lineWidth, lineSeparator );
+        return ldifFormatParameters;
     }
 
 }

@@ -37,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -291,7 +291,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
 
                             for ( int v = 0; v < values.length; v++ )
                             {
-                                String val = LdifUtils.getStringValue( values[v], binaryEncoding );
+                                String val = ModelConverter.getStringValue( values[v], binaryEncoding );
                                 valueSB.append( val );
                                 if ( v + 1 < values.length )
                                 {

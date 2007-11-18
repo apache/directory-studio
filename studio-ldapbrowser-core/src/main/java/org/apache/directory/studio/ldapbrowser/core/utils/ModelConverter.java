@@ -27,6 +27,7 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -35,17 +36,18 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifChangeTypeLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifCommentLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
+import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 
 public class ModelConverter
@@ -293,4 +295,35 @@ public class ModelConverter
         }
     }
 
+    /**
+     * Gets the string value from the given {@link IValue}. If the given
+     * {@link IValue} is binary is is encoded according to the regquested
+     * encoding type.
+     *
+     * @param value the value
+     * @param binaryEncoding the binary encoding type
+     *
+     * @return the string value
+     */
+    public static String getStringValue( IValue value, int binaryEncoding )
+    {
+        String s = value.getStringValue();
+        if ( value.isBinary() && LdifUtils.mustEncode( s ) )
+        {
+            byte[] binary = value.getBinaryValue();
+            if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_BASE64 )
+            {
+                s = LdifUtils.base64encode( binary );
+            }
+            else if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_HEX )
+            {
+                s = LdifUtils.hexEncode( binary );
+            }
+            else
+            {
+                s = BrowserCoreConstants.BINARY;
+            }
+        }
+        return s;
+    }
 }

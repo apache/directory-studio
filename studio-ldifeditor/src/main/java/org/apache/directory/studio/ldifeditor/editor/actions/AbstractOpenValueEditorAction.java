@@ -24,25 +24,24 @@ package org.apache.directory.studio.ldifeditor.editor.actions;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDeloldrdnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewrdnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewsuperiorLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
@@ -122,7 +121,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
                     try
                     {
-                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( LdifUtils
+                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( Utils
                             .getLdifFormatParameters() ) );
                     }
                     catch ( BadLocationException e )

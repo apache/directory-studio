@@ -27,15 +27,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifCommentContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNonEmptyLineBase;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifCommentContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNonEmptyLineBase;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;

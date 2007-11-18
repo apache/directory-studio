@@ -21,11 +21,10 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
-
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.ISourceViewer;
 
@@ -53,7 +52,7 @@ public class FormatLdifRecordAction extends AbstractLdifAction
             for ( int i = 0; i < containers.length; i++ )
             {
                 LdifContainer container = containers[i];
-                sb.append( container.toFormattedString( LdifUtils.getLdifFormatParameters() ) );
+                sb.append( container.toFormattedString( Utils.getLdifFormatParameters() ) );
             }
 
             sb.append( old.substring( containers[containers.length - 1].getOffset()

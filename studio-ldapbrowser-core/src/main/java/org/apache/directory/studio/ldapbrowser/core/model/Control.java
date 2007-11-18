@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
 
 
 /**

@@ -30,20 +30,20 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModifyRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifModSpec;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecSepLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.text.BadLocationException;
@@ -172,12 +172,12 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
                             LdifModSpecSepLine newSepLine = LdifModSpecSepLine.create();
 
-                            String text = newTypeLine.toFormattedString( LdifUtils.getLdifFormatParameters() );
+                            String text = newTypeLine.toFormattedString( Utils.getLdifFormatParameters() );
                             for ( int j = 0; j < newAttrValLines.length; j++ )
                             {
-                                text += newAttrValLines[j].toFormattedString( LdifUtils.getLdifFormatParameters() );
+                                text += newAttrValLines[j].toFormattedString( Utils.getLdifFormatParameters() );
                             }
-                            text += newSepLine.toFormattedString( LdifUtils.getLdifFormatParameters() );
+                            text += newSepLine.toFormattedString( Utils.getLdifFormatParameters() );
                             try
                             {
                                 document.replace( modSpec.getOffset(), modSpec.getLength(), text );
@@ -195,7 +195,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                             try
                             {
                                 document.replace( line.getOffset(), line.getLength(), newLine
-                                    .toFormattedString( LdifUtils.getLdifFormatParameters() ) );
+                                    .toFormattedString( Utils.getLdifFormatParameters() ) );
                             }
                             catch ( BadLocationException e )
                             {
