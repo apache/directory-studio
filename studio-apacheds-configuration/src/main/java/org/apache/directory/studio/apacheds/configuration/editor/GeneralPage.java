@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.configuration.editor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.dialogs.BinaryAttributeDialog;
