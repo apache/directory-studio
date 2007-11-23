@@ -736,7 +736,7 @@ public class SchemaHandler
         at1.setSingleValue( at2.isSingleValue() );
         at1.setCollective( at2.isCollective() );
         at1.setCanUserModify( at2.isCanUserModify() );
-        at1.setEqualityName( at1.getEqualityName() );
+        at1.setEqualityName( at2.getEqualityName() );
         at1.setOrderingName( at2.getOrderingName() );
         at1.setSubstrName( at2.getSubstrName() );
 
