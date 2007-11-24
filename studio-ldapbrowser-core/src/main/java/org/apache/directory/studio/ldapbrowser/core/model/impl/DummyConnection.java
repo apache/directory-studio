@@ -220,15 +220,6 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public ModificationLogger getModificationLogger()
-    {
-        return null;
-    }
-
-
-    /** 
-     * {@inheritDoc}
-     */
     public ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return ReferralHandlingMethod.IGNORE;

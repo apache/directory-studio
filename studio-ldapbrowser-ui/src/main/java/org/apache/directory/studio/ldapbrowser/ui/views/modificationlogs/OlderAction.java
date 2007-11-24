@@ -23,6 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 import java.io.File;
 
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -110,7 +112,8 @@ public class OlderAction extends BrowserAction
         if ( getInput() != null && ( getInput() instanceof ModificationLogsViewInput ) )
         {
             ModificationLogsViewInput input = ( ModificationLogsViewInput ) getInput();
-            File[] files = input.getConnection().getModificationLogger().getFiles();
+            LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
+            File[] files = modificationLogger.getFiles( input.getConnection().getConnection() );
             int i = input.getIndex() + 1;
             if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
             {

@@ -30,8 +30,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.eclipse.core.runtime.Preferences;
@@ -39,6 +43,69 @@ import org.eclipse.core.runtime.Preferences;
 
 public class Utils
 {
+
+
+    /**
+     * Transforms the given DN into a normalized String, usable by the schema cache.
+     * The following transformations are permformed:
+     * <ul>
+     *   <li>The attribute type is replaced by the OID
+     *   <li>The attribute value is trimmed and lowercased
+     * </ul> 
+     * Example: the surname=Bar will be transformed to
+     * 2.5.4.4=bar
+     * 
+     * 
+     * @param dn the DN
+     * @param schema the schema
+     * 
+     * @return the oid string
+     */
+    public static String getNormalizedOidString( LdapDN dn, Schema schema )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        Iterator<Rdn> it = dn.getRdns().iterator();
+        while ( it.hasNext() )
+        {
+            Rdn rdn = it.next();
+            sb.append( getOidString( rdn, schema ) );
+            if ( it.hasNext() )
+            {
+                sb.append( ',' );
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    private static String getOidString( Rdn rdn, Schema schema )
+    {
+        StringBuffer sb = new StringBuffer();
+
+        Iterator<AttributeTypeAndValue> it = rdn.iterator();
+        while ( it.hasNext() )
+        {
+            AttributeTypeAndValue atav = it.next();
+            sb.append( getOidString( atav, schema ) );
+            if ( it.hasNext() )
+            {
+                sb.append( '+' );
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    private static String getOidString( AttributeTypeAndValue atav, Schema schema )
+    {
+        String oid = schema != null ? schema.getAttributeTypeDescription( atav.getNormType() ).getNumericOID() : atav
+            .getNormType();
+        return oid.trim().toLowerCase() + "=" + ( ( String ) atav.getUpValue() ).trim().toLowerCase(); //$NON-NLS-1$
+    }
+
 
     public static String[] stringToArray( String s )
     {

@@ -20,9 +20,19 @@
 package org.apache.directory.studio.connection.core;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
+import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 
@@ -52,6 +62,9 @@ public class ConnectionCorePlugin extends Plugin
 
     /** The referral handler */
     private IReferralHandler referralHandler;
+
+    /** The JNDI loggers. */
+    private List<IJndiLogger> jndiLoggers;
 
     /**
      * The constructor
@@ -206,6 +219,63 @@ public class ConnectionCorePlugin extends Plugin
     public void setReferralHandler( IReferralHandler referralHandler )
     {
         this.referralHandler = referralHandler;
+    }
+
+
+    /**
+     * Gets the LDIF modification logger.
+     * 
+     * @return the LDIF modification logger, null if none found.
+     */
+    public LdifModificationLogger getLdifModificationLogger()
+    {
+        List<IJndiLogger> jndiLoggers = getJndiLoggers();
+        for ( IJndiLogger jndiLogger : jndiLoggers )
+        {
+            if(jndiLogger instanceof LdifModificationLogger)
+            {
+                return ( LdifModificationLogger ) jndiLogger;
+            }
+        }
+        return null;
+    }
+    
+    
+    /**
+     * Gets the jndi loggers.
+     * 
+     * @return the JNDI loggers
+     */
+    public List<IJndiLogger> getJndiLoggers()
+    {
+        if(jndiLoggers == null)
+        {
+            jndiLoggers = new ArrayList<IJndiLogger>();
+            
+            IExtensionRegistry registry = Platform.getExtensionRegistry();
+            IExtensionPoint extensionPoint = registry
+                .getExtensionPoint( "org.apache.directory.studio.jndilogger" );
+            IConfigurationElement[] members = extensionPoint.getConfigurationElements();
+            for ( IConfigurationElement member : members )
+            {
+                try
+                {
+                    IJndiLogger logger = ( IJndiLogger ) member.createExecutableExtension( "class" );
+                    logger.setId( member.getAttribute( "id" ) );
+                    logger.setName( member.getAttribute( "name" ) );
+                    logger.setDescription( member.getAttribute( "description" ) );
+                    jndiLoggers.add( logger );
+                }
+                catch ( Exception e )
+                {
+                   getLog().log(
+                        new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, 1,
+                            "Unable to create JNDI logger " + member.getAttribute( "class" ), e ) );
+                }
+            }
+        }
+        
+        return jndiLoggers;
     }
 
 }

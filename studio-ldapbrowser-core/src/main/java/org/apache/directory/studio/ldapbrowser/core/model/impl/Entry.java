@@ -23,9 +23,9 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**

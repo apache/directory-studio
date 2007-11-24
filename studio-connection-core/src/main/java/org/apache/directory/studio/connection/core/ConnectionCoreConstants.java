@@ -31,4 +31,8 @@ public interface ConnectionCoreConstants
 
     /** The line separator. */
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$
+
+    /** The date format of the modification logger */
+    public static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"; //$NON-NLS-1$
+
 }

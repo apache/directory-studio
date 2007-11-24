@@ -48,15 +48,15 @@ import javax.naming.ldap.Control;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
@@ -518,7 +518,7 @@ public class ImportLdifJob extends AbstractNotificationJob
         try
         {
             LdifFormatParameters ldifFormatParameters = Utils.getLdifFormatParameters();
-            DateFormat df = new SimpleDateFormat( BrowserCoreConstants.DATEFORMAT );
+            DateFormat df = new SimpleDateFormat( ConnectionCoreConstants.DATEFORMAT );
 
             String errorComment = "#!ERROR " + exception.getMessage(); //$NON-NLS-1$
             errorComment = errorComment.replaceAll( "\r", " " ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -557,7 +557,7 @@ public class ImportLdifJob extends AbstractNotificationJob
         try
         {
             LdifFormatParameters ldifFormatParameters = Utils.getLdifFormatParameters();
-            DateFormat df = new SimpleDateFormat( BrowserCoreConstants.DATEFORMAT );
+            DateFormat df = new SimpleDateFormat( ConnectionCoreConstants.DATEFORMAT );
             logWriter.write( LdifCommentLine.create( "#!RESULT OK" ).toFormattedString( ldifFormatParameters ) ); //$NON-NLS-1$
             logWriter
                 .write( LdifCommentLine

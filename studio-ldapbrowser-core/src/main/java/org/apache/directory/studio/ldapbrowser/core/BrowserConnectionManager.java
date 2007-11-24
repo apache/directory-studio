@@ -22,13 +22,10 @@ package org.apache.directory.studio.ldapbrowser.core;
 
 
 import java.beans.Encoder;
-import java.beans.ExceptionListener;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,6 +42,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
@@ -60,15 +58,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldifparser.LdifUtils;
-import org.eclipse.core.runtime.IPath;
 
 
 /**
@@ -109,28 +102,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
     public static final String getSchemaCacheFileName( IBrowserConnection browserConnection )
     {
         return BrowserCorePlugin.getDefault().getStateLocation().append(
-            "schema-" + toSaveString( browserConnection.getConnection().getId() ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-
-    /**
-     * Gets the Modification Log filename for the corresponding browser connection.
-     *
-     * @param browserConnection
-     *      the browser connection
-     * @return
-     *      the Modification Log filename
-     */
-    public static final String getModificationLogFileName( IBrowserConnection browserConnection )
-    {
-        IPath p = BrowserCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
-        File file = p.toFile();
-        if ( !file.exists() )
-        {
-            file.mkdir();
-        }
-        return p
-            .append( "modifications-" + toSaveString( browserConnection.getConnection().getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+            "schema-" + Utils.getFilenameString( browserConnection.getConnection().getId() ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -175,47 +147,6 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
         }
 
         return filename;
-    }
-
-
-    /**
-     * Converts a String into a Saveable String.
-     *
-     * @param s
-     *      the String to convert
-     * @return
-     *      the converted String
-     */
-    private static String toSaveString( String s )
-    {
-        if ( s == null )
-        {
-            return null;
-        }
-
-        byte[] b = LdifUtils.utf8encode( s );
-        StringBuffer sb = new StringBuffer();
-        for ( int i = 0; i < b.length; i++ )
-        {
-
-            if ( b[i] == '-' || b[i] == '_' || ( '0' <= b[i] && b[i] <= '9' ) || ( 'A' <= b[i] && b[i] <= 'Z' )
-                || ( 'a' <= b[i] && b[i] <= 'z' ) )
-            {
-                sb.append( ( char ) b[i] );
-            }
-            else
-            {
-                int x = ( int ) b[i];
-                if ( x < 0 )
-                    x = 256 + x;
-                String t = Integer.toHexString( x );
-                if ( t.length() == 1 )
-                    t = "0" + t; //$NON-NLS-1$
-                sb.append( t );
-            }
-        }
-
-        return sb.toString();
     }
 
 

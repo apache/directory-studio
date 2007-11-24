@@ -21,6 +21,7 @@ package org.apache.directory.studio.connection.core.io.jndi;
 
 
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.naming.CommunicationException;
 import javax.naming.Context;
@@ -50,7 +51,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
-import org.apache.directory.studio.connection.core.IModificationLogger;
+import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
@@ -93,8 +94,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     private boolean isConnected;
 
     private Thread jobThread;
-
-    private IModificationLogger modificationLogger;
 
     /** JNDI constant for "throw" referrals handling */
     public static final String REFERRAL_THROW = "throw";
@@ -469,9 +468,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( modificationLogger != null )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    modificationLogger.logChangetypeModify( dn, modificationItems, controls, namingException );
+                    logger.logChangetypeModify( connection, dn, modificationItems, controls, namingException );
                 }
             }
 
@@ -550,9 +549,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( modificationLogger != null )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    modificationLogger.logChangetypeModDn( oldDn, newDn, deleteOldRdn, controls, namingException );
+                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, namingException );
                 }
             }
 
@@ -622,9 +621,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( modificationLogger != null )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    modificationLogger.logChangetypeAdd( dn, attributes, controls, namingException );
+                    logger.logChangetypeAdd( connection, dn, attributes, controls, namingException );
                 }
             }
 
@@ -691,9 +690,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( modificationLogger != null )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    modificationLogger.logChangetypeDelete( dn, controls, namingException );
+                    logger.logChangetypeDelete( connection, dn, controls, namingException );
                 }
             }
 
@@ -1082,15 +1081,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         void reset();
     }
 
-
-    /**
-     * Sets the modification logger.
-     * 
-     * @param modificationLogger the new modification logger
-     */
-    public void setModificationLogger( IModificationLogger modificationLogger )
+    private List<IJndiLogger> getJndiLoggers()
     {
-        this.modificationLogger = modificationLogger;
+        return ConnectionCorePlugin.getDefault().getJndiLoggers();
     }
-
 }

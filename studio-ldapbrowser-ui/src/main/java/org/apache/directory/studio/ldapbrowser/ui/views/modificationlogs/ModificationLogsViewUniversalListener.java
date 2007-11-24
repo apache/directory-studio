@@ -26,6 +26,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -145,7 +147,8 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
 
             // load file %u %g
             StringBuffer sb = new StringBuffer();
-            File[] files = input.getConnection().getModificationLogger().getFiles();
+            LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
+            File[] files = modificationLogger.getFiles( input.getConnection().getConnection() );
             int i = input.getIndex();
             if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
             {
@@ -229,8 +232,9 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
     {
         StringBuffer sb = new StringBuffer( "" );
         FileWriter fw = null;
-        File[] files = input.getConnection().getModificationLogger().getFiles();
-        input.getConnection().getModificationLogger().dispose();
+        LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
+        File[] files = modificationLogger.getFiles( input.getConnection().getConnection() );
+        modificationLogger.dispose( input.getConnection().getConnection() );
         for ( int i = 0; i < files.length; i++ )
         {
             try

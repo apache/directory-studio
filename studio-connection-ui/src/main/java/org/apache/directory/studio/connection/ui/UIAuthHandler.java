@@ -29,9 +29,19 @@ import org.apache.directory.studio.connection.ui.dialogs.CredentialsDialog;
 import org.eclipse.ui.PlatformUI;
 
 
+/**
+ * Default authentication handler that ask for the password using
+ * a UI dialog.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class UIAuthHandler implements IAuthHandler
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public ICredentials getCredentials( final ConnectionParameter connectionParameter )
     {
 

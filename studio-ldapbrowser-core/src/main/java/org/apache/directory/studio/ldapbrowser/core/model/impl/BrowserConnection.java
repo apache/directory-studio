@@ -43,7 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
@@ -85,9 +85,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /** The entry to children info map. */
     private volatile Map<IEntry, ChildrenInfo> entryToChildrenInfoMap;
 
-    /** The modification logger. */
-    transient ModificationLogger modificationLogger;
-
 
     /**
      * Creates a new instance of BrowserConnection.
@@ -112,7 +109,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
         this.searchManager = new SearchManager( this );
         this.bookmarkManager = new BookmarkManager( this );
-        this.modificationLogger = new ModificationLogger( this );
 
         this.entryToChildrenFilterMap = new HashMap<IEntry, String>();
         this.dnToEntryCache = new HashMap<String, IEntry>();
@@ -122,8 +118,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         this.schema = Schema.DEFAULT_SCHEMA;
         this.rootDSE = new RootDSE( this );
         cacheEntry( this.rootDSE );
-
-        this.connection.getJNDIConnectionWrapper().setModificationLogger( this.modificationLogger );
 
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
@@ -166,7 +160,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     public IEntry getEntryFromCache( LdapDN dn )
     {
-        String oidDn = DnUtils.getNormalizedOidString( dn, getSchema() );
+        String oidDn = Utils.getNormalizedOidString( dn, getSchema() );
         if ( dnToEntryCache != null && dnToEntryCache.containsKey( oidDn ) )
         {
             return dnToEntryCache.get( oidDn );
@@ -363,15 +357,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * {@inheritDoc}
      */
-    public ModificationLogger getModificationLogger()
-    {
-        return modificationLogger;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
@@ -394,7 +379,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     public synchronized void cacheEntry( IEntry entry )
     {
-        dnToEntryCache.put( DnUtils.getNormalizedOidString( entry.getDn(), getSchema() ), entry );
+        dnToEntryCache.put( Utils.getNormalizedOidString( entry.getDn(), getSchema() ), entry );
     }
 
 
@@ -405,7 +390,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     protected synchronized void uncacheEntry( IEntry entry )
     {
-        dnToEntryCache.remove( DnUtils.getNormalizedOidString( entry.getDn(), getSchema() ) );
+        dnToEntryCache.remove( Utils.getNormalizedOidString( entry.getDn(), getSchema() ) );
     }
 
 
@@ -433,7 +418,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      */
     protected synchronized void uncacheEntry( LdapDN dn )
     {
-        dnToEntryCache.remove( DnUtils.getNormalizedOidString( dn, getSchema() ) );
+        dnToEntryCache.remove( Utils.getNormalizedOidString( dn, getSchema() ) );
     }
 
 

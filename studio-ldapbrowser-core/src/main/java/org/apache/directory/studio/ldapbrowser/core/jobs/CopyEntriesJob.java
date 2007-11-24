@@ -31,6 +31,7 @@ import javax.naming.InvalidNameException;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
@@ -49,7 +50,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.apache.directory.studio.ldapbrowser.core.utils.DnUtils;
 
 
 /**

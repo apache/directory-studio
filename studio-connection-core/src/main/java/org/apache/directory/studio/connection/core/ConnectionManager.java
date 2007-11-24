@@ -34,6 +34,7 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.core.io.ConnectionIO;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
+import org.eclipse.core.runtime.IPath;
 
 
 /**
@@ -57,6 +58,27 @@ public class ConnectionManager implements ConnectionUpdateListener
         this.connectionList = new HashSet<Connection>();
         loadConnections();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
+    }
+
+
+    /**
+     * Gets the Modification Log filename for the corresponding connection.
+     *
+     * @param connection
+     *      the connection
+     * @return
+     *      the Modification Log filename
+     */
+    public static final String getModificationLogFileName( Connection connection )
+    {
+        IPath p = ConnectionCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
+        File file = p.toFile();
+        if ( !file.exists() )
+        {
+            file.mkdir();
+        }
+        return p
+            .append( "modifications-" + Utils.getFilenameString( connection.getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

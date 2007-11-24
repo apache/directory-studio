@@ -28,7 +28,6 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.ModificationLogger;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -340,14 +339,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @return the bookmark manager
      */
     public abstract BookmarkManager getBookmarkManager();
-
-
-    /**
-     * Gets the modification logger.
-     * 
-     * @return the modification logger
-     */
-    public abstract ModificationLogger getModificationLogger();
 
 
     /**

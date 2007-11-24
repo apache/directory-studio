@@ -78,8 +78,16 @@ public interface ConnectionParameterPage
      */
     public String getMessage();
 
-    
+
+    /**
+     * Gets an info message that should be displayed
+     * to the user. Null means no info message so an 
+     * existing info message should be cleared.
+     * 
+     * @return the info message
+     */
     public String getInfoMessage();
+
 
     /**
      * Creates the composite.
