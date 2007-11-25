@@ -137,8 +137,21 @@ public class DnUtils
             sb.append( '=' );
             sb.append( Rdn.escapeValue( rdnValues[i] ) );
         }
-        Rdn rdn = new Rdn( sb.toString() );
-        return rdn;
+
+        String s = sb.toString();
+        try
+        {
+            if ( LdapDN.isValid( s ) )
+            {
+                Rdn rdn = new Rdn( sb.toString() );
+                return rdn;
+            }
+        }
+        catch ( Exception e )
+        {
+        }
+
+        throw new InvalidNameException( "RDN is invalid" );
     }
 
 }

@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import org.apache.directory.studio.ldapbrowser.common.dialogs.EntryExistsCopyStrategyDialogImpl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.ScopeDialog;
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
@@ -169,7 +170,8 @@ public class PasteAction extends BrowserAction
             scope = scopeDialog.getScope();
         }
 
-        new CopyEntriesJob( parent, entriesToPaste, scope ).execute();
+        new CopyEntriesJob( parent, entriesToPaste, scope, new EntryExistsCopyStrategyDialogImpl( Display.getDefault()
+            .getActiveShell() ) ).execute();
     }
 
 

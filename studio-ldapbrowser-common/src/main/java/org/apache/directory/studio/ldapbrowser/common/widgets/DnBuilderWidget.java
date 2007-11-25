@@ -82,9 +82,15 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
     /** The selected parent DN. */
     private LdapDN parentDn;
+    
+    /** The entry widget label. */
+    private Label parentEntryLabel;
 
     /** The entry widget to enter/select the parent DN. */
     private EntryWidget parentEntryWidget;
+    
+    /** The RDN label */
+    private Label rdnLabel;
 
     /** The composite that contains the RdnLines. */
     private Composite rdnComposite;
@@ -94,6 +100,9 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
     /** The list of RdnLines. */
     private ArrayList<RdnLine> rdnLineList;
+    
+    /** The preview label. */
+    private Label previewLabel;
 
     /** The preview text. */
     private Text previewText;
@@ -234,7 +243,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw parent
         if ( showParent )
         {
-            BaseWidgetUtils.createLabel( composite, "Parent:", 1 );
+            parentEntryLabel = BaseWidgetUtils.createLabel( composite, "Parent:", 1 );
             parentEntryWidget = new EntryWidget();
             parentEntryWidget.createWidget( composite );
             parentEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -251,7 +260,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw RDN group
         if ( showRDN )
         {
-            BaseWidgetUtils.createLabel( composite, "RDN:", 1 );
+            rdnLabel = BaseWidgetUtils.createLabel( composite, "RDN:", 1 );
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
             rdnLineList = new ArrayList<RdnLine>();
             BaseWidgetUtils.createSpacer( composite, 3 );
@@ -260,7 +269,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw dn/rdn preview
         if ( showRDN )
         {
-            BaseWidgetUtils.createLabel( composite, showParent ? "DN Preview: " : "RDN Preview: ", 1 );
+            previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? "DN Preview: " : "RDN Preview: ", 1 );
             previewText = BaseWidgetUtils.createReadonlyText( composite, "", 2 );
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
@@ -295,7 +304,6 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      */
     public void validate()
     {
-
         Exception rdnE = null;
         if ( showRDN )
         {
@@ -596,6 +604,39 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         /** The rdn delete button. */
         private Button rdnDeleteButton;
+    }
+
+
+    /**
+     * Enables or disables this widget.
+     * 
+     * @param b true to enable, false to disable 
+     */
+    public void setEnabled( boolean b )
+    {
+        if ( parentEntryWidget != null )
+        {
+            parentEntryLabel.setEnabled( b );
+            parentEntryWidget.setEnabled( b );
+        }
+        if ( rdnComposite != null && rdnLineList != null )
+        {
+            rdnLabel.setEnabled( b );
+            rdnComposite.setEnabled( b );
+            for ( RdnLine rdnLine : rdnLineList )
+            {
+                rdnLine.rdnTypeCombo.setEnabled( b );
+                rdnLine.rdnEqualsLabel.setEnabled( b );
+                rdnLine.rdnValueText.setEnabled( b );
+                rdnLine.rdnAddButton.setEnabled( b );
+                rdnLine.rdnDeleteButton.setEnabled( b && rdnLineList.size() > 1 );
+            }
+        }
+        if ( previewText != null )
+        {
+            previewLabel.setEnabled( b );
+            previewText.setEnabled( b );
+        }
     }
 
 }
