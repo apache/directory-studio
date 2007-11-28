@@ -32,9 +32,6 @@ import java.util.List;
  */
 public class ServerConfiguration
 {
-    /** The path of the Server Configuration file */
-    private String path;
-
     // LDAP Configuration
 
     /** The port */
@@ -440,18 +437,6 @@ public class ServerConfiguration
     public String getPassword()
     {
         return password;
-    }
-
-
-    /**
-     * Gets the Path of the file corresponding to the ServerConfiguration.
-     *
-     * @return
-     *      the Path of the corresponding file
-     */
-    public String getPath()
-    {
-        return path;
     }
 
 
@@ -1005,18 +990,6 @@ public class ServerConfiguration
     public void setPassword( String password )
     {
         this.password = password;
-    }
-
-
-    /**
-     * Sets the Path of the file corresponding to the ServerConfiguration.
-     *
-     * @param path
-     *      the new value
-     */
-    public void setPath( String path )
-    {
-        this.path = path;
     }
 
 

@@ -86,8 +86,6 @@ public class ServerConfigurationParser
             Document document = reader.read( path );
 
             ServerConfiguration serverConfiguration = new ServerConfiguration();
-            serverConfiguration.setPath( path );
-
             parse( document, serverConfiguration );
 
             return serverConfiguration;

@@ -846,7 +846,6 @@ public class GeneralPage extends FormPage
     /**
      * Saves the necessary elements to the input model.
      */
-    @SuppressWarnings("unchecked")
     public void save()
     {
         ServerConfiguration configuration = ( ( ServerConfigurationEditor ) getEditor() ).getServerConfiguration();
@@ -873,8 +872,12 @@ public class GeneralPage extends FormPage
         configuration.setSynchronizationPeriod( Long.parseLong( synchPeriodText.getText() ) );
         configuration.setMaxThreads( Integer.parseInt( maxThreadsText.getText() ) );
 
-        configuration.setSupportedMechanisms( new ArrayList<String>( ( List<String> ) Arrays
-            .asList( (String[])supportedMechanismsTableViewer.getCheckedElements() ) ) );
+        List<String> supportedMechanismsList = new ArrayList<String>();
+        for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
+        {
+            supportedMechanismsList.add( ( String ) supportedMechanism );
+        }
+        configuration.setSupportedMechanisms( supportedMechanismsList );
 
         configuration.setAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
         configuration.setEnableAccessControl( enableAccesControlCheckbox.getSelection() );

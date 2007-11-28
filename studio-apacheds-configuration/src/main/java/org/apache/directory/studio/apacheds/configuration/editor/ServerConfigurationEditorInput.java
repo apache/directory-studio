@@ -36,6 +36,8 @@ public class ServerConfigurationEditorInput implements IEditorInput
 {
     /** The Server Configuration */
     private ServerConfiguration serverConfiguration;
+    /** The path of the file */
+    private String path;
 
 
     /**
@@ -62,12 +64,35 @@ public class ServerConfigurationEditorInput implements IEditorInput
     }
 
 
+    /**
+     * Gets the path.
+     *
+     * @return
+     *      the path
+     */
+    public String getPath()
+    {
+        return path;
+    }
+
+
+    /**
+     * Sets the path.
+     * 
+     * @param path
+     *      the path
+     */
+    public void setPath( String path )
+    {
+        this.path = path;
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getToolTipText()
      */
     public String getToolTipText()
     {
-        String path = serverConfiguration.getPath();
         if ( path == null )
         {
             return "New Configuration File";
@@ -134,22 +159,21 @@ public class ServerConfigurationEditorInput implements IEditorInput
         {
             return false;
         }
-        
+
         if ( obj instanceof ServerConfigurationEditorInput )
         {
             ServerConfigurationEditorInput input = ( ServerConfigurationEditorInput ) obj;
             if ( input.exists() && exists() )
             {
-                String inputPath = input.getServerConfiguration().getPath();
-                String myPath = getServerConfiguration().getPath();
+                String inputPath = input.getPath();
 
-                if ( inputPath != null && myPath != null )
+                if ( inputPath != null && path != null )
                 {
-                    return inputPath.equals( myPath );
+                    return inputPath.equals( path );
                 }
             }
         }
-        
+
         return false;
     }
 }

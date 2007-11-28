@@ -20,9 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.model;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -49,19 +46,17 @@ import org.dom4j.io.DocumentSource;
 public class ServerConfigurationWriter
 {
     /**
-     * Writes the Server Configuration to disk.
+     * TODO
      *
      * @param serverConfiguration
      *      the Server Configuration
      * @throws ServerConfigurationWriterException
      *      if an error occurrs when writing the Server Configuration file
      */
-    public void write( ServerConfiguration serverConfiguration ) throws ServerConfigurationWriterException
+    public static String toXml( ServerConfiguration serverConfiguration ) throws ServerConfigurationWriterException
     {
         try
         {
-            BufferedWriter outFile = new BufferedWriter( new FileWriter( serverConfiguration.getPath() ) );
-
             Document document = DocumentHelper.createDocument();
             Element root = document.addElement( "beans" );
 
@@ -98,11 +93,11 @@ public class ServerConfigurationWriter
             // CustomEditors Bean
             createCustomEditorsBean( root );
 
-            Document stylizedDocuement = styleDocument( document );
-            stylizedDocuement.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
+            Document stylizedDocument = styleDocument( document );
+            stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
                 "http://www.springframework.org/dtd/spring-beans.dtd" );
-            outFile.write( stylizedDocuement.asXML() );
-            outFile.close();
+
+            return stylizedDocument.asXML();
         }
         catch ( Exception e )
         {
@@ -122,7 +117,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createEnvironmentBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createEnvironmentBean( Element root, ServerConfiguration serverConfiguration )
     {
         Element environmentBean = root.addElement( "bean" );
         environmentBean.addAttribute( "id", "environment" );
@@ -173,7 +168,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createChangePasswordConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createChangePasswordConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         createProtocolConfigurationBean( root, "changePasswordConfiguration",
             "org.apache.directory.server.changepw.ChangePasswordConfiguration", serverConfiguration
@@ -189,7 +184,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createNtpConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createNtpConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         createProtocolConfigurationBean( root, "ntpConfiguration", "org.apache.directory.server.ntp.NtpConfiguration",
             serverConfiguration.isEnableNtp(), serverConfiguration.getNtpPort() );
@@ -204,7 +199,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createDnsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createDnsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         createProtocolConfigurationBean( root, "dnsConfiguration", "org.apache.directory.server.dns.DnsConfiguration",
             serverConfiguration.isEnableDns(), serverConfiguration.getDnsPort() );
@@ -219,7 +214,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createKdcConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createKdcConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         createProtocolConfigurationBean( root, "kdcConfiguration", "org.apache.directory.server.kdc.KdcConfiguration",
             serverConfiguration.isEnableKerberos(), serverConfiguration.getKerberosPort() );
@@ -234,7 +229,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createLdapsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createLdapsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         Element ldapsConfiguration = createProtocolConfigurationBean( root, "ldapsConfiguration",
             "org.apache.directory.server.ldap.LdapConfiguration", serverConfiguration.isEnableLdaps(),
@@ -255,7 +250,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createLdapConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createLdapConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         Element ldapConfiguration = createProtocolConfigurationBean( root, "ldapConfiguration",
             "org.apache.directory.server.ldap.LdapConfiguration", true, serverConfiguration.getLdapPort() );
@@ -356,7 +351,7 @@ public class ServerConfigurationWriter
      * @return
      *      the corresponding Protocol Configuration Bean
      */
-    private Element createProtocolConfigurationBean( Element root, String id, String className, boolean enabled,
+    private static Element createProtocolConfigurationBean( Element root, String id, String className, boolean enabled,
         int ipPort )
     {
         Element protocolConfigurationBean = root.addElement( "bean" );
@@ -385,7 +380,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         Element configurationBean = root.addElement( "bean" );
         configurationBean.addAttribute( "id", "configuration" );
@@ -514,7 +509,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createSystemPartitionConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createSystemPartitionConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         Partition systemPartition = null;
         for ( Partition partition : serverConfiguration.getPartitions() )
@@ -541,7 +536,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createUserPartitionsConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createUserPartitionsConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
     {
         int counter = 1;
         for ( Partition partition : serverConfiguration.getPartitions() )
@@ -565,7 +560,7 @@ public class ServerConfigurationWriter
      * @param name
      *      the name to use
      */
-    private void createPartitionConfigurationBean( Element root, Partition partition, String name )
+    private static void createPartitionConfigurationBean( Element root, Partition partition, String name )
     {
         Element partitionBean = root.addElement( "bean" );
         partitionBean.addAttribute( "id", name );
@@ -658,7 +653,7 @@ public class ServerConfigurationWriter
      * @param root
      *      the root Element
      */
-    private void createCustomEditorsBean( Element root )
+    private static void createCustomEditorsBean( Element root )
     {
         Element customEditorsBean = root.addElement( "bean" );
         customEditorsBean.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
@@ -682,7 +677,7 @@ public class ServerConfigurationWriter
      *      the stylized Document
      * @throws TransformerException 
      */
-    private Document styleDocument( Document document ) throws TransformerException
+    private static Document styleDocument( Document document ) throws TransformerException
     {
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();
