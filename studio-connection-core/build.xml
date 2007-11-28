@@ -25,9 +25,13 @@
 		<ant dir="../studio-jars" target="retrieve-dependencies" inheritall="false" />
 	</target>
 	
+    <!-- COMPILE-DEPENDENCIES TASK -->
+	<target name="compile-dependencies" description="Compiles the dependencies of the project" >
+		<ant dir="../studio-ldif-parser" target="compile" inheritall="false" />
+	</target>
 	
 	<!-- BUILD-CLASSPATH TASK -->
-	<target name="build-classpath" depends="retrieve-studio-jar-dependencies" description="Computes the classpath" >
+	<target name="build-classpath" depends="retrieve-studio-jar-dependencies, compile-dependencies" description="Computes the classpath" >
 		<echo>Building classpath for ${project.name} (${project.id}) version ${project.version}</echo>
 		<path id="classpath">
 			<!-- Project dependencies -->
@@ -38,6 +42,7 @@
 			</fileset>
 			<!-- Plugin dependencies -->
 			<fileset dir="../studio-jars/lib/" />
+			<pathelement location="../studio-ldif-parser/target/classes"/>
 		</path>
 	</target>
 	
