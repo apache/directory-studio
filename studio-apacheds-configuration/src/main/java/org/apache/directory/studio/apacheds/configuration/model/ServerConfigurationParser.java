@@ -35,10 +35,13 @@ import javax.naming.directory.BasicAttributes;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
 import org.apache.directory.shared.ldap.message.AttributesImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.studio.apacheds.configuration.Activator;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 
 /**
@@ -65,7 +68,21 @@ public class ServerConfigurationParser
     {
         try
         {
+            EntityResolver resolver = new EntityResolver()
+            {
+                public InputSource resolveEntity( String publicId, String systemId )
+                {
+                    if ( publicId.equals( "-//SPRING//DTD BEAN//EN" ) )
+                    {
+                        InputStream in = Activator.class.getResourceAsStream( "spring-beans.dtd" );
+                        return new InputSource( in );
+                    }
+                    return null;
+                }
+            };
+
             SAXReader reader = new SAXReader();
+            reader.setEntityResolver( resolver );
             Document document = reader.read( path );
 
             ServerConfiguration serverConfiguration = new ServerConfiguration();
@@ -107,7 +124,21 @@ public class ServerConfigurationParser
     {
         try
         {
+            EntityResolver resolver = new EntityResolver()
+            {
+                public InputSource resolveEntity( String publicId, String systemId )
+                {
+                    if ( publicId.equalsIgnoreCase( "-//SPRING//DTD BEAN//EN" ) )
+                    {
+                        InputStream in = Activator.class.getResourceAsStream( "spring-beans.dtd" );
+                        return new InputSource( in );
+                    }
+                    return null;
+                }
+            };
+
             SAXReader reader = new SAXReader();
+            reader.setEntityResolver( resolver );
             Document document = reader.read( inputStream );
 
             ServerConfiguration serverConfiguration = new ServerConfiguration();
