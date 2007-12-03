@@ -56,17 +56,11 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     /** The dn builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
-    /** The simulate move button. */
-    private Button simulateMoveButton;
-
     /** The ok button. */
     private Button okButton;
 
     /** The parent DN. */
     private LdapDN parentDn;
-
-    /** The simulate move flag. */
-    private boolean simulateMove;
 
 
     /**
@@ -111,10 +105,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     protected void okPressed()
     {
         parentDn = dnBuilderWidget.getParentDn();
-        simulateMove = simulateMoveButton.getSelection();
-
         dnBuilderWidget.saveDialogSettings();
-
         super.okPressed();
     }
 
@@ -147,11 +138,6 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget.createContents( composite );
         dnBuilderWidget.setInput( entries[0].getBrowserConnection(), null, null, DnUtils.getParent( entries[0].getDn() ) );
 
-        simulateMoveButton = BaseWidgetUtils.createCheckbox( composite,
-            "Simulate subtree moving by searching/adding/deleting recursively", 1 );
-        simulateMoveButton.setSelection( false );
-        simulateMoveButton.setEnabled( false );
-
         applyDialogFont( composite );
         return composite;
     }
@@ -177,17 +163,6 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     public LdapDN getParentDn()
     {
         return parentDn;
-    }
-
-
-    /**
-     * Gets the simulate move flag.
-     * 
-     * @return the simulate move flag
-     */
-    public boolean isSimulateMove()
-    {
-        return simulateMove;
     }
 
 }

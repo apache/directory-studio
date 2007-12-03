@@ -149,14 +149,17 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 if ( scope == SearchScope.OBJECT
                     || !parent.getDn().getNormName().endsWith( entryToCopy.getDn().getNormName() ) )
                 {
-                    num = copyEntry( entryToCopy.getBrowserConnection(), entryToCopy.getDn(), parent.getDn(),
-                        copyScope, num, dummyMonitor, monitor );
+                    dummyMonitor.reset();
+                    num = copyEntry( entryToCopy, parent, null, copyScope, num, dialog, dummyMonitor, monitor );
                 }
                 else
                 {
                     monitor.reportError( BrowserCoreMessages.jobs__copy_entries_source_and_target_are_equal );
                 }
             }
+
+            parent.setChildrenInitialized( false );
+            parent.setHasChildrenHint( true );
         }
     }
 
@@ -166,8 +169,6 @@ public class CopyEntriesJob extends AbstractNotificationJob
      */
     protected void runNotification()
     {
-        parent.setChildrenInitialized( false );
-        parent.setHasChildrenHint( true );
         EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
     }
 
@@ -182,56 +183,104 @@ public class CopyEntriesJob extends AbstractNotificationJob
     }
 
 
-    private int copyEntry( IBrowserConnection browserConnection, LdapDN dnToCopy, LdapDN parentDn, int scope,
-        int numberOfCopiedEntries, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
+    /**
+     * Copy entry. If scope is SearchControls.SUBTREE_SCOPE the entry is copied
+     * recursively.
+     * 
+     * @param browserConnection the browser connection
+     * @param dnToCopy the DN to copy
+     * @param parentDn the parent DN
+     * @param newRdn the new RDN, if null the RDN of dnToCopy is used
+     * @param scope the copy scope
+     * @param numberOfCopiedEntries the number of copied entries
+     * @param dialog the dialog to ask for the copy strategy, if null the user won't be
+     *        asked instead the NameAlreadyBoundException it reported to the monitor
+     * @param dummyMonitor the dummy monitor, used for I/O that causes exceptions that 
+     *        should be handled
+     * @param monitor the real monitor
+     * 
+     * @return the number of copied entries
+     */
+//    static int copyEntry( IBrowserConnection browserConnection, LdapDN dnToCopy, LdapDN parentDn, Rdn newRdn,
+//        int scope, int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
+//        StudioProgressMonitor monitor )
+    static int copyEntry( IEntry entryToCopy, IEntry parent, Rdn newRdn, int scope, int numberOfCopiedEntries,
+        EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
         SearchControls searchControls = new SearchControls();
         searchControls.setCountLimit( 1 );
         searchControls.setReturningAttributes( new String[]
             { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-        NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-            dnToCopy.getUpName(), ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
+        NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection().getJNDIConnectionWrapper().search(
+            entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
             null, monitor, null );
 
-        numberOfCopiedEntries = copyEntryRecursive( browserConnection, result, parentDn, scope, numberOfCopiedEntries,
-            dummyMonitor, monitor );
+        numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result, parent
+            .getBrowserConnection(), parent.getDn(), newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,
+            monitor );
 
         return numberOfCopiedEntries;
     }
 
 
-    private int copyEntryRecursive( IBrowserConnection browserConnection, NamingEnumeration<SearchResult> entries,
-        LdapDN parentDn, int scope, int numberOfCopiedEntries, StudioProgressMonitor dummyMonitor,
+    /**
+     * Copy the entries. If scope is SearchControls.SUBTREE_SCOPE the entries are copied
+     * recursively.
+     * 
+     * @param sourceBrowserConnection the source browser connection
+     * @param entries the source entries to copy
+     * @param targetBrowserConnection the target browser connection
+     * @param parentDn the target parent DN
+     * @param newRdn the new RDN, if null the original RDN of each entry is used 
+     * @param scope the copy scope
+     * @param numberOfCopiedEntries the number of copied entries
+     * @param dialog the dialog to ask for the copy strategy, if null the user won't be
+     *        asked instead the NameAlreadyBoundException it reported to the monitor
+     * @param dummyMonitor the dummy monitor, used for I/O that causes exceptions that 
+     *        should be handled
+     * @param monitor the real monitor
+     * 
+     * @return the number of copied entries
+     */
+    static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, NamingEnumeration<SearchResult> entries,
+        IBrowserConnection targetBrowserConnection, LdapDN parentDn, Rdn forceNewRdn, int scope,
+        int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
         StudioProgressMonitor monitor )
     {
         try
         {
             while ( !monitor.isCanceled() && entries.hasMore() )
             {
+                // get next entry to copy
                 SearchResult sr = entries.next();
+                LdapDN oldLdapDn = JNDIUtils.getDn( sr );
+                Rdn oldRdn = oldLdapDn.getRdn();
+                
+                // reuse attributes of the entry to copy
+                Attributes newAttributes = sr.getAttributes();
 
                 // compose new DN
-                LdapDN oldLdapDn = JNDIUtils.getDn( sr );
-                String oldDn = oldLdapDn.getUpName();
-                Rdn oldRdn = oldLdapDn.getRdn();
-                LdapDN newLdapDn = DnUtils.composeDn( oldRdn, parentDn );
-                String newDn = newLdapDn.getUpName();
+                Rdn newRdn = oldLdapDn.getRdn();
+                if( forceNewRdn != null )
+                {
+                    newRdn = forceNewRdn;
+                }
+                LdapDN newLdapDn = DnUtils.composeDn( newRdn, parentDn );
 
-                // copy attributes
-                Attributes oldAttributes = sr.getAttributes();
-                Attributes newAttributes = oldAttributes;
-
+                // apply new RDN to the attributes
+                applyNewRdn( newAttributes, oldRdn, newRdn );
+                
                 // create entry
-                browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newDn, newAttributes, null,
+                targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(), newAttributes, null,
                     dummyMonitor );
 
                 while ( dummyMonitor.errorsReported() )
                 {
-                    if ( dummyMonitor.getException() instanceof NameAlreadyBoundException )
+                    if ( dialog != null && dummyMonitor.getException() instanceof NameAlreadyBoundException )
                     {
                         // open dialog
-                        dialog.setExistingEntry( browserConnection, newLdapDn );
+                        dialog.setExistingEntry( targetBrowserConnection, newLdapDn );
                         dialog.open();
                         EntryExistsCopyStrategy strategy = dialog.getStrategy();
 //                        boolean rememberSelection = dialog.isRememberSelection();
@@ -250,38 +299,15 @@ public class CopyEntriesJob extends AbstractNotificationJob
 //                                    break;
                                 case RENAME_AND_CONTINUE:
                                     Rdn renamedRdn = dialog.getRdn();
-                                    for ( Iterator<AttributeTypeAndValue> it = oldRdn.iterator(); it.hasNext(); )
-                                    {
-                                        AttributeTypeAndValue atav = it.next();
-                                        Attribute attribute = newAttributes.get( atav.getUpType() );
-                                        if ( attribute != null )
-                                        {
-                                            attribute.remove( atav.getUpValue() );
-                                            if ( attribute.size() == 0 )
-                                            {
-                                                newAttributes.remove( atav.getUpType() );
-                                            }
-                                        }
-                                    }
-                                    for ( Iterator<AttributeTypeAndValue> it = renamedRdn.iterator(); it.hasNext(); )
-                                    {
-                                        AttributeTypeAndValue atav = it.next();
-                                        Attribute attribute = newAttributes.get( atav.getUpType() );
-                                        if ( attribute == null )
-                                        {
-                                            attribute = new BasicAttribute( atav.getUpType() );
-                                            newAttributes.put( attribute );
-                                        }
-                                        if ( !attribute.contains( atav.getUpValue() ) )
-                                        {
-                                            attribute.add( atav.getUpValue() );
-                                        }
-                                    }
-
+                                    
+                                    // apply renamed RDN to the attributes
+                                    applyNewRdn( newAttributes, newRdn, renamedRdn );
+                                    
+                                    // compose new DN
                                     newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
-                                    newDn = newLdapDn.getUpName();
 
-                                    browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newDn,
+                                    // create entry
+                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
                                         newAttributes, null, dummyMonitor );
 
                                     break;
@@ -290,19 +316,23 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         else
                         {
                             monitor.reportError( dummyMonitor.getException() );
-                            dummyMonitor.reset();
+                            break;
                         }
                     }
                     else
                     {
                         monitor.reportError( dummyMonitor.getException() );
-                        dummyMonitor.reset();
+                        break;
                     }
                 }
 
                 if ( !monitor.isCanceled() && !monitor.errorsReported() )
                 {
                     numberOfCopiedEntries++;
+                    
+                    monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__copied_n_entries,
+                        new String[]
+                            { "" + numberOfCopiedEntries } ) ); //$NON-NLS-1$
 
                     // copy recursively
                     if ( scope == SearchControls.ONELEVEL_SCOPE || scope == SearchControls.SUBTREE_SCOPE )
@@ -312,8 +342,8 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         searchControls.setReturningAttributes( new String[]
                             { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                        NamingEnumeration<SearchResult> childEntries = browserConnection.getConnection()
-                            .getJNDIConnectionWrapper().search( oldDn, ISearch.FILTER_TRUE, searchControls, "never",
+                        NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
+                            .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE, searchControls, "never",
                                 JNDIConnectionWrapper.REFERRAL_IGNORE, null, monitor, null );
 
                         if ( scope == SearchControls.ONELEVEL_SCOPE )
@@ -321,8 +351,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
                             scope = SearchControls.OBJECT_SCOPE;
                         }
 
-                        numberOfCopiedEntries = copyEntryRecursive( browserConnection, childEntries, newLdapDn, scope,
-                            numberOfCopiedEntries, dummyMonitor, monitor );
+                        numberOfCopiedEntries = copyEntryRecursive( sourceBrowserConnection, childEntries,
+                            targetBrowserConnection, newLdapDn, null, scope, numberOfCopiedEntries, dialog,
+                            dummyMonitor, monitor );
                     }
                 }
             }
@@ -335,4 +366,37 @@ public class CopyEntriesJob extends AbstractNotificationJob
         return numberOfCopiedEntries;
     }
 
+    private static void applyNewRdn(Attributes attributes, Rdn oldRdn, Rdn newRdn)
+    {
+        // remove old RDN attributes and values
+        for ( Iterator<AttributeTypeAndValue> it = oldRdn.iterator(); it.hasNext(); )
+        {
+            AttributeTypeAndValue atav = it.next();
+            Attribute attribute = attributes.get( atav.getUpType() );
+            if ( attribute != null )
+            {
+                attribute.remove( atav.getUpValue() );
+                if ( attribute.size() == 0 )
+                {
+                    attributes.remove( atav.getUpType() );
+                }
+            }
+        }
+        
+        // add new RDN attributes and values
+        for ( Iterator<AttributeTypeAndValue> it = newRdn.iterator(); it.hasNext(); )
+        {
+            AttributeTypeAndValue atav = it.next();
+            Attribute attribute = attributes.get( atav.getUpType() );
+            if ( attribute == null )
+            {
+                attribute = new BasicAttribute( atav.getUpType() );
+                attributes.put( attribute );
+            }
+            if ( !attribute.contains( atav.getUpValue() ) )
+            {
+                attribute.add( atav.getUpValue() );
+            }
+        }
+    }
 }

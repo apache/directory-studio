@@ -500,7 +500,6 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         {
             EntryRenamedEvent ere = ( EntryRenamedEvent ) event;
             viewer.refresh( ere.getNewEntry().getParententry(), true );
-            viewer.refresh( ere.getNewEntry(), true );
             viewer.setSelection( new StructuredSelection( ere.getNewEntry() ), true );
         }
         else if ( event instanceof EntryMovedEvent )
@@ -508,7 +507,6 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             EntryMovedEvent eme = ( EntryMovedEvent ) event;
             viewer.refresh( eme.getOldEntry().getParententry(), true );
             viewer.refresh( eme.getNewEntry().getParententry(), true );
-            viewer.refresh( eme.getNewEntry(), true );
             viewer.setSelection( new StructuredSelection( eme.getNewEntry() ), true );
         }
         else if ( event instanceof EntryDeletedEvent )
@@ -516,7 +514,6 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             EntryDeletedEvent ede = ( EntryDeletedEvent ) event;
             if ( ede.getModifiedEntry().getParententry() != null )
             {
-                viewer.refresh( ede.getModifiedEntry(), true );
                 viewer.refresh( ede.getModifiedEntry().getParententry(), true );
                 viewer.setSelection( new StructuredSelection( ede.getModifiedEntry().getParententry() ), true );
             }

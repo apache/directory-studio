@@ -59,23 +59,11 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     /** The dn builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
-    /** The delete old rdn button. */
-    private Button deleteOldRdnButton;
-
-    /** The simulate rename button. */
-    private Button simulateRenameButton;
-
     /** The ok button. */
     private Button okButton;
 
     /** The new rdn. */
     private Rdn rdn;
-
-    /** The delete old rdn flag. */
-    private boolean deleteOldRdn;
-
-    /** The simulate rename flag. */
-    private boolean simulateRename;
 
 
     /**
@@ -95,8 +83,6 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         {
             BrowserCommonActivator.getDefault().getDialogSettings().put( DELETE_OLD_RDN_DIALOGSETTING_KEY, true );
         }
-        this.deleteOldRdn = BrowserCommonActivator.getDefault().getDialogSettings().getBoolean(
-            DELETE_OLD_RDN_DIALOGSETTING_KEY );
     }
 
 
@@ -127,12 +113,6 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     protected void okPressed()
     {
         rdn = dnBuilderWidget.getRdn();
-        deleteOldRdn = deleteOldRdnButton.getSelection();
-        simulateRename = simulateRenameButton.getSelection();
-
-        BrowserCommonActivator.getDefault().getDialogSettings().put( DELETE_OLD_RDN_DIALOGSETTING_KEY, deleteOldRdn );
-        dnBuilderWidget.saveDialogSettings();
-
         super.okPressed();
     }
 
@@ -165,14 +145,6 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget.setInput( entry.getBrowserConnection(), entry.getSubschema().getAllAttributeNames(), entry
             .getRdn(), null );
 
-        deleteOldRdnButton = BaseWidgetUtils.createCheckbox( composite, "Delete old RDN", 1 );
-        deleteOldRdnButton.setSelection( deleteOldRdn );
-
-        simulateRenameButton = BaseWidgetUtils.createCheckbox( composite,
-            "Simulate subtree renaming by searching/adding/deleting recursively", 1 );
-        simulateRenameButton.setSelection( false );
-        simulateRenameButton.setEnabled( false );
-
         applyDialogFont( composite );
         return composite;
     }
@@ -198,28 +170,6 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
     public Rdn getRdn()
     {
         return rdn;
-    }
-
-
-    /**
-     * Checks if the old RDN should be deleted.
-     * 
-     * @return true if the old RDN should be deleted.
-     */
-    public boolean isDeleteOldRdn()
-    {
-        return deleteOldRdn;
-    }
-
-
-    /**
-     * Checks if the renaming should be simulated by searching/adding/deleting.
-     * 
-     * @return true, if renaming shoudl be simulated
-     */
-    public boolean isSimulateRename()
-    {
-        return simulateRename;
     }
 
 }

@@ -26,8 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
+import javax.naming.ContextNotEmptyException;
+import javax.naming.directory.SearchControls;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
@@ -47,6 +47,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 /**
  * Job to rename an entry.
  *
+ * First it tries to rename an entry using an modrdn operation. If
+ * that operation fails with an LDAP error 66 (ContextNotEmptyException)
+ * the use is asked if s/he wants to simulate such a rename by recursively
+ * searching/creating/deleting entries.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
@@ -59,33 +64,33 @@ public class RenameEntryJob extends AbstractNotificationJob
     /** The old entry. */
     private IEntry oldEntry;
 
-    /** The new rdn. */
+    /** The new RDN. */
     private Rdn newRdn;
-
-    /** The delete old rdn flag. */
-    private boolean deleteOldRdn;
 
     /** The new entry. */
     private IEntry newEntry;
 
     /** The updated searches. */
-    private Set<ISearch> updatedSearchesSet = new HashSet<ISearch>();
+    private Set<ISearch> searchesToUpdateSet = new HashSet<ISearch>();
+
+    /** The dialog to ask for simulated renaming */
+    private SimulateRenameDialog dialog;
 
 
     /**
      * Creates a new instance of RenameEntryJob.
      * 
      * @param entry the entry to rename
-     * @param newRdn the new rdn
-     * @param deleteOldRdn the delete old rdn flag
+     * @param newRdn the new RDN
+     * @param dialog the dialog
      */
-    public RenameEntryJob( IEntry entry, Rdn newRdn, boolean deleteOldRdn )
+    public RenameEntryJob( IEntry entry, Rdn newRdn, SimulateRenameDialog dialog )
     {
         this.browserConnection = entry.getBrowserConnection();
         this.oldEntry = entry;
-        this.newEntry = entry;
+        this.newEntry = null;
         this.newRdn = newRdn;
-        this.deleteOldRdn = deleteOldRdn;
+        this.dialog = dialog;
 
         setName( BrowserCoreMessages.jobs__rename_entry_name );
     }
@@ -122,51 +127,85 @@ public class RenameEntryJob extends AbstractNotificationJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        IEntry parent = oldEntry.getParententry();
-        LdapDN newDn = DnUtils.composeDn( newRdn, parent.getDn() );
+        LdapDN oldDn = oldEntry.getDn();
+        LdapDN parentDn = DnUtils.getParent( oldDn );
+        LdapDN newDn = DnUtils.composeDn( newRdn, parentDn );
 
-        // rename in directory
-        // TODO: use manual/simulated rename, if rename of subtree is not
-        // supported
-        renameEntry( browserConnection, oldEntry, newDn, deleteOldRdn, monitor );
+        // use a dummy monitor to be able to handle exceptions
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
 
+        // try to rename entry
+        renameEntry( browserConnection, oldDn, newDn, dummyMonitor );
+
+        // do a simulated rename, if renaming of a non-leaf entry is not supported.
+        if ( dummyMonitor.errorsReported() )
+        {
+            if ( dialog != null && dummyMonitor.getException() instanceof ContextNotEmptyException )
+            {
+                // open dialog
+                dialog.setEntryInfo( browserConnection, oldDn, newDn );
+                dialog.open();
+                boolean isSimulatedRename = dialog.isSimulateRename();
+
+                if ( isSimulatedRename )
+                {
+                    // do simulated rename operation
+                    dummyMonitor.reset();
+                    CopyEntriesJob.copyEntry( oldEntry, oldEntry.getParententry(), newRdn,
+                        SearchControls.SUBTREE_SCOPE, 0, null, dummyMonitor, monitor );
+
+                    if ( !dummyMonitor.errorsReported() )
+                    {
+                        dummyMonitor.reset();
+                        DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, 0, dummyMonitor,
+                            monitor );
+                    }
+                }
+                else
+                {
+                    // no simulated rename operation
+                    // report the exception to the real monitor
+                    Throwable exception = dummyMonitor.getException();
+                    monitor.reportError( exception );
+                }
+            }
+            else
+            {
+                // we have another exception
+                // report it to the real monitor
+                Throwable exception = dummyMonitor.getException();
+                monitor.reportError( exception );
+            }
+        }
+
+        // update model
         if ( !monitor.errorsReported() )
         {
             // uncache old entry
             browserConnection.uncacheEntryRecursive( oldEntry );
 
-            // rename in parent
+            // remove old entry and add new entry to parent
+            IEntry parent = oldEntry.getParententry();
+            boolean hasMoreChildren = parent.hasMoreChildren();
             parent.deleteChild( oldEntry );
             newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
             parent.addChild( newEntry );
-            parent.setHasMoreChildren( false );
+            parent.setHasMoreChildren( hasMoreChildren );
 
-            newEntry.setHasChildrenHint( oldEntry.hasChildren() );
-            if ( oldEntry.isChildrenInitialized() )
-            {
-                InitializeChildrenJob.initializeChildren( newEntry, monitor );
-            }
-
-            // rename in searches
+            // reset searches, if the renamed entry is a result of a search
             ISearch[] searches = browserConnection.getSearchManager().getSearches();
-            for ( int j = 0; j < searches.length; j++ )
+            for ( ISearch search : searches )
             {
-                ISearch search = searches[j];
                 if ( search.getSearchResults() != null )
                 {
                     ISearchResult[] searchResults = search.getSearchResults();
-                    for ( int k = 0; k < searchResults.length; k++ )
+                    for ( ISearchResult result : searchResults )
                     {
-                        ISearchResult result = searchResults[k];
                         if ( oldEntry.equals( result.getEntry() ) )
                         {
-                            ISearchResult[] newsrs = new ISearchResult[searchResults.length - 1];
-                            System.arraycopy( searchResults, 0, newsrs, 0, k );
-                            System.arraycopy( searchResults, k + 1, newsrs, k, searchResults.length - k - 1 );
-                            search.setSearchResults( newsrs );
-                            searchResults = newsrs;
-                            k--;
-                            updatedSearchesSet.add( search );
+                            search.setSearchResults( null );
+                            searchesToUpdateSet.add( search );
+                            break;
                         }
                     }
                 }
@@ -183,11 +222,12 @@ public class RenameEntryJob extends AbstractNotificationJob
         if ( oldEntry != null && newEntry != null )
         {
             EventRegistry.fireEntryUpdated( new EntryRenamedEvent( oldEntry, newEntry ), this );
-        }
-        for ( ISearch search : updatedSearchesSet )
-        {
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
-                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+
+            for ( ISearch search : searchesToUpdateSet )
+            {
+                EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
+                    SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+            }
         }
     }
 
@@ -205,27 +245,16 @@ public class RenameEntryJob extends AbstractNotificationJob
      * Renames the entry.
      * 
      * @param browserConnection the browser connection
-     * @param oldEntry the old entry
+     * @param oldDn the old DN
      * @param newDn the new DN
-     * @param deleteOldRdn the delete old RDN flag
      * @param monitor the progress monitor
      */
-    static void renameEntry( IBrowserConnection browserConnection, IEntry oldEntry, LdapDN newDn, boolean deleteOldRdn,
+    static void renameEntry( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn,
         StudioProgressMonitor monitor )
     {
-        // dn
-        String oldDnString = oldEntry.getDn().getUpName();
+        String oldDnString = oldDn.getUpName();
         String newDnString = newDn.getUpName();
-
-        // controls
-        Control[] controls = null;
-        if ( oldEntry.isReferral() )
-        {
-            controls = new Control[]
-                { new ManageReferralControl() };
-        }
-
-        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, deleteOldRdn, controls,
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, true, null,
             monitor );
     }
 

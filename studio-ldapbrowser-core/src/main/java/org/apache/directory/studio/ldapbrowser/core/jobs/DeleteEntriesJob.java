@@ -62,47 +62,25 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
  *     and start from 1. for each entry. 
  * </ol>
  *
+ * TODO: delete subentries?
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public class DeleteEntriesJob extends AbstractNotificationJob
 {
 
+    /** The entries to delete. */
     private IEntry[] entriesToDelete;
-    private boolean useTreeDeleteContol;
-    private boolean useManageDsaITControl;
-    private boolean useSubentriesControl;
-
+    
+    /** The deleted entries. */
     private Set<IEntry> deletedEntriesSet;
 
+    /** The entries to update. */
     private Set<IEntry> entriesToUpdateSet;
 
+    /** The searches to update. */
     private Set<ISearch> searchesToUpdateSet;
-
-
-    /**
-     * Creates a new instance of DeleteEntriesJob. 
-     * 
-     * @param entriesToDelete the entries to delete
-     * @param useTreeDeleteContol true to use the Tree Delete Control
-     * @param useManageDsaITControl true to use the Manage DSA IT Control
-     * @param useSubentriesControl true to delete sub-entries
-     */
-    public DeleteEntriesJob( final IEntry[] entriesToDelete, boolean useTreeDeleteContol,
-        boolean useManageDsaITControl, boolean useSubentriesControl )
-    {
-        this.entriesToDelete = entriesToDelete;
-        this.useTreeDeleteContol = useTreeDeleteContol;
-        this.useManageDsaITControl = useManageDsaITControl;
-        this.useSubentriesControl = useSubentriesControl;
-
-        this.deletedEntriesSet = new HashSet<IEntry>();
-        this.entriesToUpdateSet = new HashSet<IEntry>();
-        this.searchesToUpdateSet = new HashSet<ISearch>();
-
-        setName( entriesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
-            : BrowserCoreMessages.jobs__delete_entries_name_n );
-    }
 
 
     /**
@@ -112,7 +90,14 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      */
     public DeleteEntriesJob( final IEntry[] entriesToDelete )
     {
-        this( entriesToDelete, false, false, false );
+        this.entriesToDelete = entriesToDelete;
+
+        this.deletedEntriesSet = new HashSet<IEntry>();
+        this.entriesToUpdateSet = new HashSet<IEntry>();
+        this.searchesToUpdateSet = new HashSet<ISearch>();
+
+        setName( entriesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
+            : BrowserCoreMessages.jobs__delete_entries_name_n );
     }
 
 
@@ -154,8 +139,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
             // delete from directory
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn().getUpName(), num,
-                dummyMonitor, monitor );
+            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn(), num, dummyMonitor, monitor );
             int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
 
             if ( !monitor.isCanceled() )
@@ -164,7 +148,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 {
                     // delete
                     deletedEntriesSet.add( entryToDelete );
-                    entryToDelete.setChildrenInitialized( false );
+                    //entryToDelete.setChildrenInitialized( false );
 
                     // delete from parent entry
                     entriesToUpdateSet.add( entryToDelete.getParententry() );
@@ -225,14 +209,15 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * @param numberOfDeletedEntries the number of delted entries
      * @param dummyMonitor the dummy monitor
      * @param monitor the progress monitor
-     * @return the cululative number of deleted entries
+     * 
+     * @return the cumulative number of deleted entries
      */
-    private int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, String dn,
+    static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, LdapDN dn,
         int numberOfDeletedEntries, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
         // try to delete entry
         dummyMonitor.reset();
-        deleteEntry( browserConnection, dn, useTreeDeleteContol, useManageDsaITControl, dummyMonitor );
+        deleteEntry( browserConnection, dn, dummyMonitor );
 
         if ( !dummyMonitor.errorsReported() )
         {
@@ -244,8 +229,6 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         else if ( dummyMonitor.getException() instanceof ContextNotEmptyException )
         {
             // perform one-level search and delete recursively
-            // TODO: ManageDsaIT control
-            // TODO: Subentries search
             int numberInBatch;
             dummyMonitor.reset();
             do
@@ -257,7 +240,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 searchControls.setReturningAttributes( new String[0] );
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                 NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper()
-                    .search( dn, ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
+                    .search( dn.getUpName(), ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
                         null, dummyMonitor, null );
 
                 try
@@ -271,8 +254,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                         }
 
                         SearchResult sr = result.next();
-                        LdapDN ldapDn = JNDIUtils.getDn( sr );
-                        String childDn = ldapDn.getUpName();
+                        LdapDN childDn = JNDIUtils.getDn( sr );
 
                         numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn,
                             numberOfDeletedEntries, dummyMonitor, monitor );
@@ -299,7 +281,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             // try to delete the entry again 
             if ( !dummyMonitor.errorsReported() )
             {
-                deleteEntry( browserConnection, dn, useTreeDeleteContol, useManageDsaITControl, dummyMonitor );
+                deleteEntry( browserConnection, dn, dummyMonitor );
             }
             if ( !dummyMonitor.errorsReported() )
             {
@@ -348,26 +330,19 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    static void deleteEntry( IBrowserConnection browserConnection, String dn, boolean useTreeDeleteControl,
-        boolean useManageDsaITControl, StudioProgressMonitor monitor )
+    static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, StudioProgressMonitor monitor )
     {
         // controls
         List<BasicControl> controls = new ArrayList<BasicControl>();
-        if ( useTreeDeleteControl )
+        if ( browserConnection.getRootDSE().isControlSupported( Control.TREEDELETE_CONTROL.getOid() ) )
         {
             BasicControl treeDeleteControl = new BasicControl( Control.TREEDELETE_CONTROL.getOid(),
                 Control.TREEDELETE_CONTROL.isCritical(), Control.TREEDELETE_CONTROL.getControlValue() );
             controls.add( treeDeleteControl );
         }
-        if ( useManageDsaITControl )
-        {
-            BasicControl manageDsaITControl = new BasicControl( Control.MANAGEDSAIT_CONTROL.getOid(),
-                Control.MANAGEDSAIT_CONTROL.isCritical(), Control.MANAGEDSAIT_CONTROL.getControlValue() );
-            controls.add( manageDsaITControl );
-        }
 
         // delete entry
-        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn,
+        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(),
             controls.toArray( new BasicControl[controls.size()] ), monitor );
     }
 

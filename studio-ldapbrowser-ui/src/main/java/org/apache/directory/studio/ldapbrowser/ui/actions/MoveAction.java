@@ -26,7 +26,10 @@ import java.util.LinkedHashSet;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.MoveEntriesDialog;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
+import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.jobs.MoveEntriesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -201,9 +204,15 @@ public class MoveAction extends BrowserAction
             if ( newParentDn != null /* && !newRdn.equals(entry.getRdn()) */)
             {
                 IEntry newParentEntry = entries[0].getBrowserConnection().getEntryFromCache( newParentDn );
+                if( newParentEntry == null )
+                {
+                    ReadEntryJob job = new ReadEntryJob( entries[0].getBrowserConnection(), newParentDn );
+                    RunnableContextJobAdapter.execute( job );
+                    newParentEntry = job.getReadEntry();
+                }
                 if ( newParentEntry != null )
                 {
-                    new MoveEntriesJob( entries, newParentEntry ).execute();
+                    new MoveEntriesJob( entries, newParentEntry, new SimulateRenameDialogImpl( getShell() ) ).execute();
                 }
             }
         }

@@ -27,8 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
+import javax.naming.ContextNotEmptyException;
+import javax.naming.directory.SearchControls;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
@@ -46,6 +46,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 /**
  * Job to move entries.
+ * 
+ * First it tries to move an entry using an moddn operation. If
+ * that operation fails with an LDAP error 66 (ContextNotEmptyException)
+ * the use is asked if s/he wants to simulate such a move by recursively
+ * searching/creating/deleting entries.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -65,7 +70,11 @@ public class MoveEntriesJob extends AbstractNotificationJob
     /** The moved entries. */
     private IEntry[] newEntries;
 
-    private Set<ISearch> updatedSearches = new HashSet<ISearch>();
+    /** The searches to update. */
+    private Set<ISearch> searchesToUpdateSet = new HashSet<ISearch>();
+
+    /** The dialog to ask for simulated renaming */
+    private SimulateRenameDialog dialog;
 
 
     /**
@@ -73,12 +82,15 @@ public class MoveEntriesJob extends AbstractNotificationJob
      * 
      * @param entries the entries to move
      * @param newParent the new parent
+     * @param dialog the dialog
      */
-    public MoveEntriesJob( IEntry[] entries, IEntry newParent )
+    public MoveEntriesJob( IEntry[] entries, IEntry newParent, SimulateRenameDialog dialog )
     {
         this.browserConnection = newParent.getBrowserConnection();
         this.oldEntries = entries;
         this.newParent = newParent;
+        this.dialog = dialog;
+        this.newEntries = new IEntry[oldEntries.length];
 
         setName( entries.length == 1 ? BrowserCoreMessages.jobs__move_entry_name_1
             : BrowserCoreMessages.jobs__move_entry_name_n );
@@ -119,60 +131,100 @@ public class MoveEntriesJob extends AbstractNotificationJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        newEntries = new IEntry[oldEntries.length];
-        for ( int i = 0; i < oldEntries.length; i++ )
-        {
-            newEntries[i] = oldEntries[i];
-        }
+        // use a dummy monitor to be able to handle exceptions
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
+        int numAdd = 0;
+        int numDel = 0;
+        boolean isSimulatedRename = false;
+        LdapDN parentDn = newParent.getDn();
 
         for ( int i = 0; i < oldEntries.length; i++ )
         {
+            dummyMonitor.reset();
+
             IEntry oldEntry = oldEntries[i];
-            IEntry oldParent = oldEntry.getParententry();
-            LdapDN newDn = DnUtils.composeDn( oldEntry.getRdn(), newParent.getDn() );
+            LdapDN oldDn = oldEntry.getDn();
+            LdapDN newDn = DnUtils.composeDn( oldDn.getRdn(), parentDn );
 
-            // move in directory
-            // TODO: use manual/simulated move, if move of subtree is not supported (JNDI)
-            int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            moveEntry( browserConnection, oldEntry, newDn, monitor );
-            //connection.move( oldEntry, newParent.getDn(), monitor );
-            int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
+            // try to move entry
+            moveEntry( browserConnection, oldDn, newDn, dummyMonitor );
 
-            if ( errorStatusSize1 == errorStatusSize2 )
+            // do a simulated rename, if renaming of a non-leaf entry is not supported.
+            if ( dummyMonitor.errorsReported() )
             {
-                // move in parent
-                oldParent.deleteChild( oldEntry );
+                if ( dialog != null && dummyMonitor.getException() instanceof ContextNotEmptyException )
+                {
+                    // open dialog
+                    if ( numAdd == 0 )
+                    {
+                        dialog.setEntryInfo( browserConnection, oldDn, newDn );
+                        dialog.open();
+                        isSimulatedRename = dialog.isSimulateRename();
+                    }
+
+                    if ( isSimulatedRename )
+                    {
+                        // do simulated rename operation
+                        dummyMonitor.reset();
+
+                        numAdd = CopyEntriesJob.copyEntry( oldEntry, newParent, null, SearchControls.SUBTREE_SCOPE,
+                            numAdd, null, dummyMonitor, monitor );
+
+                        if ( !dummyMonitor.errorsReported() )
+                        {
+                            dummyMonitor.reset();
+                            numDel = DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, numDel,
+                                dummyMonitor, monitor );
+                        }
+                    }
+                    else
+                    {
+                        // no simulated rename operation
+                        // report the exception to the real monitor
+                        Throwable exception = dummyMonitor.getException();
+                        monitor.reportError( exception );
+                    }
+                }
+                else
+                {
+                    // we have another exception
+                    // report it to the real monitor
+                    Throwable exception = dummyMonitor.getException();
+                    monitor.reportError( exception );
+                }
+            }
+
+            // update model
+            if ( !dummyMonitor.errorsReported() )
+            {
+                // uncache old entry
+                browserConnection.uncacheEntryRecursive( oldEntry );
+
+                // remove old entry from old parent
+                oldEntry.getParententry().deleteChild( oldEntry );
+
+                // add new entry to new parent
+                boolean hasMoreChildren = newParent.hasMoreChildren() || !newParent.isChildrenInitialized();
                 IEntry newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
                 newEntries[i] = newEntry;
                 newParent.addChild( newEntry );
-                newParent.setHasMoreChildren( false );
+                newParent.setHasMoreChildren( hasMoreChildren );
 
-                newEntry.setHasChildrenHint( oldEntry.hasChildren() );
-                if ( oldEntry.isChildrenInitialized() )
-                {
-                    InitializeChildrenJob.initializeChildren( newEntry, monitor );
-                }
-
-                // move in searches
+                // reset searches, if the moved entry is a result of a search
                 ISearch[] searches = browserConnection.getSearchManager().getSearches();
-                for ( int j = 0; j < searches.length; j++ )
+                for ( ISearch search : searches )
                 {
-                    ISearch search = searches[j];
                     if ( search.getSearchResults() != null )
                     {
                         ISearchResult[] searchResults = search.getSearchResults();
-                        for ( int k = 0; k < searchResults.length; k++ )
+                        for ( ISearchResult result : searchResults )
                         {
-                            ISearchResult result = searchResults[k];
                             if ( oldEntry.equals( result.getEntry() ) )
                             {
-                                ISearchResult[] newsrs = new ISearchResult[searchResults.length - 1];
-                                System.arraycopy( searchResults, 0, newsrs, 0, k );
-                                System.arraycopy( searchResults, k + 1, newsrs, k, searchResults.length - k - 1 );
-                                search.setSearchResults( newsrs );
-                                searchResults = newsrs;
-                                k--;
-                                updatedSearches.add( search );
+                                search.setSearchResults( null );
+                                searchesToUpdateSet.add( search );
+                                break;
                             }
                         }
                     }
@@ -194,7 +246,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
                 EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i] ), this );
             }
         }
-        for ( ISearch search : updatedSearches )
+        for ( ISearch search : searchesToUpdateSet )
         {
             EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
                 SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
@@ -216,26 +268,16 @@ public class MoveEntriesJob extends AbstractNotificationJob
      * Moves an entry.
      * 
      * @param browserConnection the browser connection
-     * @param oldEntry the old entry
+     * @param oldDn the old DN
      * @param newDn the new DN
      * @param monitor the progress monitor
      */
-    private void moveEntry( IBrowserConnection browserConnection, IEntry oldEntry, LdapDN newDn,
+    static void moveEntry( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn,
         StudioProgressMonitor monitor )
     {
-        // dn
-        String oldDnString = oldEntry.getDn().getUpName();
+        String oldDnString = oldDn.getUpName();
         String newDnString = newDn.getUpName();
-
-        // controls
-        Control[] controls = null;
-        if ( oldEntry.isReferral() )
-        {
-            controls = new Control[]
-                { new ManageReferralControl() };
-        }
-
-        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, false, controls,
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, false, null,
             monitor );
     }
 

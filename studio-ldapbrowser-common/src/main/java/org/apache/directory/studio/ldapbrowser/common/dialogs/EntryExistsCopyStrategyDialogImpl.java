@@ -146,7 +146,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
+        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
         //createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
 
@@ -212,15 +212,23 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
     private void validate()
     {
-        dnBuilderWidget.setEnabled( renameButton.getSelection() );
         if ( renameButton.getSelection() )
         {
+            dnBuilderWidget.setEnabled( true );
+//            dnBuilderWidget.get
             getButton( IDialogConstants.OK_ID ).setEnabled( dnBuilderWidget.getRdn() != null );
+        }
+        else
+        {
+            dnBuilderWidget.setEnabled( false );
         }
 //        rememberCheckbox.setEnabled( overwriteButton.getSelection() || ignoreButton.getSelection() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int open()
     {
         final int[] result = new int[1];
@@ -235,27 +243,40 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public EntryExistsCopyStrategy getStrategy()
     {
         return strategy;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Rdn getRdn()
     {
         return rdn;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isRememberSelection()
     {
         return isRememberStrategy;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setExistingEntry( IBrowserConnection browserConnection, LdapDN dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
     }
+
 }

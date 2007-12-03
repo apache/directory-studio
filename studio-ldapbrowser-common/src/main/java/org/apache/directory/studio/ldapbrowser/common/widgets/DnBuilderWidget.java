@@ -631,6 +631,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 rdnLine.rdnAddButton.setEnabled( b );
                 rdnLine.rdnDeleteButton.setEnabled( b && rdnLineList.size() > 1 );
             }
+            if( b )
+            {
+                rdnLineList.get( 0 ).rdnValueText.setFocus();
+            }
         }
         if ( previewText != null )
         {
