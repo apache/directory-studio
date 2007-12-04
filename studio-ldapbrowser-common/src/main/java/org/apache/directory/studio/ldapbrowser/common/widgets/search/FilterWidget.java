@@ -115,17 +115,22 @@ public class FilterWidget extends BrowserWidget
      */
     public void createWidget( final Composite parent )
     {
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.horizontalSpan = 1;
+        gd.widthHint = 200;
+        composite.setLayoutData( gd );
+        
         // filter combo with field decoration
         final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
             FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        filterComboField = new DecoratedField( parent, SWT.NONE, new IControlCreator()
+        filterComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
         {
             public Control createControl( Composite parent, int style )
             {
                 Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
                 GridData gd = new GridData( GridData.FILL_HORIZONTAL );
                 gd.horizontalSpan = 1;
-                gd.widthHint = 200;
                 combo.setLayoutData( gd );
                 combo.setVisibleItemCount( 20 );
                 return combo;
