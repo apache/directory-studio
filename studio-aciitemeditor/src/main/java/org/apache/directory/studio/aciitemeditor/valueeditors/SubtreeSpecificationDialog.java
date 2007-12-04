@@ -439,8 +439,9 @@ class SubtreeSpecificationDialog extends Dialog
         {
             filter = subtreeSpecification.getRefinement().toString();
         }
-        filterWidget = new FilterWidget( connection, filter );
+        filterWidget = new FilterWidget( filter );
         filterWidget.createWidget( composite );
+        filterWidget.setBrowserConnection( connection );
         filterButton.setSelection( !refinementButton.getSelection() );
         filterWidget.setEnabled( !refinementButton.getSelection() );
 

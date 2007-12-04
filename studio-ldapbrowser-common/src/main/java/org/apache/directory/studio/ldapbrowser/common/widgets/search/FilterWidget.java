@@ -87,12 +87,10 @@ public class FilterWidget extends BrowserWidget
     /**
      * Creates a new instance of FilterWidget.
      * 
-     * @param browserConnection the connection
-     * @param initalFilter the inital filter
+     * @param initalFilter the initial filter
      */
-    public FilterWidget( IBrowserConnection browserConnection, String initalFilter )
+    public FilterWidget( String initalFilter )
     {
-        this.browserConnection = browserConnection;
         this.initalFilter = initalFilter;
     }
 
@@ -182,7 +180,6 @@ public class FilterWidget extends BrowserWidget
         filterCombo.setItems( history );
 
         // initial values
-        setBrowserConnection( browserConnection );
         filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter );
     }
 

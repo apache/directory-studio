@@ -137,8 +137,9 @@ public class FilterWidgetDialog extends Dialog
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         inner.setLayoutData( gd );
 
-        filterWidget = new FilterWidget( connection, filter != null ? filter : "" );
+        filterWidget = new FilterWidget( filter != null ? filter : "" );
         filterWidget.createWidget( inner );
+        filterWidget.setBrowserConnection( connection );
         filterWidget.setFocus();
         filterWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
