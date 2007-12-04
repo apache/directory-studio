@@ -233,6 +233,7 @@ public class ImportLdifJob extends AbstractNotificationJob
     static void importLdif( IBrowserConnection browserConnection, LdifEnumeration enumeration, Writer logWriter,
         boolean continueOnError, StudioProgressMonitor monitor )
     {
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         int importedCount = 0;
         int errorCount = 0;
         try
@@ -246,62 +247,80 @@ public class ImportLdifJob extends AbstractNotificationJob
                     LdifRecord record = ( LdifRecord ) container;
                     try
                     {
-                        importLdifRecord( browserConnection, record, monitor );
-                        logModification( browserConnection, logWriter, record, monitor );
-                        importedCount++;
+                        dummyMonitor.reset();
+                        importLdifRecord( browserConnection, record, dummyMonitor );
+                        if ( dummyMonitor.errorsReported() )
+                        {
+                            errorCount++;
+                            logModificationError( browserConnection, logWriter, record, dummyMonitor.getException(),
+                                monitor );
 
-                        // update cache and adjust attribute/children initialization flags
-                        LdapDN dn = new LdapDN( record.getDnLine().getValueAsString() );
-                        IEntry entry = browserConnection.getEntryFromCache( dn );
-                        LdapDN parentDn = DnUtils.getParent( dn );
-                        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
-
-                        if ( record instanceof LdifChangeDeleteRecord )
-                        {
-                            if ( entry != null )
+                            if ( !continueOnError )
                             {
-                                entry.setAttributesInitialized( false );
-                                browserConnection.uncacheEntryRecursive( entry );
-                            }
-                            if ( parentEntry != null )
-                            {
-                                parentEntry.setChildrenInitialized( false );
-                            }
-                        }
-                        else if ( record instanceof LdifChangeModDnRecord )
-                        {
-                            if ( entry != null )
-                            {
-                                entry.setAttributesInitialized( false );
-                                browserConnection.uncacheEntryRecursive( entry );
-                            }
-                            if ( parentEntry != null )
-                            {
-                                parentEntry.setChildrenInitialized( false );
-                            }
-                            LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
-                            if ( modDnRecord.getNewsuperiorLine() != null )
-                            {
-                                LdapDN newSuperiorDn = new LdapDN( modDnRecord.getNewsuperiorLine().getValueAsString() );
-                                IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
-                                if ( newSuperiorEntry != null )
-                                {
-                                    newSuperiorEntry.setChildrenInitialized( false );
-                                }
-                            }
-                        }
-                        else if ( record instanceof LdifChangeAddRecord || record instanceof LdifContentRecord )
-                        {
-                            if ( parentEntry != null )
-                            {
-                                parentEntry.setChildrenInitialized( false );
+                                monitor.reportError( dummyMonitor.getException() );
+                                return;
                             }
                         }
                         else
                         {
-                            if ( entry != null )
+                            importedCount++;
+                            logModification( browserConnection, logWriter, record, monitor );
+
+                            // update cache and adjust attribute/children initialization flags
+                            LdapDN dn = new LdapDN( record.getDnLine().getValueAsString() );
+                            IEntry entry = browserConnection.getEntryFromCache( dn );
+                            LdapDN parentDn = DnUtils.getParent( dn );
+                            IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn )
+                                : null;
+
+                            if ( record instanceof LdifChangeDeleteRecord )
                             {
-                                entry.setAttributesInitialized( false );
+                                if ( entry != null )
+                                {
+                                    entry.setAttributesInitialized( false );
+                                    browserConnection.uncacheEntryRecursive( entry );
+                                }
+                                if ( parentEntry != null )
+                                {
+                                    parentEntry.setChildrenInitialized( false );
+                                }
+                            }
+                            else if ( record instanceof LdifChangeModDnRecord )
+                            {
+                                if ( entry != null )
+                                {
+                                    entry.setAttributesInitialized( false );
+                                    browserConnection.uncacheEntryRecursive( entry );
+                                }
+                                if ( parentEntry != null )
+                                {
+                                    parentEntry.setChildrenInitialized( false );
+                                }
+                                LdifChangeModDnRecord modDnRecord = ( LdifChangeModDnRecord ) record;
+                                if ( modDnRecord.getNewsuperiorLine() != null )
+                                {
+                                    LdapDN newSuperiorDn = new LdapDN( modDnRecord.getNewsuperiorLine()
+                                        .getValueAsString() );
+                                    IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
+                                    if ( newSuperiorEntry != null )
+                                    {
+                                        newSuperiorEntry.setChildrenInitialized( false );
+                                    }
+                                }
+                            }
+                            else if ( record instanceof LdifChangeAddRecord || record instanceof LdifContentRecord )
+                            {
+                                if ( parentEntry != null )
+                                {
+                                    parentEntry.setChildrenInitialized( false );
+                                }
+                            }
+                            else
+                            {
+                                if ( entry != null )
+                                {
+                                    entry.setAttributesInitialized( false );
+                                }
                             }
                         }
                     }
@@ -513,7 +532,7 @@ public class ImportLdifJob extends AbstractNotificationJob
      * @param monitor the progress monitor
      */
     private static void logModificationError( IBrowserConnection browserConnection, Writer logWriter,
-        LdifRecord record, Exception exception, StudioProgressMonitor monitor )
+        LdifRecord record, Throwable exception, StudioProgressMonitor monitor )
     {
         try
         {
