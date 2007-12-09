@@ -113,7 +113,9 @@ public class LdapFilterItemComponent extends LdapFilterComponent
             && ( filtertypeToken.getType() == LdapFilterToken.EQUAL
                 || filtertypeToken.getType() == LdapFilterToken.GREATER
                 || filtertypeToken.getType() == LdapFilterToken.LESS
-                || filtertypeToken.getType() == LdapFilterToken.APROX || filtertypeToken.getType() == LdapFilterToken.PRESENT ) )
+                || filtertypeToken.getType() == LdapFilterToken.APROX 
+                || filtertypeToken.getType() == LdapFilterToken.PRESENT
+                || filtertypeToken.getType() == LdapFilterToken.SUBSTRING ) )
         {
             this.filtertypeToken = filtertypeToken;
             return true;

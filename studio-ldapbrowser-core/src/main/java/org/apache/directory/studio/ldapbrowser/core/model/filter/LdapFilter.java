@@ -206,7 +206,7 @@ public class LdapFilter
      */
     public boolean isValid()
     {
-        return startToken != null && filterComponent != null && filterComponent.isValid() && stopToken != null;
+        return startToken != null && filterComponent != null && filterComponent.isValid() && stopToken != null && otherTokens.isEmpty();
     }
 
 
@@ -299,7 +299,17 @@ public class LdapFilter
      */
     public String toString()
     {
-        return ( startToken != null ? "(" : "" ) + ( filterComponent != null ? filterComponent.toString() : "" ) + ( stopToken != null ? ")" : "" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        StringBuffer sb = new StringBuffer();
+        LdapFilterToken[] tokens = getTokens();
+        for ( LdapFilterToken token : tokens )
+        {
+            sb.append( token.getValue() );
+        }
+        return sb.toString();
+//        return ( startToken != null ? "(" : "" ) + 
+//        ( filterComponent != null ? filterComponent.toString() : "" ) + 
+//        ( stopToken != null ? ")" : "" ); 
+//        //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
 }

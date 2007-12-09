@@ -195,6 +195,7 @@ public class LdapFilterParser
                     case LdapFilterToken.LESS:
                     case LdapFilterToken.APROX:
                     case LdapFilterToken.PRESENT:
+                    case LdapFilterToken.SUBSTRING:
                     {
                         LdapFilter currentFilter = filterStack.peek();
                         LdapFilterComponent filterComponent = currentFilter.getFilterComponent();
