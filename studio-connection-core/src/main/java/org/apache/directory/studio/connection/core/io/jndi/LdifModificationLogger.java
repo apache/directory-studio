@@ -57,10 +57,14 @@ import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecor
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
@@ -69,8 +73,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 /**
  * The ModificationLogger is used to log modifications in LDIF format into a file.
- *
- * TODO: log controls
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -221,8 +223,9 @@ public class LdifModificationLogger implements IJndiLogger
     {
         try
         {
-            LdifChangeAddRecord record = LdifChangeAddRecord.create( dn );
-            //record.addControl( controlLine );
+            LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( dn ) );
+            addControlLines( record, controls );
+            record.setChangeType( LdifChangeTypeLine.createAdd() );
             NamingEnumeration<? extends Attribute> attributeEnumeration = attributes.getAll();
             while ( attributeEnumeration.hasMore() )
             {
@@ -259,8 +262,9 @@ public class LdifModificationLogger implements IJndiLogger
     public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
         NamingException ex )
     {
-        LdifChangeDeleteRecord record = LdifChangeDeleteRecord.create( dn );
-        //record.addControl( controlLine );
+        LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createDelete() );
         record.finish( LdifSepLine.create() );
 
         String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
@@ -276,8 +280,9 @@ public class LdifModificationLogger implements IJndiLogger
     {
         try
         {
-            LdifChangeModifyRecord record = LdifChangeModifyRecord.create( dn );
-            //record.addControl( controlLine );
+            LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn ) );
+            addControlLines( record, controls );
+            record.setChangeType( LdifChangeTypeLine.createModify() );
             for ( ModificationItem item : modificationItems )
             {
                 Attribute attribute = item.getAttribute();
@@ -337,8 +342,9 @@ public class LdifModificationLogger implements IJndiLogger
             Rdn newrdn = dn.getRdn();
             LdapDN newsuperior = DnUtils.getParent( dn );
 
-            LdifChangeModDnRecord record = LdifChangeModDnRecord.create( oldDn );
-            //record.addControl( controlLine );
+            LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn ) );
+            addControlLines( record, controls );
+            record.setChangeType( LdifChangeTypeLine.createModDn() );
             record.setNewrdn( LdifNewrdnLine.create( newrdn.getUpName() ) );
             record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
             record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getUpName() ) );
@@ -349,6 +355,28 @@ public class LdifModificationLogger implements IJndiLogger
         }
         catch ( InvalidNameException e )
         {
+        }
+    }
+
+
+    /**
+     * Adds control lines to the record
+     *
+     * @param record the recored
+     * @param controls the controls
+     */
+    private static void addControlLines( LdifChangeRecord record, Control[] controls )
+    {
+        if ( controls != null )
+        {
+            for ( Control control : controls )
+            {
+                String oid = control.getID();
+                boolean isCritical = control.isCritical();
+                byte[] controlValue = control.getEncodedValue();
+                LdifControlLine controlLine = LdifControlLine.create( oid, isCritical, controlValue );
+                record.addControl( controlLine );
+            }
         }
     }
 

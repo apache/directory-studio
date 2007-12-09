@@ -232,7 +232,7 @@ public class LdifControlLine extends LdifValueLineBase
         {
             LdifControlLine controlLine = new LdifControlLine( 0, "control", ":", oid, criticality,
                 controlValue != null ? ":" : null, controlValue != null ? controlValue : null,
-                    LdifParserConstants.LINE_SEPARATOR );
+                LdifParserConstants.LINE_SEPARATOR );
             return controlLine;
         }
     }
@@ -244,6 +244,18 @@ public class LdifControlLine extends LdifValueLineBase
             && controlValue.length > 0 ? "::" : null, controlValue != null && controlValue.length > 0 ? LdifUtils
             .base64encode( controlValue ) : null, LdifParserConstants.LINE_SEPARATOR );
         return controlLine;
+    }
+
+
+    public static LdifControlLine create( String oid, boolean isCritical, String controlValue )
+    {
+        return create( oid, isCritical ? " true" : " false", controlValue );
+    }
+
+
+    public static LdifControlLine create( String oid, boolean isCritical, byte[] controlValue )
+    {
+        return create( oid, isCritical ? " true" : " false", controlValue );
     }
 
 }

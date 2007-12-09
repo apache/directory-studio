@@ -157,7 +157,7 @@ public class Control implements Serializable
             return "";
         }
 
-        LdifControlLine line = LdifControlLine.create( getOid(), isCritical() ? " true" : " false", getControlValue() );
+        LdifControlLine line = LdifControlLine.create( getOid(), isCritical(), getControlValue() );
         String s = line.toRawString();
         s = s.substring( line.getRawControlSpec().length(), s.length() );
         s = s.substring( line.getRawControlType().length(), s.length() );
