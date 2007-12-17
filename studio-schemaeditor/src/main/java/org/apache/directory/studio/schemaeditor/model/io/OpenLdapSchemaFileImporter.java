@@ -23,7 +23,6 @@ package org.apache.directory.studio.schemaeditor.model.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -47,6 +46,8 @@ public class OpenLdapSchemaFileImporter
     /**
      * Extracts the Schema from the given path.
      *
+     * @param inputStream
+     *      the {@link InputStream} of the file.
      * @param path
      *      the path of the file.
      * @return
@@ -54,34 +55,8 @@ public class OpenLdapSchemaFileImporter
      * @throws OpenLdapSchemaFileImportException
      *      if an error occurrs when importing the schema
      */
-    public static Schema getSchema( String path ) throws OpenLdapSchemaFileImportException
+    public static Schema getSchema( InputStream inputStream, String path ) throws OpenLdapSchemaFileImportException
     {
-        File file = new File( path );
-
-        // Checking the file properties
-        if ( !file.exists() )
-        {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' does not exist." );
-        }
-        else if ( !file.canRead() )
-        {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read." );
-        }
-
-        InputStream in = null;
-        try
-        {
-            in = file.toURL().openStream();
-        }
-        catch ( MalformedURLException e )
-        {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
-        }
-        catch ( IOException e )
-        {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
-        }
-
         OpenLdapSchemaParser parser = null;
         try
         {
@@ -94,7 +69,7 @@ public class OpenLdapSchemaFileImporter
 
         try
         {
-            parser.parse( in );
+            parser.parse( inputStream );
         }
         catch ( IOException e )
         {

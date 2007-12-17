@@ -21,6 +21,8 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -82,7 +84,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
         page.saveDialogSettings();
 
         // Getting the schemas to be imported
-        final String[] selectedSchemasFiles = page.getSelectedSchemaFiles();
+        final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
         schemaChecker.disableModificationsListening();
         try
         {
@@ -92,20 +94,23 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                 {
                     monitor.beginTask( "Importing schemas: ", selectedSchemasFiles.length );
 
-                    for ( String schemaFile : selectedSchemasFiles )
+                    for ( File schemaFile : selectedSchemasFiles )
                     {
-                        monitor.subTask( new File( schemaFile ).getName() );
+                        monitor.subTask( schemaFile.getName() );
                         try
                         {
-                            SchemaFileType schemaFileType = XMLSchemaFileImporter.getSchemaFileType( schemaFile );
+                            SchemaFileType schemaFileType = XMLSchemaFileImporter.getSchemaFileType( new FileInputStream( schemaFile ),
+                                schemaFile.getAbsolutePath() );
                             switch ( schemaFileType )
                             {
                                 case SINGLE:
-                                    Schema importedSchema = XMLSchemaFileImporter.getSchema( schemaFile );
+                                    Schema importedSchema = XMLSchemaFileImporter.getSchema( new FileInputStream( schemaFile ),
+                                        schemaFile.getAbsolutePath() );
                                     schemaHandler.addSchema( importedSchema );
                                     break;
                                 case MULTIPLE:
-                                    Schema[] schemas = XMLSchemaFileImporter.getSchemas( schemaFile );
+                                    Schema[] schemas = XMLSchemaFileImporter.getSchemas( new FileInputStream( schemaFile ), schemaFile
+                                        .getAbsolutePath() );
                                     for ( Schema schema : schemas )
                                     {
                                         schemaHandler.addSchema( schema );
@@ -114,6 +119,12 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                             }
                         }
                         catch ( XMLSchemaFileImportException e )
+                        {
+                            PluginUtils.logError( "An error occured when importing  the schema " + schemaFile + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
+                                + schemaFile + "." );
+                        }
+                        catch ( FileNotFoundException e )
                         {
                             PluginUtils.logError( "An error occured when importing  the schema " + schemaFile + ".", e );
                             ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "

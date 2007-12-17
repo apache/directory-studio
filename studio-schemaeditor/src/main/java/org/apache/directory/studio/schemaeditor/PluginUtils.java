@@ -21,9 +21,13 @@ package org.apache.directory.studio.schemaeditor;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,20 +151,27 @@ public class PluginUtils
     public static void loadProjects()
     {
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
+        //        PluginUtils.logInfo( null, "ProjectsHandler : {0}", projectsHandler );// TODO Remove
         File projectsFile = getProjectsFile();
+        //        PluginUtils.logInfo( null, "projectsFile : {0}", projectsFile );// TODO Remove
 
         if ( projectsFile.exists() )
         {
             Project[] projects = null;
             try
             {
-                projects = ProjectsImporter.getProjects( projectsFile.getAbsolutePath() );
+                projects = ProjectsImporter.getProjects( new FileInputStream( projectsFile ), projectsFile
+                    .getAbsolutePath() );
             }
             catch ( ProjectsImportException e )
             {
-                PluginUtils.logError( "An error occured when loading the projects.", e );
-                ViewUtils.displayErrorMessageBox( "Projects Loading Error",
-                    "An error occured when loading the projects." );
+                handleErrorWhileLoadingProjects( projectsFile, e );
+                return;
+            }
+            catch ( FileNotFoundException e )
+            {
+                handleErrorWhileLoadingProjects( projectsFile, e );
+                return;
             }
 
             for ( Project project : projects )
@@ -168,6 +179,21 @@ public class PluginUtils
                 projectsHandler.addProject( project );
             }
         }
+    }
+
+
+    /**
+     * This method is called when an exception is raised when trying to load the Projects file.
+     * 
+     * @param projectsFile
+     * 		the Projects file
+     * @param e
+     * 		the exception raised
+     */
+    private static void handleErrorWhileLoadingProjects( File projectsFile, Exception e )
+    {
+        PluginUtils.logError( "An error occured when loading the projects.", e );
+        ViewUtils.displayErrorMessageBox( "Projects Loading Error", "An error occured when loading the projects." );
     }
 
 
@@ -206,6 +232,24 @@ public class PluginUtils
         Activator.getDefault().getLog().log(
             new Status( Status.ERROR, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, message,
                 exception ) );
+    }
+
+
+    /**
+     * Logs the given message and exception with the ERROR status level.
+     * 
+     * @param message
+     *      the message
+     * @param exception
+     *      the exception
+     */
+    public static void logInfo( Throwable exception, String message, Object... args )
+    {
+        String msg = MessageFormat.format( message, args );
+        Activator.getDefault().getLog()
+            .log(
+                new Status( Status.ERROR, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, msg,
+                    exception ) );
     }
 
 
@@ -250,10 +294,23 @@ public class PluginUtils
             }
             else
             {
-                schema = XMLSchemaFileImporter.getSchema( url.toString() );
+                schema = XMLSchemaFileImporter.getSchema( new FileInputStream( new File( url.toURI() ) ), url
+                    .toString() );
             }
         }
         catch ( XMLSchemaFileImportException e )
+        {
+            PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
+            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
+                + schemaName + "." );
+        }
+        catch ( FileNotFoundException e )
+        {
+            PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
+            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
+                + schemaName + "." );
+        }
+        catch ( URISyntaxException e )
         {
             PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
             ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "

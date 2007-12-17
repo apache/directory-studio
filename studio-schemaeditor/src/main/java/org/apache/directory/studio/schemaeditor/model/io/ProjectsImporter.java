@@ -20,6 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -58,6 +59,8 @@ public class ProjectsImporter
     /**
      * Extract the project from the given path
      *
+     * @param inputStream
+     *      the {@link InputStream} of the file
      * @param path
      *      the path of the file
      * @return
@@ -65,7 +68,7 @@ public class ProjectsImporter
      * @throws ProjectsImportException 
      *      if an error occurs when importing the project
      */
-    public static Project getProject( String path ) throws ProjectsImportException
+    public static Project getProject( InputStream inputStream, String path ) throws ProjectsImportException
     {
         Project project = new Project();
 
@@ -73,7 +76,7 @@ public class ProjectsImporter
         Document document = null;
         try
         {
-            document = reader.read( path );
+            document = reader.read( inputStream );
         }
         catch ( DocumentException e )
         {
@@ -93,8 +96,10 @@ public class ProjectsImporter
 
 
     /**
-     * Extract the projects from the given path
+     * Extract the projects from the given input stream
      *
+     * @param inputStream
+     *      the {@link InputStream} of the file
      * @param path
      *      the path of the file
      * @return
@@ -102,7 +107,7 @@ public class ProjectsImporter
      * @throws ProjectsImportException 
      *      if an error occurs when importing the project
      */
-    public static Project[] getProjects( String path ) throws ProjectsImportException
+    public static Project[] getProjects( InputStream inputStream, String path ) throws ProjectsImportException
     {
         List<Project> projects = new ArrayList<Project>();
 
@@ -110,10 +115,11 @@ public class ProjectsImporter
         Document document = null;
         try
         {
-            document = reader.read( path );
+            document = reader.read( inputStream );
         }
         catch ( DocumentException e )
         {
+        	PluginUtils.logError("The file '" + path + "' can not be read correctly.", e);
             throw new ProjectsImportException( "The file '" + path + "' can not be read correctly." );
         }
 
@@ -263,19 +269,21 @@ public class ProjectsImporter
     /**
      * Gets the type of file.
      *
+     * @param inputStream
+     *      the {@link InputStream} of the file
      * @param path
      *      the path of the file
      * @return
      *      the type of the file
      * @throws ProjectsImportException
      */
-    public static ProjectFileType getProjectFileType( String path ) throws ProjectsImportException
+    public static ProjectFileType getProjectFileType( InputStream inputStream, String path ) throws ProjectsImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
         try
         {
-            document = reader.read( path );
+            document = reader.read( inputStream );
         }
         catch ( DocumentException e )
         {

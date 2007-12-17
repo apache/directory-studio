@@ -21,6 +21,8 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -97,10 +99,17 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                         monitor.subTask( schemaFile.getName() );
                         try
                         {
-                            Schema schema = OpenLdapSchemaFileImporter.getSchema( schemaFile.getAbsolutePath() );
+                            Schema schema = OpenLdapSchemaFileImporter.getSchema( new FileInputStream( schemaFile), schemaFile.getAbsolutePath() );
                             schemaHandler.addSchema( schema );
                         }
                         catch ( OpenLdapSchemaFileImportException e )
+                        {
+                            PluginUtils.logError( "An error occured when importing the schema " + schemaFile.getName()
+                                + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when importing the schema "
+                                + schemaFile.getName() + "." );
+                        }
+                        catch ( FileNotFoundException e )
                         {
                             PluginUtils.logError( "An error occured when importing the schema " + schemaFile.getName()
                                 + ".", e );

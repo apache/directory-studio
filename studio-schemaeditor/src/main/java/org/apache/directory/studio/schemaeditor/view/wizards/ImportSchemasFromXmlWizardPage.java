@@ -327,17 +327,17 @@ public class ImportSchemasFromXmlWizardPage extends WizardPage
      * @return
      *      the selected schema files
      */
-    public String[] getSelectedSchemaFiles()
+    public File[] getSelectedSchemaFiles()
     {
         Object[] selectedSchemaFile = schemaFilesTableViewer.getCheckedElements();
 
-        List<String> schemaFiles = new ArrayList<String>();
+        List<File> schemaFiles = new ArrayList<File>();
         for ( Object schemaFile : selectedSchemaFile )
         {
-            schemaFiles.add( ( ( File ) schemaFile ).getAbsolutePath() );
+            schemaFiles.add( ( File ) schemaFile );
         }
 
-        return schemaFiles.toArray( new String[0] );
+        return schemaFiles.toArray( new File[0] );
     }
 
 

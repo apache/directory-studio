@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +88,8 @@ public class XMLSchemaFileImporter
     /**
      * Extracts the Schemas from the given path.
      *
+     * @param inputStream
+     *      the {@link InputStream} of the file
      * @param path
      *      the path of the file.
      * @return
@@ -94,13 +97,13 @@ public class XMLSchemaFileImporter
      * @throws XMLSchemaFileImportException
      *      if an error occurs when importing the schema
      */
-    public static Schema[] getSchemas( String path ) throws XMLSchemaFileImportException
+    public static Schema[] getSchemas(InputStream inputStream, String path ) throws XMLSchemaFileImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
         try
         {
-            document = reader.read( path );
+            document = reader.read( inputStream );
         }
         catch ( DocumentException e )
         {
@@ -120,6 +123,8 @@ public class XMLSchemaFileImporter
     /**
      * Extracts the Schema from the given path.
      *
+     * @param inputStream
+     *      the {@link InputStream} of the file
      * @param path
      *      the path of the file.
      * @return
@@ -127,13 +132,13 @@ public class XMLSchemaFileImporter
      * @throws XMLSchemaFileImportException
      *      if an error occurs when importing the schema
      */
-    public static Schema getSchema( String path ) throws XMLSchemaFileImportException
+    public static Schema getSchema(InputStream inputStream, String path ) throws XMLSchemaFileImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
         try
         {
-            document = reader.read( path );
+            document = reader.read( inputStream );
         }
         catch ( DocumentException e )
         {
@@ -812,13 +817,13 @@ public class XMLSchemaFileImporter
      *      the type of the file
      * @throws XMLSchemaFileImportException
      */
-    public static SchemaFileType getSchemaFileType( String path ) throws XMLSchemaFileImportException
+    public static SchemaFileType getSchemaFileType( InputStream inputStream, String path ) throws XMLSchemaFileImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
         try
         {
-            document = reader.read( path );
+            document = reader.read( inputStream );
         }
         catch ( DocumentException e )
         {

@@ -21,6 +21,8 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -91,10 +93,18 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
                         monitor.subTask( projectFile.getName() );
                         try
                         {
-                            Project project = ProjectsImporter.getProject( projectFile.getAbsolutePath() );
+                            Project project = ProjectsImporter.getProject( new FileInputStream( projectFile ),
+                                projectFile.getAbsolutePath() );
                             projectsHandler.addProject( project );
                         }
                         catch ( ProjectsImportException e )
+                        {
+                            PluginUtils.logError( "An error occured when importing project " + projectFile.getName()
+                                + ".", e );
+                            ViewUtils.displayErrorMessageBox( "Import Error",
+                                "An error occured when importing project " + projectFile.getName() + "." );
+                        }
+                        catch ( FileNotFoundException e )
                         {
                             PluginUtils.logError( "An error occured when importing project " + projectFile.getName()
                                 + ".", e );
