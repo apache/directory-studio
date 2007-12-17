@@ -151,9 +151,7 @@ public class PluginUtils
     public static void loadProjects()
     {
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
-        //        PluginUtils.logInfo( null, "ProjectsHandler : {0}", projectsHandler );// TODO Remove
         File projectsFile = getProjectsFile();
-        //        PluginUtils.logInfo( null, "projectsFile : {0}", projectsFile );// TODO Remove
 
         if ( projectsFile.exists() )
         {
