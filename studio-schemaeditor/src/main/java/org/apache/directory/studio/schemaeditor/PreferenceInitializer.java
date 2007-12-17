@@ -92,5 +92,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
             PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME );
         store.setDefault( PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER,
             PluginConstants.PREFS_SEARCH_VIEW_SORTING_ORDER_ASCENDING );
+
+        // File Dialogs
+        store.setDefault( PluginConstants.FILE_DIALOG_EXPORT_PROJECTS, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_OPENLDAP, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.FILE_DIALOG_IMPORT_PROJECTS, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.FILE_DIALOG_IMPORT_SCHEMAS_OPENLDAP, System.getProperty( "user.home" ) ); //$NON-NLS-1$
+        store.setDefault( PluginConstants.FILE_DIALOG_IMPORT_SCHEMAS_XML, System.getProperty( "user.home" ) ); //$NON-NLS-1$
     }
 }

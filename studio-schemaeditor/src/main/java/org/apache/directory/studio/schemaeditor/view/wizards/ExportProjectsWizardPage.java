@@ -254,6 +254,15 @@ public class ExportProjectsWizardPage extends WizardPage
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         dialog.setText( "Choose Folder" );
         dialog.setMessage( "Select the folder in which export the files." );
+        if ( "".equals( exportDirectoryText.getText() ) )
+        {
+            dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.FILE_DIALOG_EXPORT_PROJECTS ) );
+        }
+        else
+        {
+            dialog.setFilterPath( exportDirectoryText.getText() );
+        }
 
         String selectedDirectory = dialog.open();
         if ( selectedDirectory != null )
@@ -361,5 +370,15 @@ public class ExportProjectsWizardPage extends WizardPage
     public String getExportDirectory()
     {
         return exportDirectoryText.getText();
+    }
+
+
+    /**
+     * Saves the dialog settings.
+     */
+    public void saveDialogSettings()
+    {
+        Activator.getDefault().getPreferenceStore().putValue( PluginConstants.FILE_DIALOG_EXPORT_PROJECTS,
+            exportDirectoryText.getText() );
     }
 }

@@ -73,8 +73,11 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
      */
     public boolean performFinish()
     {
-        final File[] selectedProjectFiles = page.getSelectedProjectFiles();
+        // Saving the dialog settings
+        page.saveDialogSettings();
 
+        // Getting the projects to be imported
+        final File[] selectedProjectFiles = page.getSelectedProjectFiles();
         try
         {
             getContainer().run( true, false, new IRunnableWithProgress()

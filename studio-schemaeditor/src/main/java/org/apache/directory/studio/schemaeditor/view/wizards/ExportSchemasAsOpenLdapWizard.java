@@ -74,8 +74,11 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
      */
     public boolean performFinish()
     {
-        final Schema[] selectedSchemas = page.getSelectedSchemas();
+        // Saving the dialog settings
+        page.saveDialogSettings();
 
+        // Getting the schemas to be exported and where to export them
+        final Schema[] selectedSchemas = page.getSelectedSchemas();
         final String exportDirectory = page.getExportDirectory();
         try
         {

@@ -353,6 +353,15 @@ public class ExportSchemasForADSWizardPage extends WizardPage
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         dialog.setText( "Choose Folder" );
         dialog.setMessage( "Select the folder in which export the files." );
+        if ( "".equals( exportMultipleFilesText.getText() ) )
+        {
+            dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS ) );
+        }
+        else
+        {
+            dialog.setFilterPath( exportMultipleFilesText.getText() );
+        }
 
         String selectedDirectory = dialog.open();
         if ( selectedDirectory != null )
@@ -373,7 +382,15 @@ public class ExportSchemasForADSWizardPage extends WizardPage
             { "*.ldif", "*" } );
         dialog.setFilterNames( new String[]
             { "LDIF Files", "All Files" } );
-        dialog.setFilterPath( exportSingleFileText.getText() );
+        if ( "".equals( exportSingleFileText.getText() ) )
+        {
+            dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS ) );
+        }
+        else
+        {
+            dialog.setFilterPath( exportSingleFileText.getText() );
+        }
 
         String selectedFile = dialog.open();
         if ( selectedFile != null )
@@ -538,5 +555,23 @@ public class ExportSchemasForADSWizardPage extends WizardPage
     public String getExportFile()
     {
         return exportSingleFileText.getText();
+    }
+
+
+    /**
+     * Saves the dialog settings.
+     */
+    public void saveDialogSettings()
+    {
+        if ( exportMultipleFilesRadio.getSelection() )
+        {
+            Activator.getDefault().getPreferenceStore().putValue( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS,
+                exportMultipleFilesText.getText() );
+        }
+        else
+        {
+            Activator.getDefault().getPreferenceStore().putValue( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS,
+                new File( exportSingleFileText.getText() ).getParent() );
+        }
     }
 }

@@ -353,6 +353,15 @@ public class ExportSchemasAsXmlWizardPage extends WizardPage
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         dialog.setText( "Choose Folder" );
         dialog.setMessage( "Select the folder in which export the files." );
+        if ( "".equals( exportMultipleFilesText.getText() ) )
+        {
+            dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML ) );
+        }
+        else
+        {
+            dialog.setFilterPath( exportMultipleFilesText.getText() );
+        }
 
         String selectedDirectory = dialog.open();
         if ( selectedDirectory != null )
@@ -373,7 +382,15 @@ public class ExportSchemasAsXmlWizardPage extends WizardPage
             { "*.xml", "*" } );
         dialog.setFilterNames( new String[]
             { "XML Files", "All Files" } );
-        dialog.setFilterPath( exportSingleFileText.getText() );
+        if ( "".equals( exportSingleFileText.getText() ) )
+        {
+            dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML ) );
+        }
+        else
+        {
+            dialog.setFilterPath( exportSingleFileText.getText() );
+        }
 
         String selectedFile = dialog.open();
         if ( selectedFile != null )
@@ -538,5 +555,23 @@ public class ExportSchemasAsXmlWizardPage extends WizardPage
     public String getExportFile()
     {
         return exportSingleFileText.getText();
+    }
+
+
+    /**
+     * Saves the dialog settings.
+     */
+    public void saveDialogSettings()
+    {
+        if ( exportMultipleFilesRadio.getSelection() )
+        {
+            Activator.getDefault().getPreferenceStore().putValue( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML,
+                exportMultipleFilesText.getText() );
+        }
+        else
+        {
+            Activator.getDefault().getPreferenceStore().putValue( PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML,
+                new File( exportSingleFileText.getText() ).getParent() );
+        }
     }
 }

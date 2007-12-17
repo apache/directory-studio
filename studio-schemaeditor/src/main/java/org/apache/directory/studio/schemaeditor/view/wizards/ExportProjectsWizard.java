@@ -77,8 +77,11 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
      */
     public boolean performFinish()
     {
-        final Project[] selectedProjects = page.getSelectedProjects();
+        // Saving the dialog settings
+        page.saveDialogSettings();
 
+        // Getting the projects to be exported and where to export them
+        final Project[] selectedProjects = page.getSelectedProjects();
         final String exportDirectory = page.getExportDirectory();
         try
         {

@@ -74,8 +74,11 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
      */
     public boolean performFinish()
     {
-        final Schema[] selectedSchemas = page.getSelectedSchemas();
+        // Saving the dialog settings
+        page.saveDialogSettings();
 
+        // Getting the schemas to be exported and where to export them
+        final Schema[] selectedSchemas = page.getSelectedSchemas();
         int exportType = page.getExportType();
         if ( exportType == ExportSchemasAsXmlWizardPage.EXPORT_MULTIPLE_FILES )
         {

@@ -78,10 +78,12 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
      */
     public boolean performFinish()
     {
+        // Saving the dialog settings
+        page.saveDialogSettings();
+
+        // Getting the schemas to be imported
         final String[] selectedSchemasFiles = page.getSelectedSchemaFiles();
-
         schemaChecker.disableModificationsListening();
-
         try
         {
             getContainer().run( true, false, new IRunnableWithProgress()

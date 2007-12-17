@@ -77,8 +77,11 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
      */
     public boolean performFinish()
     {
-        final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
+        // Saving the dialog settings
+        page.saveDialogSettings();
 
+        // Getting the schemas to be imported
+        final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
         schemaChecker.disableModificationsListening();
 
         try

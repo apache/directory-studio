@@ -219,6 +219,15 @@ public class ImportProjectsWizardPage extends WizardPage
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         dialog.setText( "Choose Folder" );
         dialog.setMessage( "Select the folder from which import the files." );
+        if ( "".equals( fromDirectoryText.getText() ) )
+        {
+            dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
+                PluginConstants.FILE_DIALOG_IMPORT_PROJECTS ) );
+        }
+        else
+        {
+            dialog.setFilterPath( fromDirectoryText.getText() );
+        }
 
         String selectedDirectory = dialog.open();
         if ( selectedDirectory != null )
@@ -331,4 +340,13 @@ public class ImportProjectsWizardPage extends WizardPage
         return schemaFiles.toArray( new File[0] );
     }
 
+
+    /**
+     * Saves the dialog settings.
+     */
+    public void saveDialogSettings()
+    {
+        Activator.getDefault().getPreferenceStore().putValue( PluginConstants.FILE_DIALOG_IMPORT_PROJECTS,
+            fromDirectoryText.getText() );
+    }
 }

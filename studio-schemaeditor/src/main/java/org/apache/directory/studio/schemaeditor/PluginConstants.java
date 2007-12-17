@@ -348,8 +348,28 @@ public interface PluginConstants
     public static final String PREFS_SEARCH_VIEW_SCHEMA_LABEL_DISPLAY = SearchViewPreferencePage.ID
         + ".schemaLabel.display"; //$NON-NLS-1$
 
+    // Contexts
     /** The Context for the SchemaView */
     public static final String CONTEXT_SCHEMA_VIEW = Activator.PLUGIN_ID + ".contexts.schemaView"; //$NON-NLS-1$
     /** The Context for the SchemaView */
     public static final String CONTEXT_PROJECTS_VIEW = Activator.PLUGIN_ID + ".contexts.projectsView"; //$NON-NLS-1$
+
+    // File Dialogs
+    /** The File Dialog path for 'Export Schema Projects' */
+    public static final String FILE_DIALOG_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".fileDialog.exportProjects";
+    /** The File Dialog path for 'Export Schemas to OpenLDAP files' */
+    public static final String FILE_DIALOG_EXPORT_SCHEMAS_OPENLDAP = Activator.PLUGIN_ID
+        + ".fileDialog.exportSchemasOpenLDAP";
+    /** The File Dialog path for 'Export Schemas to XML files' */
+    public static final String FILE_DIALOG_EXPORT_SCHEMAS_XML = Activator.PLUGIN_ID + ".fileDialog.exportSchemasXML";
+    /** The File Dialog path for 'Export Schemas for Apache DS' */
+    public static final String FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS = Activator.PLUGIN_ID
+        + ".fileDialog.exportSchemasApacheDS";
+    /** The File Dialog path for 'Import Schema Projects' */
+    public static final String FILE_DIALOG_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".fileDialog.importProjects";
+    /** The File Dialog path for 'Import Schemas from OpenLDAP files' */
+    public static final String FILE_DIALOG_IMPORT_SCHEMAS_OPENLDAP = Activator.PLUGIN_ID
+        + ".fileDialog.importSchemasOpenLDAP";
+    /** The File Dialog path for 'Import Schemas from XML files' */
+    public static final String FILE_DIALOG_IMPORT_SCHEMAS_XML = Activator.PLUGIN_ID + ".fileDialog.importSchemasXML";
 }
