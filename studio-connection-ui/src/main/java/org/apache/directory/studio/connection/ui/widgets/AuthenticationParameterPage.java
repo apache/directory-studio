@@ -60,7 +60,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     /** The text widget to input bind password */
     private Text bindPasswordText;
-    
+
     /** The text widget to input saslRealm */
     private Combo saslRealmText;
 
@@ -122,7 +122,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         return isSaveBindPassword() ? bindPasswordText.getText() : null;
     }
-    
+
+
     private String getSaslRealm()
     {
         return saslRealmText.getText();
@@ -167,13 +168,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         String[] authMethods = new String[]
             { "Anonymous Authentication", "Simple Authentication", "DIGEST-MD5 (SASL)", "CRAM-MD5 (SASL)" };
         authenticationMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, authMethods, 1, 2 );
-        authenticationMethodCombo.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         Composite composite2 = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
@@ -183,45 +177,17 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         BaseWidgetUtils.createLabel( composite, "Bind DN or user:", 1 );
         String[] dnHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY );
         bindPrincipalCombo = BaseWidgetUtils.createCombo( composite, dnHistory, -1, 2 );
-        bindPrincipalCombo.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         BaseWidgetUtils.createLabel( composite, "Bind password:", 1 );
         bindPasswordText = BaseWidgetUtils.createPasswordText( composite, "", 2 );
-        bindPasswordText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         BaseWidgetUtils.createLabel( composite, "SASL Realm:", 1 );
         String[] saslHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY );
         saslRealmText = BaseWidgetUtils.createCombo( composite, saslHistory, -1, 2 );
-        saslRealmText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent even )
-            {
-                connectionPageModified();
-            }
-        } );
-        
+
         BaseWidgetUtils.createSpacer( composite, 1 );
         saveBindPasswordButton = BaseWidgetUtils.createCheckbox( composite, "Save password", 1 );
         saveBindPasswordButton.setSelection( true );
-        saveBindPasswordButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         checkPrincipalPasswordAuthButton = new Button( composite, SWT.PUSH );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
@@ -229,22 +195,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         checkPrincipalPasswordAuthButton.setLayoutData( gd );
         checkPrincipalPasswordAuthButton.setText( "Check Authentication" );
         checkPrincipalPasswordAuthButton.setEnabled( false );
-        checkPrincipalPasswordAuthButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                Connection connection = getTestConnection();
-                CheckBindJob job = new CheckBindJob( connection );
-                RunnableContextJobAdapter.execute( job, runnableContext );
-                if ( job.getExternalResult().isOK() )
-                {
-                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Authentication",
-                        "The authentication was successful." );
-                }
-            }
-        } );
-        
-        validate();
     }
 
 
@@ -253,7 +203,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
      */
     private void connectionPageModified()
     {
-    	
         validate();
         fireConnectionPageModified();
     }
@@ -286,7 +235,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                 message = "Please enter a bind DN or user.";
             }
         }
-        
+
         if ( isSaslRealmTextEnabled() )
         {
             if ( "".equals( saslRealmText.getText() ) )
@@ -309,15 +258,17 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             || ( getAuthenticationMethod() == AuthenticationMethod.SASL_DIGEST_MD5 )
             || ( getAuthenticationMethod() == AuthenticationMethod.SASL_CRAM_MD5 );
     }
-    
-    
-    private boolean isSaslRealmTextEnabled(){
-    	return getAuthenticationMethod() == AuthenticationMethod.SASL_DIGEST_MD5;
+
+
+    private boolean isSaslRealmTextEnabled()
+    {
+        return getAuthenticationMethod() == AuthenticationMethod.SASL_DIGEST_MD5;
     }
-    
-    
-    private boolean isGssapiEnabled(){
-    	return getAuthenticationMethod() == AuthenticationMethod.SASL_GSSAPI;
+
+
+    private boolean isGssapiEnabled()
+    {
+        return getAuthenticationMethod() == AuthenticationMethod.SASL_GSSAPI;
     }
 
 
@@ -338,7 +289,71 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         saveBindPasswordButton.setSelection( parameter.getBindPassword() != null );
         saslRealmText.setText( parameter.getSaslRealm() != null ? parameter.getSaslRealm() : "" );
 
+        initListeners();
+
         connectionPageModified();
+    }
+
+
+    /**
+     * Initializes the listeners.
+     */
+    private void initListeners()
+    {
+        authenticationMethodCombo.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        bindPrincipalCombo.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        bindPasswordText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        saslRealmText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent even )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        saveBindPasswordButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        checkPrincipalPasswordAuthButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                Connection connection = getTestConnection();
+                CheckBindJob job = new CheckBindJob( connection );
+                RunnableContextJobAdapter.execute( job, runnableContext );
+                if ( job.getExternalResult().isOK() )
+                {
+                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Authentication",
+                        "The authentication was successful." );
+                }
+            }
+        } );
     }
 
 
@@ -350,7 +365,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         parameter.setAuthMethod( getAuthenticationMethod() );
         parameter.setBindPrincipal( getBindPrincipal() );
         parameter.setBindPassword( getBindPassword() );
-        parameter.setSaslRealm(getSaslRealm());
+        parameter.setSaslRealm( getSaslRealm() );
     }
 
 

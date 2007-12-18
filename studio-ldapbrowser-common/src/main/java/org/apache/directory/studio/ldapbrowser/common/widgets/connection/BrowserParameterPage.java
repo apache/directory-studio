@@ -174,7 +174,6 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         addBaseDNInput( parent );
         addLimitInput( parent );
-        validate();
     }
 
 
@@ -193,13 +192,6 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
         autoFetchBaseDnsButton = BaseWidgetUtils.createCheckbox( groupComposite, "Get base DNs from Root DSE", 2 );
         autoFetchBaseDnsButton.setSelection( true );
-        autoFetchBaseDnsButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent arg0 )
-            {
-                connectionPageModified();
-            }
-        } );
 
         fetchBaseDnsButton = new Button( groupComposite, SWT.PUSH );
         fetchBaseDnsButton.setText( "Fetch Base DNs" );
@@ -207,49 +199,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         gd = new GridData();
         gd.horizontalAlignment = SWT.RIGHT;
         fetchBaseDnsButton.setLayoutData( gd );
-        fetchBaseDnsButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                Connection connection = getTestConnection();
-                IBrowserConnection browserConnection = new BrowserConnection( connection );
-
-                FetchBaseDNsJob job = new FetchBaseDNsJob( browserConnection );
-                RunnableContextJobAdapter.execute( job, runnableContext );
-                if ( job.getExternalResult().isOK() )
-                {
-                    if ( job.getBaseDNs().length > 0 )
-                    {
-                        String[] baseDNs = job.getBaseDNs();
-                        baseDNCombo.setItems( baseDNs );
-                        baseDNCombo.select( 0 );
-
-                        String msg = "The server returned the following base DNs:";
-                        for ( int i = 0; i < baseDNs.length; i++ )
-                        {
-                            msg += "\n  - " + baseDNs[i];
-                        }
-                        MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Fetch Base DNs", msg );
-                    }
-                    else
-                    {
-                        MessageDialog.openWarning( Display.getDefault().getActiveShell(), "Fetch Base DNs",
-                            "No base DN returned from server. Please enter the base DN manually." );
-                        autoFetchBaseDnsButton.setSelection( false );
-                    }
-                }
-            }
-        } );
 
         BaseWidgetUtils.createLabel( groupComposite, "Base DN:", 1 );
         baseDNCombo = BaseWidgetUtils.createCombo( groupComposite, new String[0], 0, 2 );
-        baseDNCombo.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
     }
 
 
@@ -296,7 +248,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         errorMessage = null;
         if ( !isAutoFetchBaseDns() )
         {
-            if( !LdapDN.isValid( getBaseDN() ) )
+            if ( !LdapDN.isValid( getBaseDN() ) )
             {
                 message = "Please enter a valid base DN.";
             }
@@ -334,7 +286,66 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
         aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
 
+        initListeners();
+
         connectionPageModified();
+    }
+
+
+    /**
+     * Initializes the listeners.
+     */
+    private void initListeners()
+    {
+        autoFetchBaseDnsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        fetchBaseDnsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                Connection connection = getTestConnection();
+                IBrowserConnection browserConnection = new BrowserConnection( connection );
+
+                FetchBaseDNsJob job = new FetchBaseDNsJob( browserConnection );
+                RunnableContextJobAdapter.execute( job, runnableContext );
+                if ( job.getExternalResult().isOK() )
+                {
+                    if ( job.getBaseDNs().length > 0 )
+                    {
+                        String[] baseDNs = job.getBaseDNs();
+                        baseDNCombo.setItems( baseDNs );
+                        baseDNCombo.select( 0 );
+
+                        String msg = "The server returned the following base DNs:";
+                        for ( int i = 0; i < baseDNs.length; i++ )
+                        {
+                            msg += "\n  - " + baseDNs[i];
+                        }
+                        MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Fetch Base DNs", msg );
+                    }
+                    else
+                    {
+                        MessageDialog.openWarning( Display.getDefault().getActiveShell(), "Fetch Base DNs",
+                            "No base DN returned from server. Please enter the base DN manually." );
+                        autoFetchBaseDnsButton.setSelection( false );
+                    }
+                }
+            }
+        } );
+
+        baseDNCombo.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
     }
 
 

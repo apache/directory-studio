@@ -151,19 +151,11 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public void createComposite( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         Composite nameComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         BaseWidgetUtils.createLabel( nameComposite, "Connection name:", 1 );
         nameText = BaseWidgetUtils.createText( nameComposite, "", 1 );
-        nameText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
 
@@ -173,51 +165,16 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         BaseWidgetUtils.createLabel( groupComposite, "Hostname:", 1 );
         String[] hostHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
         hostCombo = BaseWidgetUtils.createCombo( groupComposite, hostHistory, -1, 2 );
-        hostCombo.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         BaseWidgetUtils.createLabel( groupComposite, "Port:", 1 );
         String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
-        portCombo.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent event )
-            {
-                if ( !event.text.matches( "[0-9]*" ) )
-                {
-                    event.doit = false;
-                }
-                if ( portCombo.getText().length() > 4 && event.text.length() > 0 )
-                {
-                    event.doit = false;
-                }
-            }
-        } );
-        portCombo.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
 
         String[] encMethods = new String[]
             { "No encryption", "Use SSL encryption (ldaps://)", "Use StartTLS extension" };
         int index = 0;
         BaseWidgetUtils.createLabel( groupComposite, "Encryption method:", 1 );
         encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, index, 2 );
-        encryptionMethodCombo.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
         BaseWidgetUtils.createSpacer( groupComposite, 1 );
         BaseWidgetUtils
             .createLabel(
@@ -232,22 +189,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         gd.verticalAlignment = SWT.BOTTOM;
         checkConnectionButton.setLayoutData( gd );
         checkConnectionButton.setText( "Check Network Parameter" );
-        checkConnectionButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent event )
-            {
-                Connection connection = getTestConnection();
-                CheckNetworkParameterJob job = new CheckNetworkParameterJob( connection );
-                RunnableContextJobAdapter.execute( job, runnableContext );
-                if ( job.getExternalResult().isOK() )
-                {
-                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Network Parameter",
-                        "The connection was established successfully." );
-                }
-            }
-        } );
 
-        validate();
         nameText.setFocus();
     }
 
@@ -257,10 +199,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     private void connectionPageModified()
     {
-        // validate()
         validate();
-
-        // fire
         fireConnectionPageModified();
     }
 
@@ -310,7 +249,77 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             : parameter.getEncryptionMethod() == EncryptionMethod.START_TLS ? 2 : 0;
         encryptionMethodCombo.select( index );
 
+        initListeners();
+
         connectionPageModified();
+    }
+
+
+    /**
+     * Initializes the listeners.
+     */
+    private void initListeners()
+    {
+        nameText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        hostCombo.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        portCombo.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent event )
+            {
+                if ( !event.text.matches( "[0-9]*" ) )
+                {
+                    event.doit = false;
+                }
+                if ( portCombo.getText().length() > 4 && event.text.length() > 0 )
+                {
+                    event.doit = false;
+                }
+            }
+        } );
+        portCombo.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        encryptionMethodCombo.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                connectionPageModified();
+            }
+        } );
+
+        checkConnectionButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                Connection connection = getTestConnection();
+                CheckNetworkParameterJob job = new CheckNetworkParameterJob( connection );
+                RunnableContextJobAdapter.execute( job, runnableContext );
+                if ( job.getExternalResult().isOK() )
+                {
+                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Network Parameter",
+                        "The connection was established successfully." );
+                }
+            }
+        } );
     }
 
 
