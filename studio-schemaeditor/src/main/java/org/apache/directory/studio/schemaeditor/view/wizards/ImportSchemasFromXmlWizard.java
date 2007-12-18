@@ -88,7 +88,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
         schemaChecker.disableModificationsListening();
         try
         {
-            getContainer().run( true, false, new IRunnableWithProgress()
+            getContainer().run( false, false, new IRunnableWithProgress()
             {
                 public void run( IProgressMonitor monitor )
                 {

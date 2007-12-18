@@ -82,7 +82,7 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
         final String exportDirectory = page.getExportDirectory();
         try
         {
-            getContainer().run( true, true, new IRunnableWithProgress()
+            getContainer().run( false, false, new IRunnableWithProgress()
             {
                 public void run( IProgressMonitor monitor )
                 {

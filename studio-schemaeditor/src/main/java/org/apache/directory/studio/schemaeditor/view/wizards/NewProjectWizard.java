@@ -101,7 +101,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
 
             try
             {
-                getContainer().run( true, false, new IRunnableWithProgress()
+                getContainer().run( false, false, new IRunnableWithProgress()
                 {
                     public void run( IProgressMonitor monitor )
                     {
@@ -148,8 +148,7 @@ public class NewProjectWizard extends Wizard implements INewWizard
             }
             catch ( InvocationTargetException e )
             {
-                PluginUtils.logError( "An error occured when creating the project.", e );
-                ViewUtils.displayErrorMessageBox( "Error", "An error occured when creating the project." );
+                // Nothing to do (it will never occur)
             }
             catch ( InterruptedException e )
             {

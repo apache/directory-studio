@@ -82,7 +82,7 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
         final File[] selectedProjectFiles = page.getSelectedProjectFiles();
         try
         {
-            getContainer().run( true, false, new IRunnableWithProgress()
+            getContainer().run( false, false, new IRunnableWithProgress()
             {
                 public void run( IProgressMonitor monitor )
                 {
@@ -121,7 +121,6 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
         catch ( InvocationTargetException e )
         {
             // Nothing to do (it will never occur)
-            e.printStackTrace();
         }
         catch ( InterruptedException e )
         {

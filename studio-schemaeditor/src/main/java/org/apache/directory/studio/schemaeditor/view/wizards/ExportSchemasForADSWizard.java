@@ -97,7 +97,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             final String exportDirectory = page.getExportDirectory();
             try
             {
-                getContainer().run( true, true, new IRunnableWithProgress()
+                getContainer().run( false, true, new IRunnableWithProgress()
                 {
                     public void run( IProgressMonitor monitor )
                     {
@@ -144,7 +144,6 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             catch ( InvocationTargetException e )
             {
                 // Nothing to do (it will never occur)
-                e.printStackTrace();
             }
             catch ( InterruptedException e )
             {
@@ -156,7 +155,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             final String exportFile = page.getExportFile();
             try
             {
-                getContainer().run( true, true, new IRunnableWithProgress()
+                getContainer().run( false, true, new IRunnableWithProgress()
                 {
                     public void run( IProgressMonitor monitor )
                     {

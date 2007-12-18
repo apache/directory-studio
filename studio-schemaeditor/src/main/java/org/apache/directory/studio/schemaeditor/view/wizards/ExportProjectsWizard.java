@@ -85,7 +85,7 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
         final String exportDirectory = page.getExportDirectory();
         try
         {
-            getContainer().run( true, true, new IRunnableWithProgress()
+            getContainer().run( false, false, new IRunnableWithProgress()
             {
                 public void run( IProgressMonitor monitor )
                 {

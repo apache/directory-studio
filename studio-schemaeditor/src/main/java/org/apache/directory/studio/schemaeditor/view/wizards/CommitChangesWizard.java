@@ -85,23 +85,21 @@ public class CommitChangesWizard extends Wizard implements IExportWizard
 
         try
         {
-            getContainer().run( true, true, new IRunnableWithProgress()
+            getContainer().run( false, false, new IRunnableWithProgress()
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    //TODO
+                    //TODO implement
                 }
             } );
         }
         catch ( InvocationTargetException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Nothing to do (it will never occur)
         }
         catch ( InterruptedException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Nothing to do.
         }
 
         return true;
