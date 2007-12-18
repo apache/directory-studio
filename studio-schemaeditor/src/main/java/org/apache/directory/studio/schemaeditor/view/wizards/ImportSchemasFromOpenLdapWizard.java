@@ -88,7 +88,7 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
 
         try
         {
-            getContainer().run( true, false, new IRunnableWithProgress()
+            getContainer().run( false, false, new IRunnableWithProgress()
             {
                 public void run( IProgressMonitor monitor )
                 {
@@ -99,27 +99,39 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                         monitor.subTask( schemaFile.getName() );
                         try
                         {
-                            Schema schema = OpenLdapSchemaFileImporter.getSchema( new FileInputStream( schemaFile), schemaFile.getAbsolutePath() );
+                            Schema schema = OpenLdapSchemaFileImporter.getSchema( new FileInputStream( schemaFile ),
+                                schemaFile.getAbsolutePath() );
                             schemaHandler.addSchema( schema );
                         }
                         catch ( OpenLdapSchemaFileImportException e )
                         {
-                            PluginUtils.logError( "An error occured when importing the schema " + schemaFile.getName()
-                                + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when importing the schema "
-                                + schemaFile.getName() + "." );
+                            reportError( e, schemaFile );
                         }
                         catch ( FileNotFoundException e )
                         {
-                            PluginUtils.logError( "An error occured when importing the schema " + schemaFile.getName()
-                                + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when importing the schema "
-                                + schemaFile.getName() + "." );
+                            reportError( e, schemaFile );
                         }
                         monitor.worked( 1 );
                     }
 
                     monitor.done();
+                }
+
+
+                /**
+                 * Reports the error raised.
+                 *
+                 * @param e
+                 *      the exception
+                 * @param schemaFile
+                 *      the schema file
+                 */
+                private void reportError( Exception e, File schemaFile )
+                {
+                    PluginUtils
+                        .logError( "An error occured when importing the schema " + schemaFile.getName() + ".", e );
+                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when importing the schema "
+                        + schemaFile.getName() + "." + "\n\n" + e.getMessage() );
                 }
             } );
         }

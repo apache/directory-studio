@@ -20,11 +20,14 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Scanner;
+import java.util.regex.MatchResult;
 
 import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
 import org.apache.directory.server.core.tools.schema.ObjectClassLiteral;
@@ -77,7 +80,12 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( ParseException e )
         {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
+            throw new OpenLdapSchemaFileImportException( "The file '"
+                + path
+                + "' can not be read correctly."
+                + ( exceptionMessage == null ? "" : "\nLine: " + exceptionMessage.lineNumber + ", Column: "
+                    + exceptionMessage.columnNumber + ", Cause: " + exceptionMessage.cause ) );
         }
 
         String schemaName = getNameFromPath( path );
@@ -175,5 +183,45 @@ public class OpenLdapSchemaFileImporter
         newOC.setMayNamesList( oc.getMay() );
 
         return newOC;
+    }
+
+
+    /**
+     * Parses the exception message and fills an {@link ExceptionMessage}.
+     *
+     * @param message
+     *      the exception message to parse
+     * @return
+     *      the corresponding {@link ExceptionMessage}, or <code>null</code>
+     */
+    private static ExceptionMessage parseExceptionMessage( String message )
+    {
+        Scanner scanner = new Scanner( new ByteArrayInputStream( message.getBytes() ) );
+        String foundString = scanner.findWithinHorizon( ".*line (\\d+):(\\d+): *([^\\n]*).*", message.length() );
+        if ( foundString != null )
+        {
+            MatchResult result = scanner.match();
+            if ( result.groupCount() == 3 )
+            {
+                ExceptionMessage exceptionMessage = new ExceptionMessage();
+                exceptionMessage.lineNumber = result.group( 1 );
+                exceptionMessage.columnNumber = result.group( 2 );
+                exceptionMessage.cause = result.group( 3 );
+
+                scanner.close();
+                return exceptionMessage;
+            }
+
+        }
+
+        scanner.close();
+        return null;
+    }
+
+    private static class ExceptionMessage
+    {
+        String lineNumber;
+        String columnNumber;
+        String cause;
     }
 }
