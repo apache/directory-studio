@@ -581,6 +581,11 @@ public class ServerConfigurationWriter
         propertyElement = partitionBean.addElement( "property" );
         propertyElement.addAttribute( "name", "suffix" );
         propertyElement.addAttribute( "value", partition.getSuffix() );
+        
+        // PartitionClassName
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "partitionClassName" );
+        propertyElement.addAttribute( "value", "org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition" );
 
         // OptimizerEnabled
         propertyElement = partitionBean.addElement( "property" );
