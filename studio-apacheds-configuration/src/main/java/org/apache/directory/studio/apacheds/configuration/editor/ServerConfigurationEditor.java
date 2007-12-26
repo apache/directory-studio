@@ -25,18 +25,37 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.configuration.Activator;
+import org.apache.directory.studio.apacheds.configuration.PluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParser;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationWriter;
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationWriterException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPathEditorInput;
+import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SaveAsDialog;
@@ -83,10 +102,14 @@ public class ServerConfigurationEditor extends FormEditor
             // The 'FileEditorInput' class is used when the file is opened
             // from a project in the workspace.
             {
-                FileEditorInput fei = ( FileEditorInput ) input;
-
                 ServerConfigurationParser parser = new ServerConfigurationParser();
-                serverConfiguration = parser.parse( fei.getFile().getContents() );
+                serverConfiguration = parser.parse( ( ( FileEditorInput ) input ).getFile().getContents() );
+            }
+            else if ( input instanceof IPathEditorInput )
+            {
+                ServerConfigurationParser parser = new ServerConfigurationParser();
+                serverConfiguration = parser.parse( new FileInputStream( new File( ( ( IPathEditorInput ) input )
+                    .getPath().toOSString() ) ) );
             }
             else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
                 || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
@@ -106,36 +129,6 @@ public class ServerConfigurationEditor extends FormEditor
                 serverConfiguration = ( ( ServerConfigurationEditorInput ) input ).getServerConfiguration();
                 dirty = true;
             }
-
-            // TODO What to do in the other cases ?
-
-            //        else
-            //        {
-            //            try
-            //            {
-            //                ServerConfigurationParser parser = new ServerConfigurationParser();
-            //                serverConfiguration = parser.parse( new FileInputStream( new File( input.getToolTipText() ) ) );
-            //                serverConfiguration.setPath( input.getToolTipText() );
-            //            }
-            //            catch ( ServerConfigurationParserException e )
-            //            {
-            //                MessageBox messageBox = new MessageBox(
-            //                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
-            //                messageBox.setText( "Error!" );
-            //                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
-            //                messageBox.open();
-            //                return;
-            //            }
-            //            catch ( FileNotFoundException e )
-            //            {
-            //                MessageBox messageBox = new MessageBox(
-            //                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK | SWT.ICON_ERROR );
-            //                messageBox.setText( "Error!" );
-            //                messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
-            //                messageBox.open();
-            //                return;
-            //            }
-            //        }
         }
         catch ( Exception e )
         {
@@ -181,29 +174,29 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        // Saving the Server Configuration
         monitor.beginTask( "Saving the Server Configuration", 5 );
-        generalPage.save();
-        monitor.worked( 1 );
-        partitionsPage.save();
-        monitor.worked( 1 );
-        interceptorsPage.save();
-        monitor.worked( 1 );
-        extendedOperationsPage.save();
-        monitor.worked( 1 );
+
+        // Saving the editor pages
+        saveEditorPages( monitor );
 
         try
         {
             IEditorInput input = getEditorInput();
             String inputClassName = input.getClass().getName();
+            boolean success = false;
             if ( input instanceof FileEditorInput )
             // FileEditorInput class is used when the file is opened
-            // from an project in the workspace.
+            // from a project in the workspace.
             {
                 // Saving the ServerConfiguration to disk
-                FileEditorInput fei = ( FileEditorInput ) input;
-                String xml = ServerConfigurationWriter.toXml( serverConfiguration );
-                fei.getFile().setContents( new ByteArrayInputStream( xml.getBytes() ), true, true, monitor );
+                saveConfiguration( ( FileEditorInput ) input, monitor );
+                success = true;
+            }
+            else if ( input instanceof IPathEditorInput )
+            {
+                // Saving the ServerConfiguration to disk
+                saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toOSString() );
+                success = true;
             }
             else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
                 || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
@@ -213,50 +206,20 @@ public class ServerConfigurationEditor extends FormEditor
             // opening a file from the menu File > Open... in Eclipse 3.3.x
             {
                 // Saving the ServerConfiguration to disk
-                BufferedWriter outFile = new BufferedWriter( new FileWriter( input.getToolTipText() ) );
-                String xml = ServerConfigurationWriter.toXml( serverConfiguration );
-                outFile.write( xml );
-                outFile.close();
+                saveConfiguration( input.getToolTipText() );
+                success = true;
             }
             else if ( input instanceof ServerConfigurationEditorInput )
             {
                 // The 'ServerConfigurationEditorInput' class is used when a
                 // new Server Configuration File is created.
-                ServerConfigurationEditorInput serverConfigurationEditorInput = ( ServerConfigurationEditorInput ) input;
 
-                // Checking if the ServerConfiguration has already been saved
-                if ( serverConfigurationEditorInput.getPath() == null )
-                {
-                    FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                        SWT.SAVE );
-                    fd.setText( "Select a file" );
-                    fd.setFilterExtensions( new String[]
-                        { "*.xml", "*.*" } );
-                    fd.setFilterNames( new String[]
-                        { "XML files", "All files" } );
-                    String selectedFile = fd.open();
-                    // selected == null if 'cancel' has been pushed
-                    if ( selectedFile == null || "".equals( selectedFile ) )
-                    {
-                        monitor.setCanceled( true );
-                        return;
-                    }
-
-                    // TODO Add the overwrite code...
-
-                    serverConfigurationEditorInput.setPath( selectedFile );
-                    setTitleToolTip( getEditorInput().getToolTipText() );
-                }
-
-                // Saving the ServerConfiguration to disk
-                BufferedWriter outFile = new BufferedWriter( new FileWriter( serverConfigurationEditorInput.getPath() ) );
-                String xml = ServerConfigurationWriter.toXml( serverConfiguration );
-                outFile.write( xml );
-                outFile.close();
+                // We are saving this as if it is a "Save as..." action.
+                success = doSaveAs( monitor );
             }
 
             monitor.worked( 1 );
-            setDirty( false );
+            setDirty( !success );
             monitor.done();
         }
         catch ( Exception e )
@@ -273,15 +236,207 @@ public class ServerConfigurationEditor extends FormEditor
     }
 
 
+    /**
+     * Saves the editor pages.
+     *
+     * @param monitor
+     *      the monitor to use
+     */
+    private void saveEditorPages( IProgressMonitor monitor )
+    {
+        generalPage.save();
+        if ( monitor != null )
+        {
+            monitor.worked( 1 );
+        }
+
+        partitionsPage.save();
+        if ( monitor != null )
+        {
+            monitor.worked( 1 );
+        }
+
+        interceptorsPage.save();
+        if ( monitor != null )
+        {
+            monitor.worked( 1 );
+        }
+
+        extendedOperationsPage.save();
+        if ( monitor != null )
+        {
+            monitor.worked( 1 );
+        }
+    }
+
+
+    /**
+     * Saves the server configuration to the given path.
+     *
+     * @param path
+     *      the path where to save the file
+     * @throws IOException
+     * @throws ServerConfigurationWriterException
+     */
+    private void saveConfiguration( String path ) throws IOException, ServerConfigurationWriterException
+    {
+        BufferedWriter outFile = new BufferedWriter( new FileWriter( path ) );
+        String xml = ServerConfigurationWriter.toXml( serverConfiguration );
+        outFile.write( xml );
+        outFile.close();
+    }
+
+
+    /**
+     * Saves the server configuration using the given {@link FileEditorInput}.
+     *
+     * @param fei
+     *      the {@link FileEditorInput}
+     * @throws ServerConfigurationWriterException 
+     * @throws CoreException 
+     */
+    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor )
+        throws ServerConfigurationWriterException, CoreException
+    {
+        String xml = ServerConfigurationWriter.toXml( serverConfiguration );
+        fei.getFile().setContents( new ByteArrayInputStream( xml.getBytes() ), true, true, monitor );
+    }
+
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.EditorPart#doSaveAs()
      */
     public void doSaveAs()
     {
-        SaveAsDialog dialog = new SaveAsDialog( Activator.getDefault().getWorkbench().getActiveWorkbenchWindow()
-            .getShell() );
-        dialog.setOriginalName( "Copy of" );
-        dialog.open();
+        try
+        {
+            getSite().getWorkbenchWindow().run( false, false, new IRunnableWithProgress()
+            {
+                public void run( IProgressMonitor monitor ) throws InvocationTargetException, InterruptedException
+                {
+                    try
+                    {
+                        monitor.beginTask( "Saving the Server Configuration", 5 );
+                        saveEditorPages( monitor );
+                        boolean success = doSaveAs( monitor );
+                        monitor.worked( 1 );
+                        setDirty( !success );
+                        monitor.done();
+                    }
+                    catch ( Exception e )
+                    {
+                        MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                            .getShell(), SWT.OK | SWT.ICON_ERROR );
+                        messageBox.setText( "Error!" );
+                        messageBox.setMessage( "An error occurred when writing the file to disk." + "\n"
+                            + e.getMessage() );
+                        messageBox.open();
+                        setDirty( true );
+                        monitor.done();
+                        return;
+                    }
+                }
+            } );
+        }
+        catch ( Exception e )
+        {
+            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                SWT.OK | SWT.ICON_ERROR );
+            messageBox.setText( "Error!" );
+            messageBox.setMessage( "An error occurred when saving the file." + "\n" + e.getMessage() );
+            messageBox.open();
+            return;
+        }
+    }
+
+
+    /**
+     * Performs the "Save as..." action.
+     *
+     * @param monitor
+     *      the monitor to use
+     * @throws Exception
+     */
+    private boolean doSaveAs( IProgressMonitor monitor ) throws Exception
+    {
+        // detect IDE or RCP:
+        // check if perspective org.eclipse.ui.resourcePerspective is available
+        boolean isIDE = PluginUtils.isIDEEnvironment();
+
+        if ( isIDE )
+        {
+            // Asking the user for the location where to 'save as' the file
+            SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
+            if ( !( getEditorInput() instanceof ServerConfigurationEditorInput ) )
+            {
+                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot().getFile(
+                    new Path( getEditorInput().getToolTipText() ) ) );
+            }
+            if ( dialog.open() != Dialog.OK )
+            {
+                return false;
+            }
+
+            // Getting if the resulting file
+            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( dialog.getResult() );
+
+            // Creating the file if it does not exist
+            if ( !file.exists() )
+            {
+                file.create( new ByteArrayInputStream( "".getBytes() ), true, null );
+            }
+
+            // Creating the new input for the editor
+            FileEditorInput fei = new FileEditorInput( file );
+
+            // Saving the file to disk
+            saveEditorPages( monitor );
+            saveConfiguration( fei, monitor );
+
+            // Setting the new input to the editor
+            setInput( fei );
+        }
+        else
+        {
+            Shell shell = getSite().getShell();
+
+            // Open FileDialog
+            FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+
+            String path = dialog.open();
+            if ( path == null )
+            {
+                return false;
+            }
+
+            // Check whether file exists and if so, confirm overwrite
+            final File externalFile = new File( path );
+            if ( externalFile.exists() )
+            {
+                MessageDialog overwriteDialog = new MessageDialog( shell, "Overwrite", null, "Overwrite?",
+                    MessageDialog.WARNING, new String[]
+                        { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
+                if ( overwriteDialog.open() != Window.OK )
+                {
+                    return false;
+                }
+            }
+
+            // Saving the file to disk
+            saveEditorPages( monitor );
+            saveConfiguration( path );
+
+            // Creating the new input for the editor
+            PathEditorInput newInput = new PathEditorInput( new Path( path ) );
+
+            // Setting the new input to the editor
+            setInput( newInput );
+        }
+
+        // Updating the title and tooltip texts
+        setPartName( getEditorInput().getName() );
+
+        return true;
     }
 
 
@@ -325,5 +480,145 @@ public class ServerConfigurationEditor extends FormEditor
     public ServerConfiguration getServerConfiguration()
     {
         return serverConfiguration;
+    }
+}
+
+/**
+ * This IEditorInput is used to open files that are located in the local file system.
+ * 
+ * Inspired from org.eclipse.ui.internal.editors.text.NonExistingFileEditorInput.java
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+class PathEditorInput implements IPathEditorInput
+{
+    /** The absolute path in local file system */
+    private IPath path;
+
+
+    /**
+     * 
+     * Creates a new instance of PathEditorInput.
+     *
+     * @param path the absolute path
+     */
+    public PathEditorInput( IPath path )
+    {
+        if ( path == null )
+        {
+            throw new IllegalArgumentException();
+        }
+
+        this.path = path;
+    }
+
+
+    /**
+     * Returns hash code of the path.
+     */
+    public int hashCode()
+    {
+        return path.hashCode();
+    }
+
+
+    /** 
+     * This implemention just compares the paths
+     */
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( o instanceof PathEditorInput )
+        {
+            PathEditorInput input = ( PathEditorInput ) o;
+            return path.equals( input.path );
+        }
+
+        return false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean exists()
+    {
+        return path.toFile().exists();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ImageDescriptor getImageDescriptor()
+    {
+        return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor( path.toString() );
+    }
+
+
+    /**
+     * Returns the file name only.
+     */
+    public String getName()
+    {
+        return path.toFile().getName();
+        //return path.toString();
+    }
+
+
+    /**
+     * Returns the complete path. 
+     */
+    public String getToolTipText()
+    {
+        return path.makeRelative().toOSString();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public IPath getPath()
+    {
+        return path;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public Object getAdapter( Class adapter )
+    {
+        return Platform.getAdapterManager().getAdapter( this, adapter );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public IPersistableElement getPersistable()
+    {
+        return null;
+    }
+
+
+    /**
+     * Returns the path.
+     */
+    public IPath getPath( Object element )
+    {
+        if ( element instanceof PathEditorInput )
+        {
+            PathEditorInput input = ( PathEditorInput ) element;
+            return input.getPath();
+        }
+
+        return null;
     }
 }
