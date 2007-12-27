@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="activities" name="Activities"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+The &lt;code&gt;org.eclipse.ui.activities&lt;/code&gt; extension point is used to declare activities and associated elements.  Activities are used by the platform to filter certain plugin contributions from the users view until such a time that they express interest in them.  This allows Eclipse to grow dynamically based on the usage pattern of a user.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="activity"/>
+            <element ref="activityRequirementBinding"/>
+            <element ref="activityPatternBinding"/>
+            <element ref="category"/>
+            <element ref="categoryActivityBinding"/>
+            <element ref="defaultEnablement"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="activity">
+      <annotation>
+         <documentation>
+            This element is used to define activities. If more than one of these elements exist with the same &lt;code&gt;id&lt;/code&gt; attribute, only the last declared element (in order of reading the registry) is considered valid.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  a translatable short description of this activity for display in the UI
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of this activity
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the translatable name of this activity for display in the UI
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="activityRequirementBinding">
+      <annotation>
+         <documentation>
+            This element allows one to bind activities to activities. The relationship is such that if the activityId is ever enabled then the requiredActivityId is enabled as well.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="requiredActivityId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of required activity to bind
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="activityId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the activity to bind
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="activityPatternBinding">
+      <annotation>
+         <documentation>
+            This element allows one to bind activities to patterns.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="activityId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the activity to bind
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pattern" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the pattern to be bound. Patterns are regular expressions which match unique identifiers.  Please see the Java documentation for &lt;code&gt;java.util.regex.Pattern&lt;/code&gt; for further details.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="category">
+      <annotation>
+         <documentation>
+            This element is used to define categories. If more than one of these elements exist with the same &lt;code&gt;id&lt;/code&gt; attribute, only the last declared element (in order of reading the registry) is considered valid.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  a translatable short description of this category for display in the UI
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of this category
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the translatable name of this category for display in the UI
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="categoryActivityBinding">
+      <annotation>
+         <documentation>
+            This element allows one to bind categories to activities.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="activityId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the activity to bind
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="categoryId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the category to bind
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="defaultEnablement">
+      <annotation>
+         <documentation>
+            This element allows one to specify that a given activity should be enabled by default.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the activity
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+3.0
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of several activity and category definitions as well as associated bindings.
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.ui.activities&quot;&gt;
+  &lt;activity id=&quot;com.xyz.Activity&quot;
+      description=&quot;Filters contributions from com.xyz&quot;
+   name=&quot;My Activity&quot; /&gt;
+
+  &lt;activity id=&quot;com.xyz.OtherActivity&quot;
+      description=&quot;Filters other contributions from com.xyz&quot;
+   name=&quot;My Other Activity&quot; /&gt;
+  &lt;!-- other activity requires activity --&gt;  
+  &lt;activityRequirementBinding activityId=&quot;com.xyz.OtherActivity&quot;
+   requiredActivityId=&quot;com.xyz.Activity&quot; /&gt;
+  &lt;category id=&quot;com.xyz.Category&quot;
+   description=&quot;com.xyz Activities&quot;
+   name=&quot;My Category&quot; /&gt;
+   
+     &lt;!-- put the activity in the category --&gt;
+  &lt;categoryActivityBinding activityId=&quot;com.xyz.Activity&quot;
+   categoryId=&quot;com.xyz.Category&quot; /&gt;
+   
+     &lt;!-- bind all contributions from plugin com.xyz --&gt;
+  &lt;activityPatternBinding id=&quot;com.xyz.Activity&quot;
+   pattern=&quot;com\.xyz/.*&quot; /&gt;
+  
+  &lt;!-- bind my.contribution from plugin com.xyz.other --&gt;
+  &lt;activityPatternBinding id=&quot;com.xyz.OtherActivity&quot;
+   pattern=&quot;com\.xyz\.other/my.contribution&quot; /&gt;
+   
+  &lt;!-- our activity should be enabled by default --&gt;
+  &lt;defaultEnablement id=&quot;com.xyz.Activity&quot; /&gt;
+ &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+There is currently no public API for declaring activities or associated elements other than this extension point.  The state of activities in the workbench is accessible via &lt;code&gt;org.eclipse.ui.IWorkbench.getActivitySupport()&lt;/code&gt;.  From here you may query and update the set of currently enabled activities.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         There are no &quot;default activities&quot; provided by the workbench.  Activities are intended to be defined at the product level, such as the Eclipse SDK, so as to tightly integrate all of the (known) components that product contains.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2000, 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

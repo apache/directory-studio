@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Version: 3.2.0.I20070319-0010
+Created-By: 1.4.2 (IBM Corporation)
+Require-Bundle: org.eclipse.core.resources;bundle-version="[3.2.0,4.0.
+ 0)"
+Bundle-SymbolicName: org.eclipse.ui.workbench.compatibility
+Bundle-Name: %fragmentName
+Fragment-Host: org.eclipse.ui.workbench;bundle-version="[3.0.0,4.0.0)"
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-Localization: fragment-compatibility
+Bundle-Vendor: %providerName
+Ant-Version: Apache Ant 1.7.0
+
+Name: fragment-compatibility.properties
+SHA1-Digest: wilLEKJfyEOB8uBAxiTdMhtNQqk=
+
+Name: compatibility.jar
+SHA1-Digest: hYl98/ykvrhJjROx42j/wH0arsA=
+
+Name: about.html
+SHA1-Digest: ejOZra0kypGLQQ2bJtGTX+LI8tU=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+

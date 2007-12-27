@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="commandImages" name="Command Images"/>
+      </appInfo>
+      <documentation>
+         The images extension point provides a way of linking different types of images and icons to a particular command.  These images can be used, as appropriate, wherever the command appears in the user interface.  To accommodate some boundary cases (e.g., tool bar drop-down items), it is possible to group the images for a particular commands into &quot;styles&quot;.  These styles can then be specifically requested when a command is to be displayed.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="image" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="image">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="commandId"/>
+         </appInfo>
+         <documentation>
+            The images to associate with a particular command.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="commandId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The identifier of the command with which the images should be associated.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The path to the icon which should be used in the default case.  This will appear when the icon is enabled and mouse is not hovering over it.  It will also be used in any situation where such a more specific icon is not available.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="disabledIcon" type="string">
+            <annotation>
+               <documentation>
+                  The icon to display when the command is disabled.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="hoverIcon" type="string">
+            <annotation>
+               <documentation>
+                  The icon to display when the user is hovering over the command.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="style" type="string">
+            <annotation>
+               <documentation>
+                  The particular scenario in which this block of icons apply.  For example, it may be desirable to have different icons when the command is displayed as a toolbar drop-down item.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.2
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;pre&gt;
+&lt;extension
+ point=&quot;org.eclipse.ui.commandsImages&quot;&gt;
+ &lt;image
+  commandId=&quot;ProfileLast&quot;
+  hoverIcon=&quot;icons/full/etool16/profile.gif&quot;
+  disabledIcon=&quot;icons/full/dtool16/profile.gif&quot;
+  icon=&quot;icons/full/etool16/profile.gif&quot; /&gt;
+ &lt;image
+  commandId=&quot;ProfileLast&quot;
+  hoverIcon=&quot;icons/full/etool16/history.gif&quot;
+  disabledIcon=&quot;icons/full/dtool16/history.gif&quot;
+  icon=&quot;icons/full/etool16/history.gif&quot;
+  imageStyle=&quot;toolbar&quot; /&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+Within the workbench, it is possible to get images for commands using the &lt;code&gt;org.eclipse.ui.handlers.ICommandImageService&lt;/code&gt; interface.  This interface can be retrieved from supporting workbench objects, such as &lt;code&gt;IWorkbench&lt;/code&gt; itself.  To retrieve the service, you would make a call like &lt;code&gt;IWorkbench.getAdapter(ICommandImageService.class)&lt;/code&gt;.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

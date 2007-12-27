@@ -60,10 +60,10 @@
 	<property name="studio-rcp.dir.plugins" value="${studio-rcp.dir}/plugins"/>
 	<property name="studio-rcp.dir.features" value="${studio-rcp.dir}/features"/>
 	<property name="studio-rcp.eclipse.dir" value="../dependencies/eclipse" />
-    <property name="studio-rcp.eclipse.version" value="3.2" />
-	<property name="studio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.2.1.M20060915-1030" />
-	<property name="studio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.2.1.r321_v20060721" />
-	<property name="studio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.2.1.r321_v20060726" />
+    <property name="studio-rcp.eclipse.version" value="3.3.1" />
+	<property name="studio-rcp.eclipse.uiideplugin.filename" value="org.eclipse.ui.ide_3.3.1.M20070910-0800b" />
+	<property name="studio-rcp.eclipse.uieditorsplugin.filename" value="org.eclipse.ui.editors_3.3.1.r331_v20070629" />
+	<property name="studio-rcp.eclipse.searchplugin.filename" value="org.eclipse.search_3.3.1.r331_v20070831-0800" />
 	
     <!-- Setting up a special property if target OS is Mac OS X -->
     <condition property="isTargetMacOSX" value="true" >
@@ -78,7 +78,7 @@
 			<!-- Project dependencies -->
 			<fileset dir="${lib.dir}" />
 			<!-- Eclipse dependencies -->
-			<fileset dir="../dependencies/eclipse/3.2">
+			<fileset dir="../dependencies/eclipse/3.3.1">
 				<include name="**/*.jar"/>
 			</fileset>
 		</path>

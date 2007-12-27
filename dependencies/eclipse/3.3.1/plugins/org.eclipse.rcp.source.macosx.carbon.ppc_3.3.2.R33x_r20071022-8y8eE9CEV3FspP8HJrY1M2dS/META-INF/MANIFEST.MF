@@ -1,0 +1,40 @@
+Manifest-Version: 1.0
+Bundle-Version: 3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS
+Created-By: 1.4.2 (IBM Corporation)
+Bundle-SymbolicName: org.eclipse.rcp.source.macosx.carbon.ppc; singlet
+ on=true
+Bundle-Name: %pluginName
+Fragment-Host: org.eclipse.rcp.source;bundle-version="3.3.2.R33x_r2007
+ 1022-8y8eE9CEV3FspP8HJrY1M2dS"
+Bundle-Localization: plugin
+Bundle-Vendor: %providerName
+Ant-Version: Apache Ant 1.7.0
+Eclipse-PlatformFilter: (& (osgi.ws=carbon) (osgi.os=macosx) (osgi.arc
+ h=ppc))
+
+Name: src/org.eclipse.swt.carbon.macosx_3.3.2.v3347a/about.html
+SHA1-Digest: hKv0G81UtjNfDIh2UH9o5LXfafc=
+
+Name: about.html
+SHA1-Digest: t15ZOHlrGDCeslNIq+PwNJ1tf+4=
+
+Name: fragment.xml
+SHA1-Digest: lyCvCPJfg+w2XjG/WSlLT9rJmxo=
+
+Name: src/org.eclipse.swt.carbon.macosx_3.3.2.v3347a/about_files/mpl-v
+ 11.txt
+SHA1-Digest: q6jXbQr2fVfaPDwyHKpZ89JCOGs=
+
+Name: src/org.eclipse.swt.carbon.macosx_3.3.2.v3347a/src.zip
+SHA1-Digest: r6+oP3lqvkzF1OH/SXX2o4IgXDQ=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+
+Name: src/org.eclipse.ui.carbon_3.2.100.I20070605-0010/src.zip
+SHA1-Digest: sJcvVHLzfyv7qslWiCE01HFwSsk=
+
+Name: src/org.eclipse.swt.carbon.macosx_3.3.2.v3347a/about_files/IJG_R
+ EADME
+SHA1-Digest: 7N9zIbj6yHlHXyoSPElUaN00a6g=
+

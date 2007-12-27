@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="statusHandlers" name="Status handlers"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+This extension point is used to register implementations of status handlers in the workbench. A handler can be associated with a product and this association is also contributed via this extension point.
+&lt;/p&gt;
+
+&lt;p&gt;
+Status handlers are part of the status handling facility. The facility is responsible for handling errors and other important issues in Eclipse based applications. The handlers are responsible for presenting this errors by logging or showing error dialogs.
+&lt;/p&gt;
+
+&lt;p&gt;
+If there is no status handler associated with a product, the status handling facility uses the application handler defined in a workbench advisor.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="statusHandler" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="statusHandlerProductBinding" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="statusHandler">
+      <annotation>
+         <documentation>
+            This element is used to define a status handler.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  &lt;p&gt;
+A unique identifier for this error handler. The id is used for setting default 
+error handler in a product. 
+If an error handler is to be the default one its id has to be set
+in a product preference file in org.eclipse.ui/ERROR_HANDLER_ID property. 
+The name of the preference file is set in product extension 
+&quot;preferenceCustomization&quot; property.
+&lt;/p&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  &lt;p&gt;
+A fully qualified name of a class which extends &lt;code&gt;org.eclipse.ui.errors.AbstractStatusHandler&lt;/code&gt;.
+&lt;/p&gt;
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.errors.AbstractStatusHandler"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parameter">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            &lt;p&gt;
+This element defines parameters for instances of specified status handler class.
+Instances of specified status handler class should understand this parameter. 
+&lt;/p&gt;
+&lt;p&gt;
+Handling policies can use handler parameters. For example default policy 
+use handlers &quot;prefix&quot; parameter. The default policy looks for the most specific 
+handler for given status checking status pluginId against these prefixes.
+&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of a parameter.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The value of a parameter.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="statusHandlerProductBinding">
+      <annotation>
+         <documentation>
+            &lt;p&gt;
+Specifies a binding between a product and a status handler. 
+These bindings determine which handler is appropriate for the current product (as defined by &lt;code&gt;org.eclipse.core.runtime.Platform.getProduct()&lt;/code&gt;).
+&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="productId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique id of a product.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="handlerId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique id of a status handler.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.3
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+The following is an example of the definition for handler with prefix parameter.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+&lt;extension
+ point=&quot;org.eclipse.ui.statusHandlers&quot;&gt;
+ &lt;statusHandler
+ class=&quot;org.eclipse.ui.statushanders.SampleStatusHandler&quot;
+ id=&quot;sampleStatusHandler&quot;&gt;
+  &lt;parameter
+  name=&quot;prefix&quot;
+  value=&quot;org.eclipse.ui.ide&quot;&gt;
+  &lt;/parameter&gt;
+ &lt;/statusHandler&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;
+The following is an example of the definition for default (product) handler. The handler defined in the example will be default for product with id &quot;productId&quot;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+&lt;extension
+ point=&quot;org.eclipse.ui.statusHandlers&quot;&gt;
+ &lt;statusHandler
+ class=&quot;org.eclipse.ui.statushandlers.SampleStatusHandler&quot;
+ id=&quot;sampleStatusHandler&quot;&gt;
+ &lt;/statusHandler&gt;
+ &lt;statusHandlerProductBinding
+ handlerId=&quot;sampleStatusHandler&quot;
+ productId=&quot;productId&quot;&gt;
+ &lt;/statusHandlerProductBinding&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Of course we can define only the binding (for instance in a product plugin).
+The handler can be defined in other plugin.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+&lt;extension
+ point=&quot;org.eclipse.ui.statusHandlers&quot;&gt;
+ &lt;statusHandlerProductBinding
+ handlerId=&quot;sampleStatusHandler&quot;
+ productId=&quot;productId&quot;&gt;
+ &lt;/statusHandlerProductBinding&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         &lt;/p&gt;
+The value of the &lt;code&gt;class&lt;/code&gt; attribute in &lt;code&gt;statusHandler&lt;/code&gt; element must be the fully qualified name of a class that extends &lt;code&gt;org.eclipse.ui.statushandlers.AbstractStatusHandler&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+The &lt;code&gt;parameter&lt;/code&gt; elements in &lt;code&gt;statusHandler&lt;/code&gt; element adds parameters which can be used during handling in the status handler defined in &lt;code&gt;class&lt;/code&gt; attribute.
+&lt;/p&gt;
+&lt;p&gt;
+The value of the &lt;code&gt;productId&lt;/code&gt; attribute in &lt;code&gt;statusHandlerProductBinding&lt;/code&gt; is full name of the product to which the handler with id defined in &lt;code&gt;handlerId&lt;/code&gt; attribute in &lt;code&gt;statusHandlerProductBinding&lt;/code&gt; will be associated.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+The platform supplies basic implementation of &lt;code&gt;org.eclipse.ui.statushandlers.AbstractStatusHandler&lt;/code&gt;.
+It is &lt;code&gt;org.eclipse.ui.statushandlers.WorkbenchErrorHandler&lt;/code&gt; which is the default workbench status handler.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2006, 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="acceleratorConfigurations" name="Accelerator Configurations"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;b&gt;WARNING: This extension point is DEPRECATED.&lt;/b&gt;&lt;br&gt;
+Do not use this extension point, it will be removed in future versions of this product.
+Instead, use the extension point &lt;a href=&quot;org_eclipse_ui_commands.html&quot;&gt;org.eclipse.ui.commands&lt;/a&gt;
+&lt;/p&gt;
+This extension point is used to register accelerator configuration extensions. Accelerator configurations are configurations to which accelerator sets may be registered. The workbench allows the user to select an accelerator configuration from the Workbench preference page. Only one accelerator configuration may be active at a time. 
+&lt;p&gt;
+An accelerator configuration represents a general style or theme of accelerators for Workbench actions. For example, the Workbench provides the &quot;Emacs&quot; accelerator configuration. When the &quot;Emacs&quot; accelerator configuration is active, accelerators belonging to accelerator sets registered to the &quot;Emacs&quot; configuration are active. These accelerators are defined to mimic the accelerators in Emacs (a popular text editor amongst developers). 
+&lt;p&gt;
+An accelerator set registers with an accelerator configuration by listing the configuration&apos;s id as the value of its &quot;configurationId&quot; attribute (see the Accelerator Sets extension point). Many accelerator sets can be registered to the same accelerator configuration. 
+&lt;p&gt;
+Note the accelerator configuration name presented to the user is the same as the value of the attribute &quot;name&quot; of the extension element of org.eclipse.ui.acceleratorConfigurations extension point.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element deprecated="true"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="acceleratorConfiguration" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="acceleratorConfiguration">
+      <annotation>
+         <appInfo>
+            <meta.element deprecated="true"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that can be used to identify this accelerator configuration.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name of the accelerator configuration to be presented to the user.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a short description of the accelerator configuration.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Release 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Following is an example of an accelerator configuration extension: 
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.acceleratorConfigurations&quot;&gt; 
+      &lt;acceleratorConfiguration 
+        id=&quot;org.eclipse.ui.viAcceleratorConfiguration&quot; 
+        name=&quot;VI&quot; 
+        description=&quot;VI style accelerator configuration&quot;&gt; 
+      &lt;/acceleratorConfiguration&gt; 
+      &lt;acceleratorConfiguration 
+        id=&quot;org.eclipse.ui.jonDoeAcceleratorConfiguration&quot; 
+        name=&quot;Jon Doe&quot; 
+        description=&quot;Personal accelerator configuration for Jon Doe&quot;&gt; 
+      &lt;/acceleratorConfiguration&gt; 
+   &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench provides the Default and Emacs accelerator configurations.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

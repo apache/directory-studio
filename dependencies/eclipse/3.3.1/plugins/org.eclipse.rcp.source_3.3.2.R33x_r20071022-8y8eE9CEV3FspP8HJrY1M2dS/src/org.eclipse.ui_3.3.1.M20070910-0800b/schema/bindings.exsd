@@ -1,0 +1,288 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="bindings" name="Bindings"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+The &lt;code&gt;org.eclipse.ui.bindings&lt;/code&gt; extension point is used to declare bindings and schemes.  Schemes are sets of one or more bindings.  A binding is a mapping between a certain group of conditions, some user input and a triggered command.
+&lt;/p&gt;
+&lt;p&gt;
+All bindings require a trigger of some kind, a context in which they are active and scheme in which they exist.  If you&apos;re not sure which context to chose, then just leave it blank.  It will default to &lt;code&gt;&quot;org.eclipse.ui.contexts.window&quot;&lt;/code&gt; context.  This context means that the binding will apply in any Eclipse main window.  When the context becomes active, the binding will become active as well.  Bindings from child contexts will override bindings from parent contexts.  For more information about contexts, please see the &lt;code&gt;org.eclipse.ui.contexts&lt;/code&gt; extension point.
+&lt;/p&gt;
+&lt;p&gt;
+If a binding does not define a command identifier, then it is a deletion marker.  This means that if all the conditions are met, it will cancel any bindings with the same trigger in the same context.  This mechanism can be used, for example, to change a binding on a particular platform.
+&lt;/p&gt;
+&lt;p&gt;
+One type of binding is a &lt;code&gt;key&lt;/code&gt; binding (i.e., a keyboard shortcut).  For example, binding &lt;code&gt;Ctrl+C&lt;/code&gt; to &lt;code&gt;Copy&lt;/code&gt; is considered a &lt;code&gt;key&lt;/code&gt; binding.  The trigger for a key binding is a sequence of key strokes.
+&lt;/p&gt;
+&lt;p&gt;
+A scheme is a group of these bindings into a set that the end user can select.  For example, a user might want to use the default scheme, but they might also want an Emacs-style scheme or a Brief-style scheme.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="scheme" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="key" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="scheme">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            &lt;p&gt;
+A scheme is a grouping of bindings that an end user can chose to use.
+&lt;/p&gt;
+&lt;p&gt;
+It is possible for schemes to inherit bindings from a parent scheme.  This is intended to make it easier for plug-in developers to create customized binding sets.  An active binding defined in a child scheme will always override an active binding in a parent scheme, if they have the same trigger.  This technique is used to provide the Emacs scheme in the workbench.
+&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for this scheme.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name for this scheme, as it should be displayed to an end-user.  This value should be translated.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  The description for this scheme, as it would be displayed to an end user.  This value should be translated.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="parentId" type="string">
+            <annotation>
+               <documentation>
+                  The identifier for the parent of this scheme.  If there is no parent, then do not specify this attribute.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="key">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="commandId"/>
+         </appInfo>
+         <documentation>
+            &lt;p&gt;A binding between some keyboard input and the triggering of a command.&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+         </choice>
+         <attribute name="sequence" type="string" use="required">
+            <annotation>
+               <documentation>
+                  &lt;p&gt;
+The key sequence for this binding.  This key sequence should consist of one or more key strokes.  Key strokes are separated by spaces.  Key strokes consist of one or more keys held down at the same time.  This should be zero or more modifier keys, and one other key.  The keys are separated by the &lt;code&gt;+&lt;/code&gt; character.
+&lt;/p&gt;
+&lt;p&gt;
+The recognized modifiers keys are &lt;code&gt;M1&lt;/code&gt;, &lt;code&gt;M2&lt;/code&gt;, &lt;code&gt;M3&lt;/code&gt;, &lt;code&gt;M4&lt;/code&gt;, &lt;code&gt;ALT&lt;/code&gt;, &lt;code&gt;COMMAND&lt;/code&gt;, &lt;code&gt;CTRL&lt;/code&gt;, and &lt;code&gt;SHIFT&lt;/code&gt;.  The &quot;M&quot; modifier keys are a platform-independent way of representing keys, and these are generally preferred.  &lt;code&gt;M1&lt;/code&gt; is the &lt;code&gt;COMMAND&lt;/code&gt; key on MacOS X, and the &lt;code&gt;CTRL&lt;/code&gt; key on most other platforms.  &lt;code&gt;M2&lt;/code&gt; is the &lt;code&gt;SHIFT&lt;/code&gt; key.  &lt;code&gt;M3&lt;/code&gt; is the &lt;code&gt;Option&lt;/code&gt; key on MacOS X, and the &lt;code&gt;ALT&lt;/code&gt; key on most other platforms.  &lt;code&gt;M4&lt;/code&gt; is the &lt;code&gt;CTRL&lt;/code&gt; key on MacOS X, and is undefined on other platforms.
+&lt;/p&gt;
+&lt;p&gt;
+The actual key is generally specified simply as the ASCII character, in uppercase.  So, for example &lt;code&gt;F&lt;/code&gt; or &lt;code&gt;,&lt;/code&gt; are examples of such keys.  However, there are some special keys; keys that have no printable ASCII representation.  The following is a list of the current special keys: &lt;code&gt;ARROW_DOWN&lt;/code&gt;, &lt;code&gt;ARROW_LEFT&lt;/code&gt;, &lt;code&gt;ARROW_RIGHT&lt;/code&gt;, &lt;code&gt;ARROW_UP&lt;/code&gt;, &lt;code&gt;BREAK&lt;/code&gt;, &lt;code&gt;BS&lt;/code&gt;, &lt;code&gt;CAPS_LOCK&lt;/code&gt;, &lt;code&gt;CR&lt;/code&gt;, &lt;code&gt;DEL&lt;/code&gt;, &lt;code&gt;END&lt;/code&gt;, &lt;code&gt;ESC&lt;/code&gt;, &lt;code&gt;F1&lt;/code&gt;, &lt;code&gt;F2&lt;/code&gt;, &lt;code&gt;F3&lt;/code&gt;, &lt;code&gt;F4&lt;/code&gt;, &lt;code&gt;F5&lt;/code&gt;, &lt;code&gt;F6&lt;/code&gt;, &lt;code&gt;F7&lt;/code&gt;, &lt;code&gt;F8&lt;/code&gt;, &lt;code&gt;F9&lt;/code&gt;, &lt;code&gt;F10&lt;/code&gt;, &lt;code&gt;F11&lt;/code&gt;, &lt;code&gt;F12&lt;/code&gt;, &lt;code&gt;F13&lt;/code&gt;, &lt;code&gt;F14&lt;/code&gt;, &lt;code&gt;F15&lt;/code&gt;, &lt;code&gt;FF&lt;/code&gt;, &lt;code&gt;HOME&lt;/code&gt;, &lt;code&gt;INSERT&lt;/code&gt;, &lt;code&gt;LF&lt;/code&gt;, &lt;code&gt;NUL&lt;/code&gt;, &lt;code&gt;NUM_LOCK&lt;/code&gt;, &lt;code&gt;NUMPAD_0&lt;/code&gt;, &lt;code&gt;NUMPAD_1&lt;/code&gt;, &lt;code&gt;NUMPAD_2&lt;/code&gt;, &lt;code&gt;NUMPAD_3&lt;/code&gt;, &lt;code&gt;NUMPAD_4&lt;/code&gt;, &lt;code&gt;NUMPAD_5&lt;/code&gt;, &lt;code&gt;NUMPAD_6&lt;/code&gt;, &lt;code&gt;NUMPAD_7&lt;/code&gt;, &lt;code&gt;NUMPAD_8&lt;/code&gt;, &lt;code&gt;NUMPAD_9&lt;/code&gt;, &lt;code&gt;NUMPAD_ADD&lt;/code&gt;, &lt;code&gt;NUMPAD_DECIMAL&lt;/code&gt;, &lt;code&gt;NUMPAD_DIVIDE&lt;/code&gt;, &lt;code&gt;NUMPAD_ENTER&lt;/code&gt;, &lt;code&gt;NUMPAD_EQUAL&lt;/code&gt;, &lt;code&gt;NUMPAD_MULTIPLY&lt;/code&gt;, &lt;code&gt;NUMPAD_SUBTRACT&lt;/code&gt;, &lt;code&gt;PAGE_UP&lt;/code&gt;, &lt;code&gt;PAGE_DOWN&lt;/code&gt;, &lt;code&gt;PAUSE&lt;/code&gt;, &lt;code&gt;PRINT_SCREEN&lt;/code&gt;, &lt;code&gt;SCROLL_LOCK&lt;/code&gt;, &lt;code&gt;SPACE&lt;/code&gt;, &lt;code&gt;TAB&lt;/code&gt; and &lt;code&gt;VT&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+We also understand some alternative names for some common special keys.  For example, we accept both &lt;code&gt;ESC&lt;/code&gt; and &lt;code&gt;ESCAPE&lt;/code&gt;, and &lt;code&gt;CR&lt;/code&gt;, &lt;code&gt;ENTER&lt;/code&gt; and &lt;code&gt;RETURN&lt;/code&gt; are all the same.
+&lt;/p&gt;
+&lt;p&gt;
+It is also strongly recommended that you keep the key sequences short.  One or two is the most you should need.  Use contexts to give key sequences different meanings in different parts of your application.  At the very most, you should not use any key sequence that contains more than four key strokes.
+&lt;/p&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="schemeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The identifier of the scheme in which this key binding is active.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="contextId" type="string" use="default" value="org.eclipse.ui.contexts.window">
+            <annotation>
+               <documentation>
+                  The identifier of the context in which this key binding is active.  Please see the &lt;code&gt;org.eclipse.ui.contexts&lt;/code&gt; extension point.  If this is not specified, then it defaults to &lt;code&gt;org.eclipse.ui.contexts.window&lt;/code&gt;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="commandId" type="string">
+            <annotation>
+               <documentation>
+                  &lt;p&gt;
+The identifier of the command which should be executed when this binding is triggered.
+&lt;/p&gt;
+&lt;p&gt;
+If no command identifier is specified, this is a deletion marker.  This means that any binding in the same context with the same sequence, platform and locale will become inactive when this binding becomes active.  If the platform or locale on a deletion is not specified, then it matches any platform or locale.
+&lt;/p&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="platform" type="string">
+            <annotation>
+               <documentation>
+                  The platform on which this binding applies.  The platform should be specified in the same way as the string from &lt;code&gt;SWT.getPlatform()&lt;/code&gt;.  For example, the following strings are considered valid: &lt;code&gt;win32&lt;/code&gt;, &lt;code&gt;gtk&lt;/code&gt;, &lt;code&gt;motif&lt;/code&gt;, &lt;code&gt;carbon&lt;/code&gt; and &lt;code&gt;photon&lt;/code&gt;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="locale" type="string">
+            <annotation>
+               <documentation>
+                  The locale on which this bindings applies.  This is useful for changing bindings that conflict with locale-specific input method editors (IMEs).  The locale is specified in the same way as &lt;code&gt;Locale.toString()&lt;/code&gt;.  For example, &lt;code&gt;&quot;en&quot;&lt;/code&gt; or &lt;code&gt;&quot;en_CA&quot;&lt;/code&gt; are both understood.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parameter">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id"/>
+         </appInfo>
+         <documentation>
+            A parameter name and value that should be passed to the command when it is executed.  This allows for the command to be qualified in some way.  For example, a &quot;Show View&quot; command might accept the view id as a parameter.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  The parameter name as understood by the command.  This is not a translatable name, but the key to name-value map.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  The value for the parameter.  This value is a free-form string, but it should be parseable by the command.  Consult the command to see what format it expects these values to take.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;pre&gt;
+&lt;extension
+ point=&quot;org.eclipse.ui.bindings&quot;&gt;
+ &lt;key
+  sequence=&quot;M2+F5&quot;
+  commandId=&quot;example.commandId&quot;
+  schemeId=&quot;org.eclipse.ui.defaultAcceleratorConfiguration&quot;
+  contextId=&quot;org.eclipse.ui.contexts.dialog&quot; /&gt;
+ &lt;key
+  sequence=&quot;M2+F7&quot;
+  commandId=&quot;other.commandId&quot;
+  schemeId=&quot;default.id&quot;
+  contextId=&quot;org.eclipse.ui.contexts.dialog&quot; /&gt;
+ &lt;scheme
+  name=&quot;Default&quot;
+  description=&quot;Default shortcuts for Eclipse&quot;
+  id=&quot;default.id&quot; /&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+There is no public API for defining bindings.  To try to achieve stability for the user, bindings are only defined through the extension points.  If you are an RCP application, you should be able to override this behaviour in the &lt;code&gt;WorkbenchAdvisor&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+For bindings to work, you must have defined a &lt;a href=&quot;org_eclipse_ui_commands.html&quot;&gt;command&lt;/a&gt;.  For the binding to work, the command must have an active &lt;a href=&quot;org_eclipse_ui_handlers.html&quot;&gt;handler&lt;/a&gt;.  Handlers can be registered programmatically; please see the &lt;a href=&quot;org_eclipse_ui_handlers.html&quot;&gt;org.eclipse.ui.handlers&lt;/a&gt; extension point.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2005,2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

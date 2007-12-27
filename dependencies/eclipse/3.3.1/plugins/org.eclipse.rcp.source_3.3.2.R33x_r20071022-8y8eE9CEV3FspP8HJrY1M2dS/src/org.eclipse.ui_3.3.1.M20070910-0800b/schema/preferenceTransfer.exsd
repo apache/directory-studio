@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="preferenceTransfer" name="Preference Transfer"/>
+      </appInfo>
+      <documentation>
+         The workbench provides support for maintaining preferences.
+The purpose of this extension point is to allow plug-ins to add
+specific support for saving and loading of specific groups of preferences.
+Typically this is used for operations such as Import and Export.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="transfer" minOccurs="0" maxOccurs="unbounded"/>
+            <sequence>
+               <element ref="settingsTransfer" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="transfer">
+      <annotation>
+         <documentation>
+            A transfer is an element used for specifying a group of preferences that can be exported together.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="mapping" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this transfer
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in UI when listing this item
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  a relative name of the icon that will be used when displaying the transfer
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="description" type="string">
+      <annotation>
+         <appInfo>
+            <meta.element translatable="true"/>
+         </appInfo>
+         <documentation>
+            An optional subelement whose body should represent a short description
+of the transfer engine functionality.
+         </documentation>
+      </annotation>
+   </element>
+
+   <element name="mapping">
+      <annotation>
+         <documentation>
+            a subelement which represents a &lt;tt&gt;org.eclipse.core.runtime.preferences.IPreferenceFilter&lt;/tt&gt;.  It specifies 1 or more mappings from a scope &lt;tt&gt;org.eclipse.core.runtime.preferences.IScope&lt;/tt&gt; to 0 or more nodes. 0 or more keys are specified per node.  The rules for export and import behaviour for a filter can be found in the specifications in &lt;tt&gt;org.eclipse.core.runtime.preferences.IPreferenceFilter&lt;/tt&gt;.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="entry" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="scope" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an attribute specifying the name of the scope to map the provided nodes and keys to.
+Generally the scopes defined in org.eclipse.core.runtime.preferences and org.eclipse.core.resources are used. They are 
+configuration (org.eclipse.core.runtime.preferences.ConfigurationScope.SCOPE)
+instance (org.eclipse.core.runtime.preferences.InstanceScope.SCOPE)
+default (org.eclipse.core.runtime.preferences.DefaultScope.SCOPE)
+default (org.eclipse.core.resources.ProjectScope.SCOPE)
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="entry">
+      <annotation>
+         <documentation>
+            a subelement specifing the nodes and keys that are to be transferred for a given scope
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="key" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="node" type="string">
+            <annotation>
+               <documentation>
+                  an attribute specifing the preference node within the given scope to be transferred. This preference node will correspond to the bundle id of the plug-in that defines the preference.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="key">
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an attribute specifing a comma separated list of preference keys within the given node to be transferred, specifying the key attribute without specifying a matching node will result in a runtime error.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="settingsTransfer">
+      <annotation>
+         <documentation>
+            A settings transfer is the definition of a transfer of internal state from one workbench to another.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The human readable name of the transfer.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of the transfer.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The subclass of &lt;code&gt;org.eclipse.ui.preferences.SettingsTransfer&lt;/code&gt; that specifies this transfer.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.preferences.SettingsTransfer"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="helpContext" type="string">
+            <annotation>
+               <documentation>
+                  The help context for the transfer. See IWorkbench#getHelpSystem().
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+ Example that export all transfers, exports all nodes for specified scopes.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension
+         point=&quot;org.eclipse.ui.preferenceTransfer&quot;&gt;
+       &lt;transfer
+            icon=&quot;XYZ.gif&quot;
+            name=&quot;Export All Transfer Test&quot;
+            id=&quot;org.eclipse.ui.tests.all&quot;&gt;
+            &lt;mapping scope=&quot;instance&quot;/&gt;
+      &lt;mapping scope=&quot;configuration&quot;/&gt;
+            &lt;mapping scope=&quot;project&quot;/&gt;
+   &lt;description&gt;
+             Export all tranfer, exports all nodes for specified scopes
+      &lt;/description&gt;
+    &lt;/transfer&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;
+   Bare Bones Transfer only provides required info and no more.  
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension
+         point=&quot;org.eclipse.ui.preferenceTransfer&quot;&gt;
+       &lt;transfer
+            name=&quot;Bare Bones Transfer Test&quot;
+            id=&quot;org.eclipse.ui.tests.all&quot;&gt;
+            &lt;mapping scope=&quot;instance&quot;/&gt;
+    &lt;/transfer&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;
+   Example that exports many combinations of keys and nodes 
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension
+         point=&quot;org.eclipse.ui.preferenceTransfer&quot;&gt;
+       &lt;transfer
+            icon=&quot;XYZ.gif&quot;
+            name=&quot;Export many preferences&quot;
+            id=&quot;org.eclipse.ui.tests.all&quot;&gt;
+            &lt;mapping scope=&quot;instance&quot;&gt;
+                &lt;entry node=&quot;org.eclipse.ui&quot;&gt;
+                   &lt;key name=&quot;showIntro,DOCK_PERSPECTIVE_BAR&quot;/&gt;
+                &lt;/entry&gt;
+                &lt;entry node=&quot;org.eclipse.ui.workbench&quot;&gt;
+                   &lt;key name=&quot;bogus,RUN_IN_BACKGROUND&quot;/&gt;
+                &lt;/entry&gt;   
+                &lt;entry node=&quot;org.eclipse.ui.ide&quot;/&gt;
+                &lt;entry node=&quot;org.eclipse.core.resources&quot;/&gt;
+            &lt;/mapping&gt;
+      &lt;mapping scope=&quot;configuration&quot;/&gt;
+      &lt;description&gt;
+              Export many combinations of keys and nodes
+        &lt;/description&gt;
+    &lt;/transfer&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2005, 2006 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

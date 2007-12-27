@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="decorators" name="Decorators"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to add decorators to views that subscribe to a decorator manager. As of 2.1 there is the concept of a lightweight decorator that will handle the image management for the decorator. It is also possible to declare a lightweight decorator that simply overlays an icon when enabled that requires no implementation from the plug-in.
+      </documentation>
+   </annotation>
+
+   <include schemaLocation="commonExpression.exsd"/>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="decorator" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="decorator">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="label"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+            <element ref="enablement" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this decorator.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in the workbench window menu to represent this decorator.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class which implements &lt;samp&gt;org.eclipse.jface.viewers.ILabelDecorator&lt;/samp&gt;
+if &lt;b&gt;&lt;i&gt; lightweight&lt;/i&gt;&lt;/b&gt; is false or  &lt;samp&gt;org.eclipse.jface.viewers.ILightweightLabelDecorator&lt;/samp&gt; if lightweight is true. The default value is false. If there is no &lt;b&gt;&lt;i&gt;class&lt;/i&gt;&lt;/b&gt; element it is assumed to be lightweight.
+
+In the case where there is no decorator class this is said to be declarative. Declarative decorators with an enablement based on session properties, persistant properties or project description values (such as natures) will need to be updated explicitly when these values change using &lt;code&gt;IDecoratorManager#update()&lt;/code&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jface.viewers.ILabelDecorator"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="objectClass" type="string">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class which this decorator will be applied to. Deprecated in 2.1. Make this value part of the enablement.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="java.lang.Object" deprecated="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="adaptable" type="boolean">
+            <annotation>
+               <documentation>
+                  a flag that indicates if types that can adapt to objects other than thier objectClass should use this object contribution.
+For non-lightweight decorators, this flag only has an effect if objectClass adapts to IResource.  For lightweight decorators, adaptability to any objectClass is supported as long as adaptability is defined through the adapter manager (see the class org.eclipse.runtime.IAdapterManager). Default value is false.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="state" type="boolean">
+            <annotation>
+               <documentation>
+                  a flag that indicates if the decorator is on by default.  Default value is false.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="lightweight">
+            <annotation>
+               <documentation>
+                  The lightweight flag indicates that the decorator is either
+declarative or implements 
+&lt;samp&gt;org.eclipse.jface.viewers.ILightweightLabelDecorator&lt;/samp&gt;.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="true">
+                  </enumeration>
+                  <enumeration value="false">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  if the decorator is &lt;b&gt;&lt;i&gt;lightweight&lt;/i&gt;&lt;/b&gt; and the &lt;b&gt;&lt;i&gt;class&lt;/i&gt;&lt;/b&gt; is not specified this is the path to the overlay image to apply
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="location">
+            <annotation>
+               <documentation>
+                  if the decorator is &lt;b&gt;&lt;i&gt;lightweight&lt;/i&gt;&lt;/b&gt; this is the location to apply the decorator to. Defaults to BOTTOM_RIGHT.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="TOP_LEFT">
+                  </enumeration>
+                  <enumeration value="TOP_RIGHT">
+                  </enumeration>
+                  <enumeration value="BOTTOM_LEFT">
+                  </enumeration>
+                  <enumeration value="BOTTOM_RIGHT">
+                  </enumeration>
+                  <enumeration value="UNDERLAY">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="description" type="string">
+      <annotation>
+         <appInfo>
+            <meta.element translatable="true"/>
+         </appInfo>
+         <documentation>
+            an optional subelement whose body should contain text providing a short description of the decorator. This will be shown in the Decorators preference page so it is recommended that this is included. Default value is an empty String.
+         </documentation>
+      </annotation>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Release 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following are example of decorators:
+&lt;p&gt;
+A full decorator. The plug-in developer must handle their own image support.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.ui.decorators&quot;&gt; 
+        &lt;decorator
+            id=&quot;com.xyz.decorator&quot; 
+            label=&quot;XYZ Decorator&quot; 
+            state=&quot;true&quot; 
+            class=&quot;com.xyz.DecoratorContributor&quot;&gt;
+            &lt;enablement&gt;
+                &lt;objectClass name=&quot;org.eclipse.core.resources.IResource&quot;/&gt; 
+            &lt;/enablement&gt;
+        &lt;/decorator&gt;
+    &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+A lightweight decorator. There is a concrete class but as it is an
+ILightweightLabelDecorator it only needs to supply text and an ImageDescriptor and therefore needs no resource handling.
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.ui.decorators&quot;&gt; 
+        &lt;decorator
+            id=&quot;com.xyz.lightweight.decorator&quot; 
+            label=&quot;XYZ Lightweight Decorator&quot;                 
+            state=&quot;false&quot; 
+            class=&quot;com.xyz.LightweightDecoratorContributor&quot; 
+            lightweight=&quot;true&quot; &gt;
+            &lt;enablement&gt;
+                &lt;objectClass name=&quot;org.eclipse.core.resources.IResource&quot;/&gt; 
+            &lt;/enablement&gt;
+        &lt;/decorator&gt;
+    &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;A declarative lightweight decorator. There is no concrete class so it
+supplies an icon and a quadrant to apply that icon.
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;pre&gt;
+ &lt;extension point=&quot;org.eclipse.ui.decorators&quot;&gt; 
+        &lt;decorator
+            id=&quot;com.xyz.lightweight.declarative.decorator&quot; 
+            label=&quot;XYZ Lightweight Declarative Decorator&quot; 
+            state=&quot;false&quot; 
+            lightweight=&quot;true&quot; 
+            icon=&quot;icons/full/declarative.gif&quot; 
+            location=&quot;TOP_LEFT&quot;&gt; 
+            &lt;enablement&gt;
+                &lt;objectClass name=&quot;org.eclipse.core.resources.IResource&quot;/&gt; 
+            &lt;/enablement&gt;
+        &lt;/decorator&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the &lt;samp&gt;class&lt;/samp&gt; attribute must be the fully qualified name of a class that implements  &lt;samp&gt;org.eclipse.jface.viewers.ILabelDecorator&lt;/samp&gt; (if lightweight is false) or &lt;samp&gt;org.eclipse.jface.viewers.ILightweightLabelDecorator&lt;/samp&gt;.  This class is loaded as late as possible to avoid loading the entire plug-in before it is really needed. Declarative decorators do not entail any plug-in activation and should be used whenever possible. Non-lightweight decorators will eventually be deprecated.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         Plug-ins may use this extension point to add new decorators to be applied to views that use the decorator manager as their label decorator.
+To use the decorator manager, use the result of IViewPart.getDecoratorManager() as the decorator for an instance of DecoratingLabelProvider.
+This is currently in use by the Resource Navigator.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

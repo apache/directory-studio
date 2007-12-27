@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="commonExpression" name="Common Expressions"/>
+      </appInfo>
+      <documentation>
+         An action&apos;s enablement and/or visibility can be defined using the elements &lt;samp&gt;enablement&lt;/samp&gt; and &lt;samp&gt;visibility&lt;/samp&gt; respectively. These two elements contain a boolean expression that is evaluated to determine the enablement and/or visibility.
+&lt;p&gt;
+The syntax is the same for the &lt;samp&gt;enablement&lt;/samp&gt; and &lt;samp&gt;visibility&lt;/samp&gt; elements. Both contain only one boolean expression sub-element. In the simplest case, this will be an &lt;samp&gt;objectClass&lt;/samp&gt;, &lt;samp&gt;objectState&lt;/samp&gt;, &lt;samp&gt;pluginState&lt;/samp&gt;, or &lt;samp&gt;systemProperty&lt;/samp&gt; element. In the more complex case, the &lt;samp&gt;and&lt;/samp&gt;, &lt;samp&gt;or&lt;/samp&gt;, and &lt;samp&gt;not&lt;/samp&gt; elements can be combined to form a boolean expression. Both the &lt;samp&gt;and&lt;/samp&gt;, and &lt;samp&gt;or&lt;/samp&gt; elements must contain 2 sub-elements. The &lt;samp&gt;not&lt;/samp&gt; element must contain only 1 sub-element.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="enablement">
+      <annotation>
+         <documentation>
+            This element is used to define the enablement for the extension.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="and"/>
+            <element ref="or"/>
+            <element ref="not"/>
+            <element ref="objectClass"/>
+            <element ref="objectState"/>
+            <element ref="pluginState"/>
+            <element ref="systemProperty"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="visibility">
+      <annotation>
+         <documentation>
+            This element is used to define the visibility for the extension.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="and"/>
+            <element ref="or"/>
+            <element ref="not"/>
+            <element ref="objectClass"/>
+            <element ref="objectState"/>
+            <element ref="pluginState"/>
+            <element ref="systemProperty"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="and">
+      <annotation>
+         <documentation>
+            This element represent a boolean AND operation on the result of evaluating its two sub-element expressions.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="2" maxOccurs="unbounded">
+            <element ref="and"/>
+            <element ref="or"/>
+            <element ref="not"/>
+            <element ref="objectClass"/>
+            <element ref="objectState"/>
+            <element ref="pluginState"/>
+            <element ref="systemProperty"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="or">
+      <annotation>
+         <documentation>
+            This element represent a boolean OR operation on the result of evaluating its two sub-element expressions.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice minOccurs="2" maxOccurs="unbounded">
+            <element ref="and"/>
+            <element ref="or"/>
+            <element ref="not"/>
+            <element ref="objectClass"/>
+            <element ref="objectState"/>
+            <element ref="pluginState"/>
+            <element ref="systemProperty"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="not">
+      <annotation>
+         <documentation>
+            This element represent a boolean NOT operation on the result of evaluating its sub-element expressions.
+         </documentation>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="and"/>
+            <element ref="or"/>
+            <element ref="not"/>
+            <element ref="objectClass"/>
+            <element ref="objectState"/>
+            <element ref="pluginState"/>
+            <element ref="systemProperty"/>
+         </choice>
+      </complexType>
+   </element>
+
+   <element name="objectClass">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            This element is used to evaluate the class or interface of each object in the current selection. If each object in the selection implements the specified class or interface, the expression is evaluated as true.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class or interface.  The expression is evaluated as true only if all objects within the selection implement this class or interface.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="java.lang.Object"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="objectState">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            This element is used to evaluate the attribute state of each object in the current selection. If each object in the selection has the specified attribute state, the expression is evaluated as true. To evaluate this type of expression, each object in the selection must implement, or adapt to, &lt;samp&gt;org.eclipse.ui.IActionFilter&lt;/samp&gt; interface.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of an object&apos;s attribute. Acceptable names reflect the object type, and should be publicly declared by the plug-in where the object type is declared.
+
+@see IResourceActionFilter for a list of the supported constants
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the required value of the object&apos;s attribute. The acceptable values for the object&apos;s attribute should be publicly declared.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="pluginState">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id"/>
+         </appInfo>
+         <documentation>
+            This element is used to evaluate the state of a plug-in. The state of the plug-in may be one of the following: &lt;samp&gt;installed&lt;/samp&gt; (equivalent to the OSGi concept of &quot;resolved&quot;) or &lt;samp&gt;activated&lt;/samp&gt; (equivalent to the OSGi concept of &quot;active&quot;).
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the identifier of a plug-in which may or may not exist in the plug-in registry.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" use="default" value="installed">
+            <annotation>
+               <documentation>
+                  the required state of the plug-in. The state of the plug-in may be one of the following: &lt;samp&gt;installed&lt;/samp&gt; (equivalent to the OSGi concept of &quot;resolved&quot;) or &lt;samp&gt;activated&lt;/samp&gt; (equivalent to the OSGi concept of &quot;active&quot;).
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="installed">
+                  </enumeration>
+                  <enumeration value="activated">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="systemProperty">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            This element is used to evaluate the state of some system property.  The property value is retrieved from the &lt;samp&gt;java.lang.System&lt;/samp&gt;.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the system property.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the required value of the system property.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Release 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2006 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

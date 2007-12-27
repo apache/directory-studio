@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="fontDefinitions" name="Font Definitions"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to register fonts with the JFace FontRegistry and with the workbench preference store for use by the Fonts preference page.
+
+This extension point has been deprecated in 3.0.  You should now add fontDefinition elements to org.eclipse.ui.themes.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="fontDefinition" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="fontDefinition">
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that can be used to identify this font definition.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name of the font to be presented to the user.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  &lt;p&gt;the font value.  This is in the form: &lt;code&gt;fontname-style-height&lt;/code&gt; where &lt;code&gt;fontname&lt;/code&gt; is the name of a font, &lt;code&gt;style&lt;/code&gt; is a font style (one of &lt;code&gt;&quot;regular&quot;&lt;/code&gt;, &lt;code&gt;&quot;bold&quot;&lt;/code&gt;, &lt;code&gt;&quot;italic&quot;&lt;/code&gt;, or &lt;code&gt;&quot;bold italic&quot;&lt;/code&gt;) and &lt;code&gt;height&lt;/code&gt; is an integer representing the font height.&lt;/p&gt;
+&lt;p&gt;Example: &lt;code&gt;Times New Roman-bold-36&lt;/code&gt;.&lt;/p&gt;  
+&lt;p&gt;
+Only one (or neither) of value or defaultsTo may be used.
+&lt;/p&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="categoryId" type="string">
+            <annotation>
+               <documentation>
+                  the optional id of the presentation category this font belongs to.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="defaultsTo" type="string">
+            <annotation>
+               <documentation>
+                  the id of another font definition that is the default setting for the receiver. When there is no preference for this font the font registry will have the value of defaultsTo set for it in the registry.
+&lt;p&gt;
+Only one or neither of value or defaultsTo may be used.
+&lt;/p&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="description">
+      <annotation>
+         <appInfo>
+            <meta.element translatable="true"/>
+         </appInfo>
+         <documentation>
+            a short description of the fonts usage
+         </documentation>
+      </annotation>
+      <complexType>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Release 2.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Following is an example of an a font definition extension:
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.fontDefinition&quot;&gt; 
+      &lt;fontDefinition 
+         id=&quot;org.eclipse.examples.textFont&quot; 
+         label=&quot;Text&quot;&gt; 
+         &lt;description&gt;
+            The text font
+         &lt;/description&gt;
+      &lt;/fontDefinition&gt; 
+
+      &lt;fontDefinition 
+        id=&quot;org.eclipse.examples.userFont&quot; 
+        label=&quot;User&quot;
+        defaultsTo=&quot;org.eclipse.jface.textFont&quot;&gt; 
+        &lt;description&gt;
+           The user font
+        &lt;/description&gt;
+      &lt;/fontDefinition&gt; 
+   &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The defaultsTo tag is used as a directive by
+the Workbench to set the value of the font definition to the value of defaultsTo
+whenever the defaultsTo fontDefinition is updated. This only occurs if the
+fontDefinition is at its default value - once it is set by the user this updates
+will not occur. The workbench provides 4 fonts: 
+&lt;P&gt;&lt;b&gt;org.eclipse.jface.bannerfont&lt;/b&gt;. The banner font is used in wizard banners.&lt;br&gt;
+&lt;b&gt;org.eclipse.jface.dialogfont&lt;/b&gt;. The dialog font is the font for widgets in dialogs.&lt;br&gt;
+&lt;b&gt;org.eclipse.jface.headerfont&lt;/b&gt;. The header font is used for section headers in composite text pages.&lt;br&gt;
+&lt;b&gt;org.eclipse.jface.textfont&lt;/b&gt;. The text font is used by text editors.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench provides the font
+definitions for the text, dialog, banner and header fonts.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

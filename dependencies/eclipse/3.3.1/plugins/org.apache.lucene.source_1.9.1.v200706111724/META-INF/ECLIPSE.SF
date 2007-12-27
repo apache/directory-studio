@@ -1,0 +1,27 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest-Main-Attributes: M+gi7aq5XgUFKR46UXqDRHjByOY=
+Created-By: 1.5.0 (IBM Corporation)
+SHA1-Digest-Manifest: 7Wcq9y38j4gVVZI7VVH1ONShvu0=
+
+Name: plugin.properties
+SHA1-Digest: dG0kDzTCaiTSCvyCSdpLxPbX0u4=
+
+Name: about.html
+SHA1-Digest: MgRwV8Hwg8W/nULPs16TAo9krvQ=
+
+Name: plugin.xml
+SHA1-Digest: +yj6Qjxn1R1jExP4Zcr3gfUGND4=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: SAqY+5ITAL0mkdYeijlSRhyIaZk=
+
+Name: src/org.apache.lucene_1.9.1.v200706111724/about.html
+SHA1-Digest: cZyBDp0btYHl/rgtz6SYZyxdYqc=
+
+Name: src/org.apache.lucene_1.9.1.v200706111724/about_files/asl-v20.tx
+ t
+SHA1-Digest: sY4PWG5b7oB9t9gnsSo45bUrCtY=
+
+Name: src/org.apache.lucene_1.9.1.v200706111724/src.zip
+SHA1-Digest: F3mQ4tYviFN3mCuN6o6l4FZOQ5s=
+

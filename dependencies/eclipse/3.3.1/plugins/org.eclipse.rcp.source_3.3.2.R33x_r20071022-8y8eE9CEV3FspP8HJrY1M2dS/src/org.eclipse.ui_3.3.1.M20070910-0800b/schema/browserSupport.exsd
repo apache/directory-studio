@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="browserSupport" name="Browser Support"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to contribute workbench browser support. The support is responsible for opening URLs for all the Eclipse plug-ins. Workbench provides a very rudimentary implementation with a more complete implementation available as an optional RCP plug-in.
+&lt;p&gt;
+Contributions that are meant to be shipped with the product as the standard support should be marked as &lt;code&gt;default&lt;/code&gt;. This way, it is possible to override the support with another contribution that is not marked as &lt;code&gt;default&lt;/code&gt;. Note however that only one support can be active at any point in time. In case of multiple default and/or non-default contributions, the result is non-deterministic.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="support" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A fully qualified identifier of the target extension point.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  An optional identifier of the extension instance.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  An optional name of the extension instance.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="support">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class providing the browser support for the workbench. This class should extend &lt;code&gt;org.eclipse.ui.browser.AbstractWorkbenchBrowserSupport&lt;/code&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.browser.AbstractWorkbenchBrowserSupport"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="default" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  indicates whether this support is the default. Browser support should be marked as default if it is normally shipped with the product as the standard browser support. Browser supports that need to override the default support should have this flag set to &lt;code&gt;false&lt;/code&gt;. When workbench encounters two extensions, it will pick a non-default over a default one.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a browser support contribution:
+
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.browserSupport&quot;&gt;
+      &lt;support
+          default=&quot;true&quot;
+          class=&quot;com.example.xyz.MyBrowserSupport&quot;&gt;
+      &lt;/support&gt;
+   &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The contributors are expected to provide a class that extends &lt;code&gt;org.eclipse.ui.browser.AbstractWorkbenchBrowserSupport&lt;/code&gt;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench provides a simple implementation of the browser support that is used when no contributions are found in the registry.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

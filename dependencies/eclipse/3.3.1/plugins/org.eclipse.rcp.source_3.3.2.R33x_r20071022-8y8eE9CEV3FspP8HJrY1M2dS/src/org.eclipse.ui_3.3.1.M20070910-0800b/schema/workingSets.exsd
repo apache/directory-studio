@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="workingSets" name="Working Sets"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to define a working set wizard page. Working sets contain a number of elements of type IAdaptable and can be used to group elements for presentation to the user or for operations on a set of elements. A working set wizard page is used to create and edit working sets that contain elements of a specific type.
+&lt;p&gt;
+To select a working set the user is presented with a list of working sets that exist in the workbench. From that list a working set can be selected and edited using one of the wizard pages defined using this extension point. An existing working set is always edited with the wizard page that was used to create it or with the default resource based working set page if the original page is not available.
+&lt;p&gt;
+A new working set can be defined by the user from the same working set selection dialog. When a new working set is defined, the plugin provided wizard page is preceded by a page listing all available working set types. This list is made up of the name attribute values of each working set extension. 
+&lt;p&gt;
+Views provide a user interface to open the working set selection dialog and must store the selected working set.
+&lt;p&gt;
+The resource navigator uses a working set to filter elements from the navigator view. Only parents and children of working set elements are shown in the view, in addition to the working set elements themselves.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="workingSet" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="workingSet">
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that can be used to identify this working set dialog.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the element type that will be displayed and edited by the working set page. This should be a descriptive name like &quot;Resource&quot; or &quot;Java Element&quot;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  the relative path of an image that will be displayed in the working set type list on the first page of the working set creation wizard as well as in the working set selection dialog.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="pageClass" type="string">
+            <annotation>
+               <documentation>
+                  the fully qualified name of a Java class implementing &lt;samp&gt;org.eclipse.ui.dialogs.IWorkingSetPage&lt;/samp&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.jface.wizard.WizardPage:org.eclipse.ui.dialogs.IWorkingSetPage"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="updaterClass" type="string">
+            <annotation>
+               <documentation>
+                  the fully qualified name of a Java class implementing &lt;samp&gt;org.eclipse.ui.IWorkingSetUpdater&lt;/samp&gt;.  Use of this attribute will not cause eager plug-in activation.  This class will only be instantiated when the declaring bundle is otherwise activated.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.IWorkingSetUpdater"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="elementAdapterClass" type="string">
+            <annotation>
+               <documentation>
+                  the fully qualified name of a Java class implementing &lt;samp&gt;org.eclipse.ui.IWorkingSetElementAdapter&lt;/samp&gt;.  Use of this attribute will not cause eager plug-in activation.  This class will only be instantiated when the declaring bundle is otherwise activated.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.IWorkingSetElementAdapter"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Release 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Following is an example of how the resource working set dialog extension is defined to display and edit generic IResource elements: 
+&lt;p&gt;
+&lt;pre&gt;
+    &lt;extension point=&quot;org.eclipse.ui.workingSets&quot;&gt;
+        &lt;workingSet
+            id=&quot;org.eclipse.ui.resourceWorkingSetPage&quot;
+            name=&quot;Resource&quot;
+            icon=&quot;icons/resworkset.gif&quot;
+            pageClass=&quot;org.eclipse.ui.internal.dialogs.ResourceWorkingSetPage&quot;&gt;
+            &lt;applicableType
+               adaptable=&quot;true&quot;
+               class=&quot;org.eclipse.core.resources.IResource&quot;&gt;
+            &lt;/applicableType&gt;
+        &lt;/workingSet&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the pageClass attribute must represent a class that implements the &lt;samp&gt;org.eclipse.ui.dialogs.IWorkingSetPage&lt;/samp&gt; interface.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench provides a working set wizard page for creating and editing resource based working sets.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2006 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

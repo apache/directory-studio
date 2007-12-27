@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="dropActions" name="Drop Actions"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to add drop behaviour to 
+views defined by other plugins. 
+&lt;p&gt;
+Due to the UI layering imposed by the plugin 
+mechanism, views are often not aware of the content 
+and nature of other views. This can make drag and 
+drop operations between plugins difficult. 
+For example, one may wish to provide Java 
+refactoring support whereby the user drags a 
+method from the Java editor&apos;s content outliner 
+into another java file in the resource navigator. 
+Since the resource navigator doesn&apos;t know anything 
+about Java content, it doesn&apos;t know how to behave 
+when java methods are dropped onto it.  
+Similarly, an ISV may want to drop some of 
+their content into one of the Java viewers. 
+&lt;p&gt;
+The &lt;samp&gt;org.eclipse.ui.dropActions&lt;/samp&gt; extension point is 
+provided by the Platform to address these situations. 
+This mechanism delegates the drop behaviour back to 
+the originator of the drag operation. 
+This behaviour is contained in an action that 
+must implement 
+&lt;samp&gt;org.eclipse.ui.part.IDropActionDelegate&lt;/samp&gt;.  
+The viewer that is the source of the drag 
+operation must support 
+&lt;samp&gt;the org.eclipse.ui.part.PluginTransfer&lt;/samp&gt;
+transfer type, and place a 
+&lt;samp&gt;PluginTransferData&lt;/samp&gt; object in the drag event.
+See org.eclipse.jface.viewers.StructuredViewer#addDragSupport 
+to learn how to add drag support to a viewer.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="action">
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier that can be used to reference this action
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the fully qualified class that implements 
+&lt;samp&gt;org.eclipse.ui.part.IDropActionDelegate&lt;/samp&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.part.IDropActionDelegate"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a drop action extension: 
+&lt;p&gt;
+&lt;pre&gt;
+    &lt;extension point=&quot;org.eclipse.ui.dropActions&quot;&gt; 
+        &lt;action 
+            id=&quot;my_drop_action&quot; 
+            class=&quot;com.xyz.eclipse.TestDropAction&quot;&gt; 
+        &lt;/action&gt; 
+    &lt;/extension&gt;  
+&lt;/pre&gt;
+&lt;/p&gt;
+Here is an example of a drag listener that makes use of the drop
+action defined above.
+&lt;p&gt;
+&lt;pre&gt; 
+class MyDragListener extends DragSourceAdapter { 
+    public void dragSetData(DragSourceEvent event) { 
+        if (PluginTransfer.getInstance().isSupportedType(event.dataType)) { 
+            byte[] dataToSend = ...//enter the data to be sent. 
+            event.data = new PluginTransferData( 
+                &quot;my_drop_action&quot;, dataToSend); 
+        } 
+    } 
+} 
+&lt;/pre&gt;
+&lt;/p&gt;
+For a more complete example, see the Platform 
+readme example.  In that example, a drop action is 
+defined in ReadmeDropActionDelegate, and it is used 
+by ReadmeContentOutlineDragListener.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the class attribute must be a fully qualified name of a Java class that implements &lt;samp&gt;org.eclipse.ui.part.IDropActionDelegate&lt;/samp&gt;. This class is loaded as late as possible to avoid loading the entire plug-in before it is really needed
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench does not provide an implementation for this extension point. Plug-ins can contribute to this extension point to add drop behavior to views defined by other plugins.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

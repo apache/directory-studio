@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="acceleratorSets" name="Accelerator Sets"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+&lt;b&gt;WARNING: This extension point is DEPRECATED.&lt;/b&gt;&lt;br&gt;
+Do not use this extension point, it will be removed in future versions of this product.
+Instead, use the extension point &lt;a href=&quot;org_eclipse_ui_commands.html&quot;&gt;org.eclipse.ui.commands&lt;/a&gt;
+&lt;/p&gt;
+This extension point is used to register accelerator set extensions. Accelerator sets are just what the name implies, sets of accelerators. An accelerator is an association between one or more sequences of accelerator keys and a workbench action. An accelerator key sequence may be of length one or greater. 
+&lt;p&gt;
+An accelerator set is registered with an accelerator configuration (see the Accelerator Configuration extension point) and is applicable for an accelerator scope (see the Accelerator Scope extension point).
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element deprecated="true"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="acceleratorSet" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="acceleratorSet">
+      <annotation>
+         <appInfo>
+            <meta.element deprecated="true"/>
+         </appInfo>
+         <documentation>
+            @deprecated Please use the &quot;org.eclipse.ui.bindings&quot; extension point instead.  Use the &lt;code&gt;key&lt;/code&gt; element.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="accelerator" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="configurationId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that identifies the accelerator configuration to which this accelerator set is registered.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="scopeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that identifies the accelerator scope for which this accelerator set is applicable.
+@deprecated When migrating to the new bindings extension point, it is recommended that you change any occurrences of &quot;org.eclipse.ui.globalScope&quot; to &quot;org.eclipse.ui.contexts.window&quot;.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="accelerator">
+      <annotation>
+         <appInfo>
+            <meta.element deprecated="true"/>
+         </appInfo>
+         <documentation>
+            @deprecated Please use the &quot;org.eclipse.ui.bindings&quot; extension point instead.  Use the &lt;code&gt;key&lt;/code&gt; element.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  the unique identifier of the action definition of the action associated with this accelerator. If the id is not specified this accelerator deletes any  mappings with the same key. This is used to delete a key binding for a specific Locale.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="key" type="string" use="required">
+            <annotation>
+               <documentation>
+                  an attribute representing the sequence(s) of accelerator keys used to perform the action associated with this accelerator. Sequences are separated by &apos;||&apos;, and individual keys in a sequence are separated by a space. A key may be modified by the CTRL, ALT, or SHIFT keys. Depending on keyboard layout, some keys (&apos;?&apos; for example) may need the SHIFT to be accessed but the accelerator should be specified without the SHIFT so it will be independent of keyboard layout. E.g. if CTRL+? is specified as an accelerator, the user may have to press CTRL+SHIFT+? depending on the keyboard layout.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="locale" type="string">
+            <annotation>
+               <documentation>
+                  an optional attribute which specifies a locale for which the accelerator is applicable. If this attribute is not specified, the accelerator is applicable for all locales.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="platform" type="string">
+            <annotation>
+               <documentation>
+                  an optional attribute which specifies a platform on which the accelerator is applicable. If this attribute is not specified, the accelerator is applicable on all platforms.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         Release 2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         Following is an example of an accelerator set extension: 
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.acceleratorSets&quot;&gt; 
+      &lt;acceleratorSet 
+        configurationId=&quot;org.eclipse.ui.exampleAcceleratorConfiguration&quot; 
+        scopeId=&quot;org.eclipse.ui.globalScope&quot;&gt; 
+          &lt;accelerator 
+              id=&quot;org.eclipse.ui.ExampleActionA&quot; 
+              key=&quot;CTRL+R CTRL+A&quot;&gt; 
+          &lt;/accelerator&gt; 
+          &lt;accelerator 
+              id=&quot;org.eclipse.ui.ExampleActionB&quot; 
+              key=&quot;CTRL+R CTRL+B&quot;&gt; 
+          &lt;/accelerator&gt; 
+          &lt;accelerator 
+              id=&quot;org.eclipse.ui.ExampleActionC&quot; 
+              key=&quot;CTRL+R CTRL+C || CTRL+SHIFT+DELETE&quot;&gt; 
+          &lt;/accelerator&gt; 
+      &lt;/acceleratorSet&gt; 
+   &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         More than one accelerator may be specified for the same action in the accelerator set but only one will be used. 
+&lt;p&gt;
+If the locale and/or the platform is specified, the accelerator that better matches the current locale and platform will be used. The current locale is determined by the API Locale.getDefault() and the platform by the API SWT.getPlatform(). If the platform and/or the locale is specified and it does not match the current locale and/or platform, the accelerator is discarded. If accelerator A defines only the locale and B defines only the platform, B is used. If accelerator A defines &quot;ja&quot; as its locale and B defines &quot;ja_JP&quot;, B is used in case the current locale is &quot;ja_JP&quot;. 
+&lt;p&gt;
+If two accelerators are defined in accelerators sets in different plugins, the chosen accelerator will depend on the plugins. If plugin A depends on B, the accelerators defined in B is used. If A and B don&apos;t depend on each other, they will be alphabetically sorted by the plugin id. 
+&lt;p&gt;
+If two accelerators are defined in different scopes, the accelerator defined in the current scope will be used. If an accelerator is not defined in the current scope or one of its parents it is discarded. If an accelerator is defined in a parent and child scope, the one in the child is used.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench provides accelerator sets for the Default and Emacs accelerator configurations.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2002, 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

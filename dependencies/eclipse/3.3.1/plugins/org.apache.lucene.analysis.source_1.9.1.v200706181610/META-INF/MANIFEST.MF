@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Version: 1.9.1.v200706181610
+Created-By: 2.3 (IBM Corporation)
+Bundle-SymbolicName: org.apache.lucene.analysis.source
+Bundle-Name: %pluginName
+Bundle-Localization: plugin
+Bundle-Vendor: %providerName
+Ant-Version: Apache Ant 1.7.0
+
+Name: plugin.properties
+SHA1-Digest: 1h0j/MOiKrbfx/1T+2IiKrkYgXI=
+
+Name: plugin.xml
+SHA1-Digest: jDGmVmqrGmBObcq69i9+MOEP7cI=
+
+Name: about.html
+SHA1-Digest: gDT2Er1IoaKBT1HypdzQDPB7LUU=
+
+Name: src/org.apache.lucene.analysis_1.9.1.v200706181610/about_files/a
+ sl-v20.txt
+SHA1-Digest: K4uBUimqimHkg/tLoFiLi2xJGJA=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+
+Name: src/org.apache.lucene.analysis_1.9.1.v200706181610/src.zip
+SHA1-Digest: 7hiYR977SNw23QX9bixzr6pdNMg=
+
+Name: src/org.apache.lucene.analysis_1.9.1.v200706181610/about.html
+SHA1-Digest: Zhe0awu5O4qFeehZG8w/HsKSPGk=
+

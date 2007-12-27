@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="internalTweaklets" name="%ExtPoint.tweaklets"/>
+      </appInfo>
+      <documentation>
+         This internal extension point is not considered API.  It is used to define tweaklets.  A tweaklet is anything that can be used to tweak the look and feel of the Workbench.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="tweaklet"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="tweaklet">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name" icon="icon"/>
+         </appInfo>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique name that will be used to identify this tweaklet
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name that will be used in the UI for this tweaklet
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  a translatable short description of this tweaklet, to be used in the UI
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="definition" type="string">
+            <annotation>
+               <documentation>
+                  an identifier of the tweaklet definition in the workbench, typically a fully qualified type name
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="implementation" type="string">
+            <annotation>
+               <documentation>
+                  an identifier of the tweaklet implementation provided by the extender, typically a fully qualified class name
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  a relative name of the icon that will 
+be associated with the tweaklet.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.3
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example tweaklet: 
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.internalTweaklets&quot;&gt; 
+      &lt;tweaklet 
+         id=&quot;org.eclipse.ui.internal.tweaklets.ConcreteXYZTweaklet&quot; 
+         name=&quot;XYZ Tweaklet&quot; 
+         description=&quot;Short description of the tweak&quot; 
+         definition=&quot;org.eclipse.ui.internal.tweaklets.AbstractXYZTweaklet&quot; 
+         implementation=&quot;org.eclipse.ui.internal.tweaklets.ConcreteXYZTweaklet&quot; 
+         icon=&quot;icons/XYZ.gif&quot;/&gt;
+   &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         Typically, although not required, the value of the &lt;samp&gt;definition&lt;/samp&gt; attribute is the
+fully qualified name of an abstract class or an interface defined by the
+workbench, and the value of the &lt;samp&gt;implementation&lt;/samp&gt; attribute is the
+fully qualified name of a non-abstract class provided by the extending plug-in.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         Tweaklet implementations can be found in the Eclipse Platform incubator.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

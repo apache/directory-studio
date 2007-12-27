@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="activitySupport" name="Activity Support"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;This extension point is used to register various support extensions relating to the activities infrastucture.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="triggerPoint"/>
+            <element ref="triggerPointAdvisor"/>
+            <element ref="triggerPointAdvisorProductBinding"/>
+            <element ref="categoryImageBinding"/>
+            <element ref="activityImageBinding"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="triggerPoint">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            Specifies a trigger point.  A trigger point is an identifer that is used by the activity engine to determine whether or not an action should cause the enablement of activities.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="hint" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier for this trigger point
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="hint">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id"/>
+         </appInfo>
+         <documentation>
+            &lt;p&gt;A hint represents some data that may be used by the eclipse infrastructure to determine the behaviour of the activity support relating to the hosting trigger point.&lt;/p&gt;
+&lt;p&gt;The following hints are &quot;well known&quot; and it is expected that trigger point advisors acknowledge them:
+&lt;dl&gt;
+&lt;dt&gt;interactive&lt;/dt&gt;&lt;dd&gt;Whether this trigger point is hint in an &quot;interactive&quot; way.  Ie: it is the explicit result of an action undertaken by the user such as activating a wizard in the wizard dialog.  Accepted values are &lt;code&gt;true&lt;/code&gt; and &lt;code&gt;false&lt;/code&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/p&gt;
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier for this hint
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the value of this hint
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="triggerPointAdvisor">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id"/>
+         </appInfo>
+         <documentation>
+            A trigger point advisor is a policy mechanism that is consulted whenever the system undertakes an action that has disabled activities associated with it.  It is the advisors responsibility to answer whether an action should proceed, and if it can, what activities to enable.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier for this trigger point advisor
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified name of the class implementing the &lt;code&gt;org.eclipse.ui.activities.ITriggerPointAdvisor&lt;/code&gt; interface.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.activities.ITriggerPointAdvisor"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="triggerPointAdvisorProductBinding">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="productId"/>
+         </appInfo>
+         <documentation>
+            Specifies a binding between a product and an advisor.  These bindings determine which advisor is appropriate for the current product (as defined by &lt;code&gt;org.eclipse.core.runtime.Platform.getProduct()&lt;/code&gt;).
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="productId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  unique id of a product
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="triggerPointAdvisorId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  unique id of a trigger point advisor
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="categoryImageBinding">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id" icon="icon"/>
+         </appInfo>
+         <documentation>
+            This element allows binding of icons to categories  These icons may be used by user interface components that wish to visualize categories in some way.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the id of the category to bind an icon to
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the icon that will be used for this category
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="activityImageBinding">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="id" icon="icon"/>
+         </appInfo>
+         <documentation>
+            This element allows binding of icons to activities.  These icons may be used by user interface components that wish to visualize activities in some way.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the id of the activity to bind an icon to
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of the icon that will be used for this activity
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         3.1
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a non-interactive trigger point:
+&lt;p&gt;
+&lt;pre&gt;
+  &lt;extension point=&quot;org.eclipse.ui.activitySupport&quot;&gt;
+     &lt;triggerPoint
+        id=&quot;com.example.xyz.myTriggerPoint&quot;&gt;
+        &lt;hint id=&quot;interactive&quot; 
+              value=&quot;false&quot; /&gt;
+     &lt;/triggerPoint&gt;
+  &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+The following is an example of a trigger point advisor bound to a particular product:
+&lt;p&gt;
+&lt;pre&gt;
+  &lt;extension point=&quot;org.eclipse.ui.activitySupport&quot;&gt;
+     &lt;triggerPointAdvisor
+        id=&quot;com.example.xyz.myTriggerPointAdvisor&quot; 
+        class=&quot;com.example.xyz.AdvisorImpl&quot;/&gt;
+     &lt;triggerPointAdvisorProductBinding 
+      productId=&quot;myProduct&quot;
+      triggerPointAdvisorId=&quot;com.example.xyz.myTriggerPointAdvisor&quot; /&gt;
+  &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+
+The following is an example of binding images to activities and categories:
+&lt;p&gt;
+&lt;pre&gt;
+  &lt;extension point=&quot;org.eclipse.ui.activitySupport&quot;&gt;
+  	 &lt;activityImageBinding
+  	    id=&quot;some.activity.id&quot;
+  	    icon=&quot;icons/someIcon.gif&quot;/&gt;    
+  	 &lt;categoryImageBinding
+  	    id=&quot;some.category.id&quot;
+  	    icon=&quot;icons/someIcon.gif&quot;/&gt;
+  &lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the &lt;code&gt;class&lt;/code&gt; attribute of the triggerPointAdvisor tag must be the fully qualified name of a class that implements the &lt;code&gt;org.eclipse.ui.activities.ITriggerPointAdvisor&lt;/code&gt;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench implementation (&lt;code&gt;org.eclipse.ui.activities.WorkbenchTriggerPointAdvisor&lt;/code&gt;) is available for clients to subclass and reuse.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2005 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

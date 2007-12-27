@@ -1,0 +1,629 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="popupMenus" name="Pop-up Menus"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to add new actions to context menus owned by other plug-ins.  Action contributions may be made against a specific object type (&lt;samp&gt;objectContribution&lt;/samp&gt;) or against a specific context menu of a view or editor part (&lt;samp&gt;viewerContribution&lt;/samp&gt;). When using &lt;samp&gt;objectContribution&lt;/samp&gt;, the contribution will appear in all view or editor part context menus where objects of the specified type are selected. In contrast, using &lt;samp&gt;viewerContribution&lt;/samp&gt;, the contribution will only appear in the specified view or editor part context menu, regardless of the selection.
+&lt;p&gt;
+You can now use &lt;a href=&quot;org_eclipse_ui_menus.html&quot;&gt;org.eclipse.ui.menus&lt;/a&gt; to place commands editor or view contexts menus as well.
+&lt;/p&gt;
+&lt;p&gt;
+When the selection is heterogeneous, the contribution will be applied if registered against a common type of the selection, if possible. If a direct match is not possible, matching against superclasses and superinterfaces will be attempted. 
+&lt;p&gt;
+Selection can be further constrained through the use of a name filter. If used, all the objects in the selection must match the filter in order to apply the contribution. 
+&lt;p&gt;
+Individual actions in an object contribution can use the attribute &lt;code&gt;enablesFor&lt;/code&gt; to specify if it should only apply for a single, multiple, or any other selection type. 
+&lt;p&gt;
+If these filtering mechanisms are inadequate an action contribution may use the &lt;samp&gt;filter&lt;/samp&gt; mechanism.  In this case the attributes of the target object are described in a series of name-value pairs.  The attributes which apply to the selection are type-specific and beyond the domain of the workbench itself, so the workbench will delegate filtering at this level to the actual selection.
+      </documentation>
+   </annotation>
+
+   <include schemaLocation="commonAction.exsd"/>
+
+   <include schemaLocation="commonExpression.exsd"/>
+
+   <include schemaLocation="schema://org.eclipse.core.expressions/schema/expressionLanguage.exsd"/>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="objectContribution" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="viewerContribution" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="objectContribution">
+      <annotation>
+         <documentation>
+            This element is used to define a group of actions and/or menus for any viewer context menus for which the objects of the specified type are selected.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="filter" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="visibility" minOccurs="0" maxOccurs="1"/>
+            <element ref="enablement" minOccurs="0" maxOccurs="1"/>
+            <element ref="menu" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier used to reference this contribution
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="objectClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified name of the class or interface that all objects in the 
+selection must subclass or implement.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="java.lang.object"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="nameFilter" type="string">
+            <annotation>
+               <documentation>
+                  an optional wild card filter for the name that can be applied to all objects in the selection. No contribution will take place if there is no match.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="adaptable" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  a flag that indicates if types that adapt to IResource should use this object contribution. This flag is used only if objectClass adapts to IResource.  Default value is false.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="viewerContribution">
+      <annotation>
+         <documentation>
+            This element is used to define a group of actions and/or menus for a specific view or editor part context menu.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="visibility" minOccurs="0" maxOccurs="1"/>
+            <element ref="menu" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier used to reference this contribution
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="targetID" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of a context menu inside a view or editor part.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="action">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="label" icon="icon"/>
+         </appInfo>
+         <documentation>
+            This element defines an action that the user can invoke in the UI.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="selection" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="enablement" minOccurs="0" maxOccurs="1"/>
+            <element ref="class" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier used as a reference for this action.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name used as the menu item text. The name can include mnenomic information.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="definitionId" type="string">
+            <annotation>
+               <documentation>
+                  This specifies the command that this action is handling.  This is used to decide which key binding to display in the pop-up menu.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="menubarPath" type="string">
+            <annotation>
+               <documentation>
+                  a slash-delimited path (&apos;/&apos;) used to specify the location of this action in the context menu. Each token in the path, except the last one, must represent a valid identifier of an existing menu in the hierarchy. The last token represents the named group into which this action will be added. If the path is omitted, this action will be added to the standard additions group defined by &lt;samp&gt;IWorkbenchActionConstants.MB_ADDITIONS&lt;/samp&gt;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  a relative path of an icon used to visually represent the action in its context.
+The path is relative to the location of the plugin.xml file of the contributing plug-in.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="helpContextId" type="string">
+            <annotation>
+               <documentation>
+                  a unique identifier indicating the help context for this action. On some platforms, if the action appears as a menu item, then pressing the appropriate help key while the menu item is highlighted will display help. Not all platforms support this behaviour.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="style">
+            <annotation>
+               <documentation>
+                  an optional attribute to define the user interface style type for the action. If defined, the attribute value will be one of the following:
+    &lt;table border=&quot;0&quot; width=&quot;80%&quot;&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;push&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a regular menu item or tool item.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;radio&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a radio style menu item or tool item. Actions with the radio style within the same menu or toolbar group behave as a radio set. The initial value is specified by the &lt;samp&gt;state&lt;/samp&gt; attribute.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;toggle&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a checked style menu item or as a toggle tool item. The initial value is specified by the &lt;samp&gt;state&lt;/samp&gt; attribute.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;pulldown&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a cascading style menu item.&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="push">
+                  </enumeration>
+                  <enumeration value="radio">
+                  </enumeration>
+                  <enumeration value="toggle">
+                  </enumeration>
+                  <enumeration value="pulldown">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="state" type="boolean">
+            <annotation>
+               <documentation>
+                  an optional attribute indicating the initial state (either &lt;samp&gt;true&lt;/samp&gt; or &lt;samp&gt;false&lt;/samp&gt;), used when the &lt;samp&gt;style&lt;/samp&gt; attribute has the value &lt;samp&gt;radio&lt;/samp&gt; or &lt;samp&gt;toggle&lt;/samp&gt;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a name of the fully qualified class that implements &lt;samp&gt;org.eclipse.ui.IObjectActionDelegate&lt;/samp&gt; (for object contributions), &lt;samp&gt;org.eclipse.ui.IViewActionDelegate&lt;/samp&gt; (for viewer contributions to a view part), or &lt;samp&gt;org.eclipse.ui.IEditorActionDelegate&lt;/samp&gt; (for viewer contributions to an editor part).  For backwards compatibility, &lt;samp&gt;org.eclipse.ui.IActionDelegate&lt;/samp&gt; may be implemented for object contributions.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="enablesFor" type="string">
+            <annotation>
+               <documentation>
+                  a value indicating the selection count which must be met to enable the action.
+If this attribute is specified and the condition is met, the action is enabled.
+If the condition is not met, the action is disabled.
+If no attribute is specified, the action is enabled for any number of items selected.
+The following attribute formats are supported: 
+    &lt;table border=&quot;0&quot; width=&quot;80%&quot;&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;!&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 0 items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;?&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 0 or 1 items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;+&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 1 or more items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;multiple, 2+&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 2 or more items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;n&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- a precise number of items selected.a precise number of items selected.&amp;nbsp;
+          For example: enablesFor=&amp;quot; 4&amp;quot; enables the action only when 4
+          items are selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;*&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- any number of items selected&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+&lt;p&gt;
+The enablement criteria for an action extension are initially defined 
+by &lt;samp&gt;enablesFor&lt;/samp&gt;, &lt;samp&gt;selection&lt;/samp&gt; and &lt;samp&gt;enablement&lt;/samp&gt;.  However, once the action
+delegate has been instantiated it may control the action enable state directly 
+within its &lt;samp&gt;selectionChanged&lt;/samp&gt; method.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="overrideActionId" type="string">
+            <annotation>
+               <documentation>
+                  an optional attribute that specifies the identifier of an action which this action overrides. The action represented by this identifier will not be contributed to the context menu. The action identifier must be from a prerequisite plug-in only. This attribute is only applicable to action elements of an object contribution.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="tooltip" type="string">
+            <annotation>
+               <documentation>
+                  a translatable text representing the action&apos;s tool tip. Only used if the action appears in the toolbar.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="filter">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="name"/>
+         </appInfo>
+         <documentation>
+            This element is used to evaluate the attribute state of each object in the current selection. A match only if each object in the selection has the specified attribute state. Each object in the selection must implement, or adapt to, &lt;samp&gt;org.eclipse.ui.IActionFilter&lt;/samp&gt;.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the name of an object&apos;s attribute. Acceptable names reflect the object type, and should be publicly declared by the plug-in where the object type is declared.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the required value of the object&apos;s attribute. The acceptable values for the object&apos;s attribute should be publicly declared.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parameter">
+      <annotation>
+         <documentation>
+            A parameter element to be used within an IExecutableExtension element.  This will be passed as initialization data to the instantiated class.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the parameter name
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the parameter value
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="class">
+      <annotation>
+         <documentation>
+            The element version of the &lt;code&gt;class&lt;/code&gt; attribute.  This is used when the class implements &lt;code&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/code&gt; and there is parameterized data that you wish used in its initialization.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  A class that implements one of the interfaces listed for the class attribute.  It may also implement &lt;code&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/code&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a pop-up menu extension point: 
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.popupMenus&quot;&gt; 
+      &lt;objectContribution 
+         id=&quot;com.xyz.C1&quot; 
+         objectClass=&quot;org.eclipse.core.resources.IFile&quot; 
+         nameFilter=&quot;*.java&quot;&gt; 
+         &lt;menu
+            id=&quot;com.xyz.xyzMenu&quot; 
+            path=&quot;additions&quot; 
+            label=&quot;&amp;amp;XYZ Java Tools&quot;&gt; 
+            &lt;separator name=&quot;group1&quot;/&gt; 
+         &lt;/menu&gt; 
+         &lt;action
+            id=&quot;com.xyz.runXYZ&quot; 
+            label=&quot;&amp;amp;Run XYZ Tool&quot;
+            style=&quot;push&quot;
+            menubarPath=&quot;com.xyz.xyzMenu/group1&quot; 
+            icon=&quot;icons/runXYZ.gif&quot; 
+            helpContextId=&quot;com.xyz.run_action_context&quot; 
+            class=&quot;com.xyz.actions.XYZToolActionDelegate&quot; 
+            enablesFor=&quot;1&quot; /&gt; 
+      &lt;/objectContribution&gt; 
+      &lt;viewerContribution 
+         id=&quot;com.xyz.C2&quot; 
+         targetID=&quot;org.eclipse.ui.views.TaskList&quot;&gt; 
+         &lt;action
+            id=&quot;com.xyz.showXYZ&quot; 
+            label=&quot;&amp;amp;Show XYZ&quot;
+            style=&quot;toggle&quot;
+            state=&quot;true&quot;
+            menubarPath=&quot;additions&quot; 
+            icon=&quot;icons/showXYZ.gif&quot; 
+            helpContextId=&quot;com.xyz.show_action_context&quot; 
+            class=&quot;com.xyz.actions.XYZShowActionDelegate&quot; /&gt; 
+      &lt;/viewerContribution&gt; 
+   &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+In the example above, the specified object contribution action will only enable for a single selection (&lt;samp&gt;enablesFor&lt;/samp&gt; attribute). In addition, each object in the selection must implement the specified interface (&lt;samp&gt;IFile&lt;/samp&gt;) and must be a Java file. This action will be added into a submenu previously created. This contribution 
+will be effective in any view that has the required selection. 
+&lt;p&gt;
+In contrast, the viewer contribution above will only appear in the Tasks view context menu, and will not be affected by the selection in the view. 
+&lt;p&gt;
+The following is an example of the filter mechanism. In this case the action will only appear for IMarkers which are completed and have high priority. 
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.popupMenus&quot;&gt; 
+      &lt;objectContribution 
+         id=&quot;com.xyz.C3&quot; 
+         objectClass=&quot;org.eclipse.core.resources.IMarker&quot;&gt; 
+         &lt;filter name=&quot;done&quot; value=&quot;true&quot;/&gt; 
+         &lt;filter name=&quot;priority&quot; value=&quot;2&quot;/&gt; 
+         &lt;action
+            id=&quot;com.xyz.runXYZ&quot; 
+            label=&quot;High Priority Completed Action Tool&quot; 
+            icon=&quot;icons/runXYZ.gif&quot; 
+            class=&quot;com.xyz.actions.MarkerActionDelegate&quot;&gt; 
+         &lt;/action&gt; 
+      &lt;/objectContribution&gt; 
+   &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+The following is an other example of using the visibility element: 
+&lt;p&gt;
+&lt;pre&gt;
+   &lt;extension point=&quot;org.eclipse.ui.popupMenus&quot;&gt; 
+      &lt;viewerContribution 
+         id=&quot;com.xyz.C4&quot; 
+         targetID=&quot;org.eclipse.ui.views.TaskList&quot;&gt;
+         &lt;visibility&gt;
+            &lt;and&gt;
+               &lt;pluginState id=&quot;com.xyz&quot; value=&quot;activated&quot;/&gt;
+               &lt;systemProperty name=&quot;ADVANCED_MODE&quot; value=&quot;true&quot;/&gt;
+            &lt;/and&gt;
+         &lt;/visibility&gt;
+         &lt;action
+            id=&quot;com.xyz.showXYZ&quot; 
+            label=&quot;&amp;amp;Show XYZ&quot;
+            style=&quot;push&quot;
+            menubarPath=&quot;additions&quot; 
+            icon=&quot;icons/showXYZ.gif&quot; 
+            helpContextId=&quot;com.xyz.show_action_context&quot; 
+            class=&quot;com.xyz.actions.XYZShowActionDelegate&quot;&gt; 
+         &lt;/action&gt; 
+      &lt;/viewerContribution&gt; 
+   &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;
+In the example above, the specified action will appear as a menu item in the Task view context menu, but only if the &quot;com.xyz&quot; plug-in is active and the specified system property is set to true.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the action attribute &lt;samp&gt;class&lt;/samp&gt;
+must be a fully qualified class name of a Java class 
+that implements &lt;samp&gt;org.eclipse.ui.IObjectActionDelegate&lt;/samp&gt;
+in the case of object contributions, 
+&lt;samp&gt;org.eclipse.ui.IViewActionDelegate&lt;/samp&gt;
+for contributions to context menus that belong to views, 
+or &lt;samp&gt;org.eclipse.ui.IEditorActionDelegate&lt;/samp&gt;
+for contributions to context menus that belong to editors.  
+In all cases, the implementing class is loaded as late 
+as possible to avoid loading the entire plug-in before 
+it is really needed. 
+&lt;p&gt;
+Note: For backwards compatibility, 
+&lt;samp&gt;org.eclipse.ui.IActionDelegate&lt;/samp&gt; may be 
+implemented for object contributions. 
+&lt;p&gt;
+Conext menu extension within a part is only possible 
+when the target part publishes a menu for extension.  
+This is strongly encouraged, as it improves the 
+extensibility of the product. To accomplish this 
+each part should publish any context menus which are 
+defined by calling 
+&lt;samp&gt;IWorkbenchPartSite.registerContextMenu&lt;/samp&gt;.  
+Once this has been done the workbench will 
+automatically insert any action extensions which exist. 
+&lt;p&gt;
+A menu id must be provided for each registered menu.  
+For consistency across parts the following strategy 
+should be adopted by all part implementors. 
+&lt;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+If the target part has only one context menu it 
+should be registered with id == part id.  This can be 
+done easily by calling 
+&lt;samp&gt;registerContextMenu(MenuManager, ISelectionProvider)&lt;/samp&gt;.  
+Extenders may use the part id itself as the targetID for 
+the action extension. &lt;/li&gt;
+&lt;li&gt;
+If the target part has more than one context menu a 
+unique id should be defined for each.  Prefix each id 
+with the part id and publish these id&apos;s within 
+the javadoc for the target part.  Register each 
+menu at runtime by calling 
+&lt;samp&gt;registerContextMenu(String, MenuManager, ISelectionProvider)&lt;/samp&gt;. 
+Extenders will use the unique menu id as the targetID 
+for the action extension. &lt;/li&gt;&lt;/ul&gt;
+&lt;p&gt;
+Any context menu which is registered with the workbench 
+also should contain a standard insertion point with id 
+&lt;samp&gt;IWorkbenchActionConstants.MB_ADDITIONS&lt;/samp&gt;.  
+Other plug-ins will use this value as a reference 
+point for insertion.  The insertion point may be 
+defined by adding a GroupMarker to the menu at an 
+appropriate location for insertion. 
+&lt;p&gt;
+An object in the workbench which is the selection 
+in a context menu may define an 
+&lt;samp&gt;org.eclipse.ui.IActionFilter&lt;/samp&gt;.  This is a 
+filtering strategy which can perform type specific 
+filtering.  The workbench will retrieve the filter 
+for the selection by testing to see if it implements 
+&lt;samp&gt;IActionFilter&lt;/samp&gt;.  If that fails, the 
+workbench will ask for a filter through the 
+&lt;samp&gt;IAdaptable&lt;/samp&gt; mechanism.
+&lt;p&gt;
+Action and menu labels may contain special characters that encode mnemonics which are specified using the ampersand (&apos;&amp;amp;&apos;) character in front of a selected character in the translated text. Since ampersand is not allowed in XML strings, use &lt;samp&gt;&amp;amp;amp;&lt;/samp&gt; character entity. 
+&lt;p&gt;
+If two or more actions are contributed to a menu by a single extension the actions will appear in the reverse order of how they are listed in the plugin.xml file. This behavior is admittedly unintuitive.  However, it was discovered after the  Eclipse Platform API was frozen.  Changing the behavior now would break every plug-in which relies upon the existing behavior.
+&lt;p&gt;
+The &lt;samp&gt;selection&lt;/samp&gt; and &lt;samp&gt;enablement&lt;/samp&gt; elements are mutually exclusive. The &lt;samp&gt;enablement&lt;/samp&gt; element can replace the &lt;samp&gt;selection&lt;/samp&gt; element using the sub-elements &lt;samp&gt;objectClass&lt;/samp&gt; and &lt;samp&gt;objectState&lt;/samp&gt;. For example, the following:
+&lt;pre&gt;
+ &lt;selection
+  class=&quot;org.eclipse.core.resources.IFile&quot;
+  name=&quot;*.java&quot;&gt;
+ &lt;/selection&gt;
+&lt;/pre&gt;
+can be expressed using:
+&lt;pre&gt;
+ &lt;enablement&gt;
+  &lt;and&gt;
+   &lt;objectClass name=&quot;org.eclipse.core.resources.IFile&quot;/&gt;
+   &lt;objectState name=&quot;extension&quot; value=&quot;java&quot;/&gt;
+  &lt;/and&gt;
+ &lt;/enablement&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The workbench views have built-in context menus 
+that already come loaded with a number of actions. 
+Plug-ins can contribute to these menus. If a viewer 
+has reserved slots for these contributions and they 
+are made public, slot names can be used as paths. 
+Otherwise, actions and submenus will be added at 
+the end of the pop-up menu.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2000, 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

@@ -1,0 +1,592 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.ui" id="actionSets" name="Action Sets"/>
+      </appInfo>
+      <documentation>
+         &lt;p&gt;
+This extension point is used to add menus, menu items 
+and toolbar buttons to the common areas in the Workbench
+window. These contributions are collectively known 
+as an &lt;i&gt;action set&lt;/i&gt; and appear within the 
+Workbench window by the user customizing a perspective.
+&lt;/p&gt;
+&lt;p&gt;
+You can now use &lt;a href=&quot;org_eclipse_ui_menus.html&quot;&gt;org.eclipse.ui.menus&lt;/a&gt; to place commands in menus and toolbars as well.
+&lt;/p&gt;
+&lt;p&gt;
+There is an implementation limitation which currently affects action sets.  It is important to define the entire menu structure that is to be referenced within the action set.  So, for example, if another action set defines a menu called &quot;example&quot;, it is not possible to rely on &quot;example&quot; existing.  It is necessary to redefine the &quot;example&quot; menu in every action set that wishes to use it.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <include schemaLocation="commonAction.exsd"/>
+
+   <include schemaLocation="commonExpression.exsd"/>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="actionSet" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a fully qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="actionSet">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="label"/>
+         </appInfo>
+         <documentation>
+            This element is used to define a group of actions and/or menus.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="menu" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier for this action set.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name used by the Workbench to represent this action set to the user.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="visible" type="boolean">
+            <annotation>
+               <documentation>
+                  an optional attribute indicating whether the action set is initially visible when a perspective is open. This option is only honoured when the user opens a perspective which has not been customized. The user can override this option from the &quot;Customize Perspective Dialog&quot;. This attribute should be used with great care so as not to overwhelm the user with too many actions.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  a translatable description used by the Workbench to represent this action set to the user.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="action">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="label" icon="icon"/>
+         </appInfo>
+         <documentation>
+            This element defines an action that the user can invoke in the UI.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <choice>
+               <element ref="selection" minOccurs="0" maxOccurs="unbounded"/>
+               <element ref="enablement" minOccurs="0" maxOccurs="1"/>
+            </choice>
+            <element ref="class" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a unique identifier used as a reference for this action.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  a translatable name used either as the menu item text or toolbar button label. The name can include mnenomic information.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="accelerator" type="string">
+            <annotation>
+               <documentation>
+                  &lt;b&gt;&lt;font color=&quot;#FF0000&quot;&gt;Deprecated:&lt;/font&gt;&lt;/b&gt; Use the &lt;samp&gt;definitionId&lt;/samp&gt; attribute instead.
+               </documentation>
+               <appInfo>
+                  <meta.attribute deprecated="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="definitionId" type="string">
+            <annotation>
+               <documentation>
+                  Specifies the command that this action will handle. By specifying and action, the key binding service can assign a key sequence to this action. See the extension point &lt;a href=&quot;org_eclipse_ui_commands.html&quot;&gt;org.eclipse.ui.commands&lt;/a&gt; for more information.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="menubarPath" type="string">
+            <annotation>
+               <documentation>
+                  a slash-delimited path (&apos;/&apos;) used to specify the location of this action in the menu bar.
+Each token in the path, except the last one, must represent a valid identifier of an existing menu in the hierarchy. The last token represents the named group into which this action will be added. If the path is omitted, this action will not appear in the menu bar.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="toolbarPath" type="string">
+            <annotation>
+               <documentation>
+                  a slash-delimited path (&apos;/&apos;) that is used to specify the location of this action in the toolbar. The first token represents the toolbar identifier (with &quot;Normal&quot; being the default toolbar), while the second token is the named group within the toolbar that this action will be added to. If the group does not exist in the toolbar, it will be created.
+If toolbarPath is omitted, the action will not appear in the toolbar.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string">
+            <annotation>
+               <documentation>
+                  a relative path of an icon used to visually represent the action in its context.
+If omitted and the action appears in the toolbar, the Workbench will use a placeholder icon. The path is relative to the location of the plugin.xml file of the contributing plug-in. The icon will appear in toolbars but not in menus. Enabled actions will be represented in menus by the hoverIcon.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="disabledIcon" type="string">
+            <annotation>
+               <documentation>
+                  a relative path of an icon used to visually represent the action in its context when the action is disabled. If omitted, the normal icon will simply appear greyed out. The path is relative to the location of the plugin.xml file of the contributing plug-in. The disabled icon will appear in toolbars but not in menus. Icons for disabled actions in menus will be supplied by the OS.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="hoverIcon" type="string">
+            <annotation>
+               <documentation>
+                  a relative path of an icon used to visually represent the action in its context when the mouse pointer is over the action. If omitted, the normal icon will be used. The path is relative to the location of the plugin.xml file of the contributing plug-in.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="tooltip" type="string">
+            <annotation>
+               <documentation>
+                  a translatable text representing the action&apos;s tool tip. Only used if the action appears in the toolbar.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="helpContextId" type="string">
+            <annotation>
+               <documentation>
+                  a unique identifier indicating the help context for this action. If the action appears as a menu item, then pressing F1 while the menu item is highlighted will display help.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="style" use="default" value="push">
+            <annotation>
+               <documentation>
+                  an attribute to define the user interface style type for the action. If omitted, then it is &lt;samp&gt;push&lt;/samp&gt; by default. The attribute value will be one of the following:
+    &lt;table border=&quot;0&quot; width=&quot;80%&quot;&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;push&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a regular menu item or tool item.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;radio&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a radio style menu item or tool item. Actions with the radio style within the same menu or toolbar group behave as a radio set. The initial value is specified by the &lt;samp&gt;state&lt;/samp&gt; attribute.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;toggle&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a checked style menu item or as a toggle tool item. The initial value is specified by the &lt;samp&gt;state&lt;/samp&gt; attribute.&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;pulldown&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- as a cascading style menu item or as a drop down menu beside the tool item.&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="push">
+                  </enumeration>
+                  <enumeration value="radio">
+                  </enumeration>
+                  <enumeration value="toggle">
+                  </enumeration>
+                  <enumeration value="pulldown">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="state" type="boolean">
+            <annotation>
+               <documentation>
+                  an optional attribute indicating the initial state (either &lt;samp&gt;true&lt;/samp&gt; or &lt;samp&gt;false&lt;/samp&gt;). Used only when the &lt;samp&gt;style&lt;/samp&gt; attribute has the value &lt;samp&gt;radio&lt;/samp&gt; or &lt;samp&gt;toggle&lt;/samp&gt;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="pulldown" type="boolean">
+            <annotation>
+               <documentation>
+                  &lt;b&gt;&lt;font color=&quot;#FF0000&quot;&gt;Deprecated:&lt;/font&gt;&lt;/b&gt; Use the &lt;samp&gt;style&lt;/samp&gt; attribute with the value &lt;samp&gt;pulldown&lt;/samp&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute deprecated="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  a fully qualified name of a class which implements &lt;samp&gt;org.eclipse.ui.IWorkbenchWindowActionDelegate&lt;/samp&gt; or &lt;samp&gt;org.eclipse.ui.IWorkbenchWindowPulldownDelegate&lt;/samp&gt;. The latter should be implemented in cases where the &lt;samp&gt;style&lt;/samp&gt; attribute has the value &lt;samp&gt;pulldown&lt;/samp&gt;. This class is the handler responsible for performing the action. If the &lt;samp&gt;retarget&lt;/samp&gt; attribute is true, this attribute is ignored and should not be supplied.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.ui.IWorkbenchWindowActionDelegate"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="retarget" type="boolean">
+            <annotation>
+               <documentation>
+                  an optional attribute to retarget this action. When true, view and editor parts may supply a handler for this action using the standard mechanism for setting a global action handler on their site using this action&apos;s identifier. If this attribute is true, the &lt;samp&gt;class&lt;/samp&gt; attribute should not be supplied.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="allowLabelUpdate" type="boolean">
+            <annotation>
+               <documentation>
+                  optional attribute indicating whether the retarget action allows the handler to override it&apos;s label and tooltip. Only applies if &lt;samp&gt;retarget&lt;/samp&gt; attribute is true.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="enablesFor" type="string">
+            <annotation>
+               <documentation>
+                  a value indicating the selection count which must be met to enable the action. If specified and the condition is not met, the action is disabled. If omitted, the action enablement state is not affected. The following attribute formats are supported: 
+    &lt;table border=&quot;0&quot; width=&quot;80%&quot;&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;!&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 0 items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;?&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 0 or 1 items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;+&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 1 or more items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;multiple, 2+&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- 2 or more items selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;n&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- a precise number of items selected.a precise number of items selected.&amp;nbsp;
+          For example: enablesFor=&amp;quot; 4&amp;quot; enables the action only when 4
+          items are selected&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+ &lt;td valign=&quot;top&quot; width=&quot;25&quot;&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot; nowrap&gt;&lt;b&gt;*&lt;/b&gt;&lt;/td&gt;
+        &lt;td valign=&quot;top&quot;&gt;- any number of items selected&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parameter">
+      <annotation>
+         <documentation>
+            A parameter element to be used within an IExecutableExtension element.  This will be passed as initialization data to the instantiated class.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the parameter name
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the parameter value
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="class">
+      <annotation>
+         <documentation>
+            The element version of the &lt;code&gt;class&lt;/code&gt; attribute.  This is used when the class implements &lt;code&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/code&gt; and there is parameterized data that you wish used in its initialization.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  A class that implements &lt;code&gt;org.eclipse.ui.IWorkbenchWindowActionDelegate&lt;/code&gt;.  It may also implement &lt;code&gt;org.eclipse.core.runtime.IExecutableExtension&lt;/code&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of an action set (note 
+the sub-elements and the way attributes are used): 
+
+&lt;p&gt;
+&lt;pre&gt;
+    &lt;extension point = &quot;org.eclipse.ui.actionSets&quot;&gt; 
+        &lt;actionSet
+            id=&quot;com.xyz.actionSet&quot; 
+            label=&quot;My Actions&quot;&gt; 
+            &lt;menu
+               id=&quot;com.xyz.xyzMenu&quot; 
+               label=&quot;XYZ Menu&quot;
+               path=&quot;additions&quot;&gt; 
+               &lt;separator name=&quot;group1&quot;/&gt;
+               &lt;separator name=&quot;option1&quot;/&gt;
+            &lt;/menu&gt;
+            
+            &lt;action
+               id=&quot;com.xyz.runXYZ&quot; 
+               label=&quot;&amp;amp;Run XYZ Tool&quot;
+               style=&quot;toggle&quot;
+               state=&quot;false&quot;
+               menubarPath=&quot;com.xyz.xyzMenu/group1&quot; 
+               icon=&quot;icons/runXYZ.gif&quot; 
+               tooltip=&quot;Run XYZ Tool&quot; 
+               helpContextId=&quot;com.xyz.run_action_context&quot; 
+               class=&quot;com.xyz.actions.RunXYZ&quot; 
+               enablesFor=&quot;1&quot;&gt; 
+               &lt;selection class=&quot;org.eclipse.core.resources.IFile&quot; name=&quot;*.java&quot;/&gt; 
+            &lt;/action&gt;
+            &lt;action 
+               id=&quot;com.xyz.runABC&quot;
+               label=&quot;&amp;amp;Run ABC Tool&quot;
+               style=&quot;push&quot;
+               menubarPath=&quot;com.xyz.xyzMenu/group1&quot;
+               toolbarPath=&quot;Normal/XYZ&quot;
+               icon=&quot;icons/runABC.gif&quot;
+               tooltip=&quot;Run ABC Tool&quot;
+               helpContextId=&quot;com.xyz.run_abc_action_context&quot;
+               retarget=&quot;true&quot;
+               allowLabelUpdate=&quot;true&quot;&gt;
+               &lt;enablement&gt;
+                  &lt;and&gt;
+                     &lt;objectClass name=&quot;org.eclipse.core.resources.IFile&quot;/&gt;
+                     &lt;not&gt;
+                        &lt;objectState name=&quot;extension&quot; value=&quot;java&quot;/&gt;
+                     &lt;/not&gt;
+                  &lt;/and&gt;
+               &lt;/enablement&gt;
+            &lt;/action&gt;             
+
+            &lt;action 
+               id=&quot;com.xyz.runDEF&quot;
+               label=&quot;&amp;amp;Run DEF Tool&quot;
+               style=&quot;radio&quot;
+               state=&quot;true&quot;
+               menubarPath=&quot;com.xyz.xyzMenu/option1&quot;
+               icon=&quot;icons/runDEF.gif&quot;
+               tooltip=&quot;Run DEF Tool&quot;
+               class=&quot;com.xyz.actions.RunDEF&quot; 
+               helpContextId=&quot;com.xyz.run_def_action_context&quot;&gt;
+            &lt;/action&gt;             
+            &lt;action 
+               id=&quot;com.xyz.runGHI&quot;
+               label=&quot;&amp;amp;Run GHI Tool&quot;
+               style=&quot;radio&quot;
+               state=&quot;false&quot;
+               menubarPath=&quot;com.xyz.xyzMenu/option1&quot;
+               icon=&quot;icons/runGHI.gif&quot;
+               tooltip=&quot;Run GHI Tool&quot;
+               class=&quot;com.xyz.actions.RunGHI&quot; 
+               helpContextId=&quot;com.xyz.run_ghi_action_context&quot;&gt;
+            &lt;/action&gt;             
+            &lt;action 
+               id=&quot;com.xyz.runJKL&quot;
+               label=&quot;&amp;amp;Run JKL Tool&quot;
+               style=&quot;radio&quot;
+               state=&quot;false&quot;
+               menubarPath=&quot;com.xyz.xyzMenu/option1&quot;
+               icon=&quot;icons/runJKL.gif&quot;
+               tooltip=&quot;Run JKL Tool&quot;
+               class=&quot;com.xyz.actions.RunJKL&quot; 
+               helpContextId=&quot;com.xyz.run_jkl_action_context&quot;&gt;
+            &lt;/action&gt;             
+        &lt;/actionSet&gt; 
+    &lt;/extension&gt; 
+&lt;/pre&gt;
+&lt;/p&gt;
+&lt;p&gt;
+In the example above, the specified action set, named &quot;My Actions&quot;, is not initially visible within each perspective because the &lt;samp&gt;visible&lt;/samp&gt; attribute is not specified.
+&lt;/p&gt;
+&lt;p&gt;
+The XYZ action will appear as a check box menu item, initially not checked. It is enabled only if the selection count is 1 and if the selection contains a Java file resource.
+&lt;/p&gt;
+&lt;p&gt;
+The ABC action will appear both in the menu and on the toolbar. It is enabled only if the selection does not contain any Java file resources. Note also this is a label retarget action therefore it does not supply a &lt;samp&gt;class&lt;/samp&gt; attribute.
+&lt;/p&gt;
+&lt;p&gt;
+The actions DEF, GHI, and JKL appear as radio button menu items. They are enabled all the time, independent of the current selection state.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the class attribute must be the fully qualified name of a class that implements &lt;samp&gt;org.eclipse.ui.IWorkbenchWindowActionDelegate&lt;/samp&gt; or &lt;samp&gt;org.eclipse.ui.IWorkbenchWindowPulldownDelegate&lt;/samp&gt;. The latter should be implemented in cases where the &lt;samp&gt;style&lt;/samp&gt; attribute has the value &lt;samp&gt;pulldown&lt;/samp&gt;. This class is the handler responsible for performing the action. If the &lt;samp&gt;retarget&lt;/samp&gt; attribute is true, this attribute is ignored and should not be supplied. This class is loaded as late as possible to avoid loading the entire plug-in before it is really needed.
+&lt;p&gt;
+The enablement criteria for an action extension is initially defined by &lt;samp&gt;enablesFor&lt;/samp&gt;, and also either &lt;samp&gt;selection&lt;/samp&gt; or &lt;samp&gt;enablement&lt;/samp&gt;. However, once the action delegate has been instantiated, it may control the action enable state directly within its &lt;samp&gt;selectionChanged&lt;/samp&gt; method.
+&lt;p&gt;
+It is important to note that the workbench does not generate menus on a plug-in&apos;s behalf. Menu paths must reference menus that already exist.
+&lt;p&gt;
+Action and menu labels may contain special characters that encode mnemonics using the following rules:
+&lt;ol&gt;
+&lt;li&gt;
+Mnemonics are specified using the ampersand (&apos;&amp;amp;&apos;) character in front of a selected character in the translated text. Since ampersand is not allowed in XML strings, use &lt;samp&gt;&amp;amp;amp;&lt;/samp&gt; character entity.&lt;/li&gt;
+&lt;/ol&gt;
+If two or more actions are contributed to a menu or toolbar by a single extension the actions will appear in the reverse order of how they are listed in the plugin.xml file. This behavior is admittedly unintuitive.  However, it was discovered after the Eclipse Platform API was frozen. Changing the behavior now would break every plug-in which relies upon the existing behavior.
+&lt;p&gt;
+The &lt;samp&gt;selection&lt;/samp&gt; and &lt;samp&gt;enablement&lt;/samp&gt; elements are mutually exclusive. The &lt;samp&gt;enablement&lt;/samp&gt; element can replace the &lt;samp&gt;selection&lt;/samp&gt; element using the sub-elements &lt;samp&gt;objectClass&lt;/samp&gt; and &lt;samp&gt;objectState&lt;/samp&gt;. For example, the following:
+&lt;pre&gt;
+ &lt;selection
+  class=&quot;org.eclipse.core.resources.IFile&quot;
+  name=&quot;*.java&quot;&gt;
+ &lt;/selection&gt;
+&lt;/pre&gt;
+can be expressed using:
+&lt;pre&gt;
+ &lt;enablement&gt;
+  &lt;and&gt;
+   &lt;objectClass name=&quot;org.eclipse.core.resources.IFile&quot;/&gt;
+   &lt;objectState name=&quot;extension&quot; value=&quot;java&quot;/&gt;
+  &lt;/and&gt;
+ &lt;/enablement&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         Plug-ins may use this extension point to add new top level menus. Plug-ins can also define named groups which allow other plug-ins to contribute their actions into them. 
+&lt;p&gt;
+Top level menus are created by using the following values
+for the path attribute: 
+&lt;ul&gt;
+&lt;li&gt;additions - represents a group immediately to the left of the &lt;samp&gt;Window&lt;/samp&gt; menu. 
+&lt;/ul&gt;
+Omitting the path attribute will result in adding the new menu into the additions menu bar group. 
+&lt;/p&gt;
+&lt;p&gt;
+The default groups in a workbench window are defined in the
+&lt;samp&gt;IWorkbenchActionConstants&lt;/samp&gt; interface. These
+constants can be used in code for dynamic contribution.
+The values can also be copied into an XML file for fine
+grained integration with the existing workbench menus
+and toolbar. 
+&lt;/p&gt;
+&lt;p&gt;
+Various menu and toolbar items within the workbench 
+window are defined algorithmically.  In these cases 
+a separate mechanism must be used to extend the 
+window. For example, adding a new workbench view 
+results in a new menu item appearing in the
+Perspective menu. Import, Export, and New Wizards 
+extensions are also added automatically to the window.
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2000, 2007 IBM Corporation and others.&lt;br&gt;
+All rights reserved. This program and the accompanying materials are made
+available under the terms of the Eclipse Public License v1.0 which accompanies
+this distribution, and is available at &lt;a 
+href=&quot;http://www.eclipse.org/legal/epl-v10.html&quot;&gt;http://www.eclipse.org/legal/epl-v10.html&lt;/a&gt;
+      </documentation>
+   </annotation>
+
+</schema>

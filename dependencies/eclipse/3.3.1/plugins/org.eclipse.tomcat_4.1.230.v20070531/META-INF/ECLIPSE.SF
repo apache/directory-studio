@@ -1,0 +1,107 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest-Main-Attributes: k8yc30neuvQcGTJYr3A/nRo9sug=
+Created-By: 1.5.0 (IBM Corporation)
+SHA1-Digest-Manifest: eIicYsEck+79B9NHZAy/aaLD3Ak=
+
+Name: about_files/mx4j.license
+SHA1-Digest: JhGcA9cWRNw8kmtXVrdOWvDBo1I=
+
+Name: tomcat-http11.jar
+SHA1-Digest: 5wHuxLpx+P1FCgNCqv/wcrJuJ1c=
+
+Name: naming-common.jar
+SHA1-Digest: 7YArr0HHV6MyPI9ol4wXUAzQqQY=
+
+Name: tomcatwrapper.jar
+SHA1-Digest: 2X3LPhHc1ijilG5HFS+V8mI4YHc=
+
+Name: jasper-runtime.jar
+SHA1-Digest: Vwkiv0WC1yqp7gKgnMRB8Ne73eM=
+
+Name: servlets-common.jar
+SHA1-Digest: sS1+lFCVXhz0YOTjbJpKb+g4xXU=
+
+Name: commons-logging-api.jar
+SHA1-Digest: lOzbeIeShnf2FQdu4ZVwZFigjME=
+
+Name: conf/tomcat-users.xml
+SHA1-Digest: G+zMM385xD5lINm76kuSttNgw6c=
+
+Name: servlet.jar
+SHA1-Digest: vGATNGSTFBUZABkFl4p0PAmm5EQ=
+
+Name: naming-factory.jar
+SHA1-Digest: qFguMo+lpgIEQBpENk5X2qSV7QE=
+
+Name: servlets-default.jar
+SHA1-Digest: RZV0L5BqLLJcb5RjOsRtGYy/+Jw=
+
+Name: preferences.ini
+SHA1-Digest: Ub97GFH9IQW3/VKzyiEg6n1L6nA=
+
+Name: about.html
+SHA1-Digest: bV1O4JS1RYuC1jX3Ahtgsflh9aw=
+
+Name: servlets-invoker.jar
+SHA1-Digest: APcc1LI7zXhsWAUQlJAY0KCmfFw=
+
+Name: catalina.jar
+SHA1-Digest: 4+4DnS0KOokfvwbC4ZLa67u6zS8=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: SAqY+5ITAL0mkdYeijlSRhyIaZk=
+
+Name: commons-digester.jar
+SHA1-Digest: JlvErE0HI1EfN5tIdCDZXAKQAVY=
+
+Name: commons-modeler.jar
+SHA1-Digest: iWTCR9Mxoqj4Wn7uR3EDdBKNN2g=
+
+Name: commons-collections.jar
+SHA1-Digest: ZjOA7FNE+1oDD7o+cCS1aEQq2z8=
+
+Name: plugin.xml
+SHA1-Digest: E8k2adRdc7opn+Gaa4GeE0gN3r8=
+
+Name: servlets-manager.jar
+SHA1-Digest: IVoYOI4587MrYdMypPh8DWXNnYY=
+
+Name: bootstrap.jar
+SHA1-Digest: /4aIdU5cFz6q7ly62ZKm6wHmZy4=
+
+Name: jakarta-regexp-1.3.jar
+SHA1-Digest: xkx1ZF5iohFu8XGhjsbioGbwTuM=
+
+Name: conf/catalina.policy
+SHA1-Digest: 6b2qGfq67vnySCdyFB5ZQP3ls1M=
+
+Name: jasper-compiler.jar
+SHA1-Digest: ow1WdTmtI631MQpr8NQIt/quAUs=
+
+Name: tomcat-util.jar
+SHA1-Digest: TprzKu4ENRKs6DDZ8xVmbAPVYhg=
+
+Name: mx4j-jmx.jar
+SHA1-Digest: fhOjw01egFMm50aeqAbERKkvZc8=
+
+Name: conf/web.xml
+SHA1-Digest: GofwH/1B7DJ424TDtGMaSFSDm5w=
+
+Name: webapps/ROOT/WEB-INF/web.xml
+SHA1-Digest: XwQ1UKfxqyZbrkt3p9P0xFBahlM=
+
+Name: plugin.properties
+SHA1-Digest: jQV1qdLSuIM8NSQ1sd8XOGfPRK4=
+
+Name: naming-resources.jar
+SHA1-Digest: t1avsfrymHKqI9Amzv+kKg3FmvY=
+
+Name: webapps/ROOT/index.html
+SHA1-Digest: GH0PutbcI5fJjZEBaRXNpTi1eMA=
+
+Name: commons-beanutils.jar
+SHA1-Digest: 7xynCIsrKsTOhpmzc7Xa2hmamnk=
+
+Name: tomcat-coyote.jar
+SHA1-Digest: +SGNTiMz8ncDv45W7nM3OFAFxyM=
+
