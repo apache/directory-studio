@@ -130,7 +130,7 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
             }
 
             // url += search.getURL();
-            url += "Search Base: " + search.getSearchBase().toString() + "  -  ";
+            url += "Search Base: " + search.getSearchBase().getUpName() + "  -  ";
             url += "Filter: " + search.getFilter();
 
             boolean showDn = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(

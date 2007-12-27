@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.perspective;
 
 
+import org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.wizards.NewConnectionWizard;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;
@@ -65,7 +65,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         defineActions( layout );
         defineLayout( layout );
 
-        layout.addPerspectiveShortcut( "org.apache.directory.studio.schemas.perspective" ); //$NON-NLS-1$ 
+        layout.addPerspectiveShortcut( "org.apache.directory.studio.schemaeditor.perspective" ); //$NON-NLS-1$ 
         layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$ 
     }
 

@@ -110,10 +110,10 @@
         </copy>
 
         <!-- Creation of the Schemas Editor Plugin -->
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" />
+        <ant dir="studio-schemaeditor" inheritAll="no" />
         <!-- Copy of the Schemas Editor Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${application.plugins}">
-            <fileset dir="studio-schemaeditor-plugin/target">
+            <fileset dir="studio-schemaeditor/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -123,6 +123,24 @@
         <!-- Copy of the Schemas Editor Help Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${application.plugins}">
             <fileset dir="studio-schemaeditor-help/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the Connection Core Plugin -->
+        <ant dir="studio-connection-core" inheritAll="no" />
+        <!-- Copy of the Connection Core Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-connection-core/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the Connection UI Plugin -->
+        <ant dir="studio-connection-ui" inheritAll="no" />
+        <!-- Copy of the Connection UI Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-connection-ui/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -172,6 +190,15 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the LDIF Editor Help Plugin -->
+        <ant dir="studio-ldifeditor-help" inheritAll="no" />
+        <!-- Copy of the LDIF Editor Help Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-ldifeditor-help/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Value Editors Plugin -->
         <ant dir="studio-valueeditors" inheritAll="no" />
         <!-- Copy of the Value Editors Plugin in the "plugins" folder of the RCP app -->
@@ -190,11 +217,20 @@
             </fileset>
         </copy>
 
-	    <!-- Creation of the Jars Plugin -->
+        <!-- Creation of the Jars Plugin -->
         <ant dir="studio-jars" inheritAll="no" />
         <!-- Copy of the Jars Plugin in the "plugins" folder of the RCP app -->
         <copy todir="${application.plugins}">
             <fileset dir="studio-jars/target">
+                <include name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDIF Parser Plugin -->
+        <ant dir="studio-ldif-parser" inheritAll="no" />
+        <!-- Copy of the LDIF Parser Plugin in the "plugins" folder of the RCP app -->
+        <copy todir="${application.plugins}">
+            <fileset dir="studio-ldif-parser/target">
                 <include name="*.jar" />
             </fileset>
         </copy>
@@ -236,11 +272,20 @@
             </fileset>
         </copy>
 		
-	    <!-- Creation of the LDAP Browser Feature -->
-	    <ant dir="studio-ldapbrowser-feature" inheritAll="no" />
-	    <!-- Copy of the LDAP Browser Feature in the "features" folder -->
-	    <copy todir="${application.features}">
+        <!-- Creation of the LDAP Browser Feature -->
+        <ant dir="studio-ldapbrowser-feature" inheritAll="no" />
+        <!-- Copy of the LDAP Browser Feature in the "features" folder -->
+        <copy todir="${application.features}">
             <fileset dir="studio-ldapbrowser-feature/target">
+                <exclude name="*.jar" />
+            </fileset>
+        </copy>
+
+        <!-- Creation of the LDIF Editor Feature -->
+        <ant dir="studio-ldifeditor-feature" inheritAll="no" />
+        <!-- Copy of the LDIF Editor Feature in the "features" folder -->
+        <copy todir="${application.features}">
+            <fileset dir="studio-ldifeditor-feature/target">
                 <exclude name="*.jar" />
             </fileset>
         </copy>
@@ -307,6 +352,22 @@
             </fileset>
         </copy>
 
+        <!-- Creation of the Apache Directory Studio LDIF Editor user guides -->
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="help-html" />
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="help-pdf" />
+        <!-- Copy of the ldif editor user guides -->
+        <mkdir dir="${target.userguides}/ldif_editor" />
+        <copy todir="${target.userguides}/ldif_editor">
+            <fileset dir="${basedir}/studio-ldifeditor-help/target/html">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <copy todir="${target.userguides}">
+            <fileset dir="${basedir}/studio-ldifeditor-help/target/pdf">
+                <include name="**/*.pdf" />
+            </fileset>
+        </copy>
+
         <!-- Creation of the Apache Directory Studio Browser user guides -->
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="help-html" />
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="help-pdf" />
@@ -361,13 +422,15 @@
     <target name="javadoc" description="Generate Javadoc files">
         <ant dir="studio-aciitemeditor" inheritAll="no" target="javadoc" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="javadoc" />
+        <ant dir="studio-connection-core" inheritAll="no" target="javadoc" />
+        <ant dir="studio-connection-ui" inheritAll="no" target="javadoc" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="javadoc" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="javadoc" />
         <ant dir="studio-rcp" inheritAll="no" target="javadoc" />
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="javadoc" />
+        <ant dir="studio-schemaeditor" inheritAll="no" target="javadoc" />
         <ant dir="studio-valueeditors" inheritAll="no" target="javadoc" />
     </target>
 	
@@ -377,17 +440,21 @@
         <ant dir="studio-aciitemeditor" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-connection-core" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-connection-ui" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-ldif-parser" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-jars" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-ldifeditor" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-rcp" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-rcp-help" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-schemaeditor-help" inheritAll="no" target="retrieve-dependencies" />
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="retrieve-dependencies" />
+        <ant dir="studio-schemaeditor" inheritAll="no" target="retrieve-dependencies" />
         <ant dir="studio-valueeditors" inheritAll="no" target="retrieve-dependencies" />
     </target>
 	
@@ -402,20 +469,25 @@
         <ant dir="studio-apacheds-configuration" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration-help" inheritAll="no" target="clean" />
         <ant dir="studio-apacheds-configuration-feature" inheritAll="no" target="clean" />
+        <ant dir="studio-connection-core" inheritAll="no" target="clean" />
+        <ant dir="studio-connection-ui" inheritAll="no" target="clean" />
         <ant dir="studio-dsml-parser" inheritAll="no" target="clean" />
+        <ant dir="studio-ldif-parser" inheritAll="no" target="clean" />
         <ant dir="studio-jars" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-common" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-core" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldapbrowser-help" inheritAll="no" target="clean" />
         <ant dir="studio-ldapbrowser-ui" inheritAll="no" target="clean" />
+        <ant dir="studio-ldifeditor-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-ldifeditor" inheritAll="no" target="clean" />
+        <ant dir="studio-ldifeditor-help" inheritAll="no" target="clean" />
         <ant dir="studio-rcp" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-rcp-help" inheritAll="no" target="clean"/>
         <ant dir="studio-schemaeditor-feature" inheritAll="no" target="clean"/>
         <ant dir="studio-schemaeditor-help" inheritAll="no" target="clean" />
-        <ant dir="studio-schemaeditor-plugin" inheritAll="no" target="clean"/>
+        <ant dir="studio-schemaeditor" inheritAll="no" target="clean"/>
         <ant dir="studio-updatesite" inheritAll="no" target="clean" />
         <ant dir="studio-valueeditors" inheritAll="no" target="clean" />
         <delete dir="${target}" />

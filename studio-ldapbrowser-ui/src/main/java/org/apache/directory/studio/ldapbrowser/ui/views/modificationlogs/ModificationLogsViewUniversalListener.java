@@ -25,16 +25,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -55,6 +59,9 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
     /** The current input */
     private ModificationLogsViewInput input;
 
+    /** The last refresh timestamp. */
+    private long lastRefreshTimestamp;
+
     /** Listener that listens for selections of connections */
     private INullSelectionListener connectionSelectionListener = new INullSelectionListener()
     {
@@ -69,10 +76,11 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
             {
                 if ( view.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
                 {
-                    IConnection[] connections = SelectionUtils.getConnections( selection );
+                    Connection[] connections = BrowserSelectionUtils.getConnections( selection );
                     if ( connections.length == 1 )
                     {
-                        ModificationLogsViewInput input = new ModificationLogsViewInput( connections[0], 0 );
+                        IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( connections[0].getId() );
+                        ModificationLogsViewInput input = new ModificationLogsViewInput( connection, 0 );
                         setInput( input );
                         scrollToNewest();
                     }
@@ -139,7 +147,8 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
 
             // load file %u %g
             StringBuffer sb = new StringBuffer();
-            File[] files = input.getConnection().getModificationLogger().getFiles();
+            LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
+            File[] files = modificationLogger.getFiles( input.getConnection().getConnection() );
             int i = input.getIndex();
             if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
             {
@@ -172,10 +181,16 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
      */
     public void entryUpdated( EntryModificationEvent event )
     {
-        if ( !( event instanceof AttributesInitializedEvent ) && !( event instanceof ChildrenInitializedEvent ) )
+        // performance optimization: refresh only once per second
+        long now = System.currentTimeMillis();
+        if ( lastRefreshTimestamp + 1000 < now )
         {
-            refreshInput();
-            scrollToNewest();
+            if ( !( event instanceof AttributesInitializedEvent ) && !( event instanceof ChildrenInitializedEvent ) )
+            {
+                refreshInput();
+                scrollToNewest();
+                lastRefreshTimestamp = now;
+            }
         }
     }
 
@@ -206,10 +221,10 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
         catch ( Exception e )
         {
         }
-
     }
-    
-	/**
+
+
+    /**
      * Clears the input and deletes the logfiles for it
      * 
      */
@@ -217,8 +232,9 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
     {
         StringBuffer sb = new StringBuffer( "" );
         FileWriter fw = null;
-        File[] files = input.getConnection().getModificationLogger().getFiles();
-        input.getConnection().getModificationLogger().dispose();
+        LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
+        File[] files = modificationLogger.getFiles( input.getConnection().getConnection() );
+        modificationLogger.dispose( input.getConnection().getConnection() );
         for ( int i = 0; i < files.length; i++ )
         {
             try

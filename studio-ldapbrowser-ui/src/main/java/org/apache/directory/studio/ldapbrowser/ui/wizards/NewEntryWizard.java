@@ -21,21 +21,21 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateEntryJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -77,7 +77,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
     private IEntry selectedEntry;
 
     /** The selected connection. */
-    private IConnection selectedConnection;
+    private IBrowserConnection selectedConnection;
 
     /** The prototype entry. */
     private DummyEntry prototypeEntry;
@@ -114,37 +114,37 @@ public class NewEntryWizard extends Wizard implements INewWizard
         if ( o instanceof IEntry )
         {
             selectedEntry = ( ( IEntry ) o );
-            selectedConnection = selectedEntry.getConnection();
+            selectedConnection = selectedEntry.getBrowserConnection();
         }
         else if ( o instanceof ISearchResult )
         {
             selectedEntry = ( ( ISearchResult ) o ).getEntry();
-            selectedConnection = selectedEntry.getConnection();
+            selectedConnection = selectedEntry.getBrowserConnection();
         }
         else if ( o instanceof IBookmark )
         {
             selectedEntry = ( ( IBookmark ) o ).getEntry();
-            selectedConnection = selectedEntry.getConnection();
+            selectedConnection = selectedEntry.getBrowserConnection();
         }
         else if ( o instanceof IAttribute )
         {
             selectedEntry = ( ( IAttribute ) o ).getEntry();
-            selectedConnection = selectedEntry.getConnection();
+            selectedConnection = selectedEntry.getBrowserConnection();
         }
         else if ( o instanceof IValue )
         {
             selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
-            selectedConnection = selectedEntry.getConnection();
+            selectedConnection = selectedEntry.getBrowserConnection();
         }
         else if ( o instanceof ISearch )
         {
             selectedEntry = null;
-            selectedConnection = ( ( ISearch ) o ).getConnection();
+            selectedConnection = ( ( ISearch ) o ).getBrowserConnection();
         }
-        else if ( o instanceof IConnection )
+        else if ( o instanceof IBrowserConnection )
         {
             selectedEntry = null;
-            selectedConnection = ( IConnection ) o;
+            selectedConnection = ( IBrowserConnection ) o;
         }
         else if ( o instanceof BrowserCategory )
         {
@@ -154,12 +154,12 @@ public class NewEntryWizard extends Wizard implements INewWizard
         else if ( o instanceof BrowserSearchResultPage )
         {
             selectedEntry = null;
-            selectedConnection = ( ( BrowserSearchResultPage ) o ).getSearch().getConnection();
+            selectedConnection = ( ( BrowserSearchResultPage ) o ).getSearch().getBrowserConnection();
         }
         else if ( o instanceof BrowserEntryPage )
         {
             selectedEntry = null;
-            selectedConnection = ( ( BrowserEntryPage ) o ).getEntry().getConnection();
+            selectedConnection = ( ( BrowserEntryPage ) o ).getEntry().getBrowserConnection();
         }
         else
         {
@@ -169,8 +169,8 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
         if ( selectedConnection != null )
         {
-            selectedConnection.suspend();
-            prototypeEntry = new DummyEntry( new DN(), selectedConnection );
+            DummyConnection prototypeConnection = new DummyConnection( selectedConnection.getSchema() ); 
+            prototypeEntry = new DummyEntry( new LdapDN(), prototypeConnection );
         }
     }
 
@@ -266,12 +266,12 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public boolean performCancel()
     {
-        if ( selectedConnection != null && selectedConnection.isOpened() )
+        if ( selectedConnection != null )
         {
-            EventRegistry.suspendEventFireingInCurrentThread();
-            selectedConnection.reset();
-            EventRegistry.resumeEventFireingInCurrentThread();
-            selectedConnection.reset();
+//            EventRegistry.suspendEventFireingInCurrentThread();
+//            selectedConnection.reset();
+//            EventRegistry.resumeEventFireingInCurrentThread();
+//            selectedConnection.reset();
         }
 
         return true;
@@ -285,21 +285,20 @@ public class NewEntryWizard extends Wizard implements INewWizard
     {
         try
         {
-            if ( selectedConnection != null && selectedConnection.isOpened() )
+            if ( selectedConnection != null )
             {
                 typePage.saveDialogSettings();
                 ocPage.saveDialogSettings();
                 dnPage.saveDialogSettings();
 
-                getSelectedConnection().reset();
-
-                CreateEntryJob job = new CreateEntryJob( new IEntry[]
-                    { getPrototypeEntry() } );
+//                getSelectedConnection().reset();
+                
+                CreateEntryJob job = new CreateEntryJob( prototypeEntry, selectedConnection );
                 RunnableContextJobAdapter.execute( job, getContainer() );
 
                 if ( !job.getExternalResult().isOK() )
                 {
-                    getSelectedConnection().suspend();
+//                    getSelectedConnection().suspend();
                     return false;
                 }
                 else
@@ -336,7 +335,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
      * 
      * @return the selected connection
      */
-    public IConnection getSelectedConnection()
+    public IBrowserConnection getSelectedConnection()
     {
         return selectedConnection;
     }

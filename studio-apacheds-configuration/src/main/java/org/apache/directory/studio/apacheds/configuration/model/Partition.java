@@ -35,8 +35,8 @@ import javax.naming.directory.BasicAttributes;
  */
 public class Partition
 {
-    /** The name of the partition */
-    private String name;
+    /** The ID of the partition */
+    private String id;
 
     /** The cache size of the partition */
     private int cacheSize;
@@ -80,31 +80,31 @@ public class Partition
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
         contextEntry = new BasicAttributes( true );
-        this.name = name;
+        this.id = name;
     }
 
 
     /**
-     * Gets the name of the partition.
+     * Gets the ID of the partition.
      *
      * @return
-     *      the name of the partition
+     *      the ID of the partition
      */
-    public String getName()
+    public String getId()
     {
-        return this.name;
+        return this.id;
     }
 
 
     /**
-     * Sets the name of the partition.
+     * Sets the ID of the partition.
      *
-     * @param name
-     *      the new name to set
+     * @param id
+     *      the new ID to set
      */
-    public void setName( String name )
+    public void setId( String id )
     {
-        this.name = name;
+        this.id = id;
     }
 
 
@@ -309,6 +309,6 @@ public class Partition
      */
     public String toString()
     {
-        return name;
+        return id;
     }
 }

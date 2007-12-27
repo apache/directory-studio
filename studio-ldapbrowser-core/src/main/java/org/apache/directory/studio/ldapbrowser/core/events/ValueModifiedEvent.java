@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
@@ -56,7 +56,7 @@ public class ValueModifiedEvent extends EntryModificationEvent
      * @param oldValue the old value
      * @param newValue the new value
      */
-    public ValueModifiedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
+    public ValueModifiedEvent( IBrowserConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
         IValue oldValue, IValue newValue )
     {
         super( connection, modifiedEntry );
@@ -107,7 +107,7 @@ public class ValueModifiedEvent extends EntryModificationEvent
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__replaced_oldval_by_newval_at_att_at_dn,
             new String[]
                 { getOldValue().getStringValue(), getNewValue().getStringValue(),
-                    getModifiedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
+                    getModifiedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
     }
 
 }

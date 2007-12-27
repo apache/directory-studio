@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -71,9 +71,9 @@ public class SchemaAttributesPropertyPage extends PropertyPage implements IWorkb
         viewer.setContentProvider( new ArrayContentProvider() );
         viewer.setLabelProvider( new LabelProvider() );
 
-        if ( getElement() instanceof IConnection )
+        if ( getElement() instanceof IBrowserConnection )
         {
-            IConnection connection = ( IConnection ) getElement();
+            IBrowserConnection connection = ( IBrowserConnection ) getElement();
             if ( connection != null )
             {
                 Object[] atds = connection.getSchema().getAttributeTypeDescriptions();

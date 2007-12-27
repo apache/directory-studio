@@ -23,12 +23,14 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.DecoratedField;
@@ -64,10 +66,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     private String[] attributeNames;
 
     /** The initial RDN. */
-    private RDN currentRdn;
+    private Rdn currentRdn;
 
     /** The initial parent DN. */
-    private DN currentParentDn;
+    private LdapDN currentParentDn;
 
     /** True if the RDN input elements should be shown. */
     private boolean showRDN;
@@ -79,19 +81,28 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     private Shell shell;
 
     /** The selected parent DN. */
-    private DN parentDn;
+    private LdapDN parentDn;
+    
+    /** The entry widget label. */
+    private Label parentEntryLabel;
 
     /** The entry widget to enter/select the parent DN. */
     private EntryWidget parentEntryWidget;
+    
+    /** The RDN label */
+    private Label rdnLabel;
 
     /** The composite that contains the RdnLines. */
     private Composite rdnComposite;
 
     /** The resulting RDN. */
-    private RDN rdn;
+    private Rdn rdn;
 
     /** The list of RdnLines. */
     private ArrayList<RdnLine> rdnLineList;
+    
+    /** The preview label. */
+    private Label previewLabel;
 
     /** The preview text. */
     private Text previewText;
@@ -123,10 +134,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * 
      * @param rdn the initial RDN
      * @param attributeNames the attribute names that could be selected from drop-down list
-     * @param connection the connection
+     * @param browserConnection the connection
      * @param parentDn the initial parent DN
      */
-    public void setInput( IConnection connection, String[] attributeNames, RDN rdn, DN parentDn )
+    public void setInput( IBrowserConnection browserConnection, String[] attributeNames, Rdn rdn, LdapDN parentDn )
     {
         this.attributeNames = attributeNames;
         this.currentRdn = rdn;
@@ -137,12 +148,12 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             for ( int i = 0; i < rdnLineList.size(); i++ )
             {
                 RdnLine rdnLine = rdnLineList.get( i );
-                String oldName = rdnLine.rdnNameCombo.getText();
-                rdnLine.rdnNameCombo.setItems( attributeNames );
+                String oldName = rdnLine.rdnTypeCombo.getText();
+                rdnLine.rdnTypeCombo.setItems( attributeNames );
                 rdnLine.rdnNameCPA.setContentProposalProvider( new ListContentProposalProvider( attributeNames ) );
-                if ( Arrays.asList( rdnLine.rdnNameCombo.getItems() ).contains( oldName ) )
+                if ( Arrays.asList( rdnLine.rdnTypeCombo.getItems() ).contains( oldName ) )
                 {
-                    rdnLine.rdnNameCombo.setText( oldName );
+                    rdnLine.rdnTypeCombo.setText( oldName );
                 }
             }
         }
@@ -153,24 +164,26 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             {
                 deleteRdnLine( rdnComposite, 0 );
             }
-            if ( currentRdn == null || currentRdn.getParts().length == 0 )
+            if ( currentRdn == null || currentRdn.size() == 0 )
             {
                 addRdnLine( rdnComposite, 0 );
-                rdnLineList.get( 0 ).rdnNameCombo.setFocus();
+                rdnLineList.get( 0 ).rdnTypeCombo.setFocus();
             }
             else
             {
-                RDNPart[] parts = currentRdn.getParts();
-                for ( int i = 0; i < parts.length; i++ )
+                int i = 0;
+                Iterator<AttributeTypeAndValue> atavIterator = currentRdn.iterator();
+                while(atavIterator.hasNext())
                 {
+                    AttributeTypeAndValue atav = atavIterator.next();
                     addRdnLine( rdnComposite, i );
-                    rdnLineList.get( i ).rdnNameCombo.setText( parts[i].getType() );
-                    rdnLineList.get( i ).rdnValueText.setText( parts[i].getUnencodedValue() );
+                    rdnLineList.get( i ).rdnTypeCombo.setText( atav.getUpType() );
+                    rdnLineList.get( i ).rdnValueText.setText( ( String ) atav.getUpValue() );
                     if ( i == 0 )
                     {
-                        if ( "".equals( rdnLineList.get( i ).rdnNameCombo ) )
+                        if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) )
                         {
-                            rdnLineList.get( i ).rdnNameCombo.setFocus();
+                            rdnLineList.get( i ).rdnTypeCombo.setFocus();
                         }
                         else
                         {
@@ -178,13 +191,14 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                             rdnLineList.get( i ).rdnValueText.setFocus();
                         }
                     }
+                    i++;
                 }
             }
         }
 
         if ( showParent )
         {
-            parentEntryWidget.setInput( connection, currentParentDn );
+            parentEntryWidget.setInput( browserConnection, currentParentDn );
         }
 
         validate();
@@ -196,7 +210,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * 
      * @return the RDN
      */
-    public RDN getRdn()
+    public Rdn getRdn()
     {
         return rdn;
     }
@@ -207,7 +221,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      * 
      * @return the parent DN
      */
-    public DN getParentDn()
+    public LdapDN getParentDn()
     {
         return parentDn;
     }
@@ -229,7 +243,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw parent
         if ( showParent )
         {
-            BaseWidgetUtils.createLabel( composite, "Parent:", 1 );
+            parentEntryLabel = BaseWidgetUtils.createLabel( composite, "Parent:", 1 );
             parentEntryWidget = new EntryWidget();
             parentEntryWidget.createWidget( composite );
             parentEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -246,7 +260,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw RDN group
         if ( showRDN )
         {
-            BaseWidgetUtils.createLabel( composite, "RDN:", 1 );
+            rdnLabel = BaseWidgetUtils.createLabel( composite, "RDN:", 1 );
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
             rdnLineList = new ArrayList<RdnLine>();
             BaseWidgetUtils.createSpacer( composite, 3 );
@@ -255,7 +269,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw dn/rdn preview
         if ( showRDN )
         {
-            BaseWidgetUtils.createLabel( composite, showParent ? "DN Preview: " : "RDN Preview: ", 1 );
+            previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? "DN Preview: " : "RDN Preview: ", 1 );
             previewText = BaseWidgetUtils.createReadonlyText( composite, "", 2 );
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
@@ -290,19 +304,18 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      */
     public void validate()
     {
-
         Exception rdnE = null;
         if ( showRDN )
         {
             try
             {
                 // calculate RDN
-                String[] rdnNames = new String[rdnLineList.size()];
+                String[] rdnTypes = new String[rdnLineList.size()];
                 String[] rdnValues = new String[rdnLineList.size()];
                 for ( int i = 0; i < rdnLineList.size(); i++ )
                 {
                     RdnLine rdnLine = ( RdnLine ) rdnLineList.get( i );
-                    rdnNames[i] = rdnLine.rdnNameCombo.getText();
+                    rdnTypes[i] = rdnLine.rdnTypeCombo.getText();
                     rdnValues[i] = rdnLine.rdnValueText.getText();
 
                     if ( rdnLineList.size() > 1 )
@@ -314,7 +327,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                         rdnLine.rdnDeleteButton.setEnabled( false );
                     }
                 }
-                rdn = new RDN( rdnNames, rdnValues, false );
+                rdn = DnUtils.composeRdn( rdnTypes, rdnValues );
             }
             catch ( Exception e )
             {
@@ -329,7 +342,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             try
             {
                 // calculate DN
-                parentDn = new DN( parentEntryWidget.getDn() );
+                parentDn = new LdapDN( parentEntryWidget.getDn() );
             }
             catch ( Exception e )
             {
@@ -356,24 +369,25 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             }
             else
             {
-                DN dn;
+                LdapDN dn;
                 if ( showParent && showRDN )
                 {
-                    dn = new DN( rdn, parentDn );
+                    dn = DnUtils.composeDn( rdn, parentDn );
                 }
                 else if ( showParent )
                 {
-                    dn = new DN( parentDn );
+                    dn = parentDn;
                 }
                 else if ( showRDN )
                 {
-                    dn = new DN( rdn );
+                    dn = new LdapDN();
+                    dn.add( rdn );
                 }
                 else
                 {
-                    dn = new DN();
+                    dn = new LdapDN();
                 }
-                previewText.setText( dn.toString() );
+                previewText.setText( dn.getUpName() );
             }
         }
 
@@ -398,7 +412,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 RdnLine oldRdnLine = rdnLines[i];
 
                 // remember values
-                String oldName = oldRdnLine.rdnNameCombo.getText();
+                String oldName = oldRdnLine.rdnTypeCombo.getText();
                 String oldValue = oldRdnLine.rdnValueText.getText();
 
                 // delete old
@@ -414,7 +428,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 rdnLineList.add( newRdnLine );
 
                 // restore value
-                newRdnLine.rdnNameCombo.setText( oldName );
+                newRdnLine.rdnTypeCombo.setText( oldName );
                 newRdnLine.rdnValueText.setText( oldValue );
 
                 // check
@@ -464,9 +478,9 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         GridData gd = new GridData();
         gd.widthHint = 180;
         rdnLine.rdnNameComboField.getLayoutControl().setLayoutData( gd );
-        rdnLine.rdnNameCombo = ( Combo ) rdnLine.rdnNameComboField.getControl();
+        rdnLine.rdnTypeCombo = ( Combo ) rdnLine.rdnNameComboField.getControl();
 
-        rdnLine.rdnNameCPA = new ContentProposalAdapter( rdnLine.rdnNameCombo, new ComboContentAdapter(),
+        rdnLine.rdnNameCPA = new ContentProposalAdapter( rdnLine.rdnTypeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( attributeNames ), null, null );
         rdnLine.rdnNameCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
         rdnLine.rdnNameCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
@@ -522,10 +536,10 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         if ( attributeNames != null )
         {
-            rdnLine.rdnNameCombo.setItems( attributeNames );
+            rdnLine.rdnTypeCombo.setItems( attributeNames );
         }
 
-        rdnLine.rdnNameCombo.addModifyListener( this );
+        rdnLine.rdnTypeCombo.addModifyListener( this );
         rdnLine.rdnValueText.addModifyListener( this );
 
         return rdnLine;
@@ -574,7 +588,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         private DecoratedField rdnNameComboField;
 
         /** The rdn name combo. */
-        private Combo rdnNameCombo;
+        private Combo rdnTypeCombo;
 
         /** The content proposal adapter */
         private ContentProposalAdapter rdnNameCPA;
@@ -590,6 +604,43 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
         /** The rdn delete button. */
         private Button rdnDeleteButton;
+    }
+
+
+    /**
+     * Enables or disables this widget.
+     * 
+     * @param b true to enable, false to disable 
+     */
+    public void setEnabled( boolean b )
+    {
+        if ( parentEntryWidget != null )
+        {
+            parentEntryLabel.setEnabled( b );
+            parentEntryWidget.setEnabled( b );
+        }
+        if ( rdnComposite != null && rdnLineList != null )
+        {
+            rdnLabel.setEnabled( b );
+            rdnComposite.setEnabled( b );
+            for ( RdnLine rdnLine : rdnLineList )
+            {
+                rdnLine.rdnTypeCombo.setEnabled( b );
+                rdnLine.rdnEqualsLabel.setEnabled( b );
+                rdnLine.rdnValueText.setEnabled( b );
+                rdnLine.rdnAddButton.setEnabled( b );
+                rdnLine.rdnDeleteButton.setEnabled( b && rdnLineList.size() > 1 );
+            }
+            if( b )
+            {
+                rdnLineList.get( 0 ).rdnValueText.setFocus();
+            }
+        }
+        if ( previewText != null )
+        {
+            previewLabel.setEnabled( b );
+            previewText.setEnabled( b );
+        }
     }
 
 }

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -47,7 +47,7 @@ public class AttributeAddedEvent extends EntryModificationEvent
      * @param modifiedEntry the modified entry
      * @param addedAttribute the added attribute
      */
-    public AttributeAddedEvent( IConnection connection, IEntry modifiedEntry, IAttribute addedAttribute )
+    public AttributeAddedEvent( IBrowserConnection connection, IEntry modifiedEntry, IAttribute addedAttribute )
     {
         super( connection, modifiedEntry );
         this.addedAttribute = addedAttribute;
@@ -71,7 +71,7 @@ public class AttributeAddedEvent extends EntryModificationEvent
     public String toString()
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__added_att_to_dn, new String[]
-            { getAddedAttribute().getDescription(), getModifiedEntry().getDn().toString() } );
+            { getAddedAttribute().getDescription(), getModifiedEntry().getDn().getUpName() } );
     }
 
 }

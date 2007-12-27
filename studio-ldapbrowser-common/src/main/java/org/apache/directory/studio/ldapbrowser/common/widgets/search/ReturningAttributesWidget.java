@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.events.ModifyEvent;
@@ -54,7 +54,7 @@ public class ReturningAttributesWidget extends BrowserWidget
     private ReturningAttributesContentAssistProcessor contentAssistProcessor;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The initial returning attributes. */
     private String[] initialReturningAttributes;
@@ -64,11 +64,11 @@ public class ReturningAttributesWidget extends BrowserWidget
      * Creates a new instance of ReturningAttributesWidget.
      * 
      * @param initialReturningAttributes the initial returning attributes
-     * @param connection the connection
+     * @param browserConnection the browser  connection
      */
-    public ReturningAttributesWidget( IConnection connection, String[] initialReturningAttributes )
+    public ReturningAttributesWidget( IBrowserConnection browserConnection, String[] initialReturningAttributes )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.initialReturningAttributes = initialReturningAttributes;
     }
 
@@ -80,7 +80,7 @@ public class ReturningAttributesWidget extends BrowserWidget
      */
     public ReturningAttributesWidget()
     {
-        this.connection = null;
+        this.browserConnection = null;
         this.initialReturningAttributes = null;
     }
 
@@ -125,19 +125,19 @@ public class ReturningAttributesWidget extends BrowserWidget
             }
         } );
 
-        setConnection( connection );
+        setBrowserConnection( browserConnection );
     }
 
 
     /**
-     * Sets the connection.
+     * Sets the browser connection.
      * 
-     * @param connection the connection
+     * @param browserConnection the browser connection
      */
-    public void setConnection( IConnection connection )
+    public void setBrowserConnection( IBrowserConnection browserConnection )
     {
-        this.connection = connection;
-        contentAssistProcessor.setPossibleAttributeTypes( connection == null ? new String[0] : connection.getSchema()
+        this.browserConnection = browserConnection;
+        contentAssistProcessor.setPossibleAttributeTypes( browserConnection == null ? new String[0] : browserConnection.getSchema()
             .getAttributeTypeDescriptionNames() );
     }
 

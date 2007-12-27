@@ -32,8 +32,6 @@
 
   <!ENTITY tools_progress_view SYSTEM "2.26_tools_progress_view.xml">
 
-  <!ENTITY tools_ldif_editor SYSTEM "2.27_tools_ldif_editor.xml">
-
   <!ENTITY tools_newconnection_wizard SYSTEM "2.40_tools_newconnection_wizard.xml">
   <!ENTITY tools_newentry_wizard SYSTEM "2.41_tools_newentry_wizard.xml">
   <!ENTITY tools_attribute_wizard SYSTEM "2.42_tools_attribute_wizard.xml">
@@ -93,8 +91,8 @@
 
 	<bookinfo>
 		<title>Apache Directory Studio</title>
-		<subtitle>Browser User's Guide</subtitle>
-		<releaseinfo>Version 0.6.0</releaseinfo>
+		<subtitle>LDAP Browser User's Guide</subtitle>
+		<releaseinfo>Version 1.0.0</releaseinfo>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>

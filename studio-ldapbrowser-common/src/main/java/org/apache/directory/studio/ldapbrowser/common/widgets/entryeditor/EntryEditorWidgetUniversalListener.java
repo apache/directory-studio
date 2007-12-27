@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueDeletedEvent;
@@ -95,8 +95,8 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
          */
         public void mouseDoubleClick( MouseEvent e )
         {
-            IAttribute[] attributes = SelectionUtils.getAttributes( viewer.getSelection() );
-            IValue[] values = SelectionUtils.getValues( viewer.getSelection() );
+            IAttribute[] attributes = BrowserSelectionUtils.getAttributes( viewer.getSelection() );
+            IValue[] values = BrowserSelectionUtils.getValues( viewer.getSelection() );
             if ( attributes.length == 1 && values.length == 0 )
             {
                 if ( viewer.getExpandedState( attributes[0] ) )

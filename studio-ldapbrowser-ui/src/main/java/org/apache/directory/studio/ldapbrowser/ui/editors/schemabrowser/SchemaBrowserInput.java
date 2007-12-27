@@ -21,7 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -52,7 +54,7 @@ public class SchemaBrowserInput implements IEditorInput
 {
 
     /** The connection */
-    private IConnection connection;
+    private IBrowserConnection connection;
     
     /** The schema element */
     private SchemaPart schemaElement;
@@ -67,13 +69,26 @@ public class SchemaBrowserInput implements IEditorInput
      *@param connection the connection
      * @param schemaElement the schema element input
      */
-    public SchemaBrowserInput( IConnection connection, SchemaPart schemaElement )
+    public SchemaBrowserInput( IBrowserConnection connection, SchemaPart schemaElement )
     {
         this.connection = connection;
         this.schemaElement = schemaElement;
     }
     
 
+//    /**
+//     * Creates a new instance of SchemaBrowserInput.
+//     *
+//     *@param connection the connection
+//     * @param schemaElement the schema element input
+//     */
+//    public SchemaBrowserInput( Connection connection, SchemaPart schemaElement )
+//    {
+//        this.connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( connection );
+//        this.schemaElement = schemaElement;
+//    }
+    
+    
     /**
      * This implementation always return false because
      * a schema element should not be visible in the 
@@ -139,7 +154,7 @@ public class SchemaBrowserInput implements IEditorInput
      *
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }

@@ -130,7 +130,7 @@ public class SearchResultEditorFilter extends ViewerFilter
             // }
             // }
             if ( this.showDn
-                && searchResult.getDn().toString().toUpperCase().indexOf( this.quickFilterValue.toUpperCase() ) > -1 )
+                && searchResult.getDn().getUpName().toUpperCase().indexOf( this.quickFilterValue.toUpperCase() ) > -1 )
             {
                 return true;
             }

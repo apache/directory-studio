@@ -49,7 +49,7 @@ public class EntryMovedEvent extends EntryModificationEvent
      */
     public EntryMovedEvent( IEntry oldEntry, IEntry newEntry )
     {
-        super( newEntry.getConnection(), newEntry.getParententry() );
+        super( newEntry.getBrowserConnection(), newEntry.getParententry() );
         this.oldEntry = oldEntry;
         this.newEntry = newEntry;
     }
@@ -84,8 +84,8 @@ public class EntryMovedEvent extends EntryModificationEvent
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__moved_oldrdn_from_oldparent_to_newparent,
             new String[]
-                { getOldEntry().getDn().getRdn().toString(), getOldEntry().getParententry().getDn().toString(),
-                    getNewEntry().getParententry().getDn().toString() } );
+                { getOldEntry().getDn().getRdn().getUpName(), getOldEntry().getParententry().getDn().getUpName(),
+                    getNewEntry().getParententry().getDn().getUpName() } );
     }
 
 }

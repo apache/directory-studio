@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -65,7 +65,7 @@ public abstract class ExportBaseWizard extends Wizard implements IExportWizard
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        search = SelectionUtils.getExampleSearch( selection );
+        search = BrowserSelectionUtils.getExampleSearch( selection );
         search.setName( null );
         exportFilename = "";
     }

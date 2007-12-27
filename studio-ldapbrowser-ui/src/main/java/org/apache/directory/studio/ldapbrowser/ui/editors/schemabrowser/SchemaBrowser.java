@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
@@ -200,7 +200,7 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
             SchemaBrowserInput sbi = ( SchemaBrowserInput ) input;
 
             // set connection;
-            IConnection connection = sbi.getConnection();
+            IBrowserConnection connection = sbi.getConnection();
             setConnection( connection );
 
             // set schema element and activate tab
@@ -282,7 +282,7 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
      * 
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         ocdPage.setConnection( connection );
         atdPage.setConnection( connection );

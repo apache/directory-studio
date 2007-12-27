@@ -25,15 +25,13 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
-import org.apache.directory.studio.ldapbrowser.common.dnd.ConnectionTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldifparser.LdifUtils;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
@@ -53,7 +51,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  */
 public class CopyAction extends BrowserAction
 {
-    protected BrowserActionProxy pasteActionProxy;
+    private BrowserActionProxy pasteActionProxy;
 
 
     /**
@@ -74,13 +72,6 @@ public class CopyAction extends BrowserAction
      */
     public String getText()
     {
-
-        // connection
-        IConnection[] connections = getConnections();
-        if ( connections != null )
-        {
-            return connections.length > 1 ? "Copy Connections" : "Copy Connection";
-        }
 
         // entry/searchresult/bookmark
         IEntry[] entries = getEntries();
@@ -123,25 +114,16 @@ public class CopyAction extends BrowserAction
      */
     public void run()
     {
-        IConnection[] connections = getConnections();
         IEntry[] entries = getEntries();
         IValue[] values = getValues();
 
-        // connection
-        if ( connections != null )
-        {
-            copyToClipboard( new Object[]
-                { connections }, new Transfer[]
-                { ConnectionTransfer.getInstance() } );
-        }
-
         // entry/searchresult/bookmark
-        else if ( entries != null )
+        if ( entries != null )
         {
             StringBuffer text = new StringBuffer();
             for ( int i = 0; i < entries.length; i++ )
             {
-                text.append( entries[i].getDn().toString() );
+                text.append( entries[i].getDn().getUpName() );
                 if ( i + 1 < entries.length )
                 {
                     text.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -222,14 +204,8 @@ public class CopyAction extends BrowserAction
     public boolean isEnabled()
     {
 
-        // connection
-        if ( getConnections() != null )
-        {
-            return true;
-        }
-
         // entry/searchresult/bookmark
-        else if ( getEntries() != null )
+        if ( getEntries() != null )
         {
             return true;
         }
@@ -243,29 +219,6 @@ public class CopyAction extends BrowserAction
         else
         {
             return false;
-        }
-    }
-
-
-    /**
-     * Get the Connections
-     *
-     * @return
-     *      the Connections
-     */
-    private IConnection[] getConnections()
-    {
-
-        if ( getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length
-            + getSelectedSearches().length + getSelectedAttributeHierarchies().length + getSelectedAttributes().length
-            + getSelectedValues().length == 0
-            && getSelectedConnections().length > 0 )
-        {
-            return getSelectedConnections();
-        }
-        else
-        {
-            return null;
         }
     }
 

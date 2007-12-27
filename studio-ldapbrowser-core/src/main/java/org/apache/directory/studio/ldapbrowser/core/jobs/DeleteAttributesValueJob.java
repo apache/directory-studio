@@ -21,135 +21,258 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
+
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
 
 
-public class DeleteAttributesValueJob extends AbstractModificationJob
+/**
+ * Job to delete attributes and values from an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
 {
 
+    /** The entry. */
     private IEntry entry;
 
-    private IAttribute[] attributes;
+    /** The attributes to delete. */
+    private IAttribute[] attributesToDelete;
 
-    private IValue[] values;
+    /** The values to delete. */
+    private IValue[] valuesToDelete;
 
-    private EntryModificationEvent event;
+    /** The deleted attributes. */
+    private IAttribute[] deletedAttributes;
+
+    /** The deleted values. */
+    private IValue[] deletedValues;
 
 
-    public DeleteAttributesValueJob( IAttribute attributes[], IValue[] values )
+    /**
+     * Creates a new instance of DeleteAttributesValueJob.
+     * 
+     * @param attributesToDelete the attributes to delete
+     * @param valuesToDelete the values to delete
+     */
+    public DeleteAttributesValueJob( IAttribute attributesToDelete[], IValue[] valuesToDelete )
     {
-        this.attributes = attributes;
-        this.values = values;
-        for ( int i = 0; attributes != null && i < attributes.length; i++ )
+        this.attributesToDelete = attributesToDelete;
+        this.valuesToDelete = valuesToDelete;
+        for ( int i = 0; attributesToDelete != null && i < attributesToDelete.length; i++ )
         {
             if ( this.entry == null )
             {
-                this.entry = attributes[i].getEntry();
+                this.entry = attributesToDelete[i].getEntry();
             }
         }
-        for ( int i = 0; values != null && i < values.length; i++ )
+        for ( int i = 0; valuesToDelete != null && i < valuesToDelete.length; i++ )
         {
             if ( this.entry == null )
             {
-                this.entry = values[i].getAttribute().getEntry();
+                this.entry = valuesToDelete[i].getAttribute().getEntry();
             }
         }
 
-        setName( attributes.length + values.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_name_1
+        setName( attributesToDelete.length + valuesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_name_1
             : BrowserCoreMessages.jobs__delete_attributes_name_n );
     }
 
 
-    public DeleteAttributesValueJob( AttributeHierarchy ah )
+    /**
+     * Creates a new instance of DeleteAttributesValueJob.
+     * 
+     * @param attributeHierarchyToDelete the attribute hierarchy to delete
+     */
+    public DeleteAttributesValueJob( AttributeHierarchy attributeHierarchyToDelete )
     {
-        this( ah.getAttributes(), new IValue[0] );
+        this( attributeHierarchyToDelete.getAttributes(), new IValue[0] );
     }
 
 
-    public DeleteAttributesValueJob( IValue value )
+    /**
+     * Creates a new instance of DeleteAttributesValueJob.
+     * 
+     * @param valueToDelete the value to delete
+     */
+    public DeleteAttributesValueJob( IValue valueToDelete )
     {
         this( new IAttribute[0], new IValue[]
-            { value } );
+            { valueToDelete } );
     }
 
 
-    protected void executeAsyncModificationJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor )
     {
-
-        monitor.beginTask( attributes.length + values.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_task_1
-            : BrowserCoreMessages.jobs__delete_attributes_task_n, 2 );
+        monitor.beginTask(
+            attributesToDelete.length + valuesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_task_1
+                : BrowserCoreMessages.jobs__delete_attributes_task_n, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        for ( int i = 0; attributes != null && i < attributes.length; i++ )
-        {
-            attributes[i].getEntry().deleteAttribute( attributes[i] );
-        }
-        for ( int i = 0; values != null && i < values.length; i++ )
-        {
-            values[i].getAttribute().deleteValue( values[i] );
-        }
+        deleteAttributesAndValues( entry.getBrowserConnection(), entry, attributesToDelete, valuesToDelete, monitor );
 
-        entry.getConnection().delete( attributes, monitor );
-        entry.getConnection().delete( values, monitor );
-
-        if ( values.length > 0 )
+        if ( !monitor.errorsReported() )
         {
-            this.event = new ValueDeletedEvent( entry.getConnection(), entry, values[0].getAttribute(), values[0] );
-        }
-        else if ( attributes.length > 0 )
-        {
-            this.event = new AttributeDeletedEvent( entry.getConnection(), entry, attributes[0] );
+            deletedValues = valuesToDelete;
+            deletedAttributes = attributesToDelete;
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#getModifiedEntry()
+     */
     protected IEntry getModifiedEntry()
     {
         return entry;
     }
 
 
-    protected String[] getAffectedAttributeNames()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#getAffectedAttributeDescriptions()
+     */
+    protected String[] getAffectedAttributeDescriptions()
     {
-        Set affectedAttributeNameSet = new HashSet();
-        for ( int i = 0; i < attributes.length; i++ )
+        Set<String> affectedAttributeNameSet = new HashSet<String>();
+        for ( int i = 0; i < attributesToDelete.length; i++ )
         {
-            affectedAttributeNameSet.add( attributes[i].getDescription() );
+            affectedAttributeNameSet.add( attributesToDelete[i].getDescription() );
         }
-        for ( int i = 0; i < values.length; i++ )
+        for ( int i = 0; i < valuesToDelete.length; i++ )
         {
-            affectedAttributeNameSet.add( values[i].getAttribute().getDescription() );
+            affectedAttributeNameSet.add( valuesToDelete[i].getAttribute().getDescription() );
         }
-        return ( String[] ) affectedAttributeNameSet.toArray( new String[affectedAttributeNameSet.size()] );
+        return affectedAttributeNameSet.toArray( new String[affectedAttributeNameSet.size()] );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
-        if ( this.event != null )
+        EntryModificationEvent event;
+
+        if ( deletedValues != null && deletedValues.length > 0 )
         {
-            EventRegistry.fireEntryUpdated( this.event, this );
+            event = new ValueDeletedEvent( entry.getBrowserConnection(), entry, deletedValues[0].getAttribute(),
+                deletedValues[0] );
         }
+        else if ( deletedAttributes != null && deletedAttributes.length > 0 )
+        {
+            event = new AttributeDeletedEvent( entry.getBrowserConnection(), entry, deletedAttributes[0] );
+        }
+        else
+        {
+            event = new AttributesInitializedEvent( entry );
+        }
+
+        EventRegistry.fireEntryUpdated( event, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
-        return attributes.length + values.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_error_1
+        return attributesToDelete.length + valuesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_attributes_error_1
             : BrowserCoreMessages.jobs__delete_attributes_error_n;
+    }
+
+
+    /**
+     * Delete attributes and values.
+     * 
+     * @param browserConnection the browser connection
+     * @param entry the entry
+     * @param attributesToDelete the attributes to delete
+     * @param valuesToDelete the values to delete
+     * @param monitor the progress monitor
+     */
+    static void deleteAttributesAndValues( IBrowserConnection browserConnection, IEntry entry,
+        IAttribute[] attributesToDelete, IValue[] valuesToDelete, StudioProgressMonitor monitor )
+    {
+        if ( browserConnection.getConnection() != null )
+        {
+            // dn
+            String dn = entry.getDn().getUpName();
+
+            // modification items
+            List<ModificationItem> modificationItems = new ArrayList<ModificationItem>();
+            if ( attributesToDelete != null )
+            {
+                for ( IAttribute attribute : attributesToDelete )
+                {
+                    BasicAttribute ba = new BasicAttribute( attribute.getDescription() );
+                    ModificationItem modificationItem = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, ba );
+                    modificationItems.add( modificationItem );
+                }
+            }
+            if ( valuesToDelete != null )
+            {
+                for ( IValue value : valuesToDelete )
+                {
+                    BasicAttribute ba = new BasicAttribute( value.getAttribute().getDescription(), value.getRawValue() );
+                    ModificationItem modificationItem = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, ba );
+                    modificationItems.add( modificationItem );
+                }
+            }
+
+            // controls
+            Control[] controls = null;
+            if ( entry.isReferral() )
+            {
+                controls = new Control[]
+                    { new ManageReferralControl() };
+            }
+
+            browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn,
+                modificationItems.toArray( new ModificationItem[modificationItems.size()] ), controls, monitor );
+        }
+        else
+        {
+            if ( attributesToDelete != null )
+            {
+                for ( IAttribute attribute : attributesToDelete )
+                {
+                    attribute.getEntry().deleteAttribute( attribute );
+                }
+            }
+            if ( valuesToDelete != null )
+            {
+                for ( IValue value : valuesToDelete )
+                {
+                    value.getAttribute().deleteValue( value );
+                }
+            }
+        }
     }
 
 }

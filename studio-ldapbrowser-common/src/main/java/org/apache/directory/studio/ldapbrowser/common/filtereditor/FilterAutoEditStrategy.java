@@ -105,19 +105,35 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
         if ( aep.length > 0 && ( aep.text == null || "".equals( aep.text ) ) )
         {
             // delete surrounding parenthesis after deleting the last character
-            if ( filter.toString().length() - aep.length == 2 && filter.getStartToken() != null
+            if ( filter.toString().length() - aep.length == 2 
+                && filter.getStartToken() != null
                 && filter.getStopToken() != null
                 && aep.offset >= filter.getStartToken().getOffset() + filter.getStartToken().getLength()
                 && aep.offset + aep.length <= filter.getStopToken().getOffset() )
             {
-                aep.offset -= 1;
-                aep.length += 2;
+                if ( filter.toString().length() - aep.length == 2 )
+                {
+                    aep.offset -= 1;
+                    aep.length += 2;
+                    aep.caretOffset = aep.offset;
+                    aep.shiftsCaret = false;
+                }
+            }
+            
+            // delete closing parenthesis after deleting the opening parenthesis
+            if ( filter.toString().length() - aep.length == 1
+                && filter.getStartToken() != null
+                && filter.getStopToken() != null
+                && aep.offset == filter.getStartToken().getOffset() )
+            {
+                aep.length += 1;
                 aep.caretOffset = aep.offset;
                 aep.shiftsCaret = false;
             }
+            
         }
 
-        if ( aep.length == 0 && aep.text != null && !"".equals( aep.text ) )
+        if ( (aep.length == 0 || aep.length==currentFilter.length()) && aep.text != null && !"".equals( aep.text ) )
         {
             boolean isNewFilter = aep.text.equals( "(" );
             boolean isNewNestedFilter = aep.text.equals( "&" ) || aep.text.equals( "|" ) || aep.text.equals( "!" );
@@ -125,11 +141,12 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             boolean isSurroundNested = false;
             boolean isSurroundBeforeOtherFilter = false;
             boolean isSurroundAfterOtherFilter = false;
-            if ( aep.text.matches( "[a-zA-Z0-9-\\.&|!:]+" ) && filter != null )
+            if( !Character.isWhitespace( aep.text.charAt( 0 ) ) && !aep.text.startsWith( "(" ) && !aep.text.endsWith( ")" ) )
             {
-                isSurroundNew = filter.getStartToken() == null && aep.offset == 0 && !aep.text.startsWith( "(" )
-                    && !aep.text.endsWith( ")" );
+                // isSurroundNew
+                isSurroundNew = aep.offset == 0;
 
+                // isSurroundNested
                 if ( filter.getStartToken() != null
                     && filter.getFilterComponent() != null
                     && ( filter.getFilterComponent() instanceof LdapAndFilterComponent
@@ -172,14 +189,18 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                     }
                 }
 
+                // isSurroundBeforeOtherFilter
                 isSurroundBeforeOtherFilter = filter.getStartToken() != null
                     && aep.offset == filter.getStartToken().getOffset();
 
+                // isSurroundAfterOtherFilter
                 isSurroundAfterOtherFilter = filter.getStopToken() != null
                     && aep.offset == filter.getStopToken().getOffset()
                     && ( filter.getFilterComponent() instanceof LdapAndFilterComponent
                         || filter.getFilterComponent() instanceof LdapOrFilterComponent || filter.getFilterComponent() instanceof LdapNotFilterComponent );
             }
+            
+            System.out.println("isSurroundNew="+isSurroundNew+", isSurroundNested="+isSurroundNested+", isSurroundAfterOtherFilter="+isSurroundAfterOtherFilter+", isSurroundBeforeOtherFilter="+isSurroundBeforeOtherFilter);
 
             // add opening parenthesis '('
             if ( isSurroundNew || isSurroundNested || isSurroundAfterOtherFilter || isSurroundBeforeOtherFilter )
@@ -211,13 +232,16 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                     }
                 }
             }
-
+            
             // translate tab to IDENT_STRING
             if ( aep.text.equals( "\t" ) )
             {
                 aep.text = INDENT_STRING;
             }
         }
+        
+        System.out.println( "aep='"+aep.text+"',"+aep.offset+","+aep.length+","+aep.caretOffset+","+aep.shiftsCaret+"; balanced="+balanced+"; filter='"+filter.toString()+"'" );
+
     }
 
     /**

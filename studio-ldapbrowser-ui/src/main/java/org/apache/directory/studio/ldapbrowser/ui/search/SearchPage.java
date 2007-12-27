@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.search;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -121,9 +121,9 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
     public boolean performAction()
     {
         spw.saveToSearch( search );
-        if ( search.getConnection() != null )
+        if ( search.getBrowserConnection() != null )
         {
-            search.getConnection().getSearchManager().addSearch( search );
+            search.getBrowserConnection().getSearchManager().addSearch( search );
             return spw.performSearch( search );
         }
 
@@ -146,7 +146,7 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
     public void createControl( Composite parent )
     {
         // declare search
-        search = SelectionUtils.getExampleSearch( container.getSelection() );
+        search = BrowserSelectionUtils.getExampleSearch( container.getSelection() );
 
         // create search page content
         GridLayout gl = new GridLayout();

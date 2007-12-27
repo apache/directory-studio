@@ -1,45 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
--->
-<site mirrorsURL="http://directory.apache.org/studio/update/update--xml.cgi">
-   <feature url="features/org.apache.directory.ldapstudio.rcp.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.rcp.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
+<site>
+   <description url="http://directory.apache.org/studio/update/1.x">
+      The Apache Directory Studio update site.
+   </description>
+   <feature
+       url="features/org.apache.directory.studio.feature_1.0.1.jar"
+       id="org.apache.directory.studio.feature" version="1.0.1"
+       os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
       <category name="Apache Directory Studio RCP"/>
    </feature>
-   <feature url="features/org.apache.directory.ldapstudio.browser.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.browser.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
-      <category name="Apache Directory Studio Browser"/>
+   <feature
+       url="features/org.apache.directory.studio.ldapbrowser.feature_1.0.1.jar"
+       id="org.apache.directory.studio.ldapbrowser.feature" version="1.0.1">
+      <category name="Apache Directory Studio LDAP Browser"/>
    </feature>
-   <feature url="features/org.apache.directory.ldapstudio.schemas.feature_0.7.0.jar" id="org.apache.directory.ldapstudio.schemas.feature" version="0.7.0" os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86">
-      <category name="Apache Directory Studio Schemas Editor"/>
+   <feature url="features/org.apache.directory.studio.schemaeditor.feature_1.0.1.jar"
+       id="org.apache.directory.studio.schemaeditor.feature" version="1.0.1">
+      <category name="Apache Directory Studio Schema Editor"/>
+   </feature>
+   <feature url="features/org.apache.directory.studio.apacheds.configuration.feature_1.0.0.jar"
+       id="org.apache.directory.studio.apacheds.configuration.feature" version="1.0.0">
+      <category name="Apache Directory Studio Apache DS"/>
+   </feature>
+   <feature url="features/org.apache.directory.studio.ldifeditor.feature_1.0.1.jar"
+       id="org.apache.directory.studio.ldifeditor.feature" version="1.0.1">
+      <category name="Apache Directory Studio LDIF Editor"/>
    </feature>
    <category-def name="Apache Directory Studio RCP" label="Apache Directory Studio RCP">
       <description>
-         The Apache Directory Studio RCP category contains all features related to the Apache Directory Studio RCP Application.
+         The Apache Directory Studio RCP category contains all features related to the RCP Application.
       </description>
    </category-def>
-   <category-def name="Apache Directory Studio Browser" label="Apache Directory Studio Browser">
+   <category-def name="Apache Directory Studio LDAP Browser" label="Apache Directory Studio LDAP Browser">
       <description>
-         The Apache Directory Studio Browser category contains all features related to the Apache Directory Studio Browser.
+         The Apache Directory Studio Browser category contains all features related to the LDAP Browser.
       </description>
    </category-def>
-   <category-def name="Apache Directory Studio Schemas Editor" label="Apache Directory Studio Schemas Editor">
+   <category-def name="Apache Directory Studio Schema Editor" label="Apache Directory Studio Schema Editor">
       <description>
-         The Apache Directory Studio Schemas category contains all features related to the Apache Directory Studio Schemas Editor.
+         The Apache Directory Studio Schema category contains all features related to the Schema Editor.
+      </description>
+   </category-def>
+   <category-def name="Apache Directory Studio Apache DS" label="Apache Directory Studio Apache DS">
+      <description>
+         The Apache Directory Studio Apache DS category contains all features related to Apache DS.
+      </description>
+   </category-def>
+   <category-def name="Apache Directory Studio LDIF Editor" label="Apache Directory Studio LDIF Editor">
+      <description>
+         The Apache Directory Studio LDIF Editor category contains all features related to the LDIF Editor.
       </description>
    </category-def>
 </site>

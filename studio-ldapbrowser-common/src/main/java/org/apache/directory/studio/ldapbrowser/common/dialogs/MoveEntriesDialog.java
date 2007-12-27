@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -38,24 +38,37 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * Dialog to select and enter the new parent of some entries. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
 {
 
-    public static final String DIALOG_TITLE = "Move Entries";
+    /** The dialog title. */
+    private static final String DIALOG_TITLE = "Move Entries";
 
+    /** The entries to move. */
     private IEntry[] entries;
 
+    /** The dn builder widget. */
     private DnBuilderWidget dnBuilderWidget;
 
-    private Button simulateMoveButton;
-
+    /** The ok button. */
     private Button okButton;
 
-    private DN parentDn;
+    /** The parent DN. */
+    private LdapDN parentDn;
 
-    private boolean simulateMove;
 
-
+    /**
+     * Creates a new instance of MoveEntriesDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param entries the entries
+     */
     public MoveEntriesDialog( Shell parentShell, IEntry[] entries )
     {
         super( parentShell );
@@ -65,6 +78,9 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -72,25 +88,31 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
-        this.dnBuilderWidget.removeWidgetModifyListener( this );
-        this.dnBuilderWidget.dispose();
+        dnBuilderWidget.removeWidgetModifyListener( this );
+        dnBuilderWidget.dispose();
         return super.close();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.parentDn = this.dnBuilderWidget.getParentDn();
-        this.simulateMove = this.simulateMoveButton.getSelection();
-
-        this.dnBuilderWidget.saveDialogSettings();
-
+        parentDn = dnBuilderWidget.getParentDn();
+        dnBuilderWidget.saveDialogSettings();
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -98,9 +120,11 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
@@ -109,40 +133,36 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         BaseWidgetUtils.createLabel( composite,
             "Please enter/select the parent DN where the selected entries should be moved to.", 1 );
 
-        this.dnBuilderWidget = new DnBuilderWidget( false, true );
-        this.dnBuilderWidget.addWidgetModifyListener( this );
-        this.dnBuilderWidget.createContents( composite );
-        this.dnBuilderWidget.setInput( this.entries[0].getConnection(), null, null, this.entries[0].getDn()
-            .getParentDn() );
-
-        this.simulateMoveButton = BaseWidgetUtils.createCheckbox( composite,
-            "Simulate subtree moving by searching/adding/deleting recursively", 1 );
-        this.simulateMoveButton.setSelection( false );
-        this.simulateMoveButton.setEnabled( false );
+        dnBuilderWidget = new DnBuilderWidget( false, true );
+        dnBuilderWidget.addWidgetModifyListener( this );
+        dnBuilderWidget.createContents( composite );
+        dnBuilderWidget.setInput( entries[0].getBrowserConnection(), null, null, DnUtils.getParent( entries[0].getDn() ) );
 
         applyDialogFont( composite );
         return composite;
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent)
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
-        if ( this.okButton != null )
+        if ( okButton != null )
         {
-            this.okButton.setEnabled( this.dnBuilderWidget.getParentDn() != null );
+            okButton.setEnabled( dnBuilderWidget.getParentDn() != null );
         }
     }
 
 
-    public DN getParentDn()
+    /**
+     * Gets the parent dn.
+     * 
+     * @return the parent dn
+     */
+    public LdapDN getParentDn()
     {
-        return this.parentDn;
-    }
-
-
-    public boolean isSimulateMove()
-    {
-        return simulateMove;
+        return parentDn;
     }
 
 }

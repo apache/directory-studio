@@ -23,14 +23,17 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 import java.util.LinkedHashSet;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.MoveEntriesDialog;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
+import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.jobs.MoveEntriesJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
@@ -156,7 +159,7 @@ public class MoveAction extends BrowserAction
      */
     protected IEntry[] getEntries()
     {
-        if ( getSelectedConnections().length + getSelectedBookmarks().length + getSelectedSearches().length
+        if ( getSelectedBookmarks().length + getSelectedSearches().length
             + getSelectedAttributes().length + getSelectedValues().length == 0
             && getSelectedEntries().length + getSelectedSearchResults().length > 0 )
         {
@@ -197,13 +200,19 @@ public class MoveAction extends BrowserAction
         MoveEntriesDialog moveDialog = new MoveEntriesDialog( getShell(), entries );
         if ( moveDialog.open() == Dialog.OK )
         {
-            DN newParentDn = moveDialog.getParentDn();
+            LdapDN newParentDn = moveDialog.getParentDn();
             if ( newParentDn != null /* && !newRdn.equals(entry.getRdn()) */)
             {
-                IEntry newParentEntry = entries[0].getConnection().getEntryFromCache( newParentDn );
+                IEntry newParentEntry = entries[0].getBrowserConnection().getEntryFromCache( newParentDn );
+                if( newParentEntry == null )
+                {
+                    ReadEntryJob job = new ReadEntryJob( entries[0].getBrowserConnection(), newParentDn );
+                    RunnableContextJobAdapter.execute( job );
+                    newParentEntry = job.getReadEntry();
+                }
                 if ( newParentEntry != null )
                 {
-                    new MoveEntriesJob( entries, newParentEntry ).execute();
+                    new MoveEntriesJob( entries, newParentEntry, new SimulateRenameDialogImpl( getShell() ) ).execute();
                 }
             }
         }

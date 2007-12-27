@@ -21,78 +21,161 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 
 
-public class ReloadSchemasJob extends AbstractAsyncBulkJob
+/**
+ * Job to reload the schema.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class ReloadSchemasJob extends AbstractNotificationJob
 {
 
-    private IConnection[] connections;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
 
-    public ReloadSchemasJob( IConnection[] connections )
+    /**
+     * Creates a new instance of ReloadSchemasJob.
+     * 
+     * @param browserConnection the browser connection
+     */
+    public ReloadSchemasJob( IBrowserConnection browserConnection )
     {
-        this.connections = connections;
-        setName( connections.length == 1 ? BrowserCoreMessages.jobs__reload_schemas_name_1
-            : BrowserCoreMessages.jobs__reload_schemas_name_n );
+        this.browserConnection = browserConnection;
+        setName( BrowserCoreMessages.jobs__reload_schemas_name_1 );
     }
 
 
-    protected IConnection[] getConnections()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
+    protected Connection[] getConnections()
     {
-        return connections;
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.addAll( Arrays.asList( connections ) );
-        return l.toArray();
+        return new IBrowserConnection[]
+            { browserConnection };
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
-        monitor.beginTask( " ", connections.length + 1 ); //$NON-NLS-1$
+        monitor.beginTask( " ", 3 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
-        for ( int i = 0; i < connections.length; i++ )
-        {
+        monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__reload_schemas_task, new String[]
+            { browserConnection.getConnection().getName() } ) );
+        monitor.worked( 1 );
 
-            monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__reload_schemas_task, new String[]
-                { connections[i].getName() } ) );
-            monitor.worked( 1 );
-
-            if ( connections[i].isOpened() )
-            {
-                connections[i].reloadSchema( monitor );
-            }
-        }
+        // load root DSE
+        monitor.reportProgress( BrowserCoreMessages.model__loading_rootdse );
+        InitializeAttributesJob.initializeAttributes( browserConnection.getRootDSE(), true, monitor );
+        monitor.worked( 1 );
+        
+        // load schema
+        monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
+        reloadSchema( browserConnection, monitor );
+        monitor.worked( 1 );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
-        for ( int i = 0; i < connections.length; i++ )
-        {
-            EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( connections[i],
-                ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
-        }
+        BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
+            browserConnection, BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED );
+        EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
-        return connections.length == 1 ? BrowserCoreMessages.jobs__reload_schemas_error_1
-            : BrowserCoreMessages.jobs__reload_schemas_error_n;
+        return BrowserCoreMessages.jobs__reload_schemas_error_1;
+    }
+    
+
+    /**
+     * Reloads the schema.
+     * 
+     * @param browserConnection the browser connection
+     * @param monitor the progress monitor
+     */
+    public static void reloadSchema( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    {
+        browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
+
+        try
+        {
+            if ( browserConnection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
+            {
+                SearchParameter sp = new SearchParameter();
+                sp.setSearchBase( new LdapDN( browserConnection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
+                    .getStringValue() ) );
+                sp.setFilter( Schema.SCHEMA_FILTER );
+                sp.setScope( SearchScope.OBJECT );
+                sp.setReturningAttributes( new String[]
+                    { Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES, Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES,
+                        Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES, Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES,
+                        Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
+                        IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
+                
+                LdifEnumeration le = ExportLdifJob.search( browserConnection, sp, monitor );
+                if ( le.hasNext() )
+                {
+                    LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next();
+                    Schema schema = new Schema();
+                    schema.loadFromRecord( schemaRecord );
+                    browserConnection.setSchema( schema );
+                    // TODO: Schema update event
+//                    EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
+//                        ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
+                }
+                else
+                {
+                    monitor.reportError( BrowserCoreMessages.model__no_schema_information );
+                }
+            }
+            else
+            {
+                monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
+            }
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
+            e.printStackTrace();
+        }
     }
 }

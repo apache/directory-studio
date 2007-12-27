@@ -21,13 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.common.actions.proxy;
 
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -47,13 +50,14 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
 
     /** The action handler manager, used to deactivate and activate the action handlers and key bindings. */
     private ActionHandlerManager actionHandlerManager;
-    
+
     protected BrowserAction action;
 
     protected ISelectionProvider selectionProvider;
 
 
-    protected BrowserActionProxy( ISelectionProvider selectionProvider, ActionHandlerManager actionHandlerManager, BrowserAction action, int style )
+    protected BrowserActionProxy( ISelectionProvider selectionProvider, ActionHandlerManager actionHandlerManager,
+        BrowserAction action, int style )
     {
         super( action.getText(), style );
         this.selectionProvider = selectionProvider;
@@ -66,7 +70,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
         selectionProvider.addSelectionChangedListener( this );
         // PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener(this);
 
-        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
         EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
         EventRegistry.addBookmarkUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
@@ -75,7 +79,8 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     }
 
 
-    protected BrowserActionProxy( ISelectionProvider selectionProvider, ActionHandlerManager actionHandlerManager, BrowserAction action )
+    protected BrowserActionProxy( ISelectionProvider selectionProvider, ActionHandlerManager actionHandlerManager,
+        BrowserAction action )
     {
         this( selectionProvider, actionHandlerManager, action, Action.AS_PUSH_BUTTON );
     }
@@ -83,7 +88,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
 
     public void dispose()
     {
-        EventRegistry.removeConnectionUpdateListener( this );
+        ConnectionEventRegistry.removeConnectionUpdateListener( this );
         EventRegistry.removeEntryUpdateListener( this );
         EventRegistry.removeSearchUpdateListener( this );
         EventRegistry.removeBookmarkUpdateListener( this );
@@ -105,7 +110,6 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.entryUpdated( entryModificationEvent );
             this.updateAction();
         }
     }
@@ -115,7 +119,6 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.searchUpdated( searchUpdateEvent );
             this.updateAction();
         }
     }
@@ -125,19 +128,65 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.bookmarkUpdated( bookmarkUpdateEvent );
             this.updateAction();
         }
     }
 
 
-    public final void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
+     */
+    public final void connectionUpdated( Connection connection )
     {
-        if ( !this.isDisposed() )
+        if ( !isDisposed() )
         {
-            this.action.connectionUpdated( connectionUpdateEvent );
-            this.updateAction();
+            updateAction();
         }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionAdded( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionRemoved( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionOpened( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
+        connectionUpdated( connection );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+        connectionUpdated( null );
     }
 
 
@@ -158,23 +207,22 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
         {
             ISelection selection = event.getSelection();
 
-            this.action.setSelectedConnections( SelectionUtils.getConnections( selection ) );
+            this.action.setSelectedBrowserViewCategories( BrowserSelectionUtils.getBrowserViewCategories( selection ) );
+            this.action.setSelectedEntries( BrowserSelectionUtils.getEntries( selection ) );
+            this.action.setSelectedBrowserEntryPages( BrowserSelectionUtils.getBrowserEntryPages( selection ) );
+            this.action.setSelectedSearchResults( BrowserSelectionUtils.getSearchResults( selection ) );
+            this.action.setSelectedBrowserSearchResultPages( BrowserSelectionUtils
+                .getBrowserSearchResultPages( selection ) );
+            this.action.setSelectedBookmarks( BrowserSelectionUtils.getBookmarks( selection ) );
 
-            this.action.setSelectedBrowserViewCategories( SelectionUtils.getBrowserViewCategories( selection ) );
-            this.action.setSelectedEntries( SelectionUtils.getEntries( selection ) );
-            this.action.setSelectedBrowserEntryPages( SelectionUtils.getBrowserEntryPages( selection ) );
-            this.action.setSelectedSearchResults( SelectionUtils.getSearchResults( selection ) );
-            this.action.setSelectedBrowserSearchResultPages( SelectionUtils.getBrowserSearchResultPages( selection ) );
-            this.action.setSelectedBookmarks( SelectionUtils.getBookmarks( selection ) );
+            this.action.setSelectedSearches( BrowserSelectionUtils.getSearches( selection ) );
 
-            this.action.setSelectedSearches( SelectionUtils.getSearches( selection ) );
+            this.action.setSelectedAttributes( BrowserSelectionUtils.getAttributes( selection ) );
+            this.action.setSelectedAttributeHierarchies( BrowserSelectionUtils.getAttributeHierarchie( selection ) );
+            this.action.setSelectedValues( BrowserSelectionUtils.getValues( selection ) );
 
-            this.action.setSelectedAttributes( SelectionUtils.getAttributes( selection ) );
-            this.action.setSelectedAttributeHierarchies( SelectionUtils.getAttributeHierarchie( selection ) );
-            this.action.setSelectedValues( SelectionUtils.getValues( selection ) );
-            
-            this.action.setSelectedProperties( SelectionUtils.getProperties( selection ) );
-            
+            this.action.setSelectedProperties( BrowserSelectionUtils.getProperties( selection ) );
+
             this.updateAction();
         }
     }
@@ -201,7 +249,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
             {
                 actionHandlerManager.deactivateGlobalActionHandlers();
             }
-            
+
             action.run();
 
             // activate global actions

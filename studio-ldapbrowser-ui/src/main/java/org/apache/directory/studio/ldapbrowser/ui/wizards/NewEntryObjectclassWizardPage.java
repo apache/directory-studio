@@ -27,16 +27,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
-import org.apache.directory.studio.ldapbrowser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -50,17 +47,20 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -95,19 +95,56 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private Text availableObjectClassesInstantSearch;
 
     /** The available object classes viewer. */
-    private ListViewer availableObjectClassesViewer;
+    private TableViewer availableObjectClassesViewer;
 
     /** The selected object classes. */
     private List<ObjectClassDescription> selectedObjectClasses;
 
     /** The selected object classes viewer. */
-    private ListViewer selectedObjectClassesViewer;
+    private TableViewer selectedObjectClassesViewer;
 
     /** The add button. */
     private Button addButton;
 
     /** The remove button. */
     private Button removeButton;
+
+    private LabelProvider labelProvider = new LabelProvider()
+    {
+        /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+         */
+        public Image getImage( Object element )
+        {
+            if ( element instanceof ObjectClassDescription )
+            {
+                ObjectClassDescription ocd = ( ObjectClassDescription ) element;
+
+                if ( ocd.isAbstract() )
+                {
+                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD_ABSTRACT )
+                        .createImage();
+                }
+                else if ( ocd.isAuxiliary() )
+                {
+                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD_AUXILIARY )
+                        .createImage();
+                }
+                else if ( ocd.isStructural() )
+                {
+                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD_STRUCTURAL )
+                        .createImage();
+                }
+                else
+                {
+                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD ).createImage();
+                }
+            }
+
+            // Default
+            return super.getImage( element );
+        }
+    };
 
 
     /**
@@ -137,12 +174,31 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     {
         if ( !selectedObjectClasses.isEmpty() )
         {
+            boolean hasOneStructuralOC = false;
+            for ( ObjectClassDescription ocd : selectedObjectClasses )
+            {
+                if ( ocd.isStructural() )
+                {
+                    hasOneStructuralOC = true;
+                    break;
+                }
+            }
+            if ( !hasOneStructuralOC )
+            {
+                setMessage( "Please select at least one structural object class.", WizardPage.WARNING );
+            }
+            else
+            {
+                setMessage( null );
+            }
+
             setPageComplete( true );
             saveState();
         }
         else
         {
             setPageComplete( false );
+            setMessage( null );
         }
     }
 
@@ -158,12 +214,12 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         if ( wizard.getSelectedConnection() != null )
         {
-            if( !wizard.getSelectedConnection().isOpened() )
-            {
-                OpenConnectionsJob job = new OpenConnectionsJob(wizard.getSelectedConnection());
-                RunnableContextJobAdapter.execute( job, getContainer() );
-            }
-            
+            //            if ( !wizard.getSelectedConnection().isOpened() )
+            //            {
+            //                OpenConnectionsJob job = new OpenConnectionsJob( wizard.getSelectedConnection().getConnection() );
+            //                RunnableContextJobAdapter.execute( job, getContainer() );
+            //            }
+
             availableObjectClasses.addAll( Arrays.asList( wizard.getSelectedConnection().getSchema()
                 .getObjectClassDescriptions() ) );
 
@@ -216,10 +272,6 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 ObjectClassDescription ocd = it.next();
                 ocAttribute.addValue( new Value( ocAttribute, ocd.getNames()[0] ) );
             }
-        }
-        catch ( ModelModificationException e )
-        {
-            e.printStackTrace();
         }
         finally
         {
@@ -293,21 +345,31 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             public void modifyText( ModifyEvent e )
             {
                 availableObjectClassesViewer.refresh();
-                if ( availableObjectClassesViewer.getList().getItemCount() == 1 )
+                if ( availableObjectClassesViewer.getTable().getItemCount() >= 1 )
                 {
                     Object item = availableObjectClassesViewer.getElementAt( 0 );
                     availableObjectClassesViewer.setSelection( new StructuredSelection( item ) );
                 }
             }
         } );
+        availableObjectClassesInstantSearch.addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( e.keyCode == SWT.ARROW_DOWN )
+                {
+                    availableObjectClassesViewer.getTable().setFocus();
+                }
+            }
+        } );
 
-        availableObjectClassesViewer = new ListViewer( availableObjectClassesComposite );
+        availableObjectClassesViewer = new TableViewer( availableObjectClassesComposite );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.heightHint = SIZING_SELECTION_WIDGET_HEIGHT;
         data.widthHint = ( int ) ( SIZING_SELECTION_WIDGET_WIDTH * 0.4 );
-        availableObjectClassesViewer.getList().setLayoutData( data );
+        availableObjectClassesViewer.getTable().setLayoutData( data );
         availableObjectClassesViewer.setContentProvider( new ArrayContentProvider() );
-        availableObjectClassesViewer.setLabelProvider( new LabelProvider() );
+        availableObjectClassesViewer.setLabelProvider( labelProvider );
         availableObjectClassesViewer.setSorter( new ViewerSorter() );
         availableObjectClassesViewer.addFilter( new InstantSearchFilter( availableObjectClassesInstantSearch ) );
         availableObjectClassesViewer.setInput( availableObjectClasses );
@@ -316,6 +378,19 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             public void doubleClick( DoubleClickEvent event )
             {
                 add( event.getSelection() );
+            }
+        } );
+        availableObjectClassesViewer.getTable().addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( e.keyCode == SWT.ARROW_UP )
+                {
+                    if ( availableObjectClassesViewer.getTable().getSelectionIndex() <= 0 )
+                    {
+                        availableObjectClassesInstantSearch.setFocus();
+                    }
+                }
             }
         } );
 
@@ -356,13 +431,13 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             }
         } );
 
-        selectedObjectClassesViewer = new ListViewer( composite );
+        selectedObjectClassesViewer = new TableViewer( composite );
         data = new GridData( GridData.FILL_BOTH );
         data.heightHint = SIZING_SELECTION_WIDGET_HEIGHT;
         data.widthHint = ( int ) ( SIZING_SELECTION_WIDGET_WIDTH * 0.4 );
-        selectedObjectClassesViewer.getList().setLayoutData( data );
+        selectedObjectClassesViewer.getTable().setLayoutData( data );
         selectedObjectClassesViewer.setContentProvider( new ArrayContentProvider() );
-        selectedObjectClassesViewer.setLabelProvider( new LabelProvider() );
+        selectedObjectClassesViewer.setLabelProvider( labelProvider );
         selectedObjectClassesViewer.setSorter( new ViewerSorter() );
         selectedObjectClassesViewer.setInput( selectedObjectClasses );
         selectedObjectClassesViewer.addDoubleClickListener( new IDoubleClickListener()

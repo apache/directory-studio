@@ -94,10 +94,12 @@
 		<mkdir dir="${target.build}"/>
 		<copy todir="${target.build}" failonerror="false">
 			<fileset dir="${basedir}">
+				<include name="about.ini" />
 				<include name="log4j.conf" />
 				<include name="plugin_customization.ini" />
 				<include name="product_lg.gif" />
 				<include name="splash.bmp" />
+				<include name="studio.png" />
 			</fileset>
 		</copy>
 	</target>

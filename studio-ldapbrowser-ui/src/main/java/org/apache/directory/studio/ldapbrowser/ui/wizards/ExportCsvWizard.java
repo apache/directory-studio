@@ -99,7 +99,7 @@ public class ExportCsvWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportCsvJob ecj = new ExportCsvJob( exportFilename, search.getConnection(), search.getSearchParameter(),
+        ExportCsvJob ecj = new ExportCsvJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
             exportDn );
         ecj.execute();
 

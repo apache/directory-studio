@@ -21,24 +21,24 @@
 package org.apache.directory.studio.ldifeditor.dialogs;
 
 
+import javax.naming.InvalidNameException;
+
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroupWithAttribute;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -59,7 +59,7 @@ public class LdifEntryEditorDialog extends Dialog
 
     public static final int MAX_HEIGHT = 250;
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private LdifRecord ldifRecord;
 
@@ -77,19 +77,19 @@ public class LdifEntryEditorDialog extends Dialog
     private IContextActivation contextActivation;
 
 
-    public LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifContentRecord ldifRecord )
+    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifContentRecord ldifRecord )
     {
         this( parentShell, connection, ldifRecord, null );
     }
 
 
-    public LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifChangeAddRecord ldifRecord )
+    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifChangeAddRecord ldifRecord )
     {
         this( parentShell, connection, ldifRecord, null );
     }
 
 
-    private LdifEntryEditorDialog( Shell parentShell, IConnection connection, LdifRecord ldifRecord, String s )
+    private LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifRecord ldifRecord, String s )
     {
         super( parentShell );
         setShellStyle( getShellStyle() | SWT.RESIZE );
@@ -225,11 +225,7 @@ public class LdifEntryEditorDialog extends Dialog
             }
 
         }
-        catch ( ModelModificationException e )
-        {
-            e.printStackTrace();
-        }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
             e.printStackTrace();
         }

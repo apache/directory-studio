@@ -26,7 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.connection.core.Utils;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.events.ModifyEvent;
@@ -93,7 +93,7 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
         this.bookmarkEntryWidget.createWidget( innerComposite );
         if ( this.bookmark != null )
         {
-            this.bookmarkEntryWidget.setInput( this.bookmark.getConnection(), this.bookmark.getDn() );
+            this.bookmarkEntryWidget.setInput( this.bookmark.getBrowserConnection(), this.bookmark.getDn() );
         }
         this.bookmarkEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -138,7 +138,7 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
                 setErrorMessage( "Please enter a name." );
             }
             else if ( !bookmark.getName().equals( this.bookmarkNameText.getText() )
-                && bookmark.getConnection().getBookmarkManager().getBookmark( this.bookmarkNameText.getText() ) != null )
+                && bookmark.getBrowserConnection().getBookmarkManager().getBookmark( this.bookmarkNameText.getText() ) != null )
             {
                 setValid( false );
                 setErrorMessage( "A bookmark with this name already exists." );

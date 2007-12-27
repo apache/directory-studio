@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
@@ -62,11 +62,10 @@ public class ReloadSchemaAction extends Action
      */
     public void run()
     {
-        final IConnection connection = schemaPage.getConnection();
-        if ( connection != null )
+        final IBrowserConnection browserConnection = schemaPage.getConnection();
+        if ( browserConnection != null )
         {
-            new ReloadSchemasJob( new IConnection[]
-                { connection } ).execute();
+            new ReloadSchemasJob( browserConnection ).execute();
             schemaPage.getSchemaBrowser().refresh();
         }
     }

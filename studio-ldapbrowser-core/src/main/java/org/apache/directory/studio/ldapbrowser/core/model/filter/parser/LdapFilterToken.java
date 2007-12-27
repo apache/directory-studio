@@ -27,7 +27,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.filter.parser;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LdapFilterToken implements Comparable
+public class LdapFilterToken implements Comparable<LdapFilterToken>
 {
 
     /** The token identifier for a new filter */
@@ -77,6 +77,9 @@ public class LdapFilterToken implements Comparable
 
     /** The token identifier for the present filter type =* */
     public static final int PRESENT = 45;
+    
+    /** The token identifier for the substring filter type =* */
+    public static final int SUBSTRING = 46;
 
     /** The token identifier for a value. */
     public static final int VALUE = 51;
@@ -183,7 +186,7 @@ public class LdapFilterToken implements Comparable
     /**
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo( Object o )
+    public int compareTo( LdapFilterToken o )
     {
         if ( o instanceof LdapFilterToken )
         {

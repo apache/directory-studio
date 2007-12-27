@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.editor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.dialogs.BinaryAttributeDialog;
@@ -27,10 +28,10 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurat
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -45,7 +46,6 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
@@ -77,8 +77,6 @@ public class GeneralPage extends FormPage
     private List<String> binaryAttributes;
 
     // UI Fields
-    private Text portText;
-    private Combo authenticationCombo;
     private Text principalText;
     private Text passwordText;
     private Button showPasswordCheckbox;
@@ -88,7 +86,6 @@ public class GeneralPage extends FormPage
     private Text synchPeriodText;
     private Text maxThreadsText;
     private Button enableAccesControlCheckbox;
-    private Button enableNTPCheckbox;
     private Button enableKerberosCheckbox;
     private Button enableChangePasswordCheckbox;
     private Button denormalizeOpAttrCheckbox;
@@ -96,6 +93,20 @@ public class GeneralPage extends FormPage
     private Button binaryAttributesAddButton;
     private Button binaryAttributesEditButton;
     private Button binaryAttributesDeleteButton;
+    private Button enableLdapCheckbox;
+    private Text ldapPortText;
+    private Button enableLdapsCheckbox;
+    private Text ldapsPortText;
+    private Text kerberosPortText;
+    private Button enableNtpCheckbox;
+    private Text ntpPortText;
+    private Button enableDnsCheckbox;
+    private Text dnsPortText;
+    private Text changePasswordPortText;
+
+    private CheckboxTableViewer supportedMechanismsTableViewer;
+    private Button selectAllSupportedMechanismsButton;
+    private Button deselectAllSupportedMechanismsButton;
 
 
     /**
@@ -124,10 +135,29 @@ public class GeneralPage extends FormPage
         parent.setLayout( twl );
         FormToolkit toolkit = managedForm.getToolkit();
 
-        createSettingsSection( parent, toolkit );
-        createBinaryAttributesSection( parent, toolkit );
-        createLimitsSection( parent, toolkit );
-        createOptionsSection( parent, toolkit );
+        Composite leftComposite = toolkit.createComposite( parent );
+        GridLayout leftCompositeGridLayout = new GridLayout();
+        leftCompositeGridLayout.marginHeight = leftCompositeGridLayout.marginWidth = 0;
+        leftComposite.setLayout( leftCompositeGridLayout );
+        TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        leftCompositeTableWrapData.grabHorizontal = true;
+        leftComposite.setLayoutData( leftCompositeTableWrapData );
+
+        createAdministratorSettingsSection( leftComposite, toolkit );
+        createProtocolsSection( leftComposite, toolkit );
+        createSupportedAuthenticationMechanismsSection( leftComposite, toolkit );
+
+        Composite rightComposite = toolkit.createComposite( parent );
+        GridLayout rightCompositeGridLayout = new GridLayout();
+        rightCompositeGridLayout.marginHeight = rightCompositeGridLayout.marginWidth = 0;
+        rightComposite.setLayout( rightCompositeGridLayout );
+        TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
+        rightCompositeTableWrapData.grabHorizontal = true;
+        rightComposite.setLayoutData( rightCompositeTableWrapData );
+
+        createBinaryAttributesSection( rightComposite, toolkit );
+        createLimitsSection( rightComposite, toolkit );
+        createOptionsSection( rightComposite, toolkit );
 
         initFromInput();
         addListeners();
@@ -135,52 +165,26 @@ public class GeneralPage extends FormPage
 
 
     /**
-     * Creates the Settings Section.
+     * Creates the Administrator Settings Section.
      *
      * @param parent
      *      the parent composite
      * @param toolkit
      *      the toolkit to use
      */
-    private void createSettingsSection( Composite parent, FormToolkit toolkit )
+    private void createAdministratorSettingsSection( Composite parent, FormToolkit toolkit )
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 4;
-        section.setText( "Settings" );
-        section.setDescription( "Set the settings of the server." );
-        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        td.grabHorizontal = true;
-        section.setLayoutData( td );
+        section.setText( "Administrator settings" );
+        section.setDescription( "Set the settings about the administrator of the server." );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
         GridLayout glayout = new GridLayout( 2, false );
         client.setLayout( glayout );
         section.setClient( client );
-
-        // Port
-        toolkit.createLabel( client, "Port:" );
-        portText = toolkit.createText( client, "" );
-        portText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        portText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-
-        // Authentication
-        toolkit.createLabel( client, "Authentication:" );
-        authenticationCombo = new Combo( client, SWT.SIMPLE );
-        authenticationCombo.setItems( new String[]
-            { "Simple" } );
-        authenticationCombo.setText( "Simple" );
-        authenticationCombo.setEnabled( false );
-        authenticationCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Principal
         toolkit.createLabel( client, "Principal:" );
@@ -196,7 +200,7 @@ public class GeneralPage extends FormPage
         // Show Password
         toolkit.createLabel( client, "" );
         showPasswordCheckbox = toolkit.createButton( client, "Show password", SWT.CHECK );
-        showPasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        showPasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
         showPasswordCheckbox.setSelection( false );
         showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
@@ -212,10 +216,6 @@ public class GeneralPage extends FormPage
                 }
             }
         } );
-
-        // Allow Anonymous Access
-        allowAnonymousAccessCheckbox = toolkit.createButton( client, "Allow Anonymous Access", SWT.CHECK );
-        allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
 
@@ -230,13 +230,10 @@ public class GeneralPage extends FormPage
     private void createLimitsSection( Composite parent, FormToolkit toolkit )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.marginWidth = 4;
         section.setText( "Limits" );
-        section.setDescription( "Set the limits of the server." );
-        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        td.grabHorizontal = true;
-        section.setLayoutData( td );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
         GridLayout glayout = new GridLayout( 2, false );
@@ -316,40 +313,26 @@ public class GeneralPage extends FormPage
     private void createOptionsSection( Composite parent, FormToolkit toolkit )
     {
         // Creation of the section
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.marginWidth = 4;
         section.setText( "Options" );
-        section.setDescription( "Set the options of the server." );
-        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        td.grabHorizontal = true;
-        section.setLayoutData( td );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout();
-        client.setLayout( glayout );
+        client.setLayout( new GridLayout() );
         section.setClient( client );
+
+        // Allow Anonymous Access
+        allowAnonymousAccessCheckbox = toolkit.createButton( client, "Allow Anonymous Access", SWT.CHECK );
+        allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
         // Enable Access Control
         enableAccesControlCheckbox = toolkit.createButton( client, "Enable Access Control", SWT.CHECK );
-        enableAccesControlCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Enable NTP
-        enableNTPCheckbox = toolkit.createButton( client, "Enable NTP", SWT.CHECK );
-        enableNTPCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        enableAccesControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
 
         // Denormalize Operational Attributes
         denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
-        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Enable Kerberos
-        enableKerberosCheckbox = toolkit.createButton( client, "Enable Kerberos", SWT.CHECK );
-        enableKerberosCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        enableKerberosCheckbox.setEnabled( false );
-
-        // Enable Change Password
-        enableChangePasswordCheckbox = toolkit.createButton( client, "Enable Change Password", SWT.CHECK );
-        enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        enableChangePasswordCheckbox.setEnabled( false );
+        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
     }
 
 
@@ -367,11 +350,8 @@ public class GeneralPage extends FormPage
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 4;
         section.setText( "Binary Attributes" );
-        section
-            .setDescription( "Set attribute type names and OID's if you want an them to be handled as binary content." );
-        TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        td.grabHorizontal = true;
-        section.setLayoutData( td );
+        section.setDescription( "Set attribute type names and OID's if you want them to be handled as binary content." );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
         GridLayout glayout = new GridLayout( 2, false );
@@ -384,7 +364,6 @@ public class GeneralPage extends FormPage
         binaryAttributesTable.setLayoutData( gd );
         binaryAttributesTableViewer = new TableViewer( binaryAttributesTable );
         binaryAttributesTableViewer.setContentProvider( new ArrayContentProvider() );
-        binaryAttributesTableViewer.setLabelProvider( new LabelProvider() );
 
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
@@ -403,18 +382,174 @@ public class GeneralPage extends FormPage
 
 
     /**
+     * Creates the Supported Authentication Mechanisms Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createSupportedAuthenticationMechanismsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.marginWidth = 4;
+        section.setText( "Supported Authentication Mechanisms" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        GridLayout glayout = new GridLayout( 2, false );
+        client.setLayout( glayout );
+        section.setClient( client );
+
+        Table supportedMechanismsTable = toolkit.createTable( client, SWT.CHECK );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
+        gd.heightHint = 76;
+        supportedMechanismsTable.setLayoutData( gd );
+        supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
+        supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
+        supportedMechanismsTableViewer.setInput( new String[]
+            { "SIMPLE", "CRAM-MD5", "DIGEST-MD5", "GSSAPI" } );
+
+        selectAllSupportedMechanismsButton = toolkit.createButton( client, "Select All", SWT.PUSH );
+        selectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        deselectAllSupportedMechanismsButton = toolkit.createButton( client, "Deselect All", SWT.PUSH );
+        deselectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+    }
+
+
+    /**
+     * Creates the Protocols Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createProtocolsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.marginWidth = 4;
+        section.setText( "Protocols" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        client.setLayout( new GridLayout( 2, true ) );
+        section.setClient( client );
+
+        // LDAP
+        Composite ldapProtocolComposite = createProtocolComposite( toolkit, client );
+        enableLdapCheckbox = toolkit.createButton( ldapProtocolComposite, "Enable LDAP", SWT.CHECK );
+        enableLdapCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( ldapProtocolComposite, "    " );
+        toolkit.createLabel( ldapProtocolComposite, "Port:" );
+        ldapPortText = createPortText( toolkit, ldapProtocolComposite );
+
+        // LDAPS
+        Composite ldapsProtocolComposite = createProtocolComposite( toolkit, client );
+        enableLdapsCheckbox = toolkit.createButton( ldapsProtocolComposite, "Enable LDAPS", SWT.CHECK );
+        enableLdapsCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( ldapsProtocolComposite, "    " );
+        toolkit.createLabel( ldapsProtocolComposite, "Port:" );
+        ldapsPortText = createPortText( toolkit, ldapsProtocolComposite );
+
+        // Kerberos
+        Composite kerberosProtocolComposite = createProtocolComposite( toolkit, client );
+        enableKerberosCheckbox = toolkit.createButton( kerberosProtocolComposite, "Enable Kerberos", SWT.CHECK );
+        enableKerberosCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( kerberosProtocolComposite, "    " );
+        toolkit.createLabel( kerberosProtocolComposite, "Port:" );
+        kerberosPortText = createPortText( toolkit, kerberosProtocolComposite );
+
+        // NTP
+        Composite ntpProtocolComposite = createProtocolComposite( toolkit, client );
+        enableNtpCheckbox = toolkit.createButton( ntpProtocolComposite, "Enable NTP", SWT.CHECK );
+        enableNtpCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( ntpProtocolComposite, "    " );
+        toolkit.createLabel( ntpProtocolComposite, "Port:" );
+        ntpPortText = createPortText( toolkit, ntpProtocolComposite );
+
+        // DNS
+        Composite dnsProtocolComposite = createProtocolComposite( toolkit, client );
+        enableDnsCheckbox = toolkit.createButton( dnsProtocolComposite, "Enable DNS", SWT.CHECK );
+        enableDnsCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( dnsProtocolComposite, "    " );
+        toolkit.createLabel( dnsProtocolComposite, "Port:" );
+        dnsPortText = createPortText( toolkit, dnsProtocolComposite );
+
+        // Change Password
+        Composite changePasswordProtocolComposite = createProtocolComposite( toolkit, client );
+        enableChangePasswordCheckbox = toolkit.createButton( changePasswordProtocolComposite, "Enable Change Password",
+            SWT.CHECK );
+        enableChangePasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false, 3, 1 ) );
+        toolkit.createLabel( changePasswordProtocolComposite, "    " );
+        toolkit.createLabel( changePasswordProtocolComposite, "Port:" );
+        changePasswordPortText = createPortText( toolkit, changePasswordProtocolComposite );
+    }
+
+
+    /**
+     * Creates a Protocol Composite : a Composite composed of a GridLayout with
+     * 3 columns and marginHeight and marginWidth set to 0.
+     *
+     * @param toolkit
+     *      the toolkit
+     * @param parent
+     *      the parent
+     * @return
+     *      a Protocol Composite
+     */
+    private Composite createProtocolComposite( FormToolkit toolkit, Composite parent )
+    {
+        Composite protocolComposite = toolkit.createComposite( parent );
+        GridLayout protocolGridLayout = new GridLayout( 3, false );
+        protocolGridLayout.marginHeight = protocolGridLayout.marginWidth = 0;
+        protocolComposite.setLayout( protocolGridLayout );
+
+        return protocolComposite;
+    }
+
+
+    /**
+     * Creates a Text that can be used to enter a port number.
+     *
+     * @param toolkit
+     *      the toolkit
+     * @param parent
+     *      the parent
+     * @return
+     *      a Text that can be used to enter a port number
+     */
+    private Text createPortText( FormToolkit toolkit, Composite parent )
+    {
+        Text portText = toolkit.createText( parent, "" );
+        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        gd.widthHint = 42;
+        portText.setLayoutData( gd );
+        portText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+        portText.setTextLimit( 5 );
+
+        return portText;
+    }
+
+
+    /**
      * Initializes the page with the Editor input.
      */
     private void initFromInput()
     {
-        ServerConfiguration configuration = ( ( ServerConfigurationEditorInput ) getEditorInput() )
-            .getServerConfiguration();
-
-        binaryAttributes = configuration.getBinaryAttributes();
-        binaryAttributesTableViewer.setInput( binaryAttributes );
-
-        // Port
-        portText.setText( "" + configuration.getPort() );
+        ServerConfiguration configuration = ( ( ServerConfigurationEditor ) getEditor() ).getServerConfiguration();
 
         // Principal
         String principal = configuration.getPrincipal();
@@ -430,8 +565,39 @@ public class GeneralPage extends FormPage
             passwordText.setText( password );
         }
 
-        // Allow Anonymous Access
-        allowAnonymousAccessCheckbox.setSelection( configuration.isAllowAnonymousAccess() );
+        // Binary Attributes
+        binaryAttributes = configuration.getBinaryAttributes();
+        binaryAttributesTableViewer.setInput( binaryAttributes );
+
+        // LDAP Protocol
+        enableLdapCheckbox.setSelection( true );
+        ldapPortText.setEnabled( enableLdapCheckbox.getSelection() );
+        ldapPortText.setText( "" + configuration.getLdapPort() );
+
+        // LDAPS Protocol
+        enableLdapsCheckbox.setSelection( configuration.isEnableLdaps() );
+        ldapsPortText.setEnabled( enableLdapsCheckbox.getSelection() );
+        ldapsPortText.setText( "" + configuration.getLdapsPort() );
+
+        // Kerberos Protocol
+        enableKerberosCheckbox.setSelection( configuration.isEnableKerberos() );
+        kerberosPortText.setEnabled( enableKerberosCheckbox.getSelection() );
+        kerberosPortText.setText( "" + configuration.getKerberosPort() );
+
+        // NTP Protocol
+        enableNtpCheckbox.setSelection( configuration.isEnableNtp() );
+        ntpPortText.setEnabled( enableNtpCheckbox.getSelection() );
+        ntpPortText.setText( "" + configuration.getNtpPort() );
+
+        // DNS Protocol
+        enableDnsCheckbox.setSelection( configuration.isEnableDns() );
+        dnsPortText.setEnabled( enableDnsCheckbox.getSelection() );
+        dnsPortText.setText( "" + configuration.getDnsPort() );
+
+        // Change Password Protocol
+        enableChangePasswordCheckbox.setSelection( configuration.isEnableChangePassword() );
+        changePasswordPortText.setEnabled( enableChangePasswordCheckbox.getSelection() );
+        changePasswordPortText.setText( "" + configuration.getChangePasswordPort() );
 
         // Max Time Limit
         maxTimeLimitText.setText( "" + configuration.getMaxTimeLimit() );
@@ -445,17 +611,13 @@ public class GeneralPage extends FormPage
         // Max Threads
         maxThreadsText.setText( "" + configuration.getMaxThreads() );
 
+        supportedMechanismsTableViewer.setCheckedElements( configuration.getSupportedMechanisms().toArray() );
+
+        // Allow Anonymous Access
+        allowAnonymousAccessCheckbox.setSelection( configuration.isAllowAnonymousAccess() );
+
         // Enable Access Control
         enableAccesControlCheckbox.setSelection( configuration.isEnableAccessControl() );
-
-        // Enable NTP
-        enableNTPCheckbox.setSelection( configuration.isEnableNTP() );
-
-        // Enable Kerberos
-        enableKerberosCheckbox.setSelection( configuration.isEnableKerberos() );
-
-        // Enable Change Password
-        enableChangePasswordCheckbox.setSelection( configuration.isEnableChangePassword() );
 
         // Denormalize Op Attr
         denormalizeOpAttrCheckbox.setSelection( configuration.isDenormalizeOpAttr() );
@@ -551,25 +713,94 @@ public class GeneralPage extends FormPage
             }
         };
 
-        portText.addModifyListener( modifyListener );
-        authenticationCombo.addModifyListener( modifyListener );
+        selectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                supportedMechanismsTableViewer.setAllChecked( true );
+            }
+        } );
+
+        deselectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                supportedMechanismsTableViewer.setAllChecked( false );
+            }
+        } );
+
         principalText.addModifyListener( modifyListener );
         passwordText.addModifyListener( modifyListener );
-        allowAnonymousAccessCheckbox.addSelectionListener( selectionListener );
-        maxTimeLimitText.addModifyListener( modifyListener );
-        maxSizeLimitText.addModifyListener( modifyListener );
-        synchPeriodText.addModifyListener( modifyListener );
-        maxThreadsText.addModifyListener( modifyListener );
-        enableAccesControlCheckbox.addSelectionListener( selectionListener );
-        enableNTPCheckbox.addSelectionListener( selectionListener );
+
+        enableLdapCheckbox.addSelectionListener( selectionListener );
+        enableLdapCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                ldapPortText.setEnabled( enableLdapCheckbox.getSelection() );
+            }
+        } );
+        ldapPortText.addModifyListener( modifyListener );
+        enableLdapsCheckbox.addSelectionListener( selectionListener );
+        enableLdapsCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                ldapsPortText.setEnabled( enableLdapsCheckbox.getSelection() );
+            }
+        } );
+        ldapsPortText.addModifyListener( modifyListener );
         enableKerberosCheckbox.addSelectionListener( selectionListener );
+        enableKerberosCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                kerberosPortText.setEnabled( enableKerberosCheckbox.getSelection() );
+            }
+        } );
+        kerberosPortText.addModifyListener( modifyListener );
+        enableNtpCheckbox.addSelectionListener( selectionListener );
+        enableNtpCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                ntpPortText.setEnabled( enableNtpCheckbox.getSelection() );
+            }
+        } );
+        ntpPortText.addModifyListener( modifyListener );
+        enableDnsCheckbox.addSelectionListener( selectionListener );
+        enableDnsCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                dnsPortText.setEnabled( enableDnsCheckbox.getSelection() );
+            }
+        } );
+        dnsPortText.addModifyListener( modifyListener );
         enableChangePasswordCheckbox.addSelectionListener( selectionListener );
-        denormalizeOpAttrCheckbox.addSelectionListener( selectionListener );
+        enableChangePasswordCheckbox.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                changePasswordPortText.setEnabled( enableChangePasswordCheckbox.getSelection() );
+            }
+        } );
+        changePasswordPortText.addModifyListener( modifyListener );
+
         binaryAttributesTableViewer.addSelectionChangedListener( binaryAttributesTableViewerListener );
         binaryAttributesTableViewer.addDoubleClickListener( binaryAttributesTableViewerDoubleClickListener );
         binaryAttributesAddButton.addSelectionListener( binaryAttributesAddButtonListener );
         binaryAttributesEditButton.addSelectionListener( binaryAttributesEditButtonListener );
         binaryAttributesDeleteButton.addSelectionListener( binaryAttributesDeleteButtonListener );
+
+        maxTimeLimitText.addModifyListener( modifyListener );
+        maxSizeLimitText.addModifyListener( modifyListener );
+        synchPeriodText.addModifyListener( modifyListener );
+        maxThreadsText.addModifyListener( modifyListener );
+
+        allowAnonymousAccessCheckbox.addSelectionListener( selectionListener );
+        enableAccesControlCheckbox.addSelectionListener( selectionListener );
+        denormalizeOpAttrCheckbox.addSelectionListener( selectionListener );
     }
 
 
@@ -616,21 +847,40 @@ public class GeneralPage extends FormPage
      */
     public void save()
     {
-        ServerConfiguration serverConfiguration = ( ( ServerConfigurationEditorInput ) getEditorInput() )
-            .getServerConfiguration();
+        ServerConfiguration configuration = ( ( ServerConfigurationEditor ) getEditor() ).getServerConfiguration();
 
-        serverConfiguration.setPort( Integer.parseInt( portText.getText() ) );
-        serverConfiguration.setPrincipal( principalText.getText() );
-        serverConfiguration.setPassword( passwordText.getText() );
-        serverConfiguration.setAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
-        serverConfiguration.setMaxTimeLimit( Integer.parseInt( maxTimeLimitText.getText() ) );
-        serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
-        serverConfiguration.setSynchronizationPeriod( Long.parseLong( synchPeriodText.getText() ) );
-        serverConfiguration.setMaxThreads( Integer.parseInt( maxThreadsText.getText() ) );
-        serverConfiguration.setEnableAccessControl( enableAccesControlCheckbox.getSelection() );
-        serverConfiguration.setEnableNTP( enableNTPCheckbox.getSelection() );
-        serverConfiguration.setEnableKerberos( enableKerberosCheckbox.getSelection() );
-        serverConfiguration.setEnableChangePassword( enableChangePasswordCheckbox.getSelection() );
-        serverConfiguration.setDenormalizeOpAttr( denormalizeOpAttrCheckbox.getSelection() );
+        configuration.setPrincipal( principalText.getText() );
+        configuration.setPassword( passwordText.getText() );
+
+        configuration.setBinaryAttributes( binaryAttributes );
+
+        configuration.setLdapPort( Integer.parseInt( ldapPortText.getText() ) );
+        configuration.setEnableLdaps( enableLdapsCheckbox.getSelection() );
+        configuration.setLdapsPort( Integer.parseInt( ldapsPortText.getText() ) );
+        configuration.setEnableKerberos( enableKerberosCheckbox.getSelection() );
+        configuration.setKerberosPort( Integer.parseInt( kerberosPortText.getText() ) );
+        configuration.setEnableNtp( enableNtpCheckbox.getSelection() );
+        configuration.setNtpPort( Integer.parseInt( ntpPortText.getText() ) );
+        configuration.setEnableDns( enableDnsCheckbox.getSelection() );
+        configuration.setDnsPort( Integer.parseInt( dnsPortText.getText() ) );
+        configuration.setEnableChangePassword( enableChangePasswordCheckbox.getSelection() );
+        configuration.setChangePasswordPort( Integer.parseInt( changePasswordPortText.getText() ) );
+
+        configuration.setMaxTimeLimit( Integer.parseInt( maxTimeLimitText.getText() ) );
+        configuration.setMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
+        configuration.setSynchronizationPeriod( Long.parseLong( synchPeriodText.getText() ) );
+        configuration.setMaxThreads( Integer.parseInt( maxThreadsText.getText() ) );
+
+        List<String> supportedMechanismsList = new ArrayList<String>();
+        for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
+        {
+            supportedMechanismsList.add( ( String ) supportedMechanism );
+        }
+        configuration.setSupportedMechanisms( supportedMechanismsList );
+
+        configuration.setAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
+        configuration.setEnableAccessControl( enableAccesControlCheckbox.getSelection() );
+        configuration.setDenormalizeOpAttr( denormalizeOpAttrCheckbox.getSelection() );
+
     }
 }

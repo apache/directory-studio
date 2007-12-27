@@ -1,5 +1,23 @@
 Release Notes
 
+Apache Directory Studio 1.0.1
+
+Bug  * [DIRSTUDIO-162] - Delete old RDN on rename has no effect  * [DIRSTUDIO-180] - Connection wizard and properties tabs are out of order  * [DIRSTUDIO-183] - It's not possible to select a Connection in a New Search  * [DIRSTUDIO-186] - When copying an entry it isn't displayed correctly in the browser tree  * [DIRSTUDIO-190] - SSL connections are no longer workingImprovement  * [DIRSTUDIO-185] - Provide completion for all attribute types in the attribute wizardTask  * [DIRSTUDIO-181] - Update the documentation of the Schema Editor Plugin  * [DIRSTUDIO-188] - Move LDIF Editor help to its own help plugin
+
+---------------------------------------------------------------------------------
+
+Apache Directory Studio 1.0.0
+
+Sub-task  * [DIRSTUDIO-131] - Rename package names and plugin IDs for ldap browser plugins and features  * [DIRSTUDIO-140] - Add Eclipse Intro mecanism to the Apache Directory Studio RCP plugin  * [DIRSTUDIO-141] - Add content to Apache Directory Studio Intro  * [DIRSTUDIO-177] - Update dependencies on Apache DS jarsBug  * [DIRSTUDIO-73] - Password appears in clear  * [DIRSTUDIO-96] - installation into existing Eclipse ruins key bindings for JDT  * [DIRSTUDIO-101] - Configuration lost on brutal exit  * [DIRSTUDIO-110] - No DIT shown when opening a connection with the 'open' icon  * [DIRSTUDIO-117] - Double click attribute to rename entry displays two dialog boxes  * [DIRSTUDIO-127] - Missing ASL 2.0 headers in package-info.java files for ACIEditor  * [DIRSTUDIO-149] - Problems with the slash / in DN  * [DIRSTUDIO-168] - NPE when opening search dialog and connection is closed  * [DIRSTUDIO-172] - Syntax length definitions in schemas exported from LDAP Studio throws exception on Apache DS start-up.Improvement  * [DIRSTUDIO-47] - Improve filter widget and filter editor dialog  * [DIRSTUDIO-67] - Clear "Modification Logs" functionality missing  * [DIRSTUDIO-75] - Improve LDAP Studio build system  * [DIRSTUDIO-93] - Add server detection for ApacheDS and TivoliDS on RootDSE property page  * [DIRSTUDIO-99] - Display both OID and text for controls etc. in the property page of the Root DSE  * [DIRSTUDIO-102] - Add descriptions for OIDs for LDAP controls and extended ops specific to IBM Tivoli Directory Server  * [DIRSTUDIO-103] - Include Apache brand in splash screen of RCP application  * [DIRSTUDIO-104] - Add "Apache" prefix to window title of RCP Application  * [DIRSTUDIO-105] - Add descriptions for OIDs for LDAP controls and extended ops specific to Netscape Directory Server  * [DIRSTUDIO-106] - Add descriptions for OIDs for LDAP controls and extended ops specific to MS Active Directory  * [DIRSTUDIO-108] - Superlasses  * [DIRSTUDIO-122] - Schema editor should allow a user to add an OID in the Syntax input box  * [DIRSTUDIO-125] - Bootstrap Ivy  * [DIRSTUDIO-151] - Simplify IValueEditor interface  * [DIRSTUDIO-158] - Create a separte connection plugin  * [DIRSTUDIO-165] - Add the version number of Apache Directory Studio in the "About window" of the RCP application  * [DIRSTUDIO-169] - Make connection parameters editable even if the connection is opened  * [DIRSTUDIO-174] - Use an unique ID as connection identifier instead of the connection nameNew Feature  * [DIRSTUDIO-90] - Add a Welcome view that is displayed at first launchTask  * [DIRSTUDIO-113] - Rename "LDAP Studio" to "Apache Directory Studio"  * [DIRSTUDIO-129] - Rename project names in trunk  * [DIRSTUDIO-130] - Rename package names and plugin IDs  * [DIRSTUDIO-159] - Create a separte feature project for the LDIF Editor
+  * [DIRSTUDIO-175] - Verify and add if needed the Notice.txt and Licence.txt files of all plugins  * [DIRSTUDIO-176] - Edit Release Notes.txt files for the 1.0 release  * [DIRSTUDIO-178] - Edit features and update site with the new update site URLWish
+  * [DIRSTUDIO-100] - Interface IRootDSE does not sufficiently define return values of methods
+
+---------------------------------------------------------------------------------
+
+Apache Directory LDAP Studio 0.8.1Bug  * [DIRSTUDIO-80] - LDAP Studio does not work on x86_64  * [DIRSTUDIO-144] - Unable to install plugins from updatesite on x86_64 architecture
+
+---------------------------------------------------------------------------------
+
 Apache Directory LDAP Studio 0.8.0
 
 Bug
@@ -19,6 +37,7 @@ New Feature
   * [DIRSTUDIO-76] - Value editor for administrativeRole
   * [DIRSTUDIO-79] - Value editor for subtreeSpecification
   * [DIRSTUDIO-91] - Add a new plugin for handling the Apache DS server configuration file
+
 
 ---------------------------------------------------------------------------------
 
@@ -54,5 +73,7 @@ New Feature
   * [DIRSTUDIO-7] - OID View
   * [DIRSTUDIO-41] - Add an Overview page on the Schema Editor that displays all ATs and OCs of the schema 
 
+
 ---------------------------------------------------------------------------------
+
 Apache Directory LDAP Studio 0.6.0 - Initial release

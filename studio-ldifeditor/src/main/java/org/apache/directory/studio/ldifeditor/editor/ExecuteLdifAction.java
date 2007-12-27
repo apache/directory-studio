@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldifeditor.editor;
 
 
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.eclipse.jface.action.Action;
@@ -58,7 +58,7 @@ public class ExecuteLdifAction extends Action
     public void run()
     {
 
-        IConnection connection = editor.getConnection();
+        IBrowserConnection connection = editor.getConnection();
         String ldif = editor.getLdifModel().toRawString();
 
         new ExecuteLdifJob( connection, ldif, true ).execute();

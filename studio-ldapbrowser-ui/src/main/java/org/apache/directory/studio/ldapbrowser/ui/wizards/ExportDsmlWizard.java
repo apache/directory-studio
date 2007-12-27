@@ -100,7 +100,7 @@ public class ExportDsmlWizard extends ExportBaseWizard
         fromPage.saveDialogSettings();
         toPage.saveDialogSettings();
 
-        ExportDsmlJob edj = new ExportDsmlJob( exportFilename, search.getConnection(), search.getSearchParameter() );
+        ExportDsmlJob edj = new ExportDsmlJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter() );
         edj.execute();
 
         return true;

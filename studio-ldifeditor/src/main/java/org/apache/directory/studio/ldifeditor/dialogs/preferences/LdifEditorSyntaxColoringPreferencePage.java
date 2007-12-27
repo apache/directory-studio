@@ -23,12 +23,12 @@ package org.apache.directory.studio.ldifeditor.dialogs.preferences;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.studio.ldifeditor.widgets.LdifEditorWidget;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -430,7 +430,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return ldifEditorWidget.getConnection();
     }

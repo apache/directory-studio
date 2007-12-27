@@ -21,20 +21,22 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
+import java.util.Iterator;
+
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.AliasBaseEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.BaseDNEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DirectoryMetadataEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
+import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -107,11 +109,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else if ( entry instanceof AliasBaseEntry )
             {
-                return entry.getDn().toString() + " " + append.toString();
+                return entry.getDn().getUpName() + " " + append.toString();
             }
             else if ( entry instanceof BaseDNEntry )
             {
-                return entry.getDn().toString() + " " + append.toString();
+                return entry.getDn().getUpName() + " " + append.toString();
             }
             else if ( entry.hasParententry() )
             {
@@ -119,16 +121,15 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 String label = "";
                 if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_DN )
                 {
-                    label = entry.getDn().toString();
+                    label = entry.getDn().getUpName();
                 }
                 else if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_RDN )
                 {
-                    label = entry.getRdn().toString();
-
+                    label = entry.getRdn().getUpName();
                 }
                 else if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_RDN_VALUE )
                 {
-                    label = entry.getRdn().getValue();
+                    label = ( String ) entry.getRdn().getUpValue();
                 }
 
                 label += append.toString();
@@ -142,7 +143,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else
             {
-                return entry.getDn() + append.toString();
+                return entry.getDn().getUpName() + append.toString();
             }
         }
         else if ( obj instanceof BrowserEntryPage )
@@ -180,7 +181,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             ISearchResult sr = ( ISearchResult ) obj;
 
-            if ( !sr.getSearch().getConnection().equals( sr.getEntry().getConnection() ) )
+            if ( !sr.getSearch().getBrowserConnection().equals( sr.getEntry().getBrowserConnection() ) )
             {
                 return sr.getEntry().getUrl().toString();
             }
@@ -193,15 +194,15 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_DN )
                 {
-                    label = sr.getEntry().getDn().toString();
+                    label = sr.getEntry().getDn().getUpName();
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_RDN )
                 {
-                    label = sr.getEntry().getRdn().toString();
+                    label = sr.getEntry().getRdn().getUpName();
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_RDN_VALUE )
                 {
-                    label = sr.getEntry().getRdn().getValue();
+                    label = ( String ) sr.getEntry().getRdn().getUpValue();
                 }
 
                 if ( preferences.isSearchResultAbbreviate()
@@ -214,7 +215,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else
             {
-                return sr.getEntry().getDn().toString();
+                return sr.getEntry().getDn().getUpName();
             }
 
         }
@@ -255,7 +256,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         else if ( obj instanceof ISearch )
         {
             ISearch search = ( ISearch ) obj;
-            if ( search.getConnection().isOpened() && search.getSearchResults() != null )
+            if ( search.getSearchResults() != null )
             {
                 return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_SEARCH );
             }
@@ -319,7 +320,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
-        else if ( entry.getDn().equals( entry.getConnection().getSchema().getDn() ) )
+        else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
@@ -337,21 +338,21 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         }
         else
         {
-            RDN rdn = entry.getRdn();
-            RDNPart[] rdnParts = rdn.getParts();
-            for ( int i = 0; i < rdnParts.length; i++ )
+            Rdn rdn = entry.getRdn();
+            Iterator<AttributeTypeAndValue> atavIterator = rdn.iterator();
+            while(atavIterator.hasNext())
             {
-                RDNPart part = rdnParts[i];
-                if ( "cn".equals( part.getType() ) || "sn".equals( part.getType() ) || "uid".equals( part.getType() )
-                    || "userid".equals( part.getType() ) )
+                AttributeTypeAndValue atav = atavIterator.next();
+                if ( "cn".equals( atav.getUpType() ) || "sn".equals( atav.getUpType() ) || "uid".equals( atav.getUpType() )
+                    || "userid".equals( atav.getUpType() ) )
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_PERSON );
                 }
-                else if ( "ou".equals( part.getType() ) || "o".equals( part.getType() ) )
+                else if ( "ou".equals( atav.getUpType() ) || "o".equals( atav.getUpType() ) )
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ORG );
                 }
-                else if ( "dc".equals( part.getType() ) || "c".equals( part.getType() ) || "l".equals( part.getType() ) )
+                else if ( "dc".equals( atav.getUpType() ) || "c".equals( atav.getUpType() ) || "l".equals( atav.getUpType() ) )
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_DC );
                 }

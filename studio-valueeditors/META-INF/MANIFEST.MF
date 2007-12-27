@@ -1,13 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Value Editors Plug-in
+Bundle-Name: Apache Directory Studio Value Editors
 Bundle-SymbolicName: org.apache.directory.studio.valueeditors;singleton:=true
-Bundle-Version: 0.8.0
+Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.directory.studio.valueeditors.ValueEditorsActivator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.apache.directory.studio.jars,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.common
 Eclipse-LazyStart: true

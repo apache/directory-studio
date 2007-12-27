@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterContent
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -75,7 +75,7 @@ public class FilterWidget extends BrowserWidget
     private FilterContentAssistProcessor contentAssistProcessor;
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The inital filter. */
     private String initalFilter;
@@ -87,12 +87,10 @@ public class FilterWidget extends BrowserWidget
     /**
      * Creates a new instance of FilterWidget.
      * 
-     * @param connection the connection
-     * @param initalFilter the inital filter
+     * @param initalFilter the initial filter
      */
-    public FilterWidget( IConnection connection, String initalFilter )
+    public FilterWidget( String initalFilter )
     {
-        this.connection = connection;
         this.initalFilter = initalFilter;
     }
 
@@ -103,7 +101,7 @@ public class FilterWidget extends BrowserWidget
      */
     public FilterWidget()
     {
-        this.connection = null;
+        this.browserConnection = null;
         this.initalFilter = null;
     }
 
@@ -115,17 +113,22 @@ public class FilterWidget extends BrowserWidget
      */
     public void createWidget( final Composite parent )
     {
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.horizontalSpan = 1;
+        gd.widthHint = 200;
+        composite.setLayoutData( gd );
+        
         // filter combo with field decoration
         final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
             FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        filterComboField = new DecoratedField( parent, SWT.NONE, new IControlCreator()
+        filterComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
         {
             public Control createControl( Composite parent, int style )
             {
                 Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
                 GridData gd = new GridData( GridData.FILL_HORIZONTAL );
                 gd.horizontalSpan = 1;
-                gd.widthHint = 200;
                 combo.setLayoutData( gd );
                 combo.setVisibleItemCount( 20 );
                 return combo;
@@ -158,10 +161,10 @@ public class FilterWidget extends BrowserWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                if ( connection != null )
+                if ( browserConnection != null )
                 {
                     FilterDialog dialog = new FilterDialog( parent.getShell(), "Filter Editor", filterCombo.getText(),
-                        connection );
+                        browserConnection );
                     dialog.open();
                     String filter = dialog.getFilter();
                     if ( filter != null )
@@ -177,7 +180,6 @@ public class FilterWidget extends BrowserWidget
         filterCombo.setItems( history );
 
         // initial values
-        setConnection( connection );
         filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter );
     }
 
@@ -206,16 +208,16 @@ public class FilterWidget extends BrowserWidget
 
 
     /**
-     * Sets the connection.
+     * Sets the browser connection.
      * 
-     * @param connection the connection
+     * @param browserConnection the browser connection
      */
-    public void setConnection( IConnection connection )
+    public void setBrowserConnection( IBrowserConnection browserConnection )
     {
-        if ( this.connection != connection )
+        if ( this.browserConnection != browserConnection )
         {
-            this.connection = connection;
-            contentAssistProcessor.setSchema( connection == null ? null : connection.getSchema() );
+            this.browserConnection = browserConnection;
+            contentAssistProcessor.setSchema( browserConnection == null ? null : browserConnection.getSchema() );
             filterCPA.setAutoActivationCharacters( contentAssistProcessor
                 .getCompletionProposalAutoActivationCharacters() );
         }

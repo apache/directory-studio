@@ -89,7 +89,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     public ExtendedOperationsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ( ServerConfigurationEditorInput ) page.getEditorInput() ).getServerConfiguration();
+        serverConfiguration = ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
         extendedOperations = serverConfiguration.getExtendedOperations();
     }
 

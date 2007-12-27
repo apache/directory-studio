@@ -21,15 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -61,24 +60,19 @@ public class RenameAction extends BrowserAction
     public String getText()
     {
 
-        IConnection[] connections = getConnections();
         IEntry[] entries = getEntries();
         ISearch[] searches = getSearches();
         IBookmark[] bookmarks = getBookmarks();
 
-        if ( connections.length == 1 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0 )
-        {
-            return "Rename Connection...";
-        }
-        else if ( entries.length == 1 && connections.length == 0 && searches.length == 0 && bookmarks.length == 0 )
+        if ( entries.length == 1 && searches.length == 0 && bookmarks.length == 0 )
         {
             return "Rename Entry...";
         }
-        else if ( searches.length == 1 && connections.length == 0 && entries.length == 0 && bookmarks.length == 0 )
+        else if ( searches.length == 1 && entries.length == 0 && bookmarks.length == 0 )
         {
             return "Rename Search...";
         }
-        else if ( bookmarks.length == 1 && connections.length == 0 && entries.length == 0 && searches.length == 0 )
+        else if ( bookmarks.length == 1 && entries.length == 0 && searches.length == 0 )
         {
             return "Rename Bookmark...";
         }
@@ -112,24 +106,19 @@ public class RenameAction extends BrowserAction
      */
     public void run()
     {
-        IConnection[] connections = getConnections();
         IEntry[] entries = getEntries();
         ISearch[] searches = getSearches();
         IBookmark[] bookmarks = getBookmarks();
 
-        if ( connections.length == 1 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0 )
-        {
-            renameConnection( connections[0] );
-        }
-        else if ( entries.length == 1 && connections.length == 0 && searches.length == 0 && bookmarks.length == 0 )
+        if ( entries.length == 1 && searches.length == 0 && bookmarks.length == 0 )
         {
             renameEntry( entries[0] );
         }
-        else if ( searches.length == 1 && connections.length == 0 && entries.length == 0 && bookmarks.length == 0 )
+        else if ( searches.length == 1 && entries.length == 0 && bookmarks.length == 0 )
         {
             renameSearch( searches[0] );
         }
-        else if ( bookmarks.length == 1 && connections.length == 0 && entries.length == 0 && searches.length == 0 )
+        else if ( bookmarks.length == 1 && entries.length == 0 && searches.length == 0 )
         {
             renameBookmark( bookmarks[0] );
         }
@@ -143,69 +132,16 @@ public class RenameAction extends BrowserAction
     {
         try
         {
-            IConnection[] connections = getConnections();
             IEntry[] entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
 
-            return connections.length + entries.length + searches.length + bookmarks.length == 1;
+            return entries.length + searches.length + bookmarks.length == 1;
 
         }
         catch ( Exception e )
         {
             return false;
-        }
-    }
-
-
-    /**
-     * Gets the Connections
-     * 
-     * @return
-     *      the Connections
-     */
-    protected IConnection[] getConnections()
-    {
-        if ( getSelectedConnections().length == 1 )
-        {
-            return getSelectedConnections();
-        }
-        else
-        {
-            return new IConnection[0];
-        }
-    }
-
-
-    /**
-     * Renames a Connection.
-     *
-     * @param connection
-     *      the Connection to rename
-     */
-    protected void renameConnection( final IConnection connection )
-    {
-        IInputValidator validator = new IInputValidator()
-        {
-            public String isValid( String newName )
-            {
-                if ( connection.getName().equals( newName ) )
-                    return null;
-                else if ( BrowserCorePlugin.getDefault().getConnectionManager().getConnection( newName ) != null )
-                    return "A connection with this name already exists.";
-                else
-                    return null;
-            }
-        };
-
-        InputDialog dialog = new InputDialog( getShell(), "Rename Connection", "New name:", connection.getName(),
-            validator );
-
-        dialog.open();
-        String newName = dialog.getValue();
-        if ( newName != null )
-        {
-            connection.setName( newName );
         }
     }
 
@@ -257,11 +193,10 @@ public class RenameAction extends BrowserAction
         RenameEntryDialog renameDialog = new RenameEntryDialog( getShell(), entry );
         if ( renameDialog.open() == Dialog.OK )
         {
-            RDN newRdn = renameDialog.getRdn();
-            boolean deleteOldRdn = renameDialog.isDeleteOldRdn();
+            Rdn newRdn = renameDialog.getRdn();
             if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
             {
-                new RenameEntryJob( entry, newRdn, deleteOldRdn ).execute();
+                new RenameEntryJob( entry, newRdn, new SimulateRenameDialogImpl( getShell() ) ).execute();
             }
         }
     }
@@ -300,7 +235,7 @@ public class RenameAction extends BrowserAction
             {
                 if ( search.getName().equals( newName ) )
                     return null;
-                else if ( search.getConnection().getSearchManager().getSearch( newName ) != null )
+                else if ( search.getBrowserConnection().getSearchManager().getSearch( newName ) != null )
                     return "A connection with this name already exists.";
                 else
                     return null;
@@ -351,7 +286,7 @@ public class RenameAction extends BrowserAction
             {
                 if ( bookmark.getName().equals( newName ) )
                     return null;
-                else if ( bookmark.getConnection().getBookmarkManager().getBookmark( newName ) != null )
+                else if ( bookmark.getBrowserConnection().getBookmarkManager().getBookmark( newName ) != null )
                     return "A bookmark with this name already exists.";
                 else
                     return null;

@@ -21,22 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectAllAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ConnectionViewActionProxy;
-import org.apache.directory.studio.ldapbrowser.common.dnd.ConnectionTransfer;
-import org.apache.directory.studio.ldapbrowser.common.dnd.SearchTransfer;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionActionGroup;
+import org.apache.directory.studio.connection.ui.actions.ConnectionViewActionProxy;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.actions.ActionFactory;
 
 
 /**
@@ -53,9 +47,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
     /** The link with editor action. */
     private LinkWithEditorAction linkWithEditorAction;
-
-    /** The Constant selectAllAction. */
-    private static final String selectAllAction = "selectAllAction";
 
     /** The Constant importDsmlAction. */
     private static final String importDsmlAction = "importDsmlAction";
@@ -78,12 +69,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant openSchemaBrowserAction. */
     private static final String openSchemaBrowserAction = "openSchemaBrowserAction";
 
-    /** The drag connection listener. */
-    private DragConnectionListener dragConnectionListener;
-
-    /** The drop connection listener. */
-    private DropConnectionListener dropConnectionListener;
-
 
     /**
      * Creates a new instance of ConnectionViewActionGroup and creates
@@ -95,11 +80,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     {
         super( view.getMainWidget(), view.getConfiguration() );
         this.view = view;
-        TableViewer viewer = view.getMainWidget().getViewer();
+        TreeViewer viewer = view.getMainWidget().getViewer();
 
         linkWithEditorAction = new LinkWithEditorAction( view );
-        connectionActionMap.put( selectAllAction, new ConnectionViewActionProxy( viewer, this, new SelectAllAction(
-            viewer ) ) );
         connectionActionMap.put( importDsmlAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_DSML ) ) );
         connectionActionMap.put( exportDsmlAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
@@ -115,15 +98,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer, this,
             new OpenSchemaBrowserAction() ) );
-
-        // DND support
-        dropConnectionListener = new DropConnectionListener();
-        dragConnectionListener = new DragConnectionListener();
-        int ops = DND.DROP_COPY | DND.DROP_MOVE;
-        Transfer[] transfers = new Transfer[]
-            { ConnectionTransfer.getInstance(), SearchTransfer.getInstance() };
-        viewer.addDragSupport( ops, transfers, dragConnectionListener );
-        viewer.addDropSupport( ops, transfers, dropConnectionListener );
     }
 
 
@@ -136,10 +110,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         {
             linkWithEditorAction.dispose();
             linkWithEditorAction = null;
-            dragConnectionListener = null;
-            dropConnectionListener = null;
             view = null;
         }
+        super.dispose();
     }
 
 
@@ -151,6 +124,7 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         // add
         menuManager.add( ( IAction ) connectionActionMap.get( newConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionFolderAction ) );
         menuManager.add( new Separator() );
 
         // open/close
@@ -171,7 +145,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( ( IAction ) connectionActionMap.get( copyConnectionAction ) );
         menuManager.add( ( IAction ) connectionActionMap.get( pasteConnectionAction ) );
         menuManager.add( ( IAction ) connectionActionMap.get( deleteConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( selectAllAction ) );
         menuManager.add( ( IAction ) connectionActionMap.get( renameConnectionAction ) );
         menuManager.add( new Separator() );
 
@@ -195,39 +168,6 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         // properties
         menuManager.add( ( IAction ) connectionActionMap.get( propertyDialogAction ) );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void activateGlobalActionHandlers()
-    {
-
-        if ( actionBars != null )
-        {
-            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), ( IAction ) connectionActionMap
-                .get( selectAllAction ) );
-        }
-
-        super.activateGlobalActionHandlers();
-
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void deactivateGlobalActionHandlers()
-    {
-
-        if ( actionBars != null )
-        {
-            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), null );
-        }
-
-        super.deactivateGlobalActionHandlers();
-
     }
 
 }

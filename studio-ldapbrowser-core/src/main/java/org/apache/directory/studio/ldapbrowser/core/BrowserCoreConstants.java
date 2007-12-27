@@ -43,8 +43,6 @@ public interface BrowserCoreConstants
 
     public static final String DEFAULT_ENCODING = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
 
-    public static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"; //$NON-NLS-1$
-
     public static final String PREFERENCE_CHECK_FOR_CHILDREN = "checkForChildren"; //$NON-NLS-1$
 
     public static final String PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS = "showAliasAndReferralObjects"; //$NON-NLS-1$

@@ -91,7 +91,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     public InterceptorsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ( ServerConfigurationEditorInput ) page.getEditorInput() ).getServerConfiguration();
+        serverConfiguration = ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
         interceptors = serverConfiguration.getInterceptors();
     }
 

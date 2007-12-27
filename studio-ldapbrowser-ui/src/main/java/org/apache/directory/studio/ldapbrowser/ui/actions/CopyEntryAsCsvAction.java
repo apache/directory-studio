@@ -30,14 +30,14 @@ import java.util.Map;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -224,7 +224,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
 
             if ( attributes.length > 0 )
             {
-                AttributeComparator comparator = new AttributeComparator( entries[0].getConnection() );
+                AttributeComparator comparator = new AttributeComparator( entries[0].getBrowserConnection() );
                 Arrays.sort( attributes, comparator );
             }
 
@@ -265,7 +265,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
                     BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) )
             {
                 text.append( quoteCharacter );
-                text.append( entries[e].getDn().toString() );
+                text.append( entries[e].getDn().getUpName() );
                 text.append( quoteCharacter );
                 text.append( attributeDelimiter );
 
@@ -291,7 +291,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
 
                             for ( int v = 0; v < values.length; v++ )
                             {
-                                String val = LdifUtils.getStringValue( values[v], binaryEncoding );
+                                String val = ModelConverter.getStringValue( values[v], binaryEncoding );
                                 valueSB.append( val );
                                 if ( v + 1 < values.length )
                                 {

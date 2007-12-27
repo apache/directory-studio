@@ -20,7 +20,7 @@
 package org.apache.directory.studio.aciitemeditor;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -35,7 +35,7 @@ public class ACIItemValueWithContext
 {
 
     /** The connection, used to browse the directory. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The entry. */
     private IEntry entry;
@@ -51,7 +51,7 @@ public class ACIItemValueWithContext
      * @param connection the connection
      * @param entry the entry
      */
-    public ACIItemValueWithContext( IConnection connection, IEntry entry, String aciItemValue )
+    public ACIItemValueWithContext( IBrowserConnection connection, IEntry entry, String aciItemValue )
     {
         this.connection = connection;
         this.entry = entry;
@@ -73,7 +73,7 @@ public class ACIItemValueWithContext
     /**
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }

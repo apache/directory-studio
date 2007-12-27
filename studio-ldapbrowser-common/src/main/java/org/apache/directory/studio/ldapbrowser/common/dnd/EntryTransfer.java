@@ -29,10 +29,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 import org.eclipse.swt.dnd.ByteArrayTransfer;
@@ -42,7 +42,7 @@ import org.eclipse.swt.dnd.TransferData;
 
 /**
  * A {@link Transfer} that could be used to transfer {@link IEntry} objects.
- * Note that only the connection name and entry's DN is converted to a platform specific 
+ * Note that only the connection id and entry's DN is converted to a platform specific 
  * representation, not the complete object.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -84,7 +84,7 @@ public class EntryTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation only accepts {@link IEntry} objects. 
-     * It just converts the name of the connection and the entry's DN
+     * It just converts the id of the connection and the entry's DN
      * to the platform specific representation.
      */
     public void javaToNative( Object object, TransferData transferData )
@@ -104,10 +104,10 @@ public class EntryTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < entries.length; i++ )
                 {
-                    byte[] connectionName = entries[i].getConnection().getName().getBytes();
-                    writeOut.writeInt( connectionName.length );
-                    writeOut.write( connectionName );
-                    byte[] dn = entries[i].getDn().toString().getBytes();
+                    byte[] connectionId = entries[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" );
+                    writeOut.writeInt( connectionId.length );
+                    writeOut.write( connectionId );
+                    byte[] dn = entries[i].getDn().getUpName().getBytes( "UTF-8" );
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
                 }
@@ -129,9 +129,9 @@ public class EntryTransfer extends ByteArrayTransfer
      * {@inheritDoc}
      * 
      * This implementation just converts the platform specific representation
-     * to the connection name and entry DN and invokes 
-     * {@link ConnectionManager#getConnection(String)} to get the
-     * {@link IConnection} object and {@link IConnection#getEntryFromCache(DN)}
+     * to the connection id and entry DN and invokes 
+     * {@link BrowserConnectionManager#getBrowserConnectionById(String)} to get the
+     * {@link IBrowserConnection} object and {@link IBrowserConnection#getEntryFromCache(DN)}
      * to get the {@link IEntry} object.
      */
     public Object nativeToJava( TransferData transferData )
@@ -149,7 +149,7 @@ public class EntryTransfer extends ByteArrayTransfer
                 List<IEntry> entryList = new ArrayList<IEntry>();
                 try
                 {
-                    IConnection connection = null;
+                    IBrowserConnection connection = null;
                     ByteArrayInputStream in = new ByteArrayInputStream( buffer );
                     DataInputStream readIn = new DataInputStream( in );
 
@@ -158,10 +158,10 @@ public class EntryTransfer extends ByteArrayTransfer
                         if ( readIn.available() > 1 )
                         {
                             int size = readIn.readInt();
-                            byte[] connectionName = new byte[size];
-                            readIn.read( connectionName );
-                            connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection(
-                                new String( connectionName ) );
+                            byte[] connectionId = new byte[size];
+                            readIn.read( connectionId );
+                            connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
+                                new String( connectionId, "UTF-8" ) );
                         }
 
                         IEntry entry = null;
@@ -170,7 +170,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new DN( new String( dn ) ) );
+                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) );
                         }
                         else
                         {

@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 
 
 /**
@@ -77,7 +77,7 @@ public class FilterAndSortJob extends AbstractEclipseJob
     /**
      * {@inheritDoc}
      */
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor ) throws Exception
+    protected void executeAsyncJob( StudioProgressMonitor monitor ) throws Exception
     {
         monitor.beginTask( "Filter and Sort", 3 );
         monitor.worked( 1 );
@@ -98,9 +98,9 @@ public class FilterAndSortJob extends AbstractEclipseJob
     /**
      * {@inheritDoc}
      */
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[0];
+        return new Connection[0];
     }
 
 

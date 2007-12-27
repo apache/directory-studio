@@ -38,12 +38,11 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -57,29 +56,43 @@ import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 
 
+/**
+ * Dialog to view and edit multi-valued attributes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class MultivaluedDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "Multivalued Editor";
+    /** The dialog title. */
+    private static final String DIALOG_TITLE = "Multivalued Editor";
 
-    public static final int MAX_WIDTH = 450;
-
-    public static final int MAX_HEIGHT = 250;
-
+    /** The attribute hierarchie to edit. */
     private AttributeHierarchy attributeHierarchie;
 
+    /** The entry editor widget configuration. */
     private EntryEditorWidgetConfiguration configuration;
 
+    /** The entry edtior widget action group. */
     private EntryEditorWidgetActionGroup actionGroup;
 
+    /** The entry editor widget. */
     private EntryEditorWidget mainWidget;
 
+    /** The universal listener. */
     private MultiValuedEntryEditorUniversalListener universalListener;
 
     /** Token used to activate and deactivate shortcuts in the editor */
     private IContextActivation contextActivation;
 
 
+    /**
+     * Creates a new instance of MultivaluedDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param attributeHierarchie the attribute hierarchie
+     */
     public MultivaluedDialog( Shell parentShell, AttributeHierarchy attributeHierarchie )
     {
         super( parentShell );
@@ -88,6 +101,9 @@ public class MultivaluedDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -96,15 +112,20 @@ public class MultivaluedDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.CLOSE_ID, IDialogConstants.CLOSE_LABEL, false );
-
         getShell().update();
         getShell().layout( true, true );
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
+     */
     protected void buttonPressed( int buttonId )
     {
         if ( IDialogConstants.CLOSE_ID == buttonId )
@@ -118,38 +139,74 @@ public class MultivaluedDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#open()
+     */
     public int open()
     {
-        this.dialogOpened();
+        if ( attributeHierarchie.getAttribute().getValueSize() == 0 )
+        {
+            attributeHierarchie.getAttribute().addEmptyValue();
+        }
+
         return super.open();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
     public boolean close()
     {
         boolean returnValue = super.close();
         if ( returnValue )
         {
-            this.dispose();
-            this.dialogClosed();
+            dispose();
+
+            // cleanup attribute hierarchy after editing
+            for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
+            {
+                IAttribute attribute = it.next();
+                if ( attribute != null )
+                {
+                    // remove empty values
+                    IValue[] values = attribute.getValues();
+                    for ( int i = 0; i < values.length; i++ )
+                    {
+                        if ( values[i].isEmpty() )
+                        {
+                            attribute.deleteEmptyValue();
+                        }
+                    }
+
+                    // delete attribute from entry if all values were deleted
+                    if ( attribute.getValueSize() == 0 )
+                    {
+                        attribute.getEntry().deleteAttribute( attribute );
+                    }
+                }
+            }
         }
         return returnValue;
     }
 
 
+    /**
+     * Disposes all widgets.
+     */
     public void dispose()
     {
-        if ( this.configuration != null )
+        if ( configuration != null )
         {
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
-            this.actionGroup.deactivateGlobalActionHandlers();
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.configuration.dispose();
-            this.configuration = null;
+            universalListener.dispose();
+            universalListener = null;
+            mainWidget.dispose();
+            mainWidget = null;
+            actionGroup.deactivateGlobalActionHandlers();
+            actionGroup.dispose();
+            actionGroup = null;
+            configuration.dispose();
+            configuration = null;
 
             if ( contextActivation != null )
             {
@@ -162,48 +219,50 @@ public class MultivaluedDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         // create configuration
-        this.configuration = new EntryEditorWidgetConfiguration();
+        configuration = new EntryEditorWidgetConfiguration();
 
         // create main widget
-        this.mainWidget = new EntryEditorWidget( this.configuration );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.getViewer().setInput( attributeHierarchie );
-        this.mainWidget.getViewer().getTree().setFocus();
+        mainWidget = new EntryEditorWidget( configuration );
+        mainWidget.createWidget( composite );
+        mainWidget.getViewer().setInput( attributeHierarchie );
+        mainWidget.getViewer().getTree().setFocus();
 
         // create actions
-        this.actionGroup = new EntryEditorWidgetActionGroup( this.mainWidget, this.configuration );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
+        actionGroup = new EntryEditorWidgetActionGroup( mainWidget, configuration );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
         IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
             IContextService.class );
         contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
-        actionGroup.activateGlobalActionHandlers();        
+        actionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        this.universalListener = new MultiValuedEntryEditorUniversalListener( this.mainWidget.getViewer(),
-            this.actionGroup.getOpenDefaultEditorAction() );
+        universalListener = new MultiValuedEntryEditorUniversalListener( mainWidget.getViewer(), actionGroup
+            .getOpenDefaultEditorAction() );
 
         // start edit mode if an empty value exists
-        for ( Iterator it = attributeHierarchie.iterator(); it.hasNext(); )
+        for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
         {
-            IAttribute attribute = ( IAttribute ) it.next();
+            IAttribute attribute = it.next();
             IValue[] values = attribute.getValues();
             for ( int i = 0; i < values.length; i++ )
             {
                 IValue value = values[i];
                 if ( value.isEmpty() )
                 {
-                    this.mainWidget.getViewer().setSelection( new StructuredSelection( value ), true );
-                    if ( this.actionGroup.getOpenDefaultEditorAction().isEnabled() )
+                    mainWidget.getViewer().setSelection( new StructuredSelection( value ), true );
+                    if ( actionGroup.getOpenDefaultEditorAction().isEnabled() )
                     {
-                        this.actionGroup.getOpenDefaultEditorAction().run();
+                        actionGroup.getOpenDefaultEditorAction().run();
                         break;
                     }
                 }
@@ -214,71 +273,38 @@ public class MultivaluedDialog extends Dialog
         return composite;
     }
 
-
-    private void dialogOpened()
-    {
-        if ( this.attributeHierarchie.getAttribute().getValueSize() == 0 )
-        {
-            this.attributeHierarchie.getAttribute().addEmptyValue();
-        }
-    }
-
-
-    private void dialogClosed()
-    {
-
-        for ( Iterator it = attributeHierarchie.iterator(); it.hasNext(); )
-        {
-            IAttribute attribute = ( IAttribute ) it.next();
-            if ( attribute != null )
-            {
-
-                // remove empty values
-                IValue[] values = attribute.getValues();
-                for ( int i = 0; i < values.length; i++ )
-                {
-                    if ( values[i].isEmpty() )
-                    {
-                        attribute.deleteEmptyValue();
-                    }
-                }
-
-                // are all values deleted?
-                if ( attribute.getValueSize() == 0 )
-                {
-                    try
-                    {
-                        attribute.getEntry().deleteAttribute( attribute );
-                    }
-                    catch ( ModelModificationException e )
-                    {
-                    }
-                    // new DeleteAttributeValueCommand(attribute).execute();
-                }
-            }
-        }
-
-    }
-
+    /**
+     * A special listener for the {@link MultivaluedDialog}.
+     */
     class MultiValuedEntryEditorUniversalListener extends EntryEditorWidgetUniversalListener
     {
 
+        /**
+         * Creates a new instance of MultiValuedEntryEditorUniversalListener.
+         * 
+         * @param startEditAction the start edit action
+         * @param treeViewer the tree viewer
+         */
         public MultiValuedEntryEditorUniversalListener( TreeViewer treeViewer, OpenDefaultEditorAction startEditAction )
         {
             super( treeViewer, startEditAction );
         }
 
 
+        /**
+         * @see org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener#entryUpdated(org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent)
+         */
         public void entryUpdated( EntryModificationEvent event )
         {
-
-            if ( this.viewer == null || this.viewer.getTree() == null || this.viewer.getTree().isDisposed() )
+            if ( viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed() )
             {
                 return;
             }
 
-            if ( this.viewer.isCellEditorActive() )
-                this.viewer.cancelEditing();
+            if ( viewer.isCellEditorActive() )
+            {
+                viewer.cancelEditing();
+            }
 
             // set new input because attributes are newly created after a
             // modification
@@ -288,40 +314,34 @@ public class MultivaluedDialog extends Dialog
             if ( attributeHierarchie == null )
             {
                 EventRegistry.suspendEventFireingInCurrentThread();
-                try
-                {
-                    IAttribute attribute = new Attribute( entry, attributeDescription );
-                    entry.addAttribute( attribute );
-                    attribute.addEmptyValue();
-                }
-                catch ( ModelModificationException e )
-                {
-                }
+                IAttribute attribute = new Attribute( entry, attributeDescription );
+                entry.addAttribute( attribute );
+                attribute.addEmptyValue();
                 EventRegistry.resumeEventFireingInCurrentThread();
                 attributeHierarchie = entry.getAttributeWithSubtypes( attributeDescription );
             }
-            this.viewer.setInput( attributeHierarchie );
-            this.viewer.refresh();
+            viewer.setInput( attributeHierarchie );
+            viewer.refresh();
 
             // select added/modified value
             if ( event instanceof ValueAddedEvent )
             {
                 ValueAddedEvent vaEvent = ( ValueAddedEvent ) event;
-                this.viewer.setSelection( new StructuredSelection( vaEvent.getAddedValue() ), true );
-                this.viewer.refresh();
+                viewer.setSelection( new StructuredSelection( vaEvent.getAddedValue() ), true );
+                viewer.refresh();
             }
             else if ( event instanceof ValueModifiedEvent )
             {
                 ValueModifiedEvent vmEvent = ( ValueModifiedEvent ) event;
-                this.viewer.setSelection( new StructuredSelection( vmEvent.getNewValue() ), true );
+                viewer.setSelection( new StructuredSelection( vmEvent.getNewValue() ), true );
             }
             else if ( event instanceof ValueDeletedEvent )
             {
                 ValueDeletedEvent vdEvent = ( ValueDeletedEvent ) event;
                 if ( vdEvent.getDeletedValue().getAttribute().getValueSize() > 0 )
                 {
-                    this.viewer.setSelection( new StructuredSelection( vdEvent.getDeletedValue().getAttribute()
-                        .getValues()[0] ), true );
+                    viewer.setSelection( new StructuredSelection(
+                        vdEvent.getDeletedValue().getAttribute().getValues()[0] ), true );
                 }
             }
             else if ( event instanceof EmptyValueAddedEvent )
@@ -341,7 +361,6 @@ public class MultivaluedDialog extends Dialog
             }
             else if ( event instanceof AttributeDeletedEvent )
             {
-
             }
         }
     }

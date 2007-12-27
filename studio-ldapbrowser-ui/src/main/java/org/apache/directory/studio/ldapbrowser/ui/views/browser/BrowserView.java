@@ -179,7 +179,7 @@ public class BrowserView extends ViewPart
         {
             ISearch search = ( ISearch ) obj;
 
-            universalListener.setInput( search.getConnection() );
+            universalListener.setInput( search.getBrowserConnection() );
 
             mainWidget.getViewer().expandToLevel( search, 0 );
 
@@ -190,7 +190,7 @@ public class BrowserView extends ViewPart
             ISearchResult searchResult = ( ISearchResult ) obj;
             ISearch search = searchResult.getSearch();
 
-            universalListener.setInput( search.getConnection() );
+            universalListener.setInput( search.getBrowserConnection() );
 
             mainWidget.getViewer().expandToLevel( search, 1 );
 
@@ -200,7 +200,7 @@ public class BrowserView extends ViewPart
         {
             IBookmark bookmark = ( IBookmark ) obj;
 
-            universalListener.setInput( bookmark.getConnection() );
+            universalListener.setInput( bookmark.getBrowserConnection() );
 
             mainWidget.getViewer().expandToLevel( bookmark, 0 );
 
@@ -210,26 +210,30 @@ public class BrowserView extends ViewPart
         {
             IEntry entry = ( IEntry ) obj;
 
-            universalListener.setInput( entry.getConnection() );
+            universalListener.setInput( entry.getBrowserConnection() );
 
             List<IEntry> entryList = new ArrayList<IEntry>();
             IEntry tempEntry = entry;
             while ( tempEntry.getParententry() != null )
             {
                 IEntry parentEntry = tempEntry.getParententry();
-                entryList.add( parentEntry );
+                entryList.add( 0, parentEntry );
                 tempEntry = parentEntry;
             }
 
-            IEntry[] parentEntries = ( IEntry[] ) entryList.toArray( new IEntry[0] );
-            for ( int i = parentEntries.length - 1; i >= 0; i-- )
+            for ( IEntry parentEntry : entryList )
             {
-
-                if ( !parentEntries[i].isChildrenInitialized() )
+                if ( !parentEntry.isChildrenInitialized() )
                 {
-                    parentEntries[i].setChildrenInitialized( true );
-                    parentEntries[i].setHasMoreChildren( true );
+                    parentEntry.setChildrenInitialized( true );
+                    parentEntry.setHasMoreChildren( true );
                 }
+                
+                // force refresh of each parent, beginning from the root
+                // if the entry to select was lazy initialized then the 
+                // JFace model has no knowledge about it so we must
+                // refresh the JFace model from the browser model
+                mainWidget.getViewer().refresh( parentEntry, true );
             }
 
             objectToSelect = entry;
@@ -240,7 +244,6 @@ public class BrowserView extends ViewPart
             mainWidget.getViewer().reveal( objectToSelect );
             mainWidget.getViewer().refresh( objectToSelect, true );
             mainWidget.getViewer().setSelection( new StructuredSelection( objectToSelect ), true );
-
         }
     }
 

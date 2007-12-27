@@ -21,12 +21,13 @@
 package org.apache.directory.studio.valueeditors.dn;
 
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -52,12 +53,12 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof DnValueEditorRawValueWrapper )
         {
             DnValueEditorRawValueWrapper wrapper = ( DnValueEditorRawValueWrapper ) value;
-            DN dn;
+            LdapDN dn;
             try
             {
-                dn = wrapper.dn != null ? new DN( wrapper.dn ) : null;
+                dn = wrapper.dn != null ? new LdapDN( wrapper.dn ) : null;
             }
-            catch ( NameException e )
+            catch ( InvalidNameException e )
             {
                 dn = null;
             }
@@ -91,12 +92,12 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         }
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
         {
-            IConnection connection = attributeHierarchy.getAttribute().getEntry().getConnection();
+            IBrowserConnection connection = attributeHierarchy.getAttribute().getEntry().getBrowserConnection();
             return new DnValueEditorRawValueWrapper( connection, null );
         }
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
         {
-            IConnection connection = attributeHierarchy.getAttribute().getEntry().getConnection();
+            IBrowserConnection connection = attributeHierarchy.getAttribute().getEntry().getBrowserConnection();
             return new DnValueEditorRawValueWrapper( connection, getDisplayValue( attributeHierarchy ) );
         }
         else
@@ -117,7 +118,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
         Object o = super.getRawValue( value );
         if ( o != null && o instanceof String )
         {
-            IConnection connection = value.getAttribute().getEntry().getConnection();
+            IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
             return new DnValueEditorRawValueWrapper( connection, ( String ) o );
         }
 
@@ -135,7 +136,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
     private class DnValueEditorRawValueWrapper
     {
         /** The connection, used in DnDialog to browse for an entry */
-        private IConnection connection;
+        private IBrowserConnection connection;
 
         /** The DN, used as initial value in DnDialog */
         private String dn;
@@ -147,7 +148,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
          * @param connection the connection
          * @param dn the DN
          */
-        private DnValueEditorRawValueWrapper( IConnection connection, String dn )
+        private DnValueEditorRawValueWrapper( IBrowserConnection connection, String dn )
         {
             this.connection = connection;
             this.dn = dn;

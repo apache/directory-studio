@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -52,7 +52,7 @@ public class FilterWidgetDialog extends Dialog
     private String title;
 
     /** The connection, used for attribute completion. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The filter widget. */
     private FilterWidget filterWidget;
@@ -72,7 +72,7 @@ public class FilterWidgetDialog extends Dialog
      * @param filter the inital filter
      * @param connection the connection, used for attribute completion
      */
-    public FilterWidgetDialog( Shell parentShell, String title, String filter, IConnection connection )
+    public FilterWidgetDialog( Shell parentShell, String title, String filter, IBrowserConnection connection )
     {
         super( parentShell );
         this.title = title;
@@ -137,8 +137,9 @@ public class FilterWidgetDialog extends Dialog
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         inner.setLayoutData( gd );
 
-        filterWidget = new FilterWidget( connection, filter != null ? filter : "" );
+        filterWidget = new FilterWidget( filter != null ? filter : "" );
         filterWidget.createWidget( inner );
+        filterWidget.setBrowserConnection( connection );
         filterWidget.setFocus();
         filterWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

@@ -23,9 +23,6 @@ package org.apache.directory.studio.ldapbrowser.core;
 
 import org.apache.directory.studio.ldapbrowser.core.events.CoreEventRunner;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
-import org.apache.directory.studio.ldapbrowser.core.model.IAuthHandler;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IReferralHandler;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -42,13 +39,7 @@ public class BrowserCorePlugin extends Plugin
     private static BrowserCorePlugin plugin;
 
     /** The connection manager */
-    private ConnectionManager connectionManager;
-
-    /** The credential provider */
-    private IAuthHandler authHandler;
-
-    /** The connection provider */
-    private IReferralHandler referralHandler;
+    private BrowserConnectionManager connectionManager;
 
     /** The preferences */
     private BrowserCorePreferences preferences;
@@ -82,7 +73,7 @@ public class BrowserCorePlugin extends Plugin
 
         if ( connectionManager == null )
         {
-            connectionManager = new ConnectionManager();
+            connectionManager = new BrowserConnectionManager();
         }
     }
 
@@ -101,11 +92,11 @@ public class BrowserCorePlugin extends Plugin
 
         if ( connectionManager != null )
         {
-            IConnection[] connections = connectionManager.getConnections();
-            for ( int i = 0; i < connections.length; i++ )
-            {
-                connections[i].close();
-            }
+//            IConnection[] connections = connectionManager.getConnections();
+//            for ( int i = 0; i < connections.length; i++ )
+//            {
+//                connections[i].close();
+//            }
             connectionManager = null;
         }
     }
@@ -128,7 +119,7 @@ public class BrowserCorePlugin extends Plugin
      * @return
      *      the connection manager
      */
-    public ConnectionManager getConnectionManager()
+    public BrowserConnectionManager getConnectionManager()
     {
         return connectionManager;
     }
@@ -141,54 +132,6 @@ public class BrowserCorePlugin extends Plugin
     public BrowserCorePreferences getCorePreferences()
     {
         return preferences;
-    }
-
-
-    /**
-     * Gets the AuthHandler
-     *
-     * @return
-     *      the AuthHandler
-     */
-    public IAuthHandler getAuthHandler()
-    {
-        return authHandler;
-    }
-
-
-    /**
-     * Sets the AuthHandler
-     *
-     * @param authHandler
-     *      the authHandler to set
-     */
-    public void setAuthHandler( IAuthHandler authHandler )
-    {
-        this.authHandler = authHandler;
-    }
-
-
-    /**
-     * Gets the ReferralHanlder
-     *
-     * @return
-     *      the ReferralHandler
-     */
-    public IReferralHandler getReferralHandler()
-    {
-        return referralHandler;
-    }
-
-
-    /**
-     * Sets the ReferralHandler
-     *
-     * @param referralHandler
-     *      the ReferralHandler to set
-     */
-    public void setReferralHandler( IReferralHandler referralHandler )
-    {
-        this.referralHandler = referralHandler;
     }
 
 

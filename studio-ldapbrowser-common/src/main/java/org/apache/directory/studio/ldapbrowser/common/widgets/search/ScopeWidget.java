@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -44,7 +44,7 @@ public class ScopeWidget extends BrowserWidget
 {
 
     /** The initial scope. */
-    private int initialScope;
+    private SearchScope initialScope;
 
     /** The scope group. */
     private Group scopeGroup;
@@ -61,12 +61,11 @@ public class ScopeWidget extends BrowserWidget
 
     /**
      * Creates a new instance of ScopeWidget with the given
-     * initial scope. That must be one of {@link ISearch#SCOPE_OBJECT},
-     * {@link ISearch#SCOPE_ONELEVEL} or {@link ISearch#SCOPE_SUBTREE}.
+     * initial scope.
      * 
      * @param initialScope the initial scope
      */
-    public ScopeWidget( int initialScope )
+    public ScopeWidget( SearchScope initialScope )
     {
         this.initialScope = initialScope;
     }
@@ -74,11 +73,11 @@ public class ScopeWidget extends BrowserWidget
 
     /**
      * Creates a new instance of ScopeWidget with initial scope
-     * {@link ISearch#SCOPE_OBJECT}.
+     * {@link SearchScope.OBJECT}.
      */
     public ScopeWidget()
     {
-        this.initialScope = 0;
+        this.initialScope = SearchScope.OBJECT;
     }
 
 
@@ -134,45 +133,43 @@ public class ScopeWidget extends BrowserWidget
 
 
     /**
-     * Sets the scope, must be one of {@link ISearch#SCOPE_OBJECT},
-     * {@link ISearch#SCOPE_ONELEVEL} or {@link ISearch#SCOPE_SUBTREE}.
+     * Sets the scope.
      * 
      * @param scope the scope
      */
-    public void setScope( int scope )
+    public void setScope( SearchScope scope )
     {
         initialScope = scope;
-        scopeObjectButton.setSelection( initialScope == ISearch.SCOPE_OBJECT );
-        scopeOnelevelButton.setSelection( initialScope == ISearch.SCOPE_ONELEVEL );
-        scopeSubtreeButton.setSelection( initialScope == ISearch.SCOPE_SUBTREE );
+        scopeObjectButton.setSelection( initialScope == SearchScope.OBJECT );
+        scopeOnelevelButton.setSelection( initialScope == SearchScope.ONELEVEL );
+        scopeSubtreeButton.setSelection( initialScope == SearchScope.SUBTREE );
     }
 
 
     /**
-     * Gets the scope, one of {@link ISearch#SCOPE_OBJECT},
-     * {@link ISearch#SCOPE_ONELEVEL} or {@link ISearch#SCOPE_SUBTREE}.
+     * Gets the scope.
      * 
      * @return the scope
      */
-    public int getScope()
+    public SearchScope getScope()
     {
-        int scope;
+        SearchScope scope;
 
         if ( scopeSubtreeButton.getSelection() )
         {
-            scope = ISearch.SCOPE_SUBTREE;
+            scope = SearchScope.SUBTREE;
         }
         else if ( scopeOnelevelButton.getSelection() )
         {
-            scope = ISearch.SCOPE_ONELEVEL;
+            scope =SearchScope.ONELEVEL;
         }
         else if ( scopeObjectButton.getSelection() )
         {
-            scope = ISearch.SCOPE_OBJECT;
+            scope = SearchScope.OBJECT;
         }
         else
         {
-            scope = ISearch.SCOPE_ONELEVEL;
+            scope = SearchScope.ONELEVEL;
         }
 
         return scope;

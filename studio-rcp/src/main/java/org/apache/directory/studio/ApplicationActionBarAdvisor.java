@@ -99,6 +99,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
     private IWorkbenchAction previousAction;
     private IWorkbenchAction introAction;
 
+
     /**
      * Creates a new instance of ApplicationActionBarAdvisor.
      *
@@ -129,82 +130,82 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         newAction = ActionFactory.NEW.create( window );
         register( newAction );
         newAction.setText( "New..." );
-        
+
         newDropDownAction = new NewWizardDropDownAction( window );
-//        new NavigationHistoryAction( window, false );
-        
+        //        new NavigationHistoryAction( window, false );
+
         openFileAction = new OpenFileAction( window );
-        register(openFileAction);
-        
+        register( openFileAction );
+
         closeAction = ActionFactory.CLOSE.create( window );
         register( closeAction );
-        
+
         closeAllAction = ActionFactory.CLOSE_ALL.create( window );
         register( closeAllAction );
 
         saveAction = ActionFactory.SAVE.create( window );
         register( saveAction );
-        
+
         saveAsAction = ActionFactory.SAVE_AS.create( window );
         register( saveAsAction );
 
         saveAllAction = ActionFactory.SAVE_ALL.create( window );
         register( saveAllAction );
-        
+
         printAction = ActionFactory.PRINT.create( window );
         register( printAction );
-        
+
         moveAction = ActionFactory.MOVE.create( window );
         register( moveAction );
-        
+
         renameAction = ActionFactory.RENAME.create( window );
         register( renameAction );
-        
+
         refreshAction = ActionFactory.REFRESH.create( window );
         register( refreshAction );
-        
+
         importAction = ActionFactory.IMPORT.create( window );
         register( importAction );
-        
+
         exportAction = ActionFactory.EXPORT.create( window );
         register( exportAction );
-        
+
         propertiesAction = ActionFactory.PROPERTIES.create( window );
         register( propertiesAction );
 
         exitAction = ActionFactory.QUIT.create( window );
         register( exitAction );
-        
+
         undoAction = ActionFactory.UNDO.create( window );
         register( undoAction );
-        
+
         redoAction = ActionFactory.REDO.create( window );
         register( redoAction );
-        
+
         cutAction = ActionFactory.CUT.create( window );
         register( cutAction );
-        
+
         copyAction = ActionFactory.COPY.create( window );
         register( copyAction );
-        
+
         pasteAction = ActionFactory.PASTE.create( window );
         register( pasteAction );
-        
+
         deleteAction = ActionFactory.DELETE.create( window );
         register( deleteAction );
-        
+
         selectAllAction = ActionFactory.SELECT_ALL.create( window );
         register( selectAllAction );
-        
+
         findAction = ActionFactory.FIND.create( window );
         register( findAction );
-        
+
         closePerspectiveAction = ActionFactory.CLOSE_PERSPECTIVE.create( window );
         register( closePerspectiveAction );
-        
+
         closeAllPerspectivesAction = ActionFactory.CLOSE_ALL_PERSPECTIVES.create( window );
         register( closeAllPerspectivesAction );
-        
+
         aboutAction = ActionFactory.ABOUT.create( window );
         aboutAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
             ImageKeys.ABOUT ) );
@@ -221,25 +222,25 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         register( updateAction );
 
         manageConfigurationAction = new ManageConfigurationAction( window );
-        manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
-            ImageKeys.MANAGE_CONFIGURATION ) );
+        manageConfigurationAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin(
+            Application.PLUGIN_ID, ImageKeys.MANAGE_CONFIGURATION ) );
         register( manageConfigurationAction );
 
         helpAction = ActionFactory.HELP_CONTENTS.create( window );
         register( helpAction );
-        
+
         dynamicHelpAction = ActionFactory.DYNAMIC_HELP.create( window );
         register( dynamicHelpAction );
-        
+
         viewsList = ContributionItemFactory.VIEWS_SHORTLIST.create( window );
         perspectivesList = ContributionItemFactory.PERSPECTIVES_SHORTLIST.create( window );
         reopenEditorsList = ContributionItemFactory.REOPEN_EDITORS.create( window );
-        
+
         reportABug = new ReportABugAction( window );
         reportABug.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
             ImageKeys.REPORT_BUG ) );
         register( reportABug );
-        
+
         forwardHistoryAction = ActionFactory.FORWARD_HISTORY.create( window );
         register( forwardHistoryAction );
 
@@ -251,9 +252,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         previousAction = ActionFactory.PREVIOUS.create( window );
         register( previousAction );
-        
-        introAction = ActionFactory.INTRO.create(window);
-        register(introAction);
+
+        introAction = ActionFactory.INTRO.create( window );
+        introAction.setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID,
+            ImageKeys.INTRO ) );
+        register( introAction );
 
     }
 
@@ -307,7 +310,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         fileMenu.add( new GroupMarker( IWorkbenchActionConstants.MRU ) );
         fileMenu.add( new Separator() );
         fileMenu.add( exitAction );
-        
+
         // Populating Edit Menu
         editMenu.add( undoAction );
         editMenu.add( redoAction );
@@ -323,7 +326,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         editMenu.add( renameAction );
         editMenu.add( new Separator() );
         editMenu.add( findAction );
-        
+
         // Populating Navigate Menu
         navigateMenu.add( nextAction );
         navigateMenu.add( previousAction );
@@ -332,14 +335,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         navigateMenu.add( new Separator() );
         navigateMenu.add( backwardHistoryAction );
         navigateMenu.add( forwardHistoryAction );
-        
+
         // Window 
-        MenuManager perspectiveMenu = new MenuManager("Open Perspective", "openPerspective");
-        perspectiveMenu.add(perspectivesList);
-        windowMenu.add(perspectiveMenu);
-        MenuManager viewMenu = new MenuManager("Show View");
-        viewMenu.add(viewsList);
-        windowMenu.add(viewMenu);
+        MenuManager perspectiveMenu = new MenuManager( "Open Perspective", "openPerspective" );
+        perspectiveMenu.add( perspectivesList );
+        windowMenu.add( perspectiveMenu );
+        MenuManager viewMenu = new MenuManager( "Show View" );
+        viewMenu.add( viewsList );
+        windowMenu.add( viewMenu );
         windowMenu.add( new Separator() );
         windowMenu.add( closePerspectiveAction );
         windowMenu.add( closeAllPerspectivesAction );
@@ -386,5 +389,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         coolBar.add( new ToolBarContributionItem( navToolBar, IWorkbenchActionConstants.TOOLBAR_NAVIGATE ) );
 
     }
-    
+
 }

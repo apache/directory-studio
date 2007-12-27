@@ -87,4 +87,15 @@ public interface IRootDSE extends IEntry
      */
     public String[] getSupportedFeatures();
 
+
+    
+    /**
+     * Checks if control is supported.
+     * 
+     * @param oid the OID
+     * 
+     * @return true, if control is supported
+     */
+    public boolean isControlSupported( String oid );
+
 }

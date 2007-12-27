@@ -28,18 +28,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.OpenConnectionsJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -67,7 +67,7 @@ public class BrowserContentProvider implements ITreeContentProvider
     private Map<ISearch, BrowserSearchResultPage[]> searchToSearchResultPagesMap;
 
     /** This map contains the top-level categories for each connection */
-    private Map<IConnection, BrowserCategory[]> connectionToCategoriesMap;
+    private Map<IBrowserConnection, BrowserCategory[]> connectionToCategoriesMap;
 
 
     /**
@@ -82,7 +82,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         this.sorter = sorter;
         this.entryToEntryPagesMap = new HashMap<IEntry, BrowserEntryPage[]>();
         this.searchToSearchResultPagesMap = new HashMap<ISearch, BrowserSearchResultPage[]>();
-        this.connectionToCategoriesMap = new HashMap<IConnection, BrowserCategory[]>();
+        this.connectionToCategoriesMap = new HashMap<IBrowserConnection, BrowserCategory[]>();
     }
 
 
@@ -122,9 +122,9 @@ public class BrowserContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object parent )
     {
-        if ( parent instanceof IConnection )
+        if ( parent instanceof IBrowserConnection )
         {
-            IConnection connection = ( IConnection ) parent;
+            IBrowserConnection connection = ( IBrowserConnection ) parent;
             if ( !connectionToCategoriesMap.containsKey( connection ) )
             {
                 BrowserCategory[] categories = new BrowserCategory[3];
@@ -181,9 +181,9 @@ public class BrowserContentProvider implements ITreeContentProvider
             IEntry parentEntry = ( ( IEntry ) child ).getParententry();
             if ( parentEntry == null )
             {
-                if ( connectionToCategoriesMap.get( ( ( IEntry ) child ).getConnection() ) != null )
+                if ( connectionToCategoriesMap.get( ( ( IEntry ) child ).getBrowserConnection() ) != null )
                 {
-                    return connectionToCategoriesMap.get( ( ( IEntry ) child ).getConnection() )[0];
+                    return connectionToCategoriesMap.get( ( ( IEntry ) child ).getBrowserConnection() )[0];
                 }
                 else
                 {
@@ -212,7 +212,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof ISearch )
         {
             ISearch search = ( ( ISearch ) child );
-            return connectionToCategoriesMap.get( search.getConnection() )[1];
+            return connectionToCategoriesMap.get( search.getBrowserConnection() )[1];
         }
         else if ( child instanceof ISearchResult )
         {
@@ -235,7 +235,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof IBookmark )
         {
             IBookmark bookmark = ( ( IBookmark ) child );
-            return connectionToCategoriesMap.get( bookmark.getConnection() )[2];
+            return connectionToCategoriesMap.get( bookmark.getBrowserConnection() )[2];
         }
         else
         {
@@ -409,16 +409,16 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof BrowserCategory )
         {
             BrowserCategory category = ( BrowserCategory ) parent;
-            IConnection connection = category.getParent();
+            IBrowserConnection connection = category.getParent();
 
             switch ( category.getType() )
             {
                 case BrowserCategory.TYPE_DIT:
                 {
                     // open connection when expanding DIT
-                    if ( !connection.isOpened() )
+                    if ( !connection.getConnection().getJNDIConnectionWrapper().isConnected() )
                     {
-                        new OpenConnectionsJob( connection ).execute();
+                        new OpenConnectionsJob( connection.getConnection() ).execute();
                         return new String[]
                             { "Opening Connection..." };
                     }

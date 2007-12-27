@@ -20,36 +20,44 @@
 -->
 <plugin>
    <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="org.apache.directory.studio.apacheds.configuration.actionset"
-            label="Apache DS"
-            visible="true">
-         <menu
-               id="org.apache.directory.studio.apacheds.configuration.actionset.menu"
-               label="Apache DS"/>
-         <action
-               class="org.apache.directory.studio.apacheds.configuration.actions.OpenServerConfigurationAction"
-               id="org.apache.directory.studio.apacheds.configuration.openServerConfiguration"
-               label="Open Configuration File..."
-               menubarPath="org.apache.directory.studio.apacheds.configuration.actionset.menu/open"
-               style="push"/>
-         <action
-               class="org.apache.directory.studio.apacheds.configuration.actions.NewServerConfigurationAction"
-               id="org.apache.directory.studio.apacheds.configuration.newServerConfiguration"
-               label="New Configuration File"
-               menubarPath="org.apache.directory.studio.apacheds.configuration.actionset.menu/new"
-               style="push"/>
-      </actionSet>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
             default="true"
             icon="resources/icons/editor.gif"
             id="org.apache.directory.studio.apacheds.configuration.editor"
-            name="Server Configuration Editor">
+            name="Apache DS Configuration File Editor">
+         <contentTypeBinding
+               contentTypeId="org.apache.directory.studio.apacheds.configuration.contenttype">
+         </contentTypeBinding>
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            describer="org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationContentDescriber"
+            file-extensions="xml"
+            file-names="server.xml"
+            id="org.apache.directory.studio.apacheds.configuration.contenttype"
+            name="Apache DS Configuration File"
+            priority="normal">
+      </content-type>
+   </extension>
+      <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            canFinishEarly="true"
+            category="org.apache.directory.studio.apacheds.configuration.newWizards"
+            class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
+            hasPages="false"
+            icon="resources/icons/editor_new.gif"
+            id="org.apache.directory.studio.apacheds.configuration.NewApacheDSConfigurationFileWizard"
+            name="Apache DS Configuration File"
+            project="false"/>
+      <category
+            id="org.apache.directory.studio.apacheds.configuration.newWizards"
+            name="Apache DS">
+      </category>
    </extension>
 </plugin>

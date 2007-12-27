@@ -2322,40 +2322,6 @@ public class SearchRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with a SubEntries Control
-     */
-    public void testRequestWithSubEntriesControl()
-    {
-        Dsmlv2Parser parser = null;
-        try
-        {
-            parser = new Dsmlv2Parser();
-
-            parser
-                .setInputFile( SearchRequestTest.class.getResource( "request_with_subentries_control.xml" ).getFile() );
-
-            parser.parse();
-        }
-        catch ( Exception e )
-        {
-            fail( e.getMessage() );
-        }
-
-        SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
-
-        assertEquals( 1, searchRequest.getControls().size() );
-
-        Control control = searchRequest.getCurrentControl();
-
-        assertTrue( control.getCriticality() );
-
-        assertEquals( "1.3.6.1.4.1.4203.1.10.1", control.getControlType() );
-
-        assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
-    }
-
-
-    /**
      * Test parsing of a request with a needed requestID attribute
      * 
      * DIRSTUDIO-1

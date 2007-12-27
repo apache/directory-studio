@@ -1,18 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Jars Plugin
+Bundle-Name: Apache Directory Studio Jars
 Bundle-SymbolicName: org.apache.directory.studio.jars
-Bundle-Version: 0.8.0
+Bundle-Version: 1.0.0
 Bundle-Localization: plugin
 Bundle-Vendor: Apache Software Foundation
-Bundle-ClassPath: lib/antlr-2.7.6.jar,
+Bundle-ClassPath: .,
+ lib/antlr-2.7.6.jar,
  lib/commons-collections-3.2.jar,
  lib/dom4j-1.6.1.jar,
- lib/studio-dsml-parser-0.4.jar,
  lib/nlog4j-1.2.25.jar,
  lib/xpp3-1.1.3_8.jar,
- lib/shared-asn1-0.9.7-SNAPSHOT.jar,
- lib/shared-ldap-0.9.7-SNAPSHOT.jar
+ lib/shared-asn1-0.9.8-SNAPSHOT.jar,
+ lib/shared-ldap-0.9.8-SNAPSHOT.jar,
+ lib/shared-ldap-constants-0.9.8-SNAPSHOT.jar,
+ lib/studio-dsml-parser-0.4.1.jar
 Export-Package: antlr,
  antlr.ASdebug,
  antlr.actions.cpp,
@@ -57,6 +59,7 @@ Export-Package: antlr,
  org.apache.directory.shared.ldap.codec.add,
  org.apache.directory.shared.ldap.codec.bind,
  org.apache.directory.shared.ldap.codec.compare,
+ org.apache.directory.shared.ldap.codec.controls,
  org.apache.directory.shared.ldap.codec.del,
  org.apache.directory.shared.ldap.codec.extended,
  org.apache.directory.shared.ldap.codec.extended.operations,
@@ -66,6 +69,10 @@ Export-Package: antlr,
  org.apache.directory.shared.ldap.codec.search.controls,
  org.apache.directory.shared.ldap.codec.unbind,
  org.apache.directory.shared.ldap.codec.util,
+ org.apache.directory.shared.ldap.common,
+ org.apache.directory.shared.ldap.constants,
+ org.apache.directory.shared.ldap.entry,
+ org.apache.directory.shared.ldap.entry.client,
  org.apache.directory.shared.ldap.exception,
  org.apache.directory.shared.ldap.filter,
  org.apache.directory.shared.ldap.ldif,

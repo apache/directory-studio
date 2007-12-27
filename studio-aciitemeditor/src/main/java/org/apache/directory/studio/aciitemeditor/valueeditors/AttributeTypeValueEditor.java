@@ -22,7 +22,7 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
@@ -70,12 +70,12 @@ public class AttributeTypeValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() )
+        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value.getStringValue() )
             : null;
     }
 
 
-    private Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IBrowserConnection connection, Object value )
     {
         Schema schema = null;
         if ( connection != null )

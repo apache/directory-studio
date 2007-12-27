@@ -20,9 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.model;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -49,24 +46,40 @@ import org.dom4j.io.DocumentSource;
 public class ServerConfigurationWriter
 {
     /**
-     * Writes the Server Configuration to disk.
+     * TODO
      *
      * @param serverConfiguration
      *      the Server Configuration
      * @throws ServerConfigurationWriterException
      *      if an error occurrs when writing the Server Configuration file
      */
-    public void write( ServerConfiguration serverConfiguration ) throws ServerConfigurationWriterException
+    public static String toXml( ServerConfiguration serverConfiguration ) throws ServerConfigurationWriterException
     {
         try
         {
-            BufferedWriter outFile = new BufferedWriter( new FileWriter( serverConfiguration.getPath() ) );
-
             Document document = DocumentHelper.createDocument();
             Element root = document.addElement( "beans" );
 
             // Environment Bean
             createEnvironmentBean( root, serverConfiguration );
+
+            // Change Password Configuration Bean
+            createChangePasswordConfigurationBean( root, serverConfiguration );
+
+            // NTP Configuration Bean
+            createNtpConfigurationBean( root, serverConfiguration );
+
+            // DNS Configuration Bean
+            createDnsConfigurationBean( root, serverConfiguration );
+
+            // KDC Configuration Bean
+            createKdcConfigurationBean( root, serverConfiguration );
+
+            // LDAPS Configuration Bean
+            createLdapsConfigurationBean( root, serverConfiguration );
+
+            // LDAP Configuration Bean
+            createLdapConfigurationBean( root, serverConfiguration );
 
             // Configuration Bean
             createConfigurationBean( root, serverConfiguration );
@@ -80,11 +93,11 @@ public class ServerConfigurationWriter
             // CustomEditors Bean
             createCustomEditorsBean( root );
 
-            Document stylizedDocuement = styleDocument( document );
-            stylizedDocuement.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
+            Document stylizedDocument = styleDocument( document );
+            stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
                 "http://www.springframework.org/dtd/spring-beans.dtd" );
-            outFile.write( stylizedDocuement.asXML() );
-            outFile.close();
+
+            return stylizedDocument.asXML();
         }
         catch ( Exception e )
         {
@@ -104,7 +117,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createEnvironmentBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createEnvironmentBean( Element root, ServerConfiguration serverConfiguration )
     {
         Element environmentBean = root.addElement( "bean" );
         environmentBean.addAttribute( "id", "environment" );
@@ -148,6 +161,218 @@ public class ServerConfigurationWriter
 
 
     /**
+     * Creates the Change Password Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createChangePasswordConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "changePasswordConfiguration",
+            "org.apache.directory.server.changepw.ChangePasswordConfiguration", serverConfiguration
+                .isEnableChangePassword(), serverConfiguration.getChangePasswordPort() );
+    }
+
+
+    /**
+     * Creates the NTP Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createNtpConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "ntpConfiguration", "org.apache.directory.server.ntp.NtpConfiguration",
+            serverConfiguration.isEnableNtp(), serverConfiguration.getNtpPort() );
+    }
+
+
+    /**
+     * Creates the DNS Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createDnsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "dnsConfiguration", "org.apache.directory.server.dns.DnsConfiguration",
+            serverConfiguration.isEnableDns(), serverConfiguration.getDnsPort() );
+    }
+
+
+    /**
+     * Creates the Kerberos Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createKdcConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "kdcConfiguration", "org.apache.directory.server.kdc.KdcConfiguration",
+            serverConfiguration.isEnableKerberos(), serverConfiguration.getKerberosPort() );
+    }
+
+
+    /**
+     * Creates the LDAPS Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createLdapsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        Element ldapsConfiguration = createProtocolConfigurationBean( root, "ldapsConfiguration",
+            "org.apache.directory.server.ldap.LdapConfiguration", serverConfiguration.isEnableLdaps(),
+            serverConfiguration.getLdapsPort() );
+
+        // Enable LDAPS
+        Element enableLdapsPropertyElement = ldapsConfiguration.addElement( "property" );
+        enableLdapsPropertyElement.addAttribute( "name", "enableLdaps" );
+        enableLdapsPropertyElement.addAttribute( "value", "" + true );
+    }
+
+
+    /**
+     * Creates the LDAP Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createLdapConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        Element ldapConfiguration = createProtocolConfigurationBean( root, "ldapConfiguration",
+            "org.apache.directory.server.ldap.LdapConfiguration", true, serverConfiguration.getLdapPort() );
+
+        // AllowAnonymousAccess
+        Element propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "allowAnonymousAccess" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isAllowAnonymousAccess() );
+
+        // Supported Mechanisms
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "supportedMechanisms" );
+        if ( serverConfiguration.getSupportedMechanisms().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( String supportedMechanism : serverConfiguration.getSupportedMechanisms() )
+            {
+                listElement.addElement( "value" ).setText( supportedMechanism );
+            }
+        }
+
+        // SASL Host
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslHost" );
+        propertyElement.addAttribute( "value", serverConfiguration.getSaslHost() );
+
+        // SASL Principal
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslPrincipal" );
+        propertyElement.addAttribute( "value", serverConfiguration.getSaslPrincipal() );
+
+        // SASL QOP
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslQop" );
+        if ( serverConfiguration.getSaslQops().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( String saslQop : serverConfiguration.getSaslQops() )
+            {
+                listElement.addElement( "value" ).setText( saslQop );
+            }
+        }
+
+        // SASL Realms
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslRealms" );
+        if ( serverConfiguration.getSaslRealms().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( String saslRealm : serverConfiguration.getSaslRealms() )
+            {
+                listElement.addElement( "value" ).setText( saslRealm );
+            }
+        }
+
+        // Search Base DN
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "searchBaseDN" );
+        propertyElement.addAttribute( "value", serverConfiguration.getSearchBaseDn() );
+
+        // MaxTimeLimit
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "maxTimeLimit" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxTimeLimit() );
+
+        // MaxSizeLimit
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "maxSizeLimit" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxSizeLimit() );
+
+        // ExtendedOperationHandlers
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "extendedOperationHandlers" );
+        if ( serverConfiguration.getExtendedOperations().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( ExtendedOperation extendedOperation : serverConfiguration.getExtendedOperations() )
+            {
+                listElement.addElement( "bean" ).addAttribute( "class", extendedOperation.getClassType() );
+            }
+        }
+    }
+
+
+    /**
+     * Creates a Protocol Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param id
+     *      the id of the Bean
+     * @param className
+     *      the class name of the Bean
+     * @param enabled
+     *      the enabled flag
+     * @param ipPort
+     *      the port
+     * @return
+     *      the corresponding Protocol Configuration Bean
+     */
+    private static Element createProtocolConfigurationBean( Element root, String id, String className, boolean enabled,
+        int ipPort )
+    {
+        Element protocolConfigurationBean = root.addElement( "bean" );
+        protocolConfigurationBean.addAttribute( "id", id );
+        protocolConfigurationBean.addAttribute( "class", className );
+
+        // Enabled
+        Element enabledPropertyElement = protocolConfigurationBean.addElement( "property" );
+        enabledPropertyElement.addAttribute( "name", "enabled" );
+        enabledPropertyElement.addAttribute( "value", "" + enabled );
+
+        // IP Port
+        Element ipPortPropertyElement = protocolConfigurationBean.addElement( "property" );
+        ipPortPropertyElement.addAttribute( "name", "ipPort" );
+        ipPortPropertyElement.addAttribute( "value", "" + ipPort );
+
+        return protocolConfigurationBean;
+    }
+
+
+    /**
      * Creates the Configuration Bean.
      *
      * @param root
@@ -155,7 +380,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         Element configurationBean = root.addElement( "bean" );
         configurationBean.addAttribute( "id", "configuration" );
@@ -165,22 +390,18 @@ public class ServerConfigurationWriter
         // Working directory
         Element propertyElement = configurationBean.addElement( "property" );
         propertyElement.addAttribute( "name", "workingDirectory" );
-        propertyElement.addAttribute( "value", "example.com" ); // Ask Alex about this value.
+        propertyElement.addAttribute( "value", "example.com" ); // TODO Ask Alex about this value.
+
+        // LDIF Directory
+        // TODO Ask Alex about this value.
+
+        // LDIF Filters
+        // TODO Ask Alex about this value.
 
         // SynchPeriodMillis
         propertyElement = configurationBean.addElement( "property" );
         propertyElement.addAttribute( "name", "synchPeriodMillis" );
         propertyElement.addAttribute( "value", "" + serverConfiguration.getSynchronizationPeriod() );
-
-        // MaxTimeLimit
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "maxTimeLimit" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxTimeLimit() );
-
-        // MaxSizeLimit
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "maxSizeLimit" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxSizeLimit() );
 
         // MaxThreads
         propertyElement = configurationBean.addElement( "property" );
@@ -197,30 +418,40 @@ public class ServerConfigurationWriter
         propertyElement.addAttribute( "name", "accessControlEnabled" );
         propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableAccessControl() );
 
-        // Enable NTP
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableNtp" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableNTP() );
-
-        // EnableKerberos
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableKerberos" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableKerberos() );
-
-        // EnableChangePassword
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableChangePassword" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableChangePassword() );
-
         // DenormalizeOpAttrsEnabled
         propertyElement = configurationBean.addElement( "property" );
         propertyElement.addAttribute( "name", "denormalizeOpAttrsEnabled" );
         propertyElement.addAttribute( "value", "" + serverConfiguration.isDenormalizeOpAttr() );
 
-        // LdapPort
+        // NTP Configuration Ref
         propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "ldapPort" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getPort() );
+        propertyElement.addAttribute( "name", "ntpConfiguration" );
+        propertyElement.addAttribute( "ref", "ntpConfiguration" );
+
+        // DNS Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "dnsConfiguration" );
+        propertyElement.addAttribute( "ref", "dnsConfiguration" );
+
+        // Change Password Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "changePasswordConfiguration" );
+        propertyElement.addAttribute( "ref", "changePasswordConfiguration" );
+
+        // KDC Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "kdcConfiguration" );
+        propertyElement.addAttribute( "ref", "kdcConfiguration" );
+
+        // LDAPS Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "ldapsConfiguration" );
+        propertyElement.addAttribute( "ref", "ldapsConfiguration" );
+
+        // LDAP Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "ldapConfiguration" );
+        propertyElement.addAttribute( "ref", "ldapConfiguration" );
 
         // SystemPartitionConfiguration
         propertyElement = configurationBean.addElement( "property" );
@@ -244,18 +475,6 @@ public class ServerConfigurationWriter
             }
         }
 
-        // ExtendedOperationHandlers
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "extendedOperationHandlers" );
-        if ( serverConfiguration.getExtendedOperations().size() > 1 )
-        {
-            Element listElement = propertyElement.addElement( "list" );
-            for ( ExtendedOperation extendedOperation : serverConfiguration.getExtendedOperations() )
-            {
-                listElement.addElement( "bean" ).addAttribute( "class", extendedOperation.getClassType() );
-            }
-        }
-
         // InterceptorConfigurations
         propertyElement = configurationBean.addElement( "property" );
         propertyElement.addAttribute( "name", "interceptorConfigurations" );
@@ -273,9 +492,9 @@ public class ServerConfigurationWriter
                 interceptorPropertyElement.addAttribute( "value", interceptor.getName() );
 
                 interceptorPropertyElement = interceptorBeanElement.addElement( "property" );
-                interceptorPropertyElement.addAttribute( "name", "interceptor" );
-                interceptorPropertyElement.addElement( "bean" ).addAttribute( "class",
-                    ( interceptor.getClassType() == null ? "" : interceptor.getClassType() ) );
+                interceptorPropertyElement.addAttribute( "name", "interceptorClassName" );
+                interceptorPropertyElement.addAttribute( "value", ( interceptor.getClassType() == null ? ""
+                    : interceptor.getClassType() ) );
             }
         }
 
@@ -290,7 +509,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createSystemPartitionConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createSystemPartitionConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
         Partition systemPartition = null;
         for ( Partition partition : serverConfiguration.getPartitions() )
@@ -317,7 +536,7 @@ public class ServerConfigurationWriter
      * @param serverConfiguration
      *      the Server Configuration
      */
-    private void createUserPartitionsConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
+    private static void createUserPartitionsConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
     {
         int counter = 1;
         for ( Partition partition : serverConfiguration.getPartitions() )
@@ -341,17 +560,17 @@ public class ServerConfigurationWriter
      * @param name
      *      the name to use
      */
-    private void createPartitionConfigurationBean( Element root, Partition partition, String name )
+    private static void createPartitionConfigurationBean( Element root, Partition partition, String name )
     {
         Element partitionBean = root.addElement( "bean" );
         partitionBean.addAttribute( "id", name );
         partitionBean.addAttribute( "class",
             "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" );
 
-        // Name
+        // ID
         Element propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "name" );
-        propertyElement.addAttribute( "value", partition.getName() );
+        propertyElement.addAttribute( "name", "id" );
+        propertyElement.addAttribute( "value", partition.getId() );
 
         // CacheSize
         propertyElement = partitionBean.addElement( "property" );
@@ -362,6 +581,11 @@ public class ServerConfigurationWriter
         propertyElement = partitionBean.addElement( "property" );
         propertyElement.addAttribute( "name", "suffix" );
         propertyElement.addAttribute( "value", partition.getSuffix() );
+        
+        // PartitionClassName
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "partitionClassName" );
+        propertyElement.addAttribute( "value", "org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition" );
 
         // OptimizerEnabled
         propertyElement = partitionBean.addElement( "property" );
@@ -434,7 +658,7 @@ public class ServerConfigurationWriter
      * @param root
      *      the root Element
      */
-    private void createCustomEditorsBean( Element root )
+    private static void createCustomEditorsBean( Element root )
     {
         Element customEditorsBean = root.addElement( "bean" );
         customEditorsBean.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
@@ -458,7 +682,7 @@ public class ServerConfigurationWriter
      *      the stylized Document
      * @throws TransformerException 
      */
-    private Document styleDocument( Document document ) throws TransformerException
+    private static Document styleDocument( Document document ) throws TransformerException
     {
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();

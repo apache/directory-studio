@@ -21,19 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
 
 
 /**
@@ -42,108 +29,109 @@ import org.eclipse.jface.viewers.TableViewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionUniversalListener implements ConnectionUpdateListener, EntryUpdateListener,
-    SearchUpdateListener, BookmarkUpdateListener
-{
-
-    /** The table viewer */
-    protected TableViewer viewer;
-
-
-    /**
-     * Creates a new instance of ConnectionUniversalListener.
-     *
-     * @param viewer the table viewer
-     */
-    public ConnectionUniversalListener( TableViewer viewer )
-    {
-        this.viewer = viewer;
-
-        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
-        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
-        EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
-        EventRegistry.addBookmarkUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
-    }
-
-
-    /**
-     * Disposes this universal listener.
-     */
-    public void dispose()
-    {
-        if ( viewer != null )
-        {
-            EventRegistry.removeConnectionUpdateListener( this );
-            EventRegistry.removeEntryUpdateListener( this );
-            EventRegistry.removeSearchUpdateListener( this );
-            EventRegistry.removeBookmarkUpdateListener( this );
-            viewer = null;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * This implementation refreshes the viewer. If a new connection was added
-     * this connection is selected.
-     */
-    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
-    {
-        if ( viewer != null )
-        {
-            viewer.refresh();
-            if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED )
-            {
-                viewer.setSelection( new StructuredSelection( connectionUpdateEvent.getConnection() ) );
-            }
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * This implementation refreshes the viewer.
-     */
-    public void entryUpdated( EntryModificationEvent event )
-    {
-        if ( viewer != null )
-        {
-            viewer.refresh();
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * This implementation refreshes the viewer.
-     */
-    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
-    {
-        if ( viewer != null )
-        {
-            viewer.refresh();
-
-            // select the right connection
-            ISearch search = searchUpdateEvent.getSearch();
-            viewer.setSelection( new StructuredSelection( search.getConnection() ), true );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * This implementation refreshes the viewer.
-     */
-    public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
-    {
-        if ( viewer != null )
-        {
-            viewer.refresh();
-        }
-    }
-
-}
+public class ConnectionUniversalListener{private ConnectionUniversalListener(){}}
+//implements ConnectionUpdateListener, EntryUpdateListener,
+//    SearchUpdateListener, BookmarkUpdateListener
+//{
+//
+//    /** The table viewer */
+//    protected TableViewer viewer;
+//
+//
+//    /**
+//     * Creates a new instance of ConnectionUniversalListener.
+//     *
+//     * @param viewer the table viewer
+//     */
+//    public ConnectionUniversalListener( TableViewer viewer )
+//    {
+//        this.viewer = viewer;
+//
+//        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+//        EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+//        EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+//        EventRegistry.addBookmarkUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+//    }
+//
+//
+//    /**
+//     * Disposes this universal listener.
+//     */
+//    public void dispose()
+//    {
+//        if ( viewer != null )
+//        {
+//            EventRegistry.removeConnectionUpdateListener( this );
+//            EventRegistry.removeEntryUpdateListener( this );
+//            EventRegistry.removeSearchUpdateListener( this );
+//            EventRegistry.removeBookmarkUpdateListener( this );
+//            viewer = null;
+//        }
+//    }
+//
+//
+//    /**
+//     * {@inheritDoc}
+//     *
+//     * This implementation refreshes the viewer. If a new connection was added
+//     * this connection is selected.
+//     */
+//    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+//    {
+//        if ( viewer != null )
+//        {
+//            viewer.refresh();
+//            if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_ADDED )
+//            {
+//                viewer.setSelection( new StructuredSelection( connectionUpdateEvent.getConnection() ) );
+//            }
+//        }
+//    }
+//
+//
+//    /**
+//     * {@inheritDoc}
+//     *
+//     * This implementation refreshes the viewer.
+//     */
+//    public void entryUpdated( EntryModificationEvent event )
+//    {
+//        if ( viewer != null )
+//        {
+//            viewer.refresh();
+//        }
+//    }
+//
+//
+//    /**
+//     * {@inheritDoc}
+//     *
+//     * This implementation refreshes the viewer.
+//     */
+//    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
+//    {
+//        if ( viewer != null )
+//        {
+//            viewer.refresh();
+//
+//            // select the right connection
+//            ISearch search = searchUpdateEvent.getSearch();
+//            viewer.setSelection( new StructuredSelection( search.getConnection() ), true );
+//        }
+//    }
+//
+//
+//    /**
+//     * {@inheritDoc}
+//     *
+//     * This implementation refreshes the viewer.
+//     */
+//    public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
+//    {
+//        if ( viewer != null )
+//        {
+//            viewer.refresh();
+//        }
+//    }
+//
+//}

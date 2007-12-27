@@ -24,65 +24,106 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.naming.ContextNotEmptyException;
+import javax.naming.directory.SearchControls;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 
 
-public class MoveEntriesJob extends AbstractAsyncBulkJob
+/**
+ * Job to move entries.
+ * 
+ * First it tries to move an entry using an moddn operation. If
+ * that operation fails with an LDAP error 66 (ContextNotEmptyException)
+ * the use is asked if s/he wants to simulate such a move by recursively
+ * searching/creating/deleting entries.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class MoveEntriesJob extends AbstractNotificationJob
 {
 
-    private IConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The entries to move. */
     private IEntry[] oldEntries;
 
+    /** The new parent. */
     private IEntry newParent;
 
+    /** The moved entries. */
     private IEntry[] newEntries;
 
-    private Set searchesToUpdateSet = new HashSet();
+    /** The searches to update. */
+    private Set<ISearch> searchesToUpdateSet = new HashSet<ISearch>();
+
+    /** The dialog to ask for simulated renaming */
+    private SimulateRenameDialog dialog;
 
 
-    public MoveEntriesJob( IEntry[] entries, IEntry newParent )
+    /**
+     * Creates a new instance of MoveEntriesJob.
+     * 
+     * @param entries the entries to move
+     * @param newParent the new parent
+     * @param dialog the dialog
+     */
+    public MoveEntriesJob( IEntry[] entries, IEntry newParent, SimulateRenameDialog dialog )
     {
-        this.connection = newParent.getConnection();
+        this.browserConnection = newParent.getBrowserConnection();
         this.oldEntries = entries;
         this.newParent = newParent;
+        this.dialog = dialog;
+        this.newEntries = new IEntry[oldEntries.length];
 
         setName( entries.length == 1 ? BrowserCoreMessages.jobs__move_entry_name_1
             : BrowserCoreMessages.jobs__move_entry_name_n );
     }
 
 
-    protected IConnection[] getConnections()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<IEntry> l = new ArrayList<IEntry>();
         l.add( newParent );
         l.addAll( Arrays.asList( oldEntries ) );
         return l.toArray();
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.bind(
             oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_task_1
                 : BrowserCoreMessages.jobs__move_entry_task_n, new String[]
@@ -90,61 +131,100 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        this.newEntries = new IEntry[oldEntries.length];
-        for ( int i = 0; i < oldEntries.length; i++ )
-        {
-            this.newEntries[i] = oldEntries[i];
-        }
+        // use a dummy monitor to be able to handle exceptions
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
+        int numAdd = 0;
+        int numDel = 0;
+        boolean isSimulatedRename = false;
+        LdapDN parentDn = newParent.getDn();
 
         for ( int i = 0; i < oldEntries.length; i++ )
         {
+            dummyMonitor.reset();
 
             IEntry oldEntry = oldEntries[i];
-            IEntry oldParent = oldEntry.getParententry();
-            DN newDn = new DN( oldEntry.getRdn(), newParent.getDn() );
+            LdapDN oldDn = oldEntry.getDn();
+            LdapDN newDn = DnUtils.composeDn( oldDn.getRdn(), parentDn );
 
-            // move in directory
-            // TODO: use manual/simulated move, if move of subtree is not
-            // supported
-            int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            connection.move( oldEntry, newParent.getDn(), monitor );
-            int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
+            // try to move entry
+            moveEntry( browserConnection, oldDn, newDn, dummyMonitor );
 
-            if ( errorStatusSize1 == errorStatusSize2 )
+            // do a simulated rename, if renaming of a non-leaf entry is not supported.
+            if ( dummyMonitor.errorsReported() )
             {
-                // move in parent
-                oldParent.deleteChild( oldEntry );
-                IEntry newEntry = connection.getEntry( newDn, monitor );
-                this.newEntries[i] = newEntry;
-                newParent.addChild( newEntry );
-                newParent.setHasMoreChildren( false );
-
-                newEntry.setHasChildrenHint( oldEntry.hasChildren() );
-                if ( oldEntry.isChildrenInitialized() )
+                if ( dialog != null && dummyMonitor.getException() instanceof ContextNotEmptyException )
                 {
-                    InitializeChildrenJob.initializeChildren( newEntry, monitor );
+                    // open dialog
+                    if ( numAdd == 0 )
+                    {
+                        dialog.setEntryInfo( browserConnection, oldDn, newDn );
+                        dialog.open();
+                        isSimulatedRename = dialog.isSimulateRename();
+                    }
+
+                    if ( isSimulatedRename )
+                    {
+                        // do simulated rename operation
+                        dummyMonitor.reset();
+
+                        numAdd = CopyEntriesJob.copyEntry( oldEntry, newParent, null, SearchControls.SUBTREE_SCOPE,
+                            numAdd, null, dummyMonitor, monitor );
+
+                        if ( !dummyMonitor.errorsReported() )
+                        {
+                            dummyMonitor.reset();
+                            numDel = DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, numDel,
+                                dummyMonitor, monitor );
+                        }
+                    }
+                    else
+                    {
+                        // no simulated rename operation
+                        // report the exception to the real monitor
+                        Throwable exception = dummyMonitor.getException();
+                        monitor.reportError( exception );
+                    }
                 }
-
-                // move in searches
-                ISearch[] searches = connection.getSearchManager().getSearches();
-                for ( int j = 0; j < searches.length; j++ )
+                else
                 {
-                    ISearch search = searches[j];
+                    // we have another exception
+                    // report it to the real monitor
+                    Throwable exception = dummyMonitor.getException();
+                    monitor.reportError( exception );
+                }
+            }
+
+            // update model
+            if ( !dummyMonitor.errorsReported() )
+            {
+                // uncache old entry
+                browserConnection.uncacheEntryRecursive( oldEntry );
+
+                // remove old entry from old parent
+                oldEntry.getParententry().deleteChild( oldEntry );
+
+                // add new entry to new parent
+                boolean hasMoreChildren = newParent.hasMoreChildren() || !newParent.isChildrenInitialized();
+                IEntry newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
+                newEntries[i] = newEntry;
+                newParent.addChild( newEntry );
+                newParent.setHasMoreChildren( hasMoreChildren );
+
+                // reset searches, if the moved entry is a result of a search
+                ISearch[] searches = browserConnection.getSearchManager().getSearches();
+                for ( ISearch search : searches )
+                {
                     if ( search.getSearchResults() != null )
                     {
                         ISearchResult[] searchResults = search.getSearchResults();
-                        for ( int k = 0; k < searchResults.length; k++ )
+                        for ( ISearchResult result : searchResults )
                         {
-                            ISearchResult result = searchResults[k];
                             if ( oldEntry.equals( result.getEntry() ) )
                             {
-                                ISearchResult[] newsrs = new ISearchResult[searchResults.length - 1];
-                                System.arraycopy( searchResults, 0, newsrs, 0, k );
-                                System.arraycopy( searchResults, k + 1, newsrs, k, searchResults.length - k - 1 );
-                                search.setSearchResults( newsrs );
-                                searchResults = newsrs;
-                                k--;
+                                search.setSearchResults( null );
                                 searchesToUpdateSet.add( search );
+                                break;
                             }
                         }
                     }
@@ -154,6 +234,9 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
         for ( int i = 0; i < newEntries.length; i++ )
@@ -163,18 +246,39 @@ public class MoveEntriesJob extends AbstractAsyncBulkJob
                 EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i] ), this );
             }
         }
-        for ( Iterator it = searchesToUpdateSet.iterator(); it.hasNext(); )
+        for ( ISearch search : searchesToUpdateSet )
         {
-            ISearch search = ( ISearch ) it.next();
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
+                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_error_1
             : BrowserCoreMessages.jobs__move_entry_error_n;
+    }
+
+
+    /**
+     * Moves an entry.
+     * 
+     * @param browserConnection the browser connection
+     * @param oldDn the old DN
+     * @param newDn the new DN
+     * @param monitor the progress monitor
+     */
+    static void moveEntry( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn,
+        StudioProgressMonitor monitor )
+    {
+        String oldDnString = oldDn.getUpName();
+        String newDnString = newDn.getUpName();
+        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, false, null,
+            monitor );
     }
 
 }

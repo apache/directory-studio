@@ -24,51 +24,72 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 
 
-public class RenameValuesJob extends AbstractModificationJob
+/**
+ * Job to rename the attribute description of values asynchronously.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class RenameValuesJob extends AbstractAttributeModificationJob
 {
 
+    /** The entry to modify. */
     private IEntry entry;
 
+    /** The old values. */
     private IValue[] oldValues;
 
-    private String newAttributeName;
+    /** The new attribute description. */
+    private String newAttributeDescription;
 
-    private ValueRenamedEvent event;
+    /** The created values. */
+    private IValue[] createdValues;
 
 
-    public RenameValuesJob( IEntry entry, IValue[] oldValues, String newAttributeName )
+    /**
+     * Creates a new instance of RenameValuesJob.
+     * 
+     * @param entry the entry to modify
+     * @param oldValues the old values
+     * @param newAttributeDescription the new attribute description
+     */
+    public RenameValuesJob( IEntry entry, IValue[] oldValues, String newAttributeDescription )
     {
         this.entry = entry;
         this.oldValues = oldValues;
-        this.newAttributeName = newAttributeName;
+        this.newAttributeDescription = newAttributeDescription;
 
         setName( oldValues.length == 1 ? BrowserCoreMessages.jobs__rename_value_name_1
             : BrowserCoreMessages.jobs__rename_value_name_n );
     }
 
 
-    protected void executeAsyncModificationJob( ExtendedProgressMonitor monitor ) throws ModelModificationException
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#executeAttributeModificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeAttributeModificationJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( oldValues.length == 1 ? BrowserCoreMessages.jobs__rename_value_task_1
             : BrowserCoreMessages.jobs__rename_value_task_n, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        for ( int i = 0; i < oldValues.length; i++ )
+        for ( IValue oldValue : oldValues )
         {
-            if ( oldValues[i].getAttribute().getEntry() != this.entry )
+            if ( oldValue.getAttribute().getEntry() != entry )
             {
                 return;
             }
@@ -77,63 +98,75 @@ public class RenameValuesJob extends AbstractModificationJob
         IValue[] newValues = new IValue[oldValues.length];
         for ( int i = 0; i < oldValues.length; i++ )
         {
-
-            IAttribute newAttribute = entry.getAttribute( newAttributeName );
-            if ( newAttribute == null )
+            IAttribute attribute = entry.getAttribute( newAttributeDescription );
+            if ( attribute == null )
             {
-                newAttribute = new Attribute( entry, newAttributeName );
-                entry.addAttribute( newAttribute );
+                attribute = new Attribute( entry, newAttributeDescription );
             }
 
-            newValues[i] = new Value( newAttribute, oldValues[i].getRawValue() );
-            newAttribute.addValue( newValues[i] );
-
-            oldValues[i].getAttribute().deleteValue( oldValues[i] );
-
-            if ( this.event == null )
-            {
-                this.event = new ValueRenamedEvent( entry.getConnection(), entry, oldValues[0], newValues[0] );
-            }
+            newValues[i] = new Value( attribute, oldValues[i].getRawValue() );
         }
 
+        CreateValuesJob.createValues( entry.getBrowserConnection(), entry, newValues, monitor );
         if ( !monitor.errorsReported() )
         {
-            entry.getConnection().create( newValues, monitor );
+            DeleteAttributesValueJob.deleteAttributesAndValues( entry.getBrowserConnection(), entry, null, oldValues,
+                monitor );
         }
         if ( !monitor.errorsReported() )
         {
-            entry.getConnection().delete( oldValues, monitor );
+            createdValues = newValues;
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#getModifiedEntry()
+     */
     protected IEntry getModifiedEntry()
     {
-        return this.entry;
+        return entry;
     }
 
 
-    protected String[] getAffectedAttributeNames()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractAttributeModificationJob#getAffectedAttributeDescriptions()
+     */
+    protected String[] getAffectedAttributeDescriptions()
     {
-        Set affectedAttributeNameSet = new HashSet();
-        affectedAttributeNameSet.add( newAttributeName );
-        for ( int i = 0; i < oldValues.length; i++ )
+        Set<String> attributeDescriptionSet = new HashSet<String>();
+        attributeDescriptionSet.add( newAttributeDescription );
+        for ( IValue oldValue : oldValues )
         {
-            affectedAttributeNameSet.add( oldValues[i].getAttribute().getDescription() );
+            attributeDescriptionSet.add( oldValue.getAttribute().getDescription() );
         }
-        return ( String[] ) affectedAttributeNameSet.toArray( new String[affectedAttributeNameSet.size()] );
+        return attributeDescriptionSet.toArray( new String[attributeDescriptionSet.size()] );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
-        if ( this.event != null )
+        EntryModificationEvent event;
+
+        if ( createdValues != null && createdValues.length > 0 )
         {
-            EventRegistry.fireEntryUpdated( this.event, this );
+            event = new ValueRenamedEvent( entry.getBrowserConnection(), entry, oldValues[0], createdValues[0] );
         }
+        else
+        {
+            event = new AttributesInitializedEvent( entry );
+        }
+
+        EventRegistry.fireEntryUpdated( event, this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return oldValues.length == 1 ? BrowserCoreMessages.jobs__rename_value_error_1

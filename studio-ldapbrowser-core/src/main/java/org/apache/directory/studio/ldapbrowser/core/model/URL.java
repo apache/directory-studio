@@ -24,7 +24,12 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 
@@ -105,7 +110,7 @@ public class URL
      * @param connection the connection
      * @param dn the DN
      */
-    public URL( IConnection connection, DN dn )
+    public URL( IBrowserConnection connection, LdapDN dn )
     {
         this( connection );
 
@@ -114,7 +119,7 @@ public class URL
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_url );
         }
 
-        this.dn = dn.toString();
+        this.dn = dn.getUpName();
     }
 
 
@@ -122,16 +127,16 @@ public class URL
      * Creates a new instance of URL, based on the given connection. Only
      * the fields protocol, host and port exists when using this constructor.
      *
-     * @param connection the connection
+     * @param browserConnection the browser connection
      */
-    public URL( IConnection connection )
+    public URL( IBrowserConnection browserConnection )
     {
-        if ( connection == null )
+        if ( browserConnection == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_url );
         }
 
-        if ( connection.getEncryptionMethod() == IConnection.ENCYRPTION_LDAPS )
+        if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
         {
             this.protocol = "ldaps";; //$NON-NLS-1$
         }
@@ -139,8 +144,8 @@ public class URL
         {
             this.protocol = "ldap"; //$NON-NLS-1$
         }
-        this.host = connection.getHost();
-        this.port = Integer.toString( connection.getPort() );
+        this.host = browserConnection.getConnection().getHost();
+        this.port = Integer.toString( browserConnection.getConnection().getPort() );
     }
 
 
@@ -152,7 +157,7 @@ public class URL
      */
     public URL( ISearch search )
     {
-        this( search.getConnection(), search.getSearchBase() );
+        this( search.getBrowserConnection(), search.getSearchBase() );
 
         if ( search == null )
         {
@@ -160,8 +165,8 @@ public class URL
         }
 
         this.attributes = Utils.arrayToString( search.getReturningAttributes() );
-        this.scope = search.getScope() == ISearch.SCOPE_SUBTREE ? "sub" : //$NON-NLS-1$
-            search.getScope() == ISearch.SCOPE_ONELEVEL ? "one" : //$NON-NLS-1$
+        this.scope = search.getScope() == SearchScope.SUBTREE ? "sub" : //$NON-NLS-1$
+            search.getScope() == SearchScope.ONELEVEL ? "one" : //$NON-NLS-1$
                 "base"; //$NON-NLS-1$
         this.filter = search.getFilter();
     }
@@ -483,7 +488,7 @@ public class URL
      * @return the dn
      * @throws NoSuchFieldException if not has dn
      */
-    public DN getDn() throws NoSuchFieldException
+    public LdapDN getDn() throws NoSuchFieldException
     {
         if ( dn == null )
         {
@@ -492,9 +497,9 @@ public class URL
 
         try
         {
-            return new DN( dn );
+            return new LdapDN( dn );
         }
-        catch ( NameException e )
+        catch ( InvalidNameException e )
         {
             throw new NoSuchFieldException( BrowserCoreMessages.model__url_no_dn );
         }
@@ -563,7 +568,7 @@ public class URL
      * @return the scope
      * @throws NoSuchFieldException if not has scope
      */
-    public int getScope() throws NoSuchFieldException
+    public SearchScope getScope() throws NoSuchFieldException
     {
         if ( scope == null )
         {
@@ -571,13 +576,13 @@ public class URL
         }
 
         if ( "base".equals( scope ) ) { //$NON-NLS-1$
-            return ISearch.SCOPE_OBJECT;
+            return SearchScope.OBJECT;
         }
         else if ( "one".equals( scope ) ) { //$NON-NLS-1$
-            return ISearch.SCOPE_ONELEVEL;
+            return SearchScope.ONELEVEL;
         }
         else if ( "sub".equals( scope ) ) { //$NON-NLS-1$
-            return ISearch.SCOPE_SUBTREE;
+            return SearchScope.SUBTREE;
         }
         else
         {

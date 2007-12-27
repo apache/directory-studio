@@ -26,7 +26,7 @@ import java.io.File;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ImportLdifJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -55,7 +55,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     private String ldifFilename;
 
     /** The import connection. */
-    private IConnection importConnection;
+    private IBrowserConnection importConnection;
 
     /** The enable logging flag. */
     private boolean enableLogging;
@@ -82,7 +82,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      * 
      * @param importConnection the import connection
      */
-    public ImportLdifWizard( IConnection importConnection )
+    public ImportLdifWizard( IBrowserConnection importConnection )
     {
         super.setWindowTitle( "LDIF Import" );
         this.importConnection = importConnection;
@@ -108,27 +108,27 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
         Object o = selection.getFirstElement();
         if ( o instanceof IEntry )
         {
-            importConnection = ( ( IEntry ) o ).getConnection();
+            importConnection = ( ( IEntry ) o ).getBrowserConnection();
         }
         else if ( o instanceof ISearchResult )
         {
-            importConnection = ( ( ISearchResult ) o ).getEntry().getConnection();
+            importConnection = ( ( ISearchResult ) o ).getEntry().getBrowserConnection();
         }
         else if ( o instanceof IBookmark )
         {
-            importConnection = ( ( IBookmark ) o ).getConnection();
+            importConnection = ( ( IBookmark ) o ).getBrowserConnection();
         }
         else if ( o instanceof IAttribute )
         {
-            importConnection = ( ( IAttribute ) o ).getEntry().getConnection();
+            importConnection = ( ( IAttribute ) o ).getEntry().getBrowserConnection();
         }
         else if ( o instanceof IValue )
         {
-            importConnection = ( ( IValue ) o ).getAttribute().getEntry().getConnection();
+            importConnection = ( ( IValue ) o ).getAttribute().getEntry().getBrowserConnection();
         }
-        else if ( o instanceof IConnection )
+        else if ( o instanceof IBrowserConnection )
         {
-            importConnection = ( IConnection ) o;
+            importConnection = ( IBrowserConnection ) o;
         }
         else
         {
@@ -192,7 +192,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      * 
      * @return the import connection
      */
-    public IConnection getImportConnection()
+    public IBrowserConnection getImportConnection()
     {
         return importConnection;
     }
@@ -203,7 +203,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      * 
      * @param importConnection the import connection
      */
-    public void setImportConnection( IConnection importConnection )
+    public void setImportConnection( IBrowserConnection importConnection )
     {
         this.importConnection = importConnection;
     }

@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
@@ -86,20 +85,16 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
 
 
     /**
-     * Disposes thes action group.
+     * Disposes this action group.
      */
     public void dispose()
     {
         if ( view != null )
         {
-            for ( Iterator it = modificationLogsViewActionMap.keySet().iterator(); it.hasNext(); )
+            for ( ModificationLogsViewActionProxy action : modificationLogsViewActionMap.values() )
             {
-                String key = ( String ) it.next();
-                ModificationLogsViewActionProxy action = ( ModificationLogsViewActionProxy ) modificationLogsViewActionMap
-                    .get( key );
                 action.dispose();
                 action = null;
-                it.remove();
             }
             modificationLogsViewActionMap.clear();
             modificationLogsViewActionMap = null;
@@ -140,9 +135,8 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
      */
     public void setInput( ModificationLogsViewInput input )
     {
-        for ( Iterator it = modificationLogsViewActionMap.values().iterator(); it.hasNext(); )
+        for ( ModificationLogsViewActionProxy action : modificationLogsViewActionMap.values() )
         {
-            ModificationLogsViewActionProxy action = ( ModificationLogsViewActionProxy ) it.next();
             action.inputChanged( input );
         }
     }

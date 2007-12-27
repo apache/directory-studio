@@ -22,23 +22,24 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import java.util.Arrays;
+import java.util.Iterator;
 
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -126,17 +127,17 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         Subschema subschema = newEntry.getSubschema();
         String[] attributeNames = subschema.getAllAttributeNames();
 
-        DN parentDn = null;
-        if ( newEntry.getDn().getParentDn() != null )
+        LdapDN parentDn = null;
+        if ( DnUtils.getParent( newEntry.getDn() ) != null )
         {
-            parentDn = newEntry.getDn().getParentDn();
+            parentDn = DnUtils.getParent( newEntry.getDn() );
         }
         else if ( wizard.getSelectedEntry() != null )
         {
             parentDn = wizard.getSelectedEntry().getDn();
         }
 
-        RDN rdn = newEntry.getRdn();
+        Rdn rdn = newEntry.getRdn();
 
         dnBuilderWidget.setInput( wizard.getSelectedConnection(), attributeNames, rdn, parentDn );
     }
@@ -154,49 +155,53 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             EventRegistry.suspendEventFireingInCurrentThread();
 
             // remove old RDN
-            RDNPart[] oldRdnParts = newEntry.getRdn().getParts();
-            for ( int i = 0; i < oldRdnParts.length; i++ )
+            if( newEntry.getRdn().size() > 0 )
             {
-                IAttribute attribute = newEntry.getAttribute( oldRdnParts[i].getType() );
-                if ( attribute != null )
+                Iterator<AttributeTypeAndValue> atavIterator = newEntry.getRdn().iterator();
+                while(atavIterator.hasNext())
                 {
-                    IValue[] values = attribute.getValues();
-                    for ( int v = 0; v < values.length; v++ )
+                    AttributeTypeAndValue atav = atavIterator.next();
+                    IAttribute attribute = newEntry.getAttribute( atav.getUpType() );
+                    if ( attribute != null )
                     {
-                        if ( values[v].getStringValue().equals( oldRdnParts[i].getUnencodedValue() ) )
+                        IValue[] values = attribute.getValues();
+                        for ( int v = 0; v < values.length; v++ )
                         {
-                            attribute.deleteValue( values[v] );
+                            if ( values[v].getStringValue().equals( atav.getUpValue() ) )
+                            {
+                                attribute.deleteValue( values[v] );
+                            }
                         }
                     }
                 }
             }
 
             // set new DN
-            DN dn = new DN( dnBuilderWidget.getRdn(), dnBuilderWidget.getParentDn() );
+            LdapDN dn = DnUtils.composeDn( dnBuilderWidget.getRdn(), dnBuilderWidget.getParentDn() );
             newEntry.setDn( dn );
 
             // add new RDN
-            RDNPart[] newRdnParts = dn.getRdn().getParts();
-            for ( int i = 0; i < newRdnParts.length; i++ )
+            if( dn.getRdn().size() > 0 )
             {
-                IAttribute rdnAttribute = newEntry.getAttribute( newRdnParts[i].getType() );
-                if ( rdnAttribute == null )
+                Iterator<AttributeTypeAndValue> atavIterator = dn.getRdn().iterator();
+                while(atavIterator.hasNext())
                 {
-                    rdnAttribute = new Attribute( newEntry, newRdnParts[i].getType() );
-                    newEntry.addAttribute( rdnAttribute );
-                }
-                String rdnValue = newRdnParts[i].getUnencodedValue();
-                String[] stringValues = rdnAttribute.getStringValues();
-                if ( !Arrays.asList( stringValues ).contains( rdnValue ) )
-                {
-                    rdnAttribute.addValue( new Value( rdnAttribute, rdnValue ) );
+                    AttributeTypeAndValue atav = atavIterator.next();
+                    IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
+                    if ( rdnAttribute == null )
+                    {
+                        rdnAttribute = new Attribute( newEntry, atav.getUpType() );
+                        newEntry.addAttribute( rdnAttribute );
+                    }
+                    Object rdnValue = atav.getUpValue();
+                    String[] stringValues = rdnAttribute.getStringValues();
+                    if ( !Arrays.asList( stringValues ).contains( rdnValue ) )
+                    {
+                        rdnAttribute.addValue( new Value( rdnAttribute, rdnValue ) );
+                    }
                 }
             }
 
-        }
-        catch ( ModelModificationException e )
-        {
-            e.printStackTrace();
         }
         finally
         {
@@ -244,16 +249,14 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      */
     public IWizardPage getNextPage()
     {
-
         dnBuilderWidget.validate();
-        final RDN[] rdns = new RDN[]
-            { dnBuilderWidget.getRdn() };
-        final DN[] parentDns = new DN[]
-            { dnBuilderWidget.getParentDn() };
-        final DN dn = new DN( rdns[0], parentDns[0] );
+        
+        Rdn rdn = dnBuilderWidget.getRdn();
+        LdapDN parentDn = dnBuilderWidget.getParentDn();
+        final LdapDN dn = DnUtils.composeDn( rdn, parentDn );
 
         // check if parent exists or new entry already exists
-        ReadEntryJob readEntryJob1 = new ReadEntryJob( wizard.getSelectedConnection(), parentDns[0] );
+        ReadEntryJob readEntryJob1 = new ReadEntryJob( wizard.getSelectedConnection(), parentDn );
         RunnableContextJobAdapter.execute( readEntryJob1, getContainer(), false );
         IEntry parentEntry = readEntryJob1.getReadEntry();
         if ( parentEntry == null )

@@ -21,28 +21,29 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeModifyRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifModSpec;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecSepLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifModSpecTypeLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.text.BadLocationException;
@@ -111,7 +112,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
                 Schema schema = editor.getConnection() != null ? editor.getConnection().getSchema()
                     : Schema.DEFAULT_SCHEMA;
-                IConnection dummyConnection = new DummyConnection( schema );
+                IBrowserConnection dummyConnection = new DummyConnection( schema );
 
                 IEntry dummyEntry = null;
                 if ( containers[0] instanceof LdifContentRecord )
@@ -126,7 +127,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                 }
                 else if ( containers[0] instanceof LdifChangeModifyRecord )
                 {
-                    dummyEntry = new DummyEntry( new DN(), dummyConnection );
+                    dummyEntry = new DummyEntry( new LdapDN(), dummyConnection );
                 }
 
                 AttributeWizard wizard = new AttributeWizard( "Edit Attribute Description", true, false,
@@ -171,12 +172,12 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
                             LdifModSpecSepLine newSepLine = LdifModSpecSepLine.create();
 
-                            String text = newTypeLine.toFormattedString();
+                            String text = newTypeLine.toFormattedString( Utils.getLdifFormatParameters() );
                             for ( int j = 0; j < newAttrValLines.length; j++ )
                             {
-                                text += newAttrValLines[j].toFormattedString();
+                                text += newAttrValLines[j].toFormattedString( Utils.getLdifFormatParameters() );
                             }
-                            text += newSepLine.toFormattedString();
+                            text += newSepLine.toFormattedString( Utils.getLdifFormatParameters() );
                             try
                             {
                                 document.replace( modSpec.getOffset(), modSpec.getLength(), text );
@@ -193,7 +194,8 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                             LdifAttrValLine newLine = LdifAttrValLine.create( newAttributeDescription, oldValue );
                             try
                             {
-                                document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString() );
+                                document.replace( line.getOffset(), line.getLength(), newLine
+                                    .toFormattedString( Utils.getLdifFormatParameters() ) );
                             }
                             catch ( BadLocationException e )
                             {
@@ -205,10 +207,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                     // ...
                 }
             }
-            catch ( NameException e )
-            {
-            }
-            catch ( ModelModificationException e )
+            catch ( InvalidNameException e )
             {
             }
         }

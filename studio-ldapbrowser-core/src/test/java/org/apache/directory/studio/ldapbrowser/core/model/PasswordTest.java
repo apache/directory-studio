@@ -20,9 +20,9 @@
 
 package org.apache.directory.studio.ldapbrowser.core.model;
 
-import org.apache.directory.studio.ldapbrowser.core.model.Password;
 
 import junit.framework.TestCase;
+
 
 /**
  * Test all the encryption algorithmes
@@ -39,7 +39,7 @@ public class PasswordTest extends TestCase
     {
         try
         {
-            new Password( (String)null );
+            new Password( ( String ) null );
             fail();
         }
         catch ( IllegalArgumentException iae )
@@ -47,17 +47,29 @@ public class PasswordTest extends TestCase
             assertTrue( true );
         }
     }
-    
-    
+
+
     /**
      * 
      */
     public void testPasswordSHAEncrypted()
     {
         Password password = new Password( "{SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=" );
-            
+
         assertTrue( password.verify( "secret" ) );
     }
+
+
+    /**
+     * 
+     */
+    public void testPasswordSHAEncryptedLowercase()
+    {
+        Password password = new Password( "{sha}5en6G6MezRroT3XKqkdPOmY/BfQ=" );
+
+        assertTrue( password.verify( "secret" ) );
+    }
+
 
     /**
      * 
@@ -65,9 +77,21 @@ public class PasswordTest extends TestCase
     public void testPasswordSSHAEncrypted()
     {
         Password password = new Password( "{SSHA}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" );
-            
+
         assertTrue( password.verify( "secret" ) );
     }
+
+
+    /**
+     * 
+     */
+    public void testPasswordSSHAEncryptedLowercase()
+    {
+        Password password = new Password( "{ssha}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" );
+
+        assertTrue( password.verify( "secret" ) );
+    }
+
 
     /**
      * 
@@ -75,9 +99,21 @@ public class PasswordTest extends TestCase
     public void testPasswordMD5Encrypted()
     {
         Password password = new Password( "{MD5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" );
-            
+
         assertTrue( password.verify( "secret" ) );
     }
+
+
+    /**
+     * 
+     */
+    public void testPasswordMD5EncryptedLowercase()
+    {
+        Password password = new Password( "{md5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" );
+
+        assertTrue( password.verify( "secret" ) );
+    }
+
 
     /**
      * 
@@ -85,9 +121,21 @@ public class PasswordTest extends TestCase
     public void testPasswordSMD5Encrypted()
     {
         Password password = new Password( "{SMD5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" );
-            
+
         assertTrue( password.verify( "secret" ) );
     }
+
+
+    /**
+     * 
+     */
+    public void testPasswordSMD5EncryptedLowercase()
+    {
+        Password password = new Password( "{smd5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" );
+
+        assertTrue( password.verify( "secret" ) );
+    }
+
 
     /**
      * 
@@ -95,9 +143,21 @@ public class PasswordTest extends TestCase
     public void testPasswordCRYPTEncrypted()
     {
         Password password = new Password( "{CRYPT}qFkH8Z1woBlXw" );
-            
+
         assertTrue( password.verify( "secret" ) );
     }
+
+
+    /**
+     * 
+     */
+    public void testPasswordCRYPTEncryptedLowercase()
+    {
+        Password password = new Password( "{crypt}qFkH8Z1woBlXw" );
+
+        assertTrue( password.verify( "secret" ) );
+    }
+
 
     /**
      * 

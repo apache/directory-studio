@@ -99,7 +99,7 @@ public class ExportExcelWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportXlsJob eej = new ExportXlsJob( exportFilename, search.getConnection(), search.getSearchParameter(),
+        ExportXlsJob eej = new ExportXlsJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
             exportDn );
         eej.execute();
 

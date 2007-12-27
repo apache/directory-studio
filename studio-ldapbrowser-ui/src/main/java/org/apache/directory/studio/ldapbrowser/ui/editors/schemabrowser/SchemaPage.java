@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.eclipse.jface.action.Separator;
@@ -62,8 +62,8 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class SchemaPage
 {
 
-    /** The connection combo */
-    protected ConnectionComboContributionItem connectionCombo;
+    /** The connection widget */
+    protected BrowserConnectionWidgetContributionItem connectionCombo;
 
     /** The show default schema action */
     protected ShowDefaultSchemaAction showDefaultSchemaAction;
@@ -358,7 +358,7 @@ public abstract class SchemaPage
             }
         } );
 
-        connectionCombo = new ConnectionComboContributionItem( this );
+        connectionCombo = new BrowserConnectionWidgetContributionItem( this );
         this.form.getToolBarManager().add( connectionCombo );
         this.form.getToolBarManager().add( new Separator() );
         showDefaultSchemaAction = new ShowDefaultSchemaAction( schemaBrowser );
@@ -390,7 +390,7 @@ public abstract class SchemaPage
      * 
      * @return the connection
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connectionCombo.getConnection();
     }
@@ -401,7 +401,7 @@ public abstract class SchemaPage
      * 
      * @param connection the connection
      */
-    public void setConnection( IConnection connection )
+    public void setConnection( IBrowserConnection connection )
     {
         connectionCombo.setConnection( connection );
         reloadSchemaAction.updateEnabledState();

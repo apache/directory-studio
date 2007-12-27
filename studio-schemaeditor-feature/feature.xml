@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.directory.studio.schemas.feature"
-      label="Apache Directory Studio Schemas Editor"
-      version="0.8.0"
+      id="org.apache.directory.studio.schemaeditor.feature"
+      label="Apache Directory Studio Schema Editor"
+      version="1.0.1"
       provider-name="Apache Software Foundation"
-      os="linux,macosx,win32"
-      ws="carbon,gtk,win32"
-      arch="ppc,x86"
+      plugin="org.apache.directory.studio.schemaeditor"
       image="studio.png">
 
    <description>
-      The Apache Directory Studio Schemas Feature contains all plugins related to the
-Schemas Editor.
+      The Apache Directory Studio Schema Feature contains all plugins related to the Schema Editor.
    </description>
 
    <copyright>
@@ -220,28 +217,28 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update/1.x"/>
    </url>
 
    <plugin
-         id="org.apache.directory.studio.schemas"
+         id="org.apache.directory.studio.schemaeditor"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.schemas.help"
+         id="org.apache.directory.studio.schemaeditor.help"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>

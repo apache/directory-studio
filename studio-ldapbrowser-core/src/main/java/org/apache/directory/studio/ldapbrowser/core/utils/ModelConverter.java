@@ -24,28 +24,30 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 /**
  * Utilities to convert between models
  */
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeAddRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifChangeRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifChangeTypeLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifCommentLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifSepLine;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
+import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 
 public class ModelConverter
@@ -60,11 +62,10 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws ModelModificationException the model modification exception
-     * @throws NameException the name exception
+     * @throws InvalidNameException
      */
-    public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IConnection connection )
-        throws NameException, ModelModificationException
+    public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IBrowserConnection connection )
+        throws InvalidNameException
     {
         return createIntern( ldifContentRecord, connection );
     }
@@ -78,11 +79,10 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws ModelModificationException the model modification exception
-     * @throws NameException the name exception
+     * @throws InvalidNameException
      */
-    public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IConnection connection )
-        throws NameException, ModelModificationException
+    public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IBrowserConnection connection )
+        throws InvalidNameException
     {
         return createIntern( ldifChangeAddRecord, connection );
     }
@@ -96,17 +96,15 @@ public class ModelConverter
      *
      * @return the dummy entry
      *
-     * @throws ModelModificationException the model modification exception
-     * @throws NameException the name exception
+     * @throws InvalidNameException
      */
-    private static DummyEntry createIntern( LdifRecord ldifRecord, IConnection connection ) throws NameException,
-        ModelModificationException
+    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws InvalidNameException
     {
         LdifPart[] parts = ldifRecord.getParts();
 
         EventRegistry.suspendEventFireingInCurrentThread();
 
-        DummyEntry entry = new DummyEntry( new DN( ldifRecord.getDnLine().getValueAsString() ), connection );
+        DummyEntry entry = new DummyEntry( new LdapDN( ldifRecord.getDnLine().getValueAsString() ), connection );
 
         for ( int i = 0; i < parts.length; i++ )
         {
@@ -166,7 +164,7 @@ public class ModelConverter
 
         // LdifChangeAddRecord record =
         // LdifChangeAddRecord.create(entry.getDn().toString());
-        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().toString() ) );
+        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getUpName() ) );
         if ( mustCreateChangeTypeLine )
         {
             addControls( record, entry );
@@ -216,7 +214,7 @@ public class ModelConverter
     public static LdifContentRecord entryToLdifContentRecord( IEntry entry )
     {
 
-        LdifContentRecord record = LdifContentRecord.create( entry.getDn().toString() );
+        LdifContentRecord record = LdifContentRecord.create( entry.getDn().getUpName() );
 
         IAttribute[] attributes = entry.getAttributes();
         for ( int i = 0; i < attributes.length; i++ )
@@ -282,9 +280,9 @@ public class ModelConverter
     }
 
 
-    public static LdifDnLine dnToLdifDnLine( DN dn )
+    public static LdifDnLine dnToLdifDnLine( LdapDN dn )
     {
-        LdifDnLine line = LdifDnLine.create( dn.toString() );
+        LdifDnLine line = LdifDnLine.create( dn.getUpName() );
         return line;
     }
 
@@ -293,8 +291,39 @@ public class ModelConverter
     {
         if ( entry.isReferral() )
         {
-            cr.addControl( LdifControlLine.create( IConnection.CONTROL_MANAGEDSAIT, null, ( String ) null ) );
+            cr.addControl( LdifControlLine.create( IBrowserConnection.CONTROL_MANAGEDSAIT, null, ( String ) null ) );
         }
     }
 
+    /**
+     * Gets the string value from the given {@link IValue}. If the given
+     * {@link IValue} is binary is is encoded according to the regquested
+     * encoding type.
+     *
+     * @param value the value
+     * @param binaryEncoding the binary encoding type
+     *
+     * @return the string value
+     */
+    public static String getStringValue( IValue value, int binaryEncoding )
+    {
+        String s = value.getStringValue();
+        if ( value.isBinary() && LdifUtils.mustEncode( s ) )
+        {
+            byte[] binary = value.getBinaryValue();
+            if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_BASE64 )
+            {
+                s = LdifUtils.base64encode( binary );
+            }
+            else if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_HEX )
+            {
+                s = LdifUtils.hexEncode( binary );
+            }
+            else
+            {
+                s = BrowserCoreConstants.BINARY;
+            }
+        }
+        return s;
+    }
 }

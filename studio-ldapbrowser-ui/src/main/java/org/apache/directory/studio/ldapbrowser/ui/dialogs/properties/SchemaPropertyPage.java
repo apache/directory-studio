@@ -27,12 +27,11 @@ import java.util.Date;
 
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.ConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -123,7 +122,7 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
         BaseWidgetUtils.createLabel( cacheComposite, "Cache Size:", 1 );
         cacheSizeText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "", 1 );
 
-        IConnection connection = ConnectionPropertyPage.getConnection( getElement() );
+        IBrowserConnection connection = RootDSEPropertyPage.getConnection( getElement() );
         this.connectionUpdated( connection );
 
         return composite;
@@ -132,15 +131,14 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
 
     private void reloadSchema()
     {
-        final IConnection connection = ConnectionPropertyPage.getConnection( getElement() );
-        ReloadSchemasJob job = new ReloadSchemasJob( new IConnection[]
-            { connection } );
+        final IBrowserConnection browserConnection = RootDSEPropertyPage.getConnection( getElement() );
+        ReloadSchemasJob job = new ReloadSchemasJob( browserConnection );
         RunnableContextJobAdapter.execute( job );
-        this.connectionUpdated( connection );
+        this.connectionUpdated( browserConnection );
     }
 
 
-    private void connectionUpdated( IConnection connection )
+    private void connectionUpdated( IBrowserConnection connection )
     {
 
         if ( !this.dnText.isDisposed() )
@@ -189,7 +187,7 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
 
             if ( connection != null )
             {
-                String cacheFileName = ConnectionManager.getSchemaCacheFileName( connection.getName() );
+                String cacheFileName = BrowserConnectionManager.getSchemaCacheFileName( connection );
                 File cacheFile = new File( cacheFileName );
                 if ( cacheFile.exists() )
                 {
@@ -206,14 +204,7 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
                 }
             }
 
-            if ( connection != null && connection.isOpened() )
-            {
-                reloadSchemaButton.setEnabled( true );
-            }
-            else
-            {
-                reloadSchemaButton.setEnabled( true );
-            }
+            reloadSchemaButton.setEnabled( true );
         }
     }
 

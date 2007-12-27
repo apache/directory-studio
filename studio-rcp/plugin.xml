@@ -55,6 +55,22 @@
          <property
                name="windowImages"
                value="resources/icons/window/studio_16x16.gif,resources/icons/window/studio_32x32.gif,resources/icons/window/studio_48x48.gif,resources/icons/window/studio_64x64.gif,resources/icons/window/studio_128x128.gif"/>
+         <property
+               name="appName"
+               value="Apache Directory Studio">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="FFFFFF">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="10,237,435,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="0,280,455,15">
+         </property>
       </product>
    </extension>
    <extension
@@ -72,6 +88,7 @@
          point="org.eclipse.ui.intro">
       <intro
             class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            icon="resources/icons/intro.gif"
             id="studio.intro">
       </intro>
       <introProductBinding

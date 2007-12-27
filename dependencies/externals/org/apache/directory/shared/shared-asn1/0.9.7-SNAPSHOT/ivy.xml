@@ -3,7 +3,7 @@
 		module="shared-asn1"
 		revision="0.9.7-SNAPSHOT"
 		status="release"
-		publication="20070426221800"
+		publication="20070830140800"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>

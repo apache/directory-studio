@@ -26,7 +26,7 @@ import java.io.File;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ImportDsmlJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -51,7 +51,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     public static final String WIZARD_TITLE = "DSML Import";
 
     /** The connection attached to the import */
-    private IConnection importConnection;
+    private IBrowserConnection importConnection;
 
     /** The main page of the wizard */
     private ImportDsmlMainWizardPage mainPage;
@@ -81,7 +81,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
      * @param selectedConnection
      *          The connection to use
      */
-    public ImportDsmlWizard( IConnection selectedConnection )
+    public ImportDsmlWizard( IBrowserConnection selectedConnection )
     {
         setWindowTitle( WIZARD_TITLE );
         this.importConnection = selectedConnection;
@@ -133,27 +133,27 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
         Object o = selection.getFirstElement();
         if ( o instanceof IEntry )
         {
-            importConnection = ( ( IEntry ) o ).getConnection();
+            importConnection = ( ( IEntry ) o ).getBrowserConnection();
         }
         else if ( o instanceof ISearchResult )
         {
-            importConnection = ( ( ISearchResult ) o ).getEntry().getConnection();
+            importConnection = ( ( ISearchResult ) o ).getEntry().getBrowserConnection();
         }
         else if ( o instanceof IBookmark )
         {
-            importConnection = ( ( IBookmark ) o ).getConnection();
+            importConnection = ( ( IBookmark ) o ).getBrowserConnection();
         }
         else if ( o instanceof IAttribute )
         {
-            importConnection = ( ( IAttribute ) o ).getEntry().getConnection();
+            importConnection = ( ( IAttribute ) o ).getEntry().getBrowserConnection();
         }
         else if ( o instanceof IValue )
         {
-            importConnection = ( ( IValue ) o ).getAttribute().getEntry().getConnection();
+            importConnection = ( ( IValue ) o ).getAttribute().getEntry().getBrowserConnection();
         }
-        else if ( o instanceof IConnection )
+        else if ( o instanceof IBrowserConnection )
         {
-            importConnection = ( IConnection ) o;
+            importConnection = ( IBrowserConnection ) o;
         }
         else
         {
@@ -189,7 +189,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
      * Get the connection attached to the Import
      * @return The connection attached to the Import
      */
-    public IConnection getImportConnection()
+    public IBrowserConnection getImportConnection()
     {
         return importConnection;
     }
@@ -200,7 +200,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
      * @param connection
      *          The connection attached to the Import
      */
-    public void setImportConnection( IConnection connection )
+    public void setImportConnection( IBrowserConnection connection )
     {
         this.importConnection = connection;
     }

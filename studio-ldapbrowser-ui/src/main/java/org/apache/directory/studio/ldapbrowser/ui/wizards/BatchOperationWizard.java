@@ -21,14 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -36,7 +37,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
-
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -61,7 +61,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 public class BatchOperationWizard extends Wizard implements INewWizard
 {
 
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     private BatchOperationApplyOnWizardPage applyOnPage;
 
@@ -98,25 +98,25 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
         ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
             .getSelection();
-        IConnection[] connections = SelectionUtils.getConnections( selection );
-        ISearch[] searches = SelectionUtils.getSearches( selection );
-        IEntry[] entries = SelectionUtils.getEntries( selection );
-        ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-        IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
-        IAttribute[] attributes = SelectionUtils.getAttributes( selection );
-        IValue[] values = SelectionUtils.getValues( selection );
+        Connection[] connections = BrowserSelectionUtils.getConnections( selection );
+        ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+        IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+        ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+        IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+        IAttribute[] attributes = BrowserSelectionUtils.getAttributes( selection );
+        IValue[] values = BrowserSelectionUtils.getValues( selection );
 
         // if(searches.length + entries.length + searchResults.length +
         // bookmarks.length > 0) {
         if ( connections.length > 0
-            && connections[0].isOpened()
+            && connections[0].getJNDIConnectionWrapper().isConnected()
             || searches.length + entries.length + searchResults.length + bookmarks.length + attributes.length
                 + values.length > 0 )
         {
 
-            ISearch search = SelectionUtils.getExampleSearch( selection );
+            ISearch search = BrowserSelectionUtils.getExampleSearch( selection );
             search.setName( null );
-            this.connection = search.getConnection();
+            this.connection = search.getBrowserConnection();
 
             applyOnPage = new BatchOperationApplyOnWizardPage( BatchOperationApplyOnWizardPage.class.getName(), this );
             addPage( applyOnPage );
@@ -293,13 +293,13 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             }
 
             // get DNs
-            DN[] dns = applyOnPage.getApplyOnDns();
+            LdapDN[] dns = applyOnPage.getApplyOnDns();
             if ( dns == null )
             {
                 if ( applyOnPage.getApplyOnSearch() != null )
                 {
                     ISearch search = applyOnPage.getApplyOnSearch();
-                    if ( search.getConnection() != null )
+                    if ( search.getBrowserConnection() != null )
                     {
                         SearchJob job = new SearchJob( new ISearch[]
                             { search } );
@@ -307,7 +307,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                         if ( job.getExternalResult().isOK() )
                         {
                             ISearchResult[] srs = search.getSearchResults();
-                            dns = new DN[srs.length];
+                            dns = new LdapDN[srs.length];
                             for ( int i = 0; i < srs.length; i++ )
                             {
                                 dns[i] = srs[i].getDn();
@@ -319,17 +319,16 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
             if ( dns != null )
             {
-
                 StringBuffer ldif = new StringBuffer();
                 for ( int i = 0; i < dns.length; i++ )
                 {
                     ldif.append( "dn: " );
-                    ldif.append( dns[i].toString() );
+                    ldif.append( dns[i].getUpName() );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                     ldif.append( ldifFragment );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
-
+                
                 if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF )
                 {
 
@@ -378,7 +377,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     }
 
 
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return this.connection;
     }

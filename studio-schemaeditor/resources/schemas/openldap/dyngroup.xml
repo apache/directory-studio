@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="dyngroup">
+   <attributetypes>
+      <attributetype oid="2.16.840.1.113730.3.1" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>memberURL</alias>
+         </aliases>
+         <description>Identifies an URL associated with each member of a group. Any type of labeled URL can be used.</description>
+         <superior>labeledURI</superior>
+         <usage>USER_APPLICATIONS</usage>
+      </attributetype>
+   </attributetypes>
+   <objectclasses>
+      <objectclass oid="2.16.840.1.113730.3.2.33" obsolete="false">
+         <aliases>
+            <alias>groupOfURLs</alias>
+         </aliases>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>cn</attributetype>
+         </mandatory>
+         <optional>
+            <attributetype>memberURL</attributetype>
+            <attributetype>businessCategory</attributetype>
+            <attributetype>description</attributetype>
+            <attributetype>o</attributetype>
+            <attributetype>ou</attributetype>
+            <attributetype>owner</attributetype>
+            <attributetype>seeAlso</attributetype>
+         </optional>
+      </objectclass>
+   </objectclasses>
+</schema>

@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
@@ -52,7 +52,7 @@ public class ValueDeletedEvent extends EntryModificationEvent
      * @param modifiedAttribute the modified attribute
      * @param deletedValue the deleted value
      */
-    public ValueDeletedEvent( IConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
+    public ValueDeletedEvent( IBrowserConnection connection, IEntry modifiedEntry, IAttribute modifiedAttribute,
         IValue deletedValue )
     {
         super( connection, modifiedEntry );
@@ -90,7 +90,7 @@ public class ValueDeletedEvent extends EntryModificationEvent
     {
         return BrowserCoreMessages.bind( BrowserCoreMessages.event__deleted_val_from_att_at_dn, new String[]
             { getDeletedValue().getStringValue(), getModifiedAttribute().getDescription(),
-                getModifiedEntry().getDn().toString() } );
+                getModifiedEntry().getDn().getUpName() } );
     }
 
 }

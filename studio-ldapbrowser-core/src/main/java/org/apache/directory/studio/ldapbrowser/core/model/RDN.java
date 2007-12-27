@@ -34,6 +34,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 /**
  * A RDN represents a LDAP relative distinguished name.
  *
+ * @deprecated This class will be removed in the next version. The DN/RDN/RDNPart 
+ * classes are replaced with the shared-ldap LdapDN/Rdn/ATAV. This class just 
+ * remains to provide backward compatibility of the old browserconnections.xml
+ * file that stores searches and bookmarks.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */

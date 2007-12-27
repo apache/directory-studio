@@ -21,25 +21,20 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import org.apache.directory.studio.connection.ui.actions.StudioAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
-import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-
+import org.apache.directory.studio.ldifparser.model.LdifFile;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -55,11 +50,8 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
+public abstract class BrowserAction extends StudioAction implements IWorkbenchWindowActionDelegate
 {
-    /** The selected Connections */
-    private IConnection[] selectedConnections;
-
     /** The selected Browser View Categories */
     private BrowserCategory[] selectedBrowserViewCategories;
 
@@ -138,20 +130,18 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
      */
     public void selectionChanged( IAction action, ISelection selection )
     {
-        setSelectedConnections( SelectionUtils.getConnections( selection ) );
+        setSelectedBrowserViewCategories( BrowserSelectionUtils.getBrowserViewCategories( selection ) );
+        setSelectedEntries( BrowserSelectionUtils.getEntries( selection ) );
+        setSelectedBrowserEntryPages( BrowserSelectionUtils.getBrowserEntryPages( selection ) );
+        setSelectedSearchResults( BrowserSelectionUtils.getSearchResults( selection ) );
+        setSelectedBrowserSearchResultPages( BrowserSelectionUtils.getBrowserSearchResultPages( selection ) );
+        setSelectedBookmarks( BrowserSelectionUtils.getBookmarks( selection ) );
 
-        setSelectedBrowserViewCategories( SelectionUtils.getBrowserViewCategories( selection ) );
-        setSelectedEntries( SelectionUtils.getEntries( selection ) );
-        setSelectedBrowserEntryPages( SelectionUtils.getBrowserEntryPages( selection ) );
-        setSelectedSearchResults( SelectionUtils.getSearchResults( selection ) );
-        setSelectedBrowserSearchResultPages( SelectionUtils.getBrowserSearchResultPages( selection ) );
-        setSelectedBookmarks( SelectionUtils.getBookmarks( selection ) );
+        setSelectedSearches( BrowserSelectionUtils.getSearches( selection ) );
 
-        setSelectedSearches( SelectionUtils.getSearches( selection ) );
-
-        setSelectedAttributes( SelectionUtils.getAttributes( selection ) );
-        setSelectedAttributeHierarchies( SelectionUtils.getAttributeHierarchie( selection ) );
-        setSelectedValues( SelectionUtils.getValues( selection ) );
+        setSelectedAttributes( BrowserSelectionUtils.getAttributes( selection ) );
+        setSelectedAttributeHierarchies( BrowserSelectionUtils.getAttributeHierarchie( selection ) );
+        setSelectedValues( BrowserSelectionUtils.getValues( selection ) );
 
         action.setEnabled( this.isEnabled() );
         action.setText( this.getText() );
@@ -219,7 +209,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
      */
     private void init()
     {
-        this.selectedConnections = new IConnection[0];
         this.selectedBrowserViewCategories = new BrowserCategory[0];
         this.selectedEntries = new IEntry[0];
         this.selectedBrowserEntryPages = new BrowserEntryPage[0];
@@ -246,7 +235,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
      */
     public void dispose()
     {
-        this.selectedConnections = new IConnection[0];
         this.selectedBrowserViewCategories = new BrowserCategory[0];
         this.selectedEntries = new IEntry[0];
         this.selectedBrowserEntryPages = new BrowserEntryPage[0];
@@ -277,50 +265,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
     protected Shell getShell()
     {
         return PlatformUI.getWorkbench().getDisplay().getActiveShell();
-    }
-
-
-    /**
-     * This method is fired when an Entry is updated.
-     *
-     * @param event
-     *      the associated event
-     */
-    public final void entryUpdated( EntryModificationEvent event )
-    {
-    }
-
-
-    /**
-     * This method is fired when a Search is updated.
-     *
-     * @param searchUpdateEvent
-     *      the associated event
-     */
-    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
-    {
-    }
-
-
-    /**
-     * This method is fired when a Bookmark is updated.
-     *
-     * @param bookmarkUpdateEvent
-     *      the associated event
-     */
-    public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
-    {
-    }
-
-
-    /**
-     * This method is fired when a Connection is updated.
-     *
-     * @param connectionUpdateEvent
-     *      the associated event
-     */
-    public final void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
-    {
     }
 
 
@@ -393,30 +337,6 @@ public abstract class BrowserAction implements IWorkbenchWindowActionDelegate
     public void setSelectedBrowserViewCategories( BrowserCategory[] selectedBrowserViewCategories )
     {
         this.selectedBrowserViewCategories = selectedBrowserViewCategories;
-    }
-
-
-    /**
-     * Gets the selected Connections.
-     *
-     * @return
-     *      the selected Connections
-     */
-    public IConnection[] getSelectedConnections()
-    {
-        return selectedConnections;
-    }
-
-
-    /**
-     * Sets the selected Connections.
-     *
-     * @param selectedConnections
-     *      the selected Connections to set
-     */
-    public void setSelectedConnections( IConnection[] selectedConnections )
-    {
-        this.selectedConnections = selectedConnections;
     }
 
 

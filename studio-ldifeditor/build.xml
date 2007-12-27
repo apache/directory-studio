@@ -28,8 +28,11 @@
 	
 	<!-- COMPILE-DEPENDENCIES TASK -->
 	<target name="compile-dependencies" description="Compiles the dependencies of the project" >
+		<ant dir="../studio-connection-core" target="compile" inheritall="false" />
+		<ant dir="../studio-connection-ui" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-core" target="compile" inheritall="false" />
 		<ant dir="../studio-ldapbrowser-common" target="compile" inheritall="false" />
+		<ant dir="../studio-ldif-parser" target="compile" inheritall="false" />
 	</target>
 	
 	
@@ -45,9 +48,28 @@
 			</fileset>
 			<!-- Plugin dependencies -->
 			<fileset dir="../studio-jars/lib/" />
+			<pathelement location="../studio-connection-core/target/classes"/>
+			<pathelement location="../studio-connection-ui/target/classes"/>
 			<pathelement location="../studio-ldapbrowser-core/target/classes"/>
 			<pathelement location="../studio-ldapbrowser-common/target/classes"/>
+			<pathelement location="../studio-ldif-parser/target/classes"/>
 		</path>
+	</target>
+	
+	
+	<!-- PLUGIN TASK -->
+	<target name="plugin" depends="pre-plugin,studio-build.plugin" />
+	
+
+	<!-- PRE-PLUGIN TASK -->
+	<target name="pre-plugin">
+		<mkdir dir="${target.build}" />
+		<copy todir="${target.build}" failonerror="false">
+			<fileset dir="${basedir}">
+				<include name="about.ini" />
+				<include name="studio.png" />
+			</fileset>
+		</copy>
 	</target>
 	
 </project>

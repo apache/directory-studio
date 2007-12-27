@@ -29,7 +29,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
  */
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
@@ -120,8 +120,8 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             {
                 if ( editor.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
                 {
-                    ISearch[] searches = SelectionUtils.getSearches( selection );
-                    Object[] objects = SelectionUtils.getObjects( selection );
+                    ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+                    Object[] objects = BrowserSelectionUtils.getObjects( selection );
                     if ( searches.length == 1 && objects.length == 1 )
                     {
                         editor.setInput( new SearchResultEditorInput( searches[0] ) );
@@ -731,7 +731,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
 
                     // dnLink.setText("<a>"+sr.getDn().toString()+"</a>");
                     dnLink.setData( sr );
-                    dnLink.setText( sr.getDn().toString() );
+                    dnLink.setText( sr.getDn().getUpName() );
                     dnLink.setUnderlined( true );
                     dnLink.setFont( item.getFont() );
                     dnLink.setForeground( item.getForeground() );

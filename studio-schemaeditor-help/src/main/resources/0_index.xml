@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[]>
 <!--
-  Licensed to the Apache Software Foundation (ASF) under one
-  or more contributor license agreements.  See the NOTICE file
-  distributed with this work for additional information
-  regarding copyright ownership.  The ASF licenses this file
-  to you under the Apache License, Version 2.0 (the
-  "License"); you may not use this file except in compliance
-  with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing,
-  software distributed under the License is distributed on an
-  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, either express or implied.  See the License for the
-  specific language governing permissions and limitations
-  under the License.
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
 -->
 <book>
 	<bookinfo>
 		<title>Apache Directory Studio</title>
-		<subtitle>Schemas Editor User's Guide</subtitle>
-		<releaseinfo>Version 0.6.0</releaseinfo>
+		<subtitle>Schema Editor User's Guide</subtitle>
+		<releaseinfo>Version 1.0.0</releaseinfo>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>
@@ -53,14 +53,14 @@
 	<chapter id="gettingstarted">
 		<title>Getting started</title>
 		<para>
-			This part of the guide provides you a sum up of the basic concepts of the Schemas Editor Plugin. 
+			This part of the guide provides you a sum up of the basic concepts of the Schema Editor Plugin. 
 		</para>
 
         <!-- DOWNLOAD AND INSTALLATION SECTION -->
-        <section id="download_install">
+        <section id="gettingstarted_download_install">
 		    <title>Download and installation</title>
 		    <para>
-		 	    Beside the integration in Apache Directory Studio the Apache Directory Studio Schemas Editor can also be installed
+		 	    Beside the integration in Apache Directory Studio the Apache Directory Studio Schema Editor can also be installed
 		 	    as a plug-in into a regular Eclipse installation. This section describes this
 		 	    alternative. 
 		    </para>
@@ -85,7 +85,7 @@
 				    <mediaobject>
 					    <imageobject>
 						    <imagedata scale="50"
-							    fileref="images/gettingstarted/install_1.png" format="PNG" />
+							    fileref="images/install_1.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
@@ -95,13 +95,13 @@
 			    In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
 			    <itemizedlist>
 				    <listitem>Name: Apache Directory Studio Update Site</listitem>
-				    <listitem>URL: http://directory.apache.org/studio/update/</listitem>
+				    <listitem>URL: http://directory.apache.org/studio/update/1.x</listitem>
 			    </itemizedlist>
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
 						    <imagedata scale="50"
-							fileref="images/gettingstarted/install_2.png" format="PNG" />
+							fileref="images/install_2.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
@@ -113,20 +113,20 @@
 				    <mediaobject>
 					    <imageobject>
 						    <imagedata scale="50"
-							    fileref="images/gettingstarted/install_3.png" format="PNG" />
+							    fileref="images/install_3.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
 		    </para>
 		    <para>
 			    Now the install manager checks the update site and presents the search results. Select the
-			    feature you want to install - of course the Apache Directory Studio Schemas Editor - and click 
+			    feature you want to install - of course the Apache Directory Studio Schema Editor - and click 
 			    <emphasis role="strong">Next</emphasis>.
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
 						    <imagedata scale="50"
-							    fileref="images/gettingstarted/install_4.png" format="PNG" />
+							    fileref="images/install_4.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
@@ -138,19 +138,19 @@
 				    <mediaobject>
 					    <imageobject>
 						    <imagedata scale="50"
-							    fileref="images/gettingstarted/install_5.png" format="PNG" />
+							    fileref="images/install_5.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
 		    </para>
 		    <para>
-			    In the next dialog ensure that the Apache Directory Studio Schemas Editor feature is selected and 
+			    In the next dialog ensure that the Apache Directory Studio Schema Editor feature is selected and 
 			    click to <emphasis role="strong">Finish</emphasis>.
 			    <screenshot>
 				    <mediaobject>
 					    <imageobject>
 						<imagedata scale="50"
-							fileref="images/gettingstarted/install_6.png" format="PNG" />
+							fileref="images/install_6.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
@@ -163,7 +163,7 @@
 				    <mediaobject>
 					    <imageobject>
 						    <imagedata scale="50"
-						    	fileref="images/gettingstarted/install_7.png" format="PNG" />
+						    	fileref="images/install_7.png" format="PNG" />
 					    </imageobject>
 				    </mediaobject>
 			    </screenshot>
@@ -172,54 +172,89 @@
 			    After installation it is recommended to restart the Eclipse workbench.
 		    </para>
 	    </section>
-		
-        <!-- VIEWS SECTION -->
-		<section id="views">
-			<title>Views</title>
-			
-            <!-- HIERARCHY VIEW SECTION -->
-			<section id="hierarchy_view">
-				<title>Hierarchy view</title>
-				<para>
-					Hierarchy view provides a hierarchical view of the resources in the schemas. From here, you can open 
-					object classes and attribute types to edit them or browse the classes hierarchy.
-				</para>
-				<para>
-					<screenshot>
-						<mediaobject>
+	    
+		<!-- VIEWS SECTION -->
+        <section id="gettingstarted_views">
+		    <title>Views</title>
+		    
+			<!-- HIERARCHY VIEW SECTION -->
+	        <section id="gettingstarted_views_hierarchy">
+			    <title>Hierarchy view</title>
+			    <para>The Hierarchy view shows the hierarchy of an element (attribute type or object class).</para>
+			    <para>Here is what the Hierarchy view looks like:
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_hierarchy-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Hierarchy view contains the following actions:
+				    <itemizedlist spacing="normal" mark="bullet">
+				    	<listitem>
 							<imageobject>
-								<imagedata scale="50"
-									fileref="images/gettingstarted/views_hierarchy_view.png" format="PNG" />
-							</imageobject>
-						</mediaobject>
-					</screenshot>
-				</para>
-				<para>
-					By default, the Hierarchy view is included in the Schemas perspective
-				</para>
-				<para>
-					<emphasis role="strong">Toolbar</emphasis>
-				</para>
-				<para>
-					The toolbar of the Hierarchy view contains the following buttons:
-				</para>
-				<para>
-					<itemizedlist spacing="normal" mark="bullet">
-						<listitem>
-							<emphasis>Sort Alphabetically</emphasis> - Displays the hierarchy by alphabetical order.
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-type.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Type Hierarchy</emphasis>: Shows the type hierarchy.
 						</listitem>
 						<listitem>
-							<emphasis>Sort Unalphabetically</emphasis> - Displays the hierarchy by unalphabetical order.
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Supertype Hierarchy</emphasis>: Shows the supertype hierarchy.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-subtype.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Subtype Hierarchy</emphasis>: Shows the subtype hierarchy.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_link-with-editor.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Link with Editor</emphasis>: Links the view with the editor.
 						</listitem>
 					</itemizedlist>
-				</para>
-				<para>
-					<emphasis role="strong">Icons</emphasis>
-				</para>
-				<para>
-					The following icons can appear in the Hierarchy view.
-				</para>
-				<para>
+			    </para>
+			    <para><emphasis role="strong">Menu</emphasis></para>
+			    <para>The menu of the Hierarchy view contains the following actions:
+				    <itemizedlist spacing="normal" mark="bullet">
+				    	<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-type.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Type Hierarchy</emphasis>: Shows the type hierarchy.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Supertype Hierarchy</emphasis>: Shows the supertype hierarchy.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_hierarchy-subtype.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show the Subtype Hierarchy</emphasis>: Shows the subtype hierarchy.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_link-with-editor.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Link with Editor</emphasis>: Links the view with the editor.
+						</listitem>
+						<listitem>
+							<emphasis>Preferences</emphasis>: Displays the preferences dialog for the Hierarchy view.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Hierarchy view:</para>
+			    <para>
 					<informaltable>
 						<tgroup cols="2">
 							<colspec colname="Icon" colwidth="1* "/>
@@ -235,110 +270,312 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-operational.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Object class</entry>
+									<entry>Attribute type (operational)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class_warning.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-user.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Unresolved object class</entry>
+									<entry>Attribute type (user)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/folder.png" format="PNG" />
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-abstract.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Folder</entry>
+									<entry>Object class (abstract)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-auxiliary.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Attribute type</entry>
+									<entry>Object class (auxiliary)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-structural.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (structural)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-hierarchy-selected.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Attribute type (current selection)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-hierarchy-selected.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (current selection)</entry>
 								</row>
 							</tbody>
 						</tgroup>
 					</informaltable>
 				</para>
-			</section>
-			
-            <!-- SCHEMA VIEW SECTION -->
-			<section id="schemas_view">
-				<title>Schemas View</title>
-                <para>
-					Schemas view provides a view of all the opened schemas. From here, you can open object classes and attribute 
-                    types to edit them or browse the property of schemas files. You can also, add or delete attribute types, object 
-                    classes or schemas.
+		    </section>
+		    
+			<!-- PROBLEMS VIEW SECTION -->
+	        <section id="gettingstarted_views_problems">
+			    <title>Problems view</title>
+			    <para>The Problems view displays errors and warnings associated with a resource.</para>
+			    <para>Here is what the Problems view looks like:
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_problems-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Problems view:</para>
+			    <para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_error.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Error</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_warning.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Warning</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
 				</para>
-				<para>
-					<screenshot>
-						<mediaobject>
+		    </section>
+		    
+			<!-- PROJECTS VIEW SECTION -->
+	        <section id="gettingstarted_views_projects">
+			    <title>Projects view</title>
+			    <para>The Projects view shows all the Schema projects of the workspace.</para>
+			    <para>Here is what the Projects view looks like:
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_projects-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Projects view contains the following actions:
+				    <itemizedlist spacing="normal" mark="bullet">
+						<listitem>
 							<imageobject>
-								<imagedata scale="50"
-									fileref="images/gettingstarted/views_schemas_view.png" format="PNG" />
-							</imageobject>
-						</mediaobject>
-					</screenshot>
+								<imagedata contentdepth="1em" fileref="images/icons_project-new.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>New Schema Project</emphasis>: Opens the New Schema Project wizard.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Projects view:</para>
+			    <para>
+					<informaltable>
+						<tgroup cols="2">
+							<colspec colname="Icon" colwidth="1* "/>
+							<colspec colname="Description" colwidth="3*" />
+							<thead>
+								<row>
+									<entry>Icon</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_project-offline-closed.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Closed offline project</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_project-offline.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Opened offline project</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_project-online-closed.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Closed online project</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_project-online.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Opened onlineproject</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
 				</para>
-				<para>
-					By default, the Schemas view is included in the Schemas perspective
+		    </section>
+		    
+			<!-- SCHEMA VIEW SECTION -->
+	        <section id="gettingstarted_views_schema">
+			    <title>Schema view</title>
+			    <para>This Schema view shows all the schemas of the currently opened project.</para>
+			    <para>The Schema view has two types of presentation:
+			    	<itemizedlist spacing="normal" mark="bullet">
+						<listitem>Flat (Default)</listitem>
+						<listitem>Hierarchical</listitem>
+					</itemizedlist>
 				</para>
-                <para>
-					<emphasis role="strong">Toolbar</emphasis>
-				</para>
-				<para>
-					The toolbar of the Schemas view contains the following buttons:
-				</para>
-                <para>
+			    <para>Here is what the Schema view looks like in flat presentation:
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_schema-view-flat-presentation.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para>Here is what the Schema view looks like in hierarchical presentation:
+				    <screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_schema-view-hierarchical-presentation.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Schema view contains the following actions:
+				    <itemizedlist spacing="normal" mark="bullet">
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_schema-new.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>New Schema</emphasis>: Opens the New Schema wizard.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_attribute-type-new.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>New Attribute Type</emphasis>: Opens the New Attribute Type wizard.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_object-class-new.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>New Object Class</emphasis>: Opens the Object Class wizard.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_collapse-all.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Collapse All</emphasis>: Collapse all the node of the tree.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_link-with-editor.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Link with Editor</emphasis>: Links the view with the editor.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Menu</emphasis></para>
+			    <para>The menu of the Schema view contains the following actions:
 					<itemizedlist spacing="normal" mark="bullet">
 						<listitem>
-							<emphasis>Open a local schema file</emphasis> - Opens a file dialog to select the schema file.
-                        </listitem>
-                        <listitem>
-							<emphasis>Create a new schema</emphasis> - Opens a wizard to create a new schema.
-                        </listitem>
-                        <listitem>
-							<emphasis>Remove the selected schema from the pool</emphasis> - Removes the selected schema from the pool.
-                        </listitem>
-                        <listitem>
-							<emphasis>Create a new object class</emphasis> -  Opens a wizard to create a new object class.
-                        </listitem>
-                        <listitem>
-							<emphasis>Create a new attribute type</emphasis> - Opens a wizard to create a new attribute type.
-                        </listitem>
-                        <listitem>
-							<emphasis>Delete</emphasis> - Deletes the selected element (attribute type or object class). (Note: A schema cannot be deleted, but only removed.)
-                        </listitem>
-                        <listitem>
-							<emphasis>Sort Alphabetically</emphasis> - Displays the hierarchy by alphabetical order.
-                        </listitem>
-                        <listitem>
-							<emphasis>Sort Unalphabetically</emphasis> - Displays the hierarchy by unalphabetical order.
-                        </listitem>
-                    </itemizedlist>
-                </para>
-				<para>
-					<emphasis role="strong">Icons</emphasis>
-				</para>
-				<para>
-					The following icons can appear in the Schemas view.
-				</para>
-				<para>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_sorting.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Sorting...</emphasis>: Opens the Sorting dialog for this view.
+						</listitem>
+						<listitem>
+							<emphasis>Schema Presentation</emphasis>
+							<itemizedlist spacing="normal" mark="bullet">
+								<listitem><emphasis>Flat</emphasis>: Displays the Schema in flat presentation.</listitem>
+								<listitem><emphasis>Hierarchical</emphasis>: Displays the Schema in hierarchical presentation.</listitem>							
+							</itemizedlist>
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_link-with-editor.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Link with Editor</emphasis>: Links the view with the editor.
+						</listitem>
+						<listitem>
+							<emphasis>Preferences</emphasis>: Opens the Preferences dialog for this view.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Schema view:</para>
+			    <para>
 					<informaltable>
 						<tgroup cols="2">
 							<colspec colname="Icon" colwidth="1* "/>
@@ -354,110 +591,132 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/schema.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-operational.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Schema file</entry>
+									<entry>Attribute type (operational)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/schema_core.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-user.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Core schema file</entry>
+									<entry>Attribute type (user)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/folder.png" format="PNG" />
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-abstract.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Folder</entry>
+									<entry>Object class (abstract)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-auxiliary.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Object class</entry>
+									<entry>Object class (auxiliary)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-structural.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Attribute type</entry>
+									<entry>Object class (structural)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_hover-error.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Indicates an error on the resource</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_hover-warning.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Indicates a warning on the resource</entry>
 								</row>
 							</tbody>
 						</tgroup>
 					</informaltable>
 				</para>
-			</section>
-			
-            <!-- SEARCH VIEW SECTION -->
-			<section id="search_view">
-				<title>Search View</title>
-                <para>
-					Search view provides a search field to search any ressources in the Workbench (object class or attribute type). 
-                    From here, you can open object classes and attribute types to edit them.
-				</para>
-				<para>
-					<screenshot>
-						<mediaobject>
+		    </section>
+		    
+			<!-- SEARCH VIEW SECTION -->
+	        <section id="gettingstarted_views_search">
+			    <title>Search view</title>
+			    <para>The Search view displays the results of a search.</para>
+			    <para>Here is what the Search view looks like:
+			    	<screenshot>
+					    <mediaobject>
+						    <imageobject>
+							    <imagedata scale="50"
+							    	fileref="images/views_search-view.png" format="PNG" />
+						    </imageobject>
+					    </mediaobject>
+				    </screenshot>
+			    </para>
+			    <para><emphasis role="strong">Toolbar</emphasis></para>
+			    <para>The toolbar of the Search view contains the following actions:
+				    <itemizedlist spacing="normal" mark="bullet">
+						<listitem>
 							<imageobject>
-								<imagedata scale="50"
-									fileref="images/gettingstarted/views_search_view.png" format="PNG" />
-							</imageobject>
-						</mediaobject>
-					</screenshot>
-				</para>
-				<para>
-					By default, the Search view is included in the Schemas perspective
-				</para>
-                <para>
-					<emphasis role="strong">Toolbar</emphasis>
-				</para>
-				<para>
-					Search view provides the following search filter:
-				</para>
-                <para>
+								<imagedata contentdepth="1em" fileref="images/icons_show-search-field.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Show Search Field</emphasis>: Shows the search field in the Search view.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_run-current-search-again.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Run the Current Search Again</emphasis>: Runs the current search again.
+						</listitem>
+						<listitem>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_show-search-history.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Search History</emphasis>: This command allows you to browse previously conducted searches and repeat a previous search.  You can select a previous search from the drop-down menu or clear the search history.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Menu</emphasis></para>
+			    <para>The menu of the Search view contains the following actions:
 					<itemizedlist spacing="normal" mark="bullet">
 						<listitem>
-							<emphasis>All metadata</emphasis> - Search elements by name, oid and description.
-                        </listitem>
-                        <listitem>
-							<emphasis>Name</emphasis> - Only search elements by name.
-                        </listitem>
-                        <listitem>
-							<emphasis>OID</emphasis> - Only search elements by OID.
-                        </listitem>
-                        <listitem>
-							<emphasis>Description</emphasis> -  Only search elements by description.
-                        </listitem>
-                        <listitem>
-							<emphasis>Create a new attribute type</emphasis> - Opens a wizard to create a new attribute type.
-                        </listitem>
-                    </itemizedlist>
-                </para>
-				<para>
-					<emphasis role="strong">Icons</emphasis>
-				</para>
-				<para>
-					The following icons can appear in the Search view.
-				</para>
-				<para>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="images/icons_sorting.gif" format="GIF" />
+							</imageobject> - 
+							<emphasis>Sorting...</emphasis>: Opens the Sorting dialog for this view.
+						</listitem>
+						<listitem>
+							<emphasis>Preferences</emphasis>: Opens the Preferences dialog for this view.
+						</listitem>
+					</itemizedlist>
+			    </para>
+			    <para><emphasis role="strong">Icons</emphasis></para>
+			    <para>The following icons can appear in the Search view:</para>
+			    <para>
 					<informaltable>
 						<tgroup cols="2">
 							<colspec colname="Icon" colwidth="1* "/>
@@ -473,43 +732,74 @@
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/object_class.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-operational.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Object class</entry>
+									<entry>Attribute type (operational)</entry>
 								</row>
 								<row>
 									<entry align="center">
 										<mediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em" fileref="images/gettingstarted/attribute_type.gif" format="GIF" />
+												<imagedata contentdepth="1em" fileref="images/icons_attribute-type-user.gif" format="GIF" />
 											</imageobject>
 										</mediaobject>
 									</entry>
-									<entry>Attribute type</entry>
+									<entry>Attribute type (user)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-abstract.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (abstract)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-auxiliary.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (auxiliary)</entry>
+								</row>
+								<row>
+									<entry align="center">
+										<mediaobject>
+											<imageobject>
+												<imagedata contentdepth="1em" fileref="images/icons_object-class-structural.gif" format="GIF" />
+											</imageobject>
+										</mediaobject>
+									</entry>
+									<entry>Object class (structural)</entry>
 								</row>
 							</tbody>
 						</tgroup>
 					</informaltable>
 				</para>
-			</section>
-		</section>
-		
-        <!-- EDITORS SECTION -->
-		<section id="editors">
-			<title>Editors</title>
-			
-            <!-- ATTRIBUTE TYPE EDITOR SECTION -->
-			<section id="attribute_type_editor">
-				<title>Attribute Type Editor</title>
-                <para>The attribute type editor is the one-stop shop where you can define all aspects of your attribute type.</para>
+		    </section>
+	    
+	    </section>
+		    
+		<!-- EDITORS VIEW SECTION -->
+        <section id="gettingstarted_editors">
+		    <title>Editors</title>
+		    
+			<!-- ATTRIBUTE TYPE EDITOR SECTION -->
+	        <section id="gettingstarted_editors_attribute_type">
+			    <title>Attribute type editor</title>
+			    <para>The attribute type editor is the one-stop shop where you can define all aspects of your attribute type.</para>
                 <para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/gettingstarted/editors_attribute_type_overview.png" format="PNG" />
+									fileref="images/editors_attribute-type-editor-overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -536,24 +826,35 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/gettingstarted/editors_attribute_type_source_code.png" format="PNG" />
+									fileref="images/editors_attribute-type-editor-source-code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
 				</para>
                 <para>The <emphasis role="strong">Source code</emphasis> page is where the user can see the result of his actions in the Overview page and what source code will be generated in the schema file.</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/editors_attribute-type-editor-used-by.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>The <emphasis role="strong">Used By</emphasis> page is where the user can see in which object class(es) is used this attribute type (as mandatory or optional attribute type).</para>	
 			</section>
-			
-            <!-- OBJECT CLASS EDITOR SECTION -->
-			<section id="object_class_editor">
-				<title>Object Class Editor</title>
-                <para>The object class editor is the one-stop shop where you can define all aspects of your object class.</para>
+		    
+			<!-- OBJECT CLASS EDITOR SECTION -->
+	        <section id="gettingstarted_editors_object_class">
+			    <title>Object class editor</title>
+			    <para>The object class editor is the one-stop shop where you can define all aspects of your object class.</para>
                 <para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/gettingstarted/editors_object_class_overview.png" format="PNG" />
+									fileref="images/editors_object-class-editor-overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
@@ -577,423 +878,1219 @@
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/gettingstarted/editors_object_class_source_code.png" format="PNG" />
+									fileref="images/editors_object-class-editor-source-code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
 				</para>
                 <para>The <emphasis role="strong">Source code</emphasis> page is where the user can see the result of his actions in the Overview page and what source code will be generated in the schema file.</para>
 			</section>
-			
-            <!-- SCHEMA EDITOR SECTION -->
-			<section id="schema_editor">
-				<title>Schema Editor</title>
-                <para>The schema editor is, at the moment, only a simple view of the source code of the schema file.</para>
+		    
+			<!-- SCHEMA EDITOR SECTION -->
+	        <section id="gettingstarted_editors_schema">
+			    <title>Schema editor</title>
+			    <para>The schema editor displays all the attribute types and the object classes that contains a schema file.</para>
                 <para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/gettingstarted/editors_schema_source_code.png" format="PNG" />
+									fileref="images/editors_schema-editor-overview.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
 				</para>
-                <para>This editor can be reached from the <emphasis role="strong">Schema</emphasis> view right-clicking on the schema icon and choosing <emphasis role="strong">View source code</emphasis> in the context menu.</para>
-                <para>
+				<para>The <emphasis role="strong">Overview</emphasis> page is where the user can see all the attribute types and object classes of the schema.</para>
+				<para>
 					<screenshot>
 						<mediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="images/gettingstarted/editors_schema_source_code_context_menu.png" format="PNG" />
+									fileref="images/editors_schema-editor-source-code.png" format="PNG" />
 							</imageobject>
 						</mediaobject>
 					</screenshot>
 				</para>
-			</section>
-		</section>
+				<para>The <emphasis role="strong">Source Code</emphasis> page is where the user can see all the attribute types and object classes of the schema in their OpenLDAP code representation.</para>
+		    </section>
+		    
+	    </section>
+	    
 	</chapter>
-	
-    <!-- TASKS SECTION -->
+	    
+	<!-- TASKS CHAPTER -->
 	<chapter id="tasks">
 		<title>Tasks</title>
-		<para>
-			This part of the guide provides you a list of the tasks you can accomplish with the Schemas Editor Plugin. 
-		</para>
 		
-        <!-- OPENING A SCHEMA SECTION -->
-		<section id="opening_a_schema">
-			<title>Opening a schema</title>
-            <para>In this section, you will learn how to open a schema file.</para>
-            <para>1. In the Schemas view, click the <emphasis role="strong">Open a local schema file</emphasis> button in the toolbar, or select <emphasis role="strong">Open local schema file</emphasis> from the File menu.</para>
-            <para>
+		<!-- CREATING A NEW PROJECT SECTION -->
+        <section id="tasks_creating_new_project">
+		    <title>Creating a new project</title>
+		    <para>To create a new project, in the Projects view toolbar, click on the 
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-new.gif" format="GIF" />
+						</imageobject>
+						<emphasis role="strong">New Schema Project</emphasis> button, or use the <emphasis role="strong">Strg-R</emphasis> shortcut.
+		    </para>
+		    <para>
+				The creation of a new Schema Project is a two-step process:
+				<orderedlist numeration="arabic">
+					<listitem>
+						<para>Define the name of the project.</para>
+					</listitem>
+					<listitem>
+						<para>Select the 'core' schema files to import.</para>
+					</listitem>
+				</orderedlist>
+			</para>
+			<simplesect>
+				<title>Page 1</title>
+				<para>
+					The first page allows you to enter a project name and select the type of project.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-project-wizard_page-1.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Name</entry>
+									<entry>
+										The name of the project. In the
+										Projects view the project is
+										listed with this name. The name must be
+										unique.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Type</entry>
+									<entry>
+										The type of the project. Choose between Offline Schema and Online Schema from a Directory Server.
+									</entry>
+									<entry>Offline Schema</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 2 - Offline Schema</title>
+				<para>
+					The second page allows you to select the 'core' schema files to import.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-project-wizard_page-2_offline.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					Specify the type of server you want to work with and check the 'core' schema files you want to import.
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 2 - Online Schema from a Directory Server</title>
+				<para>
+					The second page allows you to select the connection to use to import the Schema.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-project-wizard_page-2_online.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					Choose a connection.
+				</para>
+			</simplesect>
+	    </section>
+		
+		<!-- IMPORTING PROJECTS SECTION -->
+        <section id="tasks_importing_projects">
+		    <title>Importing projects</title>
+		    <para>To import schema projects choose one of the following options:
+		    	<itemizedlist spacing="normal" mark="bullet">
+                     <listitem>In the Projects view, choose <emphasis role="strong">Import > 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-import.gif" format="GIF" />
+						</imageobject>
+                     	Schema Projects</emphasis> from the context menu.</listitem> 
+                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Import...</emphasis>  and choose 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-import.gif" format="GIF" />
+						</imageobject>
+                     	<emphasis role="strong"> Schema Projects</emphasis></listitem> 
+                 </itemizedlist>
+		    </para>
+		    <para>The following wizard appears:</para>
+		    <para>
 				<screenshot>
 					<mediaobject>
 						<imageobject>
 							<imagedata scale="50"
-								fileref="images/tasks/opening_a_schema/toolbar_action.png" format="PNG" />
+								fileref="images/tasks_import-projects-wizard.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
 			</para>
-            <para>
+			<para>Select the directory from which import the schema project files and then check each schema project file you want to import.</para>
+	    </section>
+		
+		<!-- EXPORTING PROJECTS SECTION -->
+        <section id="tasks_exporting_projects">
+		    <title>Exporting projects</title>
+		    <para>To export schema projects choose one of the following options:
+		    	<itemizedlist spacing="normal" mark="bullet">
+                     <listitem>In the Projects view, choose <emphasis role="strong">Export > 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-export.gif" format="GIF" />
+						</imageobject>
+                     	Schema Projects</emphasis> from the context menu.</listitem> 
+                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Export...</emphasis>  and choose 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_project-export.gif" format="GIF" />
+						</imageobject>
+                     	<emphasis role="strong"> Schema Projects</emphasis></listitem> 
+                 </itemizedlist>
+		    </para>
+		    <para>The following wizard appears:</para>
+		    <para>
 				<screenshot>
 					<mediaobject>
 						<imageobject>
 							<imagedata scale="50"
-								fileref="images/tasks/opening_a_schema/file_menu.png" format="PNG" />
+								fileref="images/tasks_export-projects-wizard.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
 			</para>
-            <para>2. Browse the filesystem and select the schema file. Then click <emphasis role="strong">Open</emphasis>.</para>
-            <para>
+			<para>Check each schema project you want to export and then select the directory where to export these schema project files.</para>
+	    </section>
+		
+		<!-- CREATING A NEW SCHEMA SECTION -->
+        <section id="tasks_creating_new_schema">
+		    <title>Creating a new schema</title>
+		    <para>To create a new schema, in the Schema view toolbar, click on the 
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_schema-new.gif" format="GIF" />
+						</imageobject>
+						<emphasis role="strong">New Schema</emphasis> button (a project must be opened), or use the <emphasis role="strong">Strg-E</emphasis> shorcut.
+		    </para>
+		    <para>The following wizard appears:</para>
+		    <para>
 				<screenshot>
 					<mediaobject>
 						<imageobject>
 							<imagedata scale="50"
-								fileref="images/tasks/opening_a_schema/open_dialog.png" format="PNG" />
+								fileref="images/tasks_new-schema.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
 			</para>
-		</section>
-
-        <!-- CREATING A NEW SCHEMA SECTION -->
-		<section id="creating_a_new_schema">
-			<title>Creating a new schema</title>
-            <para>In this section, you will learn how to create a new schema.</para>
-            <para>1. In the Schemas view, click the <emphasis role="strong">Create a new schema</emphasis> button in the toolbar.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_schema/toolbar_action.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
+			<para>Give a name to the schema.</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Name</entry>
+								<entry>
+									The name of the schema. In the
+									Schema view the project is
+									listed with this name. The name must be
+									unique.
+								</entry>
+								<entry>empty</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
 			</para>
-            <para>2. In the <emphasis role="strong">Name</emphasis> field, enter the name of the schema.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_schema/wizard.png" format="PNG" />
+	    </section>
+	    
+		<!-- IMPORTING SCHEMAS SECTION -->
+        <section id="tasks_importing_schemas">
+		    <title>Importing schemas</title>
+		    
+    		<!-- IMPORTING SCHEMAS FROM XML FILES SECTION -->
+	        <section id="tasks_importing_schemas_from_xml_files">
+			    <title>Importing schemas from XML files</title>
+			    <para>To import schemas from XML files choose one of the following options:
+			    	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>In the Schema view, choose <emphasis role="strong">Import > 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-import.gif" format="GIF" />
+							</imageobject>
+	                     	Schemas from XML file(s)</emphasis> from the context menu.</listitem> 
+	                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Import...</emphasis>  and choose 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-import.gif" format="GIF" />
+							</imageobject>
+	                     	<emphasis role="strong"> Schemas from XML file(s)</emphasis></listitem> 
+	                 </itemizedlist>
+			    </para>
+			    <para>The following wizard appears:</para>
+			    <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_import-schemas-xml-wizard.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>Select the directory from which import the schema files and then check each schema file you want to import.</para>
+		    </section>
+		    
+    		<!-- IMPORTING SCHEMAS FROM OPENLDAP FILES SECTION -->
+	        <section id="tasks_importing_schemas_from_openldap_files">
+			    <title>Importing schemas from OpenLDAP files</title>
+			    <para>To import schemas from OpenLDAP files choose one of the following options:
+			    	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>In the Schema view, choose <emphasis role="strong">Import > 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-import.gif" format="GIF" />
+							</imageobject>
+	                     	Schemas from OpenLDAP file(s)</emphasis> from the context menu.</listitem> 
+	                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Import...</emphasis>  and choose 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-import.gif" format="GIF" />
+							</imageobject>
+	                     	<emphasis role="strong"> Schemas from OpenLDAP file(s)</emphasis></listitem> 
+	                 </itemizedlist>
+			    </para>
+			    <para>The following wizard appears:</para>
+			    <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_import-schemas-openldap-wizard.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>Select the directory from which import the schema files and then check each schema file you want to import.</para>
+		    </section>
+		    
+	    </section>
+	    
+		<!-- EXPORTING SCHEMAS SECTION -->
+        <section id="tasks_exporting_schemas">
+		    <title>Exporting schemas</title>
+		    
+		    <!-- EXPORTING SCHEMAS AS XML FILES SECTION -->
+	        <section id="tasks_exporting_schemas_as_xml_files">
+			    <title>Exporting schemas as XML files</title>
+			    <para>To export schemas as XML files, choose one of the following options:
+			    	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>In the Schema view, choose <emphasis role="strong">Export > 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-export.gif" format="GIF" />
+							</imageobject>
+	                     	Schemas as XML file(s)</emphasis> from the context menu.</listitem> 
+	                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Export...</emphasis>  and choose 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-export.gif" format="GIF" />
+							</imageobject>
+	                     	<emphasis role="strong"> Schemas as XML file(s)</emphasis></listitem> 
+	                 </itemizedlist>
+			    </para>
+			    <para>The following wizard appears:</para>
+			    <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_export_schemas-xml-wizard.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>Check each schema you want to export and then select the directory where to export each schema as a separate file or a single destination file.</para>
+		    </section>
+		    
+    		<!-- EXPORTING SCHEMAS TO OPENLDAP FILES SECTION -->
+	        <section id="tasks_exporting_schemas_as_openldap_files">
+			    <title>Exporting schemas as OpenLDAP files</title>
+				<para>To export schemas as OpenLDAP files, choose one of the following options:
+			    	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>In the Schema view, choose <emphasis role="strong">Export > 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-export.gif" format="GIF" />
+							</imageobject>
+	                     	Schemas as OpenLDAP file(s)</emphasis> from the context menu.</listitem> 
+	                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Export...</emphasis>  and choose 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-export.gif" format="GIF" />
+							</imageobject>
+	                     	<emphasis role="strong"> Schemas as OpenLDAP file(s)</emphasis></listitem> 
+	                 </itemizedlist>
+			    </para>
+			    <para>The following wizard appears:</para>
+			    <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_export-schemas-openldap-wizard.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>Check each schema you want to export and then select the directory where to export each schema as a separate file.</para>
+		    </section>
+		    
+    		<!-- EXPORTING SCHEMAS FOR APACHE DS SECTION -->
+	        <section id="tasks_exporting_schemas_for_apache_ds">
+			    <title>Exporting schemas for Apache DS</title>
+			    <para>To export schemas for Apache DS, choose one of the following options:
+			    	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>In the Schema view, choose <emphasis role="strong">Export > 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-export-for-ads.gif" format="GIF" />
+							</imageobject>
+	                     	Schemas for Apache DS</emphasis> from the context menu.</listitem> 
+	                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > Export...</emphasis>  and choose 
+	                     	<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="images/icons_schemas-export-for-ads.gif" format="GIF" />
+							</imageobject>
+	                     	<emphasis role="strong"> Schemas for Apache DS</emphasis></listitem> 
+	                 </itemizedlist>
+			    </para>
+			    <para>The following wizard appears:</para>
+			    <para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_export-schemas-apacheds-wizard.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>Check each schema you want to export and then select the directory where to export each schema as a separate file or a single destination file.</para>
+		    </section>
+		    
+	    </section>
+		
+		<!-- CREATING A NEW ATTRIBUTE TYPE SECTION -->
+        <section id="tasks_creating_new_attribute_type">
+		    <title>Creating a new attribute type</title>
+		    <para>To create a new attribute type, choose one of the following options:
+		    	<itemizedlist spacing="normal" mark="bullet">
+                     <listitem>In the Schema view, choose <emphasis role="strong">New > 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_attribute-type-new.gif" format="GIF" />
 						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>3. If a schema of the same name already exists, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_schema/wizard_error.png" format="PNG" />
+                     	New Attribute Type</emphasis> from the context menu.</listitem>
+                     	<listitem>In the Schema view, click the <emphasis role="strong"> 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_attribute-type-new.gif" format="GIF" />
 						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>4. Then click <emphasis role="strong">Finish</emphasis>.</para>
-		</section>
-
-        <!-- REMOVING A SCHEMA SECTION -->
-		<section id="removing_a_schema">
-			<title>Removing a schema</title>
-            <para>In this section, you will learn how to remove a schema.</para>
-            <para>1. In the Schemas view, click the <emphasis role="strong">Remove the selected schema</emphasis> from the pool button in the toolbar.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/removing_a_schema/toolbar_action.png" format="PNG" />
+                     	New Attribute Type</emphasis> button in the toolbar.</listitem>
+                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > New...</emphasis>  and choose 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_attribute-type-new.gif" format="GIF" />
 						</imageobject>
-					</mediaobject>
-				</screenshot>
+                     	<emphasis role="strong"> New Attribute Type</emphasis></listitem> 
+                     <listitem>
+                     	You can also use the <emphasis role="strong">Strg-T</emphasis> shortcut.
+                     </listitem> 
+                 </itemizedlist>
+		    </para>
+		    <para>
+				The creation of a new attribute type is a three-step process:
+				<orderedlist numeration="arabic">
+					<listitem>
+						<para>Select the schema in which insert the new attribute type and specify its naming and description information (OID, aliases and description)</para>
+					</listitem>
+					<listitem>
+						<para>Specify the attribute type content such as superior and usage, as well as syntax and properties</para>
+					</listitem>
+					<listitem>
+						<para>Specify the equality, ordering and/or substring matching rules</para>
+					</listitem>
+				</orderedlist>
 			</para>
-            <para><emphasis role="strong">Note:</emphasis> It is not possible to remove a core schema</para>
-		</section>
-
-        <!-- CREATING A NEW OBJECT CLASS SECTION -->
-		<section id="creating_a_new_object_class">
-			<title>Creating a new object class</title>
-            <para>In this section, you will learn how to create a new object class.</para>
-            <para>1. In the Schemas view, click the <emphasis role="strong">Create a new object class</emphasis>  button in the toolbar.</para>
-            <para><emphasis role="strong">Note:</emphasis> It is not possible to create a new object class in a core schema.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_object_class/toolbar_action.png" format="PNG" />
+			<simplesect>
+				<title>Page 1</title>
+				<para>
+					The first page allows you to select the schema in which insert the new attribute type and specify its naming and description information (OID, aliases and description).
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-attribute-type-wizard-general.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Schema</entry>
+									<entry>
+										The schema in which insert the new attribute type.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>OID</entry>
+									<entry>
+										The OID of the new attribute type. The OID must be
+										unique.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Aliases</entry>
+									<entry>
+										The aliases (or names) of the new attribute type. Each alias (or name) must be
+										unique.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Description</entry>
+									<entry>
+										The description of the new attribute type.
+									</entry>
+									<entry>empty</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 2</title>
+				<para>
+					The second page allows you to specify the attribute type content such as superior and usage, as well as syntax and properties.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-attribute-type-wizard-content.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Superior</entry>
+									<entry>
+										The superior attribute type of the new attribute type.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Usage</entry>
+									<entry>
+										The usage of the new attribute type.
+									</entry>
+									<entry>User Applications</entry>
+								</row>
+								<row>
+									<entry>Syntax</entry>
+									<entry>
+										The syntax of the new attribute type. 
+									</entry>
+									<entry>(None)</entry>
+								</row>
+								<row>
+									<entry>Syntax Length</entry>
+									<entry>
+										The syntax length of the new attribute type. 
+									</entry>
+									<entry>0</entry>
+								</row>
+								<row>
+									<entry>Obsolete</entry>
+									<entry>
+										Indicates the new attribute type is obsolete. 
+									</entry>
+									<entry>Not checked</entry>
+								</row>
+								<row>
+									<entry>Single Value</entry>
+									<entry>
+										Indicates the new attribute type is single value. 
+									</entry>
+									<entry>Not checked</entry>
+								</row>
+								<row>
+									<entry>Collective</entry>
+									<entry>
+										Indicates the new attribute type is collective. 
+									</entry>
+									<entry>Not checked</entry>
+								</row>
+								<row>
+									<entry>No User Modification</entry>
+									<entry>
+										Indicates the new attribute type is no user modification. 
+									</entry>
+									<entry>Not checked</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 3</title>
+				<para>
+					The third page allows you to specify the equality, ordering and/or substring matching rules.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-attribute-type-wizard-matching-rules.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Equality</entry>
+									<entry>
+										The equality matching rule of the new attribute type. 
+									</entry>
+									<entry>(None)</entry>
+								</row>
+								<row>
+									<entry>Ordering</entry>
+									<entry>
+										The ordering matching rule of the new attribute type. 
+									</entry>
+									<entry>(None)</entry>
+								</row>
+								<row>
+									<entry>Substring</entry>
+									<entry>
+										The substring matching rule of the new attribute type. 
+									</entry>
+									<entry>(None)</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+	    </section>
+	    
+		<!-- CREATING A NEW OBJECT CLASS SECTION -->
+        <section id="tasks_creating_new_object_class">
+		    <title>Creating a new object class</title>
+		    <para>To create a new attribute type, choose one of the following options:
+		    	<itemizedlist spacing="normal" mark="bullet">
+                     <listitem>In the Schema view, choose <emphasis role="strong">New > 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_object-class-new.gif" format="GIF" />
 						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>2. In the <emphasis role="strong">OID</emphasis> field, enter an OID of your choice.</para>
-            <para>If you want the <emphasis role="strong">OID</emphasis> field to be pre-filled with your organisation's OID, check the <emphasis role="strong">Prefix with default OID</emphasis> checkbox.
-            In the <emphasis role="strong">Name</emphasis> field, enter the name of the object class.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_object_class/wizard.png" format="PNG" />
+                     	New Object Class</emphasis> from the context menu.</listitem>
+                     	<listitem>In the Schema view, click the <emphasis role="strong"> 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_object-class-new.gif" format="GIF" />
 						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>3. If an object class of the same name already exists, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_object_class/wizard_error_same_name.png" format="PNG" />
+                     	New Object Class</emphasis> button in the toolbar.</listitem> 
+                     <listitem>In the Workbench menu bar select <emphasis role="strong">File > New...</emphasis>  and choose 
+                     	<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/icons_object-class-new.gif" format="GIF" />
 						</imageobject>
-					</mediaobject>
-				</screenshot>
+                     	<emphasis role="strong"> New Object Class</emphasis></listitem> 
+                     <listitem>
+                     	You can also use the <emphasis role="strong">Strg-B</emphasis> shortcut.
+                     </listitem> 
+                 </itemizedlist>
+		    </para>
+		    <para>
+				The creation of a new object class is a four-step process:
+				<orderedlist numeration="arabic">
+					<listitem>
+						<para>Select the schema in which insert the new object class and specify its naming and description information (OID, aliases and description)</para>
+					</listitem>
+					<listitem>
+						<para>Specify the object class content such as superiors, class type and properties</para>
+					</listitem>
+					<listitem>
+						<para>Specify the mandatory attribute types of the new object class</para>
+					</listitem>
+					<listitem>
+						<para>Specify the optional attribute types of the new object class</para>
+					</listitem>
+				</orderedlist>
 			</para>
-            <para>4. If an element (object class or attribute type) already has the OID you provided, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_object_class/wizard_error_same_oid.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>5. If you enter a bad OID, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_object_class/wizard_error_malformed_oid.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>6. Then click <emphasis role="strong">Finish</emphasis>.</para>
-		</section>
-
-        <!-- CREATING A NEW ATTRIBUTE TYPE SECTION -->
-		<section id="creating_a_new_attribute_type">
-			<title>Creating a new attribute type</title>
-            <para>In this section, you will learn how to create a new attribute type.</para>
-            <para>1. In the Schemas view, click the <emphasis role="strong">Create a new attribute type</emphasis> button in the toolbar.</para>
-            <para><emphasis role="strong">Note:</emphasis> It is not possible to create a new attribute type in a core schema.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_attribute_type/toolbar_action.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>2. In the <emphasis role="strong">OID</emphasis> field, enter an OID of your choice.</para>
-            <para>If you want the <emphasis role="strong">OID</emphasis> field to be pre-filled with your organisation's OID, check the <emphasis role="strong">Prefix with default OID</emphasis> checkbox.
-            In the <emphasis role="strong">Name</emphasis> field, enter the name of the attribute type.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_attribute_type/wizard.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>3. If an attribute type of the same name already exists, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_same_name.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>4. If an element (object class or attribute type) already has the OID you provided, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_same_oid.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>5. If you enter a bad OID, you will see this error.</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/tasks/creating_a_new_attribute_type/wizard_error_malformed_oid.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para>6. Then click <emphasis role="strong">Finish</emphasis>.</para>
-		</section>
+			<simplesect>
+				<title>Page 1</title>
+				<para>
+					The first page allows you to select the schema in which insert the new object class and specify its naming and description information (OID, aliases and description).
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-object-class-wizard-general.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Schema</entry>
+									<entry>
+										The schema in which insert the new object class.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>OID</entry>
+									<entry>
+										The OID of the new object class. The OID must be
+										unique.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Aliases</entry>
+									<entry>
+										The aliases (or names) of the new object class. Each alias (or name) must be
+										unique.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Description</entry>
+									<entry>
+										The description of the new object class.
+									</entry>
+									<entry>empty</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 2</title>
+				<para>
+					The second page allows you to specify the object class content such as superiors, class type and properties.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-object-class-wizard-content.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Superiors</entry>
+									<entry>
+										The superiors object classes of the new object class.
+									</entry>
+									<entry>empty</entry>
+								</row>
+								<row>
+									<entry>Class Type</entry>
+									<entry>
+										The class type of the new object class.
+									</entry>
+									<entry>Structural</entry>
+								</row>
+								<row>
+									<entry>Obsolete</entry>
+									<entry>
+										Indicates the new object class is obsolete. 
+									</entry>
+									<entry>Not checked</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 3</title>
+				<para>
+					The third page allows you to specify the mandatory attribute types of the new object class.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-object-class-wizard-mandatory-attribute-types.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Mandatory Attribute Types</entry>
+									<entry>
+										The mandatory attribute types of the new object class.
+									</entry>
+									<entry>empty</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Page 4</title>
+				<para>
+					The forth page allows you to specify the optional attribute types of the new object class.
+				</para>
+				<para>
+					<screenshot>
+						<mediaobject>
+							<imageobject>
+								<imagedata scale="50"
+									fileref="images/tasks_new-object-class-wizard-optional-attribute-types.png" format="PNG" />
+							</imageobject>
+						</mediaobject>
+					</screenshot>
+				</para>
+				<para>
+					<informaltable frame="all">
+						<tgroup cols="3">
+							<colspec colname="Option" colwidth="1*" />
+							<colspec colname="Description" colwidth="2*" />
+							<colspec colname="Default" colwidth="1*" />
+							<thead>
+								<row>
+									<entry>Option</entry>
+									<entry>Description</entry>
+									<entry>Default</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Optional Attribute Types</entry>
+									<entry>
+										The optional attribute types of the new object class.
+									</entry>
+									<entry>empty</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</informaltable>
+				</para>
+			</simplesect>
+	    </section>
+	    
 	</chapter>
 	
-    <!-- REFERENCE CHAPTER -->
-	<chapter id="reference">
-		<title>Reference</title>
-
-        <!-- OBJECT CLASS AND ATTRIBUTE TYPE PREFERENCE SECTION -->
-		<section id="object_class_and_attribute_type_prefs">
-			<title>Object Class and Attribute Type Preferences</title>
-            <para>On the ObjectClass and AttributeType preferences page, you can indicate the following preferences.</para>
-            <para>
-				<informaltable>
-					<tgroup cols="3">
-						<colspec colname="Option" colwidth="2* "/>
-						<colspec colname="Description" colwidth="3*" />
-						<colspec colname="Default" colwidth="1*" />
-						<thead>
-							<row>
-								<entry>Option</entry>
-								<entry>Description</entry>
-								<entry>Default</entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>Your organization's default OID</entry>
-								<entry>OID of your organisation.</entry>
-								<entry>1.2.3.4.5.6</entry>
-							</row>
-							<row>
-								<entry>Automatically prefix new elements with this OID</entry>
-								<entry>Select this option if you want new elements (object class or attribute type) to be prefixed with the OID provided in the field above in wizards.</entry>
-								<entry>Off</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</informaltable>
-			</para>
-            <para>Here is what the ObjectClass and AttributeType preferences page looks like:</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/reference/preferences_OC_and_AT.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-		</section>
-
-        <!-- SCHEMAS PREFERENCESECTION -->
-		<section id="schemas_prefs">
-			<title>Schemas Preferences</title>
-            <para>On the Schemas preferences page, you can indicate the following preferences.</para>
-            <para>
-				<informaltable>
-					<tgroup cols="3">
-						<colspec colname="Option" colwidth="2* "/>
-						<colspec colname="Description" colwidth="3*" />
-						<colspec colname="Default" colwidth="1*" />
-						<thead>
-							<row>
-								<entry>Option</entry>
-								<entry>Description</entry>
-								<entry>Default</entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>Default save/load dialogs directory</entry>
-								<entry>This option allows you to browse to a directory you want to set as default save/load dialogs directory.</entry>
-								<entry>User's Home directory</entry>
-							</row>
-							<row>
-								<entry>Save schemas configuration when exiting Apache Directory Studio</entry>
-								<entry>Select this option if you want the opened schemas to saved automatically when Apache Directory Studio exits.</entry>
-								<entry>On</entry>
-							</row>
-							<row>
-								<entry>Use specific core files</entry>
-								<entry>Select this option if you want to use different core files from the standard ones bundled with Apache Directory Studio.</entry>
-								<entry>Off</entry>
-							</row>
-							<row>
-								<entry>Core schemas directory</entry>
-								<entry>This option allows you to browse to your specific core schemas directory.</entry>
-								<entry>User's Home directory</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</informaltable>
-			</para>
-            <para>Here is what the Schemas preferences page looks like:</para>
-            <para>
-				<screenshot>
-					<mediaobject>
-						<imageobject>
-							<imagedata scale="50"
-								fileref="images/reference/preferences_schemas.png" format="PNG" />
-						</imageobject>
-					</mediaobject>
-				</screenshot>
-			</para>
-            <para></para>
-            <para></para>
-            <para></para>
-		</section>
-
-        <!-- RFCS SECTION -->
-		<section id="rfcs">
-			<title>RFCs</title>
-            <simplelist>
-			    <member>
-				    <ulink url="rfcs/rfc2252.txt">
-					    RFC 2252 - Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions
-				    </ulink>
-			    </member>
-                <member>
-				    <ulink url="rfcs/rfc4517.txt">
-					    RFC 4517 - Lightweight Directory Access Protocol (LDAP): Syntaxes and Matching Rules
-				    </ulink>
-			    </member>
-                <member>
-				    <ulink url="rfcs/rfc4524.txt">
-					    RFC 4524 - COSINE LDAP/X.500 Schema
-				    </ulink>
-			    </member>
-                <member>
-				    <ulink url="rfcs/rfc4519.txt">
-					    RFC 4519 - Lightweight Directory Access Protocol (LDAP): Schema for User Applications
-				    </ulink>
-			    </member>
-            </simplelist>
-		</section>
-
-        <!-- RELEASE NOTES SECTION -->
-		<section id="release_notes">
-			<title>Release notes</title>
-            <para><emphasis role="strong">Apache Directory Studio 0.6.0</emphasis> (2007, late january) : initial release</para>
-            <para>Includes :</para>
-            <para>
-                <itemizedlist spacing="normal" mark="bullet">
-					<listitem>Apache Directory Studio RCP 0.6.0</listitem>
-					<listitem>Apache Directory Studio Browser Plugin 0.6.0</listitem>
-					<listitem>Apache Directory Studio Schemas Editor Plugin 0.6.0</listitem>
-                </itemizedlist>
-            </para>
+	<!-- REFERENCES CHAPTER -->
+	<chapter id="references">
+		<title>References</title>
+	    
+		<!-- PREFERENCES SECTION -->
+        <section id="references_preferences">
+		    <title>Preferences</title>
+		    
+				<!-- HIERARCHY VIEW PREFERENCES SECTION -->
+				<section id="references_hierarchy_view_preferences">
+				    <title>Hierarchy View preferences</title>
+		    		<para>
+						In the Hierarchy View preferences page you can configure general settings
+						for the <link linkend="gettingstarted_views_hierarchy">Hierarchy view</link>.
+					</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/preferences_hierarchy-view.png"
+										format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>
+						<informaltable frame="all">
+							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1*" />
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>
+											Label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as label for attribute types or object classes. 
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>All Aliases with limit of 50 characters</entry>
+									</row>
+									<row>
+										<entry>
+											Secondary label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as secondary label for attribute types or object classes.
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>OID with no limit of characters</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>		
+	    		</section>
+		    
+				<!-- SCHEMA VIEW PREFERENCES SECTION -->
+				<section id="references_schema_view_preferences">
+				    <title>Schema View preferences</title>
+				    <para>
+						In the Schema View preferences page you can configure general settings
+						for the <link linkend="gettingstarted_views_schema">Schema view</link>.
+					</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/preferences_schema-view.png"
+										format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>
+						<informaltable frame="all">
+							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1*" />
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>
+											Label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as label for attribute types or object classes. 
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>All Aliases with limit of 50 characters</entry>
+									</row>
+									<row>
+										<entry>
+											Secondary label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as secondary label for attribute types or object classes.
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>OID with no limit of characters</entry>
+									</row>
+									<row>
+										<entry>
+											Schema label
+										</entry>
+										<entry>
+											If the checkbox is checked the name of the schema of the element will be added to the label.
+										</entry>
+										<entry>Checked</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>	
+	    		</section>
+		    
+				<!-- SEARCH VIEW PREFERENCES SECTION -->
+				<section id="references_search_view_preferences">
+				    <title>Search View preferences</title>
+				    <para>
+						In the Search View preferences page you can configure general settings
+						for the <link linkend="gettingstarted_views_search">Search view</link>.
+					</para>
+					<para>
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/preferences_search-view.png"
+										format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+					<para>
+						<informaltable frame="all">
+							<tgroup cols="3">
+								<colspec colname="Option" colwidth="1*" />
+								<colspec colname="Description" colwidth="2*" />
+								<colspec colname="Default" colwidth="1*" />
+								<thead>
+									<row>
+										<entry>Option</entry>
+										<entry>Description</entry>
+										<entry>Default</entry>
+									</row>
+								</thead>
+								<tbody>
+									<row>
+										<entry>
+											Label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as label for attribute types or object classes. 
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>All Aliases with limit of 50 characters</entry>
+									</row>
+									<row>
+										<entry>
+											Secondary label
+										</entry>
+										<entry>
+											Choose one of 
+											<emphasis role="strong">First Name</emphasis>,
+											<emphasis role="strong">All Aliases</emphasis> or
+											<emphasis role="strong">OID</emphasis>
+											to be used as secondary label for attribute types or object classes.
+											If the checkbox is checked long labels with more
+											than the specified number of characters are
+											abbreviated.
+										</entry>
+										<entry>OID with no limit of characters</entry>
+									</row>
+									<row>
+										<entry>
+											Schema label
+										</entry>
+										<entry>
+											If the checkbox is checked the name of the schema of the element will be added to the label.
+										</entry>
+										<entry>Checked</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</informaltable>
+					</para>	
+	    		</section>
+	    </section>
+	    		    
+		<!-- RELEASE NOTES SECTION -->
+		<section id="references_release_notes">
+		    <title>Release notes</title>
+		    <simplesect>
+				<title>Apache Directory Studio 1.0.1 - (2007, september 10)</title>
+				<para><emphasis>Bug</emphasis></para>
+	            <para>
+	            	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>[DIRSTUDIO-180] - Connection wizard and properties tabs are out of order</listitem>
+	                </itemizedlist>
+	            </para>
+	            <para><emphasis>Task</emphasis></para>
+	            <para>
+	            	<itemizedlist spacing="normal" mark="bullet">
+	                     <listitem>[DIRSTUDIO-181] - Update the documentation of the Schema Editor Plugin</listitem>
+	                </itemizedlist>
+	            </para>
+			</simplesect>
+			<simplesect>
+				<title>Apache Directory Studio 1.0.0 - (2007, september 3rd) : initial release</title>
+			</simplesect>
         </section>
+	    
 	</chapter>
 </book>

@@ -25,15 +25,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.events.ModifyEvent;
@@ -141,8 +144,8 @@ public class SearchPageWrapper extends BrowserWidget
     /** The connection label. */
     protected Label connectionLabel;
 
-    /** The connection widget. */
-    protected ConnectionWidget connectionWidget;
+    /** The browser connection widget. */
+    protected BrowserConnectionWidget browserConnectionWidget;
 
     /** The search base label. */
     protected Label searchBaseLabel;
@@ -290,10 +293,10 @@ public class SearchPageWrapper extends BrowserWidget
         }
 
         connectionLabel = BaseWidgetUtils.createLabel( composite, "Connection:", 1 );
-        connectionWidget = new ConnectionWidget();
-        connectionWidget.createWidget( composite );
-        connectionWidget.setEnabled( !isActive( CONNECTION_READONLY ) );
-        connectionWidget.addWidgetModifyListener( new WidgetModifyListener()
+        browserConnectionWidget = new BrowserConnectionWidget();
+        browserConnectionWidget.createWidget( composite );
+        browserConnectionWidget.setEnabled( !isActive( CONNECTION_READONLY ) );
+        browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
             public void widgetModified( WidgetModifyEvent event )
             {
@@ -529,16 +532,16 @@ public class SearchPageWrapper extends BrowserWidget
     protected void validate()
     {
 
-        if ( connectionWidget.getConnection() != null )
+        if ( browserConnectionWidget.getBrowserConnection() != null )
         {
             if ( searchBaseWidget.getDn() == null
-                || searchBaseWidget.getConnection() != connectionWidget.getConnection() )
+                || searchBaseWidget.getBrowserConnection() != browserConnectionWidget.getBrowserConnection() )
             {
-                searchBaseWidget.setInput( connectionWidget.getConnection(), null );
+                searchBaseWidget.setInput( browserConnectionWidget.getBrowserConnection(), null );
             }
         }
 
-        filterWidget.setConnection( connectionWidget.getConnection() );
+        filterWidget.setBrowserConnection( browserConnectionWidget.getBrowserConnection() );
 
         super.notifyListeners();
     }
@@ -567,30 +570,30 @@ public class SearchPageWrapper extends BrowserWidget
             searchNameText.setText( search.getName() );
         }
 
-        if ( search.getConnection() != null )
+        if ( search.getBrowserConnection() != null )
         {
-            IConnection connection = search.getConnection();
-            DN searchBase = search.getSearchBase();
+            IBrowserConnection browserConnection = search.getBrowserConnection();
+            LdapDN searchBase = search.getSearchBase();
 
-            if ( connectionWidget != null )
+            if ( browserConnectionWidget != null )
             {
-                connectionWidget.setConnection( connection );
+                browserConnectionWidget.setBrowserConnection( browserConnection );
             }
 
             if ( searchBase != null )
             {
-                searchBaseWidget.setInput( connection, searchBase );
+                searchBaseWidget.setInput( browserConnection, searchBase );
             }
 
             if ( filterWidget != null )
             {
-                filterWidget.setConnection( connection );
+                filterWidget.setBrowserConnection( browserConnection );
                 filterWidget.setFilter( search.getFilter() );
             }
 
             if ( returningAttributesWidget != null )
             {
-                returningAttributesWidget.setConnection( connection );
+                returningAttributesWidget.setBrowserConnection( browserConnection );
                 returningAttributesWidget.setInitialReturningAttributes( search.getReturningAttributes() );
             }
 
@@ -646,10 +649,10 @@ public class SearchPageWrapper extends BrowserWidget
             search.getSearchParameter().setName( searchNameText.getText() );
             searchModified = true;
         }
-        if ( connectionWidget != null && connectionWidget.getConnection() != null
-            && connectionWidget.getConnection() != search.getConnection() )
+        if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() != null
+            && browserConnectionWidget.getBrowserConnection() != search.getBrowserConnection() )
         {
-            search.setConnection( connectionWidget.getConnection() );
+            search.setBrowserConnection( browserConnectionWidget.getBrowserConnection() );
             searchModified = true;
         }
         if ( searchBaseWidget != null && searchBaseWidget.getDn() != null
@@ -698,7 +701,7 @@ public class SearchPageWrapper extends BrowserWidget
                     if ( returnOperationalAttributesButton.getSelection() )
                     {
                         AttributeTypeDescription[] opAtds = SchemaUtils
-                            .getOperationalAttributeDescriptions( connectionWidget.getConnection().getSchema() );
+                            .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection().getSchema() );
                         String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( opAtds );
                         raList.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
                         raList.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
@@ -715,7 +718,7 @@ public class SearchPageWrapper extends BrowserWidget
 
         if ( scopeWidget != null )
         {
-            int scope = scopeWidget.getScope();;
+            SearchScope scope = scopeWidget.getScope();
             if ( scope != search.getScope() )
             {
                 search.getSearchParameter().setScope( scope );
@@ -739,7 +742,8 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( aliasesDereferencingWidget != null )
         {
-            int aliasesDereferencingMethod = aliasesDereferencingWidget.getAliasesDereferencingMethod();
+            AliasDereferencingMethod aliasesDereferencingMethod = aliasesDereferencingWidget
+                .getAliasesDereferencingMethod();
             if ( aliasesDereferencingMethod != search.getAliasesDereferencingMethod() )
             {
                 search.getSearchParameter().setAliasesDereferencingMethod( aliasesDereferencingMethod );
@@ -748,7 +752,7 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( referralsHandlingWidget != null )
         {
-            int referralsHandlingMethod = referralsHandlingWidget.getReferralsHandlingMethod();
+            ReferralHandlingMethod referralsHandlingMethod = referralsHandlingWidget.getReferralsHandlingMethod();
             if ( referralsHandlingMethod != search.getReferralsHandlingMethod() )
             {
                 search.getSearchParameter().setReferralsHandlingMethod( referralsHandlingMethod );
@@ -801,7 +805,7 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public boolean performSearch( final ISearch search )
     {
-        if ( search.getConnection() != null )
+        if ( search.getBrowserConnection() != null )
         {
             new SearchJob( new ISearch[]
                 { search } ).execute();
@@ -821,7 +825,7 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public boolean isValid()
     {
-        if ( connectionWidget != null && connectionWidget.getConnection() == null )
+        if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() == null )
         {
             return false;
         }
@@ -850,7 +854,7 @@ public class SearchPageWrapper extends BrowserWidget
      */
     public String getErrorMessage()
     {
-        if ( connectionWidget != null && connectionWidget.getConnection() == null )
+        if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() == null )
         {
             return "Please select a connection.";
         }
@@ -883,10 +887,10 @@ public class SearchPageWrapper extends BrowserWidget
             searchNameLabel.setEnabled( b );
             searchNameText.setEnabled( b );
         }
-        if ( connectionWidget != null )
+        if ( browserConnectionWidget != null )
         {
             connectionLabel.setEnabled( b );
-            connectionWidget.setEnabled( b && !isActive( CONNECTION_READONLY ) );
+            browserConnectionWidget.setEnabled( b && !isActive( CONNECTION_READONLY ) );
         }
         if ( searchBaseWidget != null )
         {

@@ -23,12 +23,12 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 import java.math.BigInteger;
 
+import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DirectoryMetadataEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -259,8 +259,8 @@ public class BrowserSorter extends ViewerSorter
      */
     private int compareRdns( IEntry entry1, IEntry entry2 )
     {
-        RDN rdn1 = entry1.getRdn();
-        RDN rdn2 = entry2.getRdn();
+        Rdn rdn1 = entry1.getRdn();
+        Rdn rdn2 = entry2.getRdn();
 
         if ( rdn1 == null && rdn2 == null )
         {
@@ -276,7 +276,7 @@ public class BrowserSorter extends ViewerSorter
         }
         else
         {
-            return compare( rdn1.toString(), rdn2.toString() );
+            return compare( rdn1.getUpName(), rdn2.getUpName() );
         }
     }
 
@@ -291,9 +291,8 @@ public class BrowserSorter extends ViewerSorter
      */
     private int compareRdnValues( IEntry entry1, IEntry entry2 )
     {
-
-        RDN rdn1 = entry1.getRdn();
-        RDN rdn2 = entry2.getRdn();
+        Rdn rdn1 = entry1.getRdn();
+        Rdn rdn2 = entry2.getRdn();
 
         if ( ( rdn1 == null || rdn1.getValue() == null || "".equals( rdn1.getValue() ) )
             && ( rdn2 == null || rdn2.getValue() == null || "".equals( rdn2.getValue() ) ) )
@@ -311,27 +310,29 @@ public class BrowserSorter extends ViewerSorter
             return lessThan();
         }
 
-        else if ( rdn1.getValue().matches( "\\d*" ) && !rdn2.getValue().matches( "\\d*" ) )
+        String rdn1Value = ( String ) rdn1.getUpValue();
+        String rdn2Value = ( String ) rdn2.getUpValue();
+        if ( rdn1Value.matches( "\\d*" ) && !rdn2Value.matches( "\\d*" ) )
         {
             // return lessThan();
-            return compare( rdn1.getValue(), rdn2.getValue() );
+            return compare( rdn1Value, rdn2Value );
         }
-        else if ( !rdn1.getValue().matches( "\\d*" ) && rdn2.getValue().matches( "\\d*" ) )
+        else if ( !rdn1Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) )
         {
             // return greaterThan();
-            return compare( rdn1.getValue(), rdn2.getValue() );
+            return compare( rdn1Value, rdn2Value );
         }
-        else if ( rdn1.getValue().matches( "\\d*" ) && rdn2.getValue().matches( "\\d*" ) )
+        else if ( rdn2Value.matches( "\\d*" ) && rdn2Value.matches( "\\d*" ) )
         {
-            BigInteger bi1 = new BigInteger( rdn1.getValue() );
-            BigInteger bi2 = new BigInteger( rdn2.getValue() );
+            BigInteger bi1 = new BigInteger( rdn1Value );
+            BigInteger bi2 = new BigInteger( rdn2Value );
             return compare( bi1, bi2 );
             // return Integer.parseInt(rdn1.getValue()) -
             // Integer.parseInt(rdn2.getValue());
         }
         else
         {
-            return compare( rdn1.getValue(), rdn2.getValue() );
+            return compare( rdn1Value, rdn2Value );
         }
     }
 

@@ -26,46 +26,62 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.AttributeDescription;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.ReferralException;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob.JndiLdifEnumeration;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContentRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
+import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.eclipse.core.runtime.Preferences;
 
 
+/**
+ * Job to export directory content to an CSV file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ExportCsvJob extends AbstractEclipseJob
 {
 
-    private String exportLdifFilename;
+    /** The filename of the CSV file. */
+    private String exportCsvFilename;
 
-    private IConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
+    /** The search parameter. */
     private SearchParameter searchParameter;
 
+    /** The export dn flag. */
     private boolean exportDn;
 
 
-    public ExportCsvJob( String exportLdifFilename, IConnection connection, SearchParameter searchParameter,
-        boolean exportDn )
+    /**
+     * Creates a new instance of ExportCsvJob.
+     * 
+     * @param exportCsvFilename the filename of the csv file
+     * @param browserConnection the browser connection
+     * @param searchParameter the search parameter
+     * @param exportDn true to export the DN
+     */
+    public ExportCsvJob( String exportCsvFilename, IBrowserConnection browserConnection,
+        SearchParameter searchParameter, boolean exportDn )
     {
-        this.exportLdifFilename = exportLdifFilename;
-        this.connection = connection;
+        this.exportCsvFilename = exportCsvFilename;
+        this.browserConnection = browserConnection;
         this.searchParameter = searchParameter;
         this.exportDn = exportDn;
 
@@ -73,24 +89,31 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    protected IConnection[] getConnections()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( exportLdifFilename ) );
-        return l.toArray();
+        return new Object[]
+            { browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportCsvFilename ) };
     }
 
 
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.jobs__export_csv_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -108,7 +131,7 @@ public class ExportCsvJob extends AbstractEclipseJob
         try
         {
             // open file
-            FileOutputStream fos = new FileOutputStream( exportLdifFilename );
+            FileOutputStream fos = new FileOutputStream( exportCsvFilename );
             OutputStreamWriter osw = new OutputStreamWriter( fos, encoding );
             BufferedWriter bufferedWriter = new BufferedWriter( osw );
 
@@ -126,11 +149,11 @@ public class ExportCsvJob extends AbstractEclipseJob
                     bufferedWriter.write( attributeDelimiter );
             }
             bufferedWriter.write( BrowserCoreConstants.LINE_SEPARATOR );
-            
+
             // export
             int count = 0;
-            export( connection, searchParameter, bufferedWriter, count, monitor, exportAttributes, attributeDelimiter,
-                valueDelimiter, quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn );
+            exportToCsv( browserConnection, searchParameter, bufferedWriter, count, monitor, exportAttributes,
+                attributeDelimiter, valueDelimiter, quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn );
 
             // close file
             bufferedWriter.close();
@@ -145,25 +168,44 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    private static void export( IConnection connection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
-        int count, ExtendedProgressMonitor monitor, String[] attributes, String attributeDelimiter,
-        String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
-        throws IOException, ConnectionException
+    /**
+     * Exports to CSV.
+     * 
+     * @param browserConnection the browser connection
+     * @param searchParameter the search parameter
+     * @param bufferedWriter the buffered writer
+     * @param count the count
+     * @param monitor the monitor
+     * @param attributes the attributes
+     * @param attributeDelimiter the attribute delimiter
+     * @param valueDelimiter the value delimiter
+     * @param quoteCharacter the quote character
+     * @param lineSeparator the line separator
+     * @param encoding the encoding
+     * @param binaryEncoding the binary encoding
+     * @param exportDn the export dn
+     * 
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ConnectionException the connection exception
+     */
+    private static void exportToCsv( IBrowserConnection browserConnection, SearchParameter searchParameter,
+        BufferedWriter bufferedWriter, int count, StudioProgressMonitor monitor, String[] attributes,
+        String attributeDelimiter, String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding,
+        int binaryEncoding, boolean exportDn ) throws IOException, ConnectionException
     {
         try
         {
-
-            LdifEnumeration enumeration = connection.exportLdif( searchParameter, monitor );
-            while ( !monitor.isCanceled() && enumeration.hasNext( monitor ) )
+            JndiLdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
+            while ( !monitor.isCanceled() && enumeration.hasNext() )
             {
-                LdifContainer container = enumeration.next( monitor );
+                LdifContainer container = enumeration.next();
 
                 if ( container instanceof LdifContentRecord )
                 {
 
                     LdifContentRecord record = ( LdifContentRecord ) container;
-                    bufferedWriter.write( recordToCsv( connection, record, attributes, attributeDelimiter, valueDelimiter,
-                        quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn ) );
+                    bufferedWriter.write( recordToCsv( browserConnection, record, attributes, attributeDelimiter,
+                        valueDelimiter, quoteCharacter, lineSeparator, encoding, binaryEncoding, exportDn ) );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
@@ -179,31 +221,6 @@ public class ExportCsvJob extends AbstractEclipseJob
             {
                 // nothing
             }
-            else if ( ce instanceof ReferralException )
-            {
-
-                if ( searchParameter.getReferralsHandlingMethod() == IConnection.HANDLE_REFERRALS_FOLLOW )
-                {
-
-                    ReferralException re = ( ReferralException ) ce;
-                    ISearch[] referralSearches = re.getReferralSearches();
-                    for ( int i = 0; i < referralSearches.length; i++ )
-                    {
-                        ISearch referralSearch = referralSearches[i];
-
-                        // open connection
-                        if ( !referralSearch.getConnection().isOpened() )
-                        {
-                            referralSearch.getConnection().open( monitor );
-                        }
-
-                        // export recursive
-                        export( referralSearch.getConnection(), referralSearch.getSearchParameter(), bufferedWriter,
-                            count, monitor, attributes, attributeDelimiter, valueDelimiter, quoteCharacter,
-                            lineSeparator, encoding, binaryEncoding, exportDn );
-                    }
-                }
-            }
             else
             {
                 monitor.reportError( ce );
@@ -213,12 +230,30 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    private static String recordToCsv( IConnection connection, LdifContentRecord record, String[] attributes, String attributeDelimiter,
-        String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
+    /**
+     * Transforms an LDIF rRecord to CSV.
+     * 
+     * @param browserConnection the browser connection
+     * @param record the record
+     * @param attributes the attributes
+     * @param attributeDelimiter the attribute delimiter
+     * @param valueDelimiter the value delimiter
+     * @param quoteCharacter the quote character
+     * @param lineSeparator the line separator
+     * @param encoding the encoding
+     * @param binaryEncoding the binary encoding
+     * @param exportDn the export dn
+     * 
+     * @return the string
+     */
+    private static String recordToCsv( IBrowserConnection browserConnection, LdifContentRecord record,
+        String[] attributes, String attributeDelimiter, String valueDelimiter, String quoteCharacter,
+        String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
     {
 
         // group multi-valued attributes
-        Map attributeMap = getAttributeMap( connection, record, valueDelimiter, encoding, binaryEncoding );
+        Map<String, String> attributeMap = getAttributeMap( browserConnection, record, valueDelimiter, encoding,
+            binaryEncoding );
 
         // print attributes
         StringBuffer sb = new StringBuffer();
@@ -236,10 +271,10 @@ public class ExportCsvJob extends AbstractEclipseJob
 
             String attributeName = attributes[i];
             AttributeDescription ad = new AttributeDescription( attributeName );
-            String oidString = ad.toOidString( connection.getSchema() );
+            String oidString = ad.toOidString( browserConnection.getSchema() );
             if ( attributeMap.containsKey( oidString ) )
             {
-                String value = ( String ) attributeMap.get( oidString );
+                String value = attributeMap.get( oidString );
 
                 // escape
                 value = value.replaceAll( quoteCharacter, quoteCharacter + quoteCharacter );
@@ -263,21 +298,33 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
-    static Map getAttributeMap( IConnection connection, LdifContentRecord record, String valueDelimiter, String encoding, int binaryEncoding )
+    /**
+     * Gets the attribute map.
+     * 
+     * @param browserConnection the browser connection
+     * @param record the record
+     * @param valueDelimiter the value delimiter
+     * @param encoding the encoding
+     * @param binaryEncoding the binary encoding
+     * 
+     * @return the attribute map
+     */
+    static Map<String, String> getAttributeMap( IBrowserConnection browserConnection, LdifContentRecord record,
+        String valueDelimiter, String encoding, int binaryEncoding )
     {
-        Map attributeMap = new HashMap();
+        Map<String, String> attributeMap = new HashMap<String, String>();
         LdifAttrValLine[] lines = record.getAttrVals();
         for ( int i = 0; i < lines.length; i++ )
         {
             String attributeName = lines[i].getUnfoldedAttributeDescription();
-            if ( connection != null )
+            if ( browserConnection != null )
             {
                 // convert attributeName to oid
                 AttributeDescription ad = new AttributeDescription( attributeName );
-                attributeName = ad.toOidString( connection.getSchema() );
+                attributeName = ad.toOidString( browserConnection.getSchema() );
             }
             String value = lines[i].getValueAsString();
-            if ( ! Charset.forName( encoding ).newEncoder().canEncode( value ) )
+            if ( !Charset.forName( encoding ).newEncoder().canEncode( value ) )
             {
                 if ( binaryEncoding == BrowserCoreConstants.BINARYENCODING_BASE64 )
                 {
@@ -319,6 +366,9 @@ public class ExportCsvJob extends AbstractEclipseJob
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__export_cvs_error;

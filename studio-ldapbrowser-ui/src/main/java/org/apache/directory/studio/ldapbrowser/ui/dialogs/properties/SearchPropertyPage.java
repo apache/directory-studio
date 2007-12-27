@@ -27,9 +27,9 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListen
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
+import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPropertyPage;
@@ -110,7 +110,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
     public boolean performOk()
     {
         boolean modified = spw.saveToSearch( search );
-        if ( modified && search.getConnection() != null && search.getConnection().isOpened() )
+        if ( modified && search.getBrowserConnection() != null )
         {
             // send update event to force saving of new search parameters.
             EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,

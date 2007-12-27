@@ -131,6 +131,7 @@ public class FilterDamagerRepairer implements IPresentationDamager, IPresentatio
                 case LdapFilterToken.LESS:
                 case LdapFilterToken.APROX:
                 case LdapFilterToken.PRESENT:
+                case LdapFilterToken.SUBSTRING:
                 case LdapFilterToken.EXTENSIBLE_DNATTR_COLON:
                 case LdapFilterToken.EXTENSIBLE_MATCHINGRULEOID_COLON:
                 case LdapFilterToken.EXTENSIBLE_EQUALS_COLON:

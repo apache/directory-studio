@@ -21,12 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionConfiguration;
-import org.apache.directory.studio.ldapbrowser.common.widgets.connection.ConnectionWidget;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
+import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -132,7 +131,7 @@ public class ConnectionView extends ViewPart
         // create main widget
         mainWidget = new ConnectionWidget( configuration, getViewSite().getActionBars() );
         mainWidget.createWidget( composite );
-        mainWidget.setInput( BrowserCorePlugin.getDefault().getConnectionManager() );
+        mainWidget.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
 
         // create actions and context menu (and register global actions)
         actionGroup = new ConnectionViewActionGroup( this );
@@ -140,20 +139,19 @@ public class ConnectionView extends ViewPart
         actionGroup.fillMenu( mainWidget.getMenuManager() );
         actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
         actionGroup.fillContextMenu( configuration.getContextMenuManager( mainWidget.getViewer() ) );
-
+        
         // create the listener
         getSite().setSelectionProvider( mainWidget.getViewer() );
         universalListener = new ConnectionViewUniversalListener( this );
-
+        
         // default selection
-        IConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager().getConnections();
-        if ( connections.length > 0 )
-        {
-            ISelection selection = new StructuredSelection( connections[0] );
-            mainWidget.getViewer().setSelection( selection );
-            //this.universalListener.selectionChanged( this, selection );
-        }
-
+//        Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
+//        if ( connections.length > 0 )
+//        {
+//            ISelection selection = new StructuredSelection( connections[0] );
+//            mainWidget.getViewer().setSelection( selection );
+//            //this.universalListener.selectionChanged( this, selection );
+//        }
     }
 
 
@@ -165,9 +163,9 @@ public class ConnectionView extends ViewPart
      */
     public void select( Object obj )
     {
-        if ( obj instanceof IConnection )
+        if ( obj instanceof Connection )
         {
-            IConnection connection = ( IConnection ) obj;
+            Connection connection = ( Connection ) obj;
 
             mainWidget.getViewer().reveal( connection );
             mainWidget.getViewer().refresh( connection, true );

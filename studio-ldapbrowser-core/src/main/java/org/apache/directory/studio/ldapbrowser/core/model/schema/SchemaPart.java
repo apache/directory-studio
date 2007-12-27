@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.schema;
 
 import java.io.Serializable;
 
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 
 
 public abstract class SchemaPart implements Comparable, Serializable

@@ -2,11 +2,12 @@
 <feature
       id="org.apache.directory.studio.feature"
       label="Apache Directory Studio RCP"
-      version="0.7.0"
+      version="1.0.1"
       provider-name="Apache Software Foundation"
+      plugin="org.apache.directory.studio"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
-      arch="ppc,x86"
+      arch="ppc,x86,x86_64"
       image="studio.png">
 
    <description>
@@ -220,21 +221,21 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update/1.x"/>
    </url>
 
    <plugin
          id="org.apache.directory.studio"
          download-size="0"
          install-size="0"
-         version="0.7.0"
+         version="1.0.1"
          unpack="false"/>
-         
-	<plugin
+
+   <plugin
          id="org.apache.directory.studio.help"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>

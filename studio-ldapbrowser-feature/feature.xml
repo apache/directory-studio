@@ -2,11 +2,9 @@
 <feature
       id="org.apache.directory.studio.ldapbrowser.feature"
       label="Apache Directory Studio LDAP Browser"
-      version="0.8.0"
+      version="1.0.1"
       provider-name="Apache Software Foundation"
-      os="linux,macosx,win32"
-      ws="carbon,gtk,win32"
-      arch="ppc,x86"
+      plugin="org.apache.directory.studio.ldapbrowser.ui"
       image="studio.png">
 
    <description>
@@ -218,63 +216,90 @@ of your accepting any such warranty or additional liability.
    </license>
 
    <url>
-      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update"/>
+      <update label="Apache Directory Studio" url="http://directory.apache.org/studio/update/1.x"/>
    </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.search"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.resources"/>
+   </requires>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.core"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.ui"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.help"
          download-size="0"
          install-size="0"
-         version="0.6.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.common"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.valueeditors"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifeditor"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.1"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.aciitemeditor"
          download-size="0"
          install-size="0"
-         version="0.8.0"
+         version="1.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.connection.core"
+         download-size="0"
+         install-size="0"
+         version="1.0.1"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.connection.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0"
          unpack="false"/>
 
 </feature>

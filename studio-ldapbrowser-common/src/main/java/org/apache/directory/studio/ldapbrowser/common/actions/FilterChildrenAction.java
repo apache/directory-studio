@@ -59,7 +59,7 @@ public class FilterChildrenAction extends BrowserAction
         if ( getSelectedEntries().length == 1 )
         {
             FilterWidgetDialog dialog = new FilterWidgetDialog( getShell(), "Filter Children", getSelectedEntries()[0]
-                .getChildrenFilter(), getSelectedEntries()[0].getConnection() );
+                .getChildrenFilter(), getSelectedEntries()[0].getBrowserConnection() );
             if ( dialog.open() == Dialog.OK )
             {
                 String newFilter = dialog.getFilter();

@@ -101,7 +101,7 @@ public class PartitionDetailsPage implements IDetailsPage
     private boolean dirty = false;
 
     // UI fields
-    private Text nameText;
+    private Text idText;
     private Text cacheSizeText;
     private Text suffixText;
     private Button enableOptimizerCheckbox;
@@ -333,10 +333,10 @@ public class PartitionDetailsPage implements IDetailsPage
         client.setLayout( glayout );
         section.setClient( client );
 
-        // Name
-        toolkit.createLabel( client, "Name:" );
-        nameText = toolkit.createText( client, "" );
-        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        // ID
+        toolkit.createLabel( client, "ID:" );
+        idText = toolkit.createText( client, "" );
+        idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Cache Size
         toolkit.createLabel( client, "Cache Size:" );
@@ -551,7 +551,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
-        nameText.addModifyListener( textModifyListener );
+        idText.addModifyListener( textModifyListener );
         cacheSizeText.addModifyListener( textModifyListener );
         suffixText.addModifyListener( textModifyListener );
         enableOptimizerCheckbox.addSelectionListener( checkboxSelectionListener );
@@ -576,7 +576,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
-        nameText.removeModifyListener( textModifyListener );
+        idText.removeModifyListener( textModifyListener );
         cacheSizeText.removeModifyListener( textModifyListener );
         suffixText.removeModifyListener( textModifyListener );
         enableOptimizerCheckbox.removeSelectionListener( checkboxSelectionListener );
@@ -621,7 +621,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         if ( input != null )
         {
-            input.setName( nameText.getText() );
+            input.setId( idText.getText() );
             input.setCacheSize( Integer.parseInt( cacheSizeText.getText() ) );
             input.setSuffix( suffixText.getText() );
             input.setEnableOptimizer( enableOptimizerCheckbox.getSelection() );
@@ -672,9 +672,9 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         removeListeners();
 
-        // Name
-        String name = input.getName();
-        nameText.setText( ( name == null ) ? "" : name );
+        // ID
+        String id = input.getId();
+        idText.setText( ( id == null ) ? "" : id );
 
         // Cache Size
         cacheSizeText.setText( "" + input.getCacheSize() );
@@ -721,7 +721,7 @@ public class PartitionDetailsPage implements IDetailsPage
      */
     public void setFocus()
     {
-        nameText.setFocus();
+        idText.setFocus();
     }
 
 

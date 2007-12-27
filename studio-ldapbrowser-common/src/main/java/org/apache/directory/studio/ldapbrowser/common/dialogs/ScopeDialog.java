@@ -22,8 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -35,31 +34,53 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * A dialog to select the scope of a copy operation.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ScopeDialog extends Dialog
 {
 
+    /** The dialog title. */
     private String dialogTitle;
 
-    private boolean multi;
+    /** The multiple entries selected flag. */
+    private boolean multipleEntriesSelected;
 
-    private int scope = -1;
+    /** The scope. */
+    private SearchScope scope;
 
+    /** The object scope button. */
     private Button objectScopeButton;
 
+    /** The onelevel scope button. */
     private Button onelevelScopeButton;
 
+    /** The subtree scope button. */
     private Button subtreeScopeButton;
 
 
-    public ScopeDialog( Shell parentShell, String dialogTitle, boolean multi )
+    /**
+     * Creates a new instance of ScopeDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param dialogTitle the dialog title
+     * @param multipleEntriesSelected the multiple entries selected
+     */
+    public ScopeDialog( Shell parentShell, String dialogTitle, boolean multipleEntriesSelected )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         this.dialogTitle = dialogTitle;
-        this.multi = multi;
+        this.multipleEntriesSelected = multipleEntriesSelected;
     }
 
 
+    /**
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+     */
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -67,20 +88,20 @@ public class ScopeDialog extends Dialog
     }
 
 
-    public boolean close()
-    {
-        return super.close();
-    }
-
-
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#okPressed()
+     */
     protected void okPressed()
     {
-        this.scope = this.objectScopeButton.getSelection() ? ISearch.SCOPE_OBJECT : this.onelevelScopeButton
-            .getSelection() ? ISearch.SCOPE_ONELEVEL : ISearch.SCOPE_SUBTREE;
+        scope = objectScopeButton.getSelection() ? SearchScope.OBJECT
+            : onelevelScopeButton.getSelection() ? SearchScope.ONELEVEL : SearchScope.SUBTREE;
         super.okPressed();
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -88,33 +109,41 @@ public class ScopeDialog extends Dialog
     }
 
 
+    /**
+     * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         composite.setLayoutData( gd );
 
         Group group = BaseWidgetUtils.createGroup( composite, "Please select the copy depth", 1 );
-        this.objectScopeButton = new Button( group, SWT.RADIO );
-        this.objectScopeButton.setSelection( true );
-        this.objectScopeButton.setText( this.multi ? "&Object (Only the copied entries)"
+        objectScopeButton = new Button( group, SWT.RADIO );
+        objectScopeButton.setSelection( true );
+        objectScopeButton.setText( multipleEntriesSelected ? "&Object (Only the copied entries)"
             : "&Object (Only the copied entry)" );
-        this.onelevelScopeButton = new Button( group, SWT.RADIO );
-        this.onelevelScopeButton.setText( this.multi ? "O&ne Level (The copied entries and their direct children)"
-            : "O&ne Level (The copied entry and its direct children)" );
-        this.subtreeScopeButton = new Button( group, SWT.RADIO );
-        this.subtreeScopeButton.setText( this.multi ? "&Subtree (The whole subtrees)" : "&Subtree (The whole subtree)" );
+        onelevelScopeButton = new Button( group, SWT.RADIO );
+        onelevelScopeButton
+            .setText( multipleEntriesSelected ? "O&ne Level (The copied entries and their direct children)"
+                : "O&ne Level (The copied entry and its direct children)" );
+        subtreeScopeButton = new Button( group, SWT.RADIO );
+        subtreeScopeButton.setText( multipleEntriesSelected ? "&Subtree (The whole subtrees)"
+            : "&Subtree (The whole subtree)" );
 
         applyDialogFont( composite );
         return composite;
-
     }
 
 
-    public int getScope()
+    /**
+     * Gets the scope.
+     * 
+     * @return the scope
+     */
+    public SearchScope getScope()
     {
-        return this.scope;
+        return scope;
     }
 
 }

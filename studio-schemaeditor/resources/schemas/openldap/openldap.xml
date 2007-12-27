@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="openldap">
+   <objectclasses>
+      <objectclass oid="1.3.6.1.4.1.4203.1.4.3" obsolete="false">
+         <aliases>
+            <alias>OpenLDAPorg</alias>
+         </aliases>
+         <description>OpenLDAP Organizational Object</description>
+         <superiors>
+            <superior>organization</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <optional>
+            <attributetype>buildingName</attributetype>
+            <attributetype>displayName</attributetype>
+            <attributetype>labeledURI</attributetype>
+         </optional>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.4203.1.4.4" obsolete="false">
+         <aliases>
+            <alias>OpenLDAPou</alias>
+         </aliases>
+         <description>OpenLDAP Organizational Unit Object</description>
+         <superiors>
+            <superior>organizationalUnit</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <optional>
+            <attributetype>buildingName</attributetype>
+            <attributetype>displayName</attributetype>
+            <attributetype>labeledURI</attributetype>
+            <attributetype>o</attributetype>
+         </optional>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.4203.1.4.5" obsolete="false">
+         <aliases>
+            <alias>OpenLDAPperson</alias>
+         </aliases>
+         <description>OpenLDAP Person</description>
+         <superiors>
+            <superior>pilotPerson</superior>
+            <superior>inetOrgPerson</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>uid</attributetype>
+            <attributetype>cn</attributetype>
+         </mandatory>
+         <optional>
+            <attributetype>givenName</attributetype>
+            <attributetype>labeledURI</attributetype>
+            <attributetype>o</attributetype>
+         </optional>
+      </objectclass>
+      <objectclass oid="1.3.6.1.4.1.4203.1.4.6" obsolete="false">
+         <aliases>
+            <alias>OpenLDAPdisplayableObject</alias>
+         </aliases>
+         <description>OpenLDAP Displayable Object</description>
+         <type>AUXILIARY</type>
+         <optional>
+            <attributetype>displayName</attributetype>
+         </optional>
+      </objectclass>
+   </objectclasses>
+</schema>

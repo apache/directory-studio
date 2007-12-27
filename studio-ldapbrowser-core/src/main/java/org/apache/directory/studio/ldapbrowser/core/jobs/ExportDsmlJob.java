@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
@@ -43,21 +41,31 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.filter.AndNode;
+import org.apache.directory.shared.ldap.filter.ApproximateNode;
 import org.apache.directory.shared.ldap.filter.BranchNode;
+import org.apache.directory.shared.ldap.filter.EqualityNode;
 import org.apache.directory.shared.ldap.filter.ExprNode;
 import org.apache.directory.shared.ldap.filter.ExtensibleNode;
 import org.apache.directory.shared.ldap.filter.FilterParser;
-import org.apache.directory.shared.ldap.filter.FilterParserImpl;
+import org.apache.directory.shared.ldap.filter.GreaterEqNode;
+import org.apache.directory.shared.ldap.filter.LessEqNode;
+import org.apache.directory.shared.ldap.filter.NotNode;
+import org.apache.directory.shared.ldap.filter.OrNode;
 import org.apache.directory.shared.ldap.filter.PresenceNode;
 import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
+import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -75,7 +83,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     private String exportDsmlFilename;
 
     /** The connection to use */
-    private IConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The Search Parameter of the export*/
     private SearchParameter searchParameter;
@@ -91,10 +99,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * @param searchParameter
      *          the Search Parameter of the export
      */
-    public ExportDsmlJob( String exportDsmlFilename, IConnection connection, SearchParameter searchParameter )
+    public ExportDsmlJob( String exportDsmlFilename, IBrowserConnection connection, SearchParameter searchParameter )
     {
         this.exportDsmlFilename = exportDsmlFilename;
-        this.connection = connection;
+        this.browserConnection = connection;
         this.searchParameter = searchParameter;
 
         setName( BrowserCoreMessages.jobs__export_dsml_name );
@@ -104,10 +112,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
     /* (non-Javadoc)
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
      */
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
@@ -117,7 +125,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     protected Object[] getLockedObjects()
     {
         List<String> l = new ArrayList<String>();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
         return l.toArray();
     }
 
@@ -125,7 +133,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     /* (non-Javadoc)
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor)
      */
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__export_dsml_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -137,40 +145,41 @@ public class ExportDsmlJob extends AbstractEclipseJob
             searchRequest.setProtocolOP( searchRequest );
 
             // DN
-            searchRequest.setBaseObject( new LdapDN( searchParameter.getSearchBase().toString() ) );
+            searchRequest.setBaseObject( searchParameter.getSearchBase( ) );
 
             // Scope
-            int scope = searchParameter.getScope();
-            if ( scope == ISearch.SCOPE_OBJECT )
+            SearchScope scope = searchParameter.getScope();
+            if ( scope == SearchScope.OBJECT )
             {
                 searchRequest.setScope( ScopeEnum.BASE_OBJECT );
             }
-            else if ( scope == ISearch.SCOPE_ONELEVEL )
+            else if ( scope == SearchScope.ONELEVEL )
             {
                 searchRequest.setScope( ScopeEnum.SINGLE_LEVEL );
             }
-            else if ( scope == ISearch.SCOPE_SUBTREE )
+            else if ( scope == SearchScope.SUBTREE )
             {
                 searchRequest.setScope( ScopeEnum.WHOLE_SUBTREE );
             }
 
             // DerefAliases
-            int derefAliases = searchParameter.getAliasesDereferencingMethod();
-            if ( derefAliases == IConnection.DEREFERENCE_ALIASES_ALWAYS )
+            AliasDereferencingMethod derefAliases = searchParameter.getAliasesDereferencingMethod();
+            switch ( derefAliases )
             {
-                searchRequest.setDerefAliases( LdapConstants.DEREF_ALWAYS );
-            }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_FINDING )
-            {
-                searchRequest.setDerefAliases( LdapConstants.DEREF_FINDING_BASE_OBJ );
-            }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_NEVER )
-            {
-                searchRequest.setDerefAliases( LdapConstants.NEVER_DEREF_ALIASES );
-            }
-            else if ( derefAliases == IConnection.DEREFERENCE_ALIASES_SEARCH )
-            {
-                searchRequest.setDerefAliases( LdapConstants.DEREF_IN_SEARCHING );
+                case ALWAYS:
+                    searchRequest.setDerefAliases( LdapConstants.DEREF_ALWAYS );
+                    break;
+                case FINDING:
+                    searchRequest.setDerefAliases( LdapConstants.DEREF_FINDING_BASE_OBJ );
+                    break;
+                case NEVER:
+                    searchRequest.setDerefAliases( LdapConstants.NEVER_DEREF_ALIASES );
+                    break;
+                case SEARCH:
+                    searchRequest.setDerefAliases( LdapConstants.DEREF_IN_SEARCHING );
+                    break;
+                default:
+                    break;
             }
 
             // Time Limit
@@ -210,8 +219,9 @@ public class ExportDsmlJob extends AbstractEclipseJob
             Element rootElement = xmlRequest.addElement( "batchRequest" );
             SearchRequestDsml searchRequestDsml = new SearchRequestDsml( searchRequest );
             searchRequestDsml.toDsml( rootElement );
-            Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection
-                .getBindPrincipal(), connection.getBindPassword() );
+            Dsmlv2Engine engine = new Dsmlv2Engine( browserConnection.getConnection().getHost(), browserConnection
+                .getConnection().getPort(), browserConnection.getConnection().getBindPrincipal(), browserConnection
+                .getConnection().getBindPassword() );
             String response = engine.processDSML( xmlRequest.asXML() );
 
             // Saving the response
@@ -249,10 +259,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     public static Filter convertToSharedLdapFilter( String filter ) throws IOException, ParseException,
         DecoderException
     {
-        FilterParser filterParser = new FilterParserImpl();
-
-        ExprNode exprNode = filterParser.parse( filter );
-
+        ExprNode exprNode = FilterParser.parse( filter );
         return convertToSharedLdapFilter( exprNode );
     }
 
@@ -274,36 +281,35 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             BranchNode branchNode = ( BranchNode ) exprNode;
 
-            switch ( branchNode.getOperator() )
+            if( branchNode instanceof AndNode )
             {
-                case AND:
-                    AndFilter andFilter = new AndFilter();
-                    sharedLdapFilter = andFilter;
-
-                    List<Filter> andFilters = iterateOnFilters( branchNode.getChildren() );
-                    for ( int i = 0; i < andFilters.size(); i++ )
-                    {
-                        andFilter.addFilter( andFilters.get( i ) );
-                    }
-                    break;
-
-                case OR:
-                    OrFilter orFilter = new OrFilter();
-                    sharedLdapFilter = orFilter;
-
-                    List<Filter> orFilters = iterateOnFilters( branchNode.getChildren() );
-                    for ( int i = 0; i < orFilters.size(); i++ )
-                    {
-                        orFilter.addFilter( orFilters.get( i ) );
-                    }
-                    break;
-                case NOT:
-                    NotFilter notFilter = new NotFilter();
-                    sharedLdapFilter = notFilter;
-
-                    List<Filter> notFilters = iterateOnFilters( branchNode.getChildren() );
-                    notFilter.setNotFilter( notFilters.get( 0 ) );
-                    break;
+                AndFilter andFilter = new AndFilter();
+                sharedLdapFilter = andFilter;
+                
+                List<Filter> andFilters = iterateOnFilters( branchNode.getChildren() );
+                for ( int i = 0; i < andFilters.size(); i++ )
+                {
+                    andFilter.addFilter( andFilters.get( i ) );
+                }
+            }
+            else if( branchNode instanceof OrNode )
+            {
+                OrFilter orFilter = new OrFilter();
+                sharedLdapFilter = orFilter;
+                
+                List<Filter> orFilters = iterateOnFilters( branchNode.getChildren() );
+                for ( int i = 0; i < orFilters.size(); i++ )
+                {
+                    orFilter.addFilter( orFilters.get( i ) );
+                }
+            }
+            else if( branchNode instanceof NotNode )
+            {
+                NotFilter notFilter = new NotFilter();
+                sharedLdapFilter = notFilter;
+                
+                List<Filter> notFilters = iterateOnFilters( branchNode.getChildren() );
+                notFilter.setNotFilter( notFilters.get( 0 ) );
             }
         }
         else if ( exprNode instanceof PresenceNode )
@@ -319,31 +325,29 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             SimpleNode simpleNode = ( SimpleNode ) exprNode;
 
-            switch ( simpleNode.getAssertionType() )
+            if ( simpleNode instanceof ApproximateNode )
             {
-                case APPROXIMATE:
-                    AttributeValueAssertionFilter approxMatchFilter = createAttributeValueAssertionFilter( simpleNode,
-                        LdapConstants.APPROX_MATCH_FILTER );
-                    sharedLdapFilter = approxMatchFilter;
-                    break;
-
-                case EQUALITY:
-                    AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter(
-                        simpleNode, LdapConstants.EQUALITY_MATCH_FILTER );
-                    sharedLdapFilter = equalityMatchFilter;
-                    break;
-
-                case GREATEREQ:
-                    AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter(
-                        simpleNode, LdapConstants.GREATER_OR_EQUAL_FILTER );
-                    sharedLdapFilter = greaterOrEqualFilter;
-                    break;
-
-                case LESSEQ:
-                    AttributeValueAssertionFilter lessOrEqualFilter = createAttributeValueAssertionFilter( simpleNode,
-                        LdapConstants.LESS_OR_EQUAL_FILTER );
-                    sharedLdapFilter = lessOrEqualFilter;
-                    break;
+                AttributeValueAssertionFilter approxMatchFilter = createAttributeValueAssertionFilter( simpleNode,
+                    LdapConstants.APPROX_MATCH_FILTER );
+                sharedLdapFilter = approxMatchFilter;
+            }
+            else if ( simpleNode instanceof EqualityNode )
+            {
+                AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter(
+                    simpleNode, LdapConstants.EQUALITY_MATCH_FILTER );
+                sharedLdapFilter = equalityMatchFilter;
+            }
+            else if ( simpleNode instanceof GreaterEqNode )
+            {
+                AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter(
+                    simpleNode, LdapConstants.GREATER_OR_EQUAL_FILTER );
+                sharedLdapFilter = greaterOrEqualFilter;
+            }
+            else if ( simpleNode instanceof LessEqNode )
+            {
+                AttributeValueAssertionFilter lessOrEqualFilter = createAttributeValueAssertionFilter( simpleNode,
+                    LdapConstants.LESS_OR_EQUAL_FILTER );
+                sharedLdapFilter = lessOrEqualFilter;
             }
         }
         else if ( exprNode instanceof ExtensibleNode )
@@ -353,7 +357,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             ExtensibleMatchFilter extensibleMatchFilter = new ExtensibleMatchFilter();
             sharedLdapFilter = extensibleMatchFilter;
 
-            extensibleMatchFilter.setDnAttributes( extensibleNode.dnAttributes() );
+            extensibleMatchFilter.setDnAttributes( extensibleNode.hasDnAttributes() );
             extensibleMatchFilter.setMatchingRule( extensibleNode.getMatchingRuleId() );
             extensibleMatchFilter.setMatchValue( extensibleNode.getValue() );
             extensibleMatchFilter.setType( extensibleNode.getAttribute() );
@@ -368,10 +372,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
             substringFilter.setType( substringNode.getAttribute() );
             substringFilter.setInitialSubstrings( substringNode.getInitial() );
             substringFilter.setFinalSubstrings( substringNode.getFinal() );
-            List anys = substringNode.getAny();
+            List<String> anys = substringNode.getAny();
             for ( int i = 0; i < anys.size(); i++ )
             {
-                substringFilter.addAnySubstrings( ( String ) anys.get( i ) );
+                substringFilter.addAnySubstrings( anys.get( i ) );
             }
         }
 
@@ -436,7 +440,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
     {
         List<org.apache.directory.shared.ldap.codec.Control> returnList = new ArrayList<org.apache.directory.shared.ldap.codec.Control>();
 
-        if ( controls != null)
+        if ( controls != null )
         {
             for ( int i = 0; i < controls.length; i++ )
             {

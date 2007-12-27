@@ -34,8 +34,6 @@
 		&tools_modification_logs_view;
 		&tools_progress_view;
 
-		&tools_ldif_editor;
-
 	</section>
 
 	<section  id="tools_wizardsanddialogs">

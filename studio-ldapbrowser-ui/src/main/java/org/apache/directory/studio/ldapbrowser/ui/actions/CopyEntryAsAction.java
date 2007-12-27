@@ -162,11 +162,11 @@ public abstract class CopyEntryAsAction extends BrowserAction
         }
         for ( int i = 0; i < getSelectedBookmarks().length; i++ )
         {
-            IEntry entry = getSelectedBookmarks()[0].getConnection().getEntryFromCache(
+            IEntry entry = getSelectedBookmarks()[0].getBrowserConnection().getEntryFromCache(
                 getSelectedBookmarks()[0].getDn() );
             if ( entry == null )
             {
-                ReadEntryJob job = new ReadEntryJob( getSelectedBookmarks()[0].getConnection(),
+                ReadEntryJob job = new ReadEntryJob( getSelectedBookmarks()[0].getBrowserConnection(),
                     getSelectedBookmarks()[0].getDn() );
                 RunnableContextJobAdapter.execute( job );
                 entry = job.getReadEntry();

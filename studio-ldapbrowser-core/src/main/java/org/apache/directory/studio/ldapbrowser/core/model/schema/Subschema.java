@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -58,11 +58,11 @@ public class Subschema implements Serializable
         {
             this.objectClassNames = new String[0];
         }
-        this.schema = entry.getConnection().getSchema();
+        this.schema = entry.getBrowserConnection().getSchema();
     }
 
 
-    public Subschema( String[] objectClassNames, IConnection connection )
+    public Subschema( String[] objectClassNames, IBrowserConnection connection )
     {
         this.objectClassNames = objectClassNames;
         this.schema = connection.getSchema();

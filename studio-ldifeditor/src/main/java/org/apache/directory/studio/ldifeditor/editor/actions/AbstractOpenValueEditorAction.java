@@ -21,26 +21,27 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyConnection;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifPart;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifContainer;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.container.LdifRecord;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifAttrValLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifControlLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDeloldrdnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifDnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewrdnLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifNewsuperiorLine;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.lines.LdifValueLineBase;
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
@@ -120,7 +121,8 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
                     try
                     {
-                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString() );
+                        document.replace( line.getOffset(), line.getLength(), newLine.toFormattedString( Utils
+                            .getLdifFormatParameters() ) );
                     }
                     catch ( BadLocationException e )
                     {
@@ -133,7 +135,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
     }
 
 
-    protected IConnection getConnection()
+    protected IBrowserConnection getConnection()
     {
         return editor.getConnection() != null ? editor.getConnection() : new DummyConnection( Schema.DEFAULT_SCHEMA );
     }
@@ -141,7 +143,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
     protected Object getValueEditorRawValue()
     {
-        IConnection connection = getConnection();
+        IBrowserConnection connection = getConnection();
         String dn = getDn();
         String description = getAttributeDescription();
         Object value = getValue();
@@ -151,17 +153,13 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
         {
             try
             {
-                DummyEntry dummyEntry = new DummyEntry( new DN( dn ), connection );
+                DummyEntry dummyEntry = new DummyEntry( new LdapDN( dn ), connection );
                 Attribute dummyAttribute = new Attribute( dummyEntry, description );
                 Value dummyValue = new Value( dummyAttribute, value );
 
                 rawValue = valueEditor.getRawValue( dummyValue );
             }
-            catch ( NameException e )
-            {
-                e.printStackTrace();
-            }
-            catch ( ModelModificationException e )
+            catch ( InvalidNameException e )
             {
                 e.printStackTrace();
             }
@@ -184,8 +182,8 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
         }
         return dn;
     }
-    
-    
+
+
     protected Object getValue()
     {
         LdifPart[] parts = getSelectedLdifParts();

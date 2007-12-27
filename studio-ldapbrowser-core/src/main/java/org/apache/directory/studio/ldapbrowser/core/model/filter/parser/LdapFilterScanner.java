@@ -224,8 +224,13 @@ public class LdapFilterScanner
                 this.lastTokenType = LdapFilterToken.LPAR;
                 return new LdapFilterToken( this.lastTokenType, "(", pos );
             case ')':
-                this.lastTokenType = LdapFilterToken.RPAR;
-                return new LdapFilterToken( this.lastTokenType, ")", pos );
+                if ( lastTokenType != LdapFilterToken.EQUAL && lastTokenType != LdapFilterToken.GREATER
+                    && lastTokenType != LdapFilterToken.LESS && lastTokenType != LdapFilterToken.APROX 
+                    && lastTokenType != LdapFilterToken.SUBSTRING )
+                {
+                    this.lastTokenType = LdapFilterToken.RPAR;
+                    return new LdapFilterToken( this.lastTokenType, ")", pos );
+                }
             case '&':
                 if ( lastTokenType == LdapFilterToken.LPAR )
                 {
@@ -281,13 +286,41 @@ public class LdapFilterScanner
                         {
                             prevChar();
                             prevChar();
-                            this.lastTokenType = LdapFilterToken.EQUAL;
-                            return new LdapFilterToken( this.lastTokenType, "=", pos );
                         }
                     }
                     else
                     {
                         prevChar();
+                    }
+                    
+                    // substring or equal
+                    // read till ) or eof, if we found an * we have an substring
+                    boolean asteriskFound = false;
+                    c = nextNonLinebreakChar();
+                    int count = 1;
+                    while ( c != ')' && c != '\u0000' )
+                    {
+                        if( c == '*' )
+                        {
+                            asteriskFound = true;
+                            break;
+                        }
+                        
+                        c = nextNonLinebreakChar();
+                        count++;
+                    }
+                    while( count > 0 )
+                    {
+                        prevNonLinebreakChar();
+                        count--;
+                    }
+                    if( asteriskFound )
+                    {
+                        this.lastTokenType = LdapFilterToken.SUBSTRING;
+                        return new LdapFilterToken( this.lastTokenType, "=", pos );
+                    }
+                    else
+                    {
                         this.lastTokenType = LdapFilterToken.EQUAL;
                         return new LdapFilterToken( this.lastTokenType, "=", pos );
                     }
@@ -418,17 +451,67 @@ public class LdapFilterScanner
         if ( lastTokenType == LdapFilterToken.EQUAL || lastTokenType == LdapFilterToken.GREATER
             || lastTokenType == LdapFilterToken.LESS || lastTokenType == LdapFilterToken.APROX )
         {
-
+            boolean forbiddenCharFound = false;
             StringBuffer sb = new StringBuffer();
             c = nextNonLinebreakChar();
-            while ( c != '(' && c != ')' && c != '\u0000' )
+            int count = 0;
+            while ( c != ')' && c != '\u0000' )
             {
+                if ( c == '*' || c == '(' )
+                {
+                    forbiddenCharFound = true;
+                    break;
+                }
+
                 sb.append( c );
                 c = nextNonLinebreakChar();
+                count++;
             }
             prevNonLinebreakChar();
 
-            if ( sb.length() > 0 )
+            if ( forbiddenCharFound )
+            {
+                while ( count > 0 )
+                {
+                    prevNonLinebreakChar();
+                    count--;
+                }
+            }
+            else //if ( sb.length() > 0 )
+            {
+                this.lastTokenType = LdapFilterToken.VALUE;
+                return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );
+            }
+        }
+        if ( lastTokenType == LdapFilterToken.SUBSTRING )
+        {
+            boolean forbiddenCharFound = false;
+            StringBuffer sb = new StringBuffer();
+            c = nextNonLinebreakChar();
+            int count = 0;
+            while ( c != ')' && c != '\u0000' )
+            {
+                if ( c == '(' )
+                {
+                    forbiddenCharFound = true;
+                    break;
+                }
+
+                sb.append( c );
+                c = nextNonLinebreakChar();
+                count++;
+            }
+            prevNonLinebreakChar();
+
+            if ( forbiddenCharFound )
+            {
+                while ( count > 0 )
+                {
+                    prevNonLinebreakChar();
+                    count--;
+                }
+            }
+            else if ( sb.length() > 0 )
             {
                 this.lastTokenType = LdapFilterToken.VALUE;
                 return new LdapFilterToken( this.lastTokenType, sb.toString(), pos - sb.length() + 1 );

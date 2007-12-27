@@ -17,19 +17,18 @@
 
    <windowImages i16="/studio-rcp/resources/icons/window/studio_16x16.gif" i32="/studio-rcp/resources/icons/window/studio_32x32.gif" i48="/studio-rcp/resources/icons/window/studio_48x48.gif" i64="/studio-rcp/resources/icons/window/studio_64x64.gif" i128="/studio-rcp/resources/icons/window/studio_128x128.gif"/>
 
+   <splash
+      location="org.apache.directory.studio"
+      startupProgressRect="0,280,455,15"
+      startupMessageRect="10,237,435,20"
+      startupForegroundColor="FFFFFF" />
    <launcher name="Apache Directory Studio">
       <linux icon="/studio-rcp/resources/icons/linux/studio.xpm"/>
       <macosx icon="/studio-rcp/resources/icons/macosx/studio.icns"/>
       <solaris/>
-      <win useIco="false">
-         <bmp
-            winSmallHigh="/studio-rcp/resources/icons/windows/studio_16x16_32-bits.bmp"
-            winSmallLow="/studio-rcp/resources/icons/windows/studio_16x16_8-bits.bmp"
-            win24Low="/studio-rcp/resources/icons/windows/studio_24x24_8-bits.bmp"
-            winMediumHigh="/studio-rcp/resources/icons/windows/studio_32x32_32-bits.bmp"
-            winMediumLow="/studio-rcp/resources/icons/windows/studio_32x32_8-bits.bmp"
-            winLargeHigh="/studio-rcp/resources/icons/windows/studio_48x48_32-bits.bmp"
-            winLargeLow="/studio-rcp/resources/icons/windows/studio_48x48_8-bits.bmp"/>
+      <win useIco="true">
+         <ico path="/studio-rcp/resources/icons/windows/studio.ico"/>
+         <bmp/>
       </win>
    </launcher>
 

@@ -23,7 +23,7 @@ package org.apache.directory.studio.valueeditors.objectclass;
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -79,7 +79,7 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
 
         if ( !showRawValues() && !"".equals( displayValue ) )
         {
-            Schema schema = value.getAttribute().getEntry().getConnection().getSchema();
+            Schema schema = value.getAttribute().getEntry().getBrowserConnection().getSchema();
             ObjectClassDescription ocd = schema.getObjectClassDescription( displayValue );
             if ( ocd.isStructural() )
             {
@@ -128,12 +128,12 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
         }
         else
         {
-            return getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() );
+            return getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value.getStringValue() );
         }
     }
 
 
-    private Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IBrowserConnection connection, Object value )
     {
         Schema schema = null;
         if ( connection != null )

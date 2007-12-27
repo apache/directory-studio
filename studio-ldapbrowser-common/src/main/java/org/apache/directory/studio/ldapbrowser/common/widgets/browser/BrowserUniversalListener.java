@@ -21,10 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -69,7 +72,7 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
             {
                 IEntry entry = ( IEntry ) event.getElement();
                 if ( entry.isChildrenInitialized() && entry.hasMoreChildren()
-                    && entry.getChildrenCount() < entry.getConnection().getCountLimit() )
+                    && entry.getChildrenCount() < entry.getBrowserConnection().getCountLimit() )
                 {
                     entry.setChildrenInitialized( false );
                 }
@@ -120,7 +123,7 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
         viewer.addTreeListener( treeViewerListener );
         viewer.addDoubleClickListener( doubleClickListener );
 
-        EventRegistry.addConnectionUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
@@ -135,7 +138,7 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
             viewer.removeTreeListener( treeViewerListener );
             viewer.removeDoubleClickListener( doubleClickListener );
 
-            EventRegistry.removeConnectionUpdateListener( this );
+            ConnectionEventRegistry.removeConnectionUpdateListener( this );
             EventRegistry.removeEntryUpdateListener( this );
 
             viewer = null;
@@ -144,25 +147,55 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
 
     /**
-     * {@inheritDoc}
-     *
-     * This implementation refreshes the tree and collapses the
-     * tree when the connection is closed.
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
      */
-    public void connectionUpdated( ConnectionUpdateEvent connectionUpdateEvent )
+    public void connectionOpened( Connection connection )
     {
-        if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_CLOSED )
-        {
-            viewer.collapseAll();
-        }
-        else if ( connectionUpdateEvent.getDetail() == ConnectionUpdateEvent.EventDetail.CONNECTION_OPENED )
-        {
-            viewer.refresh( connectionUpdateEvent.getConnection() );
-        }
-        else
-        {
-            viewer.refresh( connectionUpdateEvent.getConnection() );
-        }
+        viewer.refresh();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionClosed( Connection connection )
+    {
+        viewer.collapseAll();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionUpdated( Connection connection )
+    {
+        viewer.refresh();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionAdded( Connection connection )
+    {
+        viewer.refresh();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     */
+    public void connectionRemoved( Connection connection )
+    {
+        viewer.refresh();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
     }
 
 

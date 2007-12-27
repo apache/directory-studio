@@ -23,103 +23,159 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.naming.NameAlreadyBoundException;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
+
+import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Entry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Search;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Value;
+import org.apache.directory.studio.ldapbrowser.core.jobs.EntryExistsCopyStrategyDialog.EntryExistsCopyStrategy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-import org.apache.directory.studio.ldapbrowser.core.model.RDN;
-import org.apache.directory.studio.ldapbrowser.core.model.RDNPart;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
-public class CopyEntriesJob extends AbstractAsyncBulkJob
+/**
+ * Job to copy entries asynchronously.
+ * 
+ * TODO: implement overwrite strategy
+ * TODO: implement remember selection
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class CopyEntriesJob extends AbstractNotificationJob
 {
 
+    /** The parent entry. */
     private IEntry parent;
 
+    /** The entries to copy. */
     private IEntry[] entriesToCopy;
 
-    private int scope;
+    /** The copy scope */
+    private SearchScope scope;
+
+    /** The dialog to ask for the strategy */
+    private EntryExistsCopyStrategyDialog dialog;
 
 
-    public CopyEntriesJob( final IEntry parent, final IEntry[] entriesToCopy, int scope )
+    /**
+     * Creates a new instance of CopyEntriesJob.
+     * 
+     * @param parent the parent entry
+     * @param entriesToCopy the entries to copy
+     * @param scope the copy scope
+     * @param dialog the dialog
+     */
+    public CopyEntriesJob( final IEntry parent, final IEntry[] entriesToCopy, SearchScope scope,
+        EntryExistsCopyStrategyDialog dialog )
     {
         this.parent = parent;
         this.entriesToCopy = entriesToCopy;
         this.scope = scope;
+        this.dialog = dialog;
         setName( entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_name_1
             : BrowserCoreMessages.jobs__copy_entries_name_n );
     }
 
 
-    protected IConnection[] getConnections()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { parent.getConnection() };
+        return new Connection[]
+            { parent.getBrowserConnection().getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<IEntry> l = new ArrayList<IEntry>();
         l.add( parent );
         l.addAll( Arrays.asList( entriesToCopy ) );
         return l.toArray();
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( entriesToCopy.length == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__copy_entries_task_1, new String[]
-                { entriesToCopy[0].getDn().toString(), parent.getDn().toString() } ) : BrowserCoreMessages.bind(
+                { entriesToCopy[0].getDn().getUpName(), parent.getDn().getUpName() } ) : BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__copy_entries_task_n, new String[]
-                { Integer.toString( entriesToCopy.length ), parent.getDn().toString() } ), 2 + entriesToCopy.length );
+                { Integer.toString( entriesToCopy.length ), parent.getDn().getUpName() } ), 2 + entriesToCopy.length );
 
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        if ( scope == ISearch.SCOPE_OBJECT || scope == ISearch.SCOPE_ONELEVEL || scope == ISearch.SCOPE_SUBTREE )
+        if ( scope == SearchScope.OBJECT || scope == SearchScope.ONELEVEL || scope == SearchScope.SUBTREE )
         {
+            StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+            int copyScope = scope == SearchScope.SUBTREE ? SearchControls.SUBTREE_SCOPE
+                : scope == SearchScope.ONELEVEL ? SearchControls.ONELEVEL_SCOPE : SearchControls.OBJECT_SCOPE;
+
             int num = 0;
             for ( int i = 0; !monitor.isCanceled() && i < entriesToCopy.length; i++ )
             {
                 IEntry entryToCopy = entriesToCopy[i];
 
-                if ( scope == ISearch.SCOPE_OBJECT
-                    || !parent.getDn().toString().endsWith( entryToCopy.getDn().toString() ) )
+                if ( scope == SearchScope.OBJECT
+                    || !parent.getDn().getNormName().endsWith( entryToCopy.getDn().getNormName() ) )
                 {
-                    num = this.copyEntryRecursive( entryToCopy, parent, scope, num, monitor );
+                    dummyMonitor.reset();
+                    num = copyEntry( entryToCopy, parent, null, copyScope, num, dialog, dummyMonitor, monitor );
                 }
                 else
                 {
                     monitor.reportError( BrowserCoreMessages.jobs__copy_entries_source_and_target_are_equal );
                 }
             }
+
+            parent.setChildrenInitialized( false );
+            parent.setHasChildrenHint( true );
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
         EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
         return entriesToCopy.length == 1 ? BrowserCoreMessages.jobs__copy_entries_error_1
@@ -127,185 +183,220 @@ public class CopyEntriesJob extends AbstractAsyncBulkJob
     }
 
 
-    private int copyEntryRecursive( IEntry entryToCopy, IEntry parent, int scope, int num,
-        ExtendedProgressMonitor monitor )
+    /**
+     * Copy entry. If scope is SearchControls.SUBTREE_SCOPE the entry is copied
+     * recursively.
+     * 
+     * @param browserConnection the browser connection
+     * @param dnToCopy the DN to copy
+     * @param parentDn the parent DN
+     * @param newRdn the new RDN, if null the RDN of dnToCopy is used
+     * @param scope the copy scope
+     * @param numberOfCopiedEntries the number of copied entries
+     * @param dialog the dialog to ask for the copy strategy, if null the user won't be
+     *        asked instead the NameAlreadyBoundException it reported to the monitor
+     * @param dummyMonitor the dummy monitor, used for I/O that causes exceptions that 
+     *        should be handled
+     * @param monitor the real monitor
+     * 
+     * @return the number of copied entries
+     */
+//    static int copyEntry( IBrowserConnection browserConnection, LdapDN dnToCopy, LdapDN parentDn, Rdn newRdn,
+//        int scope, int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
+//        StudioProgressMonitor monitor )
+    static int copyEntry( IEntry entryToCopy, IEntry parent, Rdn newRdn, int scope, int numberOfCopiedEntries,
+        EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
+    {
+        SearchControls searchControls = new SearchControls();
+        searchControls.setCountLimit( 1 );
+        searchControls.setReturningAttributes( new String[]
+            { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
+        searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
+        NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection().getJNDIConnectionWrapper().search(
+            entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
+            null, monitor, null );
+
+        numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result, parent
+            .getBrowserConnection(), parent.getDn(), newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,
+            monitor );
+
+        return numberOfCopiedEntries;
+    }
+
+
+    /**
+     * Copy the entries. If scope is SearchControls.SUBTREE_SCOPE the entries are copied
+     * recursively.
+     * 
+     * @param sourceBrowserConnection the source browser connection
+     * @param entries the source entries to copy
+     * @param targetBrowserConnection the target browser connection
+     * @param parentDn the target parent DN
+     * @param newRdn the new RDN, if null the original RDN of each entry is used 
+     * @param scope the copy scope
+     * @param numberOfCopiedEntries the number of copied entries
+     * @param dialog the dialog to ask for the copy strategy, if null the user won't be
+     *        asked instead the NameAlreadyBoundException it reported to the monitor
+     * @param dummyMonitor the dummy monitor, used for I/O that causes exceptions that 
+     *        should be handled
+     * @param monitor the real monitor
+     * 
+     * @return the number of copied entries
+     */
+    static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, NamingEnumeration<SearchResult> entries,
+        IBrowserConnection targetBrowserConnection, LdapDN parentDn, Rdn forceNewRdn, int scope,
+        int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
+        StudioProgressMonitor monitor )
     {
         try
         {
-            SearchParameter param = new SearchParameter();
-            param.setSearchBase( entryToCopy.getDn() );
-            param.setFilter( ISearch.FILTER_TRUE );
-            param.setScope( ISearch.SCOPE_OBJECT );
-            param.setAliasesDereferencingMethod( IConnection.DEREFERENCE_ALIASES_NEVER );
-            param.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
-            param.setReturningAttributes( new String[]
-                { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
-            ISearch search = new Search( entryToCopy.getConnection(), param );
-            entryToCopy.getConnection().search( search, monitor );
-
-            ISearchResult[] srs = search.getSearchResults();
-            if ( !monitor.isCanceled() && srs != null && srs.length == 1 )
+            while ( !monitor.isCanceled() && entries.hasMore() )
             {
-                entryToCopy = srs[0].getEntry();
-                IAttribute[] attributesToCopy = entryToCopy.getAttributes();
+                // get next entry to copy
+                SearchResult sr = entries.next();
+                LdapDN oldLdapDn = JNDIUtils.getDn( sr );
+                Rdn oldRdn = oldLdapDn.getRdn();
+                
+                // reuse attributes of the entry to copy
+                Attributes newAttributes = sr.getAttributes();
 
-                // create new entry
-                RDN rdn = entryToCopy.getRdn();
-                IEntry newEntry = new Entry( parent, rdn );
-
-                // change RDN if entry already exists
-                ExtendedProgressMonitor testMonitor = new ExtendedProgressMonitor( monitor );
-                IEntry testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
-                if ( testEntry != null )
+                // compose new DN
+                Rdn newRdn = oldLdapDn.getRdn();
+                if( forceNewRdn != null )
                 {
-                    String rdnValue = rdn.getValue();
-                    String newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, "", rdnValue ); //$NON-NLS-1$
-                    RDN newRdn = getNewRdn( rdn, newRdnValue );
-                    newEntry = new Entry( parent, newRdn );
-                    testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
-                    for ( int i = 2; testEntry != null; i++ )
-                    {
-                        newRdnValue = BrowserCoreMessages.bind( BrowserCoreMessages.copy_n_of_s, i + " ", rdnValue ); //$NON-NLS-1$
-                        newRdn = getNewRdn( rdn, newRdnValue );
-                        newEntry = new Entry( parent, newRdn );
-                        testEntry = parent.getConnection().getEntry( newEntry.getDn(), testMonitor );
-                    }
+                    newRdn = forceNewRdn;
                 }
+                LdapDN newLdapDn = DnUtils.composeDn( newRdn, parentDn );
 
-                // copy attributes
-                for ( int i = 0; i < attributesToCopy.length; i++ )
+                // apply new RDN to the attributes
+                applyNewRdn( newAttributes, oldRdn, newRdn );
+                
+                // create entry
+                targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(), newAttributes, null,
+                    dummyMonitor );
+
+                while ( dummyMonitor.errorsReported() )
                 {
-                    IAttribute attributeToCopy = attributesToCopy[i];
-
-                    if ( SchemaUtils.isModifyable( attributeToCopy.getAttributeTypeDescription() )
-                        || IAttribute.REFERRAL_ATTRIBUTE.equalsIgnoreCase( attributeToCopy.getDescription() ) )
+                    if ( dialog != null && dummyMonitor.getException() instanceof NameAlreadyBoundException )
                     {
-                        IAttribute newAttribute = new Attribute( newEntry, attributeToCopy.getDescription() );
-                        newEntry.addAttribute( newAttribute );
-                        IValue[] valuesToCopy = attributeToCopy.getValues();
-                        for ( int j = 0; j < valuesToCopy.length; j++ )
+                        // open dialog
+                        dialog.setExistingEntry( targetBrowserConnection, newLdapDn );
+                        dialog.open();
+                        EntryExistsCopyStrategy strategy = dialog.getStrategy();
+//                        boolean rememberSelection = dialog.isRememberSelection();
+                        if ( strategy != null )
                         {
-                            IValue valueToCopy = valuesToCopy[j];
-                            IValue newValue = new Value( newAttribute, valueToCopy.getRawValue() );
-                            newAttribute.addValue( newValue );
-                        }
-                    }
-                }
+                            dummyMonitor.reset();
 
-                // check if RDN attributes ar present
-                RDN newRdn = newEntry.getRdn();
-                RDNPart[] oldRdnParts = rdn.getParts();
-                for ( int i = 0; i < oldRdnParts.length; i++ )
-                {
-                    RDNPart part = oldRdnParts[i];
-                    IAttribute rdnAttribute = newEntry.getAttribute( part.getType() );
-                    if ( rdnAttribute != null )
-                    {
-                        IValue[] values = rdnAttribute.getValues();
-                        for ( int ii = 0; ii < values.length; ii++ )
-                        {
-                            if ( part.getUnencodedValue().equals( values[ii].getRawValue() ) )
+                            switch ( strategy )
                             {
-                                rdnAttribute.deleteValue( values[ii] );
-                            }
-                            if ( rdnAttribute.getValueSize() == 0 )
-                            {
-                                newEntry.deleteAttribute( rdnAttribute );
+                                case BREAK:
+                                    monitor.setCanceled( true );
+                                    break;
+                                case IGNORE_AND_CONTINUE:
+                                    break;
+//                                case OVERWRITE_AND_CONTINUE:
+//                                    break;
+                                case RENAME_AND_CONTINUE:
+                                    Rdn renamedRdn = dialog.getRdn();
+                                    
+                                    // apply renamed RDN to the attributes
+                                    applyNewRdn( newAttributes, newRdn, renamedRdn );
+                                    
+                                    // compose new DN
+                                    newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
+
+                                    // create entry
+                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
+                                        newAttributes, null, dummyMonitor );
+
+                                    break;
                             }
                         }
-                    }
-                }
-                RDNPart[] newRdnParts = newRdn.getParts();
-                for ( int i = 0; i < newRdnParts.length; i++ )
-                {
-                    RDNPart part = newRdnParts[i];
-                    IAttribute rdnAttribute = newEntry.getAttribute( part.getType() );
-                    if ( rdnAttribute == null )
-                    {
-                        rdnAttribute = new Attribute( newEntry, part.getType() );
-                        newEntry.addAttribute( rdnAttribute );
-                        rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ) );
+                        else
+                        {
+                            monitor.reportError( dummyMonitor.getException() );
+                            break;
+                        }
                     }
                     else
                     {
-                        boolean mustAdd = true;
-                        IValue[] values = rdnAttribute.getValues();
-                        for ( int ii = 0; ii < values.length; ii++ )
-                        {
-                            if ( part.getUnencodedValue().equals( values[ii].getStringValue() ) )
-                            {
-                                mustAdd = false;
-                                break;
-                            }
-                        }
-                        if ( mustAdd )
-                        {
-                            rdnAttribute.addValue( new Value( rdnAttribute, part.getUnencodedValue() ) );
-                        }
+                        monitor.reportError( dummyMonitor.getException() );
+                        break;
                     }
                 }
 
-                newEntry.getConnection().create( newEntry, monitor );
-                newEntry.getParententry().addChild( newEntry );
-                newEntry.setHasChildrenHint( false );
-
-                num++;
-                monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__copied_n_entries,
-                    new String[]
-                        { Integer.toString( num ) } ) );
-
-                // check for children
-                if ( !monitor.isCanceled() && ( scope == ISearch.SCOPE_ONELEVEL || scope == ISearch.SCOPE_SUBTREE ) )
+                if ( !monitor.isCanceled() && !monitor.errorsReported() )
                 {
+                    numberOfCopiedEntries++;
+                    
+                    monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__copied_n_entries,
+                        new String[]
+                            { "" + numberOfCopiedEntries } ) ); //$NON-NLS-1$
 
-                    SearchParameter subParam = new SearchParameter();
-                    subParam.setSearchBase( entryToCopy.getDn() );
-                    subParam.setFilter( ISearch.FILTER_TRUE );
-                    subParam.setScope( ISearch.SCOPE_ONELEVEL );
-                    subParam.setReturningAttributes( ISearch.NO_ATTRIBUTES );
-                    ISearch subSearch = new Search( entryToCopy.getConnection(), subParam );
-                    entryToCopy.getConnection().search( subSearch, monitor );
-
-                    ISearchResult[] subSrs = subSearch.getSearchResults();
-                    if ( !monitor.isCanceled() && subSrs != null && subSrs.length > 0 )
+                    // copy recursively
+                    if ( scope == SearchControls.ONELEVEL_SCOPE || scope == SearchControls.SUBTREE_SCOPE )
                     {
+                        SearchControls searchControls = new SearchControls();
+                        searchControls.setCountLimit( 0 );
+                        searchControls.setReturningAttributes( new String[]
+                            { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
+                        searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+                        NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
+                            .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE, searchControls, "never",
+                                JNDIConnectionWrapper.REFERRAL_IGNORE, null, monitor, null );
 
-                        for ( int i = 0; i < subSrs.length; i++ )
+                        if ( scope == SearchControls.ONELEVEL_SCOPE )
                         {
-                            ISearchResult subSearchResult = subSrs[i];
-                            IEntry childEntry = subSearchResult.getEntry();
-
-                            if ( scope == ISearch.SCOPE_ONELEVEL )
-                            {
-                                num = this
-                                    .copyEntryRecursive( childEntry, newEntry, ISearch.SCOPE_OBJECT, num, monitor );
-                            }
-                            else if ( scope == ISearch.SCOPE_SUBTREE )
-                            {
-                                num = this.copyEntryRecursive( childEntry, newEntry, ISearch.SCOPE_SUBTREE, num,
-                                    monitor );
-                            }
+                            scope = SearchControls.OBJECT_SCOPE;
                         }
 
+                        numberOfCopiedEntries = copyEntryRecursive( sourceBrowserConnection, childEntries,
+                            targetBrowserConnection, newLdapDn, null, scope, numberOfCopiedEntries, dialog,
+                            dummyMonitor, monitor );
                     }
                 }
             }
         }
-        catch ( Exception e )
+        catch ( NamingException e )
         {
             monitor.reportError( e );
         }
-        return num;
+
+        return numberOfCopiedEntries;
     }
 
-
-    private RDN getNewRdn( RDN rdn, String newRdnValue ) throws NameException
+    private static void applyNewRdn(Attributes attributes, Rdn oldRdn, Rdn newRdn)
     {
-        String[] names = rdn.getTypes();
-        String[] values = rdn.getValues();
-        values[0] = newRdnValue;
-        RDN newRdn = new RDN( names, values, true );
-        return newRdn;
+        // remove old RDN attributes and values
+        for ( Iterator<AttributeTypeAndValue> it = oldRdn.iterator(); it.hasNext(); )
+        {
+            AttributeTypeAndValue atav = it.next();
+            Attribute attribute = attributes.get( atav.getUpType() );
+            if ( attribute != null )
+            {
+                attribute.remove( atav.getUpValue() );
+                if ( attribute.size() == 0 )
+                {
+                    attributes.remove( atav.getUpType() );
+                }
+            }
+        }
+        
+        // add new RDN attributes and values
+        for ( Iterator<AttributeTypeAndValue> it = newRdn.iterator(); it.hasNext(); )
+        {
+            AttributeTypeAndValue atav = it.next();
+            Attribute attribute = attributes.get( atav.getUpType() );
+            if ( attribute == null )
+            {
+                attribute = new BasicAttribute( atav.getUpType() );
+                attributes.put( attribute );
+            }
+            if ( !attribute.contains( atav.getUpValue() ) )
+            {
+                attribute.add( atav.getUpValue() );
+            }
+        }
     }
-
 }

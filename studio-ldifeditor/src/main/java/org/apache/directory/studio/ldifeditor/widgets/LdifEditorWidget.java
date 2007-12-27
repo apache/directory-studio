@@ -22,12 +22,12 @@ package org.apache.directory.studio.ldifeditor.widgets;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.ldif.LdifFile;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
 import org.apache.directory.studio.ldifeditor.editor.LdifSourceViewerConfiguration;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.IDocument;
@@ -52,7 +52,7 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
 {
 
     /** The connection. */
-    private IConnection connection;
+    private IBrowserConnection connection;
 
     /** The initial LDIF. */
     private String initialLdif;
@@ -80,7 +80,7 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
      * @param initialLdif the initial ldif
      * @param connection the connection
      */
-    public LdifEditorWidget( IConnection connection, String initialLdif, boolean contentAssistEnabled )
+    public LdifEditorWidget( IBrowserConnection connection, String initialLdif, boolean contentAssistEnabled )
     {
         this.connection = connection;
         this.initialLdif = initialLdif;
@@ -158,7 +158,7 @@ public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITex
     /**
      * {@inheritDoc}
      */
-    public IConnection getConnection()
+    public IBrowserConnection getConnection()
     {
         return connection;
     }

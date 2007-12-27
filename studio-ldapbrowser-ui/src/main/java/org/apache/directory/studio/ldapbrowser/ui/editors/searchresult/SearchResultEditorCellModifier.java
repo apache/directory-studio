@@ -23,15 +23,13 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import java.util.Iterator;
 
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Item;
@@ -76,16 +74,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
             // attribute dummy
             if ( ah == null )
             {
-                try
-                {
-                    ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
-                        { new Attribute( result.getEntry(), property ) } );
-                }
-                catch ( ModelModificationException e )
-                {
-                    e.printStackTrace();
-                    return false;
-                }
+                ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
+                    { new Attribute( result.getEntry(), property ) } );
             }
 
             // check schema modifyable
@@ -145,16 +135,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
             if ( ah == null )
             {
-                try
-                {
-                    ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
-                        { new Attribute( result.getEntry(), property ) } );
-                }
-                catch ( ModelModificationException e )
-                {
-                    e.printStackTrace();
-                    return null;
-                }
+                ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
+                    { new Attribute( result.getEntry(), property ) } );
             }
 
             return this.valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );
@@ -175,29 +157,21 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
         if ( element != null && element instanceof ISearchResult && property != null )
         {
-            try
-            {
-                ISearchResult result = ( ISearchResult ) element;
-                AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
+            ISearchResult result = ( ISearchResult ) element;
+            AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
-                // switch operation:
-                if ( ah == null && newRawValue != null )
-                {
-                    this.valueEditorManager.createValue( result.getEntry(), property, newRawValue );
-                }
-                else if ( ah != null && newRawValue == null )
-                {
-                    this.valueEditorManager.deleteAttribute( ah );
-                }
-                else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
-                {
-                    this.valueEditorManager.modifyValue( ah.getAttribute().getValues()[0], newRawValue );
-                }
-            }
-            catch ( ModelModificationException mme )
+            // switch operation:
+            if ( ah == null && newRawValue != null )
             {
-                MessageDialog.openError( this.viewer.getTable().getShell(), "Error While Modifying Value", mme
-                    .getMessage() );
+                this.valueEditorManager.createValue( result.getEntry(), property, newRawValue );
+            }
+            else if ( ah != null && newRawValue == null )
+            {
+                this.valueEditorManager.deleteAttribute( ah );
+            }
+            else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
+            {
+                this.valueEditorManager.modifyValue( ah.getAttribute().getValues()[0], newRawValue );
             }
         }
     }

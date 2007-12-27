@@ -1,0 +1,979 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<chapter id="gettingstarted">
+	<title>Getting started</title>
+	
+	<para>
+		This getting started guide provides a brief introduction to the Apache Directory Studio LDIF Editor. 
+	</para>
+	
+	<section id="gettingstarted_download_install">
+		<title>Download and installation</title>
+		<para>
+		 	Beside the integration in Apache Directory Studio the Apache Directory Studio LDIF Editor could also be installed
+		 	as a plug-in into a regular Eclipse installation. This section describes this
+		 	alternative. 
+		 </para>
+		 <para>
+			Using the Eclipse Install/Update Manager is the easiest way to 
+			install the Apache Directory Studio LDIF Editor plug-in.
+			From workbench menu choose
+			<emphasis role="strong">
+			<menuchoice>
+				<guimenu>Help</guimenu>
+				<guisubmenu>Software Updates</guisubmenu>
+				<guimenuitem>Find and Install...</guimenuitem>
+			</menuchoice>
+			</emphasis>
+			. 
+		</para>
+		<para>
+			In the opened wizard choose 
+			<emphasis role="strong">Search for new features to install</emphasis> 
+			and click <emphasis role="strong">Next</emphasis>.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/gettingstarted_install_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			Next please specify the Apache Directory Studio update site. Click the <emphasis role="strong">New Remote Site...</emphasis> button.
+			In the dialog input the following and press <emphasis role="strong">OK</emphasis>:
+			<itemizedlist>
+				<listitem>Name: Apache Directory Studio Update Site</listitem>
+				<listitem>URL: http://directory.apache.org/studio/update/1.x</listitem>
+			</itemizedlist>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/gettingstarted_install_2.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			Make sure the new update site is checked an press 
+			<emphasis role="strong">Finish</emphasis>.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/gettingstarted_install_3.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			Now the install manager checks the update site and presents the search results. Select the
+			feature you want to install - of course the Apache Directory Studio LDIF Editor - and click 
+			<emphasis role="strong">Next</emphasis>.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/gettingstarted_install_4.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			Accept the license agreement, the Apache Directory Studio LDIF Editor is distributed under the 
+			Apache License, Version 2.0.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50" 
+							fileref="images/gettingstarted_install_5.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			In the next dialog ensure that the Apache Directory Studio LDIF Editor feature is selected and 
+			click to <emphasis role="strong">Finish</emphasis>.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50" 
+							fileref="images/gettingstarted_install_6.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			Now the install manager loads the necessary files. When download is finished
+			you have to verify the installation, please click to 
+			<emphasis role="strong">Install</emphasis>.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/gettingstarted_install_7.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			After installation it is recommended to restart the Eclipse workbench.
+		</para>
+		
+	</section>
+	
+	
+	<section id="gettingstarted_overview">
+		<title>Overview</title>
+		  
+		<para>
+			The LDIF editor could be used to edit LDIF files. 
+			It could handle LDIF content files as well as LDIF changetype files.
+			Files with appendix *.ldif are automatically handled by the LDIF editor.
+		</para>
+		
+		<simplesect id="gettingstarted_overview_limitations">
+		<title>Limitations</title>
+			<para>
+				The LDIF editor is still in development. 
+				The handling of big LDIF files is a problem because the complete file 
+				is loaded into memory which may cause an OutOfMemoryException.
+				The syntax check doesn't work correctly. The error annotations and 
+				displayed messages are not very helpful at the moment.
+				Currently there is no URL support (jpegImage:&lt;file://)
+			</para>	
+		</simplesect>
+		
+		<simplesect id="gettingstarted_overview_screenshots">
+			<title>Example screenshot</title>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_ldif_editor_15.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>			
+		</simplesect>
+		
+		<simplesect id="gettingstarted_overview_syntax_coloring">
+			<title>Syntax coloring</title>
+			<para>
+				Syntax coloring helps you to distinguish the different elements of a LDIF file. 
+				By default the following colors and fonts are used:
+			</para>	
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Element" colwidth="2*" />
+					<colspec colname="Color" colwidth="1*" />
+					<colspec colname="Example" colwidth="2*" />
+					<thead>
+						<row>
+							<entry>Element</entry>
+							<entry>Color</entry>
+							<entry>Example</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>distinguished name</entry>
+							<entry>black and bold</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_1.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>attributes</entry>
+							<entry>violett and bold</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_2.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>values</entry>
+							<entry>blue</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_3.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>changetype add</entry>
+							<entry>green and bold</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_4.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>changetype modify</entry>
+							<entry>yellow and bold</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_5.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>changetype delete</entry>
+							<entry>red and bold</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_6.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>changetype moddn/modrdn</entry>
+							<entry>blue and bold</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_7.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>keywords</entry>
+							<entry>gray</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_8.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>comments</entry>
+							<entry>dark green</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_ldif_editor_9.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+			<para>
+				These colors and fonts could be changed in the 
+				<link linkend="gettingstarted_preferences">
+					LDIF Editor Syntax Coloring preferences
+				</link>.
+			</para>		
+		</simplesect>
+  
+	</section>
+	
+	<section id="gettingstarted_working">
+		<title>Working with the LDIF editor</title>
+		<simplesect id="gettingstarted_working_using">
+			<title>Using LDIF editor</title>
+			<para>
+				To create a new LDIF file choose <emphasis role="strong">File -> New </emphasis>, 
+				expand <emphasis role="strong">LDAP Browser</emphasis>, 
+				select 
+				<emphasis role="strong">
+					<guiicon>
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em" fileref="icons/browser_ldifeditor.gif"
+									format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+					</guiicon>
+					LDIF File
+				</emphasis> 
+				and press the Finish button.
+			</para>
+			<para>
+				To open an existing LDIF file choose <emphasis role="strong">File -> Open File</emphasis>, 
+				that opens a file dialog where you could select the LDIF file. 
+				Within Eclipse you could also open a LDIF file from Navigator view.
+			</para>
+			<para>
+				To save the modified LDIF choose <emphasis role="strong">File -> Save</emphasis>
+				or <emphasis role="strong">File -> Save as</emphasis> and select a save location 
+				and enter the file name.
+			</para>
+			<para>
+				The LDIF editor also supports default editor functionality like Copy/Paste, 
+				Undo/Redo and a Find/Replace dialog, see Edit menu. 
+			</para>
+		</simplesect>
+		
+		<simplesect id="gettingstarted_working_connect">
+			<title>Connect with directory and its schema</title>
+			<para>
+				The LDIF editor could be connected to a directory server and its schema. 
+				A prerequirement is that the connection is defined. 
+				Then you could select a connection from the drop-down list.
+				Doing this will provide you the following features:
+				<itemizedlist>
+					<listitem>
+						<para>
+							The Content Assistent will provide better attribute proposals.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							The best value provider is choosen as default value editor.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							The LDIF could be imported into the selected directory by invoking the 
+							<emphasis role="strong">
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em" fileref="icons/execute.gif"
+												format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</emphasis> 
+							execute button.
+						</para>
+					</listitem>
+				</itemizedlist>			
+			</para>
+		</simplesect>
+	
+		<simplesect id="gettingstarted_working_content_assistent">
+			<title>Content Assistent</title>
+			<para>
+				The LDIF editor provides a context-sensitive content assistent.
+				To start content assistence press 
+				<emphasis role="strong">Ctrl+Space</emphasis>, 
+				then a popup with proposals is shown. 
+				You could select one using the cursur keys or the mouse, press 
+				<emphasis role="strong">Enter</emphasis> to apply 
+				the selected proposal. To close the popup press the 
+				<emphasis role="strong">ESC</emphasis> key.
+				The following list shows the supported proposals:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						When starting a new record a popup with record templates is shown.
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_ldif_editor_10.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When writing an attribute in a content or add record a popup with 
+						a list with matching attributes is shown.
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_ldif_editor_12.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						In an modify record the popup lists possible modify item templates.
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_ldif_editor_11.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</simplesect>
+	
+		<simplesect id="gettingstarted_working_value_editors">
+			<title>Value Editors</title>
+			<para>
+				In LDIF values may only contain a subset of ASCII characters. 
+				Values with other characters (like accent mark) and even asiatic characters 
+				must be encoded using BASE-64. Also binary data like images or certificates
+				must be encoded. 
+			</para>
+			<para>
+				To edit such values Value editors could be used.
+			</para>
+			<para>
+				To start a Value editor move the cursor to the attribute or value and select 
+				<emphasis role="strong">Edit Value</emphasis> from context menu or press 
+				<emphasis role="strong">F7</emphasis>.
+				This opens the default value editor dialog. 
+				You could also open a custom value editor by choosing one from 
+				<emphasis role="strong">Edit Value With</emphasis> in context menu.
+			</para>
+			<para>
+				To apply a modified value press the <emphasis role="strong">OK</emphasis> 
+				button in the value editor dialog, the previous value is replaced by the new value. 
+				Of course in LDIF they are displayed BASE-64 encoded.
+			</para>
+		</simplesect>
+		
+		<simplesect id="gettingstarted_working_record_editors">
+			<title>LDIF record editor</title>
+			<para>
+				It is possible to use the well-known Entry editor to edit content 
+				records and add records. Move the cursor to the record and choose 
+				<emphasis role="strong">Edit Record</emphasis> from context menu or 
+				press <emphasis role="strong">F8</emphasis>.
+				This opens the LDIF record editor. 
+				You can add, modify and delete attributes. 
+				To apply the modification press <emphasis role="strong">OK</emphasis>, 
+				the previous record is replaced by the new one.
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_ldif_editor_13.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>			
+			</para>
+		</simplesect>
+	
+		<simplesect id="gettingstarted_working_base64">
+			<title>Reading BASE-64 values</title>
+			<para>
+				There are two ways to make BASE-64 values human readable:
+			</para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Move the mouse over the value, a tooltip with the value is displayed. 
+						This works only for text-based values, not for binary values.
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_ldif_editor_14.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Open the value editor.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</simplesect>
+	
+		<simplesect id="gettingstarted_working_error_annotations">
+			<title>Error annotations</title>
+			<para>
+				Syntax errors are displayed using error annotations. 
+				In the ruler the error icon 
+				<guiicon>
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="icons/error.gif" format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+				</guiicon>
+				is displayed.
+				Additional the erroneous content is red squiggled.
+			</para>
+			<para>
+				Note: The support for error annotations is still in development and has to be improved.
+				The displayed messages are not very useful at the moment.
+			</para>
+		</simplesect>
+		
+		<simplesect id="gettingstarted_working_formatting">
+			<title>Formatting</title>
+			<para>
+				To format the document or the selected record according the 
+				<link linkend="gettingstarted_preferences">
+					LDIF Editor preferences
+				</link>
+				choose <emphasis role="strong">Format</emphasis> from context menu.
+			</para>
+		</simplesect>
+		
+		<simplesect id="gettingstarted_working_folding">
+			<title>Folding</title>
+			<para>
+				Multi-lined comments, records and multi-lined values could be folded. 
+				There is a <emphasis role="strong">(+)</emphasis> and 
+				<emphasis role="strong">(-)</emphasis> in the left ruler to collapse 
+				and expand these. By default multi-lined comments and multi-lined
+				values are folded. This behaviour could be changed in 
+				<link linkend="gettingstarted_preferences">
+					LDIF Editor preferences
+				</link>.
+			</para>
+		</simplesect>
+		
+		<simplesect id="tools_ldif_editor_line_numbers">
+			<title>Line numbers</title>
+			<para>
+				To show/hide line numbers toggle the 
+				<emphasis role="strong">Show Line Number</emphasis> 
+				in the context menu of the left ruler.
+			</para>
+		</simplesect>		  
+	</section>
+	
+	<section id="gettingstarted_outline">
+		<title>Outline</title>
+		<para>
+			The Outline view shows the distinguished names of all the records 
+			in the LDIF file, the icon indicates the record type.
+			The following icons are used:
+		</para>
+		<informaltable frame="all">
+			<tgroup cols="2">
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/entry_default.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Content record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_add.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Add record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_modify.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Modify record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_delete.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Delete record</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_rename.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Moddn/Modrdn record</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+		<para>
+			When expanding the DNs the detail of a record are shown:
+		</para>
+		<informaltable frame="all">
+			<tgroup cols="2">
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_attribute.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Attribute</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_value.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Value</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_mod_add.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Changetype add</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_mod_replace.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Changetype modify</entry>
+					</row>
+					<row>
+						<entry>
+							<guiicon>
+								<inlinemediaobject>
+									<imageobject>
+										<imagedata contentdepth="1em"
+											fileref="icons/ldif_mod_delete.gif" format="GIF" />
+									</imageobject>
+								</inlinemediaobject>
+							</guiicon>
+						</entry>
+						<entry>Changetype delete</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+		<para>
+			When selecting an element in the Outline view the corresponding 
+			element is selected in LDIF editor.
+		</para>
+	</section>
+		  
+	<section id="gettingstarted_preferences">
+		<title>LDIF Editor preferences</title>
+		<para>
+			On the LDIF Editor preference pages you can configure the LDIF editor.
+		</para>
+
+		<simplesect id="gettingstarted_preferences_main">
+			<title>LDIF Editor</title>
+			<para>On the LDIF Editor main preference page you can configure 
+				common settings.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_ldif_editor.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Text Editors
+								</entry>
+								<entry>
+									Opens the general text editor preferences.
+								</entry>
+								<entry>-</entry>
+							</row>
+							<row>
+								<entry>
+									Text Formats
+								</entry>
+								<entry>
+									Opens the LDIF text format preferences.
+								</entry>
+								<entry>-</entry>
+							</row>
+							<row>
+								<entry>
+									Enable Folding
+								</entry>
+								<entry>
+									Enables folding for multi-lined comments,
+									mulit-lined values and records.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Initially fold: Comments
+								</entry>
+								<entry>
+									Folds multi-lined comments when opening
+									the LDIF editor.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Initially fold: Records
+								</entry>
+								<entry>
+									Folds records when opening the LDIF editor.
+								</entry>
+								<entry>off</entry>
+							</row>
+							<row>
+								<entry>
+									Initially fold: Wrapped lines
+								</entry>
+								<entry>
+									Folds multi-lined values when opening
+									the LDIF editor.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Select whole attribute or value on double click
+								</entry>
+								<entry>
+									If checked the whole attribute description or value
+									is selected on double click.
+								</entry>
+								<entry>on</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+
+		<simplesect id="gettingstarted_preferences_content_assistent">
+			<title>Content Assistant</title>
+			<para>On the Content Assistant preference page you can configure 
+				content assistent settings.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_ldif_editor_content_assistant.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Insert single proposal automatically
+								</entry>
+								<entry>
+									If checked single proposals are inserted 
+									automatically when invoking Strg+Space.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Enable auto activation
+								</entry>
+								<entry>
+									If checked the content assistant is activated
+									after you pause typing for the defined period.
+								</entry>
+								<entry>on and 200ms</entry>
+							</row>
+							<row>
+								<entry>
+									Smart insert attribute name in modification items
+								</entry>
+								<entry>
+									If checked attribute names are inserted in 
+									modification items when a new line is started.
+								</entry>
+								<entry>on</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+		
+		<simplesect id="gettingstarted_preferences_syntax_coloring">
+			<title>Syntax Coloring</title>
+			<para>On the Syntax Coloring preference page you can configure 
+				fonts and colors.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_ldif_editor_syntax_coloring.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				To modify color and font options select a element from the list. The color could be 
+				changed by invoking the color button. The font options could be changed by 
+				toggeling the Bold, Italic, Strikethrough and Underline check boxes.
+			</para>
+			<para>
+				Changes are immediately displayed in the preview.
+			</para>
+		</simplesect>
+		
+	</section>
+	
+	
+	
+	
+</chapter>

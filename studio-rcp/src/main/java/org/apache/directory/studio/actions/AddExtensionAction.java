@@ -89,9 +89,9 @@ public class AddExtensionAction extends Action implements IAction
                 try
                 {
                     String homeBase = System.getProperty(
-                        "studio.homebase", Messages.getString( "AddExtensionAction.LDAP_Studio_Home_Base" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        "studio.homebase", Messages.getString( "AddExtensionAction.Apache_Directory_Studio_Home_Base" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     URL url = new URL( homeBase );
-                    scope.addSearchSite( Messages.getString( "AddExtensionAction.LDAP_Studio_Site" ), url, null ); //$NON-NLS-1$
+                    scope.addSearchSite( Messages.getString( "AddExtensionAction.Apache_Directory_Studio_Site" ), url, null ); //$NON-NLS-1$
                 }
                 catch ( MalformedURLException e )
                 {

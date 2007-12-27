@@ -26,21 +26,21 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.studio.ldapbrowser.common.actions.SelectionUtils;
+import javax.naming.InvalidNameException;
+
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
-import org.apache.directory.studio.ldapbrowser.core.model.DN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.NameException;
-
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -61,7 +61,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
     private String[] initCurrentSelectionTexts;
 
-    private DN[][] initCurrentSelectionDns;
+    private LdapDN[][] initCurrentSelectionDns;
 
     private ISearch initSearch;
 
@@ -165,7 +165,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
     }
 
 
-    public DN[] getApplyOnDns()
+    public LdapDN[] getApplyOnDns()
     {
         if ( currentSelectionButton.getSelection() )
         {
@@ -208,11 +208,11 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
     {
         ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
             .getSelection();
-        this.initSearch = SelectionUtils.getExampleSearch( selection );
+        this.initSearch = BrowserSelectionUtils.getExampleSearch( selection );
         this.initSearch.setName( null );
 
         // never follow referrals for a batch operation!
-        this.initSearch.setReferralsHandlingMethod( IConnection.HANDLE_REFERRALS_IGNORE );
+        this.initSearch.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
     }
 
 
@@ -221,29 +221,29 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
         ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService()
             .getSelection();
-        ISearch[] searches = SelectionUtils.getSearches( selection );
-        IEntry[] entries = SelectionUtils.getEntries( selection );
-        ISearchResult[] searchResults = SelectionUtils.getSearchResults( selection );
-        IBookmark[] bookmarks = SelectionUtils.getBookmarks( selection );
-        IAttribute[] attributes = SelectionUtils.getAttributes( selection );
-        IValue[] values = SelectionUtils.getValues( selection );
+        ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+        IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+        ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+        IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+        IAttribute[] attributes = BrowserSelectionUtils.getAttributes( selection );
+        IValue[] values = BrowserSelectionUtils.getValues( selection );
 
-        List textList = new ArrayList();
-        List dnsList = new ArrayList();
+        List<String> textList = new ArrayList<String>();
+        List<LdapDN[]> dnsList = new ArrayList<LdapDN[]>();
 
         if ( attributes.length + values.length > 0 )
         {
-            Set internalDnSet = new LinkedHashSet();
+            Set<LdapDN> internalDnSet = new LinkedHashSet<LdapDN>();
             for ( int v = 0; v < values.length; v++ )
             {
                 if ( values[v].isString() )
                 {
                     try
                     {
-                        DN dn = new DN( values[v].getStringValue() );
+                        LdapDN dn = new LdapDN( values[v].getStringValue() );
                         internalDnSet.add( dn );
                     }
-                    catch ( NameException e )
+                    catch ( InvalidNameException e )
                     {
                     }
                 }
@@ -258,10 +258,10 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
                     {
                         try
                         {
-                            DN dn = new DN( vals[v].getStringValue() );
+                            LdapDN dn = new LdapDN( vals[v].getStringValue() );
                             internalDnSet.add( dn );
                         }
-                        catch ( NameException e )
+                        catch ( InvalidNameException e )
                         {
                         }
                     }
@@ -270,26 +270,26 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
             if ( !internalDnSet.isEmpty() )
             {
-                dnsList.add( internalDnSet.toArray( new DN[internalDnSet.size()] ) );
+                dnsList.add( internalDnSet.toArray( new LdapDN[internalDnSet.size()] ) );
                 textList.add( "DNs of selected Attributes (" + internalDnSet.size() + " Entries)" );
             }
         }
         if ( searches.length == 1 && searches[0].getSearchResults() != null )
         {
-            Set internalDnSet = new LinkedHashSet();
+            Set<LdapDN> internalDnSet = new LinkedHashSet<LdapDN>();
             ISearchResult[] srs = searches[0].getSearchResults();
             for ( int i = 0; i < srs.length; i++ )
             {
                 internalDnSet.add( srs[i].getDn() );
             }
 
-            dnsList.add( internalDnSet.toArray( new DN[internalDnSet.size()] ) );
+            dnsList.add( internalDnSet.toArray( new LdapDN[internalDnSet.size()] ) );
             textList.add( "Search Results of '" + searches[0].getName() + "' (" + searches[0].getSearchResults().length
                 + " Entries)" );
         }
         if ( entries.length + searchResults.length + bookmarks.length > 0 )
         {
-            Set internalDnSet = new LinkedHashSet();
+            Set<LdapDN> internalDnSet = new LinkedHashSet<LdapDN>();
             for ( int i = 0; i < entries.length; i++ )
             {
                 internalDnSet.add( entries[i].getDn() );
@@ -303,12 +303,12 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
                 internalDnSet.add( bookmarks[i].getDn() );
             }
 
-            dnsList.add( internalDnSet.toArray( new DN[internalDnSet.size()] ) );
+            dnsList.add( internalDnSet.toArray( new LdapDN[internalDnSet.size()] ) );
             textList.add( "Selected Entries (" + internalDnSet.size() + " Entries)" );
         }
 
-        this.initCurrentSelectionTexts = ( String[] ) textList.toArray( new String[textList.size()] );
-        this.initCurrentSelectionDns = ( DN[][] ) dnsList.toArray( new DN[0][0] );
+        this.initCurrentSelectionTexts = textList.toArray( new String[textList.size()] );
+        this.initCurrentSelectionDns = dnsList.toArray( new LdapDN[0][0] );
 
     }
 

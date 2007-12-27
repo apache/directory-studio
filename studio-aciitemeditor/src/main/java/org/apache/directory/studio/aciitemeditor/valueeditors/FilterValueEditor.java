@@ -23,7 +23,7 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.FilterWidgetDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
@@ -72,12 +72,12 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getConnection(), value.getStringValue() )
+        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value.getStringValue() )
             : null;
     }
 
 
-    private Object getRawValue( IConnection connection, Object value )
+    private Object getRawValue( IBrowserConnection connection, Object value )
     {
         if ( connection == null || value == null || !( value instanceof String ) )
         {
@@ -102,7 +102,7 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
          * The connection, used in FilterDialog to build the list
          * with possible attribute types.
          */
-        private IConnection connection;
+        private IBrowserConnection connection;
 
         /** The filter, used as initial value in FilterDialog. */
         private String filter;
@@ -114,7 +114,7 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
          * @param schema the schema
          * @param attributeType the attribute type
          */
-        private FilterValueEditorRawValueWrapper( IConnection connection, String filter )
+        private FilterValueEditorRawValueWrapper( IBrowserConnection connection, String filter )
         {
             this.connection = connection;
             this.filter = filter;

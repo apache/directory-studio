@@ -28,13 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.codec.LdapResponse;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.studio.dsmlv2.reponse.ErrorResponse;
-import org.apache.directory.shared.ldap.codec.LdapResponse;
-import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
 
 /**
@@ -46,7 +48,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
 public class ImportDsmlJob extends AbstractEclipseJob
 {
     /** The connection to use */
-    private IConnection connection;
+    private IBrowserConnection browserConnection;
 
     /** The DSML file to use */
     private File dsmlFile;
@@ -67,9 +69,9 @@ public class ImportDsmlJob extends AbstractEclipseJob
      * @param continueOnError
      *          The ContinueOnError flag
      */
-    public ImportDsmlJob( IConnection connection, File dsmlFile, File saveFile )
+    public ImportDsmlJob( IBrowserConnection connection, File dsmlFile, File saveFile )
     {
-        this.connection = connection;
+        this.browserConnection = connection;
         this.dsmlFile = dsmlFile;
         this.responseFile = saveFile;
 
@@ -87,7 +89,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
      * @param continueOnError
      *          The ContinueOnError flag
      */
-    public ImportDsmlJob( IConnection connection, File dsmlFile )
+    public ImportDsmlJob( IBrowserConnection connection, File dsmlFile )
     {
         this( connection, dsmlFile, null );
     }
@@ -96,10 +98,10 @@ public class ImportDsmlJob extends AbstractEclipseJob
     /* (non-Javadoc)
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
      */
-    protected IConnection[] getConnections()
+    protected Connection[] getConnections()
     {
-        return new IConnection[]
-            { connection };
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
@@ -109,7 +111,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
     protected Object[] getLockedObjects()
     {
         List l = new ArrayList();
-        l.add( connection.getUrl() + "_" + DigestUtils.shaHex( dsmlFile.toString() ) );
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( dsmlFile.toString() ) );
         return l.toArray();
     }
 
@@ -117,14 +119,16 @@ public class ImportDsmlJob extends AbstractEclipseJob
     /* (non-Javadoc)
      * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor)
      */
-    protected void executeAsyncJob( ExtendedProgressMonitor monitor )
+    protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
 
         monitor.beginTask( BrowserCoreMessages.jobs__import_dsml_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
         
-        Dsmlv2Engine engine = new Dsmlv2Engine( connection.getHost(), connection.getPort(), connection.getBindPrincipal(), connection.getBindPassword() );
+        Dsmlv2Engine engine = new Dsmlv2Engine( browserConnection.getConnection().getHost(), browserConnection
+            .getConnection().getPort(), browserConnection.getConnection().getBindPrincipal(), browserConnection
+            .getConnection().getBindPassword() );
         try
         {
             // Executing the DSML request and getting the response

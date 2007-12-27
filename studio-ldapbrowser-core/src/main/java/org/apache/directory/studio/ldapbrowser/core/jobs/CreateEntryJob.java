@@ -21,99 +21,166 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttributes;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 
-public class CreateEntryJob extends AbstractAsyncBulkJob
+/**
+ * Job to create an entry asynchronously.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class CreateEntryJob extends AbstractNotificationJob
 {
 
-    private IEntry[] entriesToCreate;
+    /** The entry to create. */
+    private IEntry entryToCreate;
 
-    private IEntry[] createdEntries;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
+
+    /** The created entry. */
+    private IEntry createdEntry;
 
 
-    public CreateEntryJob( IEntry[] entriesToCreate )
+    /**
+     * Creates a new instance of CreateEntryJob.
+     * 
+     * @param entryToCreate the entry to create
+     * @param browserConnection the browser connection
+     */
+    public CreateEntryJob( IEntry entryToCreate, IBrowserConnection browserConnection )
     {
-        this.entriesToCreate = entriesToCreate;
-        createdEntries = new IEntry[entriesToCreate.length];
-        setName( entriesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_entry_name_1
-            : BrowserCoreMessages.jobs__create_entry_name_n );
+        this.entryToCreate = entryToCreate;
+        this.browserConnection = browserConnection;
+        this.createdEntry = null;
+
+        setName( BrowserCoreMessages.jobs__create_entry_name_1 );
     }
 
 
-    protected IConnection[] getConnections()
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     */
+    protected Connection[] getConnections()
     {
-        IConnection[] connections = new IConnection[entriesToCreate.length];
-        for ( int i = 0; i < connections.length; i++ )
-        {
-            connections[i] = entriesToCreate[i].getConnection();
-        }
-        return connections;
+        return new Connection[]
+            { browserConnection.getConnection() };
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
-        l.addAll( Arrays.asList( entriesToCreate ) );
-        return l.toArray();
+        return new Object[]
+            { browserConnection };
     }
 
 
-    protected void executeBulkJob( ExtendedProgressMonitor monitor )
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     */
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-
-        monitor.beginTask( entriesToCreate.length == 1 ? BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__create_entry_task_1, new String[]
-                { entriesToCreate[0].getDn().toString() } ) : BrowserCoreMessages.bind(
-            BrowserCoreMessages.jobs__create_entry_task_n, new String[]
-                { Integer.toString( entriesToCreate.length ) } ), 2 + entriesToCreate.length );
+        monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__create_entry_task_1, new String[]
+            { entryToCreate.getDn().getUpName() } ), 2 + 1 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        for ( int i = 0; !monitor.isCanceled() && i < entriesToCreate.length; i++ )
+        createEntry( browserConnection, entryToCreate, monitor );
+
+        if ( !monitor.errorsReported() )
         {
-            IEntry entryToCreate = entriesToCreate[i];
-
-            entryToCreate.getConnection().create( entryToCreate, monitor );
-
-            if ( !monitor.errorsReported() )
-            {
-                createdEntries[i] = entryToCreate.getConnection().getEntry( entryToCreate.getDn(), monitor );
-                // createdEntries[i].getParententry().addChild(entry, this);
-                createdEntries[i].setHasChildrenHint( false );
-            }
-
-            monitor.worked( 1 );
+            createdEntry = ReadEntryJob.getEntry( browserConnection, entryToCreate.getDn(), monitor );
+            // createdEntries[i].getParententry().addChild(entry, this);
+            createdEntry.setHasChildrenHint( false );
         }
+
+        monitor.reportProgress( " " ); //$NON-NLS-1$
+        monitor.worked( 1 );
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
     protected void runNotification()
     {
-        for ( int i = 0; i < createdEntries.length; i++ )
+        if ( createdEntry != null )
         {
-            if ( createdEntries[i] != null )
-            {
-                EventRegistry.fireEntryUpdated( new EntryAddedEvent( createdEntries[i].getConnection(),
-                    createdEntries[i] ), this );
-            }
+            EventRegistry.fireEntryUpdated( new EntryAddedEvent( browserConnection, createdEntry ), this );
         }
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     */
     protected String getErrorMessage()
     {
-        return entriesToCreate.length == 1 ? BrowserCoreMessages.jobs__create_entry_error_1
-            : BrowserCoreMessages.jobs__create_entry_error_n;
+        return BrowserCoreMessages.jobs__create_entry_error_1;
+    }
+
+
+    /**
+     * Creates the entry using the underlying JNDI connection wrapper.
+     * 
+     * @param browserConnection the browser connection
+     * @param entryToCreate the entry to create
+     * @param monitor the monitor
+     */
+    static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor )
+    {
+        // dn
+        String dn = entryToCreate.getDn().getUpName();
+
+        // attributes
+        Attributes jndiAttributes = new BasicAttributes();
+        IAttribute[] attributes = entryToCreate.getAttributes();
+        for ( int i = 0; i < attributes.length; i++ )
+        {
+            String description = attributes[i].getDescription();
+            IValue[] values = attributes[i].getValues();
+            for ( int ii = 0; ii < values.length; ii++ )
+            {
+                IValue value = values[ii];
+                Object rawValue = value.getRawValue();
+                if ( jndiAttributes.get( description ) != null )
+                {
+                    jndiAttributes.get( description ).add( rawValue );
+                }
+                else
+                {
+                    jndiAttributes.put( description, rawValue );
+                }
+            }
+        }
+
+        // controls
+        Control[] controls = null;
+        if ( entryToCreate.isReferral() )
+        {
+            controls = new Control[]
+                { new ManageReferralControl() };
+        }
+
+        browserConnection.getConnection().getJNDIConnectionWrapper()
+            .createEntry( dn, jndiAttributes, controls, monitor );
     }
 
 }

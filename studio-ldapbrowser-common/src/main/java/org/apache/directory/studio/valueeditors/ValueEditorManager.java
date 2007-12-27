@@ -24,7 +24,6 @@ package org.apache.directory.studio.valueeditors;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ import java.util.Set;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.internal.model.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ModifyValueJob;
@@ -41,12 +39,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.ModelModificationException;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdifUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -145,10 +143,9 @@ public class ValueEditorManager
             this.defaultStringMultiLineValueEditor.dispose();
             this.defaultBinaryValueEditor.dispose();
 
-            for ( Iterator it = this.class2ValueEditors.values().iterator(); it.hasNext(); )
+            for ( IValueEditor ve : class2ValueEditors.values() )
             {
-                IValueEditor vp = ( IValueEditor ) it.next();
-                vp.dispose();
+                ve.dispose();
             }
 
             this.parent = null;
@@ -247,7 +244,7 @@ public class ValueEditorManager
      */
     public IValueEditor getCurrentValueEditor( IEntry entry, String attributeType )
     {
-        return getCurrentValueEditor( entry.getConnection().getSchema(), attributeType );
+        return getCurrentValueEditor( entry.getBrowserConnection().getSchema(), attributeType );
     }
 
 
@@ -334,7 +331,7 @@ public class ValueEditorManager
      */
     public IValueEditor[] getAlternativeValueEditors( IEntry entry, String attributeName )
     {
-        Schema schema = entry.getConnection().getSchema();
+        Schema schema = entry.getBrowserConnection().getSchema();
         return getAlternativeValueEditors( schema, attributeName );
     }
 
@@ -519,7 +516,6 @@ public class ValueEditorManager
      * @throws ModelModificationException the model modification exception
      */
     public void createValue( IEntry entry, String attributeDescription, Object newRawValue )
-        throws ModelModificationException
     {
         if ( entry != null && attributeDescription != null && newRawValue != null
             && ( newRawValue instanceof byte[] || newRawValue instanceof String ) )
@@ -547,7 +543,7 @@ public class ValueEditorManager
                 EventRegistry.resumeEventFireingInCurrentThread();
 
                 Object newValue;
-                if ( entry.getConnection().getSchema().getAttributeTypeDescription( attributeDescription )
+                if ( entry.getBrowserConnection().getSchema().getAttributeTypeDescription( attributeDescription )
                     .getSyntaxDescription().isString() )
                 {
                     if ( newRawValue instanceof String )
@@ -620,7 +616,7 @@ public class ValueEditorManager
             }
             else
             {
-                new ModifyValueJob( attribute, oldValue, newRawValue ).execute();
+                new ModifyValueJob( oldValue, newRawValue ).execute();
             }
         }
     }
