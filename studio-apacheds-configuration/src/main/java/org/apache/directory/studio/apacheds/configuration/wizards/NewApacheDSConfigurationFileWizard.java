@@ -22,7 +22,7 @@ package org.apache.directory.studio.apacheds.configuration.wizards;
 
 import org.apache.directory.studio.apacheds.configuration.Activator;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditorInput;
+import org.apache.directory.studio.apacheds.configuration.editor.NonExistingServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParser;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParserException;
@@ -62,7 +62,7 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
                 .getResourceAsStream( "default-server.xml" ) );
 
             IWorkbenchPage page = window.getActivePage();
-            page.openEditor( new ServerConfigurationEditorInput( serverConfiguration ), ServerConfigurationEditor.ID );
+            page.openEditor( new NonExistingServerConfigurationInput( serverConfiguration ), ServerConfigurationEditor.ID );
         }
         catch ( PartInitException e )
         {

@@ -27,26 +27,24 @@ import org.eclipse.ui.IPersistableElement;
 
 
 /**
- * This class represents the Server Configuration Editor Input.
+ * This class represents the Non Existing Server Configuration Input.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerConfigurationEditorInput implements IEditorInput
+public class NonExistingServerConfigurationInput implements IEditorInput
 {
     /** The Server Configuration */
     private ServerConfiguration serverConfiguration;
-    /** The path of the file */
-    private String path;
 
 
     /**
-     * Creates a new instance of ServerConfigurationEditorInput.
+     * Creates a new instance of NonExistingServerConfigurationInput.
      *
      * @param serverConfiguration
      *      the Server Configuration
      */
-    public ServerConfigurationEditorInput( ServerConfiguration serverConfiguration )
+    public NonExistingServerConfigurationInput( ServerConfiguration serverConfiguration )
     {
         this.serverConfiguration = serverConfiguration;
     }
@@ -64,43 +62,12 @@ public class ServerConfigurationEditorInput implements IEditorInput
     }
 
 
-    /**
-     * Gets the path.
-     *
-     * @return
-     *      the path
-     */
-    public String getPath()
-    {
-        return path;
-    }
-
-
-    /**
-     * Sets the path.
-     * 
-     * @param path
-     *      the path
-     */
-    public void setPath( String path )
-    {
-        this.path = path;
-    }
-
-
     /* (non-Javadoc)
      * @see org.eclipse.ui.IEditorInput#getToolTipText()
      */
     public String getToolTipText()
     {
-        if ( path == null )
-        {
-            return "New Configuration File";
-        }
-        else
-        {
-            return path;
-        }
+        return "New Apache DS Configuration File";
     }
 
 
@@ -160,16 +127,16 @@ public class ServerConfigurationEditorInput implements IEditorInput
             return false;
         }
 
-        if ( obj instanceof ServerConfigurationEditorInput )
+        if ( obj instanceof NonExistingServerConfigurationInput )
         {
-            ServerConfigurationEditorInput input = ( ServerConfigurationEditorInput ) obj;
+            NonExistingServerConfigurationInput input = ( NonExistingServerConfigurationInput ) obj;
             if ( input.exists() && exists() )
             {
-                String inputPath = input.getPath();
+                ServerConfiguration inputServerConfiguration = input.getServerConfiguration();
 
-                if ( inputPath != null && path != null )
+                if ( ( inputServerConfiguration != null ) && ( serverConfiguration != null ) )
                 {
-                    return inputPath.equals( path );
+                    return inputServerConfiguration.equals( serverConfiguration );
                 }
             }
         }

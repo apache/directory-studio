@@ -122,11 +122,11 @@ public class ServerConfigurationEditor extends FormEditor
                 ServerConfigurationParser parser = new ServerConfigurationParser();
                 serverConfiguration = parser.parse( new FileInputStream( new File( input.getToolTipText() ) ) );
             }
-            else if ( input instanceof ServerConfigurationEditorInput )
+            else if ( input instanceof NonExistingServerConfigurationInput )
             {
                 // The 'ServerConfigurationEditorInput' class is used when a
                 // new Server Configuration File is created.
-                serverConfiguration = ( ( ServerConfigurationEditorInput ) input ).getServerConfiguration();
+                serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
                 dirty = true;
             }
         }
@@ -209,7 +209,7 @@ public class ServerConfigurationEditor extends FormEditor
                 saveConfiguration( input.getToolTipText() );
                 success = true;
             }
-            else if ( input instanceof ServerConfigurationEditorInput )
+            else if ( input instanceof NonExistingServerConfigurationInput )
             {
                 // The 'ServerConfigurationEditorInput' class is used when a
                 // new Server Configuration File is created.
@@ -367,7 +367,7 @@ public class ServerConfigurationEditor extends FormEditor
         {
             // Asking the user for the location where to 'save as' the file
             SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
-            if ( !( getEditorInput() instanceof ServerConfigurationEditorInput ) )
+            if ( !( getEditorInput() instanceof NonExistingServerConfigurationInput ) )
             {
                 dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot().getFile(
                     new Path( getEditorInput().getToolTipText() ) ) );
