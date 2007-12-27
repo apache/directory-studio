@@ -47,7 +47,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
@@ -399,26 +398,44 @@ public class ServerConfigurationEditor extends FormEditor
         else
         {
             Shell shell = getSite().getShell();
+            boolean canOverwrite = false;
+            String path = null;
 
-            // Open FileDialog
-            FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-
-            String path = dialog.open();
-            if ( path == null )
+            while ( !canOverwrite )
             {
-                return false;
-            }
-
-            // Check whether file exists and if so, confirm overwrite
-            final File externalFile = new File( path );
-            if ( externalFile.exists() )
-            {
-                MessageDialog overwriteDialog = new MessageDialog( shell, "Overwrite", null, "Overwrite?",
-                    MessageDialog.WARNING, new String[]
-                        { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 1 ); // 'No' is the default
-                if ( overwriteDialog.open() != Window.OK )
+                // Open FileDialog
+                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+                path = dialog.open();
+                if ( path == null )
                 {
                     return false;
+                }
+
+                // Check whether file exists and if so, confirm overwrite
+                final File externalFile = new File( path );
+                if ( externalFile.exists() )
+                {
+                    String question = "The file '" + path
+                        + "' already exists. Do you want to replace the existing file?";
+                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question,
+                        MessageDialog.QUESTION, new String[]
+                            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
+                    int overwrite = overwriteDialog.open();
+                    switch ( overwrite )
+                    {
+                        case 0: // Yes
+                            canOverwrite = true;
+                            break;
+                        case 1: // No
+                            break;
+                        case 2: // Cancel
+                        default:
+                            return false;
+                    }
+                }
+                else
+                {
+                    canOverwrite = true;
                 }
             }
 
