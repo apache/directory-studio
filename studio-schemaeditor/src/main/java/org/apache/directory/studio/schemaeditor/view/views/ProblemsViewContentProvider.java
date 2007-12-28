@@ -99,8 +99,8 @@ public class ProblemsViewContentProvider implements IStructuredContentProvider, 
 
                 if ( schemaChecker != null )
                 {
-                    List<SchemaError> errors = schemaChecker.getErrors();
-                    if ( !errors.isEmpty() )
+                    SchemaError[] errors = schemaChecker.getErrors().toArray( new SchemaError[0] );
+                    if ( !( errors.length == 0 ) )
                     {
                         Folder errorsFolder = new Folder( FolderType.ERROR, root );
                         root.addChild( errorsFolder );
@@ -110,8 +110,8 @@ public class ProblemsViewContentProvider implements IStructuredContentProvider, 
                         }
                     }
 
-                    List<SchemaWarning> warnings = schemaChecker.getWarnings();
-                    if ( !warnings.isEmpty() )
+                    SchemaWarning[] warnings = schemaChecker.getWarnings().toArray( new SchemaWarning[0] );
+                    if ( !( warnings.length == 0 ) )
                     {
                         Folder warningsFolder = new Folder( FolderType.WARNING, root );
                         root.addChild( warningsFolder );

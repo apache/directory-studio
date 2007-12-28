@@ -82,13 +82,11 @@ public class ProblemsViewController
             if ( oldProject != null )
             {
                 removeSchemaCheckerListener( oldProject );
-
             }
 
             if ( newProject != null )
             {
                 addSchemaCheckerListener( newProject );
-                view.reloadViewer();
             }
             else
             {
