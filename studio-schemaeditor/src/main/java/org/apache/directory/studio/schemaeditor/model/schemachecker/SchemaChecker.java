@@ -99,7 +99,11 @@ public class SchemaChecker
         public void attributeTypeModified( AttributeTypeImpl at )
         {
             List<Object> deps = new ArrayList<Object>();
-            deps.addAll( ( List<?> ) dependenciesMap.get( at ) );
+            List<?> atDeps = ( List<?> ) dependenciesMap.get( at );
+            if ( atDeps != null )
+            {
+                deps.addAll( atDeps );
+            }
 
             checkAttributeType( at );
 
@@ -112,7 +116,11 @@ public class SchemaChecker
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
             List<Object> deps = new ArrayList<Object>();
-            deps.addAll( ( List<?> ) dependenciesMap.get( at ) );
+            List<?> atDeps = ( List<?> ) dependenciesMap.get( at );
+            if ( atDeps != null )
+            {
+                deps.addAll( atDeps );
+            }
 
             removeSchemaObject( at );
 
@@ -137,7 +145,11 @@ public class SchemaChecker
         public void objectClassModified( ObjectClassImpl oc )
         {
             List<Object> deps = new ArrayList<Object>();
-            deps.addAll( ( List<?> ) dependenciesMap.get( oc ) );
+            List<?> ocDeps = ( List<?> ) dependenciesMap.get( oc );
+            if ( ocDeps != null )
+            {
+                deps.addAll( ocDeps );
+            }
 
             checkObjectClass( oc );
 
@@ -150,7 +162,11 @@ public class SchemaChecker
         public void objectClassRemoved( ObjectClassImpl oc )
         {
             List<Object> deps = new ArrayList<Object>();
-            deps.addAll( ( List<?> ) dependenciesMap.get( oc ) );
+            List<?> ocDeps = ( List<?> ) dependenciesMap.get( oc );
+            if ( ocDeps != null )
+            {
+                deps.addAll( ocDeps );
+            }
 
             removeSchemaObject( oc );
 
