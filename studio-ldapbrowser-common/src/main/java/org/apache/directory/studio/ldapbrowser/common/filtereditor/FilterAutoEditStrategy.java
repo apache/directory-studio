@@ -200,7 +200,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
                         || filter.getFilterComponent() instanceof LdapOrFilterComponent || filter.getFilterComponent() instanceof LdapNotFilterComponent );
             }
             
-            System.out.println("isSurroundNew="+isSurroundNew+", isSurroundNested="+isSurroundNested+", isSurroundAfterOtherFilter="+isSurroundAfterOtherFilter+", isSurroundBeforeOtherFilter="+isSurroundBeforeOtherFilter);
+            //System.out.println("isSurroundNew="+isSurroundNew+", isSurroundNested="+isSurroundNested+", isSurroundAfterOtherFilter="+isSurroundAfterOtherFilter+", isSurroundBeforeOtherFilter="+isSurroundBeforeOtherFilter);
 
             // add opening parenthesis '('
             if ( isSurroundNew || isSurroundNested || isSurroundAfterOtherFilter || isSurroundBeforeOtherFilter )
@@ -240,7 +240,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             }
         }
         
-        System.out.println( "aep='"+aep.text+"',"+aep.offset+","+aep.length+","+aep.caretOffset+","+aep.shiftsCaret+"; balanced="+balanced+"; filter='"+filter.toString()+"'" );
+        //System.out.println( "aep='"+aep.text+"',"+aep.offset+","+aep.length+","+aep.caretOffset+","+aep.shiftsCaret+"; balanced="+balanced+"; filter='"+filter.toString()+"'" );
 
     }
 
