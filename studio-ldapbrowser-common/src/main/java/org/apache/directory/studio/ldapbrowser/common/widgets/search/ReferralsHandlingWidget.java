@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -43,17 +43,20 @@ public class ReferralsHandlingWidget extends BrowserWidget
 {
 
     /** The initial referrals handling method. */
-    private ReferralHandlingMethod initialReferralsHandlingMethod;
+    private Connection.ReferralHandlingMethod initialReferralsHandlingMethod;
 
     /** The group. */
     private Group group;
+    
+    /** The follow button. */
+    private Button followButton;
 
     /** The ignore button. */
     private Button ignoreButton;
 
-    /** The follow button. */
-    private Button followButton;
-
+    /** The manage button. */
+    private Button manageButton;
+    
 
     /**
      * Creates a new instance of ReferralsHandlingWidget with the given
@@ -61,7 +64,7 @@ public class ReferralsHandlingWidget extends BrowserWidget
      * 
      * @param initialReferralsHandlingMethod the initial referrals handling method
      */
-    public ReferralsHandlingWidget( ReferralHandlingMethod initialReferralsHandlingMethod )
+    public ReferralsHandlingWidget( Connection.ReferralHandlingMethod initialReferralsHandlingMethod )
     {
         this.initialReferralsHandlingMethod = initialReferralsHandlingMethod;
     }
@@ -69,11 +72,11 @@ public class ReferralsHandlingWidget extends BrowserWidget
 
     /**
      * Creates a new instance of ReferralsHandlingWidget with initial 
-     * referrals handling method {@link ReferralHandlingMethod.IGNORE}.
+     * referrals handling method {@link Connection.ReferralHandlingMethod.FOLLOW}.
      */
     public ReferralsHandlingWidget()
     {
-        this.initialReferralsHandlingMethod = ReferralHandlingMethod.IGNORE;
+        this.initialReferralsHandlingMethod = Connection.ReferralHandlingMethod.FOLLOW;
     }
 
 
@@ -84,9 +87,17 @@ public class ReferralsHandlingWidget extends BrowserWidget
      */
     public void createWidget( Composite parent )
     {
-
         group = BaseWidgetUtils.createGroup( parent, "Referrals Handling", 1 );
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
+        
+        followButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Follow", 1 );
+        followButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                notifyListeners();
+            }
+        } );
 
         ignoreButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Ignore", 1 );
         ignoreButton.addSelectionListener( new SelectionAdapter()
@@ -96,9 +107,9 @@ public class ReferralsHandlingWidget extends BrowserWidget
                 notifyListeners();
             }
         } );
-
-        followButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Follow", 1 );
-        followButton.addSelectionListener( new SelectionAdapter()
+        
+        manageButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Manage", 1 );
+        manageButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -115,11 +126,12 @@ public class ReferralsHandlingWidget extends BrowserWidget
      * 
      * @param referralsHandlingMethod the referrals handling method
      */
-    public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
+    public void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod )
     {
         initialReferralsHandlingMethod = referralsHandlingMethod;
-        ignoreButton.setSelection( initialReferralsHandlingMethod == ReferralHandlingMethod.IGNORE );
-        followButton.setSelection( initialReferralsHandlingMethod == ReferralHandlingMethod.FOLLOW );
+        followButton.setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.FOLLOW );
+        ignoreButton.setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.IGNORE );
+        manageButton.setSelection( initialReferralsHandlingMethod == Connection.ReferralHandlingMethod.MANAGE );
     }
 
 
@@ -128,15 +140,19 @@ public class ReferralsHandlingWidget extends BrowserWidget
      * 
      * @return the referrals handling method
      */
-    public ReferralHandlingMethod getReferralsHandlingMethod()
+    public Connection.ReferralHandlingMethod getReferralsHandlingMethod()
     {
         if ( ignoreButton.getSelection() )
         {
-            return ReferralHandlingMethod.IGNORE;
+            return Connection.ReferralHandlingMethod.IGNORE;
+        }
+        else if ( manageButton.getSelection() )
+        {
+            return Connection.ReferralHandlingMethod.MANAGE;
         }
         else
         {
-            return ReferralHandlingMethod.FOLLOW;
+            return Connection.ReferralHandlingMethod.FOLLOW;
         }
     }
 
@@ -149,8 +165,9 @@ public class ReferralsHandlingWidget extends BrowserWidget
     public void setEnabled( boolean b )
     {
         group.setEnabled( b );
-        ignoreButton.setEnabled( b );
         followButton.setEnabled( b );
+        ignoreButton.setEnabled( b );
+        manageButton.setEnabled( b );
     }
 
 }

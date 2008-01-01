@@ -35,9 +35,7 @@ import javax.naming.InvalidNameException;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -46,8 +44,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
@@ -227,10 +223,11 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         else
         {
 	        // search
-	        ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(), entry.isSubentry()?ISearch.FILTER_SUBENTRY:ISearch.FILTER_TRUE, attributes,
-	            SearchScope.OBJECT, 0, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE,
-	            false, false, null );
-	        SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
+            ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
+                entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
+                0, entry.getBrowserConnection().getAliasesDereferencingMethod(), entry.getBrowserConnection()
+                    .getReferralsHandlingMethod(), false, null );
+            SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 	
 	        // set initialized state
 	        entry.setAttributesInitialized( true );
@@ -264,9 +261,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
         // load well-known Root DSE attributes, includes + and *
         ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
-            InitializeAttributesJob.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0,
-            AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false,
-            null );
+            InitializeAttributesJob.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+            Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
 
         // the list of entries under the Root DSE
@@ -328,8 +324,9 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                 {
                     // special handling of empty namingContext (Novell eDirectory): 
                     // perform a one-level search and add all result DNs to the set
-                    search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0,
-                        0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, false, false, null );
+                    search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
+                        ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+                        Connection.ReferralHandlingMethod.IGNORE, false, null );
                     SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
                     ISearchResult[] results = search.getSearchResults();
                     for ( ISearchResult searchResult : results )
@@ -364,19 +361,6 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             }
         }
         
-//        // TODO: check all attributes if they are valid DNs
-//        String[] metadataAttributeNames = new String[]
-//            { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_CONFIGCONTEXT,
-//                IRootDSE.ROOTDSE_ATTRIBUTE_DSANAME };
-//        for ( int x = 0; x < metadataAttributeNames.length; x++ )
-//        {
-//            IEntry[] metadataEntries = getDirectoryMetadataEntries( browserConnection, metadataAttributeNames[x] );
-//            for ( int i = 0; i < metadataEntries.length; i++ )
-//            {
-//                rootDseEntries.add( metadataEntries[i] );
-//            }
-//        }
-        
         // try to init entries
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         for ( IEntry entry : rootDseEntries.values() )
@@ -399,18 +383,10 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         ISearch search;
         IEntry entry;
         // search the entry
-        AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
-        ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
-        if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS )
-            && browserConnection.getRootDSE().isControlSupported(
-                IBrowserConnection.CONTROL_MANAGEDSAIT ) )
-        {
-            derefAliasMethod = AliasDereferencingMethod.NEVER;
-            handleReferralsMethod = ReferralHandlingMethod.IGNORE;
-        }
-        search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT, 1, 0,
-            derefAliasMethod, handleReferralsMethod, true, true, null );
+        Connection.AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
+        Connection.ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
+        search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
+            SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
         
         // add entry to Root DSE

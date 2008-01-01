@@ -26,8 +26,8 @@ import java.io.Serializable;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 
 
@@ -77,9 +77,6 @@ public class SearchParameter implements Serializable
     /** Flag indicating weather the hasChildren flag of IEntry should be initialized */
     private boolean initHasChildrenFlag;
 
-    /** Flag indicating weather the isAlias and isReferral flag of IEntry should be initialized */
-    private boolean initAliasAndReferralFlag;
-
 
     /**
      * Creates a new instance of SearchParameter with default search parameters:
@@ -91,8 +88,8 @@ public class SearchParameter implements Serializable
      * <li>search scope one level
      * <li>no count limit
      * <li>no time limit
-     * <li>never dereference aliases
-     * <li>ignore referrals
+     * <li>always dereference aliases
+     * <li>follow referrals
      * <li>no initialization of hasChildren flag
      * <li>no initialization of isAlias and isReferral flag
      * <li>no controls 
@@ -107,11 +104,10 @@ public class SearchParameter implements Serializable
         scope = SearchScope.ONELEVEL;
         timeLimit = 0;
         countLimit = 0;
-        aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
-        referralsHandlingMethod = ReferralHandlingMethod.IGNORE;
+        aliasesDereferencingMethod = AliasDereferencingMethod.ALWAYS;
+        referralsHandlingMethod = ReferralHandlingMethod.FOLLOW;
         controls = null;
         initHasChildrenFlag = false;
-        initAliasAndReferralFlag = false;
     }
 
 
@@ -364,31 +360,8 @@ public class SearchParameter implements Serializable
         clone.setAliasesDereferencingMethod( getAliasesDereferencingMethod() );
         clone.setReferralsHandlingMethod( getReferralsHandlingMethod() );
         clone.setInitHasChildrenFlag( isInitHasChildrenFlag() );
-        clone.setInitAliasAndReferralFlag( isInitAliasAndReferralFlag() );
         clone.setControls( getControls() );
         return clone;
-    }
-
-
-    /**
-     * Checks if the isAlias and isReferral flags of IEntry should be initialized.
-     * 
-     * @return true, if the isAlias and isReferral flags of IEntry should be initialized
-     */
-    public boolean isInitAliasAndReferralFlag()
-    {
-        return initAliasAndReferralFlag;
-    }
-
-
-    /**
-     * Sets if the hasChildren flag of IEntry should be initialized.
-     * 
-     * @param initAliasAndReferralFlag the init isAlias and isReferral flag
-     */
-    public void setInitAliasAndReferralFlag( boolean initAliasAndReferralFlag )
-    {
-        this.initAliasAndReferralFlag = initAliasAndReferralFlag;
     }
 
 

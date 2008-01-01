@@ -51,6 +51,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -400,7 +401,7 @@ public class ImportLdifJob extends AbstractNotificationJob
             }
 
             browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-                getControls( attrValRecord ), monitor );
+                ReferralHandlingMethod.IGNORE, getControls( attrValRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeAddRecord )
         {
@@ -423,13 +424,13 @@ public class ImportLdifJob extends AbstractNotificationJob
             }
 
             browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-                getControls( changeAddRecord ), monitor );
+                ReferralHandlingMethod.IGNORE, getControls( changeAddRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
             browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn,
-                getControls( changeDeleteRecord ), monitor );
+                ReferralHandlingMethod.IGNORE, getControls( changeDeleteRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModifyRecord )
         {
@@ -461,8 +462,8 @@ public class ImportLdifJob extends AbstractNotificationJob
                 }
             }
 
-            browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, mis,
-                getControls( modifyRecord ), monitor );
+            browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, mis,
+                ReferralHandlingMethod.IGNORE, getControls( modifyRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModDnRecord )
         {
@@ -484,8 +485,8 @@ public class ImportLdifJob extends AbstractNotificationJob
                         newDn = DnUtils.composeDn( newRdn, parent.getUpName() );
                     }
 
-                    browserConnection.getConnection().getJNDIConnectionWrapper().rename( dn, newDn.toString(),
-                        deleteOldRdn, getControls( modDnRecord ), monitor );
+                    browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( dn, newDn.toString(),
+                        deleteOldRdn, ReferralHandlingMethod.IGNORE, getControls( modDnRecord ), monitor, null );
                 }
                 catch ( InvalidNameException ne )
                 {
@@ -514,8 +515,7 @@ public class ImportLdifJob extends AbstractNotificationJob
             for ( int i = 0; i < controlLines.length; i++ )
             {
                 LdifControlLine line = controlLines[i];
-                // TODO: encoded control value
-                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(), null );
+                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(), line.getControlValueAsBinary() );
             }
         }
         return controls;

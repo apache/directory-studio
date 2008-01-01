@@ -34,6 +34,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
@@ -41,7 +42,7 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -201,9 +202,6 @@ public class CopyEntriesJob extends AbstractNotificationJob
      * 
      * @return the number of copied entries
      */
-//    static int copyEntry( IBrowserConnection browserConnection, LdapDN dnToCopy, LdapDN parentDn, Rdn newRdn,
-//        int scope, int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
-//        StudioProgressMonitor monitor )
     static int copyEntry( IEntry entryToCopy, IEntry parent, Rdn newRdn, int scope, int numberOfCopiedEntries,
         EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
     {
@@ -212,9 +210,11 @@ public class CopyEntriesJob extends AbstractNotificationJob
         searchControls.setReturningAttributes( new String[]
             { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-        NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection().getJNDIConnectionWrapper().search(
-            entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
-            null, monitor, null );
+        Control[] controls = null;
+        NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection()
+            .getJNDIConnectionWrapper().search( entryToCopy.getDn().getUpName(), ISearch.FILTER_TRUE, searchControls,
+                entryToCopy.getBrowserConnection().getAliasesDereferencingMethod(),
+                entryToCopy.getBrowserConnection().getReferralsHandlingMethod(), controls, monitor, null );
 
         numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result, parent
             .getBrowserConnection(), parent.getDn(), newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,
@@ -270,10 +270,14 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
                 // apply new RDN to the attributes
                 applyNewRdn( newAttributes, oldRdn, newRdn );
-                
+
+                // determine referrals handling method
+                ReferralHandlingMethod referralsHandlingMethod = newAttributes.get( "ref" ) != null ? ReferralHandlingMethod.MANAGE
+                    : ReferralHandlingMethod.FOLLOW;
+
                 // create entry
-                targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(), newAttributes, null,
-                    dummyMonitor );
+                targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
+                    newAttributes, referralsHandlingMethod, null, dummyMonitor, null );
 
                 while ( dummyMonitor.errorsReported() )
                 {
@@ -308,7 +312,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
 
                                     // create entry
                                     targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
-                                        newAttributes, null, dummyMonitor );
+                                        newAttributes, referralsHandlingMethod, null, dummyMonitor, null );
 
                                     break;
                             }
@@ -343,8 +347,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
                             { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                         NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
-                            .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE, searchControls, "never",
-                                JNDIConnectionWrapper.REFERRAL_IGNORE, null, monitor, null );
+                            .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE,
+                                searchControls, sourceBrowserConnection.getAliasesDereferencingMethod(),
+                                sourceBrowserConnection.getReferralsHandlingMethod(), null, monitor, null );
 
                         if ( scope == SearchControls.ONELEVEL_SCOPE )
                         {

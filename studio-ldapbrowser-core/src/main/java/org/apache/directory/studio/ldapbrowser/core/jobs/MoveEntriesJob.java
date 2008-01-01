@@ -148,7 +148,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
             LdapDN newDn = DnUtils.composeDn( oldDn.getRdn(), parentDn );
 
             // try to move entry
-            moveEntry( browserConnection, oldDn, newDn, dummyMonitor );
+            RenameEntryJob.renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );
 
             // do a simulated rename, if renaming of a non-leaf entry is not supported.
             if ( dummyMonitor.errorsReported() )
@@ -261,24 +261,6 @@ public class MoveEntriesJob extends AbstractNotificationJob
     {
         return oldEntries.length == 1 ? BrowserCoreMessages.jobs__move_entry_error_1
             : BrowserCoreMessages.jobs__move_entry_error_n;
-    }
-
-
-    /**
-     * Moves an entry.
-     * 
-     * @param browserConnection the browser connection
-     * @param oldDn the old DN
-     * @param newDn the new DN
-     * @param monitor the progress monitor
-     */
-    static void moveEntry( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn,
-        StudioProgressMonitor monitor )
-    {
-        String oldDnString = oldDn.getUpName();
-        String newDnString = newDn.getUpName();
-        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, false, null,
-            monitor );
     }
 
 }

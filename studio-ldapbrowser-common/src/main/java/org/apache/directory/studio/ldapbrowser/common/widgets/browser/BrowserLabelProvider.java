@@ -324,11 +324,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
-        else if ( preferences.isDerefAliasesAndReferralsWhileBrowsing() && entry.isAlias() )
+        else if ( entry.isAlias() )
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ALIAS );
         }
-        else if ( preferences.isDerefAliasesAndReferralsWhileBrowsing() && entry.isReferral() )
+        else if ( entry.isReferral() )
         {
             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_REF );
         }

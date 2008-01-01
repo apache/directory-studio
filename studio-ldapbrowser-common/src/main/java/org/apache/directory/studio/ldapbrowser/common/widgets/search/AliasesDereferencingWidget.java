@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -43,7 +43,7 @@ public class AliasesDereferencingWidget extends BrowserWidget
 {
 
     /** The initial aliases dereferencing method */
-    private AliasDereferencingMethod initialAliasesDereferencingMethod;
+    private Connection.AliasDereferencingMethod initialAliasesDereferencingMethod;
 
     /** The group. */
     private Group group;
@@ -61,7 +61,7 @@ public class AliasesDereferencingWidget extends BrowserWidget
      * 
      * @param initialAliasesDereferencingMethod the initial aliases dereferencing method
      */
-    public AliasesDereferencingWidget( AliasDereferencingMethod initialAliasesDereferencingMethod )
+    public AliasesDereferencingWidget( Connection.AliasDereferencingMethod initialAliasesDereferencingMethod )
     {
         this.initialAliasesDereferencingMethod = initialAliasesDereferencingMethod;
     }
@@ -69,11 +69,11 @@ public class AliasesDereferencingWidget extends BrowserWidget
 
     /**
      * Creates a new instance of AliasesDereferencingWidget. The initial 
-     * dereferencing method is set to {@link AliasDereferencingMethod.NEVER}.
+     * dereferencing method is set to {@link Connection.AliasDereferencingMethod.ALWAYS}.
      */
     public AliasesDereferencingWidget()
     {
-        this.initialAliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
+        this.initialAliasesDereferencingMethod = Connection.AliasDereferencingMethod.ALWAYS;
     }
 
 
@@ -115,13 +115,13 @@ public class AliasesDereferencingWidget extends BrowserWidget
      * 
      * @param aliasesDereferencingMethod the aliases dereferencing method
      */
-    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( Connection.AliasDereferencingMethod aliasesDereferencingMethod )
     {
         initialAliasesDereferencingMethod = aliasesDereferencingMethod;
-        findingButton.setSelection( initialAliasesDereferencingMethod == AliasDereferencingMethod.FINDING
-            || initialAliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS );
-        searchButton.setSelection( initialAliasesDereferencingMethod == AliasDereferencingMethod.SEARCH
-            || initialAliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS );
+        findingButton.setSelection( initialAliasesDereferencingMethod == Connection.AliasDereferencingMethod.FINDING
+            || initialAliasesDereferencingMethod == Connection.AliasDereferencingMethod.ALWAYS );
+        searchButton.setSelection( initialAliasesDereferencingMethod == Connection.AliasDereferencingMethod.SEARCH
+            || initialAliasesDereferencingMethod == Connection.AliasDereferencingMethod.ALWAYS );
     }
 
 
@@ -130,23 +130,23 @@ public class AliasesDereferencingWidget extends BrowserWidget
      * 
      * @return the aliases dereferencing method
      */
-    public AliasDereferencingMethod getAliasesDereferencingMethod()
+    public Connection.AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         if ( findingButton.getSelection() && searchButton.getSelection() )
         {
-            return AliasDereferencingMethod.ALWAYS;
+            return Connection.AliasDereferencingMethod.ALWAYS;
         }
         else if ( findingButton.getSelection() )
         {
-            return AliasDereferencingMethod.FINDING;
+            return Connection.AliasDereferencingMethod.FINDING;
         }
         else if ( searchButton.getSelection() )
         {
-            return AliasDereferencingMethod.SEARCH;
+            return Connection.AliasDereferencingMethod.SEARCH;
         }
         else
         {
-            return AliasDereferencingMethod.NEVER;
+            return Connection.AliasDereferencingMethod.NEVER;
         }
     }
 

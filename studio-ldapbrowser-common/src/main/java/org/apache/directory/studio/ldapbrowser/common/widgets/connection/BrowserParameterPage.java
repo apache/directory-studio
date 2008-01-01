@@ -32,8 +32,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.LimitWidget
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.ReferralsHandlingWidget;
 import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -136,7 +134,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
      * 
      * @return the aliases dereferencing method
      */
-    private AliasDereferencingMethod getAliasesDereferencingMethod()
+    private Connection.AliasDereferencingMethod getAliasesDereferencingMethod()
     {
         return aliasesDereferencingWidget.getAliasesDereferencingMethod();
     }
@@ -147,7 +145,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
      * 
      * @return the referrals handling method
      */
-    private ReferralHandlingMethod getReferralsHandlingMethod()
+    private Connection.ReferralHandlingMethod getReferralsHandlingMethod()
     {
         return referralsHandlingWidget.getReferralsHandlingMethod();
     }
@@ -214,13 +212,13 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
-        limitWidget = new LimitWidget();
+        limitWidget = new LimitWidget( 1000, 0 );
         limitWidget.createWidget( composite );
 
-        aliasesDereferencingWidget = new AliasesDereferencingWidget();
+        aliasesDereferencingWidget = new AliasesDereferencingWidget( Connection.AliasDereferencingMethod.ALWAYS );
         aliasesDereferencingWidget.createWidget( composite );
 
-        referralsHandlingWidget = new ReferralsHandlingWidget();
+        referralsHandlingWidget = new ReferralsHandlingWidget( Connection.ReferralHandlingMethod.FOLLOW );
         referralsHandlingWidget.createWidget( composite );
     }
 
@@ -276,13 +274,13 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
         int referralsHandlingMethodOrdinal = parameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
-        ReferralHandlingMethod referralsHandlingMethod = ReferralHandlingMethod
+        Connection.ReferralHandlingMethod referralsHandlingMethod = Connection.ReferralHandlingMethod
             .getByOrdinal( referralsHandlingMethodOrdinal );
         referralsHandlingWidget.setReferralsHandlingMethod( referralsHandlingMethod );
 
         int aliasesDereferencingMethodOrdinal = parameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
-        AliasDereferencingMethod aliasesDereferencingMethod = AliasDereferencingMethod
+        Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
         aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
 
@@ -391,19 +389,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         int countLimit = connectionParameter
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT );
         int timeLimit = connectionParameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT );
-        int referralsHandlingMethodOrdinal = connectionParameter
-            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
-        ReferralHandlingMethod referralsHandlingMethod = ReferralHandlingMethod
-            .getByOrdinal( referralsHandlingMethodOrdinal );
-        int aliasesDereferencingMethodOrdinal = connectionParameter
-            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
-        AliasDereferencingMethod aliasesDereferencingMethod = AliasDereferencingMethod
-            .getByOrdinal( aliasesDereferencingMethodOrdinal );
-        aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
 
-        return isReconnectionRequired() || countLimit != getCountLimit() || timeLimit != getTimeLimit()
-            || referralsHandlingMethod != getReferralsHandlingMethod()
-            || aliasesDereferencingMethod != getAliasesDereferencingMethod();
+        return isReconnectionRequired() || countLimit != getCountLimit() || timeLimit != getTimeLimit();
     }
 
 
@@ -420,9 +407,20 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         boolean fetchBaseDns = connectionParameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS );
         String baseDn = connectionParameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN );
+        int referralsHandlingMethodOrdinal = connectionParameter
+            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
+        Connection.ReferralHandlingMethod referralsHandlingMethod = Connection.ReferralHandlingMethod
+            .getByOrdinal( referralsHandlingMethodOrdinal );
+        int aliasesDereferencingMethodOrdinal = connectionParameter
+            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
+        Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
+            .getByOrdinal( aliasesDereferencingMethodOrdinal );
+
         return fetchBaseDns != isAutoFetchBaseDns() || ( baseDn == null && getBaseDN() != null )
             || ( baseDn != null && getBaseDN() == null )
-            || ( baseDn != getBaseDN() && !( baseDn.equals( getBaseDN() ) ) );
+            || ( baseDn != getBaseDN() && !( baseDn.equals( getBaseDN() ) ) )
+            || referralsHandlingMethod != getReferralsHandlingMethod()
+            || aliasesDereferencingMethod != getAliasesDereferencingMethod();
     }
 
 }

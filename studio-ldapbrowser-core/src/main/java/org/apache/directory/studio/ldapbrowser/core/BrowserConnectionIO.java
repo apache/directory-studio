@@ -31,14 +31,14 @@ import java.util.Map;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
@@ -277,7 +277,7 @@ public class BrowserConnectionIO
         {
             try
             {
-                searchParameter.setAliasesDereferencingMethod( AliasDereferencingMethod
+                searchParameter.setAliasesDereferencingMethod( Connection.AliasDereferencingMethod
                     .valueOf( aliasesDereferencingMethodAttribute.getValue() ) );
             }
             catch ( IllegalArgumentException e )
@@ -294,7 +294,7 @@ public class BrowserConnectionIO
         {
             try
             {
-                searchParameter.setReferralsHandlingMethod( ReferralHandlingMethod
+                searchParameter.setReferralsHandlingMethod( Connection.ReferralHandlingMethod
                     .valueOf( referralsHandlingMethodAttribute.getValue() ) );
             }
             catch ( IllegalArgumentException e )

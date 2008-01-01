@@ -29,8 +29,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 
@@ -157,9 +155,9 @@ public class ReadEntryJob extends AbstractNotificationJob
             }
 
             // search in directory
-            ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES,
-                SearchScope.OBJECT, 1, 0, AliasDereferencingMethod.NEVER,
-                ReferralHandlingMethod.IGNORE, true, true, null );
+            ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT,
+                1, 0, browserConnection.getAliasesDereferencingMethod(),
+                browserConnection.getReferralsHandlingMethod(), true, null );
             SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )

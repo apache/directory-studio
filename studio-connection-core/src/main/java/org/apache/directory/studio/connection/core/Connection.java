@@ -39,6 +39,135 @@ import org.eclipse.core.runtime.IAdaptable;
 public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 {
 
+    /**
+     * Enum for alias dereferencing method.
+     * 
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public static enum AliasDereferencingMethod
+    {
+    
+        /** Never. */
+        NEVER(0),
+    
+        /** Always. */
+        ALWAYS(1),
+    
+        /** Finding. */
+        FINDING(2),
+    
+        /** Search. */
+        SEARCH(3);
+    
+        private final int ordinal;
+    
+    
+        private AliasDereferencingMethod( int ordinal )
+        {
+            this.ordinal = ordinal;
+        }
+    
+    
+        /**
+         * Gets the ordinal.
+         * 
+         * @return the ordinal
+         */
+        public int getOrdinal()
+        {
+            return ordinal;
+        }
+    
+    
+        /**
+         * Gets the AliasDereferencingMethod by ordinal.
+         * 
+         * @param ordinal the ordinal
+         * 
+         * @return the AliasDereferencingMethod
+         */
+        public static AliasDereferencingMethod getByOrdinal( int ordinal )
+        {
+            switch ( ordinal )
+            {
+                case 0:
+                    return NEVER;
+                case 1:
+                    return ALWAYS;
+                case 2:
+                    return FINDING;
+                case 3:
+                    return SEARCH;
+                default:
+                    return null;
+            }
+        }
+    }
+
+
+    /**
+     * Enum for referral handling method.
+     * 
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public static enum ReferralHandlingMethod
+    {
+    
+        /** Ignore. */
+        IGNORE(0),
+    
+        /** Follow. */
+        FOLLOW(1),
+    
+        /** Manage. */
+        MANAGE(2);
+    
+        private final int ordinal;
+    
+    
+        private ReferralHandlingMethod( int ordinal )
+        {
+            this.ordinal = ordinal;
+        }
+    
+    
+        /**
+         * Gets the ordinal.
+         * 
+         * @return the ordinal
+         */
+        public int getOrdinal()
+        {
+            return ordinal;
+        }
+    
+    
+        /**
+         * Gets the ReferralHandlingMethod by ordinal.
+         * 
+         * @param ordinal the ordinal
+         * 
+         * @return the ReferralHandlingMethod
+         */
+        public static ReferralHandlingMethod getByOrdinal( int ordinal )
+        {
+            switch ( ordinal )
+            {
+                case 0:
+                    return IGNORE;
+                case 1:
+                    return FOLLOW;
+                case 2:
+                    return MANAGE;
+                default:
+                    return null;
+            }
+        }
+    }
+
+
     private ConnectionParameter connectionParameter;
 
     private JNDIConnectionWrapper jndiConnectionWrapper;

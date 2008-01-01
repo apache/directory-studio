@@ -33,18 +33,19 @@ import javax.naming.NamingEnumeration;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
+import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -206,7 +207,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * 
      * @param browserConnection the browser connection
      * @param dn the DN to delete
-     * @param numberOfDeletedEntries the number of delted entries
+     * @param numberOfDeletedEntries the number of deleted entries
      * @param dummyMonitor the dummy monitor
      * @param monitor the progress monitor
      * 
@@ -228,6 +229,12 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         }
         else if ( dummyMonitor.getException() instanceof ContextNotEmptyException )
         {
+            // do not follow referrals or dereference aliases when deleting entries
+            AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.NEVER;
+            ReferralHandlingMethod referralsHandlingMethod = browserConnection.getRootDSE().isControlSupported(
+                org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
+                : ReferralHandlingMethod.IGNORE;
+
             // perform one-level search and delete recursively
             int numberInBatch;
             dummyMonitor.reset();
@@ -240,8 +247,8 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 searchControls.setReturningAttributes( new String[0] );
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                 NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper()
-                    .search( dn.getUpName(), ISearch.FILTER_TRUE, searchControls, "never", JNDIConnectionWrapper.REFERRAL_IGNORE,
-                        null, dummyMonitor, null );
+                    .search( dn.getUpName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
+                        referralsHandlingMethod, null, dummyMonitor, null );
 
                 try
                 {
@@ -333,17 +340,26 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, StudioProgressMonitor monitor )
     {
         // controls
-        List<BasicControl> controls = new ArrayList<BasicControl>();
-        if ( browserConnection.getRootDSE().isControlSupported( Control.TREEDELETE_CONTROL.getOid() ) )
+        List<Control> controlList = new ArrayList<Control>();
+        if ( browserConnection.getRootDSE().isControlSupported(
+            org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid() ) )
         {
-            BasicControl treeDeleteControl = new BasicControl( Control.TREEDELETE_CONTROL.getOid(),
-                Control.TREEDELETE_CONTROL.isCritical(), Control.TREEDELETE_CONTROL.getControlValue() );
-            controls.add( treeDeleteControl );
+            Control treeDeleteControl = new BasicControl(
+                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid(),
+                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.isCritical(),
+                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getControlValue() );
+            controlList.add( treeDeleteControl );
         }
+        Control[] controls = controlList.toArray( new Control[controlList.size()] );
+
+        // do not follow referrals
+        ReferralHandlingMethod referralsHandlingMethod = browserConnection.getRootDSE().isControlSupported(
+            org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
+            : ReferralHandlingMethod.IGNORE;
 
         // delete entry
         browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(),
-            controls.toArray( new BasicControl[controls.size()] ), monitor );
+            referralsHandlingMethod, controls, monitor, null );
     }
 
 }

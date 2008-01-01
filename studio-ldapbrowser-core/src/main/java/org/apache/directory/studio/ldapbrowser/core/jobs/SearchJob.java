@@ -41,7 +41,8 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -301,8 +302,8 @@ public class SearchJob extends AbstractNotificationJob
         controls.setCountLimit( parameter.getCountLimit() );
         controls.setTimeLimit( parameter.getTimeLimit() );
         String filter = parameter.getFilter();
-        String derefAliasMethod = getDerefAliasMethod( parameter );
-        String handleReferralsMethod = getReferralsHandlingMethod( parameter );
+        AliasDereferencingMethod aliasesDereferencingMethod = parameter.getAliasesDereferencingMethod();
+        ReferralHandlingMethod referralsHandlingMethod = parameter.getReferralsHandlingMethod();
 
         Control[] ldapControls = null;
         if ( parameter.getControls() != null )
@@ -316,50 +317,8 @@ public class SearchJob extends AbstractNotificationJob
         }
 
         NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-            searchBase, filter, controls, derefAliasMethod, handleReferralsMethod, ldapControls, monitor, null );
+            searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, ldapControls, monitor, null );
         return result;
-    }
-
-
-    private static String getDerefAliasMethod( SearchParameter parameter )
-    {
-        String m = "always"; //$NON-NLS-1$
-
-        switch ( parameter.getAliasesDereferencingMethod() )
-        {
-            case NEVER:
-                m = "never"; //$NON-NLS-1$
-                break;
-            case ALWAYS:
-                m = "always"; //$NON-NLS-1$
-                break;
-            case FINDING:
-                m = "finding"; //$NON-NLS-1$
-                break;
-            case SEARCH:
-                m = "searching"; //$NON-NLS-1$
-                break;
-        }
-
-        return m;
-    }
-
-
-    private static String getReferralsHandlingMethod( SearchParameter parameter )
-    {
-        String m = JNDIConnectionWrapper.REFERRAL_FOLLOW; //$NON-NLS-1$
-
-        switch ( parameter.getReferralsHandlingMethod() )
-        {
-            case IGNORE:
-                m = JNDIConnectionWrapper.REFERRAL_IGNORE; //$NON-NLS-1$
-                break;
-            case FOLLOW:
-                m = JNDIConnectionWrapper.REFERRAL_FOLLOW; //$NON-NLS-1$
-                break;
-        }
-
-        return m;
     }
 
 
@@ -404,33 +363,47 @@ public class SearchJob extends AbstractNotificationJob
                 searchParameter.setReturningAttributes( returningAttributes );
             }
         }
-
-        // to init the alias/referral flag we need the objectClass
-        if ( search.isInitAliasAndReferralFlag() )
+//
+//        // to init the alias/referral flag we need the objectClass
+//        if ( search.isInitAliasAndReferralFlag() )
+//        {
+//            if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
+//                IAttribute.OBJECTCLASS_ATTRIBUTE ) )
+//            {
+//                String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
+//                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
+//                    .getReturningAttributes().length );
+//                returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
+//                searchParameter.setReturningAttributes( returningAttributes );
+//            }
+//        }
+//
+//        // if returning attributes are requested but objectClass isn't included then add it
+//        if ( search.getReturningAttributes() == null || search.getReturningAttributes().length > 0 )
+//        {
+//            if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
+//                IAttribute.OBJECTCLASS_ATTRIBUTE ) )
+//            {
+//                String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
+//                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
+//                    .getReturningAttributes().length );
+//                returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
+//                searchParameter.setReturningAttributes( returningAttributes );
+//            }
+//        }
+        
+        // always add the objectClass attribute, we need it  
+        // - to detect alias and referral entries
+        // - to determine the entry's icon
+        // - to determine must and may attributes
+        if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
+            IAttribute.OBJECTCLASS_ATTRIBUTE ) )
         {
-            if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-                IAttribute.OBJECTCLASS_ATTRIBUTE ) )
-            {
-                String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-                    .getReturningAttributes().length );
-                returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
-                searchParameter.setReturningAttributes( returningAttributes );
-            }
-        }
-
-        // if returning attributes are requested but objectClass isn't included then add it
-        if ( search.getReturningAttributes() == null || search.getReturningAttributes().length > 0 )
-        {
-            if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-                IAttribute.OBJECTCLASS_ATTRIBUTE ) )
-            {
-                String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-                    .getReturningAttributes().length );
-                returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
-                searchParameter.setReturningAttributes( returningAttributes );
-            }
+            String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
+            System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
+                .getReturningAttributes().length );
+            returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
+            searchParameter.setReturningAttributes( returningAttributes );
         }
 
         // filter controls if not supported by server
@@ -572,18 +545,17 @@ public class SearchJob extends AbstractNotificationJob
                         }
                     }
 
-                    if ( searchParameter.isInitAliasAndReferralFlag() )
+                    if ( IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeDescription ) )
                     {
-                        if ( IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeDescription ) )
+                        if ( ObjectClassDescription.OC_ALIAS.equalsIgnoreCase( value ) )
                         {
-                            if ( ObjectClassDescription.OC_ALIAS.equalsIgnoreCase( value ) )
-                            {
-                                entry.setAlias( true );
-                            }
-                            if ( ObjectClassDescription.OC_REFERRAL.equalsIgnoreCase( value ) )
-                            {
-                                entry.setReferral( true );
-                            }
+                            entry.setAlias( true );
+                            entry.setHasChildrenHint( false );
+                        }
+                        if ( ObjectClassDescription.OC_REFERRAL.equalsIgnoreCase( value ) )
+                        {
+                            entry.setReferral( true );
+                            entry.setHasChildrenHint( false );
                         }
                     }
                 }

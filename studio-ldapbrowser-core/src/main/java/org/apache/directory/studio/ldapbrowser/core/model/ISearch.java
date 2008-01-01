@@ -24,9 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -141,14 +140,6 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
 
     /**
-     * Checks if the isAlias and isReferral flags should be initialized.
-     * 
-     * @return true, if the isAlias and isReferral flags should be initialized
-     */
-    public abstract boolean isInitAliasAndReferralFlag();
-
-
-    /**
      * Gets the controls.
      * 
      * @return the controls
@@ -234,7 +225,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the aliases dereferencing method
      */
-    public abstract AliasDereferencingMethod getAliasesDereferencingMethod();
+    public abstract Connection.AliasDereferencingMethod getAliasesDereferencingMethod();
 
 
     /**
@@ -244,7 +235,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param aliasesDereferencingMethod the aliases dereferencing method
      */
-    public abstract void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod );
+    public abstract void setAliasesDereferencingMethod( Connection.AliasDereferencingMethod aliasesDereferencingMethod );
 
 
     /**
@@ -252,7 +243,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      *  
      * @return the referrals handling method
      */
-    public abstract ReferralHandlingMethod getReferralsHandlingMethod();
+    public abstract Connection.ReferralHandlingMethod getReferralsHandlingMethod();
 
 
     /**
@@ -262,7 +253,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param referralsHandlingMethod the referrals handling method
      */
-    public abstract void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod );
+    public abstract void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod );
 
 
     /**

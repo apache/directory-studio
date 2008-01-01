@@ -29,6 +29,7 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
+import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;

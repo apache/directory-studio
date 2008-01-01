@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -34,8 +35,6 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -742,7 +741,7 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( aliasesDereferencingWidget != null )
         {
-            AliasDereferencingMethod aliasesDereferencingMethod = aliasesDereferencingWidget
+            Connection.AliasDereferencingMethod aliasesDereferencingMethod = aliasesDereferencingWidget
                 .getAliasesDereferencingMethod();
             if ( aliasesDereferencingMethod != search.getAliasesDereferencingMethod() )
             {
@@ -752,7 +751,7 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( referralsHandlingWidget != null )
         {
-            ReferralHandlingMethod referralsHandlingMethod = referralsHandlingWidget.getReferralsHandlingMethod();
+            Connection.ReferralHandlingMethod referralsHandlingMethod = referralsHandlingWidget.getReferralsHandlingMethod();
             if ( referralsHandlingMethod != search.getReferralsHandlingMethod() )
             {
                 search.getSearchParameter().setReferralsHandlingMethod( referralsHandlingMethod );

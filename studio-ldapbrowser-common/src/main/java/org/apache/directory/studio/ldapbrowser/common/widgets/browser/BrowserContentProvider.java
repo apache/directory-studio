@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -455,10 +453,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         if ( parent instanceof IEntry )
         {
             IEntry parentEntry = ( IEntry ) parent;
-            return parentEntry.hasChildren()
-                || ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                    BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) && ( parentEntry.isAlias() || parentEntry
-                    .isReferral() ) );
+            return parentEntry.hasChildren();
         }
         else if ( parent instanceof BrowserEntryPage )
         {

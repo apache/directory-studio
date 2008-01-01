@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.LinkLoopException;
-import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.name.LdapDN;
 
 
 /**
@@ -38,9 +38,9 @@ import org.apache.directory.shared.ldap.codec.util.LdapURL;
  */
 public class ReferralsInfo
 {
-    private List<LdapURL> referralsToProcess;
+    private List<UrlAndDn> referralsToProcess;
 
-    private List<LdapURL> processedReferrals;
+    private List<UrlAndDn> processedReferrals;
 
 
     /**
@@ -49,30 +49,32 @@ public class ReferralsInfo
      */
     public ReferralsInfo()
     {
-        this.referralsToProcess = new ArrayList<LdapURL>();
-        this.processedReferrals = new ArrayList<LdapURL>();
+        this.referralsToProcess = new ArrayList<UrlAndDn>();
+        this.processedReferrals = new ArrayList<UrlAndDn>();
     }
 
 
     /**
-     * Adds the referral URL to the list of referrals to be processed.
+     * Adds the referral URL and DN to the list of referrals to be processed.
      * 
      * If the URL is already in the list or if the URL was already processed
      * a NamingException will be thrown
      * 
      * @param url the URL
+     * @param dn the DN
      * 
-     * @throws NamingException the naming exception
+     * @throws LinkLoopException if a loop was encountered.
      */
-    public void addReferralUrl( LdapURL url ) throws NamingException
+    public void addReferralUrl( LdapURL url, LdapDN dn ) throws LinkLoopException
     {
-        if ( !referralsToProcess.contains( url ) && !processedReferrals.contains( url ) )
+        UrlAndDn urlAndDn = new UrlAndDn( url, dn );
+        if ( !referralsToProcess.contains( urlAndDn ) && !processedReferrals.contains( urlAndDn ) )
         {
-            referralsToProcess.add( url );
+            referralsToProcess.add( urlAndDn );
         }
         else
         {
-            throw new LinkLoopException( "Loop detected: " + url.toString() );
+            throw new LinkLoopException( "Loop detected while following referral: " + urlAndDn.toString() );
         }
     }
 
@@ -82,18 +84,107 @@ public class ReferralsInfo
      * 
      * @return the next referral URL or null
      */
-    public LdapURL getNext()
+    public UrlAndDn getNext()
     {
         if ( !referralsToProcess.isEmpty() )
         {
-            LdapURL url = referralsToProcess.remove( 0 );
-            processedReferrals.add( url );
-            return url;
+            UrlAndDn urlAndDn = referralsToProcess.remove( 0 );
+            processedReferrals.add( urlAndDn );
+            return urlAndDn;
         }
         else
         {
             return null;
         }
+    }
+
+    /**
+     * Container for an LDAP URL and an LDAP DN.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    class UrlAndDn
+    {
+        private LdapURL url;
+        private LdapDN dn;
+
+
+        /**
+         * Creates a new instance of UrlAndDn.
+         *
+         * @param url the URL, never null
+         * @param dn the DN, never null
+         */
+        private UrlAndDn( LdapURL url, LdapDN dn )
+        {
+            if ( url == null )
+            {
+                throw new IllegalArgumentException( "URL may not be null" );
+            }
+            if ( dn == null )
+            {
+                throw new IllegalArgumentException( "DN may not be null" );
+            }
+            this.url = url;
+            this.dn = dn;
+        }
+
+
+        /**
+         * Gets the URL.
+         * 
+         * @return the URL
+         */
+        public LdapURL getUrl()
+        {
+            return url;
+        }
+
+
+        /**
+         * Gets the DN.
+         * 
+         * @return the DN
+         */
+        public LdapDN getDn()
+        {
+            return dn;
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public int hashCode()
+        {
+            // dn and url are never null
+            int h = 37;
+            h = h * 17 + url.hashCode();
+            h = h * 17 + dn.hashCode();
+            return h;
+        }
+
+
+        /**
+         * {@inheritDoc}
+         */
+        public boolean equals( Object obj )
+        {
+            // dn and url are never null
+            if ( this == obj )
+            {
+                return true;
+            }
+            if ( !( obj instanceof UrlAndDn ) )
+            {
+                return false;
+            }
+
+            UrlAndDn other = ( UrlAndDn ) obj;
+            return dn.equals( other.dn ) && url.equals( other.url );
+        }
+
     }
 
 }

@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -135,7 +136,7 @@ public class RenameEntryJob extends AbstractNotificationJob
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
 
         // try to rename entry
-        renameEntry( browserConnection, oldDn, newDn, dummyMonitor );
+        renameEntry( browserConnection, oldEntry, newDn, dummyMonitor );
 
         // do a simulated rename, if renaming of a non-leaf entry is not supported.
         if ( dummyMonitor.errorsReported() )
@@ -241,21 +242,28 @@ public class RenameEntryJob extends AbstractNotificationJob
     }
 
 
+    
     /**
-     * Renames the entry.
+     * Moves/Renames an entry.
      * 
      * @param browserConnection the browser connection
-     * @param oldDn the old DN
+     * @param entry the entry to move/rename
      * @param newDn the new DN
      * @param monitor the progress monitor
      */
-    static void renameEntry( IBrowserConnection browserConnection, LdapDN oldDn, LdapDN newDn,
+    static void renameEntry( IBrowserConnection browserConnection, IEntry entry, LdapDN newDn,
         StudioProgressMonitor monitor )
     {
-        String oldDnString = oldDn.getUpName();
+        // DNs
+        String oldDnString = entry.getDn().getUpName();
         String newDnString = newDn.getUpName();
-        browserConnection.getConnection().getJNDIConnectionWrapper().rename( oldDnString, newDnString, true, null,
-            monitor );
+
+        // determine referrals handling method
+        ReferralHandlingMethod referralsHandlingMethod = entry.isReferral() ? ReferralHandlingMethod.MANAGE
+            : ReferralHandlingMethod.FOLLOW;
+
+        browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( oldDnString, newDnString, false,
+            referralsHandlingMethod, null, monitor, null );
     }
 
 }

@@ -23,11 +23,10 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -171,16 +170,12 @@ public class CreateEntryJob extends AbstractNotificationJob
             }
         }
 
-        // controls
-        Control[] controls = null;
-        if ( entryToCreate.isReferral() )
-        {
-            controls = new Control[]
-                { new ManageReferralControl() };
-        }
+        // determine referrals handling method
+        ReferralHandlingMethod referralsHandlingMethod = entryToCreate.isReferral() ? ReferralHandlingMethod.MANAGE
+            : ReferralHandlingMethod.FOLLOW;
 
-        browserConnection.getConnection().getJNDIConnectionWrapper()
-            .createEntry( dn, jndiAttributes, controls, monitor );
+        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
+            referralsHandlingMethod, null, monitor, null );
     }
 
 }

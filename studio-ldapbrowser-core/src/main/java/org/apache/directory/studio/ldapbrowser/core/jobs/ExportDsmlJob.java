@@ -64,7 +64,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -163,7 +162,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             }
 
             // DerefAliases
-            AliasDereferencingMethod derefAliases = searchParameter.getAliasesDereferencingMethod();
+            Connection.AliasDereferencingMethod derefAliases = searchParameter.getAliasesDereferencingMethod();
             switch ( derefAliases )
             {
                 case ALWAYS:

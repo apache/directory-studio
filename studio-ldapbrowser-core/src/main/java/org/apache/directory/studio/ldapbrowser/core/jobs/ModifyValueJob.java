@@ -24,10 +24,9 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
@@ -184,16 +183,12 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
                 modificationItems[1] = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, oldAttribute );
             }
 
-            // controls
-            Control[] controls = null;
-            if ( entry.isReferral() )
-            {
-                controls = new Control[]
-                    { new ManageReferralControl() };
-            }
+            // determine referrals handling method
+            ReferralHandlingMethod referralsHandlingMethod = entry.isReferral() ? ReferralHandlingMethod.MANAGE
+                : ReferralHandlingMethod.FOLLOW;
 
-            browserConnection.getConnection().getJNDIConnectionWrapper().modifyAttributes( dn, modificationItems,
-                controls, monitor );
+            browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, modificationItems,
+                referralsHandlingMethod, null, monitor, null );
         }
         else
         {

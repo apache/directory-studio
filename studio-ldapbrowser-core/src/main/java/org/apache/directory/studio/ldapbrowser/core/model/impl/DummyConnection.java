@@ -89,9 +89,9 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public AliasDereferencingMethod getAliasesDereferencingMethod()
+    public Connection.AliasDereferencingMethod getAliasesDereferencingMethod()
     {
-        return AliasDereferencingMethod.NEVER;
+        return Connection.AliasDereferencingMethod.NEVER;
     }
 
 
@@ -168,7 +168,7 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod )
+    public void setAliasesDereferencingMethod( Connection.AliasDereferencingMethod aliasesDereferencingMethod )
     {
     }
 
@@ -220,16 +220,16 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
-    public ReferralHandlingMethod getReferralsHandlingMethod()
+    public Connection.ReferralHandlingMethod getReferralsHandlingMethod()
     {
-        return ReferralHandlingMethod.IGNORE;
+        return Connection.ReferralHandlingMethod.IGNORE;
     }
 
 
     /** 
      * {@inheritDoc}
      */
-    public void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod )
+    public void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod )
     {
     }
 

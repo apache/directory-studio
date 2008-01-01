@@ -29,6 +29,7 @@ import java.util.Set;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
@@ -40,7 +41,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ReferralHandlingMethod;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -212,7 +212,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         this.initSearch.setName( null );
 
         // never follow referrals for a batch operation!
-        this.initSearch.setReferralsHandlingMethod( ReferralHandlingMethod.IGNORE );
+        this.initSearch.setReferralsHandlingMethod( Connection.ReferralHandlingMethod.IGNORE );
     }
 
 

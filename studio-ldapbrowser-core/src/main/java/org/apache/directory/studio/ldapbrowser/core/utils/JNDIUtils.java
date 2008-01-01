@@ -27,6 +27,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import javax.naming.NamingException;
+import javax.naming.ldap.BasicControl;
+import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -164,4 +166,14 @@ public class JNDIUtils
 
     }
 
+    public static Control[] getManageDsaItControl()
+    {
+        Control[] controls = new Control[]
+            { new BasicControl(
+                org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.getOid(),
+                org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.isCritical(),
+                org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.getControlValue() ) };
+        return controls;
+    }
+    
 }

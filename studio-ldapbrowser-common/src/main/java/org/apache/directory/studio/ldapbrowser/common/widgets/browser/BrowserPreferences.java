@@ -310,19 +310,6 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
 
 
     /**
-     * Returns true if the browser should dereference aliases and referrals.
-     * 
-     *
-     * @return true if the browser should dereference aliases and referrals
-     */
-    public boolean isDerefAliasesAndReferralsWhileBrowsing()
-    {
-        Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
-        return coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS );
-    }
-
-
-    /**
      * Returns true if subentries should be fetched while browsing.
      * 
      *

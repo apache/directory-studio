@@ -75,8 +75,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
 
     private Button checkForChildrenButton;
 
-    private Button showAliasAndReferralObjectsButton;
-
     private Button fetchSubentriesButton;
 
 
@@ -238,10 +236,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         checkForChildrenButton = BaseWidgetUtils.createCheckbox( composite, "Check for children", 1 );
         checkForChildrenButton
             .setSelection( coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ) );
-        showAliasAndReferralObjectsButton = BaseWidgetUtils.createCheckbox( composite,
-            "Show alias and referral objects", 1 );
-        showAliasAndReferralObjectsButton.setSelection( coreStore
-            .getBoolean( BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) );
         fetchSubentriesButton = BaseWidgetUtils.createCheckbox( composite,
             "Fetch subentries (requires additional search request)", 1 );
         fetchSubentriesButton.setSelection( coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) );
@@ -269,8 +263,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, this.checkForChildrenButton
             .getSelection() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS,
-            this.showAliasAndReferralObjectsButton.getSelection() );
         coreStore
             .setValue( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES, this.fetchSubentriesButton.getSelection() );
         BrowserCorePlugin.getDefault().savePluginPreferences();
@@ -337,8 +329,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
         checkForChildrenButton.setSelection( coreStore
             .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ) );
-        showAliasAndReferralObjectsButton.setSelection( coreStore
-            .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_SHOW_ALIAS_AND_REFERRAL_OBJECTS ) );
         fetchSubentriesButton.setSelection( coreStore
             .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) );
 

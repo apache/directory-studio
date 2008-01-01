@@ -31,7 +31,9 @@ import javax.naming.ldap.Control;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
 
 
 /**
@@ -48,8 +50,8 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
     private String searchBase;
     private String filter;
     private SearchControls searchControls;
-    private String aliasesDereferencingMethod;
-    private String referralsHandlingMethod;
+    private AliasDereferencingMethod aliasesDereferencingMethod;
+    private ReferralHandlingMethod referralsHandlingMethod;
     private Control[] controls;
     private StudioProgressMonitor monitor;
     private ReferralsInfo referralsInfo;
@@ -70,8 +72,9 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      * @param referralsInfo the referrals info
      */
     public StudioNamingEnumeration( Connection connection, NamingEnumeration<SearchResult> delegate, String searchBase,
-        String filter, SearchControls searchControls, String aliasesDereferencingMethod,
-        String referralsHandlingMethod, Control[] controls, StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
+        String filter, SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
+        ReferralHandlingMethod referralsHandlingMethod, Control[] controls, StudioProgressMonitor monitor,
+        ReferralsInfo referralsInfo )
     {
         this.connection = connection;
         this.delegate = delegate;
@@ -105,13 +108,14 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
         {
             try
             {
-                return delegate.hasMore();
+                return delegate != null && delegate.hasMore();
             }
             catch ( PartialResultException pre )
             {
-                if ( JNDIConnectionWrapper.REFERRAL_IGNORE.equals( referralsHandlingMethod ) )
+                // ignore exception if referrals handling method is IGNORE
+                // report exception if referrals handling method is FOLLOW or MANGAGE
+                if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE )
                 {
-                    // ignore
                     return false;
                 }
                 else
@@ -121,18 +125,22 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
             }
             catch ( ReferralException re )
             {
-                if ( JNDIConnectionWrapper.REFERRAL_IGNORE.equals( referralsHandlingMethod ) )
+                // ignore exception if referrals handling method is IGNORE
+                // report exception if referrals handling method is MANGAGE
+                // follow referral if referrals handling method is FOLLOW
+                if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE )
                 {
-                    // ignore
                     return false;
                 }
-                else if ( JNDIConnectionWrapper.REFERRAL_FOLLOW.equals( referralsHandlingMethod ) )
+                else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
                 {
                     referralsInfo = JNDIConnectionWrapper.handleReferralException( re, referralsInfo );
-                    LdapURL url = referralsInfo.getNext();
-                    if ( url != null )
+                    UrlAndDn urlAndDn = referralsInfo.getNext();
+                    if ( urlAndDn != null )
                     {
-                        Connection referralConnection = JNDIConnectionWrapper.getReferralConnection( url );
+                        LdapURL url = urlAndDn.getUrl();
+                        Connection referralConnection = JNDIConnectionWrapper
+                            .getReferralConnection( url, monitor, this );
                         if ( referralConnection != null )
                         {
                             String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
@@ -142,20 +150,13 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                             SearchControls referralSearchControls = new SearchControls();
                             referralSearchControls.setSearchScope( url.getScope() > -1 ? url.getScope()
                                 : searchControls.getSearchScope() );
-                            referralSearchControls.setReturningAttributes( url.getAttributes() != null ? url
-                                .getAttributes().toArray( new String[url.getAttributes().size()] ) : searchControls
-                                .getReturningAttributes() );
+                            referralSearchControls.setReturningAttributes( url.getAttributes() != null
+                                && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
+                                new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );
                             referralSearchControls.setCountLimit( searchControls.getCountLimit() );
                             referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
                             referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                             referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
-
-                            if ( referralConnection.getJNDIConnectionWrapper().isConnected() )
-                            {
-                                referralConnection.getJNDIConnectionWrapper().connect( monitor );
-                                referralConnection.getJNDIConnectionWrapper().bind( monitor );
-                                ConnectionEventRegistry.fireConnectionOpened( referralConnection, this );
-                            }
 
                             delegate = referralConnection.getJNDIConnectionWrapper().search( referralSearchBase,
                                 referralFilter, referralSearchControls, aliasesDereferencingMethod,

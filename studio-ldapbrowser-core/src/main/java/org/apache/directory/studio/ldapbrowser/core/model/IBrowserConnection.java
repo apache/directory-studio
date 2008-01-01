@@ -26,6 +26,8 @@ import java.io.Serializable;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -61,133 +63,6 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
     /** The key for the connection parameter "Referrals Handling". */
     public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod";
-
-    /**
-     * Enum for alias dereferencing method.
-     * 
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
-     */
-    public enum AliasDereferencingMethod
-    {
-
-        /** Never. */
-        NEVER(0),
-
-        /** Always. */
-        ALWAYS(1),
-
-        /** Finding. */
-        FINDING(2),
-
-        /** Search. */
-        SEARCH(3);
-
-        private final int ordinal;
-
-
-        private AliasDereferencingMethod( int ordinal )
-        {
-            this.ordinal = ordinal;
-        }
-
-
-        /**
-         * Gets the ordinal.
-         * 
-         * @return the ordinal
-         */
-        public int getOrdinal()
-        {
-            return ordinal;
-        }
-
-
-        /**
-         * Gets the AliasDereferencingMethod by ordinal.
-         * 
-         * @param ordinal the ordinal
-         * 
-         * @return the AliasDereferencingMethod
-         */
-        public static AliasDereferencingMethod getByOrdinal( int ordinal )
-        {
-            switch ( ordinal )
-            {
-                case 0:
-                    return NEVER;
-                case 1:
-                    return ALWAYS;
-                case 2:
-                    return FINDING;
-                case 3:
-                    return SEARCH;
-                default:
-                    return null;
-            }
-        }
-    }
-
-    /**
-     * Enum for referral handling method.
-     * 
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
-     */
-    public enum ReferralHandlingMethod
-    {
-
-        /** Ignore. */
-        IGNORE(0),
-
-        /** Follow. */
-        FOLLOW(1),
-
-        /** Manual. */
-        MANUAL(2);
-
-        private final int ordinal;
-
-
-        private ReferralHandlingMethod( int ordinal )
-        {
-            this.ordinal = ordinal;
-        }
-
-
-        /**
-         * Gets the ordinal.
-         * 
-         * @return the ordinal
-         */
-        public int getOrdinal()
-        {
-            return ordinal;
-        }
-
-
-        /**
-         * Gets the ReferralHandlingMethod by ordinal.
-         * 
-         * @param ordinal the ordinal
-         * 
-         * @return the ReferralHandlingMethod
-         */
-        public static ReferralHandlingMethod getByOrdinal( int ordinal )
-        {
-            switch ( ordinal )
-            {
-                case 0:
-                    return IGNORE;
-                case 1:
-                    return FOLLOW;
-                case 2:
-                    return MANUAL;
-                default:
-                    return null;
-            }
-        }
-    }
 
     /** The MangageDsaIT control OID. */
     public static final String CONTROL_MANAGEDSAIT = "2.16.840.1.113730.3.4.2"; //$NON-NLS-1$

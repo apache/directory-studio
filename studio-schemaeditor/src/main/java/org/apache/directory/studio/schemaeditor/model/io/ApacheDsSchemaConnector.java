@@ -33,6 +33,8 @@ import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
@@ -63,8 +65,8 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /** The name of the metaSyntax object class */
     private static final String META_SYNTAX = "metaSyntax";
 
-    private static final String DEREF_ALIAS_METHOD = "always";
-    private static final String HANDLE_REFERALS_METHOD = "throw";
+    private static final AliasDereferencingMethod DEREF_ALIAS_METHOD = AliasDereferencingMethod.ALWAYS;
+    private static final ReferralHandlingMethod HANDLE_REFERALS_METHOD = ReferralHandlingMethod.FOLLOW;
 
     /**
      * This enum represents the different types of nodes that can be found while

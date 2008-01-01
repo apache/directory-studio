@@ -31,6 +31,8 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
@@ -97,12 +99,12 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
         if ( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_COUNT_LIMIT ) == null )
         {
-            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT, 0 );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_COUNT_LIMIT, 1000 );
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, 0 );
             connection.getConnectionParameter().setExtendedIntProperty(
-                CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, AliasDereferencingMethod.NEVER.getOrdinal() );
+                CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD, AliasDereferencingMethod.ALWAYS.getOrdinal() );
             connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
-                ReferralHandlingMethod.IGNORE.getOrdinal() );
+                ReferralHandlingMethod.FOLLOW.getOrdinal() );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
             connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
         }
