@@ -204,7 +204,7 @@ public class SearchView extends ViewPart
                 {
                     resultsTable.setFocus();
                 }
-                else if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == 16777296 /* The "Enter" Key at the bottom right of the keyboard */) ) //$NON-NLS-1$ 
+                else if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) //$NON-NLS-1$ 
                 {
                     search();
                 }
@@ -521,8 +521,7 @@ public class SearchView extends ViewPart
         {
             public void keyPressed( KeyEvent e )
             {
-                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) )
-                    || ( e.keyCode == 16777296 /* The "Enter" Key at the bottom right of the keyboard */) ) // return key
+                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) // return key
                 {
                     openEditor();
                 }
