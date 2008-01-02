@@ -93,7 +93,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
      *
      * @param connection the connection
      */
-    public BrowserConnection( org.apache.directory.studio.connection.core.Connection connection )
+    public BrowserConnection( Connection connection )
     {
         this.connection = connection;
 
@@ -532,7 +532,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * This implementation does nothing.
      */
-    public void connectionAdded( org.apache.directory.studio.connection.core.Connection connection )
+    public void connectionAdded( Connection connection )
     {
     }
 
@@ -540,7 +540,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * This implementation does nothing.
      */
-    public void connectionRemoved( org.apache.directory.studio.connection.core.Connection connection )
+    public void connectionRemoved( Connection connection )
     {
     }
 
@@ -548,7 +548,7 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
     /**
      * This implementation does nothing.
      */
-    public void connectionUpdated( org.apache.directory.studio.connection.core.Connection connection )
+    public void connectionUpdated( Connection connection )
     {
     }
 
