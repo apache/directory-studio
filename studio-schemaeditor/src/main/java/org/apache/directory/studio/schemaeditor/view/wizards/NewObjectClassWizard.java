@@ -21,6 +21,8 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -74,6 +76,7 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
+        // Creating the new object class
         ObjectClassImpl newOC = new ObjectClassImpl( generalPage.getOidValue() );
         newOC.setSchema( generalPage.getSchemaValue() );
         newOC.setNames( generalPage.getAliasesValue() );
@@ -84,7 +87,11 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
         newOC.setMustNamesList( mandatoryAttributesPage.getMandatoryAttributeTypesNames() );
         newOC.setMayNamesList( optionalAttributesPage.getOptionalAttributeTypesNames() );
 
+        // Adding the new object class
         Activator.getDefault().getSchemaHandler().addObjectClass( newOC );
+
+        // Saving the Dialog Settings OID History
+        PluginUtils.saveDialogSettingsHistory( PluginConstants.DIALOG_SETTINGS_OID_HISTORY, newOC.getOid() );
 
         return true;
     }

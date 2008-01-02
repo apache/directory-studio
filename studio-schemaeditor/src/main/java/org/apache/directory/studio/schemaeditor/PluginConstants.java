@@ -372,4 +372,7 @@ public interface PluginConstants
         + ".fileDialog.importSchemasOpenLDAP";
     /** The File Dialog path for 'Import Schemas from XML files' */
     public static final String FILE_DIALOG_IMPORT_SCHEMAS_XML = Activator.PLUGIN_ID + ".fileDialog.importSchemasXML";
+
+    // Dialog Settings
+    public static final String DIALOG_SETTINGS_OID_HISTORY = Activator.PLUGIN_ID + ".dialogSettings.oidHistory";
 }

@@ -21,6 +21,8 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -71,6 +73,7 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
+        // Creating the new attribute type
         AttributeTypeImpl newAT = new AttributeTypeImpl( generalPage.getOidValue() );
         newAT.setSchema( generalPage.getSchemaValue() );
         newAT.setNames( generalPage.getAliasesValue() );
@@ -87,7 +90,11 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
         newAT.setOrderingName( matchingRulesPage.getOrderingMatchingRuleValue() );
         newAT.setSubstrName( matchingRulesPage.getSubstringMatchingRuleValue() );
 
+        // Adding the new attribute type
         Activator.getDefault().getSchemaHandler().addAttributeType( newAT );
+
+        // Saving the Dialog Settings OID History
+        PluginUtils.saveDialogSettingsHistory( PluginConstants.DIALOG_SETTINGS_OID_HISTORY, newAT.getOid() );
 
         return true;
     }

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -321,7 +322,7 @@ public class PluginUtils
             PluginUtils.logError( loggerMessage, e );
         }
 
-        if ( dialogMessage != null ) 
+        if ( dialogMessage != null )
         {
             ViewUtils.displayErrorMessageBox( ( ( dialogTitle == null ) ? "" : dialogTitle ), dialogMessage );
         }
@@ -411,5 +412,55 @@ public class PluginUtils
         }
 
         return schemaConnectors;
+    }
+
+
+    /**
+     * Saves the the given value under the given key in the dialog settings.
+     *
+     * @param key
+     *      the key
+     * @param value
+     *      the value
+     */
+    public static void saveDialogSettingsHistory( String key, String value )
+    {
+        // get current history
+        String[] history = loadDialogSettingsHistory( key );
+        List<String> list = new ArrayList<String>( Arrays.asList( history ) );
+
+        // add new value or move to first position
+        if ( list.contains( value ) )
+        {
+            list.remove( value );
+        }
+        list.add( 0, value );
+
+        // check history size
+        while ( list.size() > 20 )
+        {
+            list.remove( list.size() - 1 );
+        }
+
+        // save
+        history = list.toArray( new String[list.size()] );
+        Activator.getDefault().getDialogSettings().put( key, history );
+    }
+
+
+    /**
+     * Loads the value of the given key from the dialog settings.
+     *
+     * @param key the key
+     * @return the value
+     */
+    public static String[] loadDialogSettingsHistory( String key )
+    {
+        String[] history = Activator.getDefault().getDialogSettings().getArray( key );
+        if ( history == null )
+        {
+            history = new String[0];
+        }
+        return history;
     }
 }

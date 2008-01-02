@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
@@ -80,7 +81,7 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
 
     // UI fields
     private ComboViewer schemaComboViewer;
-    private Text oidText;
+    private Combo oidCombo;
     private Text aliasesText;
     private Button aliasesButton;
     private Text descriptionText;
@@ -160,9 +161,9 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
         // OID
         Label oidLabel = new Label( namingDescriptionGroup, SWT.NONE );
         oidLabel.setText( "OID:" );
-        oidText = new Text( namingDescriptionGroup, SWT.BORDER );
-        oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        oidText.addModifyListener( new ModifyListener()
+        oidCombo = new Combo( namingDescriptionGroup, SWT.DROP_DOWN | SWT.BORDER );
+        oidCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        oidCombo.addModifyListener( new ModifyListener()
         {
             /* (non-Javadoc)
              * @see org.eclipse.swt.events.ModifyListener#modifyText(org.eclipse.swt.events.ModifyEvent)
@@ -172,7 +173,7 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
                 dialogChanged();
             }
         } );
-        oidText.addVerifyListener( new VerifyListener()
+        oidCombo.addVerifyListener( new VerifyListener()
         {
             /* (non-Javadoc)
              * @see org.eclipse.swt.events.VerifyListener#verifyText(org.eclipse.swt.events.VerifyEvent)
@@ -185,6 +186,7 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
                 }
             }
         } );
+        oidCombo.setItems( PluginUtils.loadDialogSettingsHistory( PluginConstants.DIALOG_SETTINGS_OID_HISTORY ) );
 
         // Aliases
         Label aliasesLabel = new Label( namingDescriptionGroup, SWT.NONE );
@@ -278,18 +280,18 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
             displayErrorMessage( "A Schema must be specified." );
             return;
         }
-        else if ( oidText.getText().equals( "" ) )
+        else if ( oidCombo.getText().equals( "" ) )
         {
             displayErrorMessage( "An OID must be specified." );
             return;
         }
-        else if ( ( !oidText.getText().equals( "" ) ) && ( !OID.isOID( oidText.getText() ) ) )
+        else if ( ( !oidCombo.getText().equals( "" ) ) && ( !OID.isOID( oidCombo.getText() ) ) )
         {
             displayErrorMessage( "Incorrect OID." );
             return;
         }
-        else if ( ( !oidText.getText().equals( "" ) ) && ( OID.isOID( oidText.getText() ) )
-            && ( schemaHandler.isAliasOrOidAlreadyTaken( oidText.getText() ) ) )
+        else if ( ( !oidCombo.getText().equals( "" ) ) && ( OID.isOID( oidCombo.getText() ) )
+            && ( schemaHandler.isAliasOrOidAlreadyTaken( oidCombo.getText() ) ) )
         {
             displayErrorMessage( "An object with this OID already exists." );
             return;
@@ -383,7 +385,7 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
      */
     public String getOidValue()
     {
-        return oidText.getText();
+        return oidCombo.getText();
     }
 
 
