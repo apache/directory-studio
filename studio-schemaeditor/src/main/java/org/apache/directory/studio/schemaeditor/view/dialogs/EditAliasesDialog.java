@@ -30,14 +30,13 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -66,16 +65,19 @@ import org.eclipse.ui.PlatformUI;
 public class EditAliasesDialog extends Dialog
 {
     /** The aliases List */
+    private List<String> initialLowerCasedAliases;
     private List<String> aliases;
-    private List<String> aliasesLowerCased;
+    private List<String> lowerCasedAliases;
 
     /** The dirty flag */
     private boolean dirty = false;
 
     // UI Fields
     private Table aliasesTable;
-    private Text newAliasText;
-    private Button newAliasAddButton;
+    private TableEditor tableEditor;
+    private Button addButton;
+    private Button editButton;
+    private Button removeButton;
     private Composite errorComposite;
     private Image errorImage;
     private Label errorLabel;
@@ -85,28 +87,23 @@ public class EditAliasesDialog extends Dialog
      * Creates a new instance of EditAliasesDialog.
      *
      * @param aliases
-     *      the array containing the aliases
+     *      an array containing the aliases
      */
     public EditAliasesDialog( String[] aliases )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
+        initialLowerCasedAliases = new ArrayList<String>();
         this.aliases = new ArrayList<String>();
-        aliasesLowerCased = new ArrayList<String>();
-        for ( String alias : aliases )
+        lowerCasedAliases = new ArrayList<String>();
+        if ( aliases != null )
         {
-            this.aliases.add( alias );
-            aliasesLowerCased.add( alias.toLowerCase() );
+            for ( String alias : aliases )
+            {
+                initialLowerCasedAliases.add( alias.toLowerCase() );
+                this.aliases.add( alias );
+                lowerCasedAliases.add( alias.toLowerCase() );
+            }
         }
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
-     */
-    protected void configureShell( Shell newShell )
-    {
-        super.configureShell( newShell );
-        newShell.setText( "Edit Aliases" );
     }
 
 
@@ -115,39 +112,48 @@ public class EditAliasesDialog extends Dialog
      */
     protected Control createDialogArea( Composite parent )
     {
+        // Creating the composite
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayout( new GridLayout( 2, false ) );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        // ALIASES Label
-        Label aliases_label = new Label( composite, SWT.NONE );
-        aliases_label.setText( "Aliases" );
-        aliases_label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
+        // Aliases Label
+        Label aliasesLabel = new Label( composite, SWT.NONE );
+        aliasesLabel.setText( "Aliases:" );
+        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
 
-        // ALIASES Table
+        // Aliases Table
         aliasesTable = new Table( composite, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
-        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 );
-        gridData.heightHint = 100;
-        gridData.minimumHeight = 100;
+        GridData gridData = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 );
+        gridData.heightHint = 125;
+        gridData.minimumHeight = 125;
         gridData.widthHint = 200;
         gridData.minimumWidth = 200;
         aliasesTable.setLayoutData( gridData );
 
-        // ADD Label
-        Label add_label = new Label( composite, SWT.NONE );
-        add_label.setText( "Add an alias" );
-        add_label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
-
-        // NEW ALIAS Field
-        newAliasText = new Text( composite, SWT.BORDER );
-        newAliasText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Aliases Table Editor
+        tableEditor = new TableEditor( aliasesTable );
+        tableEditor.horizontalAlignment = SWT.LEFT;
+        tableEditor.grabHorizontal = true;
+        tableEditor.minimumWidth = 200;
 
         // Add Button
-        newAliasAddButton = new Button( composite, SWT.PUSH );
-        newAliasAddButton.setText( "Add" );
-        newAliasAddButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false ) );
-        newAliasAddButton.setEnabled( false );
+        addButton = new Button( composite, SWT.PUSH );
+        addButton.setText( "Add..." );
+        addButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
+
+        // Edit Button
+        editButton = new Button( composite, SWT.PUSH );
+        editButton.setText( "Edit..." );
+        editButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
+        editButton.setEnabled( false );
+
+        // Remove Button
+        removeButton = new Button( composite, SWT.PUSH );
+        removeButton.setText( "Remove" );
+        removeButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
+        removeButton.setEnabled( false );
 
         // Error Composite
         errorComposite = new Composite( composite, SWT.NONE );
@@ -166,21 +172,19 @@ public class EditAliasesDialog extends Dialog
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
         errorLabel.setText( "An element with the same alias already exists." );
 
-        // Table initialization
+        // Filling the Table with the given aliases
         fillAliasesTable();
 
         // Listeners initialization
         initListeners();
-
-        // Setting the focus to the text field
-        newAliasText.setFocus();
 
         return composite;
     }
 
 
     /**
-     * Fills in the Aliases Table from the aliases list     */
+     * Fills in the Aliases Table from the aliases list 
+     */
     private void fillAliasesTable()
     {
         aliasesTable.removeAll();
@@ -202,86 +206,50 @@ public class EditAliasesDialog extends Dialog
         {
             public void keyPressed( KeyEvent e )
             {
-                if ( ( e.keyCode == SWT.DEL ) || ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) ) ) { //$NON-NLS-1$
-                    // NOTE: I couldn't find the corresponding Identificator in the SWT.SWT Class,
-                    // so I Used JFace Action fineKeyCode method to get the Backspace keycode.
-
-                    removeAliases();
+                if ( ( e.keyCode == SWT.DEL ) || ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) ) ) //$NON-NLS-1$
+                {
+                    removeSelectedAliases();
+                    fillAliasesTable();
+                    updateButtonsState();
+                    checkAliases();
                 }
+            }
+        } );
+        aliasesTable.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                closeTableEditor();
+                updateButtonsState();
+            }
+        } );
+        aliasesTable.addListener( SWT.MouseDoubleClick, new Listener()
+        {
+            public void handleEvent( Event event )
+            {
+                openTableEditor( aliasesTable.getItem( aliasesTable.getSelectionIndex() ) );
             }
         } );
 
         // Aliases Table's Popup Menu
         Menu menu = new Menu( getShell(), SWT.POP_UP );
         aliasesTable.setMenu( menu );
-        MenuItem deleteMenuItem = new MenuItem( menu, SWT.PUSH );
-        deleteMenuItem.setText( "Delete" );
-        deleteMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
-        // Adding the listener
-        deleteMenuItem.addListener( SWT.Selection, new Listener()
+        MenuItem removeMenuItem = new MenuItem( menu, SWT.PUSH );
+        removeMenuItem.setText( "Remove" );
+        removeMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
+        removeMenuItem.addListener( SWT.Selection, new Listener()
         {
             public void handleEvent( Event event )
             {
-                removeAliases();
+                removeSelectedAliases();
+                fillAliasesTable();
+                updateButtonsState();
+                checkAliases();
             }
         } );
 
-        // NEW ALIAS Field
-        newAliasText.addTraverseListener( new TraverseListener()
-        {
-            public void keyTraversed( TraverseEvent e )
-            {
-                if ( e.detail == SWT.TRAVERSE_RETURN )
-                {
-                    String text = newAliasText.getText();
-
-                    if ( "".equals( text ) ) //$NON-NLS-1$
-                    {
-                        close();
-                    }
-                    else if ( ( !aliasesLowerCased.contains( text.toLowerCase() ) ) //$NON-NLS-1$
-                        && ( !Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( text ) ) )
-                    {
-                        addANewAlias();
-                    }
-                }
-            }
-        } );
-        newAliasText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                errorComposite.setVisible( false );
-                newAliasAddButton.setEnabled( true );
-                String text = newAliasText.getText();
-
-                if ( "".equals( text ) ) //$NON-NLS-1$
-                {
-                    newAliasAddButton.setEnabled( false );
-                }
-                else if ( aliasesLowerCased.contains( text.toLowerCase() ) )
-                {
-                    errorComposite.setVisible( true );
-                    errorLabel.setText( "This alias already exists in the list." );
-                    newAliasAddButton.setEnabled( false );
-                }
-                else if ( Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( text ) )
-                {
-                    errorComposite.setVisible( true );
-                    errorLabel.setText( "An element with the same alias already exists." );
-                    newAliasAddButton.setEnabled( false );
-                }
-                else if ( !PluginUtils.verifyName( text ) )
-                {
-                    errorComposite.setVisible( true );
-                    errorLabel.setText( "Invalid Alias." );
-                    newAliasAddButton.setEnabled( false );
-                }
-            }
-        } );
-
-        // ADD Button
-        newAliasAddButton.addSelectionListener( new SelectionAdapter()
+        // Add Button
+        addButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -289,22 +257,59 @@ public class EditAliasesDialog extends Dialog
             }
         } );
 
+        // Edit Button
+        editButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                openTableEditor( aliasesTable.getItem( aliasesTable.getSelectionIndex() ) );
+            }
+        } );
+
+        // Remove Button
+        removeButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                removeSelectedAliases();
+                fillAliasesTable();
+                updateButtonsState();
+                checkAliases();
+            }
+        } );
     }
 
 
     /**
-     * Removes the selected aliases in the Aliases Table from the Aliases List.
+     * Updates the state of the buttons.
      */
-    private void removeAliases()
+    private void updateButtonsState()
+    {
+        if ( aliasesTable.getSelectionCount() >= 1 )
+        {
+            editButton.setEnabled( true );
+            removeButton.setEnabled( true );
+        }
+        else
+        {
+            editButton.setEnabled( false );
+            removeButton.setEnabled( false );
+        }
+    }
+
+
+    /**
+     * Removes the selected aliases.
+     */
+    private void removeSelectedAliases()
     {
         TableItem[] selectedItems = aliasesTable.getSelection();
         for ( TableItem item : selectedItems )
         {
             aliases.remove( item.getText() );
-            aliasesLowerCased.remove( item.getText().toLowerCase() );
+            lowerCasedAliases.remove( item.getText().toLowerCase() );
         }
         dirty = true;
-        fillAliasesTable();
     }
 
 
@@ -313,21 +318,134 @@ public class EditAliasesDialog extends Dialog
      */
     private void addANewAlias()
     {
-        if ( newAliasText.getText().length() != 0 )
+        TableItem item = new TableItem( aliasesTable, SWT.NONE );
+        item.setText( "" );
+        openTableEditor( item );
+        dirty = true;
+    }
+
+
+    /**
+     * Opens the {@link TableEditor} on the given {@link TableItem}.
+     *
+     * @param item
+     *      the {@link TableItem}
+     */
+    private void openTableEditor( TableItem item )
+    {
+        // Clean up any previous editor control
+        Control oldEditor = tableEditor.getEditor();
+        if ( oldEditor != null )
+            oldEditor.dispose();
+
+        if ( item == null )
+            return;
+
+        // The control that will be the editor must be a child of the Table
+        Text newEditor = new Text( aliasesTable, SWT.NONE );
+        newEditor.setText( item.getText() );
+        newEditor.addModifyListener( new ModifyListener()
         {
-            aliases.add( newAliasText.getText() );
-            aliasesLowerCased.add( newAliasText.getText().toLowerCase() );
-            fillAliasesTable();
-            newAliasText.setText( "" ); //$NON-NLS-1$
-            newAliasText.setFocus();
-            this.dirty = true;
+            public void modifyText( ModifyEvent e )
+            {
+                saveTableEditorText();
+            }
+        } );
+        newEditor.addKeyListener( new KeyAdapter()
+        {
+            public void keyPressed( KeyEvent e )
+            {
+                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) )
+                {
+                    closeTableEditor();
+                }
+            }
+        } );
+        newEditor.selectAll();
+        newEditor.setFocus();
+        tableEditor.setEditor( newEditor, item, 0 );
+    }
+
+
+    /**
+     * Saves the {@link TableEditor} text.
+     */
+    private void saveTableEditorText()
+    {
+        Text text = ( Text ) tableEditor.getEditor();
+        if ( text != null )
+        {
+            TableItem item = tableEditor.getItem();
+            String oldText = item.getText();
+            String newText = text.getText();
+            if ( !oldText.equals( newText ) )
+            {
+                aliases.remove( oldText );
+                lowerCasedAliases.remove( oldText.toLowerCase() );
+                if ( !newText.equals( "" ) )
+                {
+                    aliases.add( newText );
+                    lowerCasedAliases.add( newText.toLowerCase() );
+                }
+                item.setText( newText );
+                dirty = true;
+            }
+        }
+        checkAliases();
+    }
+
+
+    /**
+     * Closes the {@link TableEditor}.
+     */
+    private void closeTableEditor()
+    {
+        Text text = ( Text ) tableEditor.getEditor();
+        if ( text != null )
+        {
+            saveTableEditorText();
+            text.dispose();
+        }
+    }
+
+
+    /**
+     * Checks the aliases.
+     */
+    private void checkAliases()
+    {
+        errorComposite.setVisible( false );
+
+        for ( String alias : aliases )
+        {
+            if ( ( Activator.getDefault().getSchemaHandler().isAliasOrOidAlreadyTaken( alias ) )
+                && ( !initialLowerCasedAliases.contains( alias.toLowerCase() ) ) )
+            {
+                errorComposite.setVisible( true );
+                errorLabel.setText( "An element with the same alias already exists." );
+            }
+            else if ( !PluginUtils.verifyName( alias ) )
+            {
+                errorComposite.setVisible( true );
+                errorLabel.setText( "The alias '" + alias + "' is invalid." );
+            }
         }
     }
 
 
     /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    protected void configureShell( Shell newShell )
+    {
+        super.configureShell( newShell );
+        newShell.setText( "Edit Aliases" );
+    }
+
+
+    /* (non-Javadoc)
+    * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+    */
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
