@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -163,12 +162,14 @@ public class PluginUtils
             }
             catch ( ProjectsImportException e )
             {
-                handleErrorWhileLoadingProjects( projectsFile, e );
+                reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
+                    "An error occured when loading the projects." );
                 return;
             }
             catch ( FileNotFoundException e )
             {
-                handleErrorWhileLoadingProjects( projectsFile, e );
+                reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
+                    "An error occured when loading the projects." );
                 return;
             }
 
@@ -177,21 +178,6 @@ public class PluginUtils
                 projectsHandler.addProject( project );
             }
         }
-    }
-
-
-    /**
-     * This method is called when an exception is raised when trying to load the Projects file.
-     * 
-     * @param projectsFile
-     * 		the Projects file
-     * @param e
-     * 		the exception raised
-     */
-    private static void handleErrorWhileLoadingProjects( File projectsFile, Exception e )
-    {
-        PluginUtils.logError( "An error occured when loading the projects.", e );
-        ViewUtils.displayErrorMessageBox( "Projects Loading Error", "An error occured when loading the projects." );
     }
 
 
@@ -211,8 +197,8 @@ public class PluginUtils
         }
         catch ( IOException e )
         {
-            PluginUtils.logError( "An error occured when saving the projects.", e );
-            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when saving the projects." );
+            reportError( "An error occured when saving the projects.", e, "Projects Saving Error",
+                "An error occured when saving the projects." );
         }
     }
 
@@ -286,36 +272,59 @@ public class PluginUtils
 
             if ( url == null )
             {
-                PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", null );
-                ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
-                    + schemaName + "." );
+                reportError( "An error occured when loading the schema " + schemaName + ".", null,
+                    "Projects Loafing Error", "An error occured when loading the schema " + schemaName + "." );
             }
             else
             {
-                schema = XMLSchemaFileImporter.getSchema( new FileInputStream( new File( url.toURI() ) ), url
-                    .toString() );
+                schema = XMLSchemaFileImporter.getSchema( url.openStream(), url.toString() );
             }
         }
         catch ( XMLSchemaFileImportException e )
         {
-            PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
-            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
-                + schemaName + "." );
+            reportError( "An error occured when loading the schema " + schemaName + ".", e, "Projects Loafing Error",
+                "An error occured when loading the schema " + schemaName + "." );
         }
         catch ( FileNotFoundException e )
         {
-            PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
-            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
-                + schemaName + "." );
+            reportError( "An error occured when loading the schema " + schemaName + ".", e, "Projects Loafing Error",
+                "An error occured when loading the schema " + schemaName + "." );
         }
-        catch ( URISyntaxException e )
+        catch ( IOException e )
         {
-            PluginUtils.logError( "An error occured when loading the schema " + schemaName + ".", e );
-            ViewUtils.displayErrorMessageBox( "Projects Saving Error", "An error occured when loading the schema "
-                + schemaName + "." );
+            reportError( "An error occured when loading the schema " + schemaName + ".", e, "Projects Loafing Error",
+                "An error occured when loading the schema " + schemaName + "." );
         }
 
         return schema;
+    }
+
+
+    /**
+     * Reports an error.
+     * <p>
+     * Logs a message and an exception, and displays a Error Dialog with title and message.
+     *
+     * @param loggerMessage
+     *      the message for the logger
+     * @param e
+     *      the exception to log
+     * @param dialogTitle
+     *      the title of the Error Dialog (empty string used if <code>null</code>)
+     * @param dialogMessage
+     *      the message to display in the Error Dialog
+     */
+    private static void reportError( String loggerMessage, Exception e, String dialogTitle, String dialogMessage )
+    {
+        if ( ( loggerMessage != null ) || ( e != null ) )
+        {
+            PluginUtils.logError( loggerMessage, e );
+        }
+
+        if ( dialogMessage != null ) 
+        {
+            ViewUtils.displayErrorMessageBox( ( ( dialogTitle == null ) ? "" : dialogTitle ), dialogMessage );
+        }
     }
 
 
