@@ -95,8 +95,7 @@ public class LdifEntryEditorDialog extends Dialog
         setShellStyle( getShellStyle() | SWT.RESIZE );
         this.ldifRecord = ldifRecord;
 
-        this.connection = new DummyConnection( ( connection != null && connection.getSchema() != null ) ? connection
-            .getSchema() : Schema.DEFAULT_SCHEMA );
+        this.connection = connection != null ? connection : new DummyConnection( Schema.DEFAULT_SCHEMA );
     }
 
 

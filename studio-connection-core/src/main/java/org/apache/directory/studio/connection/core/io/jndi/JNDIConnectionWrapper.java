@@ -374,6 +374,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if( connection.isReadOnly() )
+        {
+            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            return;
+        }
+
         InnerRunnable runnable = new InnerRunnable()
         {
             public void run()
@@ -459,6 +465,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if( connection.isReadOnly() )
+        {
+            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            return;
+        }
+
         InnerRunnable runnable = new InnerRunnable()
         {
             public void run()
@@ -553,6 +565,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if( connection.isReadOnly() )
+        {
+            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            return;
+        }
+
         InnerRunnable runnable = new InnerRunnable()
         {
             public void run()
@@ -635,6 +653,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     public void deleteEntry( final String dn, final ReferralHandlingMethod referralsHandlingMethod,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        if( connection.isReadOnly() )
+        {
+            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            return;
+        }
+
         InnerRunnable runnable = new InnerRunnable()
         {
             public void run()

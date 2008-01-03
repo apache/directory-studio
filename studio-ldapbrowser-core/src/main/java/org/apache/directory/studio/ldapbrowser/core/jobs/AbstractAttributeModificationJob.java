@@ -47,9 +47,12 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
         }
         finally
         {
-            // reload affected attributes
-            String[] attributeDescriptions = getAffectedAttributeDescriptions();
-            InitializeAttributesJob.initializeAttributes( getModifiedEntry(), attributeDescriptions, monitor );
+            if( !getModifiedEntry().getBrowserConnection().getConnection().isReadOnly() )
+            {
+                // reload affected attributes
+                String[] attributeDescriptions = getAffectedAttributeDescriptions();
+                InitializeAttributesJob.initializeAttributes( getModifiedEntry(), attributeDescriptions, monitor );
+            }
         }
     }
 

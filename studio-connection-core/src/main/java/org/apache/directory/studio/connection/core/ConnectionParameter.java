@@ -104,13 +104,15 @@ public class ConnectionParameter
 
     /** The bind password. */
     private String bindPassword;
-    
+
     /** The SASL realm. */
     private String saslRealm;
 
+    /** The read only flag. */
+    private boolean isReadOnly;
+    
     /** The extended properties. */
     private Map<String, String> extendedProperties;
-
 
 
     /**
@@ -133,11 +135,12 @@ public class ConnectionParameter
      * @param bindPrincipal the bind principal
      * @param bindPassword the bind password
      * @param saslRealm the SASL realm
+     * @param isReadOnly the read only flag
      * @param extendedProperties the extended properties
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
         AuthenticationMethod authMethod, String bindPrincipal, String bindPassword, String saslRealm,
-        Map<String, String> extendedProperties )
+        boolean isReadOnly, Map<String, String> extendedProperties )
     {
         this.id = createId();
         this.name = name;
@@ -148,6 +151,7 @@ public class ConnectionParameter
         this.bindPrincipal = bindPrincipal;
         this.bindPassword = bindPassword;
         this.saslRealm = saslRealm;
+        this.isReadOnly = isReadOnly;
         this.extendedProperties = new HashMap<String, String>();
         if ( extendedProperties != null )
         {
@@ -198,25 +202,49 @@ public class ConnectionParameter
     {
         this.bindPassword = bindPassword;
     }
-    
-    
+
+
     /**
      * Gets the SASL realm
      * 
      * @return the SASL realm
      */
-    public String getSaslRealm (){
-    	return saslRealm;
+    public String getSaslRealm()
+    {
+        return saslRealm;
     }
-    
-    
+
+
     /**
      * Sets the SASL realm
      * 
      * @param saslRealm the SASL realm
      */
-    public void setSaslRealm (String saslRealm){
-    	this.saslRealm = saslRealm;
+    public void setSaslRealm( String saslRealm )
+    {
+        this.saslRealm = saslRealm;
+    }
+
+
+    /**
+     * Checks if this connection is read only.
+     * 
+     * @return true, if this connection is read only
+     */
+    public boolean isReadOnly()
+    {
+        return isReadOnly;
+    }
+
+
+    /**
+     * Sets the read only flag.
+     * 
+     * @param isReadOnly the new read only flag
+     */
+    public void setReadOnly( boolean isReadOnly )
+    {
+        this.isReadOnly = isReadOnly;
     }
 
 

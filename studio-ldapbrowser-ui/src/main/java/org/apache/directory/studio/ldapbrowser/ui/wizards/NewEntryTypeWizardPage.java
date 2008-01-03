@@ -196,7 +196,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 EventRegistry.suspendEventFireingInCurrentThread();
 
                 LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntries[0] );
-                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, new DummyConnection( browserConnection.getSchema() ) );
+                DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, browserConnection );
                 IAttribute[] attributes = prototypeEntry.getAttributes();
                 for ( int i = 0; i < attributes.length; i++ )
                 {
@@ -218,7 +218,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
         else
         {
-            wizard.setPrototypeEntry( new DummyEntry( new LdapDN(), new DummyConnection( wizard.getSelectedConnection().getSchema() ) ) );
+            wizard.setPrototypeEntry( new DummyEntry( new LdapDN(), wizard.getSelectedConnection() ) );
         }
 
         return super.getNextPage();

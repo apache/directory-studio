@@ -218,7 +218,7 @@ public class DeleteAttributesValueJob extends AbstractAttributeModificationJob
     static void deleteAttributesAndValues( IBrowserConnection browserConnection, IEntry entry,
         IAttribute[] attributesToDelete, IValue[] valuesToDelete, StudioProgressMonitor monitor )
     {
-        if ( browserConnection.getConnection() != null )
+        if ( !browserConnection.getConnection().isReadOnly() )
         {
             // dn
             String dn = entry.getDn().getUpName();

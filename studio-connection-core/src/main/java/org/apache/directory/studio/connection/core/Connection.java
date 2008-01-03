@@ -172,7 +172,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
     private JNDIConnectionWrapper jndiConnectionWrapper;
 
-
     /**
      * Creates a new instance of Connection.
      *
@@ -190,7 +189,8 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Object clone()
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
-            getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), getConnectionParameter().getExtendedProperties() );
+            getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
+            getConnectionParameter().getExtendedProperties() );
 
         Connection clone = new Connection( cp );
 
@@ -334,6 +334,18 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     	return connectionParameter.getSaslRealm();
     }
 
+
+    /**
+     * Checks if this connection is read only.
+     * 
+     * @return true, if this connection is read only
+     */
+    public boolean isReadOnly()
+    {
+        return connectionParameter.isReadOnly();
+    }
+    
+    
     /**
      * Sets the auth method.
      * 
@@ -416,20 +428,32 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         connectionParameter.setPort( port );
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
     }
-    
-    
+
+
     /**
      * Sets the SASL realm.
      * 
      * @param realm the new SASL realm
      */
-    public void setSaslRealm (String realm)
+    public void setSaslRealm( String realm )
     {
-    	connectionParameter.setSaslRealm(realm);
-    	ConnectionEventRegistry.fireConnectionUpdated(this, this);
+        connectionParameter.setSaslRealm( realm );
+        ConnectionEventRegistry.fireConnectionUpdated( this, this );
     }
-    
-    
+
+
+    /**
+     * Sets the read only flag.
+     * 
+     * @param isReadOnly the new read only flag
+     */
+    public void setReadOnly( boolean isReadOnly )
+    {
+        connectionParameter.setReadOnly( isReadOnly );
+        ConnectionEventRegistry.fireConnectionUpdated( this, this );
+    }
+
+
     /**
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
      */

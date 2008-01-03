@@ -34,7 +34,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -79,6 +78,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
     /** The selected connection. */
     private IBrowserConnection selectedConnection;
 
+    /** The read only flag of the selected connection. */
+    private boolean originalReadOnlyFlag;
+    
     /** The prototype entry. */
     private DummyEntry prototypeEntry;
 
@@ -169,8 +171,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
         if ( selectedConnection != null )
         {
-            DummyConnection prototypeConnection = new DummyConnection( selectedConnection.getSchema() ); 
-            prototypeEntry = new DummyEntry( new LdapDN(), prototypeConnection );
+            originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
+            selectedConnection.getConnection().setReadOnly( true );
+            prototypeEntry = new DummyEntry( new LdapDN(), selectedConnection );
         }
     }
 
@@ -266,12 +269,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public boolean performCancel()
     {
-        if ( selectedConnection != null )
+        if ( selectedConnection != null && selectedConnection.getConnection() != null )
         {
-//            EventRegistry.suspendEventFireingInCurrentThread();
-//            selectedConnection.reset();
-//            EventRegistry.resumeEventFireingInCurrentThread();
-//            selectedConnection.reset();
+            selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
         }
 
         return true;
@@ -285,20 +285,20 @@ public class NewEntryWizard extends Wizard implements INewWizard
     {
         try
         {
-            if ( selectedConnection != null )
+            if ( selectedConnection != null && selectedConnection.getConnection() != null )
             {
+                selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
+                
                 typePage.saveDialogSettings();
                 ocPage.saveDialogSettings();
                 dnPage.saveDialogSettings();
 
-//                getSelectedConnection().reset();
-                
                 CreateEntryJob job = new CreateEntryJob( prototypeEntry, selectedConnection );
                 RunnableContextJobAdapter.execute( job, getContainer() );
 
                 if ( !job.getExternalResult().isOK() )
                 {
-//                    getSelectedConnection().suspend();
+                    selectedConnection.getConnection().setReadOnly( true );
                     return false;
                 }
                 else

@@ -159,7 +159,7 @@ public abstract class AbstractEclipseJob extends Job
 
     public boolean shouldSchedule()
     {
-
+        
         Object[] myLockedObjects = getLockedObjects();
         String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
 

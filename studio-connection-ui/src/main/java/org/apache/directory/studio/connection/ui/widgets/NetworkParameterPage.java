@@ -140,7 +140,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     private Connection getTestConnection()
     {
         ConnectionParameter cp = new ConnectionParameter( null, getHostName(), getPort(), getEncyrptionMethod(),
-            ConnectionParameter.AuthenticationMethod.NONE, null, null, null, null );
+            ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null );
         Connection conn = new Connection( cp );
         return conn;
     }

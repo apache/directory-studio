@@ -186,7 +186,7 @@ public class CreateValuesJob extends AbstractAttributeModificationJob
     static void createValues( IBrowserConnection browserConnection, IEntry entryToModify, IValue[] valuesToCreate,
         StudioProgressMonitor monitor )
     {
-        if ( browserConnection.getConnection() != null )
+        if ( !browserConnection.getConnection().isReadOnly() )
         {
             // dn
             String dn = entryToModify.getDn().getUpName();
