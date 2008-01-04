@@ -48,6 +48,9 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         store.setDefault( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS, true );
 
+        // Modification Logs
+        store.setDefault( BrowserUIConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
+
     }
 
 }

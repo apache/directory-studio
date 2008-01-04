@@ -38,6 +38,8 @@ public interface BrowserUIConstants
 
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS = "searchResultEditorShowLinks";
 
+    public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable";
+    
     public static final String PREFERENCEPAGEID_MAIN = "org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage";
 
     public static final String PREFERENCEPAGEID_ATTRIBUTES = "org.apache.directory.studio.ldapbrowser.preferences.AttributesPreferencePage";
