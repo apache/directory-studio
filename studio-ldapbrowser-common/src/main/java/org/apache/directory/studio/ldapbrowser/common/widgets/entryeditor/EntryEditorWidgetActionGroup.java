@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -171,20 +170,15 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
             openDefaultValueEditorActionProxy = null;
             openBestValueEditorActionProxy.dispose();
             openBestValueEditorActionProxy = null;
-            for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
+            for ( EntryEditorActionProxy action : openValueEditorActionProxies )
             {
-                openValueEditorActionProxies[i].dispose();
-                openValueEditorActionProxies[i] = null;
+                action.dispose();
             }
             openValueEditorPreferencesAction = null;
 
-            for ( Iterator it = entryEditorActionMap.keySet().iterator(); it.hasNext(); )
+            for ( EntryEditorActionProxy action : entryEditorActionMap.values() )
             {
-                String key = ( String ) it.next();
-                EntryEditorActionProxy action = ( EntryEditorActionProxy ) entryEditorActionMap.get( key );
                 action.dispose();
-                action = null;
-                it.remove();
             }
             entryEditorActionMap.clear();
             entryEditorActionMap = null;
@@ -303,13 +297,13 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
             editorMenuManager.add( openBestValueEditorActionProxy );
             editorMenuManager.add( new Separator() );
         }
-        for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
+        for ( EntryEditorActionProxy action : openValueEditorActionProxies )
         {
-            if ( openValueEditorActionProxies[i].isEnabled()
-                && ( ( OpenEditorAction ) openValueEditorActionProxies[i].getAction() ).getValueEditor().getClass() != ( ( OpenBestEditorAction ) openBestValueEditorActionProxy
+            if ( action.isEnabled()
+                && ( ( OpenEditorAction ) action.getAction() ).getValueEditor().getClass() != ( ( OpenBestEditorAction ) openBestValueEditorActionProxy
                     .getAction() ).getBestValueEditor().getClass() )
             {
-                editorMenuManager.add( openValueEditorActionProxies[i] );
+                editorMenuManager.add( action );
             }
         }
         editorMenuManager.add( new Separator() );

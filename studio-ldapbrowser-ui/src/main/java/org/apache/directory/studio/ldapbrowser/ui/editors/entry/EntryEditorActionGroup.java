@@ -21,8 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import java.util.Iterator;
-
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.CollapseAllAction;
@@ -427,9 +425,8 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
      */
     public void setInput( IEntry entry )
     {
-        for ( Iterator it = entryEditorActionMap.values().iterator(); it.hasNext(); )
+        for ( EntryEditorActionProxy action : entryEditorActionMap.values() )
         {
-            EntryEditorActionProxy action = ( EntryEditorActionProxy ) it.next();
             action.inputChanged( entry );
         }
     }
