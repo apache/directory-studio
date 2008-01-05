@@ -21,12 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 
-import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -38,43 +37,66 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * The AttributeValueEditorDialog is used to specify
+ * value editors for attributes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeValueEditorDialog extends Dialog
 {
 
-    private AttributeValueProviderRelation relation;
+    /** The initial attribute to value editor relation. */
+    private AttributeValueEditorRelation relation;
 
-    private SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap;
+    /** Map with class name => value editor extension. */
+    private SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap;
 
+    /** The attribute types and OIDs. */
     private String[] attributeTypesAndOids;
 
-    private SortedMap<String, String> vpName2classMap;
+    /** Map with value editor names => class name. */
+    private SortedMap<String, String> veName2classMap;
 
-    private AttributeValueProviderRelation returnRelation;
+    /** The selected attribute to value editor relation. */
+    private AttributeValueEditorRelation returnRelation;
 
+    /** The type or OID combo. */
     private Combo typeOrOidCombo;
 
+    /** The value editor combo. */
     private Combo valueEditorCombo;
 
 
-    public AttributeValueEditorDialog( Shell parentShell, AttributeValueProviderRelation relation,
-        SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap, String[] attributeTypesAndOids )
+    /**
+     * Creates a new instance of AttributeValueEditorDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param relation the initial attribute to value editor relation
+     * @param class2ValueEditorExtensionMap Map with class name => value editor extension
+     * @param attributeTypesAndOids the attribute types and OIDs
+     */
+    public AttributeValueEditorDialog( Shell parentShell, AttributeValueEditorRelation relation,
+        SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap, String[] attributeTypesAndOids )
     {
         super( parentShell );
         this.relation = relation;
-        this.class2ValueEditorProxyMap = class2ValueEditorProxyMap;
+        this.class2ValueEditorExtensionMap = class2ValueEditorExtensionMap;
         this.attributeTypesAndOids = attributeTypesAndOids;
-
         this.returnRelation = null;
 
-        this.vpName2classMap = new TreeMap<String, String>();
-        for ( Iterator<ValueEditorExtension> it = this.class2ValueEditorProxyMap.values().iterator(); it.hasNext(); )
+        this.veName2classMap = new TreeMap<String, String>();
+        for ( ValueEditorExtension vee : class2ValueEditorExtensionMap.values() )
         {
-            ValueEditorExtension vp = it.next();
-            vpName2classMap.put( vp.name, vp.className );
+            veName2classMap.put( vee.name, vee.className );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -82,27 +104,32 @@ public class AttributeValueEditorDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void okPressed()
     {
-        this.returnRelation = new AttributeValueProviderRelation( this.typeOrOidCombo.getText(), this.vpName2classMap
-            .get( this.valueEditorCombo.getText() ) );
+        returnRelation = new AttributeValueEditorRelation( typeOrOidCombo.getText(), veName2classMap
+            .get( valueEditorCombo.getText() ) );
         super.okPressed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         BaseWidgetUtils.createLabel( c, "Attribute Type or OID:", 1 );
-        this.typeOrOidCombo = BaseWidgetUtils.createCombo( c, this.attributeTypesAndOids, -1, 1 );
-        if ( this.relation != null && this.relation.getAttributeNumericOidOrType() != null )
+        typeOrOidCombo = BaseWidgetUtils.createCombo( c, attributeTypesAndOids, -1, 1 );
+        if ( relation != null && relation.getAttributeNumericOidOrType() != null )
         {
-            this.typeOrOidCombo.setText( this.relation.getAttributeNumericOidOrType() );
+            typeOrOidCombo.setText( relation.getAttributeNumericOidOrType() );
         }
-        this.typeOrOidCombo.addModifyListener( new ModifyListener()
+        typeOrOidCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -111,15 +138,14 @@ public class AttributeValueEditorDialog extends Dialog
         } );
 
         BaseWidgetUtils.createLabel( c, "Value Editor:", 1 );
-        this.valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, vpName2classMap.keySet()
-            .toArray( new String[0] ), -1, 1 );
-        if ( this.relation != null && this.relation.getValueProviderClassname() != null
-            && this.class2ValueEditorProxyMap.containsKey( this.relation.getValueProviderClassname() ) )
+        valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, veName2classMap.keySet().toArray( new String[0] ),
+            -1, 1 );
+        if ( relation != null && relation.getValueEditorClassName() != null
+            && class2ValueEditorExtensionMap.containsKey( relation.getValueEditorClassName() ) )
         {
-            this.valueEditorCombo.setText( ( this.class2ValueEditorProxyMap.get( this.relation
-                .getValueProviderClassname() ) ).name );
+            valueEditorCombo.setText( ( class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() ) ).name );
         }
-        this.valueEditorCombo.addModifyListener( new ModifyListener()
+        valueEditorCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -134,11 +160,16 @@ public class AttributeValueEditorDialog extends Dialog
     private void validate()
     {
         super.getButton( IDialogConstants.OK_ID ).setEnabled(
-            !"".equals( this.valueEditorCombo.getText() ) && !"".equals( this.typeOrOidCombo.getText() ) );
+            !"".equals( valueEditorCombo.getText() ) && !"".equals( typeOrOidCombo.getText() ) );
     }
 
 
-    public AttributeValueProviderRelation getRelation()
+    /**
+     * Gets the selected attribute to value editor relation.
+     * 
+     * @return the selected attribute to value editor relation
+     */
+    public AttributeValueEditorRelation getRelation()
     {
         return returnRelation;
     }

@@ -21,14 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 
-import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.ModifyEvent;
@@ -39,43 +37,66 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * The SyntaxValueEditorDialog is used to specify
+ * value editors for syntaxes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SyntaxValueEditorDialog extends Dialog
 {
 
-    private SyntaxValueProviderRelation relation;
+    /** The initial syntax to value editor relation. */
+    private SyntaxValueEditorRelation relation;
 
-    private SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap;
+    /** Map with class name => value editor extension. */
+    private SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap;
 
+    /** The syntax OIDs. */
     private String[] syntaxOids;
 
-    private SortedMap<String, String> vpName2classMap;
+    /** Map with value editor names => class name. */
+    private SortedMap<String, String> veName2classMap;
 
-    private SyntaxValueProviderRelation returnRelation;
+    /** The selected syntax to value editor relation. */
+    private SyntaxValueEditorRelation returnRelation;
 
+    /** The OID combo. */
     private Combo oidCombo;
 
+    /** The value editor combo. */
     private Combo valueEditorCombo;
 
 
-    public SyntaxValueEditorDialog( Shell parentShell, SyntaxValueProviderRelation relation,
-        SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap, String[] syntaxOids )
+    /**
+     * Creates a new instance of SyntaxValueEditorDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param relation the initial syntax to value editor relation
+     * @param class2ValueEditorExtensionMap Map with class name => value editor extension
+     * @param syntaxOids the syntax OIDs
+     */
+    public SyntaxValueEditorDialog( Shell parentShell, SyntaxValueEditorRelation relation,
+        SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap, String[] syntaxOids )
     {
         super( parentShell );
         this.relation = relation;
-        this.class2ValueEditorProxyMap = class2ValueEditorProxyMap;
+        this.class2ValueEditorExtensionMap = class2ValueEditorExtensionMap;
         this.syntaxOids = syntaxOids;
-
         this.returnRelation = null;
 
-        this.vpName2classMap = new TreeMap<String, String>();
-        for ( Iterator<ValueEditorExtension> it = this.class2ValueEditorProxyMap.values().iterator(); it.hasNext(); )
+        this.veName2classMap = new TreeMap<String, String>();
+        for ( ValueEditorExtension vee : class2ValueEditorExtensionMap.values() )
         {
-            ValueEditorExtension vp = it.next();
-            vpName2classMap.put( vp.name, vp.className );
+            veName2classMap.put( vee.name, vee.className );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -83,27 +104,32 @@ public class SyntaxValueEditorDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void okPressed()
     {
-        this.returnRelation = new SyntaxValueProviderRelation( this.oidCombo.getText(), ( String ) this.vpName2classMap
-            .get( this.valueEditorCombo.getText() ) );
+        returnRelation = new SyntaxValueEditorRelation( oidCombo.getText(), ( String ) veName2classMap
+            .get( valueEditorCombo.getText() ) );
         super.okPressed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         BaseWidgetUtils.createLabel( c, "Syntax OID:", 1 );
-        this.oidCombo = BaseWidgetUtils.createCombo( c, this.syntaxOids, -1, 1 );
-        if ( this.relation != null && this.relation.getSyntaxOID() != null )
+        oidCombo = BaseWidgetUtils.createCombo( c, syntaxOids, -1, 1 );
+        if ( relation != null && relation.getSyntaxOID() != null )
         {
-            this.oidCombo.setText( this.relation.getSyntaxOID() );
+            oidCombo.setText( relation.getSyntaxOID() );
         }
-        this.oidCombo.addModifyListener( new ModifyListener()
+        oidCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -112,15 +138,14 @@ public class SyntaxValueEditorDialog extends Dialog
         } );
 
         BaseWidgetUtils.createLabel( c, "Value Editor:", 1 );
-        this.valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, vpName2classMap.keySet()
-            .toArray( new String[0] ), -1, 1 );
-        if ( this.relation != null && this.relation.getValueProviderClassname() != null
-            && this.class2ValueEditorProxyMap.containsKey( this.relation.getValueProviderClassname() ) )
+        valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, veName2classMap.keySet().toArray( new String[0] ),
+            -1, 1 );
+        if ( relation != null && relation.getValueEditorClassName() != null
+            && class2ValueEditorExtensionMap.containsKey( relation.getValueEditorClassName() ) )
         {
-            this.valueEditorCombo.setText( ( this.class2ValueEditorProxyMap.get( this.relation
-                .getValueProviderClassname() ) ).name );
+            valueEditorCombo.setText( ( class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() ) ).name );
         }
-        this.valueEditorCombo.addModifyListener( new ModifyListener()
+        valueEditorCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -135,11 +160,16 @@ public class SyntaxValueEditorDialog extends Dialog
     private void validate()
     {
         super.getButton( IDialogConstants.OK_ID ).setEnabled(
-            !"".equals( this.valueEditorCombo.getText() ) && !"".equals( this.oidCombo.getText() ) );
+            !"".equals( valueEditorCombo.getText() ) && !"".equals( oidCombo.getText() ) );
     }
 
 
-    public SyntaxValueProviderRelation getRelation()
+    /**
+     * Gets the selected syntax to value editor relation.
+     * 
+     * @return the selected syntax to value editor relation
+     */
+    public SyntaxValueEditorRelation getRelation()
     {
         return returnRelation;
     }

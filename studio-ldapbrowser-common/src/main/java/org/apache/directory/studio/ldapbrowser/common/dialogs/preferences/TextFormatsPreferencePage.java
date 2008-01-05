@@ -50,16 +50,27 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
+/**
+ * The BinaryAttributesAndSyntaxesPreferencePage is used to specify
+ * binary attributes and syntaxes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class TextFormatsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage,
     WidgetModifyListener, ModifyListener
 {
 
+    /** The constant used to preselect the 'LDIF' tab */
     public static final String LDIF_TAB = "LDIF";
 
+    /** The constant used to preselect the 'CSV Export' tab */
     public static final String CSV_TAB = "CSV";
 
+    /** The constant used to preselect the 'Excel Export' tab */
     public static final String XLS_TAB = "XLS";
 
+    /** The constant used to preselect the 'CSV Copy' tab */
     public static final String TABLE_TAB = "TABLE";
 
     private Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
@@ -79,8 +90,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private Button ldifSpaceAfterColonButton;
 
     private LineSeparatorInput ldifLineSeparator;
-
-    // private Button ldifSpaceBetweenRDNsButton;
 
     private OptionsInput tableAttributeDelimiterWidget;
 
@@ -109,19 +118,28 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private OptionsInput xlsBinaryEncodingWidget;
 
 
+    /**
+     * Creates a new instance of TextFormatsPreferencePage.
+     */
     public TextFormatsPreferencePage()
     {
-        super();
+        super( "Text Formats" );
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
         super.setDescription( "Settings for text formats" );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void applyData( Object data )
     {
         if ( data != null && tabFolder != null )
@@ -146,6 +164,9 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
         BaseWidgetUtils.createSpacer( parent, 1 );
@@ -156,7 +177,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         createCsvTab();
         createXlsTab();
 
-        updateEnabled();
         validate();
 
         applyDialogFont( tabFolder );
@@ -167,7 +187,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     private void createTableTab()
     {
-
         tableTab = new TabItem( tabFolder, SWT.NONE );
         tableTab.setText( "CSV Copy" );
 
@@ -181,21 +200,21 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         tableAttributeDelimiterWidget = new OptionsInput( "Attribute Delimiter", "Tabulator (\\t)", "\t", new String[]
             { "Tabulator (\\t)", "Comma (,)", "Semikolon (;)" }, new String[]
             { "\t", ",", ";" }, getPreferenceStore().getString(
-                BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER ), false, true );
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER ), false, true );
         tableAttributeDelimiterWidget.createWidget( tableInnerComposite );
         tableAttributeDelimiterWidget.addWidgetModifyListener( this );
 
         tableValueDelimiterWidget = new OptionsInput( "Value Delimiter", "Pipe (|)", "|", new String[]
             { "Pipe (|)", "Comma (,)", "Semikolon (;)", "Newline (\\n)" }, new String[]
             { "|", ",", ";", "\n" }, getPreferenceStore().getString(
-                BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER ), false, true );
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER ), false, true );
         tableValueDelimiterWidget.createWidget( tableInnerComposite );
         tableValueDelimiterWidget.addWidgetModifyListener( this );
 
         tableQuoteWidget = new OptionsInput( "Quote Character", "Double Quote (\")", "\"", new String[]
             { "Double Quote (\")", "Single Quote (')" }, new String[]
-            { "\"", "'" }, getPreferenceStore().getString( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER ),
-            false, true );
+            { "\"", "'" }, getPreferenceStore().getString(
+            BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER ), false, true );
         tableQuoteWidget.createWidget( tableInnerComposite );
         tableQuoteWidget.addWidgetModifyListener( this );
 
@@ -219,7 +238,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     private void createCsvTab()
     {
-
         csvTab = new TabItem( tabFolder, SWT.NONE );
         csvTab.setText( "CSV Export" );
 
@@ -272,7 +290,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     private void createXlsTab()
     {
-
         xlsTab = new TabItem( tabFolder, SWT.NONE );
         xlsTab.setText( "Excel Export" );
 
@@ -301,7 +318,6 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     private void createLdifTab()
     {
-
         ldifTab = new TabItem( tabFolder, SWT.NONE );
         ldifTab.setText( "LDIF" );
 
@@ -344,107 +360,93 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         ldifSpaceAfterColonButton.setSelection( coreStore
             .getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON ) );
 
-        // ldifSpaceBetweenRDNsButton =
-        // BaseWidgetUtils.createCheckbox(ldifComposite, "Space between RDNs",
-        // 1);
-        // ldifSpaceBetweenRDNsButton.setSelection(coreStore.getBoolean(BrowserCoreConstants.PREFERENCE_LDIF_SPACE_BETWEEN_RDNS));
-
         ldifTab.setControl( ldifComposite );
     }
 
 
-    private void updateEnabled()
-    {
-
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, this.ldifLineLengthText.getText() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR, this.ldifLineSeparator.getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON, this.ldifSpaceAfterColonButton
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, ldifLineLengthText.getText() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR, ldifLineSeparator.getRawValue() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON, ldifSpaceAfterColonButton
             .getSelection() );
-        // coreStore.setValue(BrowserCoreConstants.PREFERENCE_LDIF_SPACE_BETWEEN_RDNS,
-        // this.ldifSpaceBetweenRDNsButton.getSelection());
         BrowserCorePlugin.getDefault().savePluginPreferences();
 
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER,
-            this.csvAttributeDelimiterWidget.getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_VALUEDELIMITER, this.csvValueDelimiterWidget
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER, csvAttributeDelimiterWidget
             .getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_QUOTECHARACTER, this.csvQuoteWidget
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_VALUEDELIMITER, csvValueDelimiterWidget
             .getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_LINESEPARATOR, this.csvLineSeparator
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_QUOTECHARACTER, csvQuoteWidget.getRawValue() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_LINESEPARATOR, csvLineSeparator.getRawValue() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_BINARYENCODING, csvBinaryEncodingWidget
             .getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_BINARYENCODING, this.csvBinaryEncodingWidget
-            .getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING, this.csvEncodingWidget.getRawValue() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING, csvEncodingWidget.getRawValue() );
 
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER,
-            this.tableAttributeDelimiterWidget.getRawValue() );
+            tableAttributeDelimiterWidget.getRawValue() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER,
-            this.tableValueDelimiterWidget.getRawValue() );
+            tableValueDelimiterWidget.getRawValue() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER,
-            this.tableQuoteWidget.getRawValue() );
+            tableQuoteWidget.getRawValue() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR,
-            this.tableLineSeparator.getRawValue() );
+            tableLineSeparator.getRawValue() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_BINARYENCODING,
-            this.tableBinaryEncodingWidget.getRawValue() );
+            tableBinaryEncodingWidget.getRawValue() );
 
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_VALUEDELIMITER, this.xlsValueDelimiterWidget
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_VALUEDELIMITER, xlsValueDelimiterWidget
             .getRawValue() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_BINARYENCODING, this.xlsBinaryEncodingWidget
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_BINARYENCODING, xlsBinaryEncodingWidget
             .getRawValue() );
 
-        updateEnabled();
         validate();
 
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-
-        this.ldifLineLengthText.setText( coreStore.getDefaultString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH ) );
-        this.ldifLineSeparator.setRawValue( coreStore
-            .getDefaultString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR ) );
-        this.ldifSpaceAfterColonButton.setSelection( coreStore
+        ldifLineLengthText.setText( coreStore.getDefaultString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH ) );
+        ldifLineSeparator
+            .setRawValue( coreStore.getDefaultString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR ) );
+        ldifSpaceAfterColonButton.setSelection( coreStore
             .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON ) );
-        // this.ldifSpaceBetweenRDNsButton.setSelection(coreStore.getDefaultBoolean(BrowserCoreConstants.PREFERENCE_LDIF_SPACE_BETWEEN_RDNS));
 
-        this.csvAttributeDelimiterWidget.setRawValue( coreStore
+        csvAttributeDelimiterWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER ) );
-        this.csvValueDelimiterWidget.setRawValue( coreStore
+        csvValueDelimiterWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_VALUEDELIMITER ) );
-        this.csvQuoteWidget.setRawValue( coreStore
+        csvQuoteWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_QUOTECHARACTER ) );
-        this.csvLineSeparator.setRawValue( coreStore
+        csvLineSeparator.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_LINESEPARATOR ) );
-        this.csvBinaryEncodingWidget.setRawValue( coreStore
+        csvBinaryEncodingWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_BINARYENCODING ) );
-        this.csvEncodingWidget.setRawValue( coreStore
-            .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING ) );
+        csvEncodingWidget
+            .setRawValue( coreStore.getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING ) );
 
-        this.tableAttributeDelimiterWidget.setRawValue( getPreferenceStore().getDefaultString(
+        tableAttributeDelimiterWidget.setRawValue( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER ) );
-        this.tableValueDelimiterWidget.setRawValue( getPreferenceStore().getDefaultString(
+        tableValueDelimiterWidget.setRawValue( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER ) );
-        this.tableQuoteWidget.setRawValue( getPreferenceStore().getDefaultString(
+        tableQuoteWidget.setRawValue( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER ) );
-        this.tableLineSeparator.setRawValue( getPreferenceStore().getDefaultString(
+        tableLineSeparator.setRawValue( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR ) );
-        this.tableBinaryEncodingWidget.setRawValue( getPreferenceStore().getDefaultString(
+        tableBinaryEncodingWidget.setRawValue( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_BINARYENCODING ) );
 
-        this.xlsValueDelimiterWidget.setRawValue( coreStore
+        xlsValueDelimiterWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_VALUEDELIMITER ) );
-        this.xlsBinaryEncodingWidget.setRawValue( coreStore
+        xlsBinaryEncodingWidget.setRawValue( coreStore
             .getDefaultString( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_BINARYENCODING ) );
 
-        updateEnabled();
         validate();
 
         super.performDefaults();
@@ -453,14 +455,12 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     public void widgetModified( WidgetModifyEvent event )
     {
-        updateEnabled();
         validate();
     }
 
 
     public void modifyText( ModifyEvent e )
     {
-        updateEnabled();
         validate();
     }
 

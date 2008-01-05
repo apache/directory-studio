@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,28 +33,47 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * The SyntaxDialog is used to enter/select a syntax OID.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SyntaxDialog extends Dialog
 {
 
+    /** The initial syntax. */
     private BinarySyntax currentSyntax;
 
+    /** The possible syntax OIDs. */
     private String[] syntaxOids;
 
+    /** The selected syntax. */
     private BinarySyntax returnSyntax;
 
+    /** The combo. */
     private Combo oidCombo;
 
 
+    /**
+     * Creates a new instance of SyntaxDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param currentSyntax the current syntax, null if none
+     * @param syntaxOids the possible syntax OIDs
+     */
     public SyntaxDialog( Shell parentShell, BinarySyntax currentSyntax, String[] syntaxOids )
     {
         super( parentShell );
         this.currentSyntax = currentSyntax;
         this.syntaxOids = syntaxOids;
-
         this.returnSyntax = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -63,26 +81,31 @@ public class SyntaxDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void okPressed()
     {
-        this.returnSyntax = new BinarySyntax( oidCombo.getText() );
+        returnSyntax = new BinarySyntax( oidCombo.getText() );
         super.okPressed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( c, "Attribute Type or OID:", 1 );
-        this.oidCombo = BaseWidgetUtils.createCombo( c, this.syntaxOids, -1, 1 );
-        if ( this.currentSyntax != null )
+        BaseWidgetUtils.createLabel( c, "Syntax OID:", 1 );
+        oidCombo = BaseWidgetUtils.createCombo( c, syntaxOids, -1, 1 );
+        if ( currentSyntax != null )
         {
-            this.oidCombo.setText( currentSyntax.getSyntaxNumericOid() );
+            oidCombo.setText( currentSyntax.getSyntaxNumericOid() );
         }
-        this.oidCombo.addModifyListener( new ModifyListener()
+        oidCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -96,10 +119,15 @@ public class SyntaxDialog extends Dialog
 
     private void validate()
     {
-        super.getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( this.oidCombo.getText() ) );
+        getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( oidCombo.getText() ) );
     }
 
 
+    /**
+     * Gets the entered/selected syntax.
+     * 
+     * @return the syntax
+     */
     public BinarySyntax getSyntax()
     {
         return returnSyntax;

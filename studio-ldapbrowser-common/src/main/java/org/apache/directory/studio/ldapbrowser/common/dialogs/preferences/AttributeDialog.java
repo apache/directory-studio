@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,28 +33,47 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 
+/**
+ * The AttributeDialog is used to enter/select an attribute type.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributeDialog extends Dialog
 {
 
+    /** The initial attribute. */
     private BinaryAttribute currentAttribute;
 
+    /** The possible attribute types and OIDs. */
     private String[] attributeTypesAndOids;
 
+    /** The selected attribute. */
     private BinaryAttribute returnAttribute;
 
+    /** The combo. */
     private Combo typeOrOidCombo;
 
 
+    /**
+     * Creates a new instance of AttributeDialog.
+     * 
+     * @param parentShell the parent shell
+     * @param currentAttribute the current attribute, null if none 
+     * @param attributeNamesAndOids the possible attribute names and OIDs
+     */
     public AttributeDialog( Shell parentShell, BinaryAttribute currentAttribute, String[] attributeNamesAndOids )
     {
         super( parentShell );
         this.currentAttribute = currentAttribute;
         this.attributeTypesAndOids = attributeNamesAndOids;
-
         this.returnAttribute = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
@@ -63,26 +81,31 @@ public class AttributeDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void okPressed()
     {
-        this.returnAttribute = new BinaryAttribute( typeOrOidCombo.getText() );
+        returnAttribute = new BinaryAttribute( typeOrOidCombo.getText() );
         super.okPressed();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         BaseWidgetUtils.createLabel( c, "Attribute Type or OID:", 1 );
-        this.typeOrOidCombo = BaseWidgetUtils.createCombo( c, this.attributeTypesAndOids, -1, 1 );
-        if ( this.currentAttribute != null )
+        typeOrOidCombo = BaseWidgetUtils.createCombo( c, attributeTypesAndOids, -1, 1 );
+        if ( currentAttribute != null )
         {
-            this.typeOrOidCombo.setText( currentAttribute.getAttributeNumericOidOrName() );
+            typeOrOidCombo.setText( currentAttribute.getAttributeNumericOidOrName() );
         }
-        this.typeOrOidCombo.addModifyListener( new ModifyListener()
+        typeOrOidCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -96,10 +119,15 @@ public class AttributeDialog extends Dialog
 
     private void validate()
     {
-        super.getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( this.typeOrOidCombo.getText() ) );
+        getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( typeOrOidCombo.getText() ) );
     }
 
 
+    /**
+     * Gets the entered/selected attribute.
+     * 
+     * @return the attribute
+     */
     public BinaryAttribute getAttribute()
     {
         return returnAttribute;

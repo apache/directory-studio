@@ -44,6 +44,12 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
+/**
+ * The BrowserPreferencePage contains general settings for the browser view.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BrowserPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
@@ -78,22 +84,30 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
     private Button fetchSubentriesButton;
 
 
+    /**
+     * Creates a new instance of BrowserPreferencePage.
+     */
     public BrowserPreferencePage()
     {
-        super();
+        super( "Browser" );
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
         super.setDescription( "General settings for the LDAP browser view:" );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
@@ -171,8 +185,8 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
                 updateEnabled();
             }
         } );
-        searchResultAbbreviateMaxLengthText = BaseWidgetUtils
-            .createText( searchResultAbbreviateComposite, getPreferenceStore().getString(
+        searchResultAbbreviateMaxLengthText = BaseWidgetUtils.createText( searchResultAbbreviateComposite,
+            getPreferenceStore().getString(
                 BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH ), 3, 1 );
         searchResultAbbreviateMaxLengthText.setEnabled( searchResultAbbreviateButton.getSelection() );
         searchResultAbbreviateMaxLengthText.addVerifyListener( new VerifyListener()
@@ -257,50 +271,52 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, this.checkForChildrenButton
-            .getSelection() );
-        coreStore
-            .setValue( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES, this.fetchSubentriesButton.getSelection() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, checkForChildrenButton.getSelection() );
+        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES, fetchSubentriesButton.getSelection() );
         BrowserCorePlugin.getDefault().savePluginPreferences();
 
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_EXPAND_BASE_ENTRIES,
-            this.expandBaseEntriesButton.getSelection() );
+            expandBaseEntriesButton.getSelection() );
 
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_ENABLE_FOLDING,
-            this.enableFoldingButton.getSelection() );
+            enableFoldingButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_FOLDING_SIZE,
-            this.foldingSizeText.getText().trim() );
+            foldingSizeText.getText().trim() );
 
         getPreferenceStore().setValue(
             BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_LABEL,
-            this.entryLabelCombo.getSelectionIndex() == 2 ? BrowserCommonConstants.SHOW_RDN_VALUE : this.entryLabelCombo
+            entryLabelCombo.getSelectionIndex() == 2 ? BrowserCommonConstants.SHOW_RDN_VALUE : entryLabelCombo
                 .getSelectionIndex() == 1 ? BrowserCommonConstants.SHOW_RDN : BrowserCommonConstants.SHOW_DN );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_ABBREVIATE,
-            this.entryAbbreviateButton.getSelection() );
+            entryAbbreviateButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_ABBREVIATE_MAX_LENGTH,
-            this.entryAbbreviateMaxLengthText.getText().trim() );
+            entryAbbreviateMaxLengthText.getText().trim() );
 
         getPreferenceStore().setValue(
             BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL,
-            this.searchResultLabelCombo.getSelectionIndex() == 2 ? BrowserCommonConstants.SHOW_RDN_VALUE
-                : this.searchResultLabelCombo.getSelectionIndex() == 1 ? BrowserCommonConstants.SHOW_RDN
+            searchResultLabelCombo.getSelectionIndex() == 2 ? BrowserCommonConstants.SHOW_RDN_VALUE
+                : searchResultLabelCombo.getSelectionIndex() == 1 ? BrowserCommonConstants.SHOW_RDN
                     : BrowserCommonConstants.SHOW_DN );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE,
-            this.searchResultAbbreviateButton.getSelection() );
+            searchResultAbbreviateButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH,
-            this.searchResultAbbreviateMaxLengthText.getText().trim() );
+            searchResultAbbreviateMaxLengthText.getText().trim() );
 
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-
         entryLabelCombo
             .select( getPreferenceStore().getDefaultInt( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_LABEL ) == BrowserCommonConstants.SHOW_RDN_VALUE ? 2
                 : getPreferenceStore().getDefaultInt( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_LABEL ) == BrowserCommonConstants.SHOW_RDN ? 1

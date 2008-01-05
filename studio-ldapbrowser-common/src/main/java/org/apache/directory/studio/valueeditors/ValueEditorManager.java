@@ -194,7 +194,7 @@ public class ValueEditorManager
 
         // check attribute preferences
         AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeType );
-        Map attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+        Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
         if ( atd.getNumericOID() != null && attributeValueEditorMap.containsKey( atd.getNumericOID().toLowerCase() ) )
         {
@@ -202,18 +202,17 @@ public class ValueEditorManager
                 .toLowerCase() ) );
         }
         String[] names = atd.getNames();
-        for ( int i = 0; i < names.length; i++ )
+        for ( String name : names )
         {
-            if ( attributeValueEditorMap.containsKey( names[i].toLowerCase() ) )
+            if ( attributeValueEditorMap.containsKey( name.toLowerCase() ) )
             {
-                return ( IValueEditor ) this.class2ValueEditors.get( attributeValueEditorMap.get( names[i]
-                    .toLowerCase() ) );
+                return ( IValueEditor ) this.class2ValueEditors.get( attributeValueEditorMap.get( name.toLowerCase() ) );
             }
         }
 
         // check syntax preferences
         LdapSyntaxDescription lsd = atd.getSyntaxDescription();
-        Map syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+        Map<String, String> syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getSyntaxValueEditorMap();
         if ( lsd.getNumericOID() != null && syntaxValueEditorMap.containsKey( lsd.getNumericOID().toLowerCase() ) )
         {
@@ -646,22 +645,22 @@ public class ValueEditorManager
     {
         Collection<IValueEditor> valueEditors = new ArrayList<IValueEditor>();
 
-        Collection<ValueEditorExtension> valueEditorProxys = getValueEditorProxys();
-        for ( ValueEditorExtension proxy : valueEditorProxys )
+        Collection<ValueEditorExtension> valueEditorExtensions = getValueEditorExtensions();
+        for ( ValueEditorExtension vee : valueEditorExtensions )
         {
             try
             {
-                IValueEditor valueEditor = ( IValueEditor ) proxy.member.createExecutableExtension( "class" );
+                IValueEditor valueEditor = ( IValueEditor ) vee.member.createExecutableExtension( "class" );
                 valueEditor.create( parent );
-                valueEditor.setValueEditorName( proxy.name );
-                valueEditor.setValueEditorImageDescriptor( proxy.icon );
+                valueEditor.setValueEditorName( vee.name );
+                valueEditor.setValueEditorImageDescriptor( vee.icon );
                 valueEditors.add( valueEditor );
             }
             catch ( Exception e )
             {
                 BrowserCommonActivator.getDefault().getLog().log(
                     new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, 1, "Unable to create ValueEditor "
-                        + proxy.className, e ) );
+                        + vee.className, e ) );
             }
         }
 
@@ -670,13 +669,13 @@ public class ValueEditorManager
 
 
     /**
-     * Returns all value editor proxies specified by value editor extensions.
+     * Returns all value editor extensions specified by value editor extensions.
      *
-     * @return the value editor proxies
+     * @return the value editor extensions
      */
-    public static Collection<ValueEditorExtension> getValueEditorProxys()
+    public static Collection<ValueEditorExtension> getValueEditorExtensions()
     {
-        Collection<ValueEditorExtension> valueEditorProxies = new ArrayList<ValueEditorExtension>();
+        Collection<ValueEditorExtension> valueEditorExtensions = new ArrayList<ValueEditorExtension>();
 
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint extensionPoint = registry.getExtensionPoint( EXTENSION_POINT );
@@ -686,7 +685,7 @@ public class ValueEditorManager
         for ( int m = 0; m < members.length; m++ )
         {
             ValueEditorExtension proxy = new ValueEditorExtension();
-            valueEditorProxies.add( proxy );
+            valueEditorExtensions.add( proxy );
 
             IConfigurationElement member = members[m];
             IExtension extension = member.getDeclaringExtension();
@@ -720,7 +719,7 @@ public class ValueEditorManager
             }
         }
 
-        return valueEditorProxies;
+        return valueEditorExtensions;
     }
 
     /**

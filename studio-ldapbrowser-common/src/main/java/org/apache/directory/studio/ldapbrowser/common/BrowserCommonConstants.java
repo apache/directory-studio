@@ -58,9 +58,9 @@ public interface BrowserCommonConstants
 
     public static final String PREFERENCE_COUNT_LIMIT = "countLimit";
 
-    public static final String PREFERENCE_SYNTAX_VALUEPROVIDER_RELATIONS = "syntaxValueProviderRelations";
+    public static final String PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS = "syntaxValueProviderRelations";
 
-    public static final String PREFERENCE_ATTRIBUTE_VALUEPROVIDER_RELATIONS = "attributeValueProviderRelations";
+    public static final String PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS = "attributeValueProviderRelations";
 
     public static final String PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER = "formatTableAttributeDelimiter";
 

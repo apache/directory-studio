@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueProviderRelation;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -91,27 +91,26 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES, false );
 
         // Value Editors
-        Collection<AttributeValueProviderRelation> avprs = new ArrayList<AttributeValueProviderRelation>();
-        Collection<SyntaxValueProviderRelation> svprs = new ArrayList<SyntaxValueProviderRelation>();
-        Collection<ValueEditorExtension> valueEditorProxys = ValueEditorManager.getValueEditorProxys();
-        for ( ValueEditorExtension proxy : valueEditorProxys )
+        Collection<AttributeValueEditorRelation> avprs = new ArrayList<AttributeValueEditorRelation>();
+        Collection<SyntaxValueEditorRelation> svprs = new ArrayList<SyntaxValueEditorRelation>();
+        Collection<ValueEditorExtension> valueEditorExtensions = ValueEditorManager.getValueEditorExtensions();
+        for ( ValueEditorExtension vee : valueEditorExtensions )
         {
-            for ( String attributeType : proxy.attributeTypes )
+            for ( String attributeType : vee.attributeTypes )
             {
-                AttributeValueProviderRelation avpr = new AttributeValueProviderRelation( attributeType,
-                    proxy.className );
-                avprs.add( avpr );
+                AttributeValueEditorRelation aver = new AttributeValueEditorRelation( attributeType, vee.className );
+                avprs.add( aver );
             }
-            for ( String syntaxOid : proxy.syntaxOids )
+            for ( String syntaxOid : vee.syntaxOids )
             {
-                SyntaxValueProviderRelation svpr = new SyntaxValueProviderRelation( syntaxOid, proxy.className );
-                svprs.add( svpr );
+                SyntaxValueEditorRelation sver = new SyntaxValueEditorRelation( syntaxOid, vee.className );
+                svprs.add( sver );
             }
         }
-        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setDefaultAttributeValueProviderRelations(
-            avprs.toArray( new AttributeValueProviderRelation[0] ) );
-        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setDefaultSyntaxValueProviderRelations(
-            svprs.toArray( new SyntaxValueProviderRelation[0] ) );
+        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setDefaultAttributeValueEditorRelations(
+            avprs.toArray( new AttributeValueEditorRelation[0] ) );
+        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setDefaultSyntaxValueEditorRelations(
+            svprs.toArray( new SyntaxValueEditorRelation[0] ) );
 
         // Browser
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_EXPAND_BASE_ENTRIES, false );

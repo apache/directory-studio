@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueProviderRelation;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -53,18 +53,18 @@ public class ValueEditorsPreferences
      * @return
      *      a Map containing all the Attribute Value Editors
      */
-    public Map getAttributeValueEditorMap()
+    public Map<String, String> getAttributeValueEditorMap()
     {
         if ( attributeValueEditorCache == null )
         {
             attributeValueEditorCache = new HashMap<String, String>();
-            AttributeValueProviderRelation[] relations = getAttributeValueProviderRelations();
+            AttributeValueEditorRelation[] relations = getAttributeValueEditorRelations();
             for ( int i = 0; i < relations.length; i++ )
             {
                 if ( relations[i].getAttributeNumericOidOrType() != null )
                 {
                     attributeValueEditorCache.put( relations[i].getAttributeNumericOidOrType()
-                        .toLowerCase(), relations[i].getValueProviderClassname() );
+                        .toLowerCase(), relations[i].getValueEditorClassName() );
                 }
             }
         }
@@ -73,54 +73,54 @@ public class ValueEditorsPreferences
 
 
     /**
-     * Gets an array containing all the Attribute Value Provider Relations.
+     * Gets an array containing all the Attribute Value Editor Relations.
      *
      * @return
-     *      an array containing all the Attribute Value Provider Relations
+     *      an array containing all the Attribute Value Editor Relations
      */
-    public AttributeValueProviderRelation[] getAttributeValueProviderRelations()
+    public AttributeValueEditorRelation[] getAttributeValueEditorRelations()
     {
-        AttributeValueProviderRelation[] avpr = ( AttributeValueProviderRelation[] ) load( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEPROVIDER_RELATIONS );
-        return avpr;
+        AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) load( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS );
+        return aver;
     }
 
 
     /**
-     * Sets the Attribute Value Provider Relations.
+     * Sets the Attribute Value Editor Relations.
      *
-     * @param attributeValueProviderRelations
-     *      an array containing all the Attribute Value Provider Relations
+     * @param attributeValueEditorRelations
+     *      an array containing all the Attribute Value Editor Relations
      */
-    public void setAttributeValueProviderRelations( AttributeValueProviderRelation[] attributeValueProviderRelations )
+    public void setAttributeValueEditorRelations( AttributeValueEditorRelation[] attributeValueEditorRelations )
     {
-        store( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEPROVIDER_RELATIONS, attributeValueProviderRelations );
+        store( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS, attributeValueEditorRelations );
         attributeValueEditorCache = null;
     }
 
 
     /**
-     * Gets the default Attribute Value Provider Relations.
+     * Gets the default Attribute Value Editor Relations.
      *
      * @return
-     *      an array containing all the default Attribute Value Provider Relations
+     *      an array containing all the default Attribute Value Editor Relations
      */
-    public AttributeValueProviderRelation[] getDefaultAttributeValueProviderRelations()
+    public AttributeValueEditorRelation[] getDefaultAttributeValueEditorRelations()
     {
-        AttributeValueProviderRelation[] avpr = ( AttributeValueProviderRelation[] ) loadDefault( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEPROVIDER_RELATIONS );
-        return avpr;
+        AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) loadDefault( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS );
+        return aver;
     }
 
 
     /**
-     * Sets the default Attribute Value Provider Relations.
+     * Sets the default Attribute Value Editor Relations.
      *
-     * @param attributeValueProviderRelations
-     *      an array containing all the default Attribute Value Provider Relations
+     * @param attributeValueEditorRelations
+     *      an array containing all the default Attribute Value Editor Relations
      */
-    public void setDefaultAttributeValueProviderRelations(
-        AttributeValueProviderRelation[] attributeValueProviderRelations )
+    public void setDefaultAttributeValueEditorRelations(
+        AttributeValueEditorRelation[] attributeValueEditorRelations )
     {
-        storeDefault( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEPROVIDER_RELATIONS, attributeValueProviderRelations );
+        storeDefault( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS, attributeValueEditorRelations );
     }
 
 
@@ -131,18 +131,18 @@ public class ValueEditorsPreferences
      * @return
      *      a Map containing all the Syntax Value Editors
      */
-    public Map getSyntaxValueEditorMap()
+    public Map<String, String> getSyntaxValueEditorMap()
     {
         if ( syntaxValueEditorCache == null )
         {
             syntaxValueEditorCache = new HashMap<String, String>();
-            SyntaxValueProviderRelation[] relations = getSyntaxValueProviderRelations();
+            SyntaxValueEditorRelation[] relations = getSyntaxValueEditorRelations();
             for ( int i = 0; i < relations.length; i++ )
             {
                 if ( relations[i].getSyntaxOID() != null )
                 {
                     syntaxValueEditorCache.put( relations[i].getSyntaxOID().toLowerCase(), relations[i]
-                        .getValueProviderClassname() );
+                        .getValueEditorClassName() );
                 }
             }
         }
@@ -151,53 +151,53 @@ public class ValueEditorsPreferences
 
 
     /**
-     * Sets the Syntax Value Provider Relations.
+     * Sets the Syntax Value Editor Relations.
      *
-     * @param syntaxValueProviderRelations
-     *      an array containing the Syntax Value Provider Relations to set
+     * @param syntaxValueEditorRelations
+     *      an array containing the Syntax Value Editor Relations to set
      */
-    public void setSyntaxValueProviderRelations( SyntaxValueProviderRelation[] syntaxValueProviderRelations )
+    public void setSyntaxValueEditorRelations( SyntaxValueEditorRelation[] syntaxValueEditorRelations )
     {
-        store( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPROVIDER_RELATIONS, syntaxValueProviderRelations );
+        store( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS, syntaxValueEditorRelations );
         syntaxValueEditorCache = null;
     }
 
 
     /**
-     * Gets an array containing all the Syntax Value Provider Relations
+     * Gets an array containing all the Syntax Value Editor Relations
      *
      * @return
-     *      an array containing all the Syntax Value Provider Relations
+     *      an array containing all the Syntax Value Editor Relations
      */
-    public SyntaxValueProviderRelation[] getSyntaxValueProviderRelations()
+    public SyntaxValueEditorRelation[] getSyntaxValueEditorRelations()
     {
-        SyntaxValueProviderRelation[] svpr = ( SyntaxValueProviderRelation[] ) load( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPROVIDER_RELATIONS );
-        return svpr;
+        SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) load( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS );
+        return sver;
     }
 
 
     /**
-     * Gets an array containing all the default Syntax Value Provider Relations
+     * Gets an array containing all the default Syntax Value Editor Relations
      *
      * @return
-     *      an array containing all the default Syntax Value Provider Relations
+     *      an array containing all the default Syntax Value Editor Relations
      */
-    public SyntaxValueProviderRelation[] getDefaultSyntaxValueProviderRelations()
+    public SyntaxValueEditorRelation[] getDefaultSyntaxValueEditorRelations()
     {
-        SyntaxValueProviderRelation[] svpr = ( SyntaxValueProviderRelation[] ) loadDefault( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPROVIDER_RELATIONS );
-        return svpr;
+        SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) loadDefault( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS );
+        return sver;
     }
 
 
     /**
-     * Sets the default Syntax Value Provider Relations.
+     * Sets the default Syntax Value Editor Relations.
      *
-     * @param syntaxValueProviderRelations
-     *      an array containing the default Syntax Value Provider Relations to set
+     * @param syntaxValueEditorRelations
+     *      an array containing the default Syntax Value Editor Relations to set
      */
-    public void setDefaultSyntaxValueProviderRelations( SyntaxValueProviderRelation[] syntaxValueProviderRelations )
+    public void setDefaultSyntaxValueEditorRelations( SyntaxValueEditorRelation[] syntaxValueEditorRelations )
     {
-        storeDefault( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPROVIDER_RELATIONS, syntaxValueProviderRelations );
+        storeDefault( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS, syntaxValueEditorRelations );
     }
 
 

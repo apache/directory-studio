@@ -28,15 +28,14 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -59,116 +58,137 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
+/**
+ * The BinaryAttributesAndSyntaxesPreferencePage is used to specify
+ * binary attributes and syntaxes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private SortedMap attributeOid2AtdMap;
+    /** Map with attribute OID => attribute type description */
+    private SortedMap<String, AttributeTypeDescription> attributeOid2AtdMap;
 
-    private SortedMap attributeNames2AtdMap;
+    /** Map with attribute name => attribute type description */
+    private SortedMap<String, AttributeTypeDescription> attributeNames2AtdMap;
 
+    /** The attribute names and OIDs. */
     private String[] attributeNamesAndOids;
 
-    private SortedMap syntaxOid2LsdMap;
+    /** Map with syntax OID => syntax description */
+    private SortedMap<String, LdapSyntaxDescription> syntaxOid2LsdMap;
 
-    private SortedMap syntaxDesc2LsdMap;
+    /** Map with syntax DESC => syntax description */
+    private SortedMap<String, LdapSyntaxDescription> syntaxDesc2LsdMap;
 
+    /** The syntax OIDs. */
     private String[] syntaxOids;
 
-    private List attributeList;
+    /** The attribute list. */
+    private List<BinaryAttribute> attributeList;
 
+    /** The attribute viewer. */
     private TableViewer attributeViewer;
 
+    /** The attribute add button. */
     private Button attributeAddButton;
 
+    /** The attribute edit button. */
     private Button attributeEditButton;
 
+    /** The attribute remove button. */
     private Button attributeRemoveButton;
 
-    private List syntaxList;
+    /** The syntax list. */
+    private List<BinarySyntax> syntaxList;
 
+    /** The syntax viewer. */
     private TableViewer syntaxViewer;
 
+    /** The syntax add button. */
     private Button syntaxAddButton;
 
+    /** The syntax edit button. */
     private Button syntaxEditButton;
 
+    /** The syntax remove button. */
     private Button syntaxRemoveButton;
 
 
+    /**
+     * Creates a new instance of BinaryAttributesAndSyntaxesPreferencePage.
+     */
     public BinaryAttributesAndSyntaxesPreferencePage()
     {
-        super();
-        super.setDescription( "Specify attributes to handle as binary:" );
+        super( "Binary Attributes" );
+        super.setDescription( "Specify attributes and syntaxes to handle as binary:" );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         // init available attribute types
-        this.attributeNames2AtdMap = new TreeMap();
-        this.attributeOid2AtdMap = new TreeMap();
+        attributeNames2AtdMap = new TreeMap<String, AttributeTypeDescription>();
+        attributeOid2AtdMap = new TreeMap<String, AttributeTypeDescription>();
         BrowserConnectionManager cm = BrowserCorePlugin.getDefault().getConnectionManager();
         IBrowserConnection[] connections = cm.getBrowserConnections();
-        for ( int i = 0; i < connections.length; i++ )
+        for ( IBrowserConnection browserConnection : connections )
         {
-            Schema schema = connections[i].getSchema();
-            if ( schema != null )
-            {
-                createAttributeMaps( schema );
-            }
+            Schema schema = browserConnection.getSchema();
+            createAttributeMaps( schema );
         }
         createAttributeMaps( Schema.DEFAULT_SCHEMA );
-        this.attributeNamesAndOids = new String[this.attributeNames2AtdMap.size() + this.attributeOid2AtdMap.size()];
-        System.arraycopy( this.attributeNames2AtdMap.keySet().toArray(), 0, this.attributeNamesAndOids, 0,
-            this.attributeNames2AtdMap.size() );
-        System.arraycopy( this.attributeOid2AtdMap.keySet().toArray(), 0, this.attributeNamesAndOids,
-            this.attributeNames2AtdMap.size(), this.attributeOid2AtdMap.size() );
+        attributeNamesAndOids = new String[attributeNames2AtdMap.size() + attributeOid2AtdMap.size()];
+        System.arraycopy( attributeNames2AtdMap.keySet().toArray(), 0, attributeNamesAndOids, 0, attributeNames2AtdMap
+            .size() );
+        System.arraycopy( attributeOid2AtdMap.keySet().toArray(), 0, attributeNamesAndOids, attributeNames2AtdMap
+            .size(), attributeOid2AtdMap.size() );
 
         // init available syntaxes
-        this.syntaxOid2LsdMap = new TreeMap();
-        this.syntaxDesc2LsdMap = new TreeMap();
-        for ( int i = 0; i < connections.length; i++ )
+        syntaxOid2LsdMap = new TreeMap<String, LdapSyntaxDescription>();
+        syntaxDesc2LsdMap = new TreeMap<String, LdapSyntaxDescription>();
+        for ( IBrowserConnection browserConnection : connections )
         {
-            Schema schema = connections[i].getSchema();
-            if ( schema != null )
-            {
-                createSyntaxMaps( schema );
-            }
+            Schema schema = browserConnection.getSchema();
+            createSyntaxMaps( schema );
         }
         createSyntaxMaps( Schema.DEFAULT_SCHEMA );
-        this.syntaxOids = new String[this.syntaxOid2LsdMap.size()];
-        System
-            .arraycopy( this.syntaxOid2LsdMap.keySet().toArray(), 0, this.syntaxOids, 0, this.syntaxOid2LsdMap.size() );
+        syntaxOids = new String[syntaxOid2LsdMap.size()];
+        System.arraycopy( syntaxOid2LsdMap.keySet().toArray(), 0, syntaxOids, 0, syntaxOid2LsdMap.size() );
 
         // create attribute contents
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         createAttributeContents( composite );
-        attributeList = new ArrayList( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
-            .getBinaryAttributes() ) );
-        attributeViewer.setInput( this.attributeList );
+        attributeList = new ArrayList<BinaryAttribute>( Arrays.asList( BrowserCorePlugin.getDefault()
+            .getCorePreferences().getBinaryAttributes() ) );
+        attributeViewer.setInput( attributeList );
         attributeViewer.getTable().getColumn( 0 ).pack();
-        // attributeViewer.getTable().getColumn(1).pack();
-        attributeViewer.getTable().pack();
 
         // create syntax contents
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         createSyntaxContents( composite );
-        syntaxList = new ArrayList( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
+        syntaxList = new ArrayList<BinarySyntax>( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
             .getBinarySyntaxes() ) );
-        syntaxViewer.setInput( this.syntaxList );
+        syntaxViewer.setInput( syntaxList );
         syntaxViewer.getTable().getColumn( 0 ).pack();
-        // syntaxViewer.getTable().getColumn(1).pack();
         syntaxViewer.getTable().pack();
 
         return composite;
@@ -178,17 +198,15 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
     private void createAttributeMaps( Schema schema )
     {
         AttributeTypeDescription[] atds = schema.getAttributeTypeDescriptions();
-        for ( int i = 0; i < atds.length; i++ )
+        for ( AttributeTypeDescription atd : atds )
         {
+            attributeOid2AtdMap.put( atd.getNumericOID(), atd );
 
-            attributeOid2AtdMap.put( atds[i].getNumericOID(), atds[i] );
-
-            String[] names = atds[i].getNames();
-            for ( int j = 0; j < names.length; j++ )
+            String[] names = atd.getNames();
+            for ( String name : names )
             {
-                attributeNames2AtdMap.put( names[j], atds[i] );
+                attributeNames2AtdMap.put( name, atd );
             }
-
         }
     }
 
@@ -196,23 +214,20 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
     private void createSyntaxMaps( Schema schema )
     {
         LdapSyntaxDescription[] lsds = schema.getLdapSyntaxDescriptions();
-        for ( int i = 0; i < lsds.length; i++ )
+        for ( LdapSyntaxDescription lsd : lsds )
         {
+            syntaxOid2LsdMap.put( lsd.getNumericOID(), lsd );
 
-            syntaxOid2LsdMap.put( lsds[i].getNumericOID(), lsds[i] );
-
-            if ( lsds[i].getDesc() != null )
+            if ( lsd.getDesc() != null )
             {
-                syntaxDesc2LsdMap.put( lsds[i].getDesc(), lsds[i] );
+                syntaxDesc2LsdMap.put( lsd.getDesc(), lsd );
             }
-
         }
     }
 
 
     private void createAttributeContents( Composite parent )
     {
-
         BaseWidgetUtils.createLabel( parent, "Binary Attributes", 1 );
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
@@ -275,16 +290,11 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 removeAttribute();
             }
         } );
-
-        // c1.pack();
-        // c2.pack();
-        // table.pack();
     }
 
 
     private void createSyntaxContents( Composite parent )
     {
-
         BaseWidgetUtils.createLabel( parent, "Binary Syntaxes", 1 );
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
@@ -347,109 +357,110 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                 removeSyntax();
             }
         } );
-
-        // c1.pack();
-        // c2.pack();
-        // table.pack();
     }
 
 
-    protected void addAttribute()
+    private void addAttribute()
     {
-        AttributeDialog dialog = new AttributeDialog( getShell(), null, this.attributeNamesAndOids );
+        AttributeDialog dialog = new AttributeDialog( getShell(), null, attributeNamesAndOids );
         if ( dialog.open() == AttributeValueEditorDialog.OK )
         {
-            this.attributeList.add( dialog.getAttribute() );
-            this.attributeViewer.refresh();
+            attributeList.add( dialog.getAttribute() );
+            attributeViewer.refresh();
         }
     }
 
 
-    protected void removeAttribute()
+    private void removeAttribute()
     {
-        Object o = ( ( StructuredSelection ) this.attributeViewer.getSelection() ).getFirstElement();
-        this.attributeList.remove( o );
-        this.attributeViewer.refresh();
+        Object o = ( ( StructuredSelection ) attributeViewer.getSelection() ).getFirstElement();
+        attributeList.remove( o );
+        attributeViewer.refresh();
     }
 
 
-    protected void editAttribute()
+    private void editAttribute()
     {
-        StructuredSelection sel = ( StructuredSelection ) this.attributeViewer.getSelection();
+        StructuredSelection sel = ( StructuredSelection ) attributeViewer.getSelection();
         if ( !sel.isEmpty() )
         {
             BinaryAttribute attribute = ( BinaryAttribute ) sel.getFirstElement();
-            AttributeDialog dialog = new AttributeDialog( getShell(), attribute, this.attributeNamesAndOids );
+            AttributeDialog dialog = new AttributeDialog( getShell(), attribute, attributeNamesAndOids );
             if ( dialog.open() == AttributeValueEditorDialog.OK )
             {
-                int index = this.attributeList.indexOf( attribute );
-                this.attributeList.set( index, dialog.getAttribute() );
-                this.attributeViewer.refresh();
+                int index = attributeList.indexOf( attribute );
+                attributeList.set( index, dialog.getAttribute() );
+                attributeViewer.refresh();
             }
         }
     }
 
 
-    protected void addSyntax()
+    private void addSyntax()
     {
-        SyntaxDialog dialog = new SyntaxDialog( getShell(), null, this.syntaxOids );
+        SyntaxDialog dialog = new SyntaxDialog( getShell(), null, syntaxOids );
         if ( dialog.open() == SyntaxValueEditorDialog.OK )
         {
-            this.syntaxList.add( dialog.getSyntax() );
-            this.syntaxViewer.refresh();
+            syntaxList.add( dialog.getSyntax() );
+            syntaxViewer.refresh();
         }
     }
 
 
-    protected void removeSyntax()
+    private void removeSyntax()
     {
-        Object o = ( ( StructuredSelection ) this.syntaxViewer.getSelection() ).getFirstElement();
-        this.syntaxList.remove( o );
-        this.syntaxViewer.refresh();
+        Object o = ( ( StructuredSelection ) syntaxViewer.getSelection() ).getFirstElement();
+        syntaxList.remove( o );
+        syntaxViewer.refresh();
     }
 
 
-    protected void editSyntax()
+    private void editSyntax()
     {
-        StructuredSelection sel = ( StructuredSelection ) this.syntaxViewer.getSelection();
+        StructuredSelection sel = ( StructuredSelection ) syntaxViewer.getSelection();
         if ( !sel.isEmpty() )
         {
             BinarySyntax syntax = ( BinarySyntax ) sel.getFirstElement();
-            SyntaxDialog dialog = new SyntaxDialog( getShell(), syntax, this.syntaxOids );
+            SyntaxDialog dialog = new SyntaxDialog( getShell(), syntax, syntaxOids );
             if ( dialog.open() == SyntaxValueEditorDialog.OK )
             {
-                int index = this.syntaxList.indexOf( syntax );
-                this.syntaxList.set( index, dialog.getSyntax() );
-                this.syntaxViewer.refresh();
+                int index = syntaxList.indexOf( syntax );
+                syntaxList.set( index, dialog.getSyntax() );
+                syntaxViewer.refresh();
             }
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-        BinaryAttribute[] attributes = ( BinaryAttribute[] ) this.attributeList
-            .toArray( new BinaryAttribute[this.attributeList.size()] );
+        BinaryAttribute[] attributes = attributeList.toArray( new BinaryAttribute[attributeList.size()] );
         BrowserCorePlugin.getDefault().getCorePreferences().setBinaryAttributes( attributes );
 
-        BinarySyntax[] syntaxes = ( BinarySyntax[] ) this.syntaxList.toArray( new BinarySyntax[this.syntaxList.size()] );
+        BinarySyntax[] syntaxes = syntaxList.toArray( new BinarySyntax[syntaxList.size()] );
         BrowserCorePlugin.getDefault().getCorePreferences().setBinarySyntaxes( syntaxes );
 
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-        this.attributeList.clear();
-        this.attributeList.addAll( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
+        attributeList.clear();
+        attributeList.addAll( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
             .getDefaultBinaryAttributes() ) );
-        this.attributeViewer.refresh();
+        attributeViewer.refresh();
 
-        this.syntaxList.clear();
-        this.syntaxList.addAll( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
+        syntaxList.clear();
+        syntaxList.addAll( Arrays.asList( BrowserCorePlugin.getDefault().getCorePreferences()
             .getDefaultBinarySyntaxes() ) );
-        this.syntaxViewer.refresh();
+        syntaxViewer.refresh();
 
         super.performDefaults();
     }
@@ -474,11 +485,11 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                             AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeNames2AtdMap
                                 .get( attribute.getAttributeNumericOidOrName() );
                             String s = atd.getNumericOID();
-                            for ( int i = 0; i < atd.getNames().length; i++ )
+                            for ( String attributeName : atd.getNames() )
                             {
-                                if ( !attribute.getAttributeNumericOidOrName().equals( atd.getNames()[i] ) )
+                                if ( !attribute.getAttributeNumericOidOrName().equals( attributeName ) )
                                 {
-                                    s += ", " + atd.getNames()[i];
+                                    s += ", " + attributeName;
                                 }
                             }
                             return s;

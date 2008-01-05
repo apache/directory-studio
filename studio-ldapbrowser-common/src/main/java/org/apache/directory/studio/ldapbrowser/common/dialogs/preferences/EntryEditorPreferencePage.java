@@ -39,6 +39,12 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
+/**
+ * The EntryEditorPreferencePage contains general settings for the entry editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
@@ -57,22 +63,30 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
     private Text foldingThresholdText;
 
 
+    /**
+     * Creates a new instance of EntryEditorPreferencePage.
+     */
     public EntryEditorPreferencePage()
     {
-        super();
+        super( "Entry Editor" );
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
         super.setDescription( "General settings for the LDAP entry editor:" );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
@@ -150,40 +164,44 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES,
-            this.showObjectClassAttributeButton.getSelection() );
+            showObjectClassAttributeButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES,
-            this.showMustAttributesButton.getSelection() );
+            showMustAttributesButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES,
-            this.showMayAttributesButton.getSelection() );
+            showMayAttributesButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES,
-            this.showOperationalAttributesButton.getSelection() );
+            showOperationalAttributesButton.getSelection() );
 
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING,
-            this.enableFoldingButton.getSelection() );
+            enableFoldingButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD,
-            this.foldingThresholdText.getText() );
+            foldingThresholdText.getText() );
 
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-
-        this.showObjectClassAttributeButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showObjectClassAttributeButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES ) );
-        this.showMustAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showMustAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES ) );
-        this.showMayAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showMayAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES ) );
-        this.showOperationalAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showOperationalAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
 
-        this.foldingThresholdText.setText( getPreferenceStore().getDefaultString(
+        foldingThresholdText.setText( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD ) );
 
         updateEnabled();

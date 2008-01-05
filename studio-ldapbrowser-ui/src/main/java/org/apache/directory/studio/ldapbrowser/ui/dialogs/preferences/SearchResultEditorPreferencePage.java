@@ -22,8 +22,6 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences;
 
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.preference.PreferencePage;
@@ -34,31 +32,47 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
-public class SearchResultEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage,
-    WidgetModifyListener
+/**
+ * The search result editor preference page contains settings for the 
+ * search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class SearchResultEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
+    /** The show DN button. */
     private Button showDnButton;
 
+    /** The show links button. */
     private Button showLinksButton;
 
 
+    /**
+     * Creates a new instance of SearchResultEditorPreferencePage.
+     */
     public SearchResultEditorPreferencePage()
     {
-        super();
+        super( "Search Result Editor" );
         super.setPreferenceStore( BrowserUIPlugin.getDefault().getPreferenceStore() );
         super.setDescription( "General settings for the LDAP search result editor:" );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
@@ -70,60 +84,34 @@ public class SearchResultEditorPreferencePage extends PreferencePage implements 
         showLinksButton.setSelection( getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS ) );
 
-        updateEnabled();
-        validate();
-
         applyDialogFont( composite );
         return composite;
     }
 
 
-    private void updateEnabled()
-    {
-
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-
         getPreferenceStore().setValue( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN,
-            this.showDnButton.getSelection() );
+            showDnButton.getSelection() );
         getPreferenceStore().setValue( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS,
-            this.showLinksButton.getSelection() );
-
-        updateEnabled();
-        validate();
-
+            showLinksButton.getSelection() );
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-
-        this.showDnButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showDnButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) );
-        this.showLinksButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showLinksButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS ) );
-
-        updateEnabled();
-        validate();
-
         super.performDefaults();
-    }
-
-
-    public void widgetModified( WidgetModifyEvent event )
-    {
-        updateEnabled();
-        validate();
-    }
-
-
-    protected void validate()
-    {
-
     }
 
 }

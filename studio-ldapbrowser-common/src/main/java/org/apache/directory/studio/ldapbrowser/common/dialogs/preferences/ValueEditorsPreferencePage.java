@@ -30,14 +30,14 @@ import java.util.TreeMap;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueProviderRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.jface.preference.PreferencePage;
@@ -62,130 +62,152 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
+/**
+ * The ValueEditorsPreferencePage is used to specify
+ * value editors for attributes and syntaxes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ValueEditorsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private SortedMap<String, ValueEditorExtension> class2ValueEditorProxyMap;
+    private SortedMap<String, ValueEditorExtension> class2ValueEditorExtensionMap;
 
-    private SortedMap attributeOid2AtdMap;
+    /** Map with attribute OID => attribute type description */
+    private SortedMap<String, AttributeTypeDescription> attributeOid2AtdMap;
 
-    private SortedMap attributeTypes2AtdMap;
+    /** Map with attribute name => attribute type description */
+    private SortedMap<String, AttributeTypeDescription> attributeNames2AtdMap;
 
+    /** The attribute names and OIDs. */
     private String[] attributeTypesAndOids;
 
-    private SortedMap syntaxOid2LsdMap;
+    /** Map with syntax OID => syntax description */
+    private SortedMap<String, LdapSyntaxDescription> syntaxOid2LsdMap;
 
-    private SortedMap syntaxDesc2LsdMap;
+    /** Map with syntax DESC => syntax description */
+    private SortedMap<String, LdapSyntaxDescription> syntaxDesc2LsdMap;
 
+    /** The syntax DESCs and OIDs. */
     private String[] syntaxDescsAndOids;
 
-    private List attributeList;
+    /** The attribute list. */
+    private List<AttributeValueEditorRelation> attributeList;
 
+    /** The attribute viewer. */
     private TableViewer attributeViewer;
 
+    /** The attribute add button. */
     private Button attributeAddButton;
 
+    /** The attribute edit button. */
     private Button attributeEditButton;
 
+    /** The attribute remove button. */
     private Button attributeRemoveButton;
 
-    private List syntaxList;
+    /** The syntax list. */
+    private List<SyntaxValueEditorRelation> syntaxList;
 
+    /** The syntax viewer. */
     private TableViewer syntaxViewer;
 
+    /** The syntax add button. */
     private Button syntaxAddButton;
 
+    /** The syntax edit button. */
     private Button syntaxEditButton;
 
+    /** The syntax remove button. */
     private Button syntaxRemoveButton;
 
 
+    /**
+     * Creates a new instance of ValueEditorsPreferencePage.
+     */
     public ValueEditorsPreferencePage()
     {
-        super();
+        super( "Value Editors" );
         super.setDescription( "Specify value editors:" );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         // init available value providers
-        this.class2ValueEditorProxyMap = new TreeMap<String, ValueEditorExtension>();
+        class2ValueEditorExtensionMap = new TreeMap<String, ValueEditorExtension>();
         Composite dummyComposite = new Composite( composite, SWT.NONE );
         dummyComposite.setLayoutData( new GridData( 1, 1 ) );
-        
-        Collection<ValueEditorExtension> valueEditorProxys = ValueEditorManager.getValueEditorProxys();
-        for ( ValueEditorExtension proxy : valueEditorProxys )
+
+        Collection<ValueEditorExtension> valueEditorExtensions = ValueEditorManager.getValueEditorExtensions();
+        for ( ValueEditorExtension vee : valueEditorExtensions )
         {
-            this.class2ValueEditorProxyMap.put( proxy.className, proxy );
+            class2ValueEditorExtensionMap.put( vee.className, vee );
         }
 
         // init available attribute types
-        this.attributeTypes2AtdMap = new TreeMap();
-        this.attributeOid2AtdMap = new TreeMap();
+        attributeNames2AtdMap = new TreeMap<String, AttributeTypeDescription>();
+        attributeOid2AtdMap = new TreeMap<String, AttributeTypeDescription>();
         BrowserConnectionManager cm = BrowserCorePlugin.getDefault().getConnectionManager();
         IBrowserConnection[] connections = cm.getBrowserConnections();
-        for ( int i = 0; i < connections.length; i++ )
+        for ( IBrowserConnection browserConnection : connections )
         {
-            Schema schema = connections[i].getSchema();
-            if ( schema != null )
-            {
-                createAttributeMaps( schema );
-            }
+            Schema schema = browserConnection.getSchema();
+            createAttributeMaps( schema );
         }
         createAttributeMaps( Schema.DEFAULT_SCHEMA );
-        this.attributeTypesAndOids = new String[this.attributeTypes2AtdMap.size() + this.attributeOid2AtdMap.size()];
-        System.arraycopy( this.attributeTypes2AtdMap.keySet().toArray(), 0, this.attributeTypesAndOids, 0,
-            this.attributeTypes2AtdMap.size() );
-        System.arraycopy( this.attributeOid2AtdMap.keySet().toArray(), 0, this.attributeTypesAndOids,
-            this.attributeTypes2AtdMap.size(), this.attributeOid2AtdMap.size() );
+        attributeTypesAndOids = new String[attributeNames2AtdMap.size() + attributeOid2AtdMap.size()];
+        System.arraycopy( attributeNames2AtdMap.keySet().toArray(), 0, attributeTypesAndOids, 0, attributeNames2AtdMap
+            .size() );
+        System.arraycopy( attributeOid2AtdMap.keySet().toArray(), 0, attributeTypesAndOids, attributeNames2AtdMap
+            .size(), attributeOid2AtdMap.size() );
 
         // init available syntaxes
-        this.syntaxOid2LsdMap = new TreeMap();
-        this.syntaxDesc2LsdMap = new TreeMap();
-        for ( int i = 0; i < connections.length; i++ )
+        syntaxOid2LsdMap = new TreeMap<String, LdapSyntaxDescription>();
+        syntaxDesc2LsdMap = new TreeMap<String, LdapSyntaxDescription>();
+        for ( IBrowserConnection browserConnection : connections )
         {
-            Schema schema = connections[i].getSchema();
-            if ( schema != null )
-            {
-                createSyntaxMaps( schema );
-            }
+            Schema schema = browserConnection.getSchema();
+            createSyntaxMaps( schema );
         }
         createSyntaxMaps( Schema.DEFAULT_SCHEMA );
-        this.syntaxDescsAndOids = new String[this.syntaxOid2LsdMap.size()];
-        System.arraycopy( this.syntaxOid2LsdMap.keySet().toArray(), 0, this.syntaxDescsAndOids, 0,
-            this.syntaxOid2LsdMap.size() );
+        syntaxDescsAndOids = new String[syntaxOid2LsdMap.size()];
+        System.arraycopy( syntaxOid2LsdMap.keySet().toArray(), 0, syntaxDescsAndOids, 0, syntaxOid2LsdMap.size() );
 
         // create attribute contents
         // BaseWidgetUtils.createSpacer(composite, 1);
         BaseWidgetUtils.createSpacer( composite, 1 );
-        this.createAttributeContents( composite );
-        this.attributeList = new ArrayList( Arrays.asList( BrowserCommonActivator.getDefault().getValueEditorsPreferences()
-            .getAttributeValueProviderRelations() ) );
-        attributeViewer.setInput( this.attributeList );
+        createAttributeContents( composite );
+        attributeList = new ArrayList<AttributeValueEditorRelation>( Arrays.asList( BrowserCommonActivator.getDefault()
+            .getValueEditorsPreferences().getAttributeValueEditorRelations() ) );
+        attributeViewer.setInput( attributeList );
         attributeViewer.getTable().getColumn( 0 ).pack();
-        // attributeViewer.getTable().getColumn(1).pack();
         attributeViewer.getTable().getColumn( 2 ).pack();
         attributeViewer.getTable().pack();
 
         // create syntax contents
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        this.createSyntaxContents( composite );
-        this.syntaxList = new ArrayList( Arrays.asList( BrowserCommonActivator.getDefault().getValueEditorsPreferences()
-            .getSyntaxValueProviderRelations() ) );
-        syntaxViewer.setInput( this.syntaxList );
+        createSyntaxContents( composite );
+        syntaxList = new ArrayList<SyntaxValueEditorRelation>( Arrays.asList( BrowserCommonActivator.getDefault()
+            .getValueEditorsPreferences().getSyntaxValueEditorRelations() ) );
+        syntaxViewer.setInput( syntaxList );
         syntaxViewer.getTable().getColumn( 0 ).pack();
-        // syntaxViewer.getTable().getColumn(1).pack();
         syntaxViewer.getTable().getColumn( 2 ).pack();
         syntaxViewer.getTable().pack();
 
@@ -196,17 +218,15 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     private void createAttributeMaps( Schema schema )
     {
         AttributeTypeDescription[] atds = schema.getAttributeTypeDescriptions();
-        for ( int i = 0; i < atds.length; i++ )
+        for ( AttributeTypeDescription atd : atds )
         {
+            attributeOid2AtdMap.put( atd.getNumericOID(), atd );
 
-            attributeOid2AtdMap.put( atds[i].getNumericOID(), atds[i] );
-
-            String[] names = atds[i].getNames();
-            for ( int j = 0; j < names.length; j++ )
+            String[] names = atd.getNames();
+            for ( String name : names )
             {
-                attributeTypes2AtdMap.put( names[j], atds[i] );
+                attributeNames2AtdMap.put( name, atd );
             }
-
         }
     }
 
@@ -214,23 +234,20 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     private void createSyntaxMaps( Schema schema )
     {
         LdapSyntaxDescription[] lsds = schema.getLdapSyntaxDescriptions();
-        for ( int i = 0; i < lsds.length; i++ )
+        for ( LdapSyntaxDescription lsd : lsds )
         {
+            syntaxOid2LsdMap.put( lsd.getNumericOID(), lsd );
 
-            syntaxOid2LsdMap.put( lsds[i].getNumericOID(), lsds[i] );
-
-            if ( lsds[i].getDesc() != null )
+            if ( lsd.getDesc() != null )
             {
-                syntaxDesc2LsdMap.put( lsds[i].getDesc(), lsds[i] );
+                syntaxDesc2LsdMap.put( lsd.getDesc(), lsd );
             }
-
         }
     }
 
 
     private void createAttributeContents( Composite parent )
     {
-
         BaseWidgetUtils.createLabel( parent, "Value Editors by Attribute Types", 1 );
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
@@ -296,16 +313,11 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 removeAttribute();
             }
         } );
-
-        // c1.pack();
-        // c2.pack();
-        // table.pack();
     }
 
 
     private void createSyntaxContents( Composite parent )
     {
-
         BaseWidgetUtils.createLabel( parent, "Value Editors by Syntax", 1 );
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
@@ -371,114 +383,116 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 removeSyntax();
             }
         } );
-
-        // c1.pack();
-        // c2.pack();
-        // table.pack();
     }
 
 
-    protected void addAttribute()
+    private void addAttribute()
     {
         AttributeValueEditorDialog dialog = new AttributeValueEditorDialog( getShell(), null,
-            this.class2ValueEditorProxyMap, this.attributeTypesAndOids );
+            class2ValueEditorExtensionMap, attributeTypesAndOids );
         if ( dialog.open() == AttributeValueEditorDialog.OK )
         {
-            this.attributeList.add( dialog.getRelation() );
-            this.attributeViewer.refresh();
+            attributeList.add( dialog.getRelation() );
+            attributeViewer.refresh();
         }
     }
 
 
-    protected void removeAttribute()
+    private void removeAttribute()
     {
-        Object o = ( ( StructuredSelection ) this.attributeViewer.getSelection() ).getFirstElement();
-        this.attributeList.remove( o );
-        this.attributeViewer.refresh();
+        Object o = ( ( StructuredSelection ) attributeViewer.getSelection() ).getFirstElement();
+        attributeList.remove( o );
+        attributeViewer.refresh();
     }
 
 
-    protected void editAttribute()
+    private void editAttribute()
     {
-        StructuredSelection sel = ( StructuredSelection ) this.attributeViewer.getSelection();
+        StructuredSelection sel = ( StructuredSelection ) attributeViewer.getSelection();
         if ( !sel.isEmpty() )
         {
-            AttributeValueProviderRelation relation = ( AttributeValueProviderRelation ) sel.getFirstElement();
+            AttributeValueEditorRelation relation = ( AttributeValueEditorRelation ) sel.getFirstElement();
             AttributeValueEditorDialog dialog = new AttributeValueEditorDialog( getShell(), relation,
-                this.class2ValueEditorProxyMap, this.attributeTypesAndOids );
+                class2ValueEditorExtensionMap, attributeTypesAndOids );
             if ( dialog.open() == AttributeValueEditorDialog.OK )
             {
-                int index = this.attributeList.indexOf( relation );
-                this.attributeList.set( index, dialog.getRelation() );
-                this.attributeViewer.refresh();
+                int index = attributeList.indexOf( relation );
+                attributeList.set( index, dialog.getRelation() );
+                attributeViewer.refresh();
             }
         }
     }
 
 
-    protected void addSyntax()
+    private void addSyntax()
     {
-        SyntaxValueEditorDialog dialog = new SyntaxValueEditorDialog( getShell(), null,
-            this.class2ValueEditorProxyMap, this.syntaxDescsAndOids );
+        SyntaxValueEditorDialog dialog = new SyntaxValueEditorDialog( getShell(), null, class2ValueEditorExtensionMap,
+            syntaxDescsAndOids );
         if ( dialog.open() == SyntaxValueEditorDialog.OK )
         {
-            this.syntaxList.add( dialog.getRelation() );
-            this.syntaxViewer.refresh();
+            syntaxList.add( dialog.getRelation() );
+            syntaxViewer.refresh();
         }
     }
 
 
-    protected void removeSyntax()
+    private void removeSyntax()
     {
-        Object o = ( ( StructuredSelection ) this.syntaxViewer.getSelection() ).getFirstElement();
-        this.syntaxList.remove( o );
-        this.syntaxViewer.refresh();
+        Object o = ( ( StructuredSelection ) syntaxViewer.getSelection() ).getFirstElement();
+        syntaxList.remove( o );
+        syntaxViewer.refresh();
     }
 
 
-    protected void editSyntax()
+    private void editSyntax()
     {
-        StructuredSelection sel = ( StructuredSelection ) this.syntaxViewer.getSelection();
+        StructuredSelection sel = ( StructuredSelection ) syntaxViewer.getSelection();
         if ( !sel.isEmpty() )
         {
-            SyntaxValueProviderRelation relation = ( SyntaxValueProviderRelation ) sel.getFirstElement();
+            SyntaxValueEditorRelation relation = ( SyntaxValueEditorRelation ) sel.getFirstElement();
             SyntaxValueEditorDialog dialog = new SyntaxValueEditorDialog( getShell(), relation,
-                this.class2ValueEditorProxyMap, this.syntaxDescsAndOids );
+                class2ValueEditorExtensionMap, syntaxDescsAndOids );
             if ( dialog.open() == SyntaxValueEditorDialog.OK )
             {
-                int index = this.syntaxList.indexOf( relation );
-                this.syntaxList.set( index, dialog.getRelation() );
-                this.syntaxViewer.refresh();
+                int index = syntaxList.indexOf( relation );
+                syntaxList.set( index, dialog.getRelation() );
+                syntaxViewer.refresh();
             }
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-        AttributeValueProviderRelation[] aRelations = ( AttributeValueProviderRelation[] ) this.attributeList
-            .toArray( new AttributeValueProviderRelation[this.attributeList.size()] );
-        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setAttributeValueProviderRelations( aRelations );
+        AttributeValueEditorRelation[] aRelations = attributeList
+            .toArray( new AttributeValueEditorRelation[attributeList.size()] );
+        BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+            .setAttributeValueEditorRelations( aRelations );
 
-        SyntaxValueProviderRelation[] sRelations = ( SyntaxValueProviderRelation[] ) this.syntaxList
-            .toArray( new SyntaxValueProviderRelation[this.syntaxList.size()] );
-        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setSyntaxValueProviderRelations( sRelations );
+        SyntaxValueEditorRelation[] sRelations = syntaxList.toArray( new SyntaxValueEditorRelation[syntaxList.size()] );
+        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setSyntaxValueEditorRelations( sRelations );
 
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-        this.attributeList.clear();
-        this.attributeList.addAll( Arrays.asList( BrowserCommonActivator.getDefault().getValueEditorsPreferences()
-            .getDefaultAttributeValueProviderRelations() ) );
-        this.attributeViewer.refresh();
+        attributeList.clear();
+        attributeList.addAll( Arrays.asList( BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+            .getDefaultAttributeValueEditorRelations() ) );
+        attributeViewer.refresh();
 
-        this.syntaxList.clear();
-        this.syntaxList.addAll( Arrays.asList( BrowserCommonActivator.getDefault().getValueEditorsPreferences()
-            .getDefaultSyntaxValueProviderRelations() ) );
-        this.syntaxViewer.refresh();
+        syntaxList.clear();
+        syntaxList.addAll( Arrays.asList( BrowserCommonActivator.getDefault().getValueEditorsPreferences()
+            .getDefaultSyntaxValueEditorRelations() ) );
+        syntaxViewer.refresh();
 
         super.performDefaults();
     }
@@ -487,9 +501,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     {
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof AttributeValueProviderRelation )
+            if ( obj instanceof AttributeValueEditorRelation )
             {
-                AttributeValueProviderRelation relation = ( AttributeValueProviderRelation ) obj;
+                AttributeValueEditorRelation relation = ( AttributeValueEditorRelation ) obj;
                 if ( index == 0 )
                 {
                     return relation.getAttributeNumericOidOrType();
@@ -498,16 +512,16 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 {
                     if ( relation.getAttributeNumericOidOrType() != null )
                     {
-                        if ( attributeTypes2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
+                        if ( attributeNames2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
                         {
-                            AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeTypes2AtdMap
+                            AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeNames2AtdMap
                                 .get( relation.getAttributeNumericOidOrType() );
                             String s = atd.getNumericOID();
-                            for ( int i = 0; i < atd.getNames().length; i++ )
+                            for ( String name : atd.getNames() )
                             {
-                                if ( !relation.getAttributeNumericOidOrType().equals( atd.getNames()[i] ) )
+                                if ( !relation.getAttributeNumericOidOrType().equals( name ) )
                                 {
-                                    s += ", " + atd.getNames()[i];
+                                    s += ", " + name;
                                 }
                             }
                             return s;
@@ -522,8 +536,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 }
                 else if ( index == 2 )
                 {
-                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
-                    return vp != null ? vp.name : null;
+                    ValueEditorExtension vee = class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() );
+                    return vee != null ? vee.name : null;
                 }
             }
             return null;
@@ -532,13 +546,13 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
         public Image getColumnImage( Object obj, int index )
         {
-            if ( obj instanceof AttributeValueProviderRelation )
+            if ( obj instanceof AttributeValueEditorRelation )
             {
-                AttributeValueProviderRelation relation = ( AttributeValueProviderRelation ) obj;
+                AttributeValueEditorRelation relation = ( AttributeValueEditorRelation ) obj;
                 if ( index == 2 )
                 {
-                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
-                    return vp != null ? vp.icon.createImage() : null;
+                    ValueEditorExtension vee = class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() );
+                    return vee != null ? vee.icon.createImage() : null;
                 }
             }
 
@@ -550,9 +564,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     {
         public String getColumnText( Object obj, int index )
         {
-            if ( obj instanceof SyntaxValueProviderRelation )
+            if ( obj instanceof SyntaxValueEditorRelation )
             {
-                SyntaxValueProviderRelation relation = ( SyntaxValueProviderRelation ) obj;
+                SyntaxValueEditorRelation relation = ( SyntaxValueEditorRelation ) obj;
                 if ( index == 0 )
                 {
                     return relation.getSyntaxOID();
@@ -571,8 +585,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 }
                 else if ( index == 2 )
                 {
-                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
-                    return vp != null ? vp.name : null;
+                    ValueEditorExtension vee = class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() );
+                    return vee != null ? vee.name : null;
                 }
             }
             return null;
@@ -581,13 +595,13 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
         public Image getColumnImage( Object obj, int index )
         {
-            if ( obj instanceof SyntaxValueProviderRelation )
+            if ( obj instanceof SyntaxValueEditorRelation )
             {
-                SyntaxValueProviderRelation relation = ( SyntaxValueProviderRelation ) obj;
+                SyntaxValueEditorRelation relation = ( SyntaxValueEditorRelation ) obj;
                 if ( index == 2 )
                 {
-                    ValueEditorExtension vp = class2ValueEditorProxyMap.get( relation.getValueProviderClassname() );
-                    return vp != null ? vp.icon.createImage() : null;
+                    ValueEditorExtension vee = class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() );
+                    return vee != null ? vee.icon.createImage() : null;
                 }
             }
 

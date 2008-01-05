@@ -24,48 +24,32 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.eclipse.jface.preference.ColorSelector;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
+/**
+ * The AttributesPreferencePage contains general settings for attributes.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
-
-    private final String[] ATTRIBUTE_TYPES = new String[]
-        { "Objectclass attribute:", "Must attributes:", "May attributes:", "Operational attributes:" };
-
-    private final String[] ATTRIBUTE_FONT_CONSTANTS = new String[]
-        { BrowserCommonConstants.PREFERENCE_OBJECTCLASS_FONT, BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_FONT,
-        BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_FONT, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT };
-
-    private final String[] ATTRIBUTE_COLOR_CONSTANTS = new String[]
-        { BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR, BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR,
-        BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR };
-
-    private Label[] attributeTypeLabels = new Label[ATTRIBUTE_TYPES.length];
-
-    private ColorSelector[] attributeColorSelectors = new ColorSelector[ATTRIBUTE_TYPES.length];
-
-    private Button[] attributeBoldButtons = new Button[ATTRIBUTE_TYPES.length];
-
-    private Button[] attributeItalicButtons = new Button[ATTRIBUTE_TYPES.length];
 
     private Button showRawValuesButton;
 
 
+    /**
+     * Creates a new instance of AttributesPreferencePage.
+     */
     public AttributesPreferencePage()
     {
         super( "Attributes" );
@@ -74,14 +58,19 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         GridLayout layout = new GridLayout( 1, false );
         layout.marginWidth = 0;
@@ -95,28 +84,7 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        Group colorsAndFontsGroup = BaseWidgetUtils.createGroup( composite, "Attribute Colors and Fonts", 1 );
-        colorsAndFontsGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        Composite colorsAndFontsComposite = BaseWidgetUtils.createColumnContainer( colorsAndFontsGroup, 4, 1 );
-        for ( int i = 0; i < ATTRIBUTE_TYPES.length; i++ )
-        {
-            final int index = i;
 
-            attributeTypeLabels[i] = BaseWidgetUtils.createLabel( colorsAndFontsComposite, ATTRIBUTE_TYPES[i], 1 );
-            attributeTypeLabels[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-            attributeColorSelectors[i] = new ColorSelector( colorsAndFontsComposite );
-            attributeBoldButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, "Bold", 1 );
-            attributeItalicButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, "Italic", 1 );
-
-            FontData[] fontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );
-            RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_COLOR_CONSTANTS[i] );
-            setColorsAndFonts( index, fontDatas, rgb );
-        }
-
-        BaseWidgetUtils.createSpacer( composite, 1 );
-        BaseWidgetUtils.createSpacer( composite, 1 );
         showRawValuesButton = BaseWidgetUtils.createCheckbox( composite, "Show raw values", 1 );
         showRawValuesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
@@ -126,91 +94,24 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
     }
 
 
-    private void setColorsAndFonts( int index, FontData[] fontDatas, RGB rgb )
-    {
-        boolean bold = isBold( fontDatas );
-        boolean italic = isItalic( fontDatas );
-        attributeColorSelectors[index].setColorValue( rgb );
-        attributeBoldButtons[index].setSelection( bold );
-        attributeItalicButtons[index].setSelection( italic );
-    }
-
-
-    private void setFontData( FontData[] fontDatas, Button boldButton, Button italicButton )
-    {
-        for ( int j = 0; j < fontDatas.length; j++ )
-        {
-            int style = SWT.NORMAL;
-            if ( boldButton.getSelection() )
-                style |= SWT.BOLD;
-            if ( italicButton.getSelection() )
-                style |= SWT.ITALIC;
-            fontDatas[j].setStyle( style );
-        }
-    }
-
-
-    private boolean isBold( FontData[] fontDatas )
-    {
-        boolean bold = false;
-        for ( int j = 0; j < fontDatas.length; j++ )
-        {
-            if ( ( fontDatas[j].getStyle() & SWT.BOLD ) != SWT.NORMAL )
-                bold = true;
-        }
-        return bold;
-    }
-
-
-    private boolean isItalic( FontData[] fontDatas )
-    {
-        boolean italic = false;
-        for ( int j = 0; j < fontDatas.length; j++ )
-        {
-            if ( ( fontDatas[j].getStyle() & SWT.ITALIC ) != SWT.NORMAL )
-                italic = true;
-        }
-        return italic;
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-
-        for ( int i = 0; i < ATTRIBUTE_TYPES.length; i++ )
-        {
-            FontData[] fontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );
-            setFontData( fontDatas, this.attributeBoldButtons[i], this.attributeItalicButtons[i] );
-            RGB rgb = attributeColorSelectors[i].getColorValue();
-            PreferenceConverter.setValue( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_FONT_CONSTANTS[i], fontDatas );
-            PreferenceConverter.setValue( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_COLOR_CONSTANTS[i], rgb );
-        }
-
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES,
-            this.showRawValuesButton.getSelection() );
-
+            showRawValuesButton.getSelection() );
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
-
-        for ( int i = 0; i < ATTRIBUTE_TYPES.length; i++ )
-        {
-            FontData[] fontDatas = PreferenceConverter.getDefaultFontDataArray( BrowserCommonActivator.getDefault()
-                .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );
-            RGB rgb = PreferenceConverter.getDefaultColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_COLOR_CONSTANTS[i] );
-            setColorsAndFonts( i, fontDatas, rgb );
-        }
-
         showRawValuesButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
-
         super.performDefaults();
     }
 
