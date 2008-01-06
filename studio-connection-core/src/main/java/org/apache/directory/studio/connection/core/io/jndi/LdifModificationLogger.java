@@ -49,6 +49,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.IJndiLogger;
@@ -221,6 +222,11 @@ public class LdifModificationLogger implements IJndiLogger
     public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
         final Control[] controls, NamingException ex )
     {
+        if (!isModificationLogEnabled())
+        {
+            return;
+        }
+
         try
         {
             LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( dn ) );
@@ -262,6 +268,11 @@ public class LdifModificationLogger implements IJndiLogger
     public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
         NamingException ex )
     {
+        if (!isModificationLogEnabled())
+        {
+            return;
+        }
+
         LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn ) );
         addControlLines( record, controls );
         record.setChangeType( LdifChangeTypeLine.createDelete() );
@@ -278,6 +289,11 @@ public class LdifModificationLogger implements IJndiLogger
     public void logChangetypeModify( Connection connection, final String dn,
         final ModificationItem[] modificationItems, final Control[] controls, NamingException ex )
     {
+        if (!isModificationLogEnabled())
+        {
+            return;
+        }
+
         try
         {
             LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn ) );
@@ -336,6 +352,11 @@ public class LdifModificationLogger implements IJndiLogger
     public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex )
     {
+        if (!isModificationLogEnabled())
+        {
+            return;
+        }
+
         try
         {
             LdapDN dn = new LdapDN( newDn );
@@ -451,6 +472,16 @@ public class LdifModificationLogger implements IJndiLogger
         return null;
     }
 
+    /**
+     * Checks if modification log is enabled.
+     * 
+     * @return true, if modification log is enabled
+     */
+    private boolean isModificationLogEnabled()
+    {
+        return ConnectionCorePlugin.getDefault().getPluginPreferences()
+            .getBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE );
+    }
 
     public String getId()
     {

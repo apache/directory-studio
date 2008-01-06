@@ -38,7 +38,6 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
      */
     public void initializeDefaultPreferences()
     {
-
         IPreferenceStore store = BrowserUIPlugin.getDefault().getPreferenceStore();
 
         // Browser
@@ -47,10 +46,6 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         // Search Result Editor
         store.setDefault( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS, true );
-
-        // Modification Logs
-        store.setDefault( BrowserUIConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
-
     }
 
 }

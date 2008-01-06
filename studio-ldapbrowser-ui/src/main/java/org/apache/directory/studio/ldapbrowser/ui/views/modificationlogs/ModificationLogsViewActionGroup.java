@@ -24,6 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.ModificationLogsViewActionProxy;
 import org.eclipse.jface.action.IAction;
@@ -58,6 +60,12 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
     /** The Constant refreshAction. */
     private static final String clearAction = "clearAction";
 
+    /** The enable modification logs action. */
+    private EnableModificationLogsAction enableModificationLogsAction;
+
+    /** The open modification logs preference page action. */
+    private OpenModificationLogsPreferencePageAction openModificationLogsPreferencePageAction;
+
     /** The modification logs view action map. */
     private Map<String, ModificationLogsViewActionProxy> modificationLogsViewActionMap;
 
@@ -81,6 +89,8 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
             new RefreshAction( view ) ) );
         modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, this,
             new ClearAction( view ) ) );
+        enableModificationLogsAction = new EnableModificationLogsAction();
+        openModificationLogsPreferencePageAction = new OpenModificationLogsPreferencePageAction();
     }
 
 
@@ -98,6 +108,9 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
             }
             modificationLogsViewActionMap.clear();
             modificationLogsViewActionMap = null;
+
+            enableModificationLogsAction = null;
+            openModificationLogsPreferencePageAction = null;
 
             view = null;
         }
@@ -117,6 +130,19 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
         actionBars.getToolBarManager().add( new Separator() );
         actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( olderAction ) );
         actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( newerAction ) );
+
+        // Menu Bar
+        actionBars.getMenuManager().add( enableModificationLogsAction );
+        actionBars.getMenuManager().add( new Separator() );
+        actionBars.getMenuManager().add( openModificationLogsPreferencePageAction );
+        actionBars.getMenuManager().addMenuListener( new IMenuListener()
+        {
+            public void menuAboutToShow( IMenuManager manager )
+            {
+                enableModificationLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
+                    .getBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+            }
+        } );
     }
 
 

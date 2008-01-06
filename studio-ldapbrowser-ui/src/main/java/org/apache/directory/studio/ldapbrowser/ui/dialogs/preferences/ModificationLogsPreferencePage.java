@@ -21,8 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences;
 
 
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.widgets.Button;
@@ -74,8 +75,8 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         enableModificationLogging = BaseWidgetUtils.createCheckbox( composite, "Enable modification logs", 1 );
-        enableModificationLogging.setSelection( getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+        enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
 
         applyDialogFont( composite );
         return composite;
@@ -87,8 +88,8 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
      */
     public boolean performOk()
     {
-        getPreferenceStore().setValue( BrowserUIConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE,
-            enableModificationLogging.getSelection() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, enableModificationLogging.getSelection() );
         return true;
     }
 
@@ -98,8 +99,8 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
      */
     protected void performDefaults()
     {
-        enableModificationLogging.setSelection( getPreferenceStore().getDefaultBoolean(
-            BrowserUIConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+        enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
+            .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
         super.performDefaults();
     }
 

@@ -11,5 +11,11 @@
             name="LDIF Modification Logger">
       </jndiLogger>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.directory.studio.connection.core.ConnectionCorePreferencesInitializer">
+      </initializer>
+   </extension>
 
 </plugin>

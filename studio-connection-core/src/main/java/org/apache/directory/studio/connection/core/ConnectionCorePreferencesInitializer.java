@@ -17,25 +17,31 @@
  *  under the License. 
  *  
  */
+
 package org.apache.directory.studio.connection.core;
 
 
+import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+
+
 /**
- * Constants for the connection core plugin.
+ * This class is used to set default preference values.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ConnectionCoreConstants
+public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInitializer
 {
+    /**
+     * {@inheritDoc}
+     */
+    public void initializeDefaultPreferences()
+    {
+        Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
 
-    /** The line separator. */
-    public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$
-
-    /** The date format of the modification logger */
-    public static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"; //$NON-NLS-1$
-
-    /** The constant used to identify the "enable modification logs" preference  */
-    public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable";
+        // Modification Logs
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
+    }
 
 }
