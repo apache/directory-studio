@@ -40,7 +40,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -271,18 +273,17 @@ public class DeleteAction extends BrowserAction
                 }
                 if ( attributes.length + values.length > 0 )
                 {
-
-                    List attributeList = new ArrayList( Arrays.asList( attributes ) );
-                    List valueList = new ArrayList( Arrays.asList( values ) );
+                    List<IAttribute> attributeList = new ArrayList<IAttribute>( Arrays.asList( attributes ) );
+                    List<IValue> valueList = new ArrayList<IValue>( Arrays.asList( values ) );
 
                     // filter empty attributes and values
-                    for ( Iterator it = attributeList.iterator(); it.hasNext(); )
+                    for ( Iterator<IAttribute> it = attributeList.iterator(); it.hasNext(); )
                     {
-                        IAttribute att = ( IAttribute ) it.next();
+                        IAttribute att = it.next();
                         IValue[] vals = att.getValues();
-                        for ( int i = 0; i < vals.length; i++ )
+                        for ( IValue value : vals )
                         {
-                            if ( vals[i].isEmpty() )
+                            if ( value.isEmpty() )
                             {
                                 att.deleteEmptyValue();
                             }
@@ -293,9 +294,9 @@ public class DeleteAction extends BrowserAction
                             it.remove();
                         }
                     }
-                    for ( Iterator it = valueList.iterator(); it.hasNext(); )
+                    for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
                     {
-                        IValue value = ( IValue ) it.next();
+                        IValue value = it.next();
                         if ( value.isEmpty() )
                         {
                             value.getAttribute().deleteEmptyValue();
@@ -305,8 +306,8 @@ public class DeleteAction extends BrowserAction
 
                     if ( !attributeList.isEmpty() || !valueList.isEmpty() )
                     {
-                        deleteAttributesAndValues( ( IAttribute[] ) attributeList.toArray( new IAttribute[attributeList
-                            .size()] ), ( IValue[] ) valueList.toArray( new IValue[valueList.size()] ) );
+                        deleteAttributesAndValues( attributeList.toArray( new IAttribute[attributeList.size()] ),
+                            valueList.toArray( new IValue[valueList.size()] ) );
                     }
                 }
             }
@@ -336,7 +337,7 @@ public class DeleteAction extends BrowserAction
         }
         catch ( Exception e )
         {
-            // e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
     }
@@ -352,35 +353,34 @@ public class DeleteAction extends BrowserAction
      */
     protected IEntry[] getEntries() throws Exception
     {
-        LinkedHashSet entriesSet = new LinkedHashSet();
-        for ( int i = 0; i < getSelectedEntries().length; i++ )
+        LinkedHashSet<IEntry> entriesSet = new LinkedHashSet<IEntry>();
+        for ( IEntry entry : getSelectedEntries() )
         {
-            if ( !getSelectedEntries()[i].hasParententry() )
+            if ( !entry.hasParententry() )
             {
                 throw new Exception();
             }
-            entriesSet.add( getSelectedEntries()[i] );
+            entriesSet.add( entry );
         }
-        for ( int i = 0; i < this.getSelectedSearchResults().length; i++ )
+        for ( ISearchResult sr : getSelectedSearchResults() )
         {
-            if ( !getSelectedSearchResults()[i].getEntry().hasParententry() )
+            if ( !sr.getEntry().hasParententry() )
             {
                 throw new Exception();
             }
-            entriesSet.add( this.getSelectedSearchResults()[i].getEntry() );
+            entriesSet.add( sr.getEntry() );
         }
 
-        IEntry[] allEntries = ( IEntry[] ) entriesSet.toArray( new IEntry[entriesSet.size()] );
-        for ( int i = 0; i < allEntries.length; i++ )
+        IEntry[] allEntries = entriesSet.toArray( new IEntry[entriesSet.size()] );
+        for ( IEntry entry : allEntries )
         {
-            IEntry entry = allEntries[i];
             if ( entriesSet.contains( entry.getParententry() ) )
             {
                 entriesSet.remove( entry );
             }
         }
 
-        return ( IEntry[] ) entriesSet.toArray( new IEntry[entriesSet.size()] );
+        return entriesSet.toArray( new IEntry[entriesSet.size()] );
     }
 
 
@@ -417,9 +417,8 @@ public class DeleteAction extends BrowserAction
      */
     protected void deleteSearches( ISearch[] searches )
     {
-        for ( int i = 0; i < searches.length; i++ )
+        for ( ISearch search : searches )
         {
-            ISearch search = searches[i];
             search.getBrowserConnection().getSearchManager().removeSearch( search );
         }
     }
@@ -445,9 +444,8 @@ public class DeleteAction extends BrowserAction
      */
     protected void deleteBookmarks( IBookmark[] bookmarks )
     {
-        for ( int i = 0; i < bookmarks.length; i++ )
+        for ( IBookmark bookmark : bookmarks )
         {
-            IBookmark bookmark = bookmarks[i];
             bookmark.getBrowserConnection().getBookmarkManager().removeBookmark( bookmark );
         }
     }
@@ -462,12 +460,9 @@ public class DeleteAction extends BrowserAction
      */
     protected IAttribute[] getAttributes() throws Exception
     {
-
-        for ( int i = 0; i < getSelectedAttributes().length; i++ )
+        // check if a non-modifyable, must or objectClass attribute is selected
+        for ( IAttribute att : getSelectedAttributes() )
         {
-            // check if a non-modifyable, must or objectClass attribute is
-            // selected
-            IAttribute att = getSelectedAttributes()[i];
             if ( !SchemaUtils.isModifyable( att.getAttributeTypeDescription() ) || att.isMustAttribute()
                 || att.isObjectClassAttribute() )
             {
@@ -475,14 +470,11 @@ public class DeleteAction extends BrowserAction
             }
         }
 
-        for ( int i = 0; i < getSelectedAttributeHierarchies().length; i++ )
+        // check if a non-modifyable, must or objectClass attribute is selected
+        for ( AttributeHierarchy ah : getSelectedAttributeHierarchies() )
         {
-            // check if a non-modifyable, must or objectClass attribute is
-            // selected
-            AttributeHierarchy ah = getSelectedAttributeHierarchies()[i];
-            for ( Iterator it = ah.iterator(); it.hasNext(); )
+            for ( IAttribute attribute : ah )
             {
-                IAttribute attribute = ( IAttribute ) it.next();
                 if ( !SchemaUtils.isModifyable( attribute.getAttributeTypeDescription() )
                     || attribute.isMustAttribute() || attribute.isObjectClassAttribute() )
                 {
@@ -491,12 +483,11 @@ public class DeleteAction extends BrowserAction
             }
         }
 
-        List attributeList = new ArrayList();
+        List<IAttribute> attributeList = new ArrayList<IAttribute>();
 
         // add selected attributes
-        for ( int i = 0; i < getSelectedAttributes().length; i++ )
+        for ( IAttribute attribute : getSelectedAttributes() )
         {
-            IAttribute attribute = getSelectedAttributes()[i];
             if ( attribute != null && attribute.getValueSize() > 0 )
             {
                 attributeList.add( attribute );
@@ -504,14 +495,10 @@ public class DeleteAction extends BrowserAction
         }
 
         // add selected hierarchies
-        for ( int i = 0; i < getSelectedAttributeHierarchies().length; i++ )
+        for ( AttributeHierarchy ah : getSelectedAttributeHierarchies() )
         {
-            // check if a operational, must or objectClass attribute is
-            // selected
-            AttributeHierarchy ah = getSelectedAttributeHierarchies()[i];
-            for ( Iterator it = ah.iterator(); it.hasNext(); )
+            for ( IAttribute attribute : ah )
             {
-                IAttribute attribute = ( IAttribute ) it.next();
                 if ( attribute != null && attribute.getValueSize() > 0 )
                 {
                     attributeList.add( attribute );
@@ -521,22 +508,19 @@ public class DeleteAction extends BrowserAction
 
         // check if ALL values of an attribute are selected -> delete whole
         // attribute
-        Map attributeNameToSelectedValuesCountMap = new HashMap();
-        for ( int i = 0; i < getSelectedValues().length; i++ )
+        Map<String, Integer> attributeNameToSelectedValuesCountMap = new HashMap<String, Integer>();
+        for ( IValue value : getSelectedValues() )
         {
-            if ( !attributeNameToSelectedValuesCountMap.containsKey( getSelectedValues()[i].getAttribute()
-                .getDescription() ) )
+            if ( !attributeNameToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
             {
-                attributeNameToSelectedValuesCountMap.put( getSelectedValues()[i].getAttribute().getDescription(),
-                    new Integer( 0 ) );
+                attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( 0 ) );
             }
-            int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( getSelectedValues()[i].getAttribute()
-                .getDescription() ) ).intValue() + 1;
-            attributeNameToSelectedValuesCountMap.put( getSelectedValues()[i].getAttribute().getDescription(),
-                new Integer( count ) );
-            if ( count >= getSelectedValues()[i].getAttribute().getValueSize() )
+            int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( value.getAttribute().getDescription() ) )
+                .intValue() + 1;
+            attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( count ) );
+            if ( count >= value.getAttribute().getValueSize() )
             {
-                IAttribute attribute = getSelectedValues()[i].getAttribute();
+                IAttribute attribute = value.getAttribute();
                 if ( attribute != null && !attributeList.contains( attribute ) )
                 {
                     attributeList.add( attribute );
@@ -557,85 +541,85 @@ public class DeleteAction extends BrowserAction
      */
     protected IValue[] getValues() throws Exception
     {
-
-        Map attributeNameToSelectedValuesCountMap = new HashMap();
-        Set selectedObjectClasses = new HashSet();
-        for ( int i = 0; i < getSelectedValues().length; i++ )
+        Map<String, Integer> attributeNameToSelectedValuesCountMap = new HashMap<String, Integer>();
+        Set<String> selectedObjectClasses = new HashSet<String>();
+        for ( IValue value : getSelectedValues() )
         {
             // check if a value of an operational attribute is selected
-            if ( !SchemaUtils.isModifyable( getSelectedValues()[i].getAttribute().getAttributeTypeDescription() ) )
+            if ( !SchemaUtils.isModifyable( value.getAttribute().getAttributeTypeDescription() ) )
             {
                 throw new Exception();
             }
 
             // check if (part of) RDN is selected
-            Iterator<AttributeTypeAndValue> atavIterator = this.getSelectedValues()[i].getAttribute().getEntry().getRdn().iterator();
-            while(atavIterator.hasNext())
+            Iterator<AttributeTypeAndValue> atavIterator = value.getAttribute().getEntry().getRdn().iterator();
+            while ( atavIterator.hasNext() )
             {
                 AttributeTypeAndValue atav = atavIterator.next();
-                if ( getSelectedValues()[i].getAttribute().getDescription().equals( atav.getUpType() )
-                    && getSelectedValues()[i].getStringValue().equals( atav.getUpValue() ) )
+                if ( value.getAttribute().getDescription().equals( atav.getUpType() )
+                    && value.getStringValue().equals( atav.getUpValue() ) )
                 {
                     throw new Exception();
                 }
             }
 
             // check if a required objectClass is selected
-            if ( getSelectedValues()[i].getAttribute().isObjectClassAttribute() )
+            if ( value.getAttribute().isObjectClassAttribute() )
             {
-                selectedObjectClasses.add( getSelectedValues()[i].getStringValue() );
+                selectedObjectClasses.add( value.getStringValue() );
             }
 
             // check if ALL values of objectClass or a MUST attribute are
             // selected
-            if ( !attributeNameToSelectedValuesCountMap.containsKey( getSelectedValues()[i].getAttribute()
-                .getDescription() ) )
+            if ( !attributeNameToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
             {
-                attributeNameToSelectedValuesCountMap.put( getSelectedValues()[i].getAttribute().getDescription(),
-                    new Integer( 0 ) );
+                attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( 0 ) );
             }
-            int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( getSelectedValues()[i].getAttribute()
-                .getDescription() ) ).intValue() + 1;
-            attributeNameToSelectedValuesCountMap.put( getSelectedValues()[i].getAttribute().getDescription(),
-                new Integer( count ) );
-            if ( ( getSelectedValues()[i].getAttribute().isObjectClassAttribute() || getSelectedValues()[i]
-                .getAttribute().isMustAttribute() /*
-             * || this.selectedEntry ==
-             * null
-             */)
-                && count >= getSelectedValues()[i].getAttribute().getValueSize() )
+            int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( value.getAttribute().getDescription() ) )
+                .intValue() + 1;
+            attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( count ) );
+            if ( ( value.getAttribute().isObjectClassAttribute() || value.getAttribute().isMustAttribute() )
+                && count >= value.getAttribute().getValueSize() )
             {
                 throw new Exception();
             }
         }
+
         // check if a required objectClass is selected
         if ( getSelectedValues().length > 0 && !selectedObjectClasses.isEmpty() )
         {
             IEntry entry = getSelectedValues()[0].getAttribute().getEntry();
             // get remaining attributes
             String[] ocValues = entry.getSubschema().getObjectClassNames();
-            Set remainingObjectClassesSet = new HashSet( Arrays.asList( ocValues ) );
+            Set<String> remainingObjectClassesSet = new HashSet<String>( Arrays.asList( ocValues ) );
             remainingObjectClassesSet.removeAll( selectedObjectClasses );
-            Set remainingAttributeSet = new HashSet();
-            for ( Iterator it = remainingObjectClassesSet.iterator(); it.hasNext(); )
+            Set<AttributeTypeDescription> remainingAttributeSet = new HashSet<AttributeTypeDescription>();
+            for ( String oc : remainingObjectClassesSet )
             {
-                String oc = ( String ) it.next();
                 ObjectClassDescription ocd = entry.getBrowserConnection().getSchema().getObjectClassDescription( oc );
                 if ( ocd != null )
                 {
-                    remainingAttributeSet
-                        .addAll( Arrays.asList( ocd.getMustAttributeTypeDescriptionNamesTransitive() ) );
-                    remainingAttributeSet.addAll( Arrays.asList( ocd.getMayAttributeTypeDescriptionNamesTransitive() ) );
+                    String[] mustAttrs = ocd.getMustAttributeTypeDescriptionNamesTransitive();
+                    for ( String mustAttr : mustAttrs )
+                    {
+                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema().getAttributeTypeDescription( mustAttr );
+                        remainingAttributeSet.add( atd );
+                    }
+                    String[] mayAttrs = ocd.getMayAttributeTypeDescriptionNamesTransitive();
+                    for ( String mayAttr : mayAttrs )
+                    {
+                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema().getAttributeTypeDescription( mayAttr );
+                        remainingAttributeSet.add( atd );
+                    }
                 }
             }
             // check against attributes
             IAttribute[] attributes = entry.getAttributes();
-            for ( int i = 0; i < attributes.length; i++ )
+            for ( IAttribute attribute : attributes )
             {
-                IAttribute attribute = attributes[i];
                 if ( attribute.isMayAttribute() || attribute.isMustAttribute() )
                 {
-                    if ( !remainingAttributeSet.contains( attribute.getType() ) )
+                    if ( !remainingAttributeSet.contains( attribute.getAttributeTypeDescription() ) )
                     {
                         throw new Exception();
                     }
@@ -643,19 +627,19 @@ public class DeleteAction extends BrowserAction
             }
         }
 
-        List valueList = new ArrayList();
+        List<IValue> valueList = new ArrayList<IValue>();
 
         // add selected values
-        Set attributeSet = new HashSet( Arrays.asList( getAttributes() ) );
-        for ( int i = 0; i < getSelectedValues().length; i++ )
+        Set<IAttribute> attributeSet = new HashSet<IAttribute>( Arrays.asList( getAttributes() ) );
+        for ( IValue value : getSelectedValues() )
         {
-            if ( !attributeSet.contains( getSelectedValues()[i].getAttribute() ) )
+            if ( !attributeSet.contains( value.getAttribute() ) )
             {
-                valueList.add( getSelectedValues()[i] );
+                valueList.add( value );
             }
         }
 
-        return ( IValue[] ) valueList.toArray( new IValue[valueList.size()] );
+        return valueList.toArray( new IValue[valueList.size()] );
     }
 
 

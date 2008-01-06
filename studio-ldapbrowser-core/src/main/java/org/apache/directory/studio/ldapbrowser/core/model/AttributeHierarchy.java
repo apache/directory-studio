@@ -37,7 +37,7 @@ import java.util.Iterator;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AttributeHierarchy
+public class AttributeHierarchy implements Iterable<IAttribute>
 {
 
     /** The entry */
