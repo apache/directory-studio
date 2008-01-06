@@ -193,6 +193,26 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
+    public boolean isOperationalAttributesInitialized()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().isOperationalAttributesInitialized();
+        }
+        else if ( entryDoesNotExist )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
     public boolean isChildrenInitialized()
     {
         if ( getDelegate() != null )
@@ -516,6 +536,39 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setOperationalAttributesInitialized( boolean b )
+    {
+        if ( !b )
+        {
+            if ( getDelegate() != null )
+            {
+                getDelegate().setOperationalAttributesInitialized( b );
+            }
+            setDelegate( null );
+            entryDoesNotExist = false;
+        }
+        else
+        {
+            if ( getDelegate() == null )
+            {
+                setDelegate( getBrowserConnection().getEntryFromCache( dn ) );
+                if ( getDelegate() == null )
+                {
+                    // entry doesn't exist!
+                    entryDoesNotExist = true;
+                }
+            }
+            if ( getDelegate() != null )
+            {
+                getDelegate().setOperationalAttributesInitialized( b );
+            }
+        }
+    }
+    
+    
     /**
      * {@inheritDoc}
      */

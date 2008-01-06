@@ -325,6 +325,15 @@ public class DummyEntry implements IEntry
 
 
     /**
+     * This implementation always returns true.
+     */
+    public boolean isOperationalAttributesInitialized()
+    {
+        return true;
+    }
+    
+    
+    /**
      * {@inheritDoc}
      */
     public boolean isConsistent()
@@ -427,6 +436,14 @@ public class DummyEntry implements IEntry
     }
 
 
+    /**
+     * This implementation does nothing.
+     */
+    public void setOperationalAttributesInitialized( boolean b )
+    {
+    }
+    
+    
     /**
      * This implementation does nothing.
      */

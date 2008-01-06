@@ -184,11 +184,6 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             raSet.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
             raSet.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
         }
-//        if ( entry instanceof RootDSE )
-//        {
-//            raSet.add( ISearch.ALL_USER_ATTRIBUTES );
-//            raSet.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
-//        }
         if ( entry.isReferral() )
         {
             raSet.add( IAttribute.REFERRAL_ATTRIBUTE );
@@ -196,6 +191,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         returningAttributes = ( String[] ) raSet.toArray( new String[raSet.size()] );
 
         initializeAttributes( entry, returningAttributes, monitor );
+
+        entry.setOperationalAttributesInitialized( initOperationalAttributes );
     }
 
 

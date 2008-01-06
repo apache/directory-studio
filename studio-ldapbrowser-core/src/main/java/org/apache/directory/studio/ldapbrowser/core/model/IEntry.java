@@ -129,7 +129,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a flag wheter this entry is an alias entry.
+     * Sets a flag whether this entry is an alias entry.
      * 
      * This method is called during a search if the initialization
      * of the alias flag is requested. 
@@ -140,7 +140,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheter this entry is a referral entry.
+     * Indicates whether this entry is a referral entry.
      * 
      * An entry is a referral entry if it has the objectClass 'referral'.
      * 
@@ -153,7 +153,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a flag wheter this entry is a referral entry.
+     * Sets a flag whether this entry is a referral entry.
      * 
      * This method is called during a search if the initialization
      * fo the referral hint is requested. 
@@ -164,7 +164,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheter this entry is a subentry.
+     * Indicates whether this entry is a subentry.
      * 
      * An entry is a subentry if it has the objectClass 'subentry'.
      * 
@@ -177,7 +177,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a flag wheter this entry is a subentry.
+     * Sets a flag whether this entry is a subentry.
      * 
      * This method is called during a search if the initialization
      * fo the subentry is requested. 
@@ -204,7 +204,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheater this entry's attributes are initialized.
+     * Indicates whether this entry's attributes are initialized.
      * 
      * True means that the entry's attributes are completely initialized
      * and getAttributes() will return all attributes.
@@ -219,13 +219,37 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a flag wheter this entry's attributes are initialized.
+     * Sets a flag whether this entry's attributes are initialized.
      * 
      * @param b the attributes initialized flag
      */
     public abstract void setAttributesInitialized( boolean b );
 
 
+    /**
+     * Indicates whether this entry's operational attributes are initialized.
+     * 
+     * True means that the entry's operational attributes are completely 
+     * initialized and getAttributes() will return all operational attributes 
+     * (additionally to the non-operational attributes).
+     * 
+     * False means that the operational attributes are not or only partially
+     * initialized. The getAttributes() method will return none
+     * or only a part of the entry's operational attributes.  
+     * 
+     * @return true if this entry's attributes are initialized
+     */
+    public abstract boolean isOperationalAttributesInitialized();
+    
+    
+    /**
+     * Sets a flag whether this entry's operational attributes are initialized.
+     * 
+     * @param b the operational attributes initialized flag
+     */
+    public abstract void setOperationalAttributesInitialized( boolean b );
+    
+    
     /**
      * Gets the attributes of the entry.
      * 
@@ -268,7 +292,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheater the entry's children are initialized.
+     * Indicates whether the entry's children are initialized.
      * 
      * True means that the entry's children are completely initialized
      * and getChildren() will return all children.
@@ -283,7 +307,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a flag wheter this entry's children are initialized..
+     * Sets a flag whether this entry's children are initialized..
      * 
      * @param b the children initialized flag
      */
@@ -299,7 +323,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a hint wheter this entry has children.
+     * Sets a hint whether this entry has children.
      * 
      * @param b the has children hint
      */
@@ -326,7 +350,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheather this entry has more children than
+     * Indicates whether this entry has more children than
      * getChildrenCount() returns. This occurs if the count or time limit
      * was exceeded while fetching children.
      * 
@@ -336,7 +360,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Sets a flag wheter this entry more children.
+     * Sets a flag whether this entry more children.
      * 
      * @param b the has more children flag
      */
@@ -344,7 +368,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates wheather this entry has a parent entry. Each entry except
+     * Indicates whether this entry has a parent entry. Each entry except
      * the root DSE and the base entries should have a parent entry.
      * 
      * @return true if the entry has a parent entry.

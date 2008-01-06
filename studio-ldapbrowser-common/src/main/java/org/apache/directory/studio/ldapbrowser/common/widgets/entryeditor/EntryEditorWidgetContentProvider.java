@@ -130,10 +130,12 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             IEntry entry = ( IEntry ) inputElement;
 
-            if ( !entry.isAttributesInitialized() && entry.isDirectoryEntry() )
+            boolean soa = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+                BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
+            boolean oai = entry.isOperationalAttributesInitialized();
+            boolean ai = entry.isAttributesInitialized(); 
+            if ( ( !ai || ( !oai && soa ) ) && entry.isDirectoryEntry() )
             {
-                boolean soa = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                    BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
                 InitializeAttributesJob job = new InitializeAttributesJob( new IEntry[]
                     { entry }, soa );
                 job.execute();

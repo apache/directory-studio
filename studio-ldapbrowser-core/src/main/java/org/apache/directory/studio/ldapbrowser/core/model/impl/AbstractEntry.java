@@ -452,6 +452,35 @@ public abstract class AbstractEntry implements IEntry
     /**
      * {@inheritDoc}
      */
+    public boolean isOperationalAttributesInitialized()
+    {
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
+        return ai != null && ai.operationalAttributesInitialized;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setOperationalAttributesInitialized( boolean b )
+    {
+        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
+        if ( ai == null && b )
+        {
+            ai = new AttributeInfo();
+            getBrowserConnectionImpl().setAttributeInfo( this, ai );
+        }
+        
+        if ( ai != null )
+        {
+            ai.operationalAttributesInitialized = b;
+        }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
     public IAttribute[] getAttributes()
     {
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
