@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
@@ -116,7 +117,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     /**
      * Gets the bind password.
      * 
-     * @return the bind password
+     * @return the bind password, null if saving of bind password is disabled
      */
     private String getBindPassword()
     {
@@ -391,11 +392,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
      */
     public boolean isReconnectionRequired()
     {
-        return connectionParameter == null
+        return connectionParameter == null 
             || connectionParameter.getAuthMethod() != getAuthenticationMethod()
-            || !( connectionParameter.getBindPrincipal().equals( getBindPrincipal() ) )
-            || !( connectionParameter.getBindPassword().equals( getBindPassword() ) || !( connectionParameter
-                .getSaslRealm().equals( getSaslRealm() ) ) );
+            || !StringUtils.equals( connectionParameter.getBindPrincipal(), getBindPrincipal() )
+            || !StringUtils.equals( connectionParameter.getBindPassword(), getBindPassword() )
+            || !StringUtils.equals( connectionParameter.getSaslRealm(), getSaslRealm() );
     }
 
 }

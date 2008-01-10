@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -402,9 +403,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
 
-        return fetchBaseDns != isAutoFetchBaseDns() || ( baseDn == null && getBaseDN() != null )
-            || ( baseDn != null && getBaseDN() == null )
-            || ( baseDn != getBaseDN() && !( baseDn.equals( getBaseDN() ) ) )
+        return fetchBaseDns != isAutoFetchBaseDns()
+            || !StringUtils.equals( baseDn, getBaseDN() )
             || referralsHandlingMethod != getReferralsHandlingMethod()
             || aliasesDereferencingMethod != getAliasesDereferencingMethod();
     }

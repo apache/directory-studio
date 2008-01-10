@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -345,7 +346,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public boolean areParametersModifed()
     {
-        return isReconnectionRequired() || !( connectionParameter.getName().equals( getName() ) );
+        return isReconnectionRequired() || !StringUtils.equals( connectionParameter.getName(), getName() );
     }
 
 
@@ -354,7 +355,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public boolean isReconnectionRequired()
     {
-        return connectionParameter == null || !( connectionParameter.getHost().equals( getHostName() ) )
+        return connectionParameter == null 
+            || !StringUtils.equals(  connectionParameter.getHost(), getHostName() ) 
             || connectionParameter.getPort() != getPort()
             || connectionParameter.getEncryptionMethod() != getEncyrptionMethod();
     }

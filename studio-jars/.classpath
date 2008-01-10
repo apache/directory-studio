@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/studio-dsml-parser-0.4.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/shared-asn1-0.9.8-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/shared-ldap-0.9.8-SNAPSHOT.jar"/>
