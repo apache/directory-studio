@@ -176,10 +176,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
                 GridLayout gl = new GridLayout( 1, false );
                 composite.setLayout( gl );
                 
-                pages[i].createComposite( composite );
-                pages[i].setRunnableContext( null );
-                pages[i].setConnectionParameterPageModifyListener( this );
-                pages[i].loadParameters( connection.getConnectionParameter() );
+                pages[i].init( composite, this, connection.getConnectionParameter() );
                 
                 tabs[i] = new TabItem( tabFolder, SWT.NONE );
                 tabs[i].setText( pages[i].getPageName() );

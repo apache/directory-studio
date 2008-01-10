@@ -156,9 +156,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#createComposite(org.eclipse.swt.widgets.Composite)
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#createComposite(org.eclipse.swt.widgets.Composite)
      */
-    public void createComposite( Composite parent )
+    protected void createComposite( Composite parent )
     {
         Composite composite1 = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
@@ -199,19 +199,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Called when an input field was modified.
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#validate()
      */
-    private void connectionPageModified()
-    {
-        validate();
-        fireConnectionPageModified();
-    }
-
-
-    /**
-     * Validates the input fields after each modification.
-     */
-    private void validate()
+    protected void validate()
     {
         // set enabled/disabled state of fields and buttons
         bindPrincipalCombo.setEnabled( isPrincipalPasswordEnabled() );
@@ -273,9 +263,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#loadParameters(org.apache.directory.studio.connection.core.ConnectionParameter)
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#loadParameters(org.apache.directory.studio.connection.core.ConnectionParameter)
      */
-    public void loadParameters( ConnectionParameter parameter )
+    protected void loadParameters( ConnectionParameter parameter )
     {
         this.connectionParameter = parameter;
 
@@ -288,17 +278,13 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         bindPasswordText.setText( parameter.getBindPassword() != null ? parameter.getBindPassword() : "" );
         saveBindPasswordButton.setSelection( parameter.getBindPassword() != null );
         saslRealmText.setText( parameter.getSaslRealm() != null ? parameter.getSaslRealm() : "" );
-
-        initListeners();
-
-        connectionPageModified();
     }
 
 
     /**
-     * Initializes the listeners.
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#initListeners()
      */
-    private void initListeners()
+    protected void initListeners()
     {
         authenticationMethodCombo.addSelectionListener( new SelectionAdapter()
         {

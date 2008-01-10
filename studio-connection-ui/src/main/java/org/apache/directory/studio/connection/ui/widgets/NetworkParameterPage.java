@@ -147,9 +147,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#createComposite(org.eclipse.swt.widgets.Composite)
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#createComposite(org.eclipse.swt.widgets.Composite)
      */
-    public void createComposite( Composite parent )
+    protected void createComposite( Composite parent )
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
@@ -195,19 +195,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Called when an input field was modified.
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#validate()
      */
-    private void connectionPageModified()
-    {
-        validate();
-        fireConnectionPageModified();
-    }
-
-
-    /**
-     * Validates the input fields after each modification.
-     */
-    private void validate()
+    protected void validate()
     {
         // set enabled/disabled state of check connection button
         checkConnectionButton.setEnabled( !hostCombo.getText().equals( "" ) && !portCombo.getText().equals( "" ) );
@@ -236,9 +226,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#loadParameters(org.apache.directory.studio.connection.core.ConnectionParameter)
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#loadParameters(org.apache.directory.studio.connection.core.ConnectionParameter)
      */
-    public void loadParameters( ConnectionParameter parameter )
+    protected void loadParameters( ConnectionParameter parameter )
     {
         connectionParameter = parameter;
 
@@ -248,17 +238,13 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         int index = parameter.getEncryptionMethod() == EncryptionMethod.LDAPS ? 1
             : parameter.getEncryptionMethod() == EncryptionMethod.START_TLS ? 2 : 0;
         encryptionMethodCombo.select( index );
-
-        initListeners();
-
-        connectionPageModified();
     }
 
 
     /**
-     * Initializes the listeners.
+     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#initListeners()
      */
-    private void initListeners()
+    protected void initListeners()
     {
         nameText.addModifyListener( new ModifyListener()
         {

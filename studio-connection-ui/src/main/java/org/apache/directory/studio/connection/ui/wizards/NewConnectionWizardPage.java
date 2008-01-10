@@ -63,7 +63,6 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
             ConnectionUIConstants.IMG_CONNECTION_WIZARD ) );
         setPageComplete( false );
 
-        page.setConnectionParameterPageModifyListener( this );
         page.setRunnableContext( getContainer() );
 
         this.wizard = wizard;
@@ -93,7 +92,7 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
         Composite composite = new Composite( parent, SWT.NONE );
         GridLayout gl = new GridLayout( 1, false );
         composite.setLayout( gl );
-        page.createComposite( composite );
+        page.init( composite, this, null );
         setControl( composite );
     }
 
@@ -103,10 +102,10 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
      */
     public void connectionParameterPageModified()
     {
-    	//only one of the messages can be shown
-    	//warning messages are more important 
-    	//than info messages
-    	if ( page.getMessage() != null )
+        //only one of the messages can be shown
+        //warning messages are more important 
+        //than info messages
+        if ( page.getMessage() != null )
         {
             setMessage( page.getMessage() );
         }
@@ -120,7 +119,11 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
         }
         setErrorMessage( page.getErrorMessage() );
         setPageComplete( page.isValid() );
-        getContainer().updateButtons();
+
+        if ( getContainer() != null && getContainer().getCurrentPage() != null )
+        {
+            getContainer().updateButtons();
+        }
     }
 
 

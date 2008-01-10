@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.ui;
 
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.swt.widgets.Composite;
 
 
 /**
@@ -38,13 +39,13 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
 
     /** The page name. */
     protected String pageName;
-    
+
     /** The page description. */
     protected String pageDescription;
 
     /** The page id this page depends on. */
     protected String pageDependsOnId;
-    
+
     /** The runnable context. */
     protected IRunnableContext runnableContext;
 
@@ -56,7 +57,7 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
 
     /** The error message. */
     protected String errorMessage;
-    
+
     protected String infoMessage;
 
     /** The connection parameter. */
@@ -72,7 +73,9 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#setConnectionParameterPageModifyListener(org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener)
+     * Sets the connection parameter page modify listener.
+     * 
+     * @param listener the connection parameter page modify listener
      */
     public void setConnectionParameterPageModifyListener( ConnectionParameterPageModifyListener listener )
     {
@@ -200,8 +203,64 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     }
 
 
-	public String getInfoMessage() {
-		return infoMessage;
-	}
+    public String getInfoMessage()
+    {
+        return infoMessage;
+    }
+
+
+    public final void init( Composite parent, ConnectionParameterPageModifyListener listener,
+        ConnectionParameter parameter )
+    {
+        createComposite( parent );
+        if ( listener != null )
+        {
+            setConnectionParameterPageModifyListener( listener );
+        }
+        if ( parameter != null )
+        {
+            loadParameters( parameter );
+        }
+        initListeners();
+        connectionPageModified();
+    }
+
+
+    /**
+     * Called when an input field was modified.
+     */
+    protected final void connectionPageModified()
+    {
+        validate();
+        fireConnectionPageModified();
+    }
+
+
+    /**
+     * Creates the composite.
+     * 
+     * @param parent the parent
+     */
+    protected abstract void createComposite( Composite parent );
+
+
+    /**
+     * Validates the input fields.
+     */
+    protected abstract void validate();
+
+
+    /**
+     * Initializes the fields with the given parameters.
+     * 
+     * @param parameter the connection parameter
+     */
+    protected abstract void loadParameters( ConnectionParameter parameter );
+
+
+    /**
+     * Initializes the listeners.
+     */
+    protected abstract void initListeners();
 
 }

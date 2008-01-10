@@ -36,14 +36,6 @@ public interface ConnectionParameterPage
 {
 
     /**
-     * Initializes the fields with the given parameters.
-     * 
-     * @param parameter the parameter
-     */
-    public void loadParameters( ConnectionParameter parameter );
-
-
-    /**
      * Save the fields to the parameters.
      * 
      * @param parameter the parameter
@@ -90,25 +82,19 @@ public interface ConnectionParameterPage
 
 
     /**
-     * Creates the composite.
+     * Initializes the connection parameter page.
      * 
      * @param parent the parent
+     * @param listener the connection parameter page modify listener
+     * @param parameter the initial connection parameter
      */
-    public void createComposite( Composite parent );
+    public void init( Composite parent, ConnectionParameterPageModifyListener listener, ConnectionParameter parameter );
 
 
     /**
      * Saves the dialog settings.
      */
     public void saveDialogSettings();
-
-
-    /**
-     * Sets the connection parameter page modify listener.
-     * 
-     * @param listener the connection parameter page modify listener
-     */
-    public void setConnectionParameterPageModifyListener( ConnectionParameterPageModifyListener listener );
 
 
     /**
@@ -133,32 +119,32 @@ public interface ConnectionParameterPage
      * @return the page id
      */
     public String getPageId();
-    
-    
+
+
     /**
      * Sets the page name.
      * 
      * @param pageName the page name
      */
     public void setPageName( String pageName );
-    
-    
+
+
     /**
      * Gets the page name.
      * 
      * @return the page name
      */
     public String getPageName();
-    
-    
+
+
     /**
      * Sets the page description.
      * 
      * @param pageDescription the page description
      */
     public void setPageDescription( String pageDescription );
-    
-    
+
+
     /**
      * Gets the page description.
      * 
@@ -181,8 +167,8 @@ public interface ConnectionParameterPage
      * @return the page id this page depends on
      */
     public String getPageDependsOnId();
-    
-    
+
+
     /**
      * Sets the focus.
      */
