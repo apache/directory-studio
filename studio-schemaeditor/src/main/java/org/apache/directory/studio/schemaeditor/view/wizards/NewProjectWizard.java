@@ -29,12 +29,13 @@ import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
+import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
-import org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizardSchemasSelectionPage.ServerTypeEnum;
+import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelectionWidget.ServerTypeEnum;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -170,12 +171,13 @@ public class NewProjectWizard extends Wizard implements INewWizard
             ServerTypeEnum serverType = schemasSelectionPage.getServerType();
             if ( ( selectedSchemas != null ) && ( serverType != null ) )
             {
+                SchemaHandler schemaHandler = project.getSchemaHandler();
                 for ( String selectedSchema : selectedSchemas )
                 {
                     Schema schema = PluginUtils.loadCoreSchema( serverType, selectedSchema );
                     if ( schema != null )
                     {
-                        project.getSchemaHandler().addSchema( schema );
+                        schemaHandler.addSchema( schema );
                     }
                 }
             }

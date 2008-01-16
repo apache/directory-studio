@@ -46,7 +46,7 @@ import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
-import org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizardSchemasSelectionPage.ServerTypeEnum;
+import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelectionWidget.ServerTypeEnum;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.eclipse.core.runtime.CoreException;

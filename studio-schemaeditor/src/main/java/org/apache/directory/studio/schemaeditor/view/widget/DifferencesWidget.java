@@ -381,7 +381,7 @@ public class DifferencesWidget
 
 
     /**
-     * Disposes the SWT resources allocated by this dialog page.
+     * Disposes the SWT resources allocated by this widget.
      */
     public void dispose()
     {

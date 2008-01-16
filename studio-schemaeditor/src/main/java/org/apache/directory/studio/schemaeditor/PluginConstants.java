@@ -121,6 +121,7 @@ public interface PluginConstants
         + ".commands.exportSchemasAsOpenLDAP";
     public static final String CMD_EXPORT_SCHEMAS_AS_XML = Activator.PLUGIN_ID + ".commands.exportSchemasAsXML";
     public static final String CMD_EXPORT_SCHEMAS_FOR_ADS = Activator.PLUGIN_ID + ".commands.exportSchemasForADS";
+    public static final String CMD_IMPORT_CORE_SCHEMAS = Activator.PLUGIN_ID + ".commands.importCoreSchemas";
     public static final String CMD_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.importProjects";
     public static final String CMD_IMPORT_SCHEMAS_FROM_OPENLDAP = Activator.PLUGIN_ID
         + ".commands.importSchemasFromOpenLDAP";

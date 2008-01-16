@@ -31,6 +31,7 @@ import org.apache.directory.studio.schemaeditor.controller.actions.DeleteSchemaE
 import org.apache.directory.studio.schemaeditor.controller.actions.ExportSchemasAsOpenLdapAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ExportSchemasAsXmlAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ExportSchemasForADSAction;
+import org.apache.directory.studio.schemaeditor.controller.actions.ImportCoreSchemasAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ImportSchemasFromOpenLdapAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ImportSchemasFromXmlAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.LinkWithEditorSchemaViewAction;
@@ -226,6 +227,7 @@ public class SchemaViewController
     private OpenElementAction openElement;
     private OpenTypeHierarchyAction openTypeHierarchy;
     private DeleteSchemaElementAction deleteSchemaElement;
+    private ImportCoreSchemasAction importCoreSchemas;
     private ImportSchemasFromOpenLdapAction importSchemasFromOpenLdap;
     private ImportSchemasFromXmlAction importSchemasFromXml;
     private ExportSchemasAsOpenLdapAction exportSchemasAsOpenLdap;
@@ -276,6 +278,7 @@ public class SchemaViewController
         openElement = new OpenElementAction( viewer );
         openTypeHierarchy = new OpenTypeHierarchyAction( viewer );
         deleteSchemaElement = new DeleteSchemaElementAction( viewer );
+        importCoreSchemas = new ImportCoreSchemasAction();
         importSchemasFromOpenLdap = new ImportSchemasFromOpenLdapAction();
         importSchemasFromXml = new ImportSchemasFromXmlAction();
         exportSchemasAsOpenLdap = new ExportSchemasAsOpenLdapAction( viewer );
@@ -352,6 +355,8 @@ public class SchemaViewController
                 manager.add( deleteSchemaElement );
                 manager.add( new Separator() );
                 manager.add( importManager );
+                importManager.add( importCoreSchemas );
+                importManager.add( new Separator() );
                 importManager.add( importSchemasFromOpenLdap );
                 importManager.add( importSchemasFromXml );
                 manager.add( exportManager );

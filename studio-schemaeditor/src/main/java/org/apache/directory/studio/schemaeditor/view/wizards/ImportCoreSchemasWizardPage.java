@@ -20,8 +20,13 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.model.Project;
+import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelectionWidget;
 import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelectionWidget.ServerTypeEnum;
 import org.eclipse.jface.wizard.WizardPage;
@@ -30,29 +35,29 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
- * This class represents the Information Page of the NewProjectWizard.
+ * This class represents the {@link WizardPage} of the {@link ImportCoreSchemasWizard}.
  * <p>
- * It is used to let the user create a new Project
+ * It is used to let the user choose the 'core' schemas to import.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewProjectWizardSchemasSelectionPage extends WizardPage
+public class ImportCoreSchemasWizardPage extends WizardPage
 {
     // UI Fields    
     private CoreSchemasSelectionWidget coreSchemaSelectionWidget;
 
 
     /**
-     * Creates a new instance of NewProjectWizardSchemasSelectionPage.
+     * Creates a new instance of ImportCoreSchemasWizardPage.
      */
-    protected NewProjectWizardSchemasSelectionPage()
+    protected ImportCoreSchemasWizardPage()
     {
-        super( "NewProjectWizardSchemasSelectionPage" );
-        setTitle( "Create a Schema project." );
-        setDescription( "Please select the 'core' schemas to include in the project." );
+        super( "ImportCoreSchemasWizardPage" );
+        setTitle( "Import core schemas" );
+        setDescription( "Please select the 'core' schemas to import." );
         setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
+            PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
     }
 
 
@@ -64,6 +69,19 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
         coreSchemaSelectionWidget = new CoreSchemasSelectionWidget();
         Composite composite = coreSchemaSelectionWidget.createWidget( parent );
         coreSchemaSelectionWidget.init( ServerTypeEnum.APACHE_DS );
+
+        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
+        if ( project != null )
+        {
+            List<Schema> schemas = project.getSchemaHandler().getSchemas();
+            List<String> schemaNames = new ArrayList<String>();
+            for ( Schema schema : schemas )
+            {
+                schemaNames.add( schema.getName() );
+            }
+
+            coreSchemaSelectionWidget.setGrayedCoreSchemas( schemaNames.toArray( new String[0] ) );
+        }
 
         setControl( composite );
     }
@@ -77,7 +95,7 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
      */
     public String[] getSelectedSchemas()
     {
-        return coreSchemaSelectionWidget.getCheckedCoreSchemas();
+        return coreSchemaSelectionWidget.getSelectedCoreSchemas();
     }
 
 
