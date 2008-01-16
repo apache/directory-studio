@@ -1,0 +1,67 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="tasks_importing_schemas_from_openldap_files">
+	<title>Importing schemas from OpenLDAP files</title>
+	<para>
+		To import schemas from OpenLDAP files choose one of the
+		following options:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				In the Schema view, choose
+				<emphasis role="strong">
+					Import >
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="images/icons_schemas-import.gif" format="GIF" />
+					</imageobject>
+					Schemas from OpenLDAP file(s)
+				</emphasis>
+				from the context menu.
+			</listitem>
+			<listitem>
+				In the Workbench menu bar select
+				<emphasis role="strong">File > Import...</emphasis>
+				and choose
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_schemas-import.gif" format="GIF" />
+				</imageobject>
+				<emphasis role="strong">
+					Schemas from OpenLDAP file(s)
+				</emphasis>
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>The following wizard appears:</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/tasks_import-schemas-openldap-wizard.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Select the directory from which import the schema files and then
+		check each schema file you want to import.
+	</para>
+</section>

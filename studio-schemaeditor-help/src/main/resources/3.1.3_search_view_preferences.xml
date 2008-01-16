@@ -1,0 +1,107 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="references_search_view_preferences">
+	<title>Search View preferences</title>
+	<para>
+		In the Search View preferences page you can configure general
+		settings for the
+		<link linkend="gettingstarted_views_search">Search view</link>
+		.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/preferences_search-view.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		<informaltable frame="all">
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Label</entry>
+						<entry>
+							Choose one of
+							<emphasis role="strong">
+								First Name
+							</emphasis>
+							,
+							<emphasis role="strong">
+								All Aliases
+							</emphasis>
+							or
+							<emphasis role="strong">OID</emphasis>
+							to be used as label for attribute types or
+							object classes. If the checkbox is checked
+							long labels with more than the specified
+							number of characters are abbreviated.
+						</entry>
+						<entry>
+							All Aliases with limit of 50 characters
+						</entry>
+					</row>
+					<row>
+						<entry>Secondary label</entry>
+						<entry>
+							Choose one of
+							<emphasis role="strong">
+								First Name
+							</emphasis>
+							,
+							<emphasis role="strong">
+								All Aliases
+							</emphasis>
+							or
+							<emphasis role="strong">OID</emphasis>
+							to be used as secondary label for attribute
+							types or object classes. If the checkbox is
+							checked long labels with more than the
+							specified number of characters are
+							abbreviated.
+						</entry>
+						<entry>OID with no limit of characters</entry>
+					</row>
+					<row>
+						<entry>Schema label</entry>
+						<entry>
+							If the checkbox is checked the name of the
+							schema of the element will be added to the
+							label.
+						</entry>
+						<entry>Checked</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>

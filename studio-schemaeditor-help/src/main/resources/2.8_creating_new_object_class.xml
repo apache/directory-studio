@@ -1,0 +1,311 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="tasks_creating_new_object_class">
+	<title>Creating a new object class</title>
+	<para>
+		To create a new attribute type, choose one of the following
+		options:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				In the Schema view, choose
+				<emphasis role="strong">
+					New >
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="images/icons_object-class-new.gif" format="GIF" />
+					</imageobject>
+					New Object Class
+				</emphasis>
+				from the context menu.
+			</listitem>
+			<listitem>
+				In the Schema view, click the
+				<emphasis role="strong">
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="images/icons_object-class-new.gif" format="GIF" />
+					</imageobject>
+					New Object Class
+				</emphasis>
+				button in the toolbar.
+			</listitem>
+			<listitem>
+				In the Workbench menu bar select
+				<emphasis role="strong">File > New...</emphasis>
+				and choose
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_object-class-new.gif" format="GIF" />
+				</imageobject>
+				<emphasis role="strong">New Object Class</emphasis>
+			</listitem>
+			<listitem>
+				You can also use the
+				<emphasis role="strong">Strg-B</emphasis>
+				shortcut.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		The creation of a new object class is a four-step process:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					Select the schema in which insert the new object
+					class and specify its naming and description
+					information (OID, aliases and description)
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Specify the object class content such as superiors,
+					class type and properties
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Specify the mandatory attribute types of the new
+					object class
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Specify the optional attribute types of the new
+					object class
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+	<simplesect>
+		<title>Page 1</title>
+		<para>
+			The first page allows you to select the schema in which
+			insert the new object class and specify its naming and
+			description information (OID, aliases and description).
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tasks_new-object-class-wizard-general.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Schema</entry>
+							<entry>
+								The schema in which insert the new
+								object class.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>OID</entry>
+							<entry>
+								The OID of the new object class. The OID
+								must be unique.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Aliases</entry>
+							<entry>
+								The aliases (or names) of the new object
+								class. Each alias (or name) must be
+								unique.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Description</entry>
+							<entry>
+								The description of the new object class.
+							</entry>
+							<entry>empty</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Page 2</title>
+		<para>
+			The second page allows you to specify the object class
+			content such as superiors, class type and properties.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tasks_new-object-class-wizard-content.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Superiors</entry>
+							<entry>
+								The superiors object classes of the new
+								object class.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Class Type</entry>
+							<entry>
+								The class type of the new object class.
+							</entry>
+							<entry>Structural</entry>
+						</row>
+						<row>
+							<entry>Obsolete</entry>
+							<entry>
+								Indicates the new object class is
+								obsolete.
+							</entry>
+							<entry>Not checked</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Page 3</title>
+		<para>
+			The third page allows you to specify the mandatory attribute
+			types of the new object class.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tasks_new-object-class-wizard-mandatory-attribute-types.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Mandatory Attribute Types</entry>
+							<entry>
+								The mandatory attribute types of the new
+								object class.
+							</entry>
+							<entry>empty</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Page 4</title>
+		<para>
+			The forth page allows you to specify the optional attribute
+			types of the new object class.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tasks_new-object-class-wizard-optional-attribute-types.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Optional Attribute Types</entry>
+							<entry>
+								The optional attribute types of the new
+								object class.
+							</entry>
+							<entry>empty</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+</section>

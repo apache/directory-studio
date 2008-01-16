@@ -1,0 +1,170 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="gettingstarted_views_search">
+	<title>Search view</title>
+	<para>The Search view displays the results of a search.</para>
+	<para>
+		Here is what the Search view looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/views_search-view.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		<emphasis role="strong">Toolbar</emphasis>
+	</para>
+	<para>
+		The toolbar of the Search view contains the following actions:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_show-search-field.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Show Search Field</emphasis>
+				: Shows the search field in the Search view.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_run-current-search-again.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Run the Current Search Again</emphasis>
+				: Runs the current search again.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_show-search-history.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Search History</emphasis>
+				: This command allows you to browse previously conducted
+				searches and repeat a previous search. You can select a
+				previous search from the drop-down menu or clear the
+				search history.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Menu</emphasis>
+	</para>
+	<para>
+		The menu of the Search view contains the following actions:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_sorting.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Sorting...</emphasis>
+				: Opens the Sorting dialog for this view.
+			</listitem>
+			<listitem>
+				<emphasis>Preferences</emphasis>
+				: Opens the Preferences dialog for this view.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Icons</emphasis>
+	</para>
+	<para>The following icons can appear in the Search view:</para>
+	<para>
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colname="Icon" colwidth="1* " />
+				<colspec colname="Description" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_attribute-type-operational.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Attribute type (operational)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_attribute-type-user.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Attribute type (user)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_object-class-abstract.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Object class (abstract)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_object-class-auxiliary.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Object class (auxiliary)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_object-class-structural.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Object class (structural)</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>

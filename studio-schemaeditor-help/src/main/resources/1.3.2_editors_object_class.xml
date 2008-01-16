@@ -1,0 +1,77 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="gettingstarted_editors_object_class">
+	<title>Object class editor</title>
+	<para>
+		The object class editor is the one-stop shop where you can
+		define all aspects of your object class.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/editors_object-class-editor-overview.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		The
+		<emphasis role="strong">Overview</emphasis>
+		page is where the user can edit the properties of the object
+		class.
+	</para>
+	<para>User can edit:</para>
+	<para>
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>the name</listitem>
+			<listitem>the OID</listitem>
+			<listitem>the description</listitem>
+			<listitem>the superior class</listitem>
+			<listitem>the class type</listitem>
+			<listitem>if the object class is obsolete</listitem>
+			<listitem>
+				the mandatory attributes (add and remove)
+			</listitem>
+			<listitem>
+				the optional attributes (add and remove)
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/editors_object-class-editor-source-code.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		The
+		<emphasis role="strong">Source code</emphasis>
+		page is where the user can see the result of his actions in the
+		Overview page and what source code will be generated in the
+		schema file.
+	</para>
+</section>

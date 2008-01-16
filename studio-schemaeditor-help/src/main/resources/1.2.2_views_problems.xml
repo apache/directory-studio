@@ -1,0 +1,78 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="gettingstarted_views_problems">
+	<title>Problems view</title>
+	<para>
+		The Problems view displays errors and warnings associated with a
+		resource.
+	</para>
+	<para>
+		Here is what the Problems view looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/views_problems-view.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		<emphasis role="strong">Icons</emphasis>
+	</para>
+	<para>The following icons can appear in the Problems view:</para>
+	<para>
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colname="Icon" colwidth="1* " />
+				<colspec colname="Description" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_error.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Error</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_warning.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Warning</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>

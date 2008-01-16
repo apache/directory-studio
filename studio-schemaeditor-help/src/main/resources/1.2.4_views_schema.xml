@@ -1,0 +1,258 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="gettingstarted_views_schema">
+	<title>Schema view</title>
+	<para>
+		This Schema view shows all the schemas of the currently opened
+		project.
+	</para>
+	<para>
+		The Schema view has two types of presentation:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>Flat (Default)</listitem>
+			<listitem>Hierarchical</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		Here is what the Schema view looks like in flat presentation:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/views_schema-view-flat-presentation.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Here is what the Schema view looks like in hierarchical
+		presentation:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/views_schema-view-hierarchical-presentation.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		<emphasis role="strong">Toolbar</emphasis>
+	</para>
+	<para>
+		The toolbar of the Schema view contains the following actions:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_schema-new.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>New Schema</emphasis>
+				: Opens the New Schema wizard.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_attribute-type-new.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>New Attribute Type</emphasis>
+				: Opens the New Attribute Type wizard.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_object-class-new.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>New Object Class</emphasis>
+				: Opens the Object Class wizard.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_collapse-all.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Collapse All</emphasis>
+				: Collapse all the node of the tree.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_link-with-editor.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Link with Editor</emphasis>
+				: Links the view with the editor.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Menu</emphasis>
+	</para>
+	<para>
+		The menu of the Schema view contains the following actions:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_sorting.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Sorting...</emphasis>
+				: Opens the Sorting dialog for this view.
+			</listitem>
+			<listitem>
+				<emphasis>Schema Presentation</emphasis>
+				<itemizedlist spacing="normal" mark="bullet">
+					<listitem>
+						<emphasis>Flat</emphasis>
+						: Displays the Schema in flat presentation.
+					</listitem>
+					<listitem>
+						<emphasis>Hierarchical</emphasis>
+						: Displays the Schema in hierarchical
+						presentation.
+					</listitem>
+				</itemizedlist>
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/icons_link-with-editor.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Link with Editor</emphasis>
+				: Links the view with the editor.
+			</listitem>
+			<listitem>
+				<emphasis>Preferences</emphasis>
+				: Opens the Preferences dialog for this view.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Icons</emphasis>
+	</para>
+	<para>The following icons can appear in the Schema view:</para>
+	<para>
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colname="Icon" colwidth="1* " />
+				<colspec colname="Description" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_attribute-type-operational.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Attribute type (operational)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_attribute-type-user.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Attribute type (user)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_object-class-abstract.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Object class (abstract)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_object-class-auxiliary.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Object class (auxiliary)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_object-class-structural.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Object class (structural)</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_hover-error.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>
+							Indicates an error on the resource
+						</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/icons_hover-warning.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>
+							Indicates a warning on the resource
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>
