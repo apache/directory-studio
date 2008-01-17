@@ -20,7 +20,8 @@
   <!ENTITY linked_mode SYSTEM "3.1.3.3_linked_mode.xml">
   <!ENTITY quick_diff SYSTEM "3.1.3.4_quick_diff.xml">
   <!ENTITY spelling SYSTEM "3.1.3.5_spelling.xml">
-  <!ENTITY release_notes SYSTEM "3.2_release_notes.xml">
+  <!ENTITY whats_new SYSTEM "4_whats_new.xml">
+  <!ENTITY release_notes SYSTEM "5_release_notes.xml">
 
 ]>
 <!--
@@ -75,5 +76,7 @@
 	&gettingstarted;
 	&tasks;
 	&reference;
+	&whats_new;
+	&release_notes;
 
 </book>
