@@ -1,0 +1,118 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="install_update">
+	<title>Install/Update</title>
+	<para>
+		The following preferences can be changed on the Install/Update
+		page:
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1* " />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							Maximum number of 'History' configurations
+						</entry>
+						<entry>
+							Maximum number of configurations you want
+							maintained in the configuration history.
+							These configurations are maintained to allow
+							you to revert to a previous configuration of
+							installed feature versions.
+						</entry>
+						<entry>100</entry>
+					</row>
+					<row>
+						<entry>
+							Check digital signatures of downloaded
+							archives
+						</entry>
+						<entry>
+							This option will check for digital
+							signatures of downloaded archives.
+						</entry>
+						<entry>On</entry>
+					</row>
+					<row>
+						<entry>Valid updates</entry>
+						<entry>
+							Assuming that feature versions use the form
+							'major.minor.service', you can select what
+							update level you want to choose from:
+							<itemizedlist>
+								<listitem>
+									equivalent : Only service updates
+									will be displayed.
+								</listitem>
+								<listitem>
+									compatible : Service updates and
+									minor updates will be displayed.
+								</listitem>
+							</itemizedlist>
+						</entry>
+						<entry>equivalent</entry>
+					</row>
+					<row>
+						<entry>Update Policy</entry>
+						<entry>
+							The update policy URL that controls the
+							redirection of update sites within an
+							organization.
+						</entry>
+						<entry>No policy</entry>
+					</row>
+					<row>
+						<entry>Proxy settings</entry>
+						<entry>
+							Allows connection to the remote server from
+							behind the firewall. When enabled, proxy
+							host address (required) and port number
+							(optional) can be specified.
+						</entry>
+						<entry>No proxy</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	<para>
+		Here is what the Install/Update preferences page looks like:
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/install-update_screen.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+</section>

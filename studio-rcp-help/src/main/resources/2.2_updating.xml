@@ -1,0 +1,76 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="updating">
+	<title>Updating Apache Directory Studio</title>
+	<para>
+		To check to see whether there are updates for features of Apache
+		Directory Studio (requires Internet access):
+	</para>
+	<para>
+		1. Click
+		<emphasis role="strong">
+			Help > Software Updates >
+			<imageobject>
+				<imagedata contentdepth="1em"
+					fileref="images/search-updates.png" format="PNG" />
+			</imageobject>
+			Search for updates...
+		</emphasis>
+		. This will contact Apache Directory Studio Web site to discover
+		what versions of those features are available. The potential
+		upgrades are presented in on the next page.
+	</para>
+	<para>
+		2. Select the feature versions that you wish to upgrade, and
+		click
+		<emphasis role="strong">Next</emphasis>
+		.
+	</para>
+	<para>
+		3. Carefully review the license agreements for the upgraded
+		features. If the terms of all these licenses are acceptable,
+		check "I accept the terms in the license agreements." Do not
+		proceed to download the features if the license terms are not
+		acceptable.
+	</para>
+	<para>
+		4. Feature versions can be digitally signed by the company that
+		provides them. This allows you to verify more easily that the
+		features and plug-ins that are about to be downloaded and
+		installed are coming from a trusted supplier.
+	</para>
+	<para>
+		Click
+		<emphasis role="strong">Install</emphasis>
+		to allow the downloading and installing to proceed.
+	</para>
+	<para>
+		5. Once all the features and plug-ins have been downloaded
+		successfully and their files installed into the product on the
+		local computer, a new configuration that incorporates these
+		features and plug-ins will be formulated. Click
+		<emphasis role="strong">Yes</emphasis>
+		when asked to exit and restart the Workbench for the changes to
+		take effect.
+	</para>
+
+	&inspecting_configuration;
+	&enabling_disabling_uninstalling_features;
+
+</section>

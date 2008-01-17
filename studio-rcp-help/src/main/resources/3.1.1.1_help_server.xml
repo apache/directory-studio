@@ -1,0 +1,76 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="help_server">
+	<title>Help Server</title>
+	<para>
+		Help system includes an internal server that serves help
+		contents to the browser. Use the
+		<emphasis role="strong">Help > Help Server</emphasis>
+		preference page to change the interface and port that the
+		servers uses. You should only change these settings if you
+		experience problems and cannot view help with the default
+		preferences.
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1* " />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Host</entry>
+						<entry>
+							Name or address of a local IP interface to
+							be used by the server.
+						</entry>
+						<entry>blank</entry>
+					</row>
+					<row>
+						<entry>Port</entry>
+						<entry>
+							IP port for server to listen on. If no port
+							is specified for the value, a port will be
+							assigned by the operating system.
+						</entry>
+						<entry>blank</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	<para>Here is what the Help preferences page looks like:</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/help-server_screen.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+</section>

@@ -1,0 +1,91 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="inspecting_configuration">
+	<title>Inspecting the current configuration</title>
+	<para>
+		The
+		<emphasis role="strong">
+			Help >
+			<imageobject>
+				<imagedata contentdepth="1em" fileref="images/about.png"
+					format="PNG" />
+			</imageobject>
+			About Apache Directory Studio
+		</emphasis>
+		dialog shows most of the important information about the
+		features and plug-in configured in the product. To find out
+		further detailed information about the current configuration:
+	</para>
+	<para>
+		1. Open the update configuration manager by clicking
+		<emphasis role="strong">
+			Help > Software Updates >
+			<imageobject>
+				<imagedata contentdepth="1em"
+					fileref="images/manage-configuration.png" format="PNG" />
+			</imageobject>
+			Manage Configuration
+		</emphasis>
+		. This opens the Product Configuration dialog.
+	</para>
+	<para>
+		2. In the Product Configuration dialog expand the root node
+		(current configuration). The first tier of items are locations
+		on the local computer where the files for features and plug-ins
+		are stored. For a typical product, all features are installed in
+		a single directory sub-tree. However, a feature that is
+		installed as an extension of another product are usually located
+		in a separate directory sub-tree.
+	</para>
+	<para>
+		3. Expand the location to see the feature versions installed
+		there.
+	</para>
+	<para>
+		4. The nesting of the features indicates which child features
+		are included in a given parent feature. Nested features act as a
+		unit.
+	</para>
+	<para>
+		5. Select a feature version and click
+		<emphasis role="strong">Show Properties</emphasis>
+		to open the Properties dialog which presents more detailed
+		information about the selected feature.
+	</para>
+	<para>
+		6. Click
+		<emphasis role="strong">Show Disabled Features</emphasis>
+		filter on the toolbar of the Product Configuration dialog. Any
+		feature versions that are disabled are now shown (you might not
+		have any). Disabled feature versions are ones that are installed
+		on the local computer but excluded from the current
+		configuration. At most one version of any given feature can be
+		present in a given configuration; usually the ones with the
+		lower version numbers will be in a disabled state.
+	</para>
+	<para>
+		7. In the Properties dialog of a feature, click
+		<emphasis role="strong">Status</emphasis>
+		to find out whether the selected feature is configured exactly
+		as packaged. The status will show when a feature's plug-ins are
+		present at different versions, or disabled due to missing
+		prerequisite plug-ins that are expected to be supplied by some
+		other feature.
+	</para>
+</section>

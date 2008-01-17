@@ -1,0 +1,69 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="enabling_disabling_uninstalling_features">
+	<title>Enabling, disabling and uninstalling features</title>
+	<para>
+		You can browse and manage your configuration from the
+		<emphasis role="strong">Product Configuration dialog</emphasis>
+		. Open the
+		<emphasis role="strong">Product Configuration</emphasis>
+		dialog by clicking
+		<emphasis role="strong">
+			Help > Software Updates >
+			<imageobject>
+				<imagedata contentdepth="1em"
+					fileref="images/manage-configuration.png" format="PNG" />
+			</imageobject>
+			Manage Configuration
+		</emphasis>
+		.
+	</para>
+	<para>
+		1.
+		<emphasis role="strong">Disabling a feature</emphasis>
+		: select the feature and click
+		<emphasis role="strong">Disable</emphasis>
+		in the right pane of the dialog. This option is available only
+		when the feature is currently enabled, and the feature is either
+		an optional feature or a root feature (not included by other
+		features).
+	</para>
+	<para>
+		2.
+		<emphasis role="strong">Enabling a feature</emphasis>
+		: First, ensure
+		<emphasis role="strong">Show Disabled Features</emphasis>
+		is turned on in the tool bar. Then, select a disabled optional
+		or root feature and click
+		<emphasis role="strong">Enable</emphasis>
+		in the right pane of the dialog.
+	</para>
+	<para>
+		3.
+		<emphasis role="strong">Uninstalling a feature</emphasis>
+		: features that you have installed using the update manager can
+		be uninstalled, provided they are already disabled, or that they
+		are optional or root features. If the feature is disabled, make
+		sure
+		<emphasis role="strong">Show Disabled Features</emphasis>
+		is turned on in the tool bar. Select the feature and click
+		<emphasis role="strong">Uninstall</emphasis>
+		in the right page of the dialog.
+	</para>
+</section>

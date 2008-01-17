@@ -1,0 +1,90 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="download_install">
+	<title>Download and install</title>
+	<para>
+		The latest version of Apache Directory Studio can be downloaded
+		from the Apache Directory Studio Downloads page, at this address
+		:
+		<ulink
+			url="http://directory.apache.org/studio/downloads.html">
+			http://directory.apache.org/studio/downloads.html
+		</ulink>
+		.
+	</para>
+	<para>
+		<emphasis role="strong">System requirements</emphasis>
+	</para>
+	<para>
+		<itemizedlist>
+			<listitem>Mac OS X 10.4 or later, Windows, Linux</listitem>
+			<listitem>
+				<ulink url="http://www.java.com/">
+					Java Runtime Environment
+				</ulink>
+				5 or later
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Installing on Mac OS X</emphasis>
+	</para>
+	<para>Follow this installation process:</para>
+	<para>
+		<itemizedlist>
+			<listitem>
+				Step 1: Double-click the downloaded package to mount the
+				Apache Directory Studio DMG.
+			</listitem>
+			<listitem>
+				Step 2: Drag and drop the Apache Directory Studio
+				application to your Applications folder.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Installing on Linux</emphasis>
+	</para>
+	<para>Follow this installation process:</para>
+	<para>
+		<itemizedlist>
+			<listitem>
+				Step 1: Uncompress the Tar Gzip archive ('tar xzf
+				ApacheDirectoryStudio-1.0.0-linux-i386.tar.gz' for the
+				i386 Linux version).
+			</listitem>
+			<listitem>
+				Step 2: Move the ApacheDirectoryStudio folder to the
+				location of your choice.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Installing on Windows</emphasis>
+	</para>
+	<para>Follow this installation process:</para>
+	<para>
+		<itemizedlist>
+			<listitem>Unzip the Zip archive.</listitem>
+			<listitem>
+				Run the installer and follow install instructions.
+			</listitem>
+		</itemizedlist>
+	</para>
+</section>
