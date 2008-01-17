@@ -1,0 +1,62 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="release_notes">
+	<title>Release notes</title>
+	<simplesect>
+		<title>
+			Apache Directory Studio 1.0.1 - (2007, september 10)
+		</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-162] - Delete old RDN on rename has no
+					effect
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-183] - It's not possible to select a
+					Connection in a New Search
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-186] - When copying an entry it isn't
+					displayed correctly in the browser tree
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-185] - Provide completion for all
+					attribute types in the attribute wizard
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>
+			Apache Directory Studio 1.0.0 - (2007, september 3rd) :
+			initial release
+		</title>
+	</simplesect>
+</section>
