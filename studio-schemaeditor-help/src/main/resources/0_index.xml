@@ -27,12 +27,12 @@
   <!ENTITY tasks_exporting_schemas_for_apache_ds SYSTEM "2.6.3_exporting_schemas_for_apache_ds.xml">
   <!ENTITY tasks_creating_new_attribute_type SYSTEM "2.7_creating_new_attribute_type.xml">
   <!ENTITY tasks_creating_new_object_class SYSTEM "2.8_creating_new_object_class.xml">
-  <!ENTITY references SYSTEM "3_references.xml">
-  <!ENTITY references_preferences SYSTEM "3.1_preferences.xml">
-  <!ENTITY references_hierarchy_view_preferences SYSTEM "3.1.1_hierarchy_view_preferences.xml">
-  <!ENTITY references_schema_view_preferences SYSTEM "3.1.2_schema_view_preferences.xml">
-  <!ENTITY references_search_view_preferences SYSTEM "3.1.3_search_view_preferences.xml">
-  <!ENTITY references_release_notes SYSTEM "3.2_release_notes.xml">
+  <!ENTITY reference SYSTEM "3_reference.xml">
+  <!ENTITY reference_preferences SYSTEM "3.1_preferences.xml">
+  <!ENTITY reference_hierarchy_view_preferences SYSTEM "3.1.1_hierarchy_view_preferences.xml">
+  <!ENTITY reference_schema_view_preferences SYSTEM "3.1.2_schema_view_preferences.xml">
+  <!ENTITY reference_search_view_preferences SYSTEM "3.1.3_search_view_preferences.xml">
+  <!ENTITY reference_release_notes SYSTEM "3.2_release_notes.xml">
 
 ]>
 <!--
@@ -86,6 +86,6 @@
 	
 	&gettingstarted;
 	&tasks;
-	&references;
+	&reference;
 	
 </book>

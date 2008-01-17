@@ -16,11 +16,11 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="references_preferences">
+<section id="reference_preferences">
 	<title>Preferences</title>
 	
-	&references_hierarchy_view_preferences;
-	&references_schema_view_preferences;
-	&references_search_view_preferences;
+	&reference_hierarchy_view_preferences;
+	&reference_schema_view_preferences;
+	&reference_search_view_preferences;
 
 </section>

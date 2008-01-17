@@ -16,10 +16,10 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="references">
-	<title>References</title>
+<chapter id="reference">
+	<title>Reference</title>
 
-	&references_preferences;
-	&references_release_notes;
+	&reference_preferences;
+	&reference_release_notes;
 
 </chapter>
