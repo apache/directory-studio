@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
@@ -134,14 +135,26 @@ public class PluginUtils
 
 
     /**
-     * Gets the Projects (where is stored information about the loaded Projects).
+     * Gets the projects file (where is stored information about the loaded projects).
      *
      * @return
-     *      the Projects File
+     *      the projects File
      */
     private static File getProjectsFile()
     {
         return Activator.getDefault().getStateLocation().append( "projects.xml" ).toFile(); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Gets the temporary projects file.
+     *
+     * @return
+     *      the temporary projects file
+     */
+    private static File getTempProjectsFile()
+    {
+        return Activator.getDefault().getStateLocation().append( "projects-temp.xml" ).toFile(); //$NON-NLS-1$
     }
 
 
@@ -152,10 +165,12 @@ public class PluginUtils
     {
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
         File projectsFile = getProjectsFile();
+        boolean loadFailed = false;
+        Project[] projects = null;
 
+        // We try to load the projects file
         if ( projectsFile.exists() )
         {
-            Project[] projects = null;
             try
             {
                 projects = ProjectsImporter.getProjects( new FileInputStream( projectsFile ), projectsFile
@@ -163,20 +178,60 @@ public class PluginUtils
             }
             catch ( ProjectsImportException e )
             {
-                reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
-                    "An error occured when loading the projects." );
-                return;
+                loadFailed = true;
             }
             catch ( FileNotFoundException e )
             {
-                reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
-                    "An error occured when loading the projects." );
-                return;
+                loadFailed = true;
             }
 
-            for ( Project project : projects )
+            if ( !loadFailed )
             {
-                projectsHandler.addProject( project );
+                // If everything went fine, we add the projects 
+                for ( Project project : projects )
+                {
+                    projectsHandler.addProject( project );
+                }
+            }
+            else
+            {
+                // If something went wrong, we try to load the temp projects file
+                File tempProjectsFile = getTempProjectsFile();
+
+                if ( tempProjectsFile.exists() )
+                {
+                    try
+                    {
+                        projects = ProjectsImporter.getProjects( new FileInputStream( tempProjectsFile ), projectsFile
+                            .getAbsolutePath() );
+
+                        loadFailed = false;
+                    }
+                    catch ( ProjectsImportException e )
+                    {
+                        reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
+                            "An error occured when loading the projects." );
+                        return;
+                    }
+                    catch ( FileNotFoundException e )
+                    {
+                        reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
+                            "An error occured when loading the projects." );
+                        return;
+                    }
+
+                    // We add the projects 
+                    for ( Project project : projects )
+                    {
+                        projectsHandler.addProject( project );
+                    }
+                }
+                else
+                {
+                    reportError( "An error occured when loading the projects.", null, "Projects Loading Error",
+                        "An error occured when loading the projects." );
+                }
+
             }
         }
     }
@@ -189,17 +244,38 @@ public class PluginUtils
     {
         try
         {
+            // Saving the projects to the temp projects file
             OutputFormat outformat = OutputFormat.createPrettyPrint();
             outformat.setEncoding( "UTF-8" );
-            XMLWriter writer = new XMLWriter( new FileOutputStream( getProjectsFile() ), outformat );
+            XMLWriter writer = new XMLWriter( new FileOutputStream( getTempProjectsFile() ), outformat );
             writer.write( ProjectsExporter.toDocument( Activator.getDefault().getProjectsHandler().getProjects()
                 .toArray( new Project[0] ) ) );
             writer.flush();
+
+            // Copying the temp projects file to the final location
+            String content = FileUtils.readFileToString( getTempProjectsFile(), "UTF-8" );
+            FileUtils.writeStringToFile( getProjectsFile(), content, "UTF-8" );
         }
         catch ( IOException e )
         {
-            reportError( "An error occured when saving the projects.", e, "Projects Saving Error",
-                "An error occured when saving the projects." );
+            // If an error occurs when saving to the temp projects file or
+            // when copying the temp projects file to the final location,
+            // we try to save the projects directly to the final location.
+            try
+            {
+                OutputFormat outformat = OutputFormat.createPrettyPrint();
+                outformat.setEncoding( "UTF-8" );
+                XMLWriter writer = new XMLWriter( new FileOutputStream( getProjectsFile() ), outformat );
+                writer.write( ProjectsExporter.toDocument( Activator.getDefault().getProjectsHandler().getProjects()
+                    .toArray( new Project[0] ) ) );
+                writer.flush();
+            }
+            catch ( IOException e2 )
+            {
+                // If another error occur, we display an error
+                reportError( "An error occured when saving the projects.", e2, "Projects Saving Error",
+                    "An error occured when saving the projects." );
+            }
         }
     }
 
