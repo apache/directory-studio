@@ -24,3 +24,18 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.studio.ldifeditor
 Eclipse-LazyStart: true
 Bundle-ClassPath: .
+Export-Package: org.apache.directory.studio.ldapbrowser.ui,
+ org.apache.directory.studio.ldapbrowser.ui.actions,
+ org.apache.directory.studio.ldapbrowser.ui.actions.proxy,
+ org.apache.directory.studio.ldapbrowser.ui.dialogs,
+ org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences,
+ org.apache.directory.studio.ldapbrowser.ui.dialogs.properties,
+ org.apache.directory.studio.ldapbrowser.ui.editors.entry,
+ org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser,
+ org.apache.directory.studio.ldapbrowser.ui.editors.searchresult,
+ org.apache.directory.studio.ldapbrowser.ui.perspective,
+ org.apache.directory.studio.ldapbrowser.ui.search,
+ org.apache.directory.studio.ldapbrowser.ui.views.browser,
+ org.apache.directory.studio.ldapbrowser.ui.views.connection,
+ org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs,
+ org.apache.directory.studio.ldapbrowser.ui.wizards
