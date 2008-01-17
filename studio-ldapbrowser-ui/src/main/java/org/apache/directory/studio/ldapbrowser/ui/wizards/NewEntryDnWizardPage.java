@@ -155,10 +155,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             EventRegistry.suspendEventFireingInCurrentThread();
 
             // remove old RDN
-            if( newEntry.getRdn().size() > 0 )
+            if ( newEntry.getRdn().size() > 0 )
             {
                 Iterator<AttributeTypeAndValue> atavIterator = newEntry.getRdn().iterator();
-                while(atavIterator.hasNext())
+                while ( atavIterator.hasNext() )
                 {
                     AttributeTypeAndValue atav = atavIterator.next();
                     IAttribute attribute = newEntry.getAttribute( atav.getUpType() );
@@ -172,6 +172,15 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                                 attribute.deleteValue( values[v] );
                             }
                         }
+
+                        // If we have removed all the values of the attribute,
+                        // then we also need to remove this attribute from the
+                        // entry.
+                        // This test has been added to fix DIRSTUDIO-222
+                        if ( attribute.getValueSize() == 0 )
+                        {
+                            newEntry.deleteAttribute( attribute );
+                        }
                     }
                 }
             }
@@ -181,10 +190,10 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             newEntry.setDn( dn );
 
             // add new RDN
-            if( dn.getRdn().size() > 0 )
+            if ( dn.getRdn().size() > 0 )
             {
                 Iterator<AttributeTypeAndValue> atavIterator = dn.getRdn().iterator();
-                while(atavIterator.hasNext())
+                while ( atavIterator.hasNext() )
                 {
                     AttributeTypeAndValue atav = atavIterator.next();
                     IAttribute rdnAttribute = newEntry.getAttribute( atav.getUpType() );
@@ -250,7 +259,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     public IWizardPage getNextPage()
     {
         dnBuilderWidget.validate();
-        
+
         Rdn rdn = dnBuilderWidget.getRdn();
         LdapDN parentDn = dnBuilderWidget.getParentDn();
         final LdapDN dn = DnUtils.composeDn( rdn, parentDn );
