@@ -17,6 +17,107 @@
 	under the License.
 -->
 <section id="whats_new">
-	<title>What's New</title>
+	<title>What's New in 1.1</title>
+
+	<simplesect>
+		<title>Folders in the Connections View</title>
+		<para>
+			The LDAP Browser plugin now supports reoganizing connections
+			inside folders in the
+			<link linkend="tools_connections_view">
+				Connections View
+			</link>. This is a great improvement for grouping related
+			connections together and keep the view clean.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_folders_connections_view.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>
+			Object Classes selection improved when creating a new entry
+		</title>
+		<para>
+			The Object Classes page of the <link linkend="tools_newentry_wizard">New Entry Wizard</link> has been
+			quite improved with:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					an icon aside each object class indicating whether
+					it is an 'Abstract', 'Auxiliary' or 'Structural'
+					object class
+				</listitem>
+				<listitem>
+					a new warning panel, showing up when the current
+					selection does not contain any structural
+				</listitem>
+				<listitem>
+					new key bindings for a better selection of object
+					classes using the keyboard
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_object_classes_selection.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>
+			Support for lowercased Hash Methods in the Password Editor
+		</title>
+		<para>
+			The <link linkend="tools_value_editors_passwordeditor">Password Editor</link> has been updated to support lowercased
+			Hash Methods (e.g. "{crypt}"). The Password Editor now
+			supports the following Hash Methods in both uppercase and
+			lowercase:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>CRYPT</listitem>
+				<listitem>SHA</listitem>
+				<listitem>SSHA</listitem>
+				<listitem>SSHA</listitem>
+				<listitem>MD5</listitem>
+				<listitem>SMD5</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_lowercase_hash_methods.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>A number of bug fixes</title>
+		<para>
+			Besides these key new features, the LDAP Browser plugin has
+			received a number of bug fixes. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
 
 </section>
