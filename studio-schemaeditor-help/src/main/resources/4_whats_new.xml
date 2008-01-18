@@ -17,6 +17,105 @@
 	under the License.
 -->
 <section id="whats_new">
-	<title>What's New</title>
+	<title>What's New in 1.1</title>
+
+	<simplesect>
+		<title>New Hierarchical presentation in Schema view</title>
+		<para>
+			The
+			<link linkend="gettingstarted_views_schema">
+				Schema view
+			</link>
+			has been improved by the addition of a new Hierarchical
+			presentation which displays the attribute types and object
+			classes hierarchically.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_hierarchical_presentation_schema_view.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Key bindings</title>
+		<para>
+			The Schema Editor plugin now supports key bindings to launch
+			several actions (e.g. "Open in Type Hierarchy").
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_key_bindings.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Bundled OpenLDAP 'core' schemas</title>
+		<para>
+			The Schema Editor plugin now bundles the 'core' schemas of
+			Open LDAP. When
+			<link linkend="tasks_creating_new_project">
+				creating a new project
+			</link>, or
+			<link linkend="">importing 'core' schemas</link>, the schemas from Open LDAP can be selected.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_openldap_core_schemas.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>Improved Hierarchy view</title>
+		<para>
+			The
+			<link linkend="gettingstarted_views_hierarchy">
+				Hierarchy view
+			</link>
+			has been improved by the addition of the "Type Hierarchy"
+			mode which displays at the same time both the element's
+			Supertype and Subtype hierarchies.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_type_hierarchy.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>A number of bug fixes</title>
+		<para>
+			Besides these key new features, the Schema Editor plugin has
+			received a number of bug fixes. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
 
 </section>
