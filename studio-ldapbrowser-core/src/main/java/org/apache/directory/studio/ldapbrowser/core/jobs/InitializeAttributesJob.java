@@ -349,12 +349,15 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         
         // get other meta data entries
         IAttribute[] rootDseAttributes = browserConnection.getRootDSE().getAttributes();
-        for ( IAttribute attribute : rootDseAttributes )
+        if ( rootDseAttributes != null )
         {
-            IEntry[] metadataEntries = getDirectoryMetadataEntries( browserConnection, attribute.getDescription() );
-            for ( IEntry entry : metadataEntries )
+            for ( IAttribute attribute : rootDseAttributes )
             {
-                rootDseEntries.put( entry.getDn(), entry );
+                IEntry[] metadataEntries = getDirectoryMetadataEntries( browserConnection, attribute.getDescription() );
+                for ( IEntry entry : metadataEntries )
+                {
+                    rootDseEntries.put( entry.getDn(), entry );
+                }
             }
         }
         
