@@ -45,6 +45,7 @@ import javax.naming.ldap.StartTlsResponse;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.name.LdapDN;
@@ -875,7 +876,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         context.addToEnvironment( Context.SECURITY_CREDENTIALS, bindCredentials );
                         context.addToEnvironment( Context.SECURITY_AUTHENTICATION, authMethod );
 
-                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
+                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5
+                            && StringUtils.isNotEmpty( saslRealm ) )
                         {
                             context.addToEnvironment( "java.naming.security.sasl.realm", saslRealm );
                         }

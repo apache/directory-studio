@@ -234,6 +234,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
         // validate input fields
         message = null;
+        infoMessage = null;
         errorMessage = null;
         if ( !isAutoFetchBaseDns() )
         {

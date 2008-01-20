@@ -58,6 +58,7 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     /** The error message. */
     protected String errorMessage;
 
+    /** The info message. */
     protected String infoMessage;
 
     /** The connection parameter. */
@@ -203,6 +204,9 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     }
 
 
+    /**
+     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#getInfoMessage()
+     */
     public String getInfoMessage()
     {
         return infoMessage;

@@ -117,21 +117,45 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     {
         int index = tabFolder.getSelectionIndex();
         ConnectionParameterPage page = index >= 0 ? pages[tabFolder.getSelectionIndex()] : null;
-        if( page != null && !page.isValid() ) 
+        if ( page != null
+            && ( page.getMessage() != null || page.getInfoMessage() != null || page.getErrorMessage() != null ) ) 
         {
-            setMessage( page.getMessage() );
+            if ( page.getMessage() != null )
+            {
+                setMessage( page.getMessage() );
+            }
+            else if ( page.getInfoMessage() != null )
+            {
+                setMessage( page.getInfoMessage() );
+            }
+            else
+            {
+                setMessage( null );
+            }
             setErrorMessage( page.getErrorMessage() );
-            setValid( false );
+            setValid( page.isValid() );
         }
         else
         {
             for ( int i = 0; i < pages.length; i++ )
             {
-                if ( !pages[i].isValid() )
+                if ( pages[i].getMessage() != null || pages[i].getInfoMessage() != null
+                    || pages[i].getErrorMessage() != null )
                 {
-                    setMessage( pages[i].getMessage() );
+                    if ( page.getMessage() != null )
+                    {
+                        setMessage( page.getMessage() );
+                    }
+                    else if ( page.getInfoMessage() != null )
+                    {
+                        setMessage( page.getInfoMessage() );
+                    }
+                    else
+                    {
+                        setMessage( null );
+                    }
                     setErrorMessage( pages[i].getErrorMessage() );
-                    setValid( false );
+                    setValid( pages[i].isValid() );
                     return;
                 }
             }
@@ -139,7 +163,6 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
             setMessage( null );
             setErrorMessage( null );
             setValid( true );
-            
         }
     }
 

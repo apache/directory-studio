@@ -205,6 +205,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
         // validate input fields
         message = null;
+        infoMessage = null;
         errorMessage = null;
         if ( "".equals( portCombo.getText() ) )
         {

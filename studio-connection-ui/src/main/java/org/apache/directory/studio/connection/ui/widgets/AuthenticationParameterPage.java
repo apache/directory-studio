@@ -214,6 +214,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // validate input fields
         message = null;
+        infoMessage = null;
         errorMessage = null;
         if ( isPrincipalPasswordEnabled() )
         {
@@ -231,8 +232,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             if ( "".equals( saslRealmText.getText() ) )
             {
-                message = message != null ? message + "\n" : "";
-                message += "Please enter a SASL Realm otherwise any available SASL realm is chosen";
+                infoMessage = "Please enter an SASL Realm otherwise any available SASL realm is choosen";
             }
         }
     }
