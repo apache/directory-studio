@@ -37,7 +37,7 @@ public interface IAuthHandler
      * The authentication handler may display a dialog to the user.
      * 
      * @param connectionParameter the connection to bind to
-     * @return the credentials
+     * @return the credentials, null to cancel the authentication
      */
     public ICredentials getCredentials( ConnectionParameter connectionParameter );
 

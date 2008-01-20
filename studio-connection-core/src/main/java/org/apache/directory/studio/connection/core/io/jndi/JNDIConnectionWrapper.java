@@ -856,7 +856,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
             if ( credentials == null )
             {
-                monitor.reportError( Messages.model__no_credentials, new Exception() );
+                monitor.setCanceled( true );
+                monitor.reportError( Messages.model__no_credentials, new CancelException() );
+                throw new CancelException();
             }
             bindPrincipal = credentials.getBindPrincipal();
             bindCredentials = credentials.getBindPassword();
