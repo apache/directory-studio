@@ -408,7 +408,7 @@ public class LdifScanner
         String s1 = this.getWord( start );
         if ( s1 != null )
         {
-            String s2 = getContent();
+            String s2 = getContent( false );
             return s2 != null ? s1 + s2 : s1;
         }
         else
@@ -418,7 +418,7 @@ public class LdifScanner
     }
 
 
-    private String getContent()
+    private String getContent( boolean allowEmptyContent )
     {
 
         StringBuffer sb = new StringBuffer( 256 );
@@ -437,7 +437,7 @@ public class LdifScanner
         {
         }
 
-        return sb.length() > 0 ? sb.toString() : null;
+        return sb.length() > 0 || allowEmptyContent ? sb.toString() : null;
     }
 
 
@@ -568,7 +568,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getContent();
+        String line = getContent( false );
         LdifToken sep = matchSep();
 
         if ( line != null || sep != null )
@@ -590,7 +590,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getContent();
+        String line = getContent( false );
         if ( line != null )
         {
             LdifToken sep = matchSep();
@@ -1046,7 +1046,7 @@ public class LdifScanner
     {
         this.flushBuffer();
 
-        String line = getContent();
+        String line = getContent( true );
         if ( line != null )
         {
             return new LdifToken( LdifToken.VALUE, line, pos - line.length() + 1 );
