@@ -50,7 +50,7 @@ public class ConnectionLabelProvider extends LabelProvider
     {
         if ( obj instanceof ConnectionFolder )
         {
-            ConnectionFolder folder = (ConnectionFolder) obj;
+            ConnectionFolder folder = ( ConnectionFolder ) obj;
             return folder.getName();
         }
         if ( obj instanceof Connection )
@@ -94,9 +94,18 @@ public class ConnectionLabelProvider extends LabelProvider
         else if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
-            return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
-                ConnectionUIConstants.IMG_CONNECTION_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
-                ConnectionUIConstants.IMG_CONNECTION_DISCONNECTED );
+            if ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
+            {
+                return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
+                    ConnectionUIConstants.IMG_CONNECTION_SSL_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
+                    ConnectionUIConstants.IMG_CONNECTION_SSL_DISCONNECTED );
+            }
+            else
+            {
+                return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
+                    ConnectionUIConstants.IMG_CONNECTION_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
+                    ConnectionUIConstants.IMG_CONNECTION_DISCONNECTED );
+            }
         }
         else
         {

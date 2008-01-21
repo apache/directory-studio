@@ -50,6 +50,12 @@ public interface ConnectionUIConstants
 
     /** The image used to display the disconnected state of connections. */
     public static final String IMG_CONNECTION_DISCONNECTED = "resources/icons/connection_disconnected.gif";
+    
+    /** The image used to display the connected state of SSL connections. */
+    public static final String IMG_CONNECTION_SSL_CONNECTED = "resources/icons/connection_ssl_connected.gif";
+
+    /** The image used to display the disconnected state of SSL connections. */
+    public static final String IMG_CONNECTION_SSL_DISCONNECTED = "resources/icons/connection_ssl_disconnected.gif";
 
     /** The image to connect connections. */
     public static final String IMG_CONNECTION_CONNECT = "resources/icons/connection_connect.gif";
