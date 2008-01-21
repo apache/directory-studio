@@ -152,7 +152,7 @@ public class LdifModSpec extends LdifContainer implements LdifPart
             String att = this.getModSpecType().getUnfoldedAttributeDescription();
             for ( int i = 0; i < attrVals.length; i++ )
             {
-                if ( !att.equals( attrVals[i].getUnfoldedAttributeDescription() ) )
+                if ( !att.equalsIgnoreCase( attrVals[i].getUnfoldedAttributeDescription() ) )
                 {
                     return false;
                 }
@@ -195,7 +195,7 @@ public class LdifModSpec extends LdifContainer implements LdifPart
             String att = this.getModSpecType().getUnfoldedAttributeDescription();
             for ( int i = 0; i < attrVals.length; i++ )
             {
-                if ( !att.equals( attrVals[i].getUnfoldedAttributeDescription() ) )
+                if ( !att.equalsIgnoreCase( attrVals[i].getUnfoldedAttributeDescription() ) )
                 {
                     return "Attribute descriptions don't match";
                 }
