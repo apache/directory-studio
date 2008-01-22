@@ -28,7 +28,6 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
@@ -43,6 +42,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -71,6 +71,22 @@ public class EditAliasesDialog extends Dialog
 
     /** The dirty flag */
     private boolean dirty = false;
+
+    /** The listener used to override the listerner on the RETURN key */
+    private Listener returnKeyListener = new Listener()
+    {
+        public void handleEvent( Event event )
+        {
+            if ( event.detail == SWT.TRAVERSE_RETURN )
+            {
+                event.detail = SWT.TRAVERSE_TAB_NEXT;
+                closeTableEditor();
+            }
+        }
+    };
+
+    /** The {@link Display} */
+    private Display display;
 
     // UI Fields
     private Table aliasesTable;
@@ -104,6 +120,8 @@ public class EditAliasesDialog extends Dialog
                 lowerCasedAliases.add( alias.toLowerCase() );
             }
         }
+
+        display = Activator.getDefault().getWorkbench().getDisplay();
     }
 
 
@@ -364,6 +382,7 @@ public class EditAliasesDialog extends Dialog
         newEditor.selectAll();
         newEditor.setFocus();
         tableEditor.setEditor( newEditor, item, 0 );
+        display.addFilter( SWT.Traverse, returnKeyListener );
     }
 
 
@@ -406,6 +425,7 @@ public class EditAliasesDialog extends Dialog
             saveTableEditorText();
             text.dispose();
         }
+        display.removeFilter( SWT.Traverse, returnKeyListener );
     }
 
 
@@ -440,16 +460,6 @@ public class EditAliasesDialog extends Dialog
     {
         super.configureShell( newShell );
         newShell.setText( "Edit Aliases" );
-    }
-
-
-    /* (non-Javadoc)
-    * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-    */
-    protected void createButtonsForButtonBar( Composite parent )
-    {
-        createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
 
 
