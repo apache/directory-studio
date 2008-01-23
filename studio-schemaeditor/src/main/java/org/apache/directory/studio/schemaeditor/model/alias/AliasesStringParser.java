@@ -96,6 +96,7 @@ public class AliasesStringParser
                     }
                     else
                     {
+                        aliases.add( new AliasWithStartError( previousTokenValue, previousTokenValue.charAt( 0 ) ) );
                         continue;
                     }
                 }
@@ -112,6 +113,8 @@ public class AliasesStringParser
                     }
                     else
                     {
+                        aliases.add( new AliasWithPartError( previousTokenValue, previousTokenValue
+                            .charAt( previousTokenValue.length() - 1 ) ) );
                         continue;
                     }
                 }
