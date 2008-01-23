@@ -31,6 +31,10 @@ import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Schema;
+import org.apache.directory.studio.schemaeditor.model.alias.Alias;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasWithPartError;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasWithStartError;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -74,7 +78,7 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
     private SchemaHandler schemaHandler;
 
     /** The aliases */
-    private String[] aliases;
+    private List<Alias> aliases;
 
     /** The selected schema */
     private Schema selectedSchema;
@@ -99,7 +103,7 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
             PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
 
         schemaHandler = Activator.getDefault().getSchemaHandler();
-        aliases = new String[0];
+        aliases = new ArrayList<Alias>();
     }
 
 
@@ -192,8 +196,23 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
         Label aliasesLabel = new Label( namingDescriptionGroup, SWT.NONE );
         aliasesLabel.setText( "Aliases:" );
         aliasesText = new Text( namingDescriptionGroup, SWT.BORDER );
-        aliasesText.setEnabled( false );
         aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        aliasesText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                AliasesStringParser parser = new AliasesStringParser();
+                parser.parse( aliasesText.getText() );
+                List<Alias> parsedAliases = parser.getAliases();
+                aliases.clear();
+                for ( Alias parsedAlias : parsedAliases )
+                {
+                    aliases.add( parsedAlias );
+                }
+
+                dialogChanged();
+            }
+        } );
         aliasesButton = new Button( namingDescriptionGroup, SWT.PUSH );
         aliasesButton.setText( "Edit..." );
         aliasesButton.addSelectionListener( new SelectionAdapter()
@@ -203,11 +222,30 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
              */
             public void widgetSelected( SelectionEvent arg0 )
             {
-                EditAliasesDialog dialog = new EditAliasesDialog( aliases );
+                EditAliasesDialog dialog = new EditAliasesDialog( getAliasesValue() );
 
                 if ( ( dialog.open() == Dialog.OK ) && ( dialog.isDirty() ) )
                 {
-                    aliases = dialog.getAliases();
+                    String[] newAliases = dialog.getAliases();
+
+                    StringBuffer sb = new StringBuffer();
+                    for ( String newAlias : newAliases )
+                    {
+                        sb.append( newAlias );
+                        sb.append( ", " );
+                    }
+                    sb.deleteCharAt( sb.length() - 1 );
+                    sb.deleteCharAt( sb.length() - 1 );
+
+                    AliasesStringParser parser = new AliasesStringParser();
+                    parser.parse( sb.toString() );
+                    List<Alias> parsedAliases = parser.getAliases();
+                    aliases.clear();
+                    for ( Alias parsedAlias : parsedAliases )
+                    {
+                        aliases.add( parsedAlias );
+                    }
+
                     fillInAliasesLabel();
                     dialogChanged();
                 }
@@ -280,26 +318,44 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
             displayErrorMessage( "A Schema must be specified." );
             return;
         }
-        else if ( oidCombo.getText().equals( "" ) )
+        if ( oidCombo.getText().equals( "" ) )
         {
             displayErrorMessage( "An OID must be specified." );
             return;
         }
-        else if ( ( !oidCombo.getText().equals( "" ) ) && ( !OID.isOID( oidCombo.getText() ) ) )
+        if ( ( !oidCombo.getText().equals( "" ) ) && ( !OID.isOID( oidCombo.getText() ) ) )
         {
             displayErrorMessage( "Incorrect OID." );
             return;
         }
-        else if ( ( !oidCombo.getText().equals( "" ) ) && ( OID.isOID( oidCombo.getText() ) )
+        if ( ( !oidCombo.getText().equals( "" ) ) && ( OID.isOID( oidCombo.getText() ) )
             && ( schemaHandler.isAliasOrOidAlreadyTaken( oidCombo.getText() ) ) )
         {
             displayErrorMessage( "An object with this OID already exists." );
             return;
         }
-        else if ( aliases.length == 0 )
+        if ( aliases.size() == 0 )
         {
             displayWarningMessage( "The attribute type does not have any name. It is recommanded to add at least one name." );
             return;
+        }
+        else
+        {
+            for ( Alias alias : aliases )
+            {
+                if ( alias instanceof AliasWithStartError )
+                {
+                    displayErrorMessage( "The alias '" + alias + "' is invalid. Character '"
+                        + ( ( AliasWithStartError ) alias ).getErrorChar() + "' is not allowed to start an alias." );
+                    return;
+                }
+                else if ( alias instanceof AliasWithPartError )
+                {
+                    displayErrorMessage( "The alias '" + alias + "' is invalid. Character '"
+                        + ( ( AliasWithPartError ) alias ).getErrorChar() + "' is not allowed as part of an alias." );
+                    return;
+                }
+            }
         }
 
         displayErrorMessage( null );
@@ -341,16 +397,16 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
     private void fillInAliasesLabel()
     {
         StringBuffer sb = new StringBuffer();
-        if ( aliases.length != 0 )
+
+        for ( Alias alias : aliases )
         {
-            for ( String name : aliases )
-            {
-                sb.append( name );
-                sb.append( ", " );
-            }
-            sb.deleteCharAt( sb.length() - 1 );
-            sb.deleteCharAt( sb.length() - 1 );
+            sb.append( alias );
+            sb.append( ", " );
         }
+
+        sb.deleteCharAt( sb.length() - 1 );
+        sb.deleteCharAt( sb.length() - 1 );
+
         aliasesText.setText( sb.toString() );
     }
 
@@ -397,7 +453,14 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
      */
     public String[] getAliasesValue()
     {
-        return aliases;
+        List<String> aliasesValue = new ArrayList<String>();
+
+        for ( Alias alias : aliases )
+        {
+            aliasesValue.add( alias.toString() );
+        }
+
+        return aliasesValue.toArray( new String[0] );
     }
 
 
