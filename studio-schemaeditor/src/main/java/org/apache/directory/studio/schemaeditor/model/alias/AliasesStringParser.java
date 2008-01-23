@@ -68,6 +68,7 @@ public class AliasesStringParser
     public void parse( String str )
     {
         // reset state
+        aliases.clear();
         scanner.reset( str );
 
         // handle error tokens before filter
