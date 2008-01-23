@@ -94,41 +94,41 @@ public class NewProjectWizardInformationPage extends WizardPage
             }
         } );
 
-        if ( PluginUtils.getSchemaConnectors().size() > 0 )
-        {
-            // Type Group
-            Group typeGroup = new Group( composite, SWT.NONE );
-            typeGroup.setText( "Type" );
-            typeGroup.setLayout( new GridLayout() );
-            typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+//        if ( PluginUtils.getSchemaConnectors().size() > 0 )
+//        {
+//            // Type Group
+//            Group typeGroup = new Group( composite, SWT.NONE );
+//            typeGroup.setText( "Type" );
+//            typeGroup.setLayout( new GridLayout() );
+//            typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+//
+//            typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
+//            typeOfflineRadio.setText( "Offline Schema" );
+//            typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+//            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
+//            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
+//            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+//        }
 
-            typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
-            typeOfflineRadio.setText( "Offline Schema" );
-            typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
-            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
-            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        }
-
-        initFields();
+//        initFields();
 
         setControl( composite );
     }
 
 
-    /**
-     * Initializes the UI Fields.
-     */
-    private void initFields()
-    {
-        if ( typeOfflineRadio != null )
-        {
-            typeOfflineRadio.setSelection( true );
-        }
-
-        displayErrorMessage( null );
-        setPageComplete( false );
-    }
+//    /**
+//     * Initializes the UI Fields.
+//     */
+//    private void initFields()
+//    {
+//        if ( typeOfflineRadio != null )
+//        {
+//            typeOfflineRadio.setSelection( true );
+//        }
+//
+//        displayErrorMessage( null );
+//        setPageComplete( false );
+//    }
 
 
     /**
