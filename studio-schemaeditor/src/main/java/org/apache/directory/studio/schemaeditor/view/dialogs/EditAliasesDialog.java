@@ -196,6 +196,9 @@ public class EditAliasesDialog extends Dialog
         // Listeners initialization
         initListeners();
 
+        // Checking the aliases
+        checkAliases();
+
         return composite;
     }
 
