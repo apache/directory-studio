@@ -65,6 +65,9 @@ public class ConnectionCorePlugin extends Plugin
 
     /** The JNDI loggers. */
     private List<IJndiLogger> jndiLoggers;
+    
+    /** The connection listeners. */
+    private List<IConnectionListener> connectionListeners;
 
     /**
      * The constructor
@@ -276,6 +279,44 @@ public class ConnectionCorePlugin extends Plugin
         }
         
         return jndiLoggers;
+    }
+    
+    
+    /**
+     * Gets the connection listeners.
+     * 
+     * @return the connection listners
+     */
+    public List<IConnectionListener> getConnectionListners()
+    {
+        if(connectionListeners == null)
+        {
+            connectionListeners = new ArrayList<IConnectionListener>();
+            
+            IExtensionRegistry registry = Platform.getExtensionRegistry();
+            IExtensionPoint extensionPoint = registry
+                .getExtensionPoint( "org.apache.directory.studio.connectionlistener" );
+            IConfigurationElement[] members = extensionPoint.getConfigurationElements();
+            for ( IConfigurationElement member : members )
+            {
+                try
+                {
+                    IConnectionListener listener = ( IConnectionListener ) member.createExecutableExtension( "class" );
+//                    listener.setId( member.getAttribute( "id" ) );
+//                    listener.setName( member.getAttribute( "name" ) );
+//                    listener.setDescription( member.getAttribute( "description" ) );
+                    connectionListeners.add( listener );
+                }
+                catch ( Exception e )
+                {
+                    getLog().log(
+                        new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, 1,
+                            "Unable to create connection listener " + member.getAttribute( "class" ), e ) );
+                }
+            }
+        }
+        
+        return connectionListeners;
     }
 
 }

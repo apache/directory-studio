@@ -248,4 +248,11 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @param entry the entry to remove from cache
      */
     public abstract void uncacheEntryRecursive( IEntry entry );
+
+
+    /**
+     * Clears all caches.
+     */
+    public abstract void clearCaches();
+    
 }

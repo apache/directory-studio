@@ -29,16 +29,11 @@ import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
-import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
-import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -55,7 +50,7 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserConnection implements ConnectionUpdateListener, IBrowserConnection, Serializable
+public class BrowserConnection implements IBrowserConnection, Serializable
 {
 
     private static final long serialVersionUID = 2987596234755856270L;
@@ -120,8 +115,6 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         this.schema = Schema.DEFAULT_SCHEMA;
         this.rootDSE = new RootDSE( this );
         cacheEntry( this.rootDSE );
-
-        ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
 
 
@@ -135,9 +128,9 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
 
 
     /**
-     * CClears all caches.
+     * {@inheritDoc}
      */
-    private void clearCaches()
+    public void clearCaches()
     {
         for ( int i = 0; i < getSearchManager().getSearchCount(); i++ )
         {
@@ -528,65 +521,4 @@ public class BrowserConnection implements ConnectionUpdateListener, IBrowserConn
         return connection;
     }
 
-
-    /**
-     * This implementation does nothing.
-     */
-    public void connectionAdded( Connection connection )
-    {
-    }
-
-
-    /**
-     * This implementation does nothing.
-     */
-    public void connectionRemoved( Connection connection )
-    {
-    }
-
-
-    /**
-     * This implementation does nothing.
-     */
-    public void connectionUpdated( Connection connection )
-    {
-    }
-
-
-    /**
-     * This implementation opens the browser connection when the connection was opened.
-     */
-    public void connectionOpened( Connection connection )
-    {
-        if ( this.connection == connection )
-        {
-            new OpenBrowserConnectionsJob( this ).execute();
-            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
-                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
-            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
-        }
-    }
-
-
-    /**
-     * This implementation closes the browser connection when the connection was closed.
-     */
-    public void connectionClosed( Connection connection )
-    {
-        if ( this.connection == connection )
-        {
-            clearCaches();
-            BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent( this,
-                BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
-            EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
-        }
-    }
-
-
-    /**
-     * This implementation does nothing.
-     */
-    public void connectionFolderModified( ConnectionFolder connectionFolder )
-    {
-    }
 }

@@ -101,12 +101,17 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
      */
     protected IEntry getDelegate()
     {
+        // always get the fresh entry from cache
+        IBrowserConnection conn = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( connectionId );
+        delegate = conn.getEntryFromCache( dn );
+        
         if ( delegate != null
             && !delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
         {
             entryDoesNotExist = false;
             delegate = null;
         }
+        
         return delegate;
     }
 

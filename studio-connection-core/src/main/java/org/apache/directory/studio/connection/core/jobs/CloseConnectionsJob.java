@@ -22,8 +22,10 @@ package org.apache.directory.studio.connection.core.jobs;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 
 
@@ -92,16 +94,27 @@ public class CloseConnectionsJob extends AbstractAsyncBulkJob
         monitor.beginTask( " ", connections.length * 6 + 1 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
-        for ( int i = 0; i < connections.length; i++ )
+        for ( Connection connection : connections )
         {
-            if ( connections[i].getJNDIConnectionWrapper().isConnected() )
+            if ( connection.getJNDIConnectionWrapper().isConnected() )
             {
                 monitor.setTaskName( Messages.bind( Messages.jobs__close_connections_task, new String[]
-                    { this.connections[i].getName() } ) );
+                    { connection.getName() } ) );
                 monitor.worked( 1 );
 
-                connections[i].getJNDIConnectionWrapper().unbind();
-                connections[i].getJNDIConnectionWrapper().disconnect();
+                connection.getJNDIConnectionWrapper().unbind();
+                connection.getJNDIConnectionWrapper().disconnect();
+            }
+        }
+
+        for ( Connection connection : connections )
+        {
+            if ( !connection.getJNDIConnectionWrapper().isConnected() )
+            {
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                {
+                    listener.connectionClosed( connection, monitor );
+                }
             }
         }
     }
@@ -112,11 +125,11 @@ public class CloseConnectionsJob extends AbstractAsyncBulkJob
      */
     protected void runNotification()
     {
-        for ( int i = 0; i < connections.length; i++ )
+        for ( Connection connection : connections )
         {
-            if ( !connections[i].getJNDIConnectionWrapper().isConnected() )
+            if ( !connection.getJNDIConnectionWrapper().isConnected() )
             {
-                ConnectionEventRegistry.fireConnectionClosed( connections[i], this );
+                ConnectionEventRegistry.fireConnectionClosed( connection, this );
             }
         }
     }

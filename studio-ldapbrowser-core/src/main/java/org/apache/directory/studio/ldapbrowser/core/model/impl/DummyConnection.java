@@ -266,4 +266,13 @@ public class DummyConnection implements IBrowserConnection
     public void uncacheEntryRecursive( IEntry entry )
     {
     }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void clearCaches()
+    {
+    }
+
 }

@@ -20,6 +20,7 @@
 -->
 <plugin>
    <extension-point id="org.apache.directory.studio.jndilogger" name="JNDI Logger" schema="src/main/resources/jndiLogger.exsd"/>
+   <extension-point id="org.apache.directory.studio.connectionlistener" name="Connection Listener" schema="src/main/resources/connectionListener.exsd"/>
    <extension
          point="org.apache.directory.studio.jndilogger">
       <jndiLogger

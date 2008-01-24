@@ -54,6 +54,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.IAuthHandler;
+import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.IReferralHandler;
@@ -1156,6 +1157,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             {
                 referralConnection.getJNDIConnectionWrapper().connect( monitor );
                 referralConnection.getJNDIConnectionWrapper().bind( monitor );
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                {
+                    listener.connectionOpened( referralConnection, monitor );
+                }
                 ConnectionEventRegistry.fireConnectionOpened( referralConnection, source );
             }
         }

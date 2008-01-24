@@ -18,18 +18,18 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.core.model.impl;
+package org.apache.directory.studio.ldapbrowser.core;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob;
+import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
-import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
@@ -37,83 +37,68 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
 /**
- * Job to open the browser connection.
+ * The {@link BrowserConnectionListener} opens and closes the 
+ * {@link IBrowserConnection} if the underlying {@link Connection}
+ * is opened and closed.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenBrowserConnectionsJob extends AbstractNotificationJob
+public class BrowserConnectionListener implements IConnectionListener
 {
 
-    /** The browser connection. */
-    private BrowserConnection browserConnection;
-
-
     /**
-     * Creates a new instance of OpenBrowserConnectionsJob.
-     * 
-     * @param browserConnection the browser connection
+     * This implementation opens the browser connection when the connection was opened.
      */
-    public OpenBrowserConnectionsJob( BrowserConnection browserConnection )
+    public void connectionOpened( Connection connection, StudioProgressMonitor monitor )
     {
-        this.browserConnection = browserConnection;
-        setName( BrowserCoreMessages.jobs__open_connections_name_1 );
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        if ( browserConnection != null )
+        {
+            try
+            {
+                EventRegistry.suspendEventFireingInCurrentThread();
+                openBrowserConnection( browserConnection, monitor );
+            }
+            finally
+            {
+                EventRegistry.resumeEventFireingInCurrentThread();
+                BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
+                    browserConnection, BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
+                EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
+            }
+        }
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * This implementation closes the browser connection when the connection was closed.
      */
-    protected Connection[] getConnections()
+    public void connectionClosed( Connection connection, StudioProgressMonitor monitor )
     {
-        return new Connection[0];
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
-     */
-    protected Object[] getLockedObjects()
-    {
-        return new Object[]
-            { browserConnection };
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
-     */
-    protected String getErrorMessage()
-    {
-        return BrowserCoreMessages.jobs__open_connections_error_1;
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
-     */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
-    {
-        monitor.beginTask( " ", 1 * 6 + 1 ); //$NON-NLS-1$
-        monitor.reportProgress( " " ); //$NON-NLS-1$
-
-        monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__open_connections_task, new String[]
-            { this.browserConnection.getConnection().getName() } ) );
-        monitor.worked( 1 );
-
-        openBrowserConnection( browserConnection, monitor );
-    }
-
-
-    /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
-     */
-    protected void runNotification()
-    {
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        if ( browserConnection != null )
+        {
+            try
+            {
+                EventRegistry.suspendEventFireingInCurrentThread();
+                browserConnection.clearCaches();
+            }
+            finally
+            {
+                EventRegistry.resumeEventFireingInCurrentThread();
+                BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
+                    browserConnection, BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
+                EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
+            }
+        }
     }
 
 
@@ -123,7 +108,7 @@ public class OpenBrowserConnectionsJob extends AbstractNotificationJob
      * @param browserConnection the browser connection
      * @param monitor the progress monitor
      */
-    static void openBrowserConnection( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    private static void openBrowserConnection( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
         IRootDSE rootDSE = browserConnection.getRootDSE();
         InitializeAttributesJob.initializeAttributes( rootDSE, true, monitor );
@@ -199,4 +184,5 @@ public class OpenBrowserConnectionsJob extends AbstractNotificationJob
             }
         }
     }
+
 }

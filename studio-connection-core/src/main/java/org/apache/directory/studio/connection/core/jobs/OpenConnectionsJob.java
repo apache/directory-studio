@@ -22,8 +22,10 @@ package org.apache.directory.studio.connection.core.jobs;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 
 
@@ -88,20 +90,30 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
      */
     protected void executeBulkJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( " ", connections.length * 6 + 1 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
-        for ( int i = 0; i < connections.length; i++ )
+        for ( Connection connection : connections )
         {
-            if ( !connections[i].getJNDIConnectionWrapper().isConnected() )
+            if ( !connection.getJNDIConnectionWrapper().isConnected() )
             {
                 monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
-                    { connections[i].getName() } ) );
+                    { connection.getName() } ) );
                 monitor.worked( 1 );
 
-                connections[i].getJNDIConnectionWrapper().connect( monitor );
-                connections[i].getJNDIConnectionWrapper().bind( monitor );
+                connection.getJNDIConnectionWrapper().connect( monitor );
+                connection.getJNDIConnectionWrapper().bind( monitor );
+            }
+        }
+
+        for ( Connection connection : connections )
+        {
+            if ( connection.getJNDIConnectionWrapper().isConnected() )
+            {
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                {
+                    listener.connectionOpened( connection, monitor );
+                }
             }
         }
     }
@@ -112,11 +124,11 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
      */
     protected void runNotification()
     {
-        for ( int i = 0; i < connections.length; i++ )
+        for ( Connection connection : connections )
         {
-            if ( connections[i].getJNDIConnectionWrapper().isConnected() )
+            if ( connection.getJNDIConnectionWrapper().isConnected() )
             {
-                ConnectionEventRegistry.fireConnectionOpened( connections[i], this );
+                ConnectionEventRegistry.fireConnectionOpened( connection, this );
             }
         }
     }

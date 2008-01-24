@@ -22,6 +22,8 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -73,17 +75,21 @@ public abstract class AbstractEclipseJob extends Job
 
         // ensure that connections are opened
         Connection[] connections = getConnections();
-        for ( int i = 0; i < connections.length; i++ )
+        for ( Connection connection : connections )
         {
-            if ( connections[i] != null && !connections[i].getJNDIConnectionWrapper().isConnected() )
+            if ( connection != null && !connection.getJNDIConnectionWrapper().isConnected() )
             {
                 monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
-                    { connections[i].getName() } ) );
+                    { connection.getName() } ) );
                 monitor.worked( 1 );
 
-                connections[i].getJNDIConnectionWrapper().connect( monitor );
-                connections[i].getJNDIConnectionWrapper().bind( monitor );
-                ConnectionEventRegistry.fireConnectionOpened( connections[i], this );
+                connection.getJNDIConnectionWrapper().connect( monitor );
+                connection.getJNDIConnectionWrapper().bind( monitor );
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                {
+                    listener.connectionOpened( connection, monitor );
+                }
+                ConnectionEventRegistry.fireConnectionOpened( connection, this );
             }
         }
 
