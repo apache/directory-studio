@@ -73,8 +73,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
             IRootDSE.ROOTDSE_ATTRIBUTE_ALTSERVER, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION,
             IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM, ISearch.ALL_OPERATIONAL_ATTRIBUTES,
-            ISearch.ALL_USER_ATTRIBUTES };
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM, ISearch.ALL_OPERATIONAL_ATTRIBUTES };
 
 
     /**
@@ -182,7 +181,11 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                 .getBrowserConnection().getSchema() );
             String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( opAtds );
             raSet.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
-            raSet.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
+            if ( entry.getBrowserConnection().getRootDSE().isFeatureSupported(
+                IRootDSE.FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID ) )
+            {
+                raSet.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
+            }
         }
         if ( entry.isReferral() )
         {
@@ -213,25 +216,25 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         {
             // special handling for Root DSE
             loadRootDSE( entry.getBrowserConnection(), monitor );
-            
-        	entry.setAttributesInitialized( true );
-        	entry.setChildrenInitialized( true );
+
+            entry.setAttributesInitialized( true );
+            entry.setChildrenInitialized( true );
         }
         else
         {
-	        // search
+            // search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
                 0, entry.getBrowserConnection().getAliasesDereferencingMethod(), entry.getBrowserConnection()
                     .getReferralsHandlingMethod(), false, null );
             SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
-	
-	        // set initialized state
-	        entry.setAttributesInitialized( true );
+
+            // set initialized state
+            entry.setAttributesInitialized( true );
         }
     }
 
-    
+
     /**
      * Loads the Root DSE.
      * 
@@ -244,7 +247,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
     {
         // delete old children
         IEntry[] oldChildren = browserConnection.getRootDSE().getChildren();
-        if(oldChildren != null)
+        if ( oldChildren != null )
         {
             for ( IEntry entry : oldChildren )
             {
@@ -256,24 +259,31 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         }
         browserConnection.getRootDSE().setChildrenInitialized( false );
 
-        // load well-known Root DSE attributes, includes + and *
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
-            InitializeAttributesJob.ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+        // load all user attributes
+        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
+            { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+            Connection.ReferralHandlingMethod.IGNORE, false, null );
+        SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+
+        // load well-known Root DSE attributes and operational attributes
+        search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES,
+            SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
 
         // the list of entries under the Root DSE
         Map<LdapDN, IEntry> rootDseEntries = new HashMap<LdapDN, IEntry>();
-        
+
         // 1st: add base DNs, either the specified or from the namingContexts attribute
-        if( !browserConnection.isFetchBaseDNs() && browserConnection.getBaseDN() != null && !"".equals( browserConnection.getBaseDN().toString() ))
+        if ( !browserConnection.isFetchBaseDNs() && browserConnection.getBaseDN() != null
+            && !"".equals( browserConnection.getBaseDN().toString() ) )
         {
             // only add the specified base DN
             try
             {
                 LdapDN dn = browserConnection.getBaseDN();
                 IEntry entry = browserConnection.getEntryFromCache( dn );
-                if(entry == null)
+                if ( entry == null )
                 {
                     entry = new BaseDNEntry( new LdapDN( dn ), browserConnection );
                     browserConnection.cacheEntry( entry );
@@ -289,7 +299,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         {
             // get base DNs from namingContexts attribute
             Set<String> namingContextSet = new HashSet<String>();
-            IAttribute attribute = browserConnection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
+            IAttribute attribute = browserConnection.getRootDSE().getAttribute(
+                IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
             if ( attribute != null )
             {
                 String[] values = attribute.getStringValues();
@@ -305,7 +316,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                     {
                         LdapDN dn = new LdapDN( namingContext );
                         IEntry entry = browserConnection.getEntryFromCache( dn );
-                        if(entry == null)
+                        if ( entry == null )
                         {
                             entry = new BaseDNEntry( new LdapDN( dn ), browserConnection );
                             browserConnection.cacheEntry( entry );
@@ -346,7 +357,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             }
             rootDseEntries.put( entry.getDn(), entry );
         }
-        
+
         // get other meta data entries
         IAttribute[] rootDseAttributes = browserConnection.getRootDSE().getAttributes();
         if ( rootDseAttributes != null )
@@ -360,7 +371,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                 }
             }
         }
-        
+
         // try to init entries
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         for ( IEntry entry : rootDseEntries.values() )
@@ -368,7 +379,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             initBaseEntry( entry.getBrowserConnection(), entry.getDn(), dummyMonitor );
             // TODO: log if a base entry doesn't exist
         }
-        
+
         // set flags
         browserConnection.getRootDSE().setHasMoreChildren( false );
         browserConnection.getRootDSE().setAttributesInitialized( true );
@@ -388,10 +399,10 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
             SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
-        
+
         // add entry to Root DSE
         ISearchResult[] results = search.getSearchResults();
-        if(results != null && results.length == 1)
+        if ( results != null && results.length == 1 )
         {
             ISearchResult result = results[0];
             entry = result.getEntry();
@@ -400,7 +411,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
     }
 
 
-    private static IEntry[] getDirectoryMetadataEntries( IBrowserConnection browserConnection, String metadataAttributeName )
+    private static IEntry[] getDirectoryMetadataEntries( IBrowserConnection browserConnection,
+        String metadataAttributeName )
     {
         List<LdapDN> metadataEntryDnList = new ArrayList<LdapDN>();
         IAttribute attribute = browserConnection.getRootDSE().getAttribute( metadataAttributeName );
@@ -409,7 +421,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             String[] values = attribute.getStringValues();
             for ( String dn : values )
             {
-                if( dn != null && !"".equals( dn ))
+                if ( dn != null && !"".equals( dn ) )
                 {
                     try
                     {
@@ -427,7 +439,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         {
             LdapDN dn = metadataEntryDnList.get( i );
             metadataEntries[i] = browserConnection.getEntryFromCache( dn );
-            if(metadataEntries[i] == null)
+            if ( metadataEntries[i] == null )
             {
                 metadataEntries[i] = new DirectoryMetadataEntry( dn, browserConnection );
                 metadataEntries[i].setDirectoryEntry( true );

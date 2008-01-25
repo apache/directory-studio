@@ -63,6 +63,9 @@ public interface IRootDSE extends IEntry
     /** The supportedSASLMechanisms attribute */
     public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM = "supportedSASLMechanisms"; //$NON-NLS-1$
 
+    /** The OID of feature 'All Operational Attributes' */
+    public static final String FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID = "1.3.6.1.4.1.4203.1.5.1"; //$NON-NLS-1$
+
 
     /**
      * Gets the supported extensions.
@@ -88,7 +91,6 @@ public interface IRootDSE extends IEntry
     public String[] getSupportedFeatures();
 
 
-    
     /**
      * Checks if control is supported.
      * 
@@ -97,5 +99,15 @@ public interface IRootDSE extends IEntry
      * @return true, if control is supported
      */
     public boolean isControlSupported( String oid );
+
+
+    /**
+     * Checks if feature is supported.
+     * 
+     * @param oid the OID
+     * 
+     * @return true, if feature is supported
+     */
+    public boolean isFeatureSupported( String oid );
 
 }

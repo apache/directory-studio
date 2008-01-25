@@ -181,7 +181,7 @@ public class SearchJob extends AbstractNotificationJob
             }
             return;
         }
-        
+
         try
         {
             if ( !monitor.isCanceled() )
@@ -205,13 +205,13 @@ public class SearchJob extends AbstractNotificationJob
                         if ( sr instanceof StudioSearchResult )
                         {
                             StudioSearchResult ssr = ( StudioSearchResult ) sr;
-                            
+
                             isReferral = ssr.isReferral();
-                            
+
                             Connection connection = ssr.getConnection();
                             IBrowserConnection bc = BrowserCorePlugin.getDefault().getConnectionManager()
                                 .getBrowserConnection( connection );
-                            if( bc != null )
+                            if ( bc != null )
                             {
                                 resultBrowserConnection = bc;
                             }
@@ -223,18 +223,18 @@ public class SearchJob extends AbstractNotificationJob
                         {
                             entry = createAndCacheEntry( resultBrowserConnection, dn );
                         }
-                        
+
                         // initialize special flags
                         initFlags( entry, sr, searchParameter );
 
                         // fill the attributes
                         fillAttributes( entry, sr, search.getSearchParameter() );
-                        
-                        if ( isReferral  )
+
+                        if ( isReferral )
                         {
                             entry = new ReferralBaseEntry( resultBrowserConnection, dn );
                         }
-                        
+
                         searchResultList.add( new org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult(
                             entry, search ) );
 
@@ -317,7 +317,8 @@ public class SearchJob extends AbstractNotificationJob
         }
 
         NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-            searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, ldapControls, monitor, null );
+            searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, ldapControls, monitor,
+            null );
         return result;
     }
 
@@ -363,41 +364,15 @@ public class SearchJob extends AbstractNotificationJob
                 searchParameter.setReturningAttributes( returningAttributes );
             }
         }
-//
-//        // to init the alias/referral flag we need the objectClass
-//        if ( search.isInitAliasAndReferralFlag() )
-//        {
-//            if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-//                IAttribute.OBJECTCLASS_ATTRIBUTE ) )
-//            {
-//                String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-//                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-//                    .getReturningAttributes().length );
-//                returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
-//                searchParameter.setReturningAttributes( returningAttributes );
-//            }
-//        }
-//
-//        // if returning attributes are requested but objectClass isn't included then add it
-//        if ( search.getReturningAttributes() == null || search.getReturningAttributes().length > 0 )
-//        {
-//            if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-//                IAttribute.OBJECTCLASS_ATTRIBUTE ) )
-//            {
-//                String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
-//                System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
-//                    .getReturningAttributes().length );
-//                returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
-//                searchParameter.setReturningAttributes( returningAttributes );
-//            }
-//        }
-        
+
         // always add the objectClass attribute, we need it  
         // - to detect alias and referral entries
         // - to determine the entry's icon
         // - to determine must and may attributes
         if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-            IAttribute.OBJECTCLASS_ATTRIBUTE ) )
+            IAttribute.OBJECTCLASS_ATTRIBUTE )
+            && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
+                ISearch.ALL_USER_ATTRIBUTES ) )
         {
             String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
             System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
