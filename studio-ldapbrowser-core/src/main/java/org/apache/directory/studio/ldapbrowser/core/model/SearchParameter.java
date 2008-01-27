@@ -59,7 +59,7 @@ public class SearchParameter implements Serializable
     /** The search scope. */
     private SearchScope scope;
 
-    /** The time limit in milliseconds, 0 means no limit. */
+    /** The time limit in seconds, 0 means no limit. */
     private int timeLimit;
 
     /** The count limit, 0 means no limit. */
@@ -323,7 +323,7 @@ public class SearchParameter implements Serializable
     
     
     /**
-     * Gets the time limit in milliseconds, 0 means no limit.
+     * Gets the time limit in seconds, 0 means no limit.
      * 
      * @return the time limit
      */
@@ -334,7 +334,7 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Sets the time limit in milliseconds, 0 means no limit.
+     * Sets the time limit in seconds, 0 means no limit.
      * 
      * @param timeLimit the time limit
      */

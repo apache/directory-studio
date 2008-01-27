@@ -102,8 +102,14 @@ public class LimitWidget extends BrowserWidget
         limitGroup.setLayout( gl );
 
         // Count limit
+        String countLimitToolTipText = "A size limit that restricts the maximum number of entries to be "
+            + "returned as a result of the search.  A value of zero in this field "
+            + "indicates that no client-requested size limit restrictions are in "
+            + "effect for the search.  Note: Servers may also enforce a maximum number of entries to return.";
         countLimitLabel = BaseWidgetUtils.createLabel( limitGroup, "&Count Limit:", 1 );
+        countLimitLabel.setToolTipText( countLimitToolTipText );
         countLimitText = BaseWidgetUtils.createText( limitGroup, "", 1 );
+        countLimitText.setToolTipText( countLimitToolTipText );
         countLimitText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -123,8 +129,14 @@ public class LimitWidget extends BrowserWidget
         } );
 
         // Time limit
-        timeLimitLabel = BaseWidgetUtils.createLabel( limitGroup, "&Time Limit:", 1 );
+        String timeLimitToolTipText = "A time limit that restricts the maximum time (in seconds) allowed for "
+            + "a search.  A value of zero in this field indicates that no client-"
+            + "requested time limit restrictions are in effect for the search. "
+            + "Note: Servers may also enforce a maximum time limit for the search.";
+        timeLimitLabel = BaseWidgetUtils.createLabel( limitGroup, "&Time Limit (s):", 1 );
+        timeLimitLabel.setToolTipText( timeLimitToolTipText );
         timeLimitText = BaseWidgetUtils.createText( limitGroup, "", 1 );
+        timeLimitText.setToolTipText( timeLimitToolTipText );
         timeLimitText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )

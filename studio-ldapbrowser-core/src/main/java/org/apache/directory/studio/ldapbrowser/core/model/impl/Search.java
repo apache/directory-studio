@@ -128,7 +128,7 @@ public class Search implements ISearch
      * @param countLimit
      *                the count limit, 0 indicates no limit
      * @param timeLimit
-     *                the time limit in ms, 0 indicates no limit
+     *                the time limit in seconds, 0 indicates no limit
      * @param aliasesDereferencingMethod
      *                the aliases dereferencing method
      * @param referralsHandlingMethod

@@ -276,7 +276,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
 
     /**
-     * Gets the time limit in milliseconds, 0 means no limit.
+     * Gets the time limit in seconds, 0 means no limit.
      * 
      * @return the time limit
      */
@@ -284,7 +284,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
 
 
     /**
-     * Sets the time limit in milliseconds, 0 means no limit.
+     * Sets the time limit in seconds, 0 means no limit.
      * 
      * Calling this method causes firing a search update event.
      * 

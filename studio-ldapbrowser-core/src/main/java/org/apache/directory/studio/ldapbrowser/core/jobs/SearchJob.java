@@ -300,7 +300,12 @@ public class SearchJob extends AbstractNotificationJob
         }
         controls.setReturningAttributes( parameter.getReturningAttributes() );
         controls.setCountLimit( parameter.getCountLimit() );
-        controls.setTimeLimit( parameter.getTimeLimit() );
+        int timeLimit = parameter.getTimeLimit() * 1000;
+        if ( timeLimit > 1 )
+        {
+            timeLimit--;
+        }
+        controls.setTimeLimit( timeLimit );
         String filter = parameter.getFilter();
         AliasDereferencingMethod aliasesDereferencingMethod = parameter.getAliasesDereferencingMethod();
         ReferralHandlingMethod referralsHandlingMethod = parameter.getReferralsHandlingMethod();

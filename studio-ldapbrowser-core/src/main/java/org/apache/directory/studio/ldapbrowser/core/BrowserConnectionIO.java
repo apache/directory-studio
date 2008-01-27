@@ -32,7 +32,6 @@ import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
