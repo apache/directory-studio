@@ -63,22 +63,21 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
     /**
      * This method creates a prototype search from the given selection.
      * 
-     * Dependend on the selected element it determines the best connection,
+     * Depended on the selected element it determines the best connection,
      * search base and filter:
      * <ul>
      *   <li>ISearch: all parameters are copied to the prototype search (clone)
      *   <li>IEntry or ISearchResult or IBookmark: DN is used as search base
+     *   <li>IEntry: children filter is used as filter
      *   <li>IAttribute or IValue: the entry's DN is used as search base, 
      *       the filter is built using the name-value-pairs (query by example). 
      * </ul>
-     * 
      * 
      * @param selection the current selection
      * @return a prototype search
      */
     public static ISearch getExampleSearch( ISelection selection )
     {
-
         ISearch exampleSearch = new Search();
         String oldName = exampleSearch.getSearchParameter().getName();
         exampleSearch.getSearchParameter().setName( null );
@@ -86,7 +85,6 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
 
         if ( selection != null && !selection.isEmpty() && selection instanceof StructuredSelection )
         {
-
             Object[] objects = ( ( IStructuredSelection ) selection ).toArray();
             Comparator<Object> comparator = new Comparator<Object>()
             {
@@ -133,6 +131,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
                 IEntry entry = ( IEntry ) obj;
                 exampleSearch.setBrowserConnection( entry.getBrowserConnection() );
                 exampleSearch.setSearchBase( entry.getDn() );
+                exampleSearch.setFilter( entry.getChildrenFilter() );
             }
             else if ( obj instanceof ISearchResult )
             {
@@ -149,7 +148,6 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
 
             else if ( obj instanceof AttributeHierarchy || obj instanceof IAttribute || obj instanceof IValue )
             {
-
                 IEntry entry = null;
                 Set<String> filterSet = new LinkedHashSet<String>();
                 for ( int i = 0; i < objects.length; i++ )
@@ -158,9 +156,8 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
                     if ( object instanceof AttributeHierarchy )
                     {
                         AttributeHierarchy ah = ( AttributeHierarchy ) object;
-                        for ( Iterator it = ah.iterator(); it.hasNext(); )
+                        for ( IAttribute attribute : ah )
                         {
-                            IAttribute attribute = ( IAttribute ) it.next();
                             entry = attribute.getEntry();
                             IValue[] values = attribute.getValues();
                             for ( int v = 0; v < values.length; v++ )
@@ -366,15 +363,15 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
      *
      * @param selection the selection
      * @param type the requested type
-     * @return a list containg beans of the requesten type
+     * @return a list containing beans of the requested type
      */
-    private static List<Object> getTypes( ISelection selection, Class type )
+    private static List<Object> getTypes( ISelection selection, Class<?> type )
     {
         List<Object> list = new ArrayList<Object>();
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
-            Iterator it = structuredSelection.iterator();
+            Iterator<?> it = structuredSelection.iterator();
             while ( it.hasNext() )
             {
                 Object o = it.next();
@@ -399,32 +396,6 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
         List<Object> list = getTypes( selection, ISearch.class );
         return list.toArray( new ISearch[list.size()] );
     }
-
-
-//    /**
-//     * Gets the IConnection beans contained in the given selection.
-//     *
-//     * @param selection the selection
-//     * @return an array with IConnection beans, may be empty.
-//     */
-//    public static IConnection[] getConnections( ISelection selection )
-//    {
-//        List<Object> list1 = getTypes( selection, IConnection.class );
-//
-//        List<Object> list2 = getTypes( selection, Connection.class );
-//        for ( Object object : list2 )
-//        {
-//            Connection connection = ( Connection ) object;
-//            String name = connection.getName();
-//            IConnection conn = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( name );
-//            if ( conn != null )
-//            {
-//                list1.add( conn );
-//            }
-//        }
-//
-//        return list1.toArray( new IConnection[list1.size()] );
-//    }
 
 
     /**
