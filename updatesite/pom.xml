@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>updatesite</artifactId>
+  <version>${updatesite.version}</version>
+  <name>Apache Directory Studio Update Site</name>
+  <packaging>pom</packaging>
+
+  <description></description>
+
+  <!-- Set path for local repository and others-->
+  <properties>
+    <current_pom_version>${pom.version}</current_pom_version>
+  </properties>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <targetPath>../updatesite</targetPath>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Deploy all to ${project.build.directory}/updatesite for local use-->
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>maven-studio-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-directory-studio-plugins</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-eclipse-artifact</goal>
+            </goals>
+            <configuration>
+              <destinationDirectory>${project.build.directory}/updatesite/plugins</destinationDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>aciitemeditor</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>rcp.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>jars</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldifeditor</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>schemaeditor</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>rcp</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>valueeditors</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.configuration</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.configuration.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>connection.core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>connection.ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapbrowser.common</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapbrowser.core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapbrowser.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapbrowser.ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldifeditor.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>schemaeditor.help</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-features</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-eclipse-artifact</goal>
+            </goals>
+            <configuration>
+              <destinationDirectory>${project.build.directory}/updatesite/features</destinationDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>rcp.feature</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.configuration.feature</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldapbrowser.feature</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldifeditor.feature</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>schemaeditor.feature</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Build dist in root projects target/distributions -->
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-1</version>
+        <executions>
+          <execution>
+            <id>dist</id>
+            <phase>package</phase>
+            <configuration>
+              <finalName>updatesite-${pom.version}</finalName>
+              <outputDirectory>../target/distributions</outputDirectory>
+              <descriptors>
+                <descriptor>src/main/assembly/bin.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
