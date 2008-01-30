@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../docbook-xml/docbookx.dtd"[
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../target/docbook/docbook-xml/docbookx.dtd"[
 
   <!ENTITY gettingstarted SYSTEM "1_gettingstarted.xml">
   <!ENTITY gettingstarted_download_install SYSTEM "1.1_download_install.xml">
