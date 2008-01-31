@@ -41,7 +41,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.apache.directory.studio.application"
+            application="org.apache.directory.studio.rcp.application"
             name="Apache Directory Studio">
          <property
                name="aboutText"
@@ -93,7 +93,7 @@
       </intro>
       <introProductBinding
             introId="studio.intro"
-            productId="org.apache.directory.studio.product">
+            productId="org.apache.directory.studio.rcp.product">
       </introProductBinding>
    </extension>
    <extension

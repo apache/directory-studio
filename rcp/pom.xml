@@ -41,9 +41,7 @@
         <includes>
           <include>plugin.properties</include>
           <include>plugin.xml</include>
-          <include>about.ini</include>
           <include>studio.png</include>
-          <include>plugin_customization.ini</include>
         </includes>
       </resource>
       <resource>
