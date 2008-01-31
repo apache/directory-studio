@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio LDAP Browser Common
 Bundle-SymbolicName: org.apache.directory.studio.ldapbrowser.common;singleton:=true
-Bundle-Version: 1.1.0.SNAPSHOT
+Bundle-Version: 1.0.1
 Bundle-Activator: org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
@@ -32,3 +32,4 @@ Export-Package: org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.common.widgets.search,
  org.apache.directory.studio.ldapbrowser.common.wizards,
  org.apache.directory.studio.valueeditors
+Bundle-ClassPath: .
