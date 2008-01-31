@@ -22,3 +22,4 @@ Export-Package: org.apache.directory.studio.valueeditors,
  org.apache.directory.studio.valueeditors.objectclass,
  org.apache.directory.studio.valueeditors.password,
  org.apache.directory.studio.valueeditors.time
+Bundle-ClassPath: .
