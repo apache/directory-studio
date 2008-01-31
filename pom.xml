@@ -751,7 +751,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>sdk</artifactId>
-        <version>3.3.2-R33x_v20071022</version>
+        <version>3.3.2.R33x_v20071022</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
