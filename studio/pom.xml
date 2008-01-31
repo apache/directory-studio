@@ -508,7 +508,7 @@
                       <artifactId>x86</artifactId>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.eclipse.core.filesystem.win</groupId>
+                      <groupId>org.eclipse.core.filesystem.win32</groupId>
                       <artifactId>x86</artifactId>
                     </artifactItem>
                   </artifactItems>

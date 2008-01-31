@@ -389,7 +389,7 @@
       <dependency>
         <groupId>org.eclipse.ui.workbench</groupId>
         <artifactId>compatibility</artifactId>
-        <version>3.2.0-I20070319-0010</version>
+        <version>3.2.0.I20070319-0010</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.update</groupId>
@@ -741,7 +741,7 @@
       <dependency>
         <groupId>org.eclipse.core.runtime.compatibility</groupId>
         <artifactId>registry</artifactId>
-        <version>3.2.100-v20070316</version>
+        <version>3.2.100.v20070316</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.help</groupId>
