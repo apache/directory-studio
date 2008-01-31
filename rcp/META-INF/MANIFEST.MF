@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio RCP
 Bundle-SymbolicName: org.apache.directory.studio.rcp;singleton:=true
-Bundle-Version: 1.0.1
+Bundle-Version: 1.1.0.SNAPSHOT
 Bundle-Activator: org.apache.directory.studio.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

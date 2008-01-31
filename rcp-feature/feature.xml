@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.apache.directory.studio.feature"
+      id="org.apache.directory.studio.rcp.feature"
       label="Apache Directory Studio RCP"
       version="1.1.0.SNAPSHOT"
       provider-name="Apache Software Foundation"
-      plugin="org.apache.directory.studio"
+      plugin="org.apache.directory.studio.rcp"
       os="linux,macosx,win32"
       ws="carbon,gtk,win32"
       arch="ppc,x86,x86_64"
@@ -225,14 +225,14 @@ of your accepting any such warranty or additional liability.
    </url>
 
    <plugin
-         id="org.apache.directory.studio"
+         id="org.apache.directory.studio.rcp"
          download-size="0"
          install-size="0"
          version="1.1.0.SNAPSHOT"
          unpack="false"/>
 
    <plugin
-         id="org.apache.directory.studio.help"
+         id="org.apache.directory.studio.rcp.help"
          download-size="0"
          install-size="0"
          version="1.1.0.SNAPSHOT"
