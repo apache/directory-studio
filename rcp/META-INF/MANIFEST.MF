@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio RCP
-Bundle-SymbolicName: org.apache.directory.studio;singleton:=true
-Bundle-Version: 1.1.0.SNAPSHOT
+Bundle-SymbolicName: org.apache.directory.studio.rcp;singleton:=true
+Bundle-Version: 1.0.1
 Bundle-Activator: org.apache.directory.studio.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
@@ -13,4 +13,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.intro
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
- lib/nlog4j-1.2.24.jar
+ lib/nlog4j-1.2.25.jar
