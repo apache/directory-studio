@@ -76,7 +76,7 @@
 								</imageobject>
 							</mediaobject>
 						</entry>
-						<entry>Closed offline project</entry>
+						<entry>Closed project</entry>
 					</row>
 					<row>
 						<entry align="center">
@@ -87,29 +87,7 @@
 								</imageobject>
 							</mediaobject>
 						</entry>
-						<entry>Opened offline project</entry>
-					</row>
-					<row>
-						<entry align="center">
-							<mediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em"
-										fileref="images/icons_project-online-closed.gif" format="GIF" />
-								</imageobject>
-							</mediaobject>
-						</entry>
-						<entry>Closed online project</entry>
-					</row>
-					<row>
-						<entry align="center">
-							<mediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em"
-										fileref="images/icons_project-online.gif" format="GIF" />
-								</imageobject>
-							</mediaobject>
-						</entry>
-						<entry>Opened onlineproject</entry>
+						<entry>Opened project</entry>
 					</row>
 				</tbody>
 			</tgroup>

@@ -96,7 +96,7 @@
 		</para>
 	</simplesect>
 	<simplesect>
-		<title>Page 2 - Offline Schema</title>
+		<title>Page 2</title>
 		<para>
 			The second page allows you to select the 'core' schema files
 			to import.
@@ -116,24 +116,5 @@
 			Specify the type of server you want to work with and check
 			the 'core' schema files you want to import.
 		</para>
-	</simplesect>
-	<simplesect>
-		<title>Page 2 - Online Schema from a Directory Server</title>
-		<para>
-			The second page allows you to select the connection to use
-			to import the Schema.
-		</para>
-		<para>
-			<screenshot>
-				<mediaobject>
-					<imageobject>
-						<imagedata scale="50"
-							fileref="images/tasks_new-project-wizard_page-2_online.png"
-							format="PNG" />
-					</imageobject>
-				</mediaobject>
-			</screenshot>
-		</para>
-		<para>Choose a connection.</para>
 	</simplesect>
 </section>
