@@ -20,6 +20,139 @@
 	<title>Release notes</title>
 	<simplesect>
 		<title>
+			Apache Directory Studio 1.1.0 - (2008, INSERT DATE HERE)
+		</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-243] - Modified value of Equality
+					Matching Rule in the AttributeTypeEditor is not
+					saved
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-239] - No error message when importing a
+					bad schema
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-226] - Attribute Type Description is not
+					imported when reading an OpenLDAP schema file
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-224] - Can't Open Schema View with JDK
+					6.0
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-214] - IllegalArgumentException raised
+					when selecting an AT with no alias as superior in
+					the NewAttributeTypeWizard
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-213] - NullPointerException raised when
+					selecting an OC with no alias as a superior in the
+					NewObjectClassWizard
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-201] - Project Name mess up if it
+					contains non-ascii chars
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-198] - Search string is not working
+					properly with metacharacters (*, +...)
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-196] - Error dialog displayed after
+					Problems View is closed
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-48] - Errors when help is open
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-254] - schema import does not provide
+					error reporting when parsing schema file
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-251] - Replace the Text Widget for the
+					OID in the new AT and OC wizards by a Drop-Down
+					Combo with history of the last used OIDs
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-240] - Memorize the last import's path
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-238] - Automatically add an alias when
+					the 'ok' button is selected
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-237] - It would be good to be able to
+					import 'core' schemas into an existing project
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-227] - Add the ability to select OpenLDAP
+					schema files as core schemas when creating a project
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-216] - Improve Type Hierarchy View
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-206] - Add help contexts to the help
+					plugin of the Schema Editor
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-200] - Add an OC and AT hierarchical
+					global view
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-199] - Add scopes for OC and AT in search
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-195] - Add key bindings to the Schema
+					Editor
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-194] - Add a SchemaConnector for Apache
+					Directory Server
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-193] - Add the abitilty to import/export
+					the Schema from/to a directory Server
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-192] - Add an extension point in the
+					Schema Editor for SchemaConnectors
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-225] - Update documentation for Schema
+					Editor Plugin
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>
 			Apache Directory Studio 1.0.1 - (2007, september 10)
 		</title>
 		<para>
