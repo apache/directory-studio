@@ -538,7 +538,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>search</artifactId>
-        <version>3.3.1-r331_v20070831-0800</version>
+        <version>3.3.1.r331_v20070831-0800-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
@@ -599,7 +599,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>editors</artifactId>
-        <version>3.3.1-r331_v20070629</version>
+        <version>3.3.1.r331_v20070629-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
@@ -689,7 +689,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>ide</artifactId>
-        <version>3.3.1-M20070910-0800b</version>
+        <version>3.3.1.M20070910-0800b-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>

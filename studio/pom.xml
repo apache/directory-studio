@@ -1129,64 +1129,6 @@
               </artifactItems>
             </configuration>
           </execution>
-          
-          <!--<execution>
-            <id>replace-plugin.xml-in-org.eclipse.search</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>replace-file-in-eclipse-artifact</goal>
-            </goals>
-            <configuration>
-              <inputFile>src/main/configuration/org.eclipse.search/plugin.xml</inputFile>
-              <destinationDirectory>${studio-dir}/plugins</destinationDirectory>
-              <overWrite>false</overWrite>
-              <outputDirectory>${studio-dir}/plugins</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>search</artifactId>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>replace-plugin.xml-in-org.eclipse.ui.editors</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>replace-file-in-eclipse-artifact</goal>
-            </goals>
-            <configuration>
-              <inputFile>src/main/configuration/org.eclipse.ui.editors/plugin.xml</inputFile>
-              <destinationDirectory>${studio-dir}/plugins</destinationDirectory>
-              <overWrite>false</overWrite>
-              <outputDirectory>${studio-dir}/plugins</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>editors</artifactId>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>replace-plugin.xml-in-org.eclipse.ui.ide</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>replace-file-in-eclipse-artifact</goal>
-            </goals>
-            <configuration>
-              <inputFile>src/main/configuration/org.eclipse.ui.ide/plugin.xml</inputFile>
-              <destinationDirectory>${studio-dir}/plugins</destinationDirectory>
-              <overWrite>false</overWrite>
-              <outputDirectory>${studio-dir}/plugins</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>ide</artifactId>
-                </artifactItem>
-              </artifactItems>
-            </configuration>
-          </execution>-->
         </executions>
       </plugin>
       <!-- No tests to run -->
