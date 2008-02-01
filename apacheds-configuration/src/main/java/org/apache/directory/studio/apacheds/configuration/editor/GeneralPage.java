@@ -506,6 +506,7 @@ public class GeneralPage extends FormPage
         Composite protocolComposite = toolkit.createComposite( parent );
         GridLayout protocolGridLayout = new GridLayout( 3, false );
         protocolGridLayout.marginHeight = protocolGridLayout.marginWidth = 0;
+        toolkit.paintBordersFor( protocolComposite );
         protocolComposite.setLayout( protocolGridLayout );
 
         return protocolComposite;
