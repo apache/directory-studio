@@ -156,7 +156,7 @@ public class DummyEntry implements IEntry
     {
         AttributeDescription ad = new AttributeDescription( attributeDescription );
         String oidString = ad.toOidString( getBrowserConnection().getSchema() );
-        return attributeMap.get( oidString );
+        return attributeMap.get( oidString.toLowerCase() );
     }
 
 
