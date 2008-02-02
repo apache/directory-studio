@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +117,8 @@ public class DummyEntry implements IEntry
      */
     public void addAttribute( IAttribute attributeToAdd )
     {
-        attributeMap.put( attributeToAdd.getDescription().toLowerCase(), attributeToAdd );
+        String oidString = attributeToAdd.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
+        attributeMap.put( oidString.toLowerCase(), attributeToAdd );
         EventRegistry.fireEntryUpdated( new AttributeAddedEvent( attributeToAdd.getEntry().getBrowserConnection(),
             this, attributeToAdd ), this );
     }
@@ -137,7 +137,8 @@ public class DummyEntry implements IEntry
      */
     public void deleteAttribute( IAttribute attributeToDelete )
     {
-        attributeMap.remove( attributeToDelete.getDescription().toLowerCase() );
+        String oidString = attributeToDelete.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
+        attributeMap.remove( oidString.toLowerCase() );
         EventRegistry.fireEntryUpdated( new AttributeDeletedEvent( attributeToDelete.getEntry().getBrowserConnection(),
             this, attributeToDelete ), this );
     }
@@ -153,7 +154,9 @@ public class DummyEntry implements IEntry
      */
     public IAttribute getAttribute( String attributeDescription )
     {
-        return attributeMap.get( attributeDescription.toLowerCase() );
+        AttributeDescription ad = new AttributeDescription( attributeDescription );
+        String oidString = ad.toOidString( getBrowserConnection().getSchema() );
+        return attributeMap.get( oidString );
     }
 
 
@@ -165,9 +168,9 @@ public class DummyEntry implements IEntry
         AttributeDescription ad = new AttributeDescription( attributeDescription );
 
         List<IAttribute> attributeList = new ArrayList<IAttribute>();
-        for ( IAttribute attribute : attributeList )
+        for ( IAttribute attribute : attributeMap.values() )
         {
-            AttributeDescription other = new AttributeDescription( attributeDescription );
+            AttributeDescription other = attribute.getAttributeDescription();
             if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
             {
                 attributeList.add( attribute );
@@ -331,34 +334,33 @@ public class DummyEntry implements IEntry
     {
         return true;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public boolean isConsistent()
     {
         // check empty attributes and empty values
-        Iterator<IAttribute> attributeIterator = attributeMap.values().iterator();
-        while ( attributeIterator.hasNext() )
+        for ( IAttribute attribute : attributeMap.values() )
         {
-            IAttribute attribute = attributeIterator.next();
             if ( !attribute.isConsistent() )
+            {
                 return false;
+            }
         }
 
         // check objectClass attribute
-        if ( !attributeMap.containsKey( IAttribute.OBJECTCLASS_ATTRIBUTE.toLowerCase() ) )
+        if ( !attributeMap.containsKey( IAttribute.OBJECTCLASS_ATTRIBUTE_OID.toLowerCase() ) )
         {
             return false;
         }
-        IAttribute ocAttribute = attributeMap.get( IAttribute.OBJECTCLASS_ATTRIBUTE.toLowerCase() );
+        IAttribute ocAttribute = attributeMap.get( IAttribute.OBJECTCLASS_ATTRIBUTE_OID.toLowerCase() );
         String[] ocValues = ocAttribute.getStringValues();
         boolean structuralObjectClassAvailable = false;
-        for ( int i = 0; i < ocValues.length; i++ )
+        for ( String ocValue : ocValues )
         {
-            ObjectClassDescription ocd = this.getBrowserConnection().getSchema()
-                .getObjectClassDescription( ocValues[i] );
+            ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValue );
             if ( ocd.isStructural() )
             {
                 structuralObjectClassAvailable = true;
@@ -372,9 +374,11 @@ public class DummyEntry implements IEntry
 
         // check must-attributes
         String[] mustAttributeNames = getSubschema().getMustAttributeNames();
-        for ( int i = 0; i < mustAttributeNames.length; i++ )
+        for ( String mustAttributeName : mustAttributeNames )
         {
-            if ( !attributeMap.containsKey( mustAttributeNames[i].toLowerCase() ) )
+            AttributeDescription ad = new AttributeDescription( mustAttributeName );
+            String oidString = ad.toOidString( getBrowserConnection().getSchema() );
+            if ( !attributeMap.containsKey( oidString.toLowerCase() ) )
             {
                 return false;
             }
@@ -442,8 +446,8 @@ public class DummyEntry implements IEntry
     public void setOperationalAttributesInitialized( boolean b )
     {
     }
-    
-    
+
+
     /**
      * This implementation does nothing.
      */
