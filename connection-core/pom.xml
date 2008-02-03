@@ -37,6 +37,12 @@
   <build>
     <resources>
       <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.xml</include>
+        </includes>
+      </resource>
+      <resource>
         <directory>src/main/resources</directory>
       </resource>
     </resources>
