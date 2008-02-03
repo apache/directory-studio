@@ -126,8 +126,8 @@ public class DnUtils
         }
         else
         {
-            LdapDN parent = ( LdapDN ) dn.getSuffix( suffix.size() - 1 );
-            return parent;
+            LdapDN prefix = ( LdapDN ) dn.getSuffix( suffix.size() );
+            return prefix;
         }
     }
 
