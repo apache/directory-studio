@@ -101,9 +101,9 @@ public class DnUtils
     {
         LdapDN ldapDn = ( LdapDN ) suffix.clone();
 
-        for ( Rdn rdn : prefix.getRdns() )
+        for ( int i = 0; i < prefix.size(); i++ )
         {
-            ldapDn.add( ( Rdn ) rdn.clone() );
+        	ldapDn.add( (Rdn) prefix.getRdn( i ).clone() );
         }
 
         return ldapDn;
