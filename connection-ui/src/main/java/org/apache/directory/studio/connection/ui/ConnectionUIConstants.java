@@ -73,6 +73,6 @@ public interface ConnectionUIConstants
     public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.gif";
 
     /** The image to add a connection folder. */
-    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder.gif";
+    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.gif";
 
 }
