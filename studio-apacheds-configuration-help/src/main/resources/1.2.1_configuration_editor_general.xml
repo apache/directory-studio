@@ -25,10 +25,16 @@
 		settings.
 	</para>
 	<para>
-		It contains four sections :
-		<emphasis role="strong">Settings</emphasis>
+		It contains six sections :
+		<emphasis role="strong">Administrator Settings</emphasis>
 		,
-		<emphasis role="strong">Binary Attribute</emphasis>
+		<emphasis role="strong">Protocols</emphasis>
+		,
+		<emphasis role="strong">
+			Supported Authentication Mechanisms
+		</emphasis>
+		,
+		<emphasis role="strong">Binary Attributes</emphasis>
 		,
 		<emphasis role="strong">Limits</emphasis>
 		and
@@ -36,29 +42,17 @@
 		.
 	</para>
 
-	<simplesect id="general_settings">
-		<title>Settings</title>
+	<simplesect id="general_administrator_settings">
+		<title>Administrator Settings</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_settings.png"
+						fileref="images/gettingstarted/general_page_administrator_settings.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
-		<para>
-			A
-			<emphasis role="strong">Port</emphasis>
-			is mandatory and must be an integer between 1 to 65535.
-		</para>
-		<para>
-			An
-			<emphasis role="strong">Authentication</emphasis>
-			method is mandatory and is at the moment not editable and
-			set to '
-			<emphasis>Simple</emphasis>
-		</para>
 		<para>
 			A
 			<emphasis role="strong">Principal</emphasis>
@@ -74,12 +68,56 @@
 		<para>
 			Check the
 			<emphasis role="strong">Show Password</emphasis>
-			checkbox to display the password in a unhidden form.
+			checkbox to display the password in a non-hidden form.
 		</para>
+	</simplesect>
+
+	<simplesect id="general_protocols">
+		<title>Protocols</title>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/general_page_protocols.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
 		<para>
-			Check the
-			<emphasis role="strong">Allow Anymous Access</emphasis>
-			checkbox to allow anymous access on the server.
+			This section allows you to enable/disable each of the
+			following protocols and specify the port it is running on:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>LDAP (default port: 10389)</listitem>
+				<listitem>LDAPS (default port: 636)</listitem>
+				<listitem>Kerberos (default port: 88)</listitem>
+				<listitem>NTP (default port: 123)</listitem>
+				<listitem>DNS (default port: 53)</listitem>
+				<listitem>Change Password (default port: 464)</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="general_supported_authentication_mechanisms">
+		<title>Supported Authentication Mechanisms</title>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/general_page_supported_authentication_mechanisms.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			This section allows you to specify the supported
+			authentication mechanisms. You can choose between the
+			following mechanisms:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>SIMPLE</listitem>
+				<listitem>CRAM-MD5</listitem>
+				<listitem>DIGEST-MD5</listitem>
+				<listitem>GSSAPI</listitem>
+			</itemizedlist>
 		</para>
 	</simplesect>
 
@@ -159,23 +197,13 @@
 		</screenshot>
 		<para>
 			Check the
+			<emphasis role="strong">Allow Anymous Access</emphasis>
+			checkbox to allow anymous access on the server.
+		</para>
+		<para>
+			Check the
 			<emphasis role="strong">Enable Access Control</emphasis>
 			to enable Access Control on the server.
-		</para>
-		<para>
-			Check the
-			<emphasis role="strong">Enable NTP</emphasis>
-			to enable NTP on the server.
-		</para>
-		<para>
-			Check the
-			<emphasis role="strong">Enable Kerberos</emphasis>
-			to enable Kerberos on the server.
-		</para>
-		<para>
-			Check the
-			<emphasis role="strong">Enable Change Password</emphasis>
-			to enable Change Password service on the server.
 		</para>
 		<para>
 			Check the

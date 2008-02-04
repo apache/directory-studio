@@ -20,17 +20,33 @@
 	<title>Create a new Server Configuration</title>
 	<para>
 		To create a new Server Configuration, locate the
-		<emphasis role="strong">Apache DS</emphasis>
-		menu and select "
+		<emphasis role="strong">File</emphasis>
+		menu, select "
+		<emphasis role="strong">File > New...</emphasis>
+		" in Apache Directory Studio or "
+		<emphasis role="strong">File > New > Other...</emphasis>
+		" in Eclipse.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/new_configuration.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		In the New Wizard Selection panel, select "
 		<emphasis role="strong">
-			Apache DS > New Configuration File
+			Apache DS > Apache DS Configuration File
 		</emphasis>
 		".
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/new_configuration.png"
+						fileref="images/gettingstarted/new_configuration_2.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
