@@ -80,7 +80,7 @@ public class SearchResultEditorPreferencePage extends PreferencePage implements 
         showDnButton = BaseWidgetUtils.createCheckbox( composite, "Show DN as first column", 1 );
         showDnButton.setSelection( getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) );
-        showLinksButton = BaseWidgetUtils.createCheckbox( composite, "Show DN a link", 1 );
+        showLinksButton = BaseWidgetUtils.createCheckbox( composite, "Show DN as link", 1 );
         showLinksButton.setSelection( getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS ) );
 
