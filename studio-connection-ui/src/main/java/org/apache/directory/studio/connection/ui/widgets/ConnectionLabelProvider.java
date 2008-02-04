@@ -94,7 +94,8 @@ public class ConnectionLabelProvider extends LabelProvider
         else if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
-            if ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
+            if ( ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
+                || ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
             {
                 return conn.getJNDIConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
                     ConnectionUIConstants.IMG_CONNECTION_SSL_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
