@@ -20,6 +20,165 @@
 	<title>Release notes</title>
 	<simplesect>
 		<title>
+			Apache Directory Studio 1.1.0 - (2008, INSERT DATE HERE)
+		</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-269] - Attributes not displayed when
+					browsing BEA Weblogic embedded LDAP
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-267] - Clicking on a bookmark loops and
+					does not display attributes
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-261] - LDAP Browser shows same root
+					objects two times under Root DSE
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-252] - Advanced value editors don't work
+					in NewEntryWizard
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-250] - Unable to load entries if RDN is
+					quoted and contains unescaped comma
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-249] - Modification Logs view does not
+					display request controls, if sent to the server
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-247] - Don't use implicit ManageDsaIT
+					control magic of JNDI
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-242] - Inconsistent state of the Entry
+					Editor after using "New Value" (or "New
+					Attribute...") and pressing "Escape".
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-235] - Non ASCII characters are not
+					rendered properly in the LDAP Browser View when
+					label is limited to a certain number of characters
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-233] - Browsing base DN returns [LDAP:
+					error code 10 - Referral]
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-230] - Locate Dn in DIT Action does not
+					work well
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-223] - NullPointerException raised when
+					adding values in the New Entry Wizard
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-222] - Pb when creating an entry with an
+					invalid atribute as a RDN
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-220] - lowercase {crypt} in userPassword
+					is an "Unsupported Hash Method"
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-210] - Filter parser accepts bad filters
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-197] - Following referrals throws NPE
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-184] - Error while reading entry in
+					Active Directory
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-154] - Studio getting slower and slower
+					on bulk operations
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-152] - New entry creator does not know
+					that 'dc' and 'domainComponent' is the same thing
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-139] - Operational attributes not shown
+					in the Entry Editor
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-120] - 100% CPU when deleting thousands
+					of entries
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-95] - Not returning large queries
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-221] - Improve Object Class selection in
+					the New Entry Wizard
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-156] - useability improvement: when
+					exporting an OU use the applied filter by default
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-138] - Add visual feedback to the user,
+					if SSL (ldaps) is enabled
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-123] - Refactor IConnection interface and
+					Connection class
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-119] - Allow user to disabled the
+					Modification logs windows
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-37] - Improve authentication methods and
+					security mechanisms
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-248] - Add support for simulated moving
+					of non-leaf entries
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-246] - Add support for simulated renaming
+					of non-leaf entries
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					[DIRSTUDIO-229] - Replace internal DN/RDN/RDNPart
+					with LdapDN/Rdn/ATAV of shared-ldap
+				</listitem>
+				<listitem>
+					[DIRSTUDIO-142] - Add SASL authentication
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>
 			Apache Directory Studio 1.0.1 - (2007, september 10)
 		</title>
 		<para>
