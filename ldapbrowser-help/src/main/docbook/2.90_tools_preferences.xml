@@ -40,13 +40,6 @@
 			</screenshot>
 		</para>
 		<para>
-			In the 
-			<emphasis role="strong">Attribute Colors and Fonts</emphasis>
-			group you can define the style how attributes
-			and values are displayed within the Entry editor and the Search Result 
-			editor.
-		</para>
-		<para>
 			By default non-text attributes are displayed in a user-friendly way
 			within the Entry editor and the Search Result editor. For example if
 			an attribute contains a timestamp it is displayed in your local
@@ -56,6 +49,27 @@
 		</para>
 	</section>	
 	
+	<section id="preferences_value_editors">
+		<title>Binary Attributes preferences</title>
+		<para>
+			In the Binary Attributes preferences page you can configure which 
+			attributes are binary. 
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_binary_attributes.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			You can specify binary attributes by attribute type or by syntax.
+		</para>
+	</section>	
 	
 	<section id="preferences_value_editors">
 		<title>Value Editors preferences</title>
@@ -77,8 +91,8 @@
 		<para>
 			You can specify value editors by attribute type or by syntax.
 			If a value editor is specified by syntax the value editor is used 
-			for all attriutes with this syntax. A value editor specified for an 
-			attributes overwrites the syntax-setting.
+			for all attributes with this syntax. A value editor specified for an 
+			attribute overwrites the syntax-setting.
 		</para>
 	</section>	
 	
@@ -87,7 +101,7 @@
 		<title>Browser preferences</title>
 		<para>
 			In the Browser preferences page you can configure the layout and
-			behaviour of the 
+			behavior of the 
 			<link linkend="tools_browser_view">LDAP Browser view</link>
 			and the Select DN dialog.
 		</para>	
@@ -200,10 +214,49 @@
 	</section>
 
 
+	<section id="preferences_colors_and_fonts">
+		<title>Colors and Fonts preferences</title>
+		<para>
+			In the Colors and Fonts preferences page you can configure colors 
+			and fonts options in the LDAP Browser.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_colors_and_fonts.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			In the 
+			<emphasis role="strong">Warning and Error Colors and Fonts</emphasis>
+			group you can define the style how warning and errors
+			are displayed within the LDAP Browser
+		</para>
+		<para>
+			In the 
+			<emphasis role="strong">Quick Filter Colors and Fonts</emphasis>
+			group you can define the style how quick filters are displayed
+			within LDAP Browser.
+		</para>
+		<para>
+			In the 
+			<emphasis role="strong">Attribute Colors and Fonts</emphasis>
+			group you can define the style how attributes
+			and values are displayed within the Entry editor and the Search Result 
+			editor.
+		</para>
+	</section>
+
+
 	<section id="preferences_entry_editor">
 		<title>Entry editor preferences</title>
 		<para>
-			In the Entry editor preferences page you can configure the behaviour of the 
+			In the Entry editor preferences page you can configure the behavior of the 
 			<link linkend="tools_entry_editor">Entry editor</link>.
 		</para>	
 		<para>
@@ -300,7 +353,7 @@
 	<section id="preferences_search_result_editor">
 		<title>Search Result editor preferences</title>
 		<para>
-			In the Search Result editor preferences page you configure the behaviour of the 
+			In the Search Result editor preferences page you configure the behavior of the 
 			<link linkend="tools_entry_editor">Search Result editor</link>.
 		</para>	
 		<para>
@@ -335,6 +388,16 @@
 							<entry>
 								If checked the distinguished name of each
 								search result entry is displayed as first line.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Show DN as link
+							</entry>
+							<entry>
+								If checked the distinguished name of each
+								search result entry is displayed as a link.
 							</entry>
 							<entry>on</entry>
 						</row>
