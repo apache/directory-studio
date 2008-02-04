@@ -171,14 +171,6 @@
 							</entry>
 							<entry>-</entry>
 						</row>
-						<row>
-							<entry>Open connection on finish</entry>
-							<entry>
-								If checked the connection is opened when
-								finishing the wizard.
-							</entry>
-							<entry>checked</entry>
-						</row>
 					</tbody>
 				</tgroup>
 			</informaltable>
@@ -216,20 +208,17 @@
 					</thead>
 					<tbody>
 						<row>
-							<entry>Anonymous Authentication</entry>
+							<entry>Authentication Method</entry>
 							<entry>
-								Uses anonymous authentication, no
-								authentication parameters required.
+								Select your authentication method between:
+								<itemizedlist spacing="normal" mark="bullet">
+									<listitem>Anonymous Authentication</listitem>
+									<listitem>Simple Authentication</listitem>
+									<listitem>DIGEST-MD5 (SASL)</listitem>
+									<listitem>CRAM-MD5 (SASL)</listitem>
+								</itemizedlist>
 							</entry>
-							<entry>not checked</entry>
-						</row>
-						<row>
 							<entry>Simple Authentication</entry>
-							<entry>
-								Uses simple authentication, requires
-								authenticaton parameters.
-							</entry>
-							<entry>checked</entry>
 						</row>
 						<row>
 							<entry>Bind DN</entry>
@@ -243,6 +232,11 @@
 						<row>
 							<entry>Bind Password</entry>
 							<entry>The password used to bind.</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>SASL Realm</entry>
+							<entry>The SASL Relam used to bind.</entry>
 							<entry>empty</entry>
 						</row>
 						<row>

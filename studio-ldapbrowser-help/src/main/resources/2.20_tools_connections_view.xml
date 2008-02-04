@@ -54,11 +54,23 @@
 				<tbody>
 					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_connected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
-					  <entry>Connections is opened.</entry>
+					  <entry>Connection is opened.</entry>
 					</row>
 					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_disconnected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Connection is closed.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_ssl_connected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Secure Connection is opened.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_ssl_disconnected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Secure Connection is closed.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_folder.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Connection folder</entry>
 					</row>
 				</tbody>
 			</tgroup>
@@ -135,6 +147,12 @@
 					  <entry></entry>
 					</row>
 					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_folder_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>New Connection Folder...</entry>
+					  <entry>Opens a dialog to create a new connection folder.</entry>
+					  <entry></entry>
+					</row>
+					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Connection</entry>
 					  <entry>Opens the selected connection(s)</entry>
@@ -188,6 +206,12 @@
 					  <entry></entry>
 					  <entry>Rename Connection...</entry>
 					  <entry>Opens a dialog to rename the selected connection.</entry>
+					  <entry><shortcut><keycap>F2</keycap></shortcut></entry>
+					</row>
+					<row>
+					  <entry></entry>
+					  <entry>Rename Connection Folder...</entry>
+					  <entry>Opens a dialog to rename the selected connection folder.</entry>
 					  <entry><shortcut><keycap>F2</keycap></shortcut></entry>
 					</row>
 					<row>
