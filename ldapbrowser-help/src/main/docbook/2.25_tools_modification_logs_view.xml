@@ -111,6 +111,11 @@
 				</thead>
 				<tbody>
 					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/clear.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Clear</entry>
+					  <entry>Clears the current modification logfile.</entry>
+					</row>
+					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/refresh.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Refresh</entry>
 					  <entry>Reloads the current modification logfile.</entry>
@@ -128,6 +133,29 @@
 				</tbody>
 			</tgroup>
 		</informaltable>						
+	</simplesect>
+	
+	<simplesect id="tools_modification_logs_view_drop_down_menu">
+		<title>Drop Down Menu</title>
+		<para>
+			The drop down menu contains the following items:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Enable Modification Logs: Enables/Disables the modification logs.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Preferences...: Opens the
+						<link linkend="preferences_modification_logs_view">
+							Modification Logs preferences
+						</link>
+						dialog.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
 	</simplesect>
 	
 	<simplesect id="tools_modification_logs_view_rotation">

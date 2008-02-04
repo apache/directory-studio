@@ -271,6 +271,22 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata contentdepth="1em"
+												fileref="icons/refresh.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Refresh</entry>
+							<entry>
+								Refreshes the selected objects
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
 												fileref="icons/collapseall.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -288,14 +304,15 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata contentdepth="1em"
-												fileref="icons/refresh.gif" format="GIF" />
+												fileref="icons/link_with_editor.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
 							</entry>
-							<entry>Refresh</entry>
+							<entry>Link With Editor</entry>
 							<entry>
-								Refreshes the selected objects
+								Links the editor with the current selection and
+								the selection with the current editor.
 							</entry>
 						</row>
 					</tbody>
