@@ -20,10 +20,10 @@
 	<title>Open a Server Configuration</title>
 	<para>
 		To open a Server Configuration, locate the
-		<emphasis role="strong">Apache DS</emphasis>
+		<emphasis role="strong">File</emphasis>
 		menu and select "
 		<emphasis role="strong">
-			Apache DS > Open Configuration File...
+			File > Open File...
 		</emphasis>
 		".
 		<screenshot>
