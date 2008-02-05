@@ -1,5 +1,10 @@
-Apache Directory StudioCopyright 2007 The Apache Software FoundationThis product includes software developed atThe Apache Software Foundation (http://www.apache.org/).
+// ------------------------------------------------------------------
+// NOTICE file corresponding to the section 4d of The Apache License,
+// Version 2.0, in this case for Apache Directory Studio LDAP Browser Feature
+// ------------------------------------------------------------------
 
-This product uses Ivy (http://www.jayasoft.fr/).
+Apache Directory Studio LDAP Browser Feature
+Copyright 2003-2008 Apache Software Foundation
 
-This product uses Ant (http://ant.apache.org/).
+This product includes software developed at
+Apache Software Foundation (http://www.apache.org).
