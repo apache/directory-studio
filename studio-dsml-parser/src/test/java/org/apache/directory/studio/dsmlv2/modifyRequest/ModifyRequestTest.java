@@ -21,6 +21,7 @@
 package org.apache.directory.studio.dsmlv2.modifyRequest;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -277,8 +278,9 @@ public class ModifyRequestTest extends AbstractTest
     /**
      * Test parsing of a request with a Modification element with Base64 Value
      * @throws NamingException 
+     * @throws UnsupportedEncodingException 
      */
-    public void testRequestWith1ModificationBase64Value() throws NamingException
+    public void testRequestWith1ModificationBase64Value() throws NamingException, UnsupportedEncodingException
     {
         Dsmlv2Parser parser = null;
         try
@@ -309,7 +311,12 @@ public class ModifyRequestTest extends AbstractTest
 
         Attribute attribute = modification.getAttribute();
 
-        assertEquals( "cn=Emmanuel Lécharny, ou=people, dc=example, dc=com", new String( ( byte[] ) attribute.get( 0 ) ) );
+        String expected = new String( new byte[]
+            { 'c', 'n', '=', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h',
+                'a', 'r', 'n', 'y', ',', ' ', 'o', 'u', '=', 'p', 'e', 'o', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=',
+                'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=', 'c', 'o', 'm' }, "UTF-8" );
+
+        assertEquals( expected, new String( ( byte[] ) attribute.get( 0 ), "UTF-8" ) );
     }
 
 
