@@ -590,15 +590,13 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
-                <id>launcher-macosx (unpack)</id>
-                <!-- Unpack the launcher and equinox launcher -->
+                <id>launcher-macosx (copy)</id>
+                <!-- Copy the launcher and equinox launcher -->
                 <phase>generate-resources</phase>
                 <goals>
-                  <goal>unpack</goal>
+                  <goal>copy</goal>
                 </goals>
                 <configuration>
-                  <overWrite>true</overWrite>
-                  <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/macosx</markersDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.apache.directory.studio</groupId>
@@ -607,13 +605,58 @@
                       <outputDirectory>${studio-dir}-macosx</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
+                    <groupId>org.eclipse.equinox.launcher.carbon</groupId>
                       <artifactId>macosx</artifactId>
                       <type>tar.gz</type>
-                      <outputDirectory>${studio-dir}-macosx/Apache Directory Studio.app/Contents/Resources/Java/plugins</outputDirectory>
+                      <outputDirectory>${studio-dir}-macosx</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>launcher-macosx (unpack)</id>
+                <!-- Unpack the launcher and equinox launcher -->
+                <phase>generate-resources</phase>
+                <configuration>
+                  <tasks>
+                    <untar dest="${studio-dir}-macosx" compression="gzip">
+                        <fileset dir="${studio-dir}-macosx" includes="launcher-macosx*.tar.gz"/>
+                    </untar>
+                    <untar dest="${studio-dir}-macosx/Apache Directory Studio.app/Contents/Resources/Java/plugins" compression="gzip">
+                        <fileset dir="${studio-dir}-macosx" includes="macosx*.tar.gz"/>
+                    </untar>
+                    <delete>
+                        <fileset dir="${studio-dir}-macosx/" includes="*.tar.gz"/>
+                    </delete>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>unpack-dist-macosx (for immediate use)</id>
+              <!-- 
+                Finally and after all unzip the created distribution in
+                ../target/distributions to have a working application there for
+                immediate use.
+              -->
+                <phase>install</phase>
+                <configuration>
+                  <tasks>
+                    <untar src="../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}-dist.tar.gz" dest="../target/distributions" overwrite="true" compression="gzip" />
+                    <chmod file="../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755" />
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>
@@ -667,29 +710,6 @@
                 </configuration>
                 <goals>
                   <goal>attached</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <!-- 
-                Finally and after all unzip the created distribution in
-                ../target/distributions to have a working application there for
-                immediate use.
-              -->
-              <execution>
-                <id>unpack-dist-macosx (for immediate use)</id>
-                <phase>install</phase>
-                <configuration>
-                  <tasks>
-                    <untar src="../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}-dist.tar.gz" dest="../target/distributions" overwrite="true" compression="gzip" />
-                    <chmod file="../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}/Apache Directory Studio.app/Contents/MacOS/ApacheDirectoryStudio" perm="755" />
-                  </tasks>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
                 </goals>
               </execution>
             </executions>
