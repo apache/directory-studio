@@ -21,6 +21,8 @@
 package org.apache.directory.studio.dsmlv2.searchResponse.searchResultEntry;
 
 
+import java.io.UnsupportedEncodingException;
+
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
@@ -74,7 +76,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a response with a (optional) Control element with empty value
      */
@@ -85,7 +88,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_control_empty_value.xml" )
+                .getFile() );
 
             parser.parse();
         }
@@ -97,7 +101,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
         Control control = searchResultEntry.getCurrentControl();
-        
+
         assertEquals( 1, searchResultEntry.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -243,8 +247,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         assertEquals( 456, searchResultEntry.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute equals 0
      */
@@ -361,11 +365,13 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         assertEquals( "example", value );
     }
-    
+
+
     /**
      * Test parsing of a response with 1 Attr 1 Base64 Value
+     * @throws UnsupportedEncodingException 
      */
-    public void testResponseWith1Attr1Base64Value()
+    public void testResponseWith1Attr1Base64Value() throws UnsupportedEncodingException
     {
         Dsmlv2ResponseParser parser = null;
         try
@@ -408,10 +414,15 @@ public class SearchResultEntryTest extends AbstractResponseTest
         }
 
         Object value = ne2.nextElement();
-        assertEquals( "Emmanuel Lécharny", new String( (byte[]) value ) );
+
+        String expected = new String( new byte[]
+            { 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n',
+                'y' }, "UTF-8" );
+
+        assertEquals( expected, new String( ( byte[] ) value, "UTF-8" ) );
     }
-    
-    
+
+
     /**
      * Test parsing of a response with 1 Attr 1 empty Value
      */
