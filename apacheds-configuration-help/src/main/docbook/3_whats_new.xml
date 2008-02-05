@@ -19,4 +19,22 @@
 <section id="whats_new">
 	<title>What's New</title>
 
+	<simplesect>
+		<title>Support for Apache DS 1.5.1</title>
+		<para>
+			The Apache DS Configuration plugin now supports the 1.5.1 version of Apache Directory Server.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_support_apache_ds_151.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
 </section>
