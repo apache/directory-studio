@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="release_notes">
+<chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
 		<title>
@@ -28,46 +28,34 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-243] - Modified value of Equality
-					Matching Rule in the AttributeTypeEditor is not
-					saved
+                    <para>[DIRSTUDIO-243] - Modified value of Equality Matching Rule in the AttributeTypeEditor is not saved</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-239] - No error message when importing a
-					bad schema
+                    <para>[DIRSTUDIO-239] - No error message when importing a bad schema</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-226] - Attribute Type Description is not
-					imported when reading an OpenLDAP schema file
+                    <para>[DIRSTUDIO-226] - Attribute Type Description is not imported when reading an OpenLDAP schema file</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-224] - Can't Open Schema View with JDK
-					6.0
+                    <para>[DIRSTUDIO-224] - Can't Open Schema View with JDK 6.0</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-214] - IllegalArgumentException raised
-					when selecting an AT with no alias as superior in
-					the NewAttributeTypeWizard
+                    <para>[DIRSTUDIO-214] - IllegalArgumentException raised when selecting an AT with no alias as superior in the NewAttributeTypeWizard</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-213] - NullPointerException raised when
-					selecting an OC with no alias as a superior in the
-					NewObjectClassWizard
+                    <para>[DIRSTUDIO-213] - NullPointerException raised when selecting an OC with no alias as a superior in the NewObjectClassWizard</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-201] - Project Name mess up if it
-					contains non-ascii chars
+                    <para>[DIRSTUDIO-201] - Project Name mess up if it contains non-ascii chars</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-198] - Search string is not working
-					properly with metacharacters (*, +...)
+                    <para>[DIRSTUDIO-198] - Search string is not working properly with metacharacters (*, +...)</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-196] - Error dialog displayed after
-					Problems View is closed
+                    <para>[DIRSTUDIO-196] - Error dialog displayed after Problems View is closed</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-48] - Errors when help is open
+                    <para>[DIRSTUDIO-48] - Errors when help is open</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -77,46 +65,37 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-254] - schema import does not provide
-					error reporting when parsing schema file
+                    <para>[DIRSTUDIO-254] - schema import does not provide error reporting when parsing schema file</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-251] - Replace the Text Widget for the
-					OID in the new AT and OC wizards by a Drop-Down
-					Combo with history of the last used OIDs
+                    <para>[DIRSTUDIO-251] - Replace the Text Widget for the OID in the new AT and OC wizards by a Drop-Down Combo with history of the last used OIDs</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-240] - Memorize the last import's path
+                    <para>[DIRSTUDIO-240] - Memorize the last import's path</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-238] - Automatically add an alias when
-					the 'ok' button is selected
+                    <para>[DIRSTUDIO-238] - Automatically add an alias when the 'ok' button is selected</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-237] - It would be good to be able to
-					import 'core' schemas into an existing project
+                    <para>[DIRSTUDIO-237] - It would be good to be able to import 'core' schemas into an existing project</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-227] - Add the ability to select OpenLDAP
-					schema files as core schemas when creating a project
+                    <para>[DIRSTUDIO-227] - Add the ability to select OpenLDAP schema files as core schemas when creating a project</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-216] - Improve Type Hierarchy View
+                    <para>[DIRSTUDIO-216] - Improve Type Hierarchy View</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-206] - Add help contexts to the help
-					plugin of the Schema Editor
+                    <para>[DIRSTUDIO-206] - Add help contexts to the help plugin of the Schema Editor</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-200] - Add an OC and AT hierarchical
-					global view
+                    <para>[DIRSTUDIO-200] - Add an OC and AT hierarchical global view</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-199] - Add scopes for OC and AT in search
+                    <para>[DIRSTUDIO-199] - Add scopes for OC and AT in search</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-195] - Add key bindings to the Schema
-					Editor
+                    <para>[DIRSTUDIO-195] - Add key bindings to the Schema Editor</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -126,16 +105,13 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-194] - Add a SchemaConnector for Apache
-					Directory Server
+                    <para>[DIRSTUDIO-194] - Add a SchemaConnector for Apache Directory Server</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-193] - Add the abitilty to import/export
-					the Schema from/to a directory Server
+                    <para>[DIRSTUDIO-193] - Add the abitilty to import/export the Schema from/to a directory Server</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-192] - Add an extension point in the
-					Schema Editor for SchemaConnectors
+                    <para>[DIRSTUDIO-192] - Add an extension point in the Schema Editor for SchemaConnectors</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -145,8 +121,7 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-225] - Update documentation for Schema
-					Editor Plugin
+                    <para>[DIRSTUDIO-225] - Update documentation for Schema Editor Plugin</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -161,8 +136,7 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-180] - Connection wizard and properties
-					tabs are out of order
+                    <para>[DIRSTUDIO-180] - Connection wizard and properties tabs are out of order</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -172,8 +146,7 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-181] - Update the documentation of the
-					Schema Editor Plugin
+                    <para>[DIRSTUDIO-181] - Update the documentation of the Schema Editor Plugin</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -184,4 +157,4 @@
 			initial release
 		</title>
 	</simplesect>
-</section>
+</chapter>
