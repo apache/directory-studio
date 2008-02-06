@@ -53,19 +53,21 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/sandbox/felixk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/sandbox/felixk/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/sandbox/felixk/</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/</url>
   </scm>
 
   <inceptionYear>2003</inceptionYear>
 
+  <!-- TODO
   <distributionManagement>
     <site>
-      <id>felixknecht.ch</id>
-      <url>scpexe://felixknecht.ch/var/www/felixknecht.ch/htdocs/projects/studio/</url>
+      <id>foo</id>
+      <url>bar</url>
     </site>
   </distributionManagement>
+  -->
 
   <mailingLists>
     <mailingList>
