@@ -29,7 +29,7 @@
   </parent>
 
   <artifactId>rcp.help</artifactId>
-  <version>${help.version}</version>
+  <version>${rcp.help.version}</version>
   <name>Apache Directory Studio RCP Help</name>
   <packaging>jar</packaging>
 
