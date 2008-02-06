@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="release_notes">
+<chapter id="release_notes">
 	<title>Release notes</title>
 	<para>
 		<emphasis role="strong">Apache Directory Studio 1.0.0</emphasis>
@@ -26,18 +26,20 @@
 	<para>
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
-				Apache Directory Studio Apache DS Configuration 1.0.0
+	           <para>Apache Directory Studio Apache DS Configuration 1.0.0</para>
 			</listitem>
 			<listitem>
-				Apache Directory Studio LDAP Browser 1.0.0
+                <para>Apache Directory Studio LDAP Browser 1.0.0</para>
 			</listitem>
 			<listitem>
-				Apache Directory Studio LDIF Editor 1.0.0
+                <para>Apache Directory Studio LDIF Editor 1.0.0</para>
 			</listitem>
-			<listitem>Apache Directory Studio RCP 1.0.0</listitem>
 			<listitem>
-				Apache Directory Studio Schema Editor 1.0.0
+                <para>Apache Directory Studio RCP 1.0.0</para>
+            </listitem>
+			<listitem>
+                <para>Apache Directory Studio Schema Editor 1.0.0</para>
 			</listitem>
 		</itemizedlist>
 	</para>
-</section>
+</chapter>
