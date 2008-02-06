@@ -31,8 +31,8 @@
 <book>
 
 	<bookinfo>
-		<title>Apache Directory Studio</title>
-		<subtitle>LDIF Editor User's Guide</subtitle>
+		<title>Apache Directory Studio LDIF Editor</title>
+		<subtitle>User's Guide</subtitle>
 		<releaseinfo>Version 1.1.0.SNAPSHOT</releaseinfo>
 		<copyright>
 			<year>2007</year>

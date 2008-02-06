@@ -91,8 +91,8 @@
 <book>
 
 	<bookinfo>
-		<title>Apache Directory Studio</title>
-		<subtitle>LDAP Browser User's Guide</subtitle>
+		<title>Apache Directory Studio LDAP Browser</title>
+		<subtitle>User's Guide</subtitle>
 		<releaseinfo>Version 1.0.0</releaseinfo>
 		<copyright>
 			<year>2007</year>

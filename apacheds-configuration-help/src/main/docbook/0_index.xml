@@ -36,8 +36,8 @@
 -->
 <book>
 	<bookinfo>
-		<title>Apache Directory Studio</title>
-		<subtitle>Apache DS Configuration User's Guide</subtitle>
+		<title>Apache Directory Studio Apache DS Configuration</title>
+		<subtitle>User's Guide</subtitle>
 		<releaseinfo>Version 1.1.0.SNAPSHOT</releaseinfo>
 		<copyright>
 			<year>2007</year>
