@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>9-SNAPSHOT</version>
+    <version>8</version>
   </parent>
 
   <groupId>org.apache.directory.studio</groupId>
@@ -113,6 +113,7 @@
     <rcp.version>1.1.0.SNAPSHOT</rcp.version>
     <rcp.feature.version>1.1.0.SNAPSHOT</rcp.feature.version>
     <rcp.help.version>1.1.0.SNAPSHOT</rcp.help.version>
+    <repository.version>1.1.0.SNAPSHOT</repository.version>
     <schemaeditor.version>1.1.0.SNAPSHOT</schemaeditor.version>
     <schemaeditor.feature.version>1.1.0.SNAPSHOT</schemaeditor.feature.version>
     <schemaeditor.help.version>1.1.0.SNAPSHOT</schemaeditor.help.version>
@@ -994,6 +995,7 @@
   </dependencyManagement>
 
   <modules>
+    <module>repository</module>
     <module>ldif-parser</module>
     <module>connection-core</module>
     <module>studio-dsml-parser</module>
@@ -1302,15 +1304,6 @@
   </reporting>
 
   <repositories>
-    <!-- Studios repository for eclipse dependencies -->
-    <repository>
-      <id>studio.eclipse.repo</id>
-      <name>Studio Eclipse Repository</name>
-      <!-- TODO Add correct url
-      <url>http://directory.apache.org/ ???</url>
-       -->
-      <url>http://people.apache.org/~felixk/studio-eclipse-m2</url>
-    </repository>
     <repository>
       <id>maven.repo1</id>
       <name>Maven Repo1 mirror</name>

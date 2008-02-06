@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.core</groupId>
+  <artifactId>jobs</artifactId>
+  <name>Eclipse Jobs Mechanism</name>
+  <version>3.3.1-R33x_v20070709</version>
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>http://www.eclipse.org/org/documents/epl-v10.html</url>
+    </license>
+  </licenses>
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>common</artifactId>
+      <version>[0,4.0.0)</version>
+    </dependency>
+  </dependencies>
+</project>

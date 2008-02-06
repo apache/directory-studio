@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.equinox</groupId>
+  <artifactId>common</artifactId>
+  <name>Common Eclipse Runtime</name>
+  <version>3.3.0-v20070426</version>
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>http://www.eclipse.org/org/documents/epl-v10.html</url>
+    </license>
+  </licenses>
+</project>

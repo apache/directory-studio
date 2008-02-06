@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.commons</groupId>
+  <artifactId>logging</artifactId>
+  <name>Apache Commons Logging Plug-in</name>
+  <version>1.0.4-v200706111724</version>
+</project>

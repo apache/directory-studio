@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.update</groupId>
+  <artifactId>scheduler</artifactId>
+  <version>3.2.100-v20070615</version>
+  <versioning>
+    <versions>
+      <version>3.2.100-v20070615</version>
+    </versions>
+    <lastUpdated>20071229234344</lastUpdated>
+  </versioning>
+</metadata>

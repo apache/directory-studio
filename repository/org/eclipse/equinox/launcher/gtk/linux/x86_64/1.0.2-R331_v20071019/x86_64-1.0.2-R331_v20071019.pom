@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
+  <artifactId>x86_64</artifactId>
+  <name>%pluginName</name>
+  <version>1.0.2-R331_v20071019</version>
+  <licenses>
+    <license>
+      <name>Eclipse Public License - v 1.0</name>
+      <url>http://www.eclipse.org/org/documents/epl-v10.html</url>
+    </license>
+  </licenses>
+  <properties>
+    <eclipse.unpack>true</eclipse.unpack>
+  </properties>
+</project>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.ui</groupId>
+  <artifactId>ide</artifactId>
+  <version>3.3.1.M20070910-0800b-studio</version>
+</project>

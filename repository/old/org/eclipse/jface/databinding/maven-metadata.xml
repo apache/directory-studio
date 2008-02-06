@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.jface</groupId>
+  <artifactId>databinding</artifactId>
+  <version>1.1.1-M20070910-0800b</version>
+  <versioning>
+    <versions>
+      <version>1.1.1-M20070910-0800b</version>
+    </versions>
+    <lastUpdated>20071229234342</lastUpdated>
+  </versioning>
+</metadata>
