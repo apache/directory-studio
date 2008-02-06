@@ -4,26 +4,26 @@
       The Apache Directory Studio update site.
    </description>
    <feature
-       url="features/org.apache.directory.studio.feature_1.1.0.SNAPSHOT.jar"
-       id="org.apache.directory.studio.feature" version="1.1.0.SNAPSHOT"
+       url="features/org.apache.directory.studio.rcp.feature_${rcp.feature.version}.jar"
+       id="org.apache.directory.studio.rcp.feature" version="${rcp.feature.version}"
        os="linux,macosx,win32" ws="carbon,gtk,win32" arch="ppc,x86,x86_64">
       <category name="Apache Directory Studio RCP"/>
    </feature>
    <feature
-       url="features/org.apache.directory.studio.ldapbrowser.feature_1.1.0.SNAPSHOT.jar"
-       id="org.apache.directory.studio.ldapbrowser.feature" version="1.1.0.SNAPSHOT">
+       url="features/org.apache.directory.studio.ldapbrowser.feature_${ldapbrowser.feature.version}.jar"
+       id="org.apache.directory.studio.ldapbrowser.feature" version="${ldapbrowser.feature.version}">
       <category name="Apache Directory Studio LDAP Browser"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.schemaeditor.feature_1.1.0.SNAPSHOT.jar"
-       id="org.apache.directory.studio.schemaeditor.feature" version="1.1.0.SNAPSHOT">
+   <feature url="features/org.apache.directory.studio.schemaeditor.feature_${schemaeditor.feature.version}.jar"
+       id="org.apache.directory.studio.schemaeditor.feature" version="${schemaeditor.feature.version}">
       <category name="Apache Directory Studio Schema Editor"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.apacheds.configuration.feature_1.1.0.SNAPSHOT.jar"
-       id="org.apache.directory.studio.apacheds.configuration.feature" version="1.1.0.SNAPSHOT">
+   <feature url="features/org.apache.directory.studio.apacheds.configuration.feature_${apacheds.configuration.feature.version}.jar"
+       id="org.apache.directory.studio.apacheds.configuration.feature" version="${apacheds.configuration.feature.version}">
       <category name="Apache Directory Studio Apache DS"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.ldifeditor.feature_1.1.0.SNAPSHOT.jar"
-       id="org.apache.directory.studio.ldifeditor.feature" version="1.1.0.SNAPSHOT">
+   <feature url="features/org.apache.directory.studio.ldifeditor.feature_${ldifeditor.feature.version}.jar"
+       id="org.apache.directory.studio.ldifeditor.feature" version="${ldifeditor.feature.version}">
       <category name="Apache Directory Studio LDIF Editor"/>
    </feature>
    <category-def name="Apache Directory Studio RCP" label="Apache Directory Studio RCP">
