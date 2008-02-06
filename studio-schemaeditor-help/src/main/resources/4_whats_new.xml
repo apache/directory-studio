@@ -69,7 +69,7 @@
 			<link linkend="tasks_creating_new_project">
 				creating a new project
 			</link>, or
-			<link linkend="tasks_importing_schemas_from_openldap_files">importing 'core' schemas</link>, the schemas from Open LDAP can be selected.
+			<link linkend="tasks_importing_core_schemas_files">importing 'core' schemas</link>, the schemas from Open LDAP can be selected.
 		</para>
 		<para>
 			<screenshot>
