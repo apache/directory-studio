@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="release_notes">
+<chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
 		<title>
@@ -28,12 +28,10 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-253] - cant open server.xml with
-					directory studio
+                    <para>[DIRSTUDIO-253] - cant open server.xml with directory studio</para>
 				</listitem>
 				<listitem>
-					[DIRSTUDIO-239] - Apache DS Configuration Plugin
-					cannot parse server.xml file correctly
+                    <para>[DIRSTUDIO-239] - Apache DS Configuration Plugin cannot parse server.xml file correctly</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -43,9 +41,7 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					[DIRSTUDIO-236] - Update the Apache DS Configuration
-					plugin to work with the server.xml file of Apache DS
-					1.5.1
+                    <para>[DIRSTUDIO-236] - Update the Apache DS Configuration plugin to work with the server.xml file of Apache DS 1.5.1</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -54,4 +50,4 @@
 		<emphasis role="strong">Apache Directory Studio 1.0.0</emphasis>
 		(2007, september 3rd) : initial release
 	</para>
-</section>
+</chapter>

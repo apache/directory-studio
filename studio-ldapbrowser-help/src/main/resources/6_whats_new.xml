@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="whats_new">
+<chapter id="whats_new">
 	<title>What's New in 1.1</title>
 
 	<simplesect>
@@ -51,17 +51,13 @@
 			quite improved with:
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					an icon aside each object class indicating whether
-					it is an 'Abstract', 'Auxiliary' or 'Structural'
-					object class
+				    <para>an icon aside each object class indicating whether it is an 'Abstract', 'Auxiliary' or 'Structural' object class</para>
 				</listitem>
 				<listitem>
-					a new warning panel, showing up when the current
-					selection does not contain any structural
+				    <para>a new warning panel, showing up when the current selection does not contain any structural</para>
 				</listitem>
 				<listitem>
-					new key bindings for a better selection of object
-					classes using the keyboard
+                    <para>new key bindings for a better selection of object classes using the keyboard</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -88,12 +84,12 @@
 			supports the following Hash Methods in both uppercase and
 			lowercase:
 			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>CRYPT</listitem>
-				<listitem>SHA</listitem>
-				<listitem>SSHA</listitem>
-				<listitem>SSHA</listitem>
-				<listitem>MD5</listitem>
-				<listitem>SMD5</listitem>
+				<listitem><para>CRYPT</para></listitem>
+				<listitem><para>SHA</para></listitem>
+				<listitem><para>SSHA</para></listitem>
+				<listitem><para>SSHA</para></listitem>
+				<listitem><para>MD5</para></listitem>
+				<listitem><para>SMD5</para></listitem>
 			</itemizedlist>
 		</para>
 		<para>
@@ -120,4 +116,4 @@
 		</para>
 	</simplesect>
 
-</section>
+</chapter>
