@@ -917,7 +917,7 @@
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>fop</artifactId>
-        <version>0.93</version>
+        <version>0.94</version>
       </dependency>
       <dependency>
         <groupId>xerces</groupId>
@@ -1183,7 +1183,7 @@
             <dependency>
               <groupId>org.apache.xmlgraphics</groupId>
               <artifactId>fop</artifactId>
-              <version>0.93</version>
+              <version>0.94</version>
               <scope>compile</scope>
             </dependency>
             <!-- 
