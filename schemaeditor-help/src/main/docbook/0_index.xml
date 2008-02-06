@@ -21,6 +21,7 @@
   <!ENTITY tasks_importing_schemas SYSTEM "2.5_importing_schemas.xml">
   <!ENTITY tasks_importing_schemas_from_xml_files SYSTEM "2.5.1_importing_schemas_from_xml_files.xml">
   <!ENTITY tasks_importing_schemas_from_openldap_files SYSTEM "2.5.2_importing_schemas_from_openldap_files.xml">
+  <!ENTITY tasks_importing_core_schemas_files SYSTEM "2.5.3_importing_core_schemas_files.xml">
   <!ENTITY tasks_exporting_schemas SYSTEM "2.6_exporting_schemas.xml">
   <!ENTITY tasks_exporting_schemas_as_xml_files SYSTEM "2.6.1_exporting_schemas_as_xml_files.xml">
   <!ENTITY tasks_exporting_schemas_as_openldap_files SYSTEM "2.6.2_exporting_schemas_as_openldap_files.xml">
