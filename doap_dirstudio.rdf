@@ -25,7 +25,7 @@
     <mailing-list rdf:resource="http://directory.apache.org/studio/mailing-lists.html" />
     <download-page rdf:resource="http://directory.apache.org/studio/downloads.html" />
     <programming-language>Java</programming-language>
-    <category rdf:resource="http://projects.apache.org/category/network-client" />
+    <category rdf:resource="http://projects.apache.org/indexes/category.html#network-client" />
     <release>
       <Version>
         <name>Stable release</name>
