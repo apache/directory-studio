@@ -35,7 +35,6 @@ import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -64,7 +63,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ExportSchemasAsOpenLdapWizardPage extends WizardPage
+public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
 {
     /** The selected schemas */
     private Schema[] selectedSchemas = new Schema[0];
@@ -284,7 +283,7 @@ public class ExportSchemasAsOpenLdapWizardPage extends WizardPage
             displayErrorMessage( "A Schema Project must be open to export schemas as OpenLDAP files." );
             return;
         }
-        
+
         // Schemas table
         if ( schemasTableViewer.getCheckedElements().length == 0 )
         {
@@ -320,20 +319,6 @@ public class ExportSchemasAsOpenLdapWizardPage extends WizardPage
         }
 
         displayErrorMessage( null );
-    }
-
-
-    /**
-     * Displays an error message and set the page status as incomplete
-     * if the message is not null.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayErrorMessage( String message )
-    {
-        setErrorMessage( message );
-        setPageComplete( message == null );
     }
 
 

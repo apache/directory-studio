@@ -37,14 +37,12 @@ import org.apache.directory.studio.schemaeditor.model.alias.AliasWithStartError;
 import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -72,7 +70,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewObjectClassGeneralPageWizardPage extends WizardPage
+public class NewObjectClassGeneralPageWizardPage extends AbstractWizardPage
 {
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
@@ -359,35 +357,6 @@ public class NewObjectClassGeneralPageWizardPage extends WizardPage
         }
 
         displayErrorMessage( null );
-    }
-
-
-    /**
-     * Displays an error message and set the page status as incomplete
-     * if the message is not null.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayErrorMessage( String message )
-    {
-        setMessage( null, DialogPage.WARNING );
-        setErrorMessage( message );
-        setPageComplete( message == null );
-    }
-
-
-    /**
-     * Displays a warning message and set the page status as complete.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayWarningMessage( String message )
-    {
-        setErrorMessage( null );
-        setMessage( message, DialogPage.WARNING );
-        setPageComplete( true );
     }
 
 

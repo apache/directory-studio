@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,7 +48,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewProjectWizardConnectionSelectionPage extends WizardPage
+public class NewProjectWizardConnectionSelectionPage extends AbstractWizardPage
 {
     private ConnectionConfiguration configuration;
     private ConnectionUniversalListener universalListener;
@@ -141,20 +140,6 @@ public class NewProjectWizardConnectionSelectionPage extends WizardPage
         }
 
         displayErrorMessage( null );
-    }
-
-
-    /**
-     * Displays an error message and set the page status as incomplete
-     * if the message is not null.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayErrorMessage( String message )
-    {
-        setErrorMessage( message );
-        setPageComplete( message == null );
     }
 
 

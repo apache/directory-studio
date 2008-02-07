@@ -42,7 +42,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ImportCoreSchemasWizardPage extends WizardPage
+public class ImportCoreSchemasWizardPage extends AbstractWizardPage
 {
     // UI Fields    
     private CoreSchemasSelectionWidget coreSchemaSelectionWidget;
@@ -102,20 +102,6 @@ public class ImportCoreSchemasWizardPage extends WizardPage
         }
 
         displayErrorMessage( null );
-    }
-
-
-    /**
-     * Displays an error message and set the page status as incomplete
-     * if the message is not null.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayErrorMessage( String message )
-    {
-        setErrorMessage( message );
-        setPageComplete( message == null );
     }
 
 
