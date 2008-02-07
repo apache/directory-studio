@@ -65,6 +65,9 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
+                    <para>[DIRSTUDIO-275] - Import/Export wizards should display an error if no Schema Project is open</para>
+				</listitem>
+				<listitem>
                     <para>[DIRSTUDIO-254] - schema import does not provide error reporting when parsing schema file</para>
 				</listitem>
 				<listitem>
