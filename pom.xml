@@ -91,11 +91,8 @@
       <archive>http://mail-archives.apache.org/mod_mbox/directory-commits</archive>
     </mailingList>
   </mailingLists>
-  
+
   <properties>
-    <!-- Set path for local repository -->
-    <local-repo>${project.basedir}/repository</local-repo>
-    
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.0.0</aciitemeditor.version>
     <apacheds.configuration.version>1.1.0.SNAPSHOT</apacheds.configuration.version>
@@ -223,14 +220,81 @@
         <version>1.0.4-v200706111724</version>
       </dependency>
       <dependency>
+        <groupId>org.eclipse</groupId>
+        <artifactId>compare</artifactId>
+        <version>3.3.1-r33x_20070906</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jface</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>ide</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>views</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.workbench</groupId>
+            <artifactId>texteditor</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>editors</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>forms</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>jobs</artifactId>
         <version>3.3.1-R33x_v20070709</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>filesystem</artifactId>
         <version>1.1.0-v20070606</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>osgi</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core.filesystem.linux</groupId>
@@ -261,6 +325,24 @@
         <groupId>org.eclipse.core</groupId>
         <artifactId>resources</artifactId>
         <version>3.3.0-v20070604</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.ant</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>filesystem</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
@@ -271,6 +353,16 @@
         <groupId>org.eclipse.equinox</groupId>
         <artifactId>app</artifactId>
         <version>1.0.1-R33x_v20070828</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
@@ -316,26 +408,31 @@
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
         <artifactId>x86</artifactId>
         <version>1.0.2.R331_v20071019</version>
+        <type>tar.gz</type>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
         <artifactId>x86_64</artifactId>
         <version>1.0.2.R331_v20071019</version>
+        <type>tar.gz</type>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
         <artifactId>ppc</artifactId>
         <version>1.0.2.R331_v20071019</version>
+        <type>tar.gz</type>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
         <artifactId>x86</artifactId>
         <version>1.0.2.R331_v20071019</version>
+        <type>tar.gz</type>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox.launcher.carbon</groupId>
         <artifactId>macosx</artifactId>
         <version>1.0.2.R331_v20071019</version>
+        <type>tar.gz</type>
       </dependency>
       <dependency>
         <groupId>org.apache</groupId>
@@ -361,6 +458,16 @@
         <groupId>org.eclipse.equinox.http</groupId>
         <artifactId>registry</artifactId>
         <version>1.0.0-v20070608</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox.http</groupId>
@@ -376,21 +483,65 @@
         <groupId>org.eclipse.equinox.jsp.jasper</groupId>
         <artifactId>registry</artifactId>
         <version>1.0.0-v20070607</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.osgi</groupId>
         <artifactId>services</artifactId>
-        <version>3.1.200-v20070605</version>
+        <version>3.1.200.v20070605</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.osgi</groupId>
         <artifactId>util</artifactId>
-        <version>3.1.200-v20070605</version>
+        <version>3.1.200.v20070605</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui.ide</groupId>
         <artifactId>application</artifactId>
         <version>1.0.0-I20070530-0100</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>ide</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.update</groupId>
+            <artifactId>configurator</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.navigator</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>net</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.update</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui.workbench</groupId>
@@ -401,6 +552,28 @@
         <groupId>org.eclipse.update</groupId>
         <artifactId>scheduler</artifactId>
         <version>3.2.100-v20070615</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.update</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.update</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.update</groupId>
+            <artifactId>configurator</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.mortbay</groupId>
@@ -416,6 +589,14 @@
             <groupId>org.eclipse</groupId>
             <artifactId>swt</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>commands</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -424,8 +605,24 @@
         <version>3.3.1-M20070910-0800b</version>
         <exclusions>
           <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>org.eclipse</groupId>
             <artifactId>swt</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>workbench</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -435,8 +632,47 @@
         <version>3.3.100-v20070530</version>
         <exclusions>
           <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>osgi</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>jobs</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>preferences</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>contenttype</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core.runtime.compatibility</groupId>
+            <artifactId>auth</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>org.eclipse.equinox</groupId>
             <artifactId>app</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.core</groupId>
+        <artifactId>variables</artifactId>
+        <version>3.2.0-v20070426</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -444,11 +680,27 @@
         <groupId>org.eclipse.equinox</groupId>
         <artifactId>preferences</artifactId>
         <version>3.2.100-v20070522</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
         <artifactId>registry</artifactId>
         <version>3.3.1-R33x_v20070802</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
@@ -456,8 +708,16 @@
         <version>3.3.1-M20070921-1200</version>
         <exclusions>
           <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>org.eclipse</groupId>
             <artifactId>help</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.eclipse</groupId>
@@ -465,10 +725,14 @@
           </exclusion>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
-            <artifactId>databinding</artifactId>
+            <artifactId>expressions</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.eclipse.jface</groupId>
+            <artifactId>databinding</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
             <artifactId>databinding</artifactId>
           </exclusion>
         </exclusions>
@@ -477,11 +741,31 @@
         <groupId>org.eclipse.core</groupId>
         <artifactId>commands</artifactId>
         <version>3.3.0-I20070605-0010</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>contenttype</artifactId>
         <version>3.2.100-v20070319</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>preferences</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
@@ -490,7 +774,30 @@
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
-            <artifactId>runtime</artifactId>
+            <artifactId>databinding</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>swt</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.core</groupId>
+        <artifactId>beans</artifactId>
+        <version>1.0.1-M20070910-0800b</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>databinding</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.eclipse.equinox</groupId>
@@ -502,6 +809,46 @@
         <groupId>org.eclipse.core</groupId>
         <artifactId>expressions</artifactId>
         <version>3.3.0-v20070606-0010</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.ui.presentations</groupId>
+        <artifactId>r21</artifactId>
+        <version>3.2.100-I20070605-0010</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.ui</groupId>
+        <artifactId>net</artifactId>
+        <version>1.0.0-I20070516</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>net</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
@@ -523,6 +870,16 @@
         <groupId>org.eclipse</groupId>
         <artifactId>help</artifactId>
         <version>3.3.1-v20070726_33x</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jface</groupId>
@@ -538,6 +895,16 @@
         <groupId>org.eclipse.update</groupId>
         <artifactId>configurator</artifactId>
         <version>3.2.101-R33x_v20070810</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>osgi</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Eclipse SDK dependencies -->
@@ -576,31 +943,229 @@
         <groupId>org.eclipse.ui</groupId>
         <artifactId>navigator</artifactId>
         <version>3.3.2-M20071022-1600a</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>workbench</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui.views.properties</groupId>
         <artifactId>tabbed</artifactId>
         <version>3.3.1-M20070831-0800</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>forms</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>views</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui.navigator</groupId>
         <artifactId>resources</artifactId>
         <version>3.3.1-M20070831-2000</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>ide</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>navigator</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.views.properties</groupId>
+            <artifactId>tabbed</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.workbench</groupId>
+            <artifactId>texteditor</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>cheatsheets</artifactId>
         <version>3.3.0-v20070507</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>forms</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>help</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.help</groupId>
+            <artifactId>base</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.help</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.ui</groupId>
+        <artifactId>console</artifactId>
+        <version>3.2.1-v20070824_r331</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jface</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.workbench</groupId>
+            <artifactId>texteditor</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>variables</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.ui</groupId>
+        <artifactId>externaltools</artifactId>
+        <version>3.1.200-v20070416</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>ide</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>variables</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.debug</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.debug</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>filebuffers</artifactId>
         <version>3.3.1-r331_v20070829</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>filesystem</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jface</groupId>
         <artifactId>text</artifactId>
         <version>3.3.1-r331_v20070629</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
@@ -631,12 +1196,20 @@
         <version>3.3.1-r331_v20070806</version>
         <exclusions>
           <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>org.eclipse.jface</groupId>
             <artifactId>text</artifactId>
           </exclusion>
           <exclusion>
             <groupId>org.eclipse</groupId>
-            <artifactId>swt</artifactId>
+            <artifactId>ui</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -644,11 +1217,35 @@
         <groupId>org.eclipse</groupId>
         <artifactId>text</artifactId>
         <version>3.3.0-v20070606-0010</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>commands</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox</groupId>
+            <artifactId>common</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>forms</artifactId>
         <version>3.3.0-v20070511</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.update</groupId>
@@ -656,8 +1253,24 @@
         <version>3.2.100-v20070615</version>
         <exclusions>
           <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.update</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>org.eclipse.update</groupId>
             <artifactId>configurator</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>forms</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -674,6 +1287,10 @@
             <groupId>org.eclipse.core</groupId>
             <artifactId>net</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -682,8 +1299,16 @@
         <version>3.2.101.M20070910-0800b</version>
         <exclusions>
           <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
             <groupId>org.eclipse</groupId>
             <artifactId>help</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -691,6 +1316,51 @@
         <groupId>org.eclipse.ui</groupId>
         <artifactId>intro</artifactId>
         <version>3.2.101-v20070827_33x</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>help</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.help</groupId>
+            <artifactId>base</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>forms</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.ui.intro</groupId>
+        <artifactId>universal</artifactId>
+        <version>3.2.100-v20070530A</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>help</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>intro</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
@@ -723,6 +1393,24 @@
         <groupId>org.eclipse.help</groupId>
         <artifactId>ui</artifactId>
         <version>3.3.1-v20070726_33x</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.help</groupId>
+            <artifactId>base</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>forms</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.help</groupId>
@@ -730,9 +1418,30 @@
         <version>3.3.1.v20070813_33x</version>
       </dependency>
       <dependency>
+        <groupId>org.eclipse.ui</groupId>
+        <artifactId>browser</artifactId>
+        <version>3.2.100-v20070524A</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>org.eclipse.help</groupId>
         <artifactId>appserver</artifactId>
         <version>3.1.200-v20070510</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core.runtime</groupId>
@@ -753,6 +1462,28 @@
         <groupId>org.eclipse.help</groupId>
         <artifactId>webapp</artifactId>
         <version>3.3.1-v20070823_33x</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.help</groupId>
+            <artifactId>base</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache</groupId>
+            <artifactId>jasper</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox.jsp.jasper</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.equinox.http</groupId>
+            <artifactId>registry</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
@@ -762,7 +1493,21 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>tomcat</artifactId>
-        <version>4.1.130-v20060601</version>
+        <version>4.1.230-v20070531</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.help</groupId>
+            <artifactId>appserver</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache</groupId>
+            <artifactId>ant</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <!-- Apache Directory Studio -->
@@ -998,6 +1743,7 @@
   </dependencyManagement>
 
   <modules>
+    <module>repository</module>
     <module>ldif-parser</module>
     <module>connection-core</module>
     <module>studio-dsml-parser</module>
@@ -1305,7 +2051,7 @@
     </plugins>
   </reporting>
 
-  <repositories><repository>            <releases>                <checksumPolicy>ignore</checksumPolicy>            </releases>            <snapshots>                <checksumPolicy>ignore</checksumPolicy>            </snapshots>            <id>provided.local</id>            <name>Locally Provided Repository</name>            <url>file:${local-repo}</url>        </repository>
+  <repositories>
     <repository>
       <id>maven.repo1</id>
       <name>Maven Repo1 mirror</name>
