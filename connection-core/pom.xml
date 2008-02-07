@@ -33,12 +33,7 @@
   <packaging>jar</packaging>
 
   <description></description>
-  
-  <!-- Set path for local repository -->
-  <properties>
-    <local-repo>${project.basedir}/../repository</local-repo>
-  </properties>
-    
+
   <build>
     <resources>
       <resource>
@@ -140,6 +135,11 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>preferences</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
