@@ -93,7 +93,7 @@
 	<bookinfo>
 		<title>Apache Directory Studio LDAP Browser</title>
 		<subtitle>User's Guide</subtitle>
-		<releaseinfo>Version 1.0.0</releaseinfo>
+		<releaseinfo>Version ${current_pom_version}</releaseinfo>
 		<copyright>
 			<year>2007</year>
 			<holder>Apache Software Foundation</holder>

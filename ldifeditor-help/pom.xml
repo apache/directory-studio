@@ -35,4 +35,8 @@
 
   <description></description>
 
+  <properties>
+    <current_pom_version>${pom.version}</current_pom_version>
+  </properties>
+
 </project>

@@ -47,6 +47,11 @@
             <directory>src/main/resources/html</directory>
             <targetPath>../html</targetPath>
           </resource>
+          <resource>
+            <directory>src/main/docbook</directory>
+            <targetPath>../docbook/documents</targetPath>
+            <filtering>true</filtering>
+          </resource>
         </resources>
         <plugins>
           <plugin>
@@ -97,7 +102,7 @@
                     </move>
 
                     <!-- Create PDF -->
-                    <xslt basedir="target/docbook" in="src/main/docbook/0_index.xml" out="target/pdf/${artifactId}.fo" style="target/docbook/docbook-xsl/fo/docbook.xsl">
+                    <xslt basedir="target/docbook" in="target/docbook/documents/0_index.xml" out="target/pdf/${artifactId}.fo" style="target/docbook/docbook-xsl/fo/docbook.xsl">
                       <param name="manifest.in.base.dir" expression="0" />
                       <param name="generate.section.toc.level" expression="5" />
                       <param name="toc.max.depth" expression="3" />
@@ -114,7 +119,7 @@
                     <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${artifactId}.fo" outfile="target/pdf/${name}.pdf" />
 
                     <!-- Create HTML -->
-                    <xslt in="src/main/docbook/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
+                    <xslt in="target/docbook/documents/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
                       <param name="ignore.image.scaling" expression="1" />
                       <param name="manifest.in.base.dir" expression="0" />
                       <!-- <param name="base.dir" expression="html/" /> -->
@@ -173,6 +178,11 @@
       </resource>
       <resource>
         <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/docbook</directory>
+        <targetPath>../docbook/documents</targetPath>
+        <filtering>true</filtering>
       </resource>
     </resources>
     <plugins>
@@ -259,7 +269,7 @@
                 </move>
 
                 <!-- Create HTML -->
-                <xslt basedir="target/docbook/" in="src/main/docbook/0_index.xml" out="target/classes/index.html" style="target/docbook/docbook-xsl/eclipse/eclipse.xsl">
+                <xslt basedir="target/docbook/" in="target/docbook/documents/0_index.xml" out="target/classes/index.html" style="target/docbook/docbook-xsl/eclipse/eclipse.xsl">
                   <param name="ignore.image.scaling" expression="1" />
                   <param name="manifest.in.base.dir" expression="0" />
                   <param name="base.dir" expression="html/" />
