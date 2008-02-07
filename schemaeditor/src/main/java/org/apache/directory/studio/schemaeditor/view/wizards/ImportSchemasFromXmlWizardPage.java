@@ -31,7 +31,6 @@ import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -60,7 +59,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ImportSchemasFromXmlWizardPage extends WizardPage
+public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
 {
     // UI Fields
     private Text fromDirectoryText;
@@ -312,20 +311,6 @@ public class ImportSchemasFromXmlWizardPage extends WizardPage
         }
 
         displayErrorMessage( null );
-    }
-
-
-    /**
-     * Displays an error message and set the page status as incomplete
-     * if the message is not null.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayErrorMessage( String message )
-    {
-        setErrorMessage( message );
-        setPageComplete( message == null );
     }
 
 

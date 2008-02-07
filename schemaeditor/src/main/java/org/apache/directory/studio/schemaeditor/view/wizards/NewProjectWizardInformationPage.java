@@ -22,10 +22,8 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
-import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.schemaeditor.model.ProjectType;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -33,7 +31,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -47,7 +44,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewProjectWizardInformationPage extends WizardPage
+public class NewProjectWizardInformationPage extends AbstractWizardPage
 {
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
@@ -94,42 +91,41 @@ public class NewProjectWizardInformationPage extends WizardPage
             }
         } );
 
-//        if ( PluginUtils.getSchemaConnectors().size() > 0 )
-//        {
-//            // Type Group
-//            Group typeGroup = new Group( composite, SWT.NONE );
-//            typeGroup.setText( "Type" );
-//            typeGroup.setLayout( new GridLayout() );
-//            typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-//
-//            typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
-//            typeOfflineRadio.setText( "Offline Schema" );
-//            typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-//            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
-//            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
-//            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-//        }
+        //        if ( PluginUtils.getSchemaConnectors().size() > 0 )
+        //        {
+        //            // Type Group
+        //            Group typeGroup = new Group( composite, SWT.NONE );
+        //            typeGroup.setText( "Type" );
+        //            typeGroup.setLayout( new GridLayout() );
+        //            typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        //
+        //            typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
+        //            typeOfflineRadio.setText( "Offline Schema" );
+        //            typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        //            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
+        //            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
+        //            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        //        }
 
-//        initFields();
+        //        initFields();
 
         setControl( composite );
     }
 
 
-//    /**
-//     * Initializes the UI Fields.
-//     */
-//    private void initFields()
-//    {
-//        if ( typeOfflineRadio != null )
-//        {
-//            typeOfflineRadio.setSelection( true );
-//        }
-//
-//        displayErrorMessage( null );
-//        setPageComplete( false );
-//    }
-
+    //    /**
+    //     * Initializes the UI Fields.
+    //     */
+    //    private void initFields()
+    //    {
+    //        if ( typeOfflineRadio != null )
+    //        {
+    //            typeOfflineRadio.setSelection( true );
+    //        }
+    //
+    //        displayErrorMessage( null );
+    //        setPageComplete( false );
+    //    }
 
     /**
      * This method is called when the user modifies something in the UI.
@@ -149,20 +145,6 @@ public class NewProjectWizardInformationPage extends WizardPage
         }
 
         displayErrorMessage( null );
-    }
-
-
-    /**
-     * Displays an error message and set the page status as incomplete
-     * if the message is not null.
-     *
-     * @param message
-     *      the message to display
-     */
-    private void displayErrorMessage( String message )
-    {
-        setErrorMessage( message );
-        setPageComplete( message == null );
     }
 
 
