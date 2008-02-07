@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.commons</groupId>
-  <artifactId>el</artifactId>
-  <name>Apache Commons JSP 2.0 Expression Language Interpreter</name>
-  <version>1.0.0-v200706111724</version>
-</project>
