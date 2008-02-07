@@ -273,6 +273,7 @@ public class ExportSchemasForADSWizardPage extends WizardPage
         } );
 
         initFields();
+        dialogChanged();
 
         setControl( composite );
     }
@@ -405,6 +406,13 @@ public class ExportSchemasForADSWizardPage extends WizardPage
      */
     private void dialogChanged()
     {
+        // Checking if a Schema Project is open
+        if ( schemaHandler == null )
+        {
+            displayErrorMessage( "A Schema Project must be open to export schemas for Apache DS." );
+            return;
+        }
+
         // Schemas table
         if ( schemasTableViewer.getCheckedElements().length == 0 )
         {

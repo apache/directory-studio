@@ -83,7 +83,39 @@ public class ImportCoreSchemasWizardPage extends WizardPage
             coreSchemaSelectionWidget.setGrayedCoreSchemas( schemaNames.toArray( new String[0] ) );
         }
 
+        dialogChanged();
+
         setControl( composite );
+    }
+
+
+    /**
+     * This method is called when the user modifies something in the UI.
+     */
+    private void dialogChanged()
+    {
+        // Checking if a Schema Project is open
+        if ( Activator.getDefault().getSchemaHandler() == null )
+        {
+            displayErrorMessage( "A Schema Project must be open to import core schemas files." );
+            return;
+        }
+
+        displayErrorMessage( null );
+    }
+
+
+    /**
+     * Displays an error message and set the page status as incomplete
+     * if the message is not null.
+     *
+     * @param message
+     *      the message to display
+     */
+    private void displayErrorMessage( String message )
+    {
+        setErrorMessage( message );
+        setPageComplete( message == null );
     }
 
 

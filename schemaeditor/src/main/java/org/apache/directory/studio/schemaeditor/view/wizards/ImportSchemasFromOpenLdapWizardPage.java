@@ -196,6 +196,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends WizardPage
         } );
 
         initFields();
+        dialogChanged();
 
         setControl( composite );
     }
@@ -269,6 +270,13 @@ public class ImportSchemasFromOpenLdapWizardPage extends WizardPage
      */
     private void dialogChanged()
     {
+        // Checking if a Schema Project is open
+        if ( Activator.getDefault().getSchemaHandler() == null )
+        {
+            displayErrorMessage( "A Schema Project must be open to import schemas from OpenLDAP files." );
+            return;
+        }
+
         // Import Directory
         String directory = fromDirectoryText.getText();
         if ( ( directory == null ) || ( directory.equals( "" ) ) )
