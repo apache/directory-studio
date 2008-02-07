@@ -33,6 +33,11 @@
   <name>Parent Help</name>
   <packaging>pom</packaging>
   
+  <!-- Set path for local repository -->
+  <properties>
+    <local-repo>${project.basedir}/../repository</local-repo>
+  </properties>
+  
   <profiles>
     <!-- UserGuides -->
     <profile>

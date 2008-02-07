@@ -34,6 +34,11 @@
 
   <description></description>
 
+  <!-- Set path for local repository -->
+  <properties>
+    <local-repo>${project.basedir}/../repository</local-repo>
+  </properties>
+    
   <build>
     <resources>
       <resource>

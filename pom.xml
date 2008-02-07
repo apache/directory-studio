@@ -91,8 +91,11 @@
       <archive>http://mail-archives.apache.org/mod_mbox/directory-commits</archive>
     </mailingList>
   </mailingLists>
-
+  
   <properties>
+    <!-- Set path for local repository -->
+    <local-repo>${project.basedir}/repository</local-repo>
+    
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.0.0</aciitemeditor.version>
     <apacheds.configuration.version>1.1.0.SNAPSHOT</apacheds.configuration.version>
@@ -995,7 +998,8 @@
   </dependencyManagement>
 
   <modules>
-    <module>repository</module>
+    <module>studio-plugin</module>
+    <!--<module>repository</module>-->
     <module>ldif-parser</module>
     <module>connection-core</module>
     <module>studio-dsml-parser</module>
@@ -1303,7 +1307,7 @@
     </plugins>
   </reporting>
 
-  <repositories>
+  <repositories><repository>            <releases>                <checksumPolicy>ignore</checksumPolicy>            </releases>            <snapshots>                <checksumPolicy>ignore</checksumPolicy>            </snapshots>            <id>provided.local</id>            <name>Locally Provided Repository</name>            <url>file:${local-repo}</url>        </repository>
     <repository>
       <id>maven.repo1</id>
       <name>Maven Repo1 mirror</name>

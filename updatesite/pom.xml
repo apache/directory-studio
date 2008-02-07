@@ -36,6 +36,7 @@
 
   <properties>
     <current_pom_version>${pom.version}</current_pom_version>
+    <local-repo>${project.basedir}/../repository</local-repo>
   </properties>
 
   <build>

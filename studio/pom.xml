@@ -32,6 +32,12 @@
 
   <description>Building distributions for the Apache Directory Studio</description>
 
+  <!-- Set some properties -->
+  <properties>
+    <studio-dir>target/ApacheDirectoryStudio</studio-dir>
+    <local-repo>${project.basedir}/../repository</local-repo>
+  </properties>
+  
   <!-- 
     How building a dist works:
     We presume that all needed dependencies are already somehow available (normally this is the case with mvn install from root)
@@ -48,11 +54,6 @@
           mvn clean install -Plinux-x86,linux-x86_64,linux-ppc,macosx,win32 -Dmaven.test.skip=true
           from the projects root to generate all available distribution in one run.
   -->
-
-  <!-- Set some properties -->
-  <properties>
-    <studio-dir>target/ApacheDirectoryStudio</studio-dir>
-  </properties>
 
   <profiles>
     <profile>
