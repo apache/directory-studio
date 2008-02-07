@@ -998,8 +998,6 @@
   </dependencyManagement>
 
   <modules>
-    <module>studio-plugin</module>
-    <!--<module>repository</module>-->
     <module>ldif-parser</module>
     <module>connection-core</module>
     <module>studio-dsml-parser</module>
