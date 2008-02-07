@@ -247,22 +247,10 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>ui</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>swt</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>runtime</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>app</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
@@ -275,24 +263,6 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>workbench</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>help</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>swt</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>databinding</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.jface</groupId>
-            <artifactId>databinding</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
@@ -305,16 +275,6 @@
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>databinding</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>runtime</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>common</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core</groupId>
@@ -323,12 +283,6 @@
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>net</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>runtime</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.core.runtime.compatibility</groupId>
@@ -355,32 +309,6 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>search</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>filebuffers</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>ui</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.ui</groupId>
-            <artifactId>ide</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>jface</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.jface</groupId>
-            <artifactId>text</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.ui.workbench</groupId>
-            <artifactId>texteditor</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
@@ -409,38 +337,10 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>editors</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>swt</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.ui</groupId>
-            <artifactId>ide</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.jface</groupId>
-            <artifactId>text</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>filebuffers</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui.workbench</groupId>
         <artifactId>texteditor</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.jface</groupId>
-            <artifactId>text</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>swt</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
@@ -453,36 +353,14 @@
       <dependency>
         <groupId>org.eclipse.update</groupId>
         <artifactId>ui</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.update</groupId>
-            <artifactId>configurator</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.update</groupId>
         <artifactId>core</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse.update</groupId>
-            <artifactId>configurator</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>net</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>views</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>help</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
@@ -491,28 +369,6 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>ide</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>help</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>swt</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>net</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.ui</groupId>
-            <artifactId>views</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.update</groupId>
-            <artifactId>configurator</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.help</groupId>
@@ -541,12 +397,6 @@
       <dependency>
         <groupId>org.eclipse.help</groupId>
         <artifactId>webapp</artifactId>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache</groupId>
-            <artifactId>jasper</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
