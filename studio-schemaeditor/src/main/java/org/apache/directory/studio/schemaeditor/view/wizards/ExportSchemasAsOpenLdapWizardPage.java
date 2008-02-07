@@ -211,6 +211,7 @@ public class ExportSchemasAsOpenLdapWizardPage extends WizardPage
         } );
 
         initFields();
+        dialogChanged();
 
         setControl( composite );
     }
@@ -277,6 +278,13 @@ public class ExportSchemasAsOpenLdapWizardPage extends WizardPage
      */
     private void dialogChanged()
     {
+        // Checking if a Schema Project is open
+        if ( schemaHandler == null )
+        {
+            displayErrorMessage( "A Schema Project must be open to export schemas as OpenLDAP files." );
+            return;
+        }
+        
         // Schemas table
         if ( schemasTableViewer.getCheckedElements().length == 0 )
         {
