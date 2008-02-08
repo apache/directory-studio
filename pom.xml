@@ -36,13 +36,26 @@
   <description>Maven2 plugin with specific goals for the Apache Directory Studio project</description>
   <url>http://directory.apache.org/studio/</url>
   
+  <inceptionYear>2007</inceptionYear>
+  
   <issueManagement>
     <system>JIRA</system>
     <url>http://issues.apache.org/jira/browse/DIRSTUDIO</url>
   </issueManagement>
 
-  <inceptionYear>2007</inceptionYear>
-  
+  <scm>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/studio-plugin/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/studio-plugin/</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/studio-plugin/</url>
+  </scm>
+
+  <distributionManagement>
+    <site>
+      <id>felixknecht.ch</id>
+      <url>scpexe://felixknecht.ch/var/www/felixknecht.ch/htdocs/projects/studio-plugin/</url>
+    </site>
+  </distributionManagement>
+
   <mailingLists>
     <mailingList>
       <name>Directory Developers List</name>
@@ -65,12 +78,6 @@
       <archive>http://mail-archives.apache.org/mod_mbox/directory-commits</archive>
     </mailingList>
   </mailingLists>
-
-  <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/sandbox/felixk/studio-plugin/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/sandbox/felixk/studio-plugin/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/sandbox/felixk/studio-plugin/</url>
-  </scm>
 
   <build>
     <plugins>
@@ -218,12 +225,5 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <distributionManagement>
-    <site>
-      <id>felixknecht.ch</id>
-      <url>scpexe://felixknecht.ch/var/www/felixknecht.ch/htdocs/projects/studio-plugin/</url>
-    </site>
-  </distributionManagement>
 
 </project>
