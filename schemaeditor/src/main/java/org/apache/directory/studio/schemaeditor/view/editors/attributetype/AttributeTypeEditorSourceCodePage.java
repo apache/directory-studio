@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.server.core.tools.schema.AttributeTypeLiteral;
-import org.apache.directory.server.core.tools.schema.OpenLdapSchemaParser;
+import org.apache.directory.shared.ldap.schema.parser.AttributeTypeLiteral;
+import org.apache.directory.shared.ldap.schema.parser.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
