@@ -558,16 +558,14 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         NamingEnumeration ne = attributes.getAll();
 
-        Attribute attribute = ( Attribute ) ne.nextElement();
+        Attribute objectClassAttribute = attributes.get( "objectclass" );
 
-        assertEquals( "objectclass", attribute.getID() );
-
-        assertEquals( 1, attribute.size() );
+        assertEquals( 1, objectClassAttribute.size() );
 
         NamingEnumeration ne2 = null;
         try
         {
-            ne2 = attribute.getAll();
+            ne2 = objectClassAttribute.getAll();
         }
         catch ( NamingException e )
         {
@@ -578,16 +576,14 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
         assertEquals( "top", value );
 
-        attribute = ( Attribute ) ne.nextElement();
+        Attribute dcAttribute = attributes.get( "dc" );
 
-        assertEquals( "dc", attribute.getID() );
-
-        assertEquals( 1, attribute.size() );
+        assertEquals( 1, dcAttribute.size() );
 
         ne2 = null;
         try
         {
-            ne2 = attribute.getAll();
+            ne2 = dcAttribute.getAll();
         }
         catch ( NamingException e )
         {
