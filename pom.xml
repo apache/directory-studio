@@ -63,8 +63,8 @@
   <!-- TODO
   <distributionManagement>
     <site>
-      <id>foo</id>
-      <url>bar</url>
+      <id>felixknecht.ch</id>
+      <url>scpexe://felixknecht.ch/var/www/felixknecht.ch/htdocs/projects/studio/</url>
     </site>
   </distributionManagement>
   -->
@@ -1990,9 +1990,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jxr-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -2001,6 +2007,7 @@
           <sourceEncoding>utf-8</sourceEncoding>
           <minimumTokens>100</minimumTokens>
           <targetJdk>1.5</targetJdk>
+          <aggregate>true</aggregate>
         </configuration>
       </plugin>
       <plugin>
