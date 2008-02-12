@@ -3,7 +3,7 @@
 		module="shared-converter"
 		revision="0.9.8-SNAPSHOT"
 		status="release"
-		publication="20071110140800"
+		publication="20080212150000"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
