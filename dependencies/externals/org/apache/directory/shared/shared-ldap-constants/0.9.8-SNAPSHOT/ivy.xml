@@ -3,7 +3,7 @@
 		module="shared-ldap-constants"
 		revision="0.9.8-SNAPSHOT"
 		status="release"
-		publication="20080208115800"
+		publication="20080212160000"
 	/>
 	<configurations>
 		<conf name="default" visibility="public"/>
