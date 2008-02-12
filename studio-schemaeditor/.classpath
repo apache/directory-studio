@@ -6,6 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="lib/junit-3.8.2.jar"/>
-	<classpathentry kind="lib" path="lib/shared-converter-0.9.7-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/shared-converter-0.9.8-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
