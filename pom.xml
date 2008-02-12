@@ -1637,13 +1637,6 @@
         <version>${apacheds.configuration.help.version}</version>
       </dependency>
 
-      <!-- Apache Directory ApacheDS -->
-      <dependency>
-        <groupId>org.apache.directory.server</groupId>
-        <artifactId>apacheds-core-plugin</artifactId>
-        <version>1.5.1</version>
-      </dependency>
-
       <!-- Apache Directory Shared -->
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
