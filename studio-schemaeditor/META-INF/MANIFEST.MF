@@ -16,6 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.directory.studio.jars
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
- lib/shared-converter-0.9.8-SNAPSHOT.jar
+ lib/shared-converter-0.9.8.jar
 Export-Package: org.apache.directory.studio.schemaeditor.model,
  org.apache.directory.studio.schemaeditor.model.io

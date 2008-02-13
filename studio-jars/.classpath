@@ -10,9 +10,9 @@
 	<classpathentry kind="lib" exported="true" path="lib/commons-lang-2.3.jar"/>
 	<classpathentry kind="lib" exported="true" path="lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" exported="true" path="lib/nlog4j-1.2.25.jar"/>
-	<classpathentry kind="lib" exported="true" path="lib/shared-asn1-0.9.8-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" exported="true" path="lib/shared-ldap-0.9.8-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" exported="true" path="lib/shared-ldap-constants-0.9.8-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" exported="true" path="lib/shared-asn1-0.9.8.jar"/>
+	<classpathentry kind="lib" exported="true" path="lib/shared-ldap-0.9.8.jar"/>
+	<classpathentry kind="lib" exported="true" path="lib/shared-ldap-constants-0.9.8.jar"/>
 	<classpathentry kind="lib" exported="true" path="lib/studio-dsml-parser-0.4.1.jar"/>
 	<classpathentry kind="lib" exported="true" path="lib/xpp3-1.1.3_8.jar"/>
 	<classpathentry kind="output" path="target/classes"/>

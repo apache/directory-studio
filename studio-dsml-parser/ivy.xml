@@ -20,9 +20,9 @@
 	<info organisation="org.apache.directory.studio" module="studio-dsml-parser"/>
 	<dependencies>
 		<dependency org="org.slf4j" name="nlog4j" rev="1.2.25"/>
-		<dependency org="org.apache.directory.shared" name="shared-ldap-constants" rev="0.9.8-SNAPSHOT"/>
-		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.8-SNAPSHOT"/>
-		<dependency org="org.apache.directory.shared" name="shared-asn1" rev="0.9.8-SNAPSHOT"/>
+		<dependency org="org.apache.directory.shared" name="shared-ldap-constants" rev="0.9.8"/>
+		<dependency org="org.apache.directory.shared" name="shared-ldap" rev="0.9.8"/>
+		<dependency org="org.apache.directory.shared" name="shared-asn1" rev="0.9.8"/>
 		<dependency org="org.dom4j" name="dom4j" rev="1.6.1"/>
 		<dependency org="org.xmlpull" name="xpp3" rev="1.1.3_8"/>
 		<dependency org="junit" name="junit" rev="3.8.2"/>
