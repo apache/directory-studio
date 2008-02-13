@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>org.apache.directory.studio</groupId>
+  <artifactId>parent-help</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
+  <name>Parent Help</name>
+  <packaging>pom</packaging>
+  
+  <profiles>
+    <!-- UserGuides -->
+    <profile>
+      <id>userguides</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main/resources/html</directory>
+            <targetPath>../pdf</targetPath>
+          </resource>
+          <resource>
+            <directory>src/main/resources/html</directory>
+            <targetPath>../html</targetPath>
+          </resource>
+          <resource>
+            <directory>src/main/docbook</directory>
+            <targetPath>../docbook/documents</targetPath>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <dependencies>
+              <!-- 
+                Putting this dependency in the core pom produces following error (?):
+                Embedded error: java.lang.ClassCastException: org.apache.fop.render.pdf.PDFRendererMaker cannot be cast to org.apache.fop.render.AbstractRendererMaker
+              -->
+              <dependency>
+                <groupId>org.apache.xmlgraphics</groupId>
+                <artifactId>xmlgraphics-commons</artifactId>
+                <version>1.1</version>
+                <scope>compile</scope>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <id>build-pdf-html-help</id>
+                <phase>compile</phase>
+                <configuration>
+                  <tasks>
+                    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
+                      <classpath>
+                        <path refid="maven.compile.classpath" />
+                        <pathelement location="${project.build.outputDirectory}" />
+                      </classpath>
+                    </taskdef>
+
+                    <!-- Prepare docbook -->
+                    <property name="fromregexpxml" value="^(docbook-xml-[^/]+)/(.*)" />
+                    <property name="toregexpxml" value="docbook-xml/\2" />
+                    <move todir="target/docbook">
+                      <fileset dir="target/docbook">
+                        <include name="docbook-xml-*/**" />
+                      </fileset>
+                      <regexpmapper from="${fromregexpxml}" to="${toregexpxml}" handledirsep="true" />
+                    </move>
+
+                    <property name="fromregexpxsl" value="^(docbook-xsl-[^/]+)/(.*)" />
+                    <property name="toregexpxsl" value="docbook-xsl/\2" />
+                    <move todir="target/docbook">
+                      <fileset dir="target/docbook">
+                        <include name="docbook-xsl-*/**" />
+                      </fileset>
+                      <regexpmapper from="${fromregexpxsl}" to="${toregexpxsl}" handledirsep="true" />
+                    </move>
+
+                    <!-- Create PDF -->
+                    <xslt basedir="target/docbook" in="target/docbook/documents/0_index.xml" out="target/pdf/${artifactId}.fo" style="target/docbook/docbook-xsl/fo/docbook.xsl">
+                      <param name="manifest.in.base.dir" expression="0" />
+                      <param name="generate.section.toc.level" expression="5" />
+                      <param name="toc.max.depth" expression="3" />
+                      <param name="ulink.target" expression="_self" />
+                      <param name="suppress.navigation" expression="0" />
+                      <param name="use.id.as.filename" expression="1" />
+                      <param name="chapter.autolabel" expression="I" />
+                      <param name="section.autolabel" expression="1" />
+                      <outputproperty name="method" value="xml" />
+                      <outputproperty name="standalone" value="yes" />
+                      <outputproperty name="encoding" value="iso8859_1" />
+                      <outputproperty name="indent" value="es" />
+                    </xslt>
+                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${artifactId}.fo" outfile="target/pdf/${name}.pdf" />
+
+                    <!-- Create HTML -->
+                    <xslt in="target/docbook/documents/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
+                      <param name="ignore.image.scaling" expression="1" />
+                      <param name="manifest.in.base.dir" expression="0" />
+                      <!-- <param name="base.dir" expression="html/" /> -->
+                      <param name="html.stylesheet" expression="css/book.css" />
+                      <param name="table.cell.borders.thickness" expression="1" />
+                      <!-- <param name="table.borders.with.css" expression="1" /> -->
+                      <param name="generate.section.toc.level" expression="5" />
+                      <param name="toc.max.depth" expression="3" />
+                      <param name="chunk.first.sections" expression="1" />
+                      <param name="chunk.section.depth" expression="5" />
+                      <param name="chunk.fast" expression="1" />
+                      <param name="chunk.separate.lots" expression="1" />
+                      <!--<param name="chunk.tocs.and.lots" expression="1" />-->
+                      <param name="ulink.target" expression="_self" />
+                      <param name="suppress.navigation" expression="0" />
+                      <param name="html.cleanup" expression="1" />
+                      <param name="html.cellpadding" expression="3" />
+                      <param name="use.id.as.filename" expression="1" />
+                      <param name="chapter.autolabel" expression="0" />
+                      <param name="section.autolabel" expression="0" />
+                      <outputproperty name="method" value="xml" />
+                      <outputproperty name="standalone" value="yes" />
+                      <outputproperty name="encoding" value="iso8859_1" />
+                      <outputproperty name="indent" value="es" />
+                    </xslt>
+
+                    <!-- Copy PDF/HTML to ../target -->
+                    <mkdir dir="../target/userguides" />
+                    <copy todir="../target/userguides">
+                      <fileset dir="target/pdf" />
+                    </copy>
+                    <mkdir dir="../target/userguides/${name}" />
+                    <copy todir="../target/userguides/${name}">
+                      <fileset dir="target/html" />
+                    </copy>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+    
+  <build>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>plugin.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/docbook</directory>
+        <targetPath>../docbook/documents</targetPath>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <buildcommands>
+            <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
+            <buildcommand>org.eclipse.pde.SchemaBuilder</buildcommand>
+          </buildcommands>
+          <projectnatures>
+            <projectnature>org.eclipse.pde.PluginNature</projectnature>
+          </projectnatures>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-schemaeditor-help</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <overWrite>true</overWrite>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>docbook</groupId>
+                  <artifactId>docbook-xml</artifactId>
+                  <type>zip</type>
+                  <outputDirectory>target/docbook/docbook-xml</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>docbook</groupId>
+                  <artifactId>docbook-xsl</artifactId>
+                  <type>zip</type>
+                  <outputDirectory>target/docbook</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>build-eclipse-help-schemaeditor-help</id>
+            <phase>process-classes</phase>
+            <configuration>
+              <tasks>
+                <!-- Prepare docbook -->
+                <property name="fromregexpxml" value="^(docbook-xml-[^/]+)/(.*)" />
+                <property name="toregexpxml" value="docbook-xml/\2" />
+                <move todir="target/docbook">
+                  <fileset dir="target/docbook">
+                    <include name="docbook-xml-*/**" />
+                  </fileset>
+                  <regexpmapper from="${fromregexpxml}" to="${toregexpxml}" handledirsep="true" />
+                </move>
+
+                <property name="fromregexpxsl" value="^(docbook-xsl-[^/]+)/(.*)" />
+                <property name="toregexpxsl" value="docbook-xsl/\2" />
+                <move todir="target/docbook">
+                  <fileset dir="target/docbook">
+                    <include name="docbook-xsl-*/**" />
+                  </fileset>
+                  <regexpmapper from="${fromregexpxsl}" to="${toregexpxsl}" handledirsep="true" />
+                </move>
+
+                <!-- Create HTML -->
+                <xslt basedir="target/docbook/" in="target/docbook/documents/0_index.xml" out="target/classes/index.html" style="target/docbook/docbook-xsl/eclipse/eclipse.xsl">
+                  <param name="ignore.image.scaling" expression="1" />
+                  <param name="manifest.in.base.dir" expression="0" />
+                  <param name="base.dir" expression="html/" />
+                  <param name="html.stylesheet" expression="css/book.css" />
+                  <param name="table.cell.borders.thickness" expression="1" />
+                  <!-- <param name="table.borders.with.css" expression="1" /> -->
+                  <param name="generate.section.toc.level" expression="5" />
+                  <param name="toc.max.depth" expression="1" />
+                  <param name="chunk.first.sections" expression="1" />
+                  <param name="chunk.section.depth" expression="5" />
+                  <param name="chunk.fast" expression="1" />
+                  <param name="chunk.separate.lots" expression="1" />
+                  <!--<param name="chunk.tocs.and.lots" expression="1" />-->
+                  <param name="ulink.target" expression="_self" />
+                  <param name="suppress.navigation" expression="1" />
+                  <param name="html.cleanup" expression="1" />
+                  <param name="html.cellpadding" expression="3" />
+                  <param name="use.id.as.filename" expression="1" />
+                  <param name="chapter.autolabel" expression="0" />
+                  <param name="section.autolabel" expression="0" />
+                  <outputproperty name="method" value="xml" />
+                  <outputproperty name="standalone" value="yes" />
+                  <outputproperty name="encoding" value="iso8859_1" />
+                  <outputproperty name="indent" value="es" />
+                </xslt>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- No tests to run -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,64 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.    
+ 
+  ------
+  Add or replace a file to existing, distributed artifact
+  ------
+  Apache Directory Project
+  ------
+  Oct 2007
+  ------
+
+Add or replace a file to existing, distributed artifact
+
+  Adds or replaces a file in an existing, distributed artifact.
+
++---+
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>maven-studio-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>replace-plugin.xml-in-org.eclipse.search</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace-file-in-eclipse-artifact</goal>
+            </goals>
+            <configuration>
+              <inputFile>src/main/configuration/org.eclipse.search/plugin.xml</inputFile>
+              <destinationDirectory>${studio-dir}/plugins</destinationDirectory>
+              <overWrite>false</overWrite>
+              <outputDirectory>target/eclipse/plugins</outputDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.eclipse</groupId>
+                  <artifactId>org.eclipse.search</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  [...]
+</project>
++---+

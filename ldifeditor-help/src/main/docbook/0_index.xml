@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../target/docbook/docbook-xml/docbookx.dtd"[
+
+  <!ENTITY gettingstarted SYSTEM "1_gettingstarted.xml">
+  <!ENTITY tasks SYSTEM "3_tasks.xml">
+  <!ENTITY reference SYSTEM "4_reference.xml">
+  <!ENTITY tipsntricks SYSTEM "5_tipsntricks.xml">
+  <!ENTITY whatsnew SYSTEM "6_whatsnew.xml">
+  
+]>
+
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<book>
+
+	<bookinfo>
+		<title>Apache Directory Studio LDIF Editor</title>
+		<subtitle>User's Guide</subtitle>
+		<releaseinfo>Version ${current_pom_version}</releaseinfo>
+		<copyright>
+			<year>2007</year>
+			<holder>Apache Software Foundation</holder>
+		</copyright>
+		<legalnotice>
+			<literallayout class="monospaced">
+				Licensed to the Apache Software Foundation (ASF) under one
+				or more contributor license agreements.  See the NOTICE file
+				distributed with this work for additional information
+				regarding copyright ownership.  The ASF licenses this file
+				to you under the Apache License, Version 2.0 (the
+				"License"); you may not use this file except in compliance
+				with the License.  You may obtain a copy of the License at
+				
+				  <ulink url="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</ulink>
+				
+				Unless required by applicable law or agreed to in writing,
+				software distributed under the License is distributed on an
+				"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+				KIND, either express or implied.  See the License for the
+				specific language governing permissions and limitations
+				under the License.
+			</literallayout>		
+		</legalnotice>	
+	</bookinfo>
+
+	&gettingstarted;
+	&tasks;
+	&reference;
+	&tipsntricks;
+	&whatsnew;
+
+</book>

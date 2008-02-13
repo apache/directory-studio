@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "../../../target/docbook/docbook-xml/docbookx.dtd"[
+
+  <!ENTITY gettingstarted SYSTEM "1_gettingstarted.xml">
+  <!ENTITY download_install SYSTEM "1.1_download_install.xml">
+  <!ENTITY tasks SYSTEM "2_tasks.xml">
+  <!ENTITY running SYSTEM "2.1_running.xml">
+  <!ENTITY updating SYSTEM "2.2_updating.xml">
+  <!ENTITY inspect_configuration SYSTEM "2.2.1_inspect_configuration.xml">
+  <!ENTITY enabling_disabling_uninstalling_features SYSTEM "2.2.2_enabling_disabling_uninstalling_features.xml">
+  <!ENTITY reporting_a_bug SYSTEM "2.3_reporting_a_bug.xml">
+  <!ENTITY reference SYSTEM "3_reference.xml">
+  <!ENTITY preferences SYSTEM "3.1_preferences.xml">
+  <!ENTITY help SYSTEM "3.1.1_help.xml">
+  <!ENTITY help_server SYSTEM "3.1.1.1_help_server.xml">
+  <!ENTITY install_update SYSTEM "3.1.2_install_update.xml">
+  <!ENTITY text_editors SYSTEM "3.1.3_text_editors.xml">
+  <!ENTITY accessibility SYSTEM "3.1.3.1_accessibility.xml">
+  <!ENTITY annotations SYSTEM "3.1.3.2_annotations.xml">
+  <!ENTITY linked_mode SYSTEM "3.1.3.3_linked_mode.xml">
+  <!ENTITY quick_diff SYSTEM "3.1.3.4_quick_diff.xml">
+  <!ENTITY spelling SYSTEM "3.1.3.5_spelling.xml">
+  <!ENTITY whats_new SYSTEM "4_whats_new.xml">
+  <!ENTITY release_notes SYSTEM "5_release_notes.xml">
+
+]>
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<book>
+	<bookinfo>
+		<title>Apache Directory Studio</title>
+		<subtitle>User's Guide</subtitle>
+		<releaseinfo>Version ${current_pom_version}</releaseinfo>
+		<copyright>
+			<year>2007</year>
+			<holder>Apache Software Foundation</holder>
+		</copyright>
+		<legalnotice>
+			<literallayout class="monospaced">
+				Licensed to the Apache Software Foundation (ASF) under one
+				or more contributor license agreements.  See the NOTICE file
+				distributed with this work for additional information
+				regarding copyright ownership.  The ASF licenses this file
+				to you under the Apache License, Version 2.0 (the
+				"License"); you may not use this file except in compliance
+				with the License.  You may obtain a copy of the License at
+				
+				  <ulink url="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</ulink>
+				
+				Unless required by applicable law or agreed to in writing,
+				software distributed under the License is distributed on an
+				"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+				KIND, either express or implied.  See the License for the
+				specific language governing permissions and limitations
+				under the License.
+			</literallayout>		
+		</legalnotice>
+	</bookinfo>
+	
+	&gettingstarted;
+	&tasks;
+	&reference;
+	&whats_new;
+	&release_notes;
+
+</book>

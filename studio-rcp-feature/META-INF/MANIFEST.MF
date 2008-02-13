@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio RCP Feature
-Bundle-SymbolicName: org.apache.directory.studio.feature;singleton:=true
-Bundle-Version: 1.0.1
-Bundle-Localization: plugin
-Eclipse-LazyStart: true
-Bundle-Vendor: Apache Software Foundation
