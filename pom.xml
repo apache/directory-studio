@@ -53,9 +53,9 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/studio/branches/studio-maven/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/studio/trunk/</url>
   </scm>
 
   <inceptionYear>2003</inceptionYear>
