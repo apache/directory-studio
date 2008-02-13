@@ -33,7 +33,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AbstractTest extends TestCase
+public abstract class AbstractTest extends TestCase
 {
     /**
      * Asserts that parsing throws a correct XmlPullParserException due to an incorrect file
