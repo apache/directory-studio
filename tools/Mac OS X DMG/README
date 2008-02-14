@@ -1,0 +1,11 @@
+The createDMG.sh shell script creates the DMG (disk image) for a release of Apache Directory Studio on Mac OS X.
+
+To create a new DMG, you have to put in a "release" folder the following files:
+  * Apache Directory Studio.app (the application)
+  * LICENSE.txt
+  * NOTICE.txt
+  * Release Notes.txt
+
+Then, you can launch the shell script: ./createDMG.sh
+
+An "ApacheDirectoryStudio.dmg" disc image will be generated.
