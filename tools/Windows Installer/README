@@ -1,0 +1,11 @@
+The windows_install.nsi script creates the Windows installer for a release of Apache Directory Studio on Windows.
+
+To create a Windows installer, you have to put in a "release" folder the following files:
+  * Apache Directory Studio.exe (the application)
+  * LICENSE.txt
+  * NOTICE.txt
+  * Release Notes.txt
+
+Then, you can compile the script with NSIS.
+
+An "Apache_Directory_Studio_VERSION_Windows.exe" installer will be generated.
