@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.ldifeditor.feature"
       label="Apache Directory Studio LDIF Editor"
-      version="1.1.0.SNAPSHOT"
+      version="1.1.0.v20080218"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.ldifeditor"
       image="studio.png">
@@ -230,34 +230,34 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.connection.core"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"
+         version="1.1.0.v20080218"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.connection.ui"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"
+         version="1.1.0.v20080218"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.jars"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"/>
+         version="1.1.0.v20080218"/>
 
    <plugin
          id="org.apache.directory.studio.ldapbrowser.core"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"
+         version="1.1.0.v20080218"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifeditor"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"
+         version="1.1.0.v20080218"
          unpack="false"/>
 
    <plugin
@@ -271,13 +271,13 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.ldapbrowser.common"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"
+         version="1.1.0.v20080218"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.ldifeditor.help"
          download-size="0"
          install-size="0"
-         version="1.1.0.SNAPSHOT"/>
+         version="1.1.0.v20080218"/>
 
 </feature>

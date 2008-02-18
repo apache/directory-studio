@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio LDAP Browser Feature
 Bundle-SymbolicName: org.apache.directory.studio.ldapbrowser.feature;singleton:=true
-Bundle-Version: 1.1.0.SNAPSHOT
+Bundle-Version: 1.1.0.v20080218
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
 Bundle-Vendor: Apache Software Foundation
