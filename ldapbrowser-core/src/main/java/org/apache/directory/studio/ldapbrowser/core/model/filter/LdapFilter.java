@@ -206,7 +206,8 @@ public class LdapFilter
      */
     public boolean isValid()
     {
-        return startToken != null && filterComponent != null && filterComponent.isValid() && stopToken != null && otherTokens.isEmpty();
+        return startToken != null && filterComponent != null && filterComponent.isValid() && stopToken != null
+            && otherTokens.isEmpty();
     }
 
 
@@ -295,7 +296,8 @@ public class LdapFilter
 
 
     /**
-     * @see java.lang.Object#toString()
+     * Gets the string representation of this LDAP filter. Invalid tokens and 
+     * white spaces are removed, but incomplete filter parts are kept.
      */
     public String toString()
     {
@@ -303,13 +305,30 @@ public class LdapFilter
         LdapFilterToken[] tokens = getTokens();
         for ( LdapFilterToken token : tokens )
         {
+            if ( token.getType() != LdapFilterToken.UNKNOWN && token.getType() != LdapFilterToken.WHITESPACE
+                && token.getType() != LdapFilterToken.ERROR && token.getType() != LdapFilterToken.EOF )
+            {
+                sb.append( token.getValue() );
+            }
+        }
+        return sb.toString();
+    }
+
+
+    /**
+     * Gets the string representation of this LDAP filter, as provided by the user.
+     * It may contain white spaces and invalid tokens. 
+     */
+    public String toUserProvidedString()
+    {
+        // add _all_ tokens to the string, including invalid tokens and whitespace tokens
+        StringBuffer sb = new StringBuffer();
+        LdapFilterToken[] tokens = getTokens();
+        for ( LdapFilterToken token : tokens )
+        {
             sb.append( token.getValue() );
         }
         return sb.toString();
-//        return ( startToken != null ? "(" : "" ) + 
-//        ( filterComponent != null ? filterComponent.toString() : "" ) + 
-//        ( stopToken != null ? ")" : "" ); 
-//        //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     }
 
 }

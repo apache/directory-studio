@@ -58,6 +58,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertNull( model.getStopToken() );
 
         assertEquals( "(", model.toString() );
+        assertEquals( "(", model.toUserProvidedString() );
         assertFalse( parser.getModel().isValid() );
     }
 
@@ -89,6 +90,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertNull( model.getStopToken() );
 
         assertEquals( "(objectClass", model.toString() );
+        assertEquals( "(objectClass", model.toUserProvidedString() );
         assertFalse( parser.getModel().isValid() );
     }
 
@@ -126,6 +128,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertNull( model.getStopToken() );
 
         assertEquals( "(objectClass=", model.toString() );
+        assertEquals( "(objectClass=", model.toUserProvidedString() );
         assertFalse( parser.getModel().isValid() );
     }
 
@@ -163,6 +166,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
         assertNotNull( model.getStopToken() );
 
         assertEquals( "(objectClass=)", model.toString() );
+        assertEquals( "(objectClass=)", model.toUserProvidedString() );
         assertTrue( parser.getModel().isValid() );
     }
 
