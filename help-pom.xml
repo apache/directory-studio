@@ -215,7 +215,7 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>unpack-schemaeditor-help</id>
+            <id>unpack-docbook-dependencies</id>
             <phase>process-resources</phase>
             <goals>
               <goal>unpack</goal>
@@ -245,7 +245,7 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <id>build-eclipse-help-schemaeditor-help</id>
+            <id>build-eclipse-help</id>
             <phase>process-classes</phase>
             <configuration>
               <tasks>
