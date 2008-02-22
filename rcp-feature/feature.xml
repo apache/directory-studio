@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.rcp.feature"
       label="Apache Directory Studio RCP"
-      version="1.1.0.v20080218"
+      version="${pom.version}"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.rcp"
       os="linux,macosx,win32"
@@ -228,14 +228,14 @@ of your accepting any such warranty or additional liability.
          id="org.apache.directory.studio.rcp"
          download-size="0"
          install-size="0"
-         version="1.1.0.v20080218"
+         version="${rcp.version}"
          unpack="false"/>
 
    <plugin
          id="org.apache.directory.studio.rcp.help"
          download-size="0"
          install-size="0"
-         version="1.1.0.v20080218"
+         version="${rcp.help.version}"
          unpack="false"/>
 
 </feature>
