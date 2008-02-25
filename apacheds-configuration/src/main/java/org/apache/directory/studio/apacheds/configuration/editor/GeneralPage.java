@@ -28,8 +28,10 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurat
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -787,6 +789,17 @@ public class GeneralPage extends FormPage
             }
         } );
         changePasswordPortText.addModifyListener( modifyListener );
+
+        supportedMechanismsTableViewer.addCheckStateListener( new ICheckStateListener()
+        {
+            public void checkStateChanged( CheckStateChangedEvent event )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        selectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
+        deselectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
 
         binaryAttributesTableViewer.addSelectionChangedListener( binaryAttributesTableViewerListener );
         binaryAttributesTableViewer.addDoubleClickListener( binaryAttributesTableViewerDoubleClickListener );
