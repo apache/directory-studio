@@ -1296,7 +1296,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>views</artifactId>
-        <version>3.2.101.M20070910-0800b</version>
+        <version>3.2.101.M20070910-0800b-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
