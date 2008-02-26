@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
 
@@ -79,6 +80,45 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
     public String toRawString()
     {
         return this.getRawLineStart() + this.getRawValueType() + this.getRawValue() + this.getRawNewLine();
+    }
+
+
+    public String toFormattedString( LdifFormatParameters formatParameters )
+    {
+        String raw = toRawString();
+        String unfolded = unfold( raw );
+
+        // Fix for DIRSTUDIO-285: We must take care that we only check
+        // the first colon in the line. If there is another :: or :< 
+        // in the value we must not use that as separator.
+        int firstColonIndex = unfolded.indexOf( ":" );
+        int firstDoubleColonIndex = unfolded.indexOf( "::" );
+        int firstColonLessIndex = unfolded.indexOf( ":<" );
+
+        if ( firstDoubleColonIndex > -1 && firstDoubleColonIndex == firstColonIndex )
+        {
+            unfolded = unfolded.replaceFirst( "::[ ]*", formatParameters.isSpaceAfterColon() ? ":: " : "::" );
+        }
+        else if ( firstColonLessIndex > -1 && firstColonLessIndex == firstColonIndex )
+        {
+            unfolded = unfolded.replaceFirst( ":<[ ]*", formatParameters.isSpaceAfterColon() ? ":< " : ":<" );
+        }
+        else if ( firstColonIndex > -1 )
+        {
+            unfolded = unfolded.replaceFirst( ":[ ]*", formatParameters.isSpaceAfterColon() ? ": " : ":" );
+        }
+
+        if ( rawNewLine != null )
+        {
+            int index = unfolded.lastIndexOf( rawNewLine );
+            if ( index > -1 )
+            {
+                unfolded = unfolded.substring( 0, unfolded.length() - rawNewLine.length() );
+                unfolded = unfolded + formatParameters.getLineSeparator();
+            }
+        }
+
+        return fold( unfolded, 0, formatParameters );
     }
 
 

@@ -33,9 +33,9 @@ import org.apache.directory.studio.ldifparser.model.LdifPart;
 public abstract class LdifLineBase implements LdifPart
 {
 
-    private String rawNewLine;
+    protected String rawNewLine;
 
-    private int offset;
+    protected int offset;
 
 
     protected LdifLineBase()
@@ -106,26 +106,10 @@ public abstract class LdifLineBase implements LdifPart
     }
 
 
-    public final String toFormattedString( LdifFormatParameters formatParameters )
+    public String toFormattedString( LdifFormatParameters formatParameters )
     {
         String raw = toRawString();
         String unfolded = unfold( raw );
-
-        if ( this instanceof LdifValueLineBase )
-        {
-            if ( unfolded.indexOf( "::" ) > -1 )
-            {
-                unfolded = unfolded.replaceFirst( "::[ ]*", formatParameters.isSpaceAfterColon() ? ":: " : "::" );
-            }
-            else if ( unfolded.indexOf( ":<" ) > -1 )
-            {
-                unfolded = unfolded.replaceFirst( ":<[ ]*", formatParameters.isSpaceAfterColon() ? ":< " : ":<" );
-            }
-            else if ( unfolded.indexOf( ":" ) > -1 )
-            {
-                unfolded = unfolded.replaceFirst( ":[ ]*", formatParameters.isSpaceAfterColon() ? ": " : ":" );
-            }
-        }
 
         if ( rawNewLine != null )
         {
@@ -137,14 +121,7 @@ public abstract class LdifLineBase implements LdifPart
             }
         }
 
-        if ( this instanceof LdifValueLineBase )
-        {
-            return fold( unfolded, 0, formatParameters );
-        }
-        else
-        {
-            return unfolded;
-        }
+        return unfolded;
     }
 
 
