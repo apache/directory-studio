@@ -18,25 +18,25 @@
  *  
  */
 
-package org.apache.directory.studio.ldifparser.model;
+package org.apache.directory.studio.ldifparser.parser;
 
 
-import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
+import junit.framework.TestCase;
+
+import org.apache.directory.studio.ldifparser.model.LdifFile;
 
 
-public interface LdifEnumeration
+public class LdifParserTest extends TestCase
 {
 
-    /**
-     * @return true if this enumeration has more elements.
-     */
-    public boolean hasNext() throws Exception;
+    public void testLdifNull()
+    {
+        String ldif = null;
 
+        LdifParser parser = new LdifParser();
+        LdifFile model = parser.parse( ldif );
 
-    /**
-     * 
-     * @return the next LDIF container or null if hasNext() returns false.
-     */
-    public LdifContainer next() throws Exception;
+        assertEquals( 0, model.getRecords().length );
+    }
 
 }

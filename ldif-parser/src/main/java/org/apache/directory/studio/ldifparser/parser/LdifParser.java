@@ -75,17 +75,20 @@ public class LdifParser
     public LdifFile parse( String ldif )
     {
         LdifFile model = new LdifFile();
-        LdifEnumeration enumeration = this.parse( new StringReader( ldif ) );
-        try
+        if ( ldif != null )
         {
-            while ( enumeration.hasNext() )
+            LdifEnumeration enumeration = this.parse( new StringReader( ldif ) );
+            try
             {
-                LdifContainer container = enumeration.next();
-                model.addContainer( container );
+                while ( enumeration.hasNext() )
+                {
+                    LdifContainer container = enumeration.next();
+                    model.addContainer( container );
+                }
             }
-        }
-        catch ( Exception e )
-        {
+            catch ( Exception e )
+            {
+            }
         }
         return model;
     }
