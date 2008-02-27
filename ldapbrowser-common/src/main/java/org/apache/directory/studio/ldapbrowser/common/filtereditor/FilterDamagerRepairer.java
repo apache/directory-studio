@@ -162,9 +162,12 @@ public class FilterDamagerRepairer implements IPresentationDamager, IPresentatio
      */
     private void addStyleRange( TextPresentation presentation, LdapFilterToken token, TextAttribute textAttribute )
     {
-        StyleRange range = new StyleRange( token.getOffset(), token.getLength(), textAttribute.getForeground(),
-            textAttribute.getBackground(), textAttribute.getStyle() );
-        presentation.addStyleRange( range );
+        if ( token.getLength() > 0 )
+        {
+            StyleRange range = new StyleRange( token.getOffset(), token.getLength(), textAttribute.getForeground(),
+                textAttribute.getBackground(), textAttribute.getStyle() );
+            presentation.addStyleRange( range );
+        }
     }
 
 }
