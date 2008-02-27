@@ -282,6 +282,13 @@ of your accepting any such warranty or additional liability.
          unpack="false"/>
 
    <plugin
+         id="org.apache.directory.studio.ldifparser"
+         download-size="0"
+         install-size="0"
+         version="${ldifparser.version}"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.directory.studio.aciitemeditor"
          download-size="0"
          install-size="0"
