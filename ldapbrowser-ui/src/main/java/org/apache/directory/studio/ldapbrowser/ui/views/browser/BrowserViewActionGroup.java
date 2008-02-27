@@ -176,54 +176,54 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         showDirectoryMetadataEntriesAction = new ShowDirectoryMetadataEntriesAction();
         openBrowserPreferencePageAction = new OpenBrowserPreferencePageAction();
 
-        browserActionMap.put( newEntryAction, new BrowserViewActionProxy( viewer, this, new NewEntryAction( view
-            .getSite().getWorkbenchWindow() ) ) );
-        browserActionMap.put( newSearchAction, new BrowserViewActionProxy( viewer, this, new NewSearchAction() ) );
-        browserActionMap.put( newBookmarkAction, new BrowserViewActionProxy( viewer, this, new NewBookmarkAction() ) );
-        browserActionMap.put( newBatchOperationAction, new BrowserViewActionProxy( viewer, this,
+        browserActionMap.put( newEntryAction, new BrowserViewActionProxy( viewer, new NewEntryAction( view.getSite()
+            .getWorkbenchWindow() ) ) );
+        browserActionMap.put( newSearchAction, new BrowserViewActionProxy( viewer, new NewSearchAction() ) );
+        browserActionMap.put( newBookmarkAction, new BrowserViewActionProxy( viewer, new NewBookmarkAction() ) );
+        browserActionMap.put( newBatchOperationAction, new BrowserViewActionProxy( viewer,
             new NewBatchOperationAction() ) );
 
-        browserActionMap.put( locateEntryInDitAction, new BrowserViewActionProxy( viewer, this,
-            new LocateEntryInDitAction() ) );
+        browserActionMap
+            .put( locateEntryInDitAction, new BrowserViewActionProxy( viewer, new LocateEntryInDitAction() ) );
 
-        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, this, new PasteAction() ) );
-        browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, this, new CopyAction(
+        browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new PasteAction() ) );
+        browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, new CopyAction(
             ( BrowserActionProxy ) browserActionMap.get( pasteAction ) ) ) );
-        browserActionMap.put( deleteAction, new BrowserViewActionProxy( viewer, this, new DeleteAction() ) );
-        browserActionMap.put( moveAction, new BrowserViewActionProxy( viewer, this, new MoveAction() ) );
-        browserActionMap.put( renameAction, new BrowserViewActionProxy( viewer, this, new RenameAction() ) );
+        browserActionMap.put( deleteAction, new BrowserViewActionProxy( viewer, new DeleteAction() ) );
+        browserActionMap.put( moveAction, new BrowserViewActionProxy( viewer, new MoveAction() ) );
+        browserActionMap.put( renameAction, new BrowserViewActionProxy( viewer, new RenameAction() ) );
 
-        browserActionMap.put( copyDnAction, new BrowserViewActionProxy( viewer, this, new CopyDnAction() ) );
-        browserActionMap.put( copyUrlAction, new BrowserViewActionProxy( viewer, this, new CopyUrlAction() ) );
+        browserActionMap.put( copyDnAction, new BrowserViewActionProxy( viewer, new CopyDnAction() ) );
+        browserActionMap.put( copyUrlAction, new BrowserViewActionProxy( viewer, new CopyUrlAction() ) );
 
-        browserActionMap.put( copyEntryAsLdifAction, new BrowserViewActionProxy( viewer, this,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_NORMAL ) ) );
-        browserActionMap.put( copyEntryAsLdifDnOnlyAction, new BrowserViewActionProxy( viewer, this,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
-        browserActionMap.put( copyEntryAsLdifReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer, this,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
-        browserActionMap.put( copyEntryAsLdifOperationalAction, new BrowserViewActionProxy( viewer, this,
-            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
-        browserActionMap.put( copyEntryAsCsvAction, new BrowserViewActionProxy( viewer, this, new CopyEntryAsCsvAction(
+        browserActionMap.put( copyEntryAsLdifAction, new BrowserViewActionProxy( viewer, new CopyEntryAsLdifAction(
             CopyEntryAsLdifAction.MODE_NORMAL ) ) );
-        browserActionMap.put( copyEntryAsCsvDnOnlyAction, new BrowserViewActionProxy( viewer, this,
-            new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
-        browserActionMap.put( copyEntryAsCsvReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer, this,
+        browserActionMap.put( copyEntryAsLdifDnOnlyAction, new BrowserViewActionProxy( viewer,
+            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
+        browserActionMap.put( copyEntryAsLdifReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer,
+            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
+        browserActionMap.put( copyEntryAsLdifOperationalAction, new BrowserViewActionProxy( viewer,
+            new CopyEntryAsLdifAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
+        browserActionMap.put( copyEntryAsCsvAction, new BrowserViewActionProxy( viewer, new CopyEntryAsCsvAction(
+            CopyEntryAsLdifAction.MODE_NORMAL ) ) );
+        browserActionMap.put( copyEntryAsCsvDnOnlyAction, new BrowserViewActionProxy( viewer, new CopyEntryAsCsvAction(
+            CopyEntryAsLdifAction.MODE_DN_ONLY ) ) );
+        browserActionMap.put( copyEntryAsCsvReturningAttributesOnlyAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_RETURNING_ATTRIBUTES_ONLY ) ) );
-        browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer, this,
+        browserActionMap.put( copyEntryAsCsvOperationalAction, new BrowserViewActionProxy( viewer,
             new CopyEntryAsCsvAction( CopyEntryAsLdifAction.MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) ) );
 
-        browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, this, new ImportExportAction(
+        browserActionMap.put( importDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_DSML ) ) );
-        browserActionMap.put( exportDsmlAction, new BrowserViewActionProxy( viewer, this, new ImportExportAction(
+        browserActionMap.put( exportDsmlAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_DSML ) ) );
-        browserActionMap.put( importLdifAction, new BrowserViewActionProxy( viewer, this, new ImportExportAction(
+        browserActionMap.put( importLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_IMPORT_LDIF ) ) );
-        browserActionMap.put( exportLdifAction, new BrowserViewActionProxy( viewer, this, new ImportExportAction(
+        browserActionMap.put( exportLdifAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_LDIF ) ) );
-        browserActionMap.put( exportCsvAction, new BrowserViewActionProxy( viewer, this, new ImportExportAction(
+        browserActionMap.put( exportCsvAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
-        browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, this, new ImportExportAction(
+        browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
 
     }

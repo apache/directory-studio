@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.ui.actions.proxy;
 
 
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -40,14 +39,11 @@ public class ModificationLogsViewActionProxy extends BrowserActionProxy
      * Creates a new instance of ModificationLogsViewActionProxy.
      * 
      * @param viewer the viewer
-     * @param actionHandlerManager the action handler manager, 
-     *        used to deactivate and activate the action handlers and key bindings
      * @param action the real action
      */
-    public ModificationLogsViewActionProxy( Viewer viewer, ActionHandlerManager actionHandlerManager,
-        BrowserAction action )
+    public ModificationLogsViewActionProxy( Viewer viewer, BrowserAction action )
     {
-        super( viewer, actionHandlerManager, action );
+        super( viewer, action );
     }
 
 }

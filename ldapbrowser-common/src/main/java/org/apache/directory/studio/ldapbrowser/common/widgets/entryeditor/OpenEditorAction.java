@@ -48,10 +48,12 @@ public class OpenEditorAction extends AbstractOpenEditorAction
      * @param viewer the viewer
      * @param valueEditorManager the value editor manager
      * @param valueEditor the specific value editor
+     * @param actionGroup the action group
      */
-    public OpenEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager, IValueEditor valueEditor )
+    public OpenEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager, IValueEditor valueEditor,
+        EntryEditorWidgetActionGroup actionGroup )
     {
-        super( viewer, valueEditorManager );
+        super( viewer, valueEditorManager, actionGroup );
         super.cellEditor = valueEditor.getCellEditor();
         this.valueEditor = valueEditor;
     }

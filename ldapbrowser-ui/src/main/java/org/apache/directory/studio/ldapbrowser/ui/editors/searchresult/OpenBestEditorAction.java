@@ -34,9 +34,9 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
 
 
     public OpenBestEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        ValueEditorManager valueEditorManager )
+        ValueEditorManager valueEditorManager, SearchResultEditorActionGroup actionGroup )
     {
-        super( viewer, cursor, valueEditorManager );
+        super( viewer, cursor, valueEditorManager, actionGroup );
     }
 
 
@@ -50,7 +50,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         return this.bestValueEditor;
     }
 
-    
+
     /**
      * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#dispose()
      */

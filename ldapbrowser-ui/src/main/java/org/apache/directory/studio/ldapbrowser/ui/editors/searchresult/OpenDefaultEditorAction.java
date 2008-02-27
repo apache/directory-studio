@@ -35,9 +35,10 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
 
 
     public OpenDefaultEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        ValueEditorManager valueEditorManager, SearchResultEditorActionProxy bestValueEditorProxy )
+        ValueEditorManager valueEditorManager, SearchResultEditorActionProxy bestValueEditorProxy,
+        SearchResultEditorActionGroup actionGroup )
     {
-        super( viewer, cursor, valueEditorManager );
+        super( viewer, cursor, valueEditorManager, actionGroup );
         this.bestValueEditorProxy = bestValueEditorProxy;
     }
 
@@ -55,7 +56,7 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
         super.dispose();
     }
 
-    
+
     /**
      * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
      */
@@ -63,8 +64,8 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
     {
         return BrowserCommonConstants.ACTION_ID_EDIT_VALUE;
     }
-    
-    
+
+
     /**
      * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
      */
@@ -79,8 +80,8 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
             return null;
         }
     }
-    
-    
+
+
     /**
      * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
      */
@@ -88,9 +89,8 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
     {
         return "Edit Value";
     }
-    
-    
-    
+
+
     /**
      * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
      */
@@ -105,6 +105,5 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
             return false;
         }
     }
-    
-    
+
 }

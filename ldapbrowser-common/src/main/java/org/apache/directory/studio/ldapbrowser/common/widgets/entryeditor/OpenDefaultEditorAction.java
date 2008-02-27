@@ -58,7 +58,7 @@ public class OpenDefaultEditorAction extends BrowserAction
         boolean enableRenameAction )
     {
         this.bestValueEditorProxy = bestValueEditorProxy;
-        this.renameProxy = enableRenameAction ? new EntryEditorActionProxy( viewer, null, new RenameAction() ) : null;
+        this.renameProxy = enableRenameAction ? new EntryEditorActionProxy( viewer, new RenameAction() ) : null;
     }
 
 

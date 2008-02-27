@@ -46,13 +46,17 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
 
     private boolean isActive;
 
+    /** The actionGroup. */
+    protected SearchResultEditorActionGroup actionGroup;
+
 
     protected AbstractOpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        ValueEditorManager valueEditorManager )
+        ValueEditorManager valueEditorManager, SearchResultEditorActionGroup actionGroup )
     {
         this.viewer = viewer;
         this.cursor = cursor;
         this.valueEditorManager = valueEditorManager;
+        this.actionGroup = actionGroup;
         this.isActive = false;
     }
 
@@ -89,6 +93,9 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
              * attribute " + attribute); } catch (ModelModificationException
              * e) { } EventRegistry.resumeEventFireingInCurrentThread(); } }
              */
+
+            // disable action handlers
+            actionGroup.deactivateGlobalActionHandlers();
 
             // set cell editor to viewer
             for ( int i = 0; i < this.viewer.getCellEditors().length; i++ )
@@ -173,6 +180,8 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
             }
         } );
 
+        // enable action handlers
+        actionGroup.activateGlobalActionHandlers();
     }
 
 

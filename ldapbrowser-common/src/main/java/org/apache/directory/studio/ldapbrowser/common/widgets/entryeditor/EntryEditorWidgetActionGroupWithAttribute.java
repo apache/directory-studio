@@ -67,11 +67,10 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
         super( mainWidget, configuration );
         TreeViewer viewer = mainWidget.getViewer();
 
-        entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer, this,
+        entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer,
             new EditAttributeDescriptionAction( viewer ) ) );
-        entryEditorActionMap.put( newAttributeAction, new EntryEditorActionProxy( viewer, this,
-            new NewAttributeAction() ) );
-        entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer, this,
+        entryEditorActionMap.put( newAttributeAction, new EntryEditorActionProxy( viewer, new NewAttributeAction() ) );
+        entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer,
             new DeleteAllValuesAction() ) );
     }
 

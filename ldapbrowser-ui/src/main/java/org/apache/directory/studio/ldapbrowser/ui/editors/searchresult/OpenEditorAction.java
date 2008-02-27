@@ -37,10 +37,9 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     public OpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
-        ValueEditorManager valueEditorManager,
-        IValueEditor valueEditor )
+        ValueEditorManager valueEditorManager, IValueEditor valueEditor, SearchResultEditorActionGroup actionGroup )
     {
-        super( viewer, cursor, valueEditorManager );
+        super( viewer, cursor, valueEditorManager, actionGroup );
         super.cellEditor = valueEditor.getCellEditor();
         this.valueEditor = valueEditor;
     }
@@ -58,7 +57,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
         super.run();
     }
 
-    
+
     /**
      * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#dispose()
      */
