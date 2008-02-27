@@ -1,0 +1,14 @@
+The createDEB.sh script creates the Debian package for a release of Apache Directory Studio on a Debian based distribution.
+
+To create a Debian package, you have to put in the "/package/usr/local/apachedirectorystudio" folder the following files:
+  * ApacheDirectoryStudio (the application)
+  * configuration folder
+  * features folder
+  * plugins folder
+  * LICENSE.txt
+  * NOTICE.txt
+  * Release Notes.txt
+
+Then, you can launch the shell script: ./createDEB.sh
+
+An "ApacheDirectoryStudio.deb" Debian package will be generated.
