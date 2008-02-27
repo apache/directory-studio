@@ -1,0 +1,12 @@
+Package: apachedirectorystudio
+Version: 1.1.0_v20080223
+Section: devel
+Priority: optional
+Architecture: i386
+Depends: 
+Installed-Size: 39037
+Maintainer: Apache Directory Project <dev@directory.apache.org>
+Description: LDAP Browser and Directory Client
+ Apache Directory Studio is a complete directory tooling platform intended to 
+ be used with any LDAP server however it is particularly designed for use 
+ with the Apache Directory Server.

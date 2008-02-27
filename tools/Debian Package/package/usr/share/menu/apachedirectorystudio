@@ -1,0 +1,3 @@
+?package(apachedirectorystudio):needs="X11" section="Accessories"\
+  icon="/usr/share/pixmaps/apachedirectorystudio.xpm" \
+  title="ApacheDirectoryStudio" command="/usr/local/apachedirectorystudio/ApacheDirectoryStudio"
