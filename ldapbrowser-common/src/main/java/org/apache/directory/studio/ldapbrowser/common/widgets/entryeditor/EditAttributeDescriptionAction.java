@@ -55,7 +55,7 @@ public class EditAttributeDescriptionAction extends BrowserAction
      */
     public EditAttributeDescriptionAction( Viewer viewer )
     {
-        deleteActionProxy = new EntryEditorActionProxy( viewer, null, new DeleteAction() );
+        deleteActionProxy = new EntryEditorActionProxy( viewer, new DeleteAction() );
     }
 
 

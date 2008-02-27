@@ -45,10 +45,12 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
      * 
      * @param viewer the viewer
      * @param valueEditorManager the value editor manager
+     * @param actionGroup the action group
      */
-    public OpenBestEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager )
+    public OpenBestEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager,
+        EntryEditorWidgetActionGroup actionGroup )
     {
-        super( viewer, valueEditorManager );
+        super( viewer, valueEditorManager, actionGroup );
     }
 
 

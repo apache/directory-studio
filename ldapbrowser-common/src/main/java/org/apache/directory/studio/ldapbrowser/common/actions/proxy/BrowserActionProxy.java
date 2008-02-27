@@ -48,20 +48,15 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     SearchUpdateListener, BookmarkUpdateListener, ConnectionUpdateListener
 {
 
-    /** The action handler manager, used to deactivate and activate the action handlers and key bindings. */
-    private ActionHandlerManager actionHandlerManager;
-
     protected BrowserAction action;
 
     protected ISelectionProvider selectionProvider;
 
 
-    protected BrowserActionProxy( ISelectionProvider selectionProvider, ActionHandlerManager actionHandlerManager,
-        BrowserAction action, int style )
+    protected BrowserActionProxy( ISelectionProvider selectionProvider, BrowserAction action, int style )
     {
         super( action.getText(), style );
         this.selectionProvider = selectionProvider;
-        this.actionHandlerManager = actionHandlerManager;
         this.action = action;
 
         super.setImageDescriptor( action.getImageDescriptor() );
@@ -79,10 +74,9 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     }
 
 
-    protected BrowserActionProxy( ISelectionProvider selectionProvider, ActionHandlerManager actionHandlerManager,
-        BrowserAction action )
+    protected BrowserActionProxy( ISelectionProvider selectionProvider, BrowserAction action )
     {
-        this( selectionProvider, actionHandlerManager, action, Action.AS_PUSH_BUTTON );
+        this( selectionProvider, action, Action.AS_PUSH_BUTTON );
     }
 
 
@@ -244,19 +238,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !isDisposed() )
         {
-            // deactivate global actions
-            if ( actionHandlerManager != null )
-            {
-                actionHandlerManager.deactivateGlobalActionHandlers();
-            }
-
             action.run();
-
-            // activate global actions
-            if ( actionHandlerManager != null )
-            {
-                actionHandlerManager.activateGlobalActionHandlers();
-            }
         }
     }
 

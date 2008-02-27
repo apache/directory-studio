@@ -39,13 +39,11 @@ public class EntryEditorActionProxy extends BrowserActionProxy implements ISelec
      * Creates a new instance of EntryEditorActionProxy.
      * 
      * @param viewer the viewer
-     * @param actionHandlerManager the action handler manager, 
-     *        used to deactivate and activate the action handlers and key bindings
      * @param action the real action
      */
-    public EntryEditorActionProxy( Viewer viewer, ActionHandlerManager actionHandlerManager, BrowserAction action )
+    public EntryEditorActionProxy( Viewer viewer, BrowserAction action )
     {
-        super( viewer, actionHandlerManager, action );
+        super( viewer, action );
     }
 
 }

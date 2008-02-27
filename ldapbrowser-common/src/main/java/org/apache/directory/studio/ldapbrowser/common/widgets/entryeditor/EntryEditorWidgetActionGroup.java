@@ -127,30 +127,28 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         showRawValuesAction = new ShowRawValuesAction();
         showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
 
-        openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, this, new OpenBestEditorAction( viewer,
-            configuration.getValueEditorManager( viewer ) ) );
-        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, this, new OpenDefaultEditorAction(
-            viewer, openBestValueEditorActionProxy, false ) );
+        openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenBestEditorAction( viewer,
+            configuration.getValueEditorManager( viewer ), this ) );
+        openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
+            openBestValueEditorActionProxy, false ) );
         IValueEditor[] valueEditors = configuration.getValueEditorManager( viewer ).getAllValueEditors();
         openValueEditorActionProxies = new EntryEditorActionProxy[valueEditors.length];
         for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
-            openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, this, new OpenEditorAction( viewer,
-                configuration.getValueEditorManager( viewer ), valueEditors[i] ) );
+            openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, new OpenEditorAction( viewer,
+                configuration.getValueEditorManager( viewer ), valueEditors[i], this ) );
         }
         openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
-        entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, this, new NewValueAction() ) );
+        entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
 
-        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, this, new PasteAction() ) );
-        entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, this, new CopyAction(
+        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
+        entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
             ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ) ) ) );
-        entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, this, new DeleteAction() ) );
-        entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, this, new SelectAllAction(
-            viewer ) ) );
+        entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
+        entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, new SelectAllAction( viewer ) ) );
 
-        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer, this,
-            new PropertiesAction() ) );
+        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer, new PropertiesAction() ) );
     }
 
 

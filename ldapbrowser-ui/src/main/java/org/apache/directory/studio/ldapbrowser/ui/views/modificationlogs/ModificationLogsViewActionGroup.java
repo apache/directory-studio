@@ -81,14 +81,14 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
         SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
 
         modificationLogsViewActionMap = new HashMap<String, ModificationLogsViewActionProxy>();
-        modificationLogsViewActionMap.put( olderAction, new ModificationLogsViewActionProxy( viewer, this,
-            new OlderAction( view ) ) );
-        modificationLogsViewActionMap.put( newerAction, new ModificationLogsViewActionProxy( viewer, this,
-            new NewerAction( view ) ) );
-        modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer, this,
+        modificationLogsViewActionMap.put( olderAction, new ModificationLogsViewActionProxy( viewer, new OlderAction(
+            view ) ) );
+        modificationLogsViewActionMap.put( newerAction, new ModificationLogsViewActionProxy( viewer, new NewerAction(
+            view ) ) );
+        modificationLogsViewActionMap.put( refreshAction, new ModificationLogsViewActionProxy( viewer,
             new RefreshAction( view ) ) );
-        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, this,
-            new ClearAction( view ) ) );
+        modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, new ClearAction(
+            view ) ) );
         enableModificationLogsAction = new EnableModificationLogsAction();
         openModificationLogsPreferencePageAction = new OpenModificationLogsPreferencePageAction();
     }

@@ -38,13 +38,11 @@ public class BrowserViewActionProxy extends BrowserActionProxy
      * Creates a new instance of BrowserViewActionProxy.
      * 
      * @param viewer the viewer
-     * @param actionHandlerManager the action handler manager, 
-     *        used to deactivate and activate the action handlers and key bindings
      * @param action the real action
      */
-    public BrowserViewActionProxy( Viewer viewer, ActionHandlerManager actionHandlerManager, BrowserAction action )
+    public BrowserViewActionProxy( Viewer viewer, BrowserAction action )
     {
-        super( viewer, actionHandlerManager, action );
+        super( viewer, action );
     }
 
 }

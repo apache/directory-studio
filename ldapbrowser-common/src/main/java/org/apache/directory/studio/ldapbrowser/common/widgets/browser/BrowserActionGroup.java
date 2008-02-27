@@ -102,13 +102,12 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         openSortDialogAction = new OpenSortDialogAction( ( BrowserPreferences ) configuration.getPreferences() );
         collapseAllAction = new CollapseAllAction( viewer );
 
-        browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, this, new UpAction( viewer ) ) );
-        browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, this, new RefreshAction() ) );
-        browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, this,
-            new FilterChildrenAction() ) );
-        browserActionMap.put( unfilterChildrenAction, new BrowserViewActionProxy( viewer, this,
-            new UnfilterChildrenAction() ) );
-        browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, this, new PropertiesAction() ) );
+        browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
+        browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
+        browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
+        browserActionMap
+            .put( unfilterChildrenAction, new BrowserViewActionProxy( viewer, new UnfilterChildrenAction() ) );
+        browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
     }
 
 
@@ -125,10 +124,10 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
             collapseAllAction.dispose();
             collapseAllAction = null;
 
-            for ( Iterator it = browserActionMap.keySet().iterator(); it.hasNext(); )
+            for ( Iterator<String> it = browserActionMap.keySet().iterator(); it.hasNext(); )
             {
                 String key = ( String ) it.next();
-                BrowserViewActionProxy action = ( BrowserViewActionProxy ) browserActionMap.get( key );
+                BrowserViewActionProxy action = browserActionMap.get( key );
                 action.dispose();
                 action = null;
                 it.remove();
@@ -302,9 +301,8 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      */
     public void setInput( IBrowserConnection connection )
     {
-        for ( Iterator it = browserActionMap.values().iterator(); it.hasNext(); )
+        for ( BrowserViewActionProxy action : browserActionMap.values() )
         {
-            BrowserViewActionProxy action = ( BrowserViewActionProxy ) it.next();
             action.inputChanged( connection );
         }
     }

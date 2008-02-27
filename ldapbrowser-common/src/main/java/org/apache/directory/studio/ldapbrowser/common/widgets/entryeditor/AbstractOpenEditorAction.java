@@ -51,6 +51,9 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     /** The cell editor. */
     protected CellEditor cellEditor;
 
+    /** The actionGroup. */
+    protected EntryEditorWidgetActionGroup actionGroup;
+
 
     /**
      * Creates a new instance of AbstractOpenEditorAction.
@@ -58,10 +61,12 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
      * @param viewer the viewer
      * @param valueEditorManager the value editor manager
      */
-    protected AbstractOpenEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager )
+    protected AbstractOpenEditorAction( TreeViewer viewer, ValueEditorManager valueEditorManager,
+        EntryEditorWidgetActionGroup actionGroup )
     {
         this.viewer = viewer;
         this.valueEditorManager = valueEditorManager;
+        this.actionGroup = actionGroup;
     }
 
 
@@ -109,6 +114,8 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
             && viewer.getCellModifier().canModify( getSelectedValues()[0],
                 EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
         {
+            // disable action handlers
+            actionGroup.deactivateGlobalActionHandlers();
 
             // set cell editor to viewer
             viewer.getCellEditors()[EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX] = cellEditor;
@@ -158,6 +165,9 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
         // openeditoractions to update their enabled state.
         valueEditorManager.setUserSelectedValueEditor( null );
         viewer.setSelection( viewer.getSelection() );
+
+        // enable action handlers
+        actionGroup.activateGlobalActionHandlers();
     }
 
 
