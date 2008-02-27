@@ -241,4 +241,25 @@ of your accepting any such warranty or additional liability.
          version="${jars.version}"
          unpack="false"/>
 
+   <plugin
+         id="org.apache.directory.studio.connection.core"
+         download-size="0"
+         install-size="0"
+         version="${connection.core.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.connection.ui"
+         download-size="0"
+         install-size="0"
+         version="${connection.ui.version}"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.ldifparser"
+         download-size="0"
+         install-size="0"
+         version="${ldifparser.version}"
+         unpack="false"/>
+
 </feature>
