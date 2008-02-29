@@ -297,7 +297,7 @@ public class PluginUtils
 
 
     /**
-     * Logs the given message and exception with the ERROR status level.
+     * Logs the given message and exception with the INFO status level.
      * 
      * @param message
      *      the message
@@ -309,7 +309,7 @@ public class PluginUtils
         String msg = MessageFormat.format( message, args );
         Activator.getDefault().getLog()
             .log(
-                new Status( Status.ERROR, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, msg,
+                new Status( Status.INFO, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, msg,
                     exception ) );
     }
 
