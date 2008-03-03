@@ -18,10 +18,25 @@
 -->
 <chapter id="release_notes">
 	<title>Release notes</title>
-	<para>
-		<emphasis role="strong">Apache Directory Studio 1.0.0</emphasis>
-		(2007, september 3rd) : initial release
-	</para>
+	<simplesect>
+		<title>
+			Apache Directory Studio 1.1.0 - (2008, INSERT DATE HERE)
+		</title>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+				    <para>[DIRSTUDIO-280] - Remove remaining unwanted contributions from Eclipse</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>
+			Apache Directory Studio 1.0.0 (2007, september 3rd) : initial release
+		</title>
 	<para>Includes :</para>
 	<para>
 		<itemizedlist spacing="normal" mark="bullet">
@@ -42,4 +57,5 @@
 			</listitem>
 		</itemizedlist>
 	</para>
+	</simplesect>
 </chapter>

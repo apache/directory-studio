@@ -28,6 +28,15 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
+				    <para>[DIRSTUDIO-286] - Update Site is not working, missing dependencies in ldifeditor, ldapbrower and schemaeditor feature</para>
+				</listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-284] - Changing "Supported Authentication Mechanism" doesn't set the dirty flag.</para>
+				</listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-281] - LDIF and Apache DS configuration files can't be saved in RCP mode</para>
+				</listitem>
+				<listitem>
                     <para>[DIRSTUDIO-253] - cant open server.xml with directory studio</para>
 				</listitem>
 				<listitem>
