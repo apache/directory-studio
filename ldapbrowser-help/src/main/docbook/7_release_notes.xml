@@ -28,6 +28,21 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
+				    <para>[DIRSTUDIO-286] - Update Site is not working, missing dependencies in ldifeditor, ldapbrower and schemaeditor feature</para>
+				</listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-285] - Export into LDIF format could be corrupted</para>
+				</listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-281] - LDIF and Apache DS configuration files can't be saved in RCP mode</para>
+				</listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-279] - Filter Editor doesn't remove spaces and line breaks after OK</para>
+				</listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-270] - Copy and paste does not work when value being edited</para>
+				</listitem>
+				<listitem>
 				    <para>[DIRSTUDIO-269] - Attributes not displayed when browsing BEA Weblogic embedded LDAP</para>
 				</listitem>
 				<listitem>

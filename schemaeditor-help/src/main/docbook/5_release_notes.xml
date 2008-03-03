@@ -28,6 +28,9 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
+				    <para>[DIRSTUDIO-286] - Update Site is not working, missing dependencies in ldifeditor, ldapbrower and schemaeditor feature</para>
+				</listitem>
+				<listitem>
                     <para>[DIRSTUDIO-243] - Modified value of Equality Matching Rule in the AttributeTypeEditor is not saved</para>
 				</listitem>
 				<listitem>
