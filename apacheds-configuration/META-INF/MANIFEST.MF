@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Apache DS Configuration
 Bundle-SymbolicName: org.apache.directory.studio.apacheds.configuration;singleton:=true
-Bundle-Version: 1.1.0.v20080218
+Bundle-Version: 1.1.0.v20080303
 Bundle-Activator: org.apache.directory.studio.apacheds.configuration.Activator
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin

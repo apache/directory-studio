@@ -30,7 +30,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.1.0.v20080218</version>
+  <version>1.1.0.v20080303</version>
   <name>Apache Directory Studio</name>
   <packaging>pom</packaging>
 
@@ -95,30 +95,30 @@
   <properties>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.0.0</aciitemeditor.version>
-    <apacheds.configuration.version>1.1.0.v20080218</apacheds.configuration.version>
-    <apacheds.configuration.feature.version>1.1.0.v20080218</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.1.0.v20080218</apacheds.configuration.help.version>
-    <connection.core.version>1.1.0.v20080218</connection.core.version>
-    <connection.ui.version>1.1.0.v20080218</connection.ui.version>
-    <jars.version>1.1.0.v20080218</jars.version>
-    <ldapbrowser.common.version>1.1.0.v20080218</ldapbrowser.common.version>
-    <ldapbrowser.core.version>1.1.0.v20080218</ldapbrowser.core.version>
-    <ldapbrowser.feature.version>1.1.0.v20080218</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.1.0.v20080218</ldapbrowser.help.version>
-    <ldapbrowser.ui.version>1.1.0.v20080218</ldapbrowser.ui.version>
-    <ldifeditor.version>1.1.0.v20080218</ldifeditor.version>
-    <ldifeditor.feature.version>1.1.0.v20080218</ldifeditor.feature.version>
-    <ldifeditor.help.version>1.1.0.v20080218</ldifeditor.help.version>
-    <ldifparser.version>1.1.0.v20080218</ldifparser.version>
-    <rcp.version>1.1.0.v20080218</rcp.version>
-    <rcp.feature.version>1.1.0.v20080218</rcp.feature.version>
-    <rcp.help.version>1.1.0.v20080218</rcp.help.version>
-    <repository.version>1.1.0.v20080218</repository.version>
-    <schemaeditor.version>1.1.0.v20080218</schemaeditor.version>
-    <schemaeditor.feature.version>1.1.0.v20080218</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.1.0.v20080218</schemaeditor.help.version>
+    <apacheds.configuration.version>1.1.0.v20080303</apacheds.configuration.version>
+    <apacheds.configuration.feature.version>1.1.0.v20080303</apacheds.configuration.feature.version>
+    <apacheds.configuration.help.version>1.1.0.v20080303</apacheds.configuration.help.version>
+    <connection.core.version>1.1.0.v20080303</connection.core.version>
+    <connection.ui.version>1.1.0.v20080303</connection.ui.version>
+    <jars.version>1.1.0.v20080303</jars.version>
+    <ldapbrowser.common.version>1.1.0.v20080303</ldapbrowser.common.version>
+    <ldapbrowser.core.version>1.1.0.v20080303</ldapbrowser.core.version>
+    <ldapbrowser.feature.version>1.1.0.v20080303</ldapbrowser.feature.version>
+    <ldapbrowser.help.version>1.1.0.v20080303</ldapbrowser.help.version>
+    <ldapbrowser.ui.version>1.1.0.v20080303</ldapbrowser.ui.version>
+    <ldifeditor.version>1.1.0.v20080303</ldifeditor.version>
+    <ldifeditor.feature.version>1.1.0.v20080303</ldifeditor.feature.version>
+    <ldifeditor.help.version>1.1.0.v20080303</ldifeditor.help.version>
+    <ldifparser.version>1.1.0.v20080303</ldifparser.version>
+    <rcp.version>1.1.0.v20080303</rcp.version>
+    <rcp.feature.version>1.1.0.v20080303</rcp.feature.version>
+    <rcp.help.version>1.1.0.v20080303</rcp.help.version>
+    <repository.version>1.1.0.v20080303</repository.version>
+    <schemaeditor.version>1.1.0.v20080303</schemaeditor.version>
+    <schemaeditor.feature.version>1.1.0.v20080303</schemaeditor.feature.version>
+    <schemaeditor.help.version>1.1.0.v20080303</schemaeditor.help.version>
     <studio.dsml.parser.version>0.4.1</studio.dsml.parser.version>
-    <updatesite.version>1.1.0.v20080218</updatesite.version>
+    <updatesite.version>1.1.0.v20080303</updatesite.version>
     <valueeditors.version>1.0.0</valueeditors.version>
   </properties>
 

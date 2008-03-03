@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Jars
 Bundle-SymbolicName: org.apache.directory.studio.jars;singleton:=true
-Bundle-Version: 1.1.0.v20080218
+Bundle-Version: 1.1.0.v20080303
 Bundle-Localization: plugin
 Bundle-Vendor: Apache Software Foundation
 Export-Package: antlr,
@@ -136,14 +136,14 @@ Export-Package: antlr,
  org.xmlpull.v1.wrapper,
  org.xmlpull.v1.wrapper.classic
 Bundle-ClassPath: .,
- lib/commons-lang-2.3.jar,
- lib/studio-dsml-parser-0.4.1.jar,
- lib/shared-asn1-0.9.8.jar,
+ lib/antlr-2.7.7.jar,
  lib/commons-collections-3.2.jar,
- lib/shared-ldap-constants-0.9.8.jar,
+ lib/commons-io-1.3.1.jar,
+ lib/commons-lang-2.3.jar,
  lib/dom4j-1.6.1.jar,
  lib/nlog4j-1.2.25.jar,
+ lib/shared-asn1-0.9.8.jar,
  lib/shared-ldap-0.9.8.jar,
- lib/antlr-2.7.7.jar,
- lib/xpp3-1.1.3.4.O.jar,
- lib/commons-io-1.3.1.jar
+ lib/shared-ldap-constants-0.9.8.jar,
+ lib/studio-dsml-parser-0.4.1.jar,
+ lib/xpp3-1.1.3.4.O.jar
