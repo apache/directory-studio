@@ -122,22 +122,19 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
                 if ( ocd.isAbstract() )
                 {
-                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD_ABSTRACT )
-                        .createImage();
+                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_ABSTRACT );
                 }
                 else if ( ocd.isAuxiliary() )
                 {
-                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD_AUXILIARY )
-                        .createImage();
+                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_AUXILIARY );
                 }
                 else if ( ocd.isStructural() )
                 {
-                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD_STRUCTURAL )
-                        .createImage();
+                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_STRUCTURAL );
                 }
                 else
                 {
-                    return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_OCD ).createImage();
+                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD );
                 }
             }
 
