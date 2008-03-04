@@ -18,8 +18,10 @@
 -->
 <chapter id="whatsnew">
 	<title>Release Notes</title>
-	<simplesect id="whatsnew_1.0.0">
-		<title>Version 1.0.0</title>
+	<simplesect>
+		<title>
+			Version 1.0.0 - (2007, september 3rd)
+		</title>
 		<para>
 			Initial release.
 		</para>

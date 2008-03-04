@@ -195,8 +195,10 @@
 	</simplesect>
 	<simplesect>
 		<title>
-			Apache Directory Studio 1.0.0 - (2007, september 3rd) :
-			initial release
+			Version 1.0.0 - (2007, september 3rd)
 		</title>
+		<para>
+			Initial release.
+		</para>
 	</simplesect>
 </chapter>
