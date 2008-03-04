@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio ACI Item Editor
-Bundle-SymbolicName: org.apache.directory.studio.aciitemeditor;singleton:=true
+Bundle-SymbolicName: aciitemeditor;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.apache.directory.studio.aciitemeditor.Activator
 Bundle-Vendor: Apache Software Foundation
