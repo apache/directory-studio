@@ -55,8 +55,12 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
-	<para>
-		<emphasis role="strong">Apache Directory Studio 1.0.0</emphasis>
-		(2007, september 3rd) : initial release
-	</para>
+	<simplesect>
+		<title>
+			Version 1.0.0 - (2007, september 3rd)
+		</title>
+		<para>
+			Initial release.
+		</para>
+	</simplesect>
 </chapter>

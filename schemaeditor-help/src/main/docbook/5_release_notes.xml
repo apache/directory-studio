@@ -20,7 +20,7 @@
 	<title>Release notes</title>
 	<simplesect>
 		<title>
-			Apache Directory Studio 1.1.0 - (2008, INSERT DATE HERE)
+			Version 1.1.0 - (2008, INSERT DATE HERE)
 		</title>
 		<para>
 			<emphasis>Bug</emphasis>
@@ -134,7 +134,7 @@
 	</simplesect>
 	<simplesect>
 		<title>
-			Apache Directory Studio 1.0.1 - (2007, september 10)
+			Version 1.0.1 - (2007, september 10)
 		</title>
 		<para>
 			<emphasis>Bug</emphasis>
@@ -159,8 +159,10 @@
 	</simplesect>
 	<simplesect>
 		<title>
-			Apache Directory Studio 1.0.0 - (2007, september 3rd) :
-			initial release
+			Version 1.0.0 - (2007, september 3rd)
 		</title>
+		<para>
+			Initial release.
+		</para>
 	</simplesect>
 </chapter>
