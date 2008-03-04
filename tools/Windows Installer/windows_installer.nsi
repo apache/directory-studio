@@ -18,8 +18,8 @@
 #
 
 !define AppName "Apache Directory Studio"
-!define AppVersion "1.1.0 RC"
-!define OutFile "Apache_Directory_Studio_1.1.0_RC_Windows"
+!define AppVersion "1.1.0 RC2"
+!define OutFile "Apache_Directory_Studio_1.1.0_RC2_Windows"
 !define ShortName "Apache Directory Studio"
 !define JRE_VERSION "1.5.0"
 !define Vendor "Apache Software Foundation"
@@ -184,6 +184,34 @@ Function .onInit
     SetCurInstType 0
     SetAutoClose false
     StrCpy $STUDIO_HOME_DIR "$PROGRAMFILES\Apache Directory Studio"
+
+    ;Verifying if Studio is already installed
+    ReadRegStr $R0 HKLM \
+    "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" \
+    "UninstallString"
+    StrCmp $R0 "" done
+
+    ;Studio is already installed
+    ;Asking before running the uninstaller
+    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION \
+    "${AppName} is already installed. $\n$\nClick 'OK' to remove the \
+    previous version $\nor 'Cancel' to cancel this installation." \
+    IDOK uninst
+    Abort
+  
+    ;Running the uninstaller
+    uninst:
+        ClearErrors
+        ExecWait '$R0 _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
+ 
+        IfErrors no_remove_uninstaller
+        ;You can either use Delete /REBOOTOK in the uninstaller or add some code
+        ;here to remove the uninstaller. Use a registry key to check
+        ;whether the user has chosen to uninstall. If you are using an uninstaller
+        ;components page, make sure all sections are uninstalled.
+        no_remove_uninstaller:
+  
+    done:
 FunctionEnd
 
 ;--------------------------------
