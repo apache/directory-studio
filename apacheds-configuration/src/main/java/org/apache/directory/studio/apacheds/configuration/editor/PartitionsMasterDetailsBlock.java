@@ -50,7 +50,6 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -139,10 +138,9 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             public Image getImage( Object element )
             {
 
-                return AbstractUIPlugin.imageDescriptorFromPlugin(
-                    Activator.PLUGIN_ID,
+                return Activator.getDefault().getImage(
                     ( ( Partition ) element ).isSystemPartition() ? PluginConstants.IMG_PARTITION_SYSTEM
-                        : PluginConstants.IMG_PARTITION ).createImage();
+                        : PluginConstants.IMG_PARTITION );
             }
         } );
 
@@ -272,7 +270,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         };
         horizontalAction.setChecked( true );
         horizontalAction.setToolTipText( "Horizontal Orientation" ); //$NON-NLS-1$
-        horizontalAction.setImageDescriptor( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        horizontalAction.setImageDescriptor( Activator.getDefault().getImageDescriptor(
             PluginConstants.IMG_HORIZONTAL_ORIENTATION ) );
 
         // Vertical layout Action
@@ -285,7 +283,7 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         };
         verticalAction.setChecked( false );
         verticalAction.setToolTipText( "Vertical Orientation" ); //$NON-NLS-1$
-        verticalAction.setImageDescriptor( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        verticalAction.setImageDescriptor( Activator.getDefault().getImageDescriptor(
             PluginConstants.IMG_VERTICAL_ORIENTATION ) );
 
         form.getToolBarManager().add( horizontalAction );
