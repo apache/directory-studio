@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -48,8 +47,7 @@ public class OpenSearchViewSortingDialogAction extends Action implements IWorkbe
         super( "&Sorting..." );
         setToolTipText( "Sorting..." );
         setId( PluginConstants.CMD_OPEN_SEARCH_VIEW_SORTING_DIALOG );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SORTING ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SORTING ) );
         setEnabled( true );
     }
 

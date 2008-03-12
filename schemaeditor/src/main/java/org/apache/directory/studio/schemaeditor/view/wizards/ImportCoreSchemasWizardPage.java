@@ -31,7 +31,6 @@ import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelection
 import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelectionWidget.ServerTypeEnum;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -56,8 +55,7 @@ public class ImportCoreSchemasWizardPage extends AbstractWizardPage
         super( "ImportCoreSchemasWizardPage" );
         setTitle( "Import core schemas" );
         setDescription( "Please select the 'core' schemas to import." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
     }
 
 

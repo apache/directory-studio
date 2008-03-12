@@ -45,7 +45,6 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -198,8 +197,7 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
         super( "Lin&k with Editor", AS_CHECK_BOX );
         setToolTipText( "Link with Editor" );
         setId( PluginConstants.CMD_LINK_WITH_EDITOR_SCHEMA_VIEW );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_LINK_WITH_EDITOR ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( false );
         this.view = view;
 

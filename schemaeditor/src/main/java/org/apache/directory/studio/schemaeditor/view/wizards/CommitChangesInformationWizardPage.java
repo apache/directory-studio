@@ -28,7 +28,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -52,8 +51,7 @@ public class CommitChangesInformationWizardPage extends WizardPage
         super( "CommitChangesInformationWizardPage" );
         setTitle( "Commit Changes" );
         setDescription( "Please read the following information before committing the changes made on the schema." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_COMMIT_CHANGES_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COMMIT_CHANGES_WIZARD ) );
     }
 
 
@@ -77,8 +75,7 @@ public class CommitChangesInformationWizardPage extends WizardPage
 
         // Warning Label
         Label warningLabel = new Label( composite, SWT.NONE );
-        warningLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_WARNING_32X32 ).createImage() );
+        warningLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_WARNING_32X32 ) );
         warningLabel.setLayoutData( new GridData( SWT.CENTER, SWT.BOTTOM, true, true ) );
 
         setControl( composite );

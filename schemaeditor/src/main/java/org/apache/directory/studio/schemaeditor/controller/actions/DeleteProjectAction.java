@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -67,8 +66,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
         setToolTipText( "Delete Project" );
         setId( PluginConstants.CMD_DELETE_PROJECT );
         setActionDefinitionId( PluginConstants.CMD_DELETE_PROJECT );
-        setImageDescriptor( AbstractUIPlugin
-            .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_DELETE ) );
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

@@ -28,7 +28,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -54,8 +53,7 @@ public class ShowSearchFieldAction extends Action implements IWorkbenchWindowAct
         super( "Show Search Field", AS_CHECK_BOX );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SHOW_SEARCH_FIELD );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SHOW_SEARCH_FIELD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_SEARCH_FIELD ) );
         setEnabled( true );
         this.view = view;
 

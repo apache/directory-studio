@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -77,8 +76,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
         super( "ImportSchemasFromXmlWizardPage" );
         setTitle( "Import schemas from XML file(s)" );
         setDescription( "Please select the XML schema files to import." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
     }
 
 
@@ -150,8 +148,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             {
                 if ( element instanceof File )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                        .createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA );
                 }
 
                 // Default
@@ -275,7 +272,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             displayErrorMessage( "A Schema Project must be open to import schemas from XML files." );
             return;
         }
-        
+
         // Export Directory
         String directory = fromDirectoryText.getText();
         if ( ( directory == null ) || ( directory.equals( "" ) ) )

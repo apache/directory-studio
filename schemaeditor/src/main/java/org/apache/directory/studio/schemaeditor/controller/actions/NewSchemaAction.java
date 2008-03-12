@@ -31,7 +31,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -51,8 +50,7 @@ public class NewSchemaAction extends Action implements IWorkbenchWindowActionDel
         setToolTipText( "New Schema" );
         setId( PluginConstants.CMD_NEW_SCHEMA );
         setActionDefinitionId( PluginConstants.CMD_NEW_SCHEMA );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMA_NEW ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMA_NEW ) );
         setEnabled( false );
     }
 

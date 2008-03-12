@@ -31,7 +31,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -59,8 +58,7 @@ public class NewSchemaWizardPage extends AbstractWizardPage
         super( "NewSchemaWizardPage" );
         setTitle( "Create a Schema" );
         setDescription( "Please specify a name to create a new schema." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 

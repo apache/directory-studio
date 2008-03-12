@@ -42,7 +42,6 @@ import org.apache.directory.studio.schemaeditor.model.difference.SyntaxLengthDif
 import org.apache.directory.studio.schemaeditor.model.difference.UsageDifference;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -64,15 +63,12 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
             switch ( propertyDifference.getType() )
             {
                 case ADDED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_PROPERTY_ADD ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_PROPERTY_ADD );
 
                 case MODIFIED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_PROPERTY_MODIFY ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_PROPERTY_MODIFY );
                 case REMOVED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_PROPERTY_REMOVE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_PROPERTY_REMOVE );
             }
         }
 

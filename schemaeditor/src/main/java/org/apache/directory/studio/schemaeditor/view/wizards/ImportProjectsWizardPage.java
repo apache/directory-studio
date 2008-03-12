@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -77,8 +76,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
         super( "ImportProjectsWizardPage" );
         setTitle( "Import schema projects" );
         setDescription( "Please select the schema project to import." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_IMPORT_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_IMPORT_WIZARD ) );
     }
 
 
@@ -150,8 +148,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
             {
                 if ( element instanceof File )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_PROJECT_FILE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_FILE );
                 }
 
                 // Default

@@ -37,7 +37,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -66,8 +65,7 @@ public class NewProjectWizardConnectionSelectionPage extends AbstractWizardPage
         super( "NewProjectWizardConnectionSelectionPage" );
         setTitle( "Create a Schema project." );
         setDescription( "Please select a connection." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
         setPageComplete( false );
     }
 

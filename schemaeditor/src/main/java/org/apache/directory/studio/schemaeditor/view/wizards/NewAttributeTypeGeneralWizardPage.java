@@ -58,7 +58,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -97,8 +96,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         super( "NewAttributeTypeGeneralWizardPage" );
         setTitle( "Attribute Type" );
         setDescription( "Create a new attribute type." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
 
         schemaHandler = Activator.getDefault().getSchemaHandler();
         aliases = new ArrayList<Alias>();

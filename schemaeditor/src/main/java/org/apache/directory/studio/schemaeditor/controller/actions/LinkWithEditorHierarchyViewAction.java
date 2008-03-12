@@ -34,7 +34,6 @@ import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -142,8 +141,7 @@ public class LinkWithEditorHierarchyViewAction extends Action
         super( "Lin&k with Editor", AS_CHECK_BOX );
         setToolTipText( "Link with Editor" );
         setId( PluginConstants.CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_LINK_WITH_EDITOR ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         this.view = view;
 

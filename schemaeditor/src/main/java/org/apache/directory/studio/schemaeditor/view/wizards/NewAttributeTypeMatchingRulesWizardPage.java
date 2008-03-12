@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -99,8 +98,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         super( "NewAttributeTypeMatchingRulesWizardPage" );
         setTitle( "Matching Rules" );
         setDescription( "Please specify the matching rules (equality, ordering and substring) to use for the attribute type." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
 
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }

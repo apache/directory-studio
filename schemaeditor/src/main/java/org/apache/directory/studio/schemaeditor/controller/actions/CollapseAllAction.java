@@ -28,7 +28,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -54,8 +53,7 @@ public class CollapseAllAction extends Action implements IWorkbenchWindowActionD
         super( "Collapse All" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_COLLAPSE_ALL );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_COLLAPSE_ALL ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COLLAPSE_ALL ) );
         setEnabled( false );
         this.viewer = viewer;
     }

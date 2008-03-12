@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -280,13 +279,11 @@ public class HierarchyViewLabelProvider extends LabelProvider
         {
             if ( ( ( AttributeTypeWrapper ) obj ).getAttributeType().equals( viewer.getInput() ) )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_ATTRIBUTE_TYPE_HIERARCHY_SELECTED ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE_HIERARCHY_SELECTED );
             }
             else
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
             }
         }
         else if ( obj instanceof ObjectClassWrapper )
@@ -294,13 +291,11 @@ public class HierarchyViewLabelProvider extends LabelProvider
 
             if ( ( ( ObjectClassWrapper ) obj ).getObjectClass().equals( viewer.getInput() ) )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OBJECT_CLASS_HIERARCHY_SELECTED ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS_HIERARCHY_SELECTED );
             }
             else
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OBJECT_CLASS ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
             }
         }
 

@@ -24,7 +24,6 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.views.HierarchyView;
 import org.eclipse.jface.action.Action;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -47,8 +46,7 @@ public class ShowTypeHierarchyAction extends Action
         super( "&Type Hierarchy", AS_RADIO_BUTTON );
         setToolTipText( "Show the Type Hierarchy" );
         setId( PluginConstants.CMD_SHOW_TYPE_HIERARCHY );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SHOW_TYPE_HIERARCHY ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_TYPE_HIERARCHY ) );
         setEnabled( true );
         this.view = view;
 

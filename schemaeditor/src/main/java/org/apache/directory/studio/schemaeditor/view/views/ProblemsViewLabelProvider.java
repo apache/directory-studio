@@ -45,7 +45,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWarningWrapp
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -65,18 +64,15 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             if ( element instanceof SchemaErrorWrapper )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_PROBLEMS_ERROR ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_PROBLEMS_ERROR );
             }
             else if ( element instanceof SchemaWarningWrapper )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_PROBLEMS_WARNING ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_PROBLEMS_WARNING );
             }
             else if ( element instanceof Folder )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_PROBLEMS_GROUP ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_PROBLEMS_GROUP );
             }
         }
 

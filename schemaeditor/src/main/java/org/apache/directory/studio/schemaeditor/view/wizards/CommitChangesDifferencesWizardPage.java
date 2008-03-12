@@ -29,7 +29,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -55,8 +54,7 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
         super( "CommitChangesDifferencesWizardPage" );
         setTitle( "Commit Changes" );
         setDescription( "Displays the modifications made on the schema." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_COMMIT_CHANGES_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COMMIT_CHANGES_WIZARD ) );
     }
 
 

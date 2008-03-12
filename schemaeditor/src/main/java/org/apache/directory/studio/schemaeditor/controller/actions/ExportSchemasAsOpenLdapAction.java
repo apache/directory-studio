@@ -38,7 +38,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -61,8 +60,7 @@ public class ExportSchemasAsOpenLdapAction extends Action implements IWorkbenchW
         super( "Schemas as OpenLDAP files" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_EXPORT_SCHEMAS_AS_OPENLDAP );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMAS_EXPORT ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT ) );
         setEnabled( true );
         this.viewer = viewer;
     }

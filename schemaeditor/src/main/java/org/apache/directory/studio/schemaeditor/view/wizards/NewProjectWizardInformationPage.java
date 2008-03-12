@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -63,8 +62,7 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
         super( "NewProjectWizardInformationPage" );
         setTitle( "Create a Schema project." );
         setDescription( "Please specify a name and a type to create a new Schema project." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
         projectsHandler = Activator.getDefault().getProjectsHandler();
     }
 

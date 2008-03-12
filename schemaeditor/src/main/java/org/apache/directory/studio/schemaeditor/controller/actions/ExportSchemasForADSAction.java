@@ -38,7 +38,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -61,8 +60,7 @@ public class ExportSchemasForADSAction extends Action implements IWorkbenchWindo
         super( "Schemas for Apache DS" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_EXPORT_SCHEMAS_FOR_ADS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMAS_EXPORT_FOR_ADS ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT_FOR_ADS ) );
         setEnabled( true );
         this.viewer = viewer;
     }
