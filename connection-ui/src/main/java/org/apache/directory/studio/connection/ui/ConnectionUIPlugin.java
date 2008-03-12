@@ -159,7 +159,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
      * automatically when the plugin is stopped.
      *
      * @param key
-     *                The key (relative path to the image im filesystem)
+     *                The key (relative path to the image in filesystem)
      * @return The SWT Image or null
      */
     public Image getImage( String key )
