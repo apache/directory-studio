@@ -130,8 +130,8 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
      * BrowserWidgetsConstants for the key.
      *
      * @param key
-     *                The key (relative path to the image im filesystem)
-     * @return The image discriptor or null
+     *                The key (relative path to the image in filesystem)
+     * @return The image descriptor or null
      */
     public ImageDescriptor getImageDescriptor( String key )
     {
