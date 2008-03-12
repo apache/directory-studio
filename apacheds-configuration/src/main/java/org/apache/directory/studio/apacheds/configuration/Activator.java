@@ -20,11 +20,17 @@
 package org.apache.directory.studio.apacheds.configuration;
 
 
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -84,7 +90,8 @@ public class Activator extends AbstractUIPlugin
     {
         return plugin;
     }
-    
+
+
     /**
      * Returns the button with respect to the font metrics.
      *
@@ -100,5 +107,58 @@ public class Activator extends AbstractUIPlugin
 
         int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
         return width;
+    }
+
+
+    /**
+     * Use this method to get SWT images. Use the IMG_ constants from
+     * PluginConstants for the key.
+     *
+     * @param key
+     *                The key (relative path to the image in filesystem)
+     * @return The image descriptor or null
+     */
+    public ImageDescriptor getImageDescriptor( String key )
+    {
+        if ( key != null )
+        {
+            URL url = FileLocator.find( getBundle(), new Path( key ), null );
+            if ( url != null )
+                return ImageDescriptor.createFromURL( url );
+            else
+                return null;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Use this method to get SWT images. Use the IMG_ constants from
+     * PluginConstants for the key. A ImageRegistry is used to manage the
+     * the key->Image mapping.
+     * <p>
+     * Note: Don't dispose the returned SWT Image. It is disposed
+     * automatically when the plugin is stopped.
+     *
+     * @param key
+     *                The key (relative path to the image in filesystem)
+     * @return The SWT Image or null
+     */
+    public Image getImage( String key )
+    {
+        Image image = getImageRegistry().get( key );
+        if ( image == null )
+        {
+            ImageDescriptor id = getImageDescriptor( key );
+            if ( id != null )
+            {
+                image = id.createImage();
+                getImageRegistry().put( key, image );
+            }
+        }
+        return image;
     }
 }
