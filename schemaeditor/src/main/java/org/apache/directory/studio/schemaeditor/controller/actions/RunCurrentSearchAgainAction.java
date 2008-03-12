@@ -28,7 +28,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -51,8 +50,7 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
         super( "Run the Current Search Again" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_RUN_CURRENT_SEARCH_AGAIN );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_RUN_CURRENT_SEARCH_AGAIN ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_RUN_CURRENT_SEARCH_AGAIN ) );
         setEnabled( true );
         this.view = view;
     }

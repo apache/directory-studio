@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -110,8 +109,7 @@ public class PreviousSearchesDialog extends Dialog
         {
             public Image getImage( Object element )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_SEARCH_HISTORY_ITEM ).createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_SEARCH_HISTORY_ITEM );
             }
         } );
         tableViewer.addSelectionChangedListener( new ISelectionChangedListener()

@@ -32,7 +32,6 @@ import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -370,17 +369,13 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             switch ( sd.getType() )
             {
                 case ADDED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_SCHEMA_ADD ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_SCHEMA_ADD );
                 case MODIFIED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_SCHEMA_MODIFY ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_SCHEMA_MODIFY );
                 case REMOVED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_SCHEMA_REMOVE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_SCHEMA_REMOVE );
                 case IDENTICAL:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                        .createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA );
             }
         }
         else if ( element instanceof AttributeTypeDifference )
@@ -389,17 +384,13 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             switch ( atd.getType() )
             {
                 case ADDED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_ADD ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_ADD );
                 case MODIFIED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_MODIFY ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_MODIFY );
                 case REMOVED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_REMOVE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_ATTRIBUTE_TYPE_REMOVE );
                 case IDENTICAL:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
             }
         }
         else if ( element instanceof ObjectClassDifference )
@@ -408,17 +399,13 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             switch ( ocd.getType() )
             {
                 case ADDED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_ADD ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_ADD );
                 case MODIFIED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_MODIFY ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_MODIFY );
                 case REMOVED:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_REMOVE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_OBJECT_CLASS_REMOVE );
                 case IDENTICAL:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_OBJECT_CLASS ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
             }
         }
         else if ( element instanceof Folder )
@@ -428,14 +415,11 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
             switch ( folder.getType() )
             {
                 case ATTRIBUTE_TYPE:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_FOLDER_AT ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER_AT );
                 case OBJECT_CLASS:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_FOLDER_OC ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER_OC );
                 case NONE:
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_FOLDER )
-                        .createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER );
             }
         }
 

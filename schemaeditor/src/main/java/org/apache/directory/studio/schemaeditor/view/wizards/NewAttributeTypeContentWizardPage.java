@@ -51,7 +51,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -94,8 +93,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
         super( "NewAttributeTypeContentWizardPage" );
         setTitle( "Attribute Type Content" );
         setDescription( "Please enter the superior, usage, syntax and properties for the attribute type." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 

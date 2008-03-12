@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -62,8 +61,7 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
         this.view = view;
         setToolTipText( getText() );
         setId( PluginConstants.CMD_SHOW_SEARCH_HISTORY );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SHOW_SEARCH_HISTORY ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_SEARCH_HISTORY ) );
         setEnabled( true );
         setMenuCreator( new MenuCreator( view ) );
     }
@@ -164,8 +162,7 @@ class MenuCreator implements IMenuCreator
         {
             MenuItem item = new MenuItem( menu, SWT.RADIO );
             item.setText( search );
-            item.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                PluginConstants.IMG_SEARCH_HISTORY_ITEM ).createImage() );
+            item.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SEARCH_HISTORY_ITEM ) );
             item.addSelectionListener( new SelectionAdapter()
             {
                 public void widgetSelected( SelectionEvent e )

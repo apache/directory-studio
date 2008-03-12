@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -88,8 +87,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
         super( "NewObjectClassContentWizardPage" );
         setTitle( "Object Class Content" );
         setDescription( "Please enter the superiors, class type  and properties for the object class." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
         superiorsList = new ArrayList<ObjectClassImpl>();
     }
 
@@ -121,8 +119,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
             {
                 if ( element instanceof ObjectClassImpl )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_OBJECT_CLASS ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
                 }
 
                 // Default

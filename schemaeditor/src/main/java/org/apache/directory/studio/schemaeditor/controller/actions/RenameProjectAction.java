@@ -36,7 +36,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -66,8 +65,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
         setToolTipText( getText() );
         setId( PluginConstants.CMD_RENAME_PROJECT );
         setActionDefinitionId( PluginConstants.CMD_RENAME_PROJECT );
-        setImageDescriptor( AbstractUIPlugin
-            .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_RENAME ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_RENAME ) );
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

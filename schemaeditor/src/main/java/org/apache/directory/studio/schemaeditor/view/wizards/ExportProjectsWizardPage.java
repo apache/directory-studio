@@ -51,7 +51,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -85,8 +84,7 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
         super( "ExportProjectsWizardPage" );
         setTitle( "Export schema projects" );
         setDescription( "Please select the schema projects to export." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_EXPORT_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_EXPORT_WIZARD ) );
     }
 
 
@@ -137,11 +135,9 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
                     switch ( type )
                     {
                         case OFFLINE:
-                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
+                            return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_OFFLINE_CLOSED );
                         case ONLINE:
-                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_ONLINE_CLOSED ).createImage();
+                            return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_ONLINE_CLOSED );
                     }
                 }
 

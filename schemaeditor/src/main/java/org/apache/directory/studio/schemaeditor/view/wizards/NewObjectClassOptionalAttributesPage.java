@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -78,8 +77,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
         super( "NewObjectClassOptionalAttributesPage" );
         setTitle( "Optional Attribute Types" );
         setDescription( "Please specify the optional attribute types for the object class." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
         optionalAttributeTypesList = new ArrayList<AttributeTypeImpl>();
     }
 
@@ -112,8 +110,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
             {
                 if ( element instanceof AttributeTypeImpl )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_ATTRIBUTE_TYPE ).createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
                 }
 
                 // Default

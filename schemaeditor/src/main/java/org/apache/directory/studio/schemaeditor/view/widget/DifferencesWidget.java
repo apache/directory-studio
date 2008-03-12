@@ -54,7 +54,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -143,8 +142,7 @@ public class DifferencesWidget
         leftToolBar.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
         // Creating the 'Menu' ToolBar item
         final ToolItem leftMenuToolItem = new ToolItem( leftToolBar, SWT.PUSH );
-        leftMenuToolItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_TOOLBAR_MENU ).createImage() );
+        leftMenuToolItem.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TOOLBAR_MENU ) );
         leftMenuToolItem.setToolTipText( "Menu" );
         // Creating the associated Menu
         final Menu leftMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
@@ -163,8 +161,7 @@ public class DifferencesWidget
         // Adding the 'Sorting...' MenuItem
         MenuItem sortingMenuItem = new MenuItem( leftMenu, SWT.PUSH );
         sortingMenuItem.setText( "Sorting..." );
-        sortingMenuItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SORTING ).createImage() );
+        sortingMenuItem.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SORTING ) );
         sortingMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent arg0 )
@@ -251,8 +248,7 @@ public class DifferencesWidget
         rightToolBar.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
         // Creating the 'Menu' ToolBar item
         final ToolItem rightMenuToolItem = new ToolItem( rightToolBar, SWT.PUSH );
-        rightMenuToolItem.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_TOOLBAR_MENU ).createImage() );
+        rightMenuToolItem.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TOOLBAR_MENU ) );
         rightMenuToolItem.setToolTipText( "Menu" );
         // Creating the associated Menu
         final Menu rightMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );

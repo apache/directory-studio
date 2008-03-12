@@ -29,7 +29,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttribut
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -47,8 +46,7 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
     {
         if ( ( element instanceof AttributeTypeImpl ) || ( element instanceof NonExistingAttributeType ) )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_ATTRIBUTE_TYPE )
-                .createImage();
+            return Activator.getDefault().getImage( PluginConstants.IMG_ATTRIBUTE_TYPE );
         }
 
         // Default

@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -97,7 +96,7 @@ public class ExportSchemasForADSWizardPage extends AbstractWizardPage
         super( "ExportSchemasForADSWizardPage" );
         setTitle( "Export schemas for Apache DS" );
         setDescription( "Please select the schemas to export for Apache DS." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+        setImageDescriptor( Activator.getDefault().getImageDescriptor(
             PluginConstants.IMG_SCHEMAS_EXPORT_FOR_ADS_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
@@ -146,8 +145,7 @@ public class ExportSchemasForADSWizardPage extends AbstractWizardPage
             {
                 if ( element instanceof Schema )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                        .createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA );
                 }
 
                 // Default

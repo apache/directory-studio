@@ -38,7 +38,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -61,8 +60,7 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
         super( "Schema Projects" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_EXPORT_PROJECTS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_EXPORT ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_EXPORT ) );
         setEnabled( true );
         this.viewer = viewer;
     }

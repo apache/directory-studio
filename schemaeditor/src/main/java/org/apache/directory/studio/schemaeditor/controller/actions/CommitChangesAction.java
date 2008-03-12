@@ -20,7 +20,6 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.wizards.CommitChangesWizard;
 import org.eclipse.jface.action.Action;
@@ -31,7 +30,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -50,8 +48,7 @@ public class CommitChangesAction extends Action implements IWorkbenchWindowActio
         super( "Commit Changes" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_COMMIT_CHANGES );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_COMMIT_CHANGES ) );
+        setImageDescriptor( AActivator.getDefault().getImageDescriptor( PluginConstants.IMG_COMMIT_CHANGES ) );
         setEnabled( false );
     }
 

@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -72,8 +71,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
         setToolTipText( "Delete" );
         setId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
-        setImageDescriptor( AbstractUIPlugin
-            .imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_DELETE ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_DELETE ) );
         setEnabled( true );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

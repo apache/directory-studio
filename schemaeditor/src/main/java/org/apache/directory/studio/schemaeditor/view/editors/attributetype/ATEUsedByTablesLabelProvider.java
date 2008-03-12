@@ -28,7 +28,6 @@ import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -46,8 +45,7 @@ public class ATEUsedByTablesLabelProvider extends LabelProvider implements ITabl
     {
         if ( element instanceof ObjectClassImpl )
         {
-            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_OBJECT_CLASS )
-                .createImage();
+            return Activator.getDefault().getImage( PluginConstants.IMG_OBJECT_CLASS );
         }
 
         // Default

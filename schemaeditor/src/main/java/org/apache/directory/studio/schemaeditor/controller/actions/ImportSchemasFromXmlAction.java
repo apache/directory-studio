@@ -31,7 +31,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -50,8 +49,7 @@ public class ImportSchemasFromXmlAction extends Action implements IWorkbenchWind
         super( "Schemas from XML file(s)" );
         setToolTipText( getText() );
         setId( PluginConstants.CMD_IMPORT_SCHEMAS_FROM_XML );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMAS_IMPORT ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT ) );
         setEnabled( true );
     }
 

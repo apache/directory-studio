@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -136,8 +135,7 @@ public class CoreSchemasSelectionWidget
         {
             public Image getImage( Object element )
             {
-                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                    .createImage();
+                return Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA );
             }
         } );
 

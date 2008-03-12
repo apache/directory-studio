@@ -36,7 +36,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -61,15 +60,16 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
             if ( schemaChecker.hasErrors( at ) )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
+                    IDecoration.BOTTOM_LEFT );
                 return;
             }
 
             if ( schemaChecker.hasWarnings( at ) )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                decoration.addOverlay(
+                    Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_WARNING ),
+                    IDecoration.BOTTOM_LEFT );
             }
         }
         else if ( element instanceof ObjectClassWrapper )
@@ -78,15 +78,16 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
             if ( schemaChecker.hasErrors( oc ) )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
+                    IDecoration.BOTTOM_LEFT );
                 return;
             }
 
             if ( schemaChecker.hasWarnings( oc ) )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                decoration.addOverlay(
+                    Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_WARNING ),
+                    IDecoration.BOTTOM_LEFT );
             }
         }
         else if ( element instanceof SchemaWrapper )
@@ -97,14 +98,14 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( schemaChecker.hasErrors( at ) )
                 {
-                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                    decoration.addOverlay( Activator.getDefault()
+                        .getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
                     return;
                 }
 
                 if ( schemaChecker.hasWarnings( at ) )
                 {
-                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                         PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
                 }
             }
@@ -113,14 +114,14 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( schemaChecker.hasErrors( oc ) )
                 {
-                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                    decoration.addOverlay( Activator.getDefault()
+                        .getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
                     return;
                 }
 
                 if ( schemaChecker.hasWarnings( oc ) )
                 {
-                    decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                    decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                         PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
                 }
             }
@@ -131,15 +132,16 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
             if ( childrenHasErrors( folder.getChildren(), schemaChecker ) )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
+                    IDecoration.BOTTOM_LEFT );
                 return;
             }
 
             if ( childrenHasWarnings( folder.getChildren(), schemaChecker ) )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                    PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                decoration.addOverlay(
+                    Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_WARNING ),
+                    IDecoration.BOTTOM_LEFT );
             }
         }
     }

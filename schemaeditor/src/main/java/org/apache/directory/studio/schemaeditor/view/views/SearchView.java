@@ -72,7 +72,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -254,8 +253,7 @@ public class SearchView extends ViewPart
         // Search Button
         searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
         searchButton.setEnabled( false );
-        searchButton.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SEARCH ).createImage() );
+        searchButton.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SEARCH ) );
         searchButton.setToolTipText( "Search" );
         searchButton.addSelectionListener( new SelectionAdapter()
         {

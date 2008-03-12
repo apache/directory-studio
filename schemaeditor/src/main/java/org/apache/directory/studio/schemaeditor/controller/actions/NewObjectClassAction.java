@@ -38,7 +38,6 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -62,8 +61,7 @@ public class NewObjectClassAction extends Action implements IWorkbenchWindowActi
         setToolTipText( "New Object Class" );
         setId( PluginConstants.CMD_NEW_OBJECT_CLASS );
         setActionDefinitionId( PluginConstants.CMD_NEW_OBJECT_CLASS );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_OBJECT_CLASS_NEW ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW ) );
         setEnabled( false );
         this.viewer = viewer;
     }

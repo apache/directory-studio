@@ -26,7 +26,6 @@ import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelection
 import org.apache.directory.studio.schemaeditor.view.widget.CoreSchemasSelectionWidget.ServerTypeEnum;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -51,8 +50,7 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
         super( "NewProjectWizardSchemasSelectionPage" );
         setTitle( "Create a Schema project." );
         setDescription( "Please select the 'core' schemas to include in the project." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
     }
 
 

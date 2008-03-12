@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -107,8 +106,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
 //
 //            public Image getImage( Object element )
 //            {
-//                return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-//                    PluginConstants.IMG_SCHEMA_CONNECTOR ).createImage();
+//                return Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA_CONNECTOR );
 //            }
 //        } );
 //

@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -171,8 +170,7 @@ public class ObjectClassSelectionDialog extends Dialog
                     {
                         chooseButton.setEnabled( false );
                     }
-                    schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_TRANSPARENT_16X16 ).createImage() );
+                    schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TRANSPARENT_16X16 ) );
                     schemaNameLabel.setText( "" );
                 }
                 else
@@ -181,8 +179,7 @@ public class ObjectClassSelectionDialog extends Dialog
                     {
                         chooseButton.setEnabled( true );
                     }
-                    schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                        PluginConstants.IMG_SCHEMA ).createImage() );
+                    schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA ) );
                     schemaNameLabel.setText( ( ( ObjectClassImpl ) selection.getFirstElement() ).getSchema() );
                 }
             }
@@ -204,8 +201,7 @@ public class ObjectClassSelectionDialog extends Dialog
         schemaIconLabelGridData.widthHint = 18;
         schemaIconLabelGridData.heightHint = 16;
         schemaIconLabel.setLayoutData( schemaIconLabelGridData );
-        schemaIconLabel.setImage( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_TRANSPARENT_16X16 ).createImage() );
+        schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TRANSPARENT_16X16 ) );
 
         // Schema Name Label
         schemaNameLabel = new Label( schemaComposite, SWT.NONE );

@@ -31,7 +31,6 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -53,13 +52,13 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
             UsageEnum usage = ( ( AttributeTypeWrapper ) element ).getAttributeType().getUsage();
             if ( usage == UsageEnum.USER_APPLICATIONS )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION ), IDecoration.BOTTOM_RIGHT );
             }
             else if ( ( usage == UsageEnum.DIRECTORY_OPERATION ) || ( usage == UsageEnum.DISTRIBUTED_OPERATION )
                 || ( usage == UsageEnum.DSA_OPERATION ) )
             {
-                decoration.addOverlay( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION ), IDecoration.BOTTOM_RIGHT );
             }
         }
@@ -68,17 +67,17 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
             ObjectClassTypeEnum classType = ( ( ObjectClassWrapper ) element ).getObjectClass().getType();
             if ( classType == ObjectClassTypeEnum.ABSTRACT )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_ABSTRACT ), IDecoration.BOTTOM_RIGHT );
             }
             else if ( classType == ObjectClassTypeEnum.STRUCTURAL )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL ), IDecoration.BOTTOM_RIGHT );
             }
             else if ( classType == ObjectClassTypeEnum.AUXILIARY )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_AUXILIARY ), IDecoration.BOTTOM_RIGHT );
             }
         }
@@ -87,13 +86,13 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
             UsageEnum usage = ( ( AttributeTypeImpl ) element ).getUsage();
             if ( usage == UsageEnum.USER_APPLICATIONS )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_USER_APPLICATION ), IDecoration.BOTTOM_RIGHT );
             }
             else if ( ( usage == UsageEnum.DIRECTORY_OPERATION ) || ( usage == UsageEnum.DISTRIBUTED_OPERATION )
                 || ( usage == UsageEnum.DSA_OPERATION ) )
             {
-                decoration.addOverlay( Activator.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_ATTRIBUTE_TYPE_OVERLAY_OPERATION ), IDecoration.BOTTOM_RIGHT );
             }
         }
@@ -102,17 +101,17 @@ public class SchemaEditorTypeLabelDecorator extends LabelProvider implements ILi
             ObjectClassTypeEnum classType = ( ( ObjectClassImpl ) element ).getType();
             if ( classType == ObjectClassTypeEnum.ABSTRACT )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_ABSTRACT ), IDecoration.BOTTOM_RIGHT );
             }
             else if ( classType == ObjectClassTypeEnum.STRUCTURAL )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_STRUCTURAL ), IDecoration.BOTTOM_RIGHT );
             }
             else if ( classType == ObjectClassTypeEnum.AUXILIARY )
             {
-                decoration.addOverlay( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor(
                     PluginConstants.IMG_OBJECT_CLASS_OVERLAY_AUXILIARY ), IDecoration.BOTTOM_RIGHT );
             }
         }

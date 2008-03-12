@@ -28,7 +28,6 @@ import org.apache.directory.studio.schemaeditor.model.Project.ProjectState;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ProjectWrapper;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -55,22 +54,18 @@ public class ProjectsViewLabelProvider extends LabelProvider
                     switch ( state )
                     {
                         case OPEN:
-                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_OFFLINE ).createImage();
+                            return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_OFFLINE );
                         case CLOSED:
-                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_OFFLINE_CLOSED ).createImage();
+                            return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_OFFLINE_CLOSED );
                     }
                 case ONLINE:
                     ProjectState state2 = project.getState();
                     switch ( state2 )
                     {
                         case OPEN:
-                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_ONLINE ).createImage();
+                            return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_ONLINE );
                         case CLOSED:
-                            return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-                                PluginConstants.IMG_PROJECT_ONLINE_CLOSED ).createImage();
+                            return Activator.getDefault().getImage( PluginConstants.IMG_PROJECT_ONLINE_CLOSED );
                     }
             }
         }

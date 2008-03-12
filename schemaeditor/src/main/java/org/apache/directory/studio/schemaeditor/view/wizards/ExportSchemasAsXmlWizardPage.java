@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
 /**
@@ -97,8 +96,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
         super( "ExportSchemasAsXmlWizardPage" );
         setTitle( "Export schemas as XML file(s)" );
         setDescription( "Please select the schemas to export as XML file(s)." );
-        setImageDescriptor( AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID,
-            PluginConstants.IMG_SCHEMAS_EXPORT_WIZARD ) );
+        setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 
@@ -146,8 +144,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             {
                 if ( element instanceof Schema )
                 {
-                    return AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, PluginConstants.IMG_SCHEMA )
-                        .createImage();
+                    return Activator.getDefault().getImage( PluginConstants.IMG_SCHEMA );
                 }
 
                 // Default
@@ -411,7 +408,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             displayErrorMessage( "A Schema Project must be open to export schemas as XML files." );
             return;
         }
-        
+
         // Schemas table
         if ( schemasTableViewer.getCheckedElements().length == 0 )
         {
