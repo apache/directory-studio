@@ -24,7 +24,9 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -41,6 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEdit
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -122,6 +125,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     /** The syntax remove button. */
     private Button syntaxRemoveButton;
 
+    /** The map of images */
+    private Map<ImageDescriptor, Image> imageMap;
 
     /**
      * Creates a new instance of ValueEditorsPreferencePage.
@@ -130,6 +135,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     {
         super( "Value Editors" );
         super.setDescription( "Specify value editors:" );
+        this.imageMap = new HashMap<ImageDescriptor, Image>();
     }
 
 
@@ -138,6 +144,24 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public void init( IWorkbench workbench )
     {
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void dispose()
+    {
+        if ( imageMap != null ) {
+            for ( Image image : imageMap.values() )
+            {
+                if ( image != null && !image.isDisposed() )
+                {
+                    image.dispose();
+                }
+            }
+        }
+        super.dispose();
     }
 
 
@@ -552,7 +576,16 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 if ( index == 2 )
                 {
                     ValueEditorExtension vee = class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() );
-                    return vee != null ? vee.icon.createImage() : null;
+                    if ( vee != null )
+                    {
+                        if ( !imageMap.containsKey( vee.icon ) )
+                        {
+                            Image image = vee.icon.createImage();
+                            imageMap.put( vee.icon, image );
+                        }
+                        return imageMap.get( vee.icon );
+                    }
+                    return null;
                 }
             }
 
@@ -601,7 +634,16 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 if ( index == 2 )
                 {
                     ValueEditorExtension vee = class2ValueEditorExtensionMap.get( relation.getValueEditorClassName() );
-                    return vee != null ? vee.icon.createImage() : null;
+                    if ( vee != null )
+                    {
+                        if ( !imageMap.containsKey( vee.icon ) )
+                        {
+                            Image image = vee.icon.createImage();
+                            imageMap.put( vee.icon, image );
+                        }
+                        return imageMap.get( vee.icon );
+                    }
+                    return null;
                 }
             }
 
