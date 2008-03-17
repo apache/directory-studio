@@ -85,7 +85,7 @@ public abstract class AbstractEclipseJob extends Job
 
                 connection.getJNDIConnectionWrapper().connect( monitor );
                 connection.getJNDIConnectionWrapper().bind( monitor );
-                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
                     listener.connectionOpened( connection, monitor );
                 }
