@@ -1157,7 +1157,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             {
                 referralConnection.getJNDIConnectionWrapper().connect( monitor );
                 referralConnection.getJNDIConnectionWrapper().bind( monitor );
-                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
                     listener.connectionOpened( referralConnection, monitor );
                 }

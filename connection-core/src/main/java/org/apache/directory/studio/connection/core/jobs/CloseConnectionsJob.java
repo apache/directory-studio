@@ -111,7 +111,7 @@ public class CloseConnectionsJob extends AbstractAsyncBulkJob
         {
             if ( !connection.getJNDIConnectionWrapper().isConnected() )
             {
-                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
                     listener.connectionClosed( connection, monitor );
                 }
