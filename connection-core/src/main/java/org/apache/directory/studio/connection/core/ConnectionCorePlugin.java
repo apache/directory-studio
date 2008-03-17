@@ -285,9 +285,9 @@ public class ConnectionCorePlugin extends Plugin
     /**
      * Gets the connection listeners.
      * 
-     * @return the connection listners
+     * @return the connection listeners
      */
-    public List<IConnectionListener> getConnectionListners()
+    public List<IConnectionListener> getConnectionListeners()
     {
         if(connectionListeners == null)
         {

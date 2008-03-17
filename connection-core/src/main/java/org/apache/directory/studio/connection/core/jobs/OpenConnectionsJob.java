@@ -110,7 +110,7 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
         {
             if ( connection.getJNDIConnectionWrapper().isConnected() )
             {
-                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListners() )
+                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
                     listener.connectionOpened( connection, monitor );
                 }
