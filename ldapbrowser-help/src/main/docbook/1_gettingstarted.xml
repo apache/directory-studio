@@ -198,6 +198,35 @@
 			</screenshot>
 		</para>
 		<para>
+			Here is a list of common directory servers and the ports they use by default:
+			<informaltable frame='all' >
+				<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+					<colspec colname="Directory Server" align="left" colwidth="3*" />
+					<colspec colname="Default Port" align="right" colwidth="1*" />
+					<thead>
+						<row>
+						  <entry>Directory Server</entry>
+						  <entry>Default Port</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+						  <entry>Apache Directory Server</entry>
+						  <entry>10389</entry>
+						</row>
+						<row>
+						  <entry>OpenDS</entry>
+						  <entry>1389</entry>
+						</row>
+						<row>
+						  <entry>OpenLDAP, Fedora, Sun, Active Directory</entry>
+						  <entry>389</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+		<para>
 			In the wizard's second page select the authentication method. If you choose the simple bind method also enter your bind DN or user and bind password. 
 			To check the authentication	parameter you entered you may click to <emphasis role="strong"><guibutton>Check Authentication</guibutton></emphasis>. 
 			Click <emphasis role="strong">Finish</emphasis> when done.
@@ -210,6 +239,40 @@
 				</mediaobject>
 			</screenshot>
 		</para>
+		<para>
+			Here is a list of common directory servers and the administrator's bind DN and password they use by default:
+			<informaltable frame='all' >
+				<tgroup cols='3' align='left' colsep='1' rowsep='1'>
+					<colspec colname="Directory Server" align="left" colwidth="3*" />
+					<colspec colname="Default Bind DN" align="left" colwidth="1*" />
+					<colspec colname="Default Bind Password" align="left" colwidth="1*" />
+					<thead>
+						<row>
+						  <entry>Directory Server</entry>
+						  <entry>Default Bind DN</entry>
+						  <entry>Default Bind Password</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+						  <entry>Apache Directory Server</entry>
+						  <entry>uid=admin,ou=system</entry>
+						  <entry>secret</entry>
+						</row>
+						<row>
+						  <entry>OpenDS, Sun, Fedora</entry>
+						  <entry>cn=Directory Manager</entry>
+						  <entry>specified at setup</entry>
+						</row>
+						<row>
+						  <entry>OpenLDAP</entry>
+						  <entry>specified at setup, see slapd.conf</entry>
+						  <entry>specified at setup, see slapd.conf</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>		
 		<para>
 			Observe that the <emphasis role="strong">Connections view</emphasis> now shows the created connection.
 			<screenshot>
