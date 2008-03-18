@@ -41,12 +41,11 @@
     <url>http://issues.apache.org/jira/browse/DIRSTUDIO</url>
   </issueManagement>
 
-  <!-- TODO
-    <ciManagement>
+  <ciManagement>
     <system>Continuum</system>
-    <url>https://directory.apache.org/continuum/servlet/continuum</url>
-    </ciManagement>
-  -->
+    <url>http://vm094.oxylos.org/continuum/</url>
+  </ciManagement>
+
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://www.apache.org</url>
@@ -63,8 +62,7 @@
   <distributionManagement>
     <site>
       <id>apache.directory.studio</id>
-      <!-- FIXME set final url according to CI -->
-      <url>scpexe://people.apache.org/home/felixk/public_html/projects/directory/studio/</url>
+      <url>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</url>
     </site>
   </distributionManagement>
 
