@@ -27,7 +27,6 @@ import java.util.Map;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 
 
@@ -46,7 +45,7 @@ public class ValueEditorsPreferences
     /** The syntax value editor cache. */
     private Map<String, String> syntaxValueEditorCache;
 
-    
+
     /**
      * Gets a Map containing all the Attribute Value Editors.
      *
@@ -63,8 +62,8 @@ public class ValueEditorsPreferences
             {
                 if ( relations[i].getAttributeNumericOidOrType() != null )
                 {
-                    attributeValueEditorCache.put( relations[i].getAttributeNumericOidOrType()
-                        .toLowerCase(), relations[i].getValueEditorClassName() );
+                    attributeValueEditorCache.put( relations[i].getAttributeNumericOidOrType().toLowerCase(),
+                        relations[i].getValueEditorClassName() );
                 }
             }
         }
@@ -80,7 +79,14 @@ public class ValueEditorsPreferences
      */
     public AttributeValueEditorRelation[] getAttributeValueEditorRelations()
     {
-        AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) load( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS );
+        IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
+        String s = store.getString( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS );
+        // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class AttributeValueProviderRelation 
+        // was renamed to AttributeValueEditorRelation, to be able to load the old configuration it
+        // is necessary to replace the old class name with the new class name.
+        s = s.replaceAll( "AttributeValueProviderRelation", "AttributeValueEditorRelation" );
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) Utils.deserialize( s );
         return aver;
     }
 
@@ -106,7 +112,14 @@ public class ValueEditorsPreferences
      */
     public AttributeValueEditorRelation[] getDefaultAttributeValueEditorRelations()
     {
-        AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) loadDefault( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS );
+        IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
+        String s = store.getDefaultString( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS );
+        // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class AttributeValueProviderRelation 
+        // was renamed to AttributeValueEditorRelation, to be able to load the old configuration it
+        // is necessary to replace the old class name with the new class name.
+        s = s.replaceAll( "AttributeValueProviderRelation", "AttributeValueEditorRelation" );
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) Utils.deserialize( s );
         return aver;
     }
 
@@ -117,12 +130,10 @@ public class ValueEditorsPreferences
      * @param attributeValueEditorRelations
      *      an array containing all the default Attribute Value Editor Relations
      */
-    public void setDefaultAttributeValueEditorRelations(
-        AttributeValueEditorRelation[] attributeValueEditorRelations )
+    public void setDefaultAttributeValueEditorRelations( AttributeValueEditorRelation[] attributeValueEditorRelations )
     {
         storeDefault( BrowserCommonConstants.PREFERENCE_ATTRIBUTE_VALUEEDITOR_RELATIONS, attributeValueEditorRelations );
     }
-
 
 
     /**
@@ -171,7 +182,14 @@ public class ValueEditorsPreferences
      */
     public SyntaxValueEditorRelation[] getSyntaxValueEditorRelations()
     {
-        SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) load( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS );
+        IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
+        String s = store.getString( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS );
+        // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class SyntaxValueProviderRelation 
+        // was renamed to SyntaxValueEditorRelation, to be able to load the old configuration it
+        // is necessary to replace the old class name with the new class name.
+        s = s.replaceAll( "SyntaxValueProviderRelation", "SyntaxValueEditorRelation" );
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) Utils.deserialize( s );
         return sver;
     }
 
@@ -184,7 +202,14 @@ public class ValueEditorsPreferences
      */
     public SyntaxValueEditorRelation[] getDefaultSyntaxValueEditorRelations()
     {
-        SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) loadDefault( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS );
+        IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
+        String s = store.getDefaultString( BrowserCommonConstants.PREFERENCE_SYNTAX_VALUEPEDITOR_RELATIONS );
+        // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class SyntaxValueProviderRelation 
+        // was renamed to SyntaxValueEditorRelation, to be able to load the old configuration it
+        // is necessary to replace the old class name with the new class name.
+        s = s.replaceAll( "SyntaxValueProviderRelation", "SyntaxValueEditorRelation" );
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) Utils.deserialize( s );
         return sver;
     }
 
@@ -202,22 +227,6 @@ public class ValueEditorsPreferences
 
 
     /**
-     * Loads the current value of the string-valued property with the given name.
-     *
-     * @param key
-     *      the name of the property
-     * @return
-     *      the corresponding object
-     */
-    private static Object load( String key )
-    {
-        IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
-        String s = store.getString( key );
-        return Utils.deserialize( s );
-    }
-
-
-    /**
      * Stores the current value of the string-valued property with the given name.
      *
      * @param key
@@ -230,22 +239,6 @@ public class ValueEditorsPreferences
         IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
         String s = Utils.serialize( o );
         store.setValue( key, s );
-    }
-
-
-    /**
-     * Loads the default value for the string-valued property with the given name.
-     *
-     * @param key
-     *      the name of the property
-     * @return
-     *      the default value of the named property
-     */
-    private static Object loadDefault( String key )
-    {
-        IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
-        String s = store.getDefaultString( key );
-        return Utils.deserialize( s );
     }
 
 
