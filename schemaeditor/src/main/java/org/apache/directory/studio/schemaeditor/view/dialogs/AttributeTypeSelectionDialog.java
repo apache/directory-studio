@@ -316,4 +316,30 @@ public class AttributeTypeSelectionDialog extends Dialog
             attributeTypesTableViewer.setSelection( new StructuredSelection( firstElement ), true );
         }
     }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
+    public boolean close()
+    {
+        hiddenAttributeTypes.clear();
+        hiddenAttributeTypes = null;
+
+        attributeTypesTableViewer = null;
+
+        attributeTypesTable.dispose();
+        attributeTypesTable = null;
+
+        searchText.dispose();
+        searchText = null;
+
+        schemaIconLabel.dispose();
+        schemaIconLabel = null;
+
+        schemaNameLabel.dispose();
+        schemaNameLabel = null;
+
+        return super.close();
+    }
 }
