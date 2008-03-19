@@ -31,6 +31,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.parser.LdifParser;
@@ -42,7 +44,7 @@ import org.apache.directory.studio.ldifparser.parser.LdifParser;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ExecuteLdifJob extends AbstractEclipseJob
+public class ExecuteLdifJob extends AbstractNotificationJob
 {
 
     /** The browser connection. */
@@ -94,9 +96,9 @@ public class ExecuteLdifJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__execute_ldif_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -145,4 +147,12 @@ public class ExecuteLdifJob extends AbstractEclipseJob
         return BrowserCoreMessages.jobs__execute_ldif_error;
     }
 
+
+    /** 
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     */
+    protected void runNotification()
+    {
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
+    }
 }
