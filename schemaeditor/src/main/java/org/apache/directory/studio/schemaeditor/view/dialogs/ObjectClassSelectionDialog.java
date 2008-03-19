@@ -317,4 +317,30 @@ public class ObjectClassSelectionDialog extends Dialog
             objectClassesTableViewer.setSelection( new StructuredSelection( firstElement ), true );
         }
     }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.dialogs.Dialog#close()
+     */
+    public boolean close()
+    {
+        hiddenObjectClasses.clear();
+        hiddenObjectClasses = null;
+
+        objectClassesTableViewer = null;
+
+        objectClassesTable.dispose();
+        objectClassesTable = null;
+
+        searchText.dispose();
+        searchText = null;
+
+        schemaIconLabel.dispose();
+        schemaIconLabel = null;
+
+        schemaNameLabel.dispose();
+        schemaNameLabel = null;
+
+        return super.close();
+    }
 }
