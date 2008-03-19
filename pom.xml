@@ -2059,9 +2059,13 @@
 
   <repositories>
     <repository>
-      <id>maven.repo1</id>
-      <name>Maven Repo1 mirror</name>
-      <url>http://repo1.maven.org/maven2</url>
+      <id>apache.directory.snapshot.repo</id>
+      <name>Snapshot repository for the Apache Directory project</name>
+      <url>http://vm094.oxylos.org/mirror-maven2/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
   </repositories>
+  
 </project>
