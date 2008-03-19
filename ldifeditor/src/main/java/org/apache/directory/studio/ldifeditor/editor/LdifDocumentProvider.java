@@ -248,9 +248,19 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
         Reader reader;
         try
         {
+            String inputClassName = input.getClass().getName();
             if ( input instanceof IPathEditorInput )
             {
                 reader = new FileReader( ( ( IPathEditorInput ) input ).getPath().toFile() );
+            }
+            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
+                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+            // opening a file from the menu File > Open... in Eclipse 3.3.x
+            {
+                reader = new FileReader( new File( input.getToolTipText() ) );
             }
             else
             {
@@ -364,13 +374,26 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
     protected void doSaveDocument( IProgressMonitor monitor, Object element, IDocument document, boolean overwrite )
         throws CoreException
     {
-
+        File file = null;
+        String elementClassName = element.getClass().getName();
         if ( element instanceof IPathEditorInput )
         {
             IPathEditorInput pei = ( IPathEditorInput ) element;
             IPath path = pei.getPath();
-            File file = path.toFile();
+            file = path.toFile();
+        }
+        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
+            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+        // opening a file from the menu File > Open... in Eclipse 3.3.x
+        {
+            file = new File( ( ( IEditorInput ) element ).getToolTipText() );
+        }
 
+        if ( file != null )
+        {
             try
             {
                 file.createNewFile();
@@ -440,12 +463,24 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
      */
     public boolean isModifiable( Object element )
     {
+        String elementClassName = element.getClass().getName();
         if ( element instanceof IPathEditorInput )
         {
             IPathEditorInput pei = ( IPathEditorInput ) element;
             File file = pei.getPath().toFile();
             return file.canWrite() || !file.exists(); // Allow to edit new files
         }
+        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
+            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+        // opening a file from the menu File > Open... in Eclipse 3.3.x
+        {
+            File file = new File( ( ( IEditorInput ) element ).getToolTipText() );
+            return file.canWrite() || !file.exists(); // Allow to edit new files
+        }
+        
         return false;
     }
 
