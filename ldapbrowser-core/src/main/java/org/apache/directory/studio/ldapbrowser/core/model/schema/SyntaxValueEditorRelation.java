@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.schema;
 
 
 /**
- * A SyntaxValueProviderRelation is used to set the relation 
+ * A SyntaxValueEditorRelation is used to set the relation 
  * from a syntax to its value editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
