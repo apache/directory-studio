@@ -89,7 +89,7 @@ public class SchemaErrorWrapper extends AbstractTreeNode
      */
     public boolean equals( Object obj )
     {
-        if ( obj instanceof SchemaWarningWrapper )
+        if ( obj instanceof SchemaErrorWrapper )
         {
             if ( super.equals( obj ) )
             {

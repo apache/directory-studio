@@ -30,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper;
 import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -150,7 +149,7 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
 
                     return at.getOid().compareToIgnoreCase( oc.getOid() );
                 }
-                else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof AttributeTypeImpl ) )
+                else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof AttributeTypeImpl ) )
                 {
                     ObjectClassImpl oc = ( ObjectClassImpl ) o1;
                     AttributeTypeImpl at = ( AttributeTypeImpl ) o2;
