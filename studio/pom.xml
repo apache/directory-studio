@@ -35,7 +35,6 @@
   <!-- Set some properties -->
   <properties>
     <studio-dir>target/ApacheDirectoryStudio</studio-dir>
-    <local-repo>${project.basedir}/../repository</local-repo>
   </properties>
   
   <!-- 
@@ -181,6 +180,28 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <configuration>
+                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
+                  <file>../target/distributions/ApacheDirectoryStudio-linux-x86-${pom.version}-dist.tar.gz</file>
+                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <artifactId>ApacheDirectoryStudio</artifactId>
+                  <groupId>${pom.groupId}.dist</groupId>
+                  <packaging>tar.gz</packaging>
+                  <version>${pom.version}-linux-x86</version>
+                  <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
+                </configuration>
+                <goals>
+                  <goal>deploy-file</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -306,6 +327,28 @@
                 </configuration>
                 <goals>
                   <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <configuration>
+                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
+                  <file>../target/distributions/ApacheDirectoryStudio-linux-x86_64-${pom.version}-dist.tar.gz</file>
+                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <artifactId>ApacheDirectoryStudio</artifactId>
+                  <groupId>${pom.groupId}.dist</groupId>
+                  <packaging>tar.gz</packaging>
+                  <version>${pom.version}-linux-x86_64</version>
+                  <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
+                </configuration>
+                <goals>
+                  <goal>deploy-file</goal>
                 </goals>
               </execution>
             </executions>
@@ -439,6 +482,28 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <configuration>
+                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
+                  <file>../target/distributions/ApacheDirectoryStudio-linux-ppc-${pom.version}-dist.tar.gz</file>
+                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <artifactId>ApacheDirectoryStudio</artifactId>
+                  <groupId>${pom.groupId}.dist</groupId>
+                  <packaging>tar.gz</packaging>
+                  <version>${pom.version}-linux-ppc</version>
+                  <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
+                </configuration>
+                <goals>
+                  <goal>deploy-file</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -567,6 +632,28 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <configuration>
+                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
+                  <file>../target/distributions/ApacheDirectoryStudio-win32-${pom.version}-dist.zip</file>
+                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <artifactId>ApacheDirectoryStudio</artifactId>
+                  <groupId>${pom.groupId}.dist</groupId>
+                  <packaging>tar.gz</packaging>
+                  <version>${pom.version}-win32</version>
+                  <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
+                </configuration>
+                <goals>
+                  <goal>deploy-file</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -657,6 +744,28 @@
                 </configuration>
                 <goals>
                   <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>deploy</phase>
+                <configuration>
+                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
+                  <file>../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}-dist.tar.gz</file>
+                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <artifactId>ApacheDirectoryStudio</artifactId>
+                  <groupId>${pom.groupId}.dist</groupId>
+                  <packaging>tar.gz</packaging>
+                  <version>${pom.version}-macosx</version>
+                  <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
+                </configuration>
+                <goals>
+                  <goal>deploy-file</goal>
                 </goals>
               </execution>
             </executions>
