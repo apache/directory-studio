@@ -86,7 +86,7 @@
 
   <properties>
     <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.0.0.SNAPSHOT</aciitemeditor.version>
+    <aciitemeditor.version>1.1.0.SNAPSHOT</aciitemeditor.version>
     <apacheds.configuration.version>1.1.0.SNAPSHOT</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.1.0.SNAPSHOT</apacheds.configuration.feature.version>
     <apacheds.configuration.help.version>1.1.0.SNAPSHOT</apacheds.configuration.help.version>
@@ -111,7 +111,7 @@
     <schemaeditor.help.version>1.1.0.SNAPSHOT</schemaeditor.help.version>
     <studio.dsml.parser.version>0.4.1.SNAPSHOT</studio.dsml.parser.version>
     <updatesite.version>1.1.0.SNAPSHOT</updatesite.version>
-    <valueeditors.version>1.0.0.SNAPSHOT</valueeditors.version>
+    <valueeditors.version>1.1.0.SNAPSHOT</valueeditors.version>
   </properties>
 
   <profiles>
