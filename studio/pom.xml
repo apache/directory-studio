@@ -36,7 +36,7 @@
   <properties>
     <studio-dir>target/ApacheDirectoryStudio</studio-dir>
   </properties>
-  
+
   <!-- 
     How building a dist works:
     We presume that all needed dependencies are already somehow available (normally this is the case with mvn install from root)
@@ -184,17 +184,16 @@
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
+                <id>deploy-dist-linux-x86</id>
                 <phase>deploy</phase>
                 <configuration>
-                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-x86-${pom.version}-dist.tar.gz</file>
                   <url>${pom.distributionManagement.snapshotRepository.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
-                  <groupId>${pom.groupId}.dist</groupId>
+                  <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-x86</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -335,17 +334,16 @@
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
+                <id>deploy-dist-linux-x86_64</id>
                 <phase>deploy</phase>
                 <configuration>
-                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-x86_64-${pom.version}-dist.tar.gz</file>
                   <url>${pom.distributionManagement.snapshotRepository.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
-                  <groupId>${pom.groupId}.dist</groupId>
+                  <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-x86_64</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -486,17 +484,16 @@
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
+                <id>deploy-dist-linux-ppc</id>
                 <phase>deploy</phase>
                 <configuration>
-                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-ppc-${pom.version}-dist.tar.gz</file>
                   <url>${pom.distributionManagement.snapshotRepository.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
-                  <groupId>${pom.groupId}.dist</groupId>
+                  <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-ppc</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -636,17 +633,16 @@
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
+                <id>deploy-dist-win32</id>
                 <phase>deploy</phase>
                 <configuration>
-                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
                   <file>../target/distributions/ApacheDirectoryStudio-win32-${pom.version}-dist.zip</file>
                   <url>${pom.distributionManagement.snapshotRepository.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
-                  <groupId>${pom.groupId}.dist</groupId>
+                  <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-win32</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -752,17 +748,16 @@
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
+                <id>deploy-dist-macosx</id>
                 <phase>deploy</phase>
                 <configuration>
-                  <repositoryId>${pom.distributionManagement.snapshotRepository.id}</repositoryId>
                   <file>../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}-dist.tar.gz</file>
                   <url>${pom.distributionManagement.snapshotRepository.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
-                  <groupId>${pom.groupId}.dist</groupId>
+                  <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-macosx</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
