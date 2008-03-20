@@ -49,11 +49,6 @@
     <url>https://svn.apache.org/repos/asf/directory/studio/trunk/studio-plugin/</url>
   </scm>
 
-  <ciManagement>
-    <system>Continuum</system>
-    <url>http://vm094.oxylos.org/continuum/</url>
-  </ciManagement>
-
   <distributionManagement>
     <site>
       <id>apache.directory.studio.plugin</id>
