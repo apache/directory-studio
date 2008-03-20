@@ -94,7 +94,7 @@
 
   <properties>
     <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.0.0</aciitemeditor.version>
+    <aciitemeditor.version>1.1.0.v20080303</aciitemeditor.version>
     <apacheds.configuration.version>1.1.0.v20080303</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.1.0.v20080303</apacheds.configuration.feature.version>
     <apacheds.configuration.help.version>1.1.0.v20080303</apacheds.configuration.help.version>
@@ -119,7 +119,7 @@
     <schemaeditor.help.version>1.1.0.v20080303</schemaeditor.help.version>
     <studio.dsml.parser.version>0.4.1</studio.dsml.parser.version>
     <updatesite.version>1.1.0.v20080303</updatesite.version>
-    <valueeditors.version>1.0.0</valueeditors.version>
+    <valueeditors.version>1.1.0.v20080303</valueeditors.version>
   </properties>
 
   <profiles>
