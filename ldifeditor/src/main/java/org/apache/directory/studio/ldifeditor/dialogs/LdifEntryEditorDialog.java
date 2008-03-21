@@ -41,6 +41,8 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -139,7 +141,7 @@ public class LdifEntryEditorDialog extends Dialog
     public void create()
     {
         super.create();
-        // this.actionGroup.activateGlobalActionHandlers();
+        //this.actionGroup.activateGlobalActionHandlers();
     }
 
 
@@ -181,34 +183,42 @@ public class LdifEntryEditorDialog extends Dialog
 
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         // create configuration
-        this.configuration = new EntryEditorWidgetConfiguration();
+        configuration = new EntryEditorWidgetConfiguration();
 
         // create main widget
-        this.mainWidget = new EntryEditorWidget( this.configuration );
-        this.mainWidget.createWidget( composite );
-        this.mainWidget.getViewer().getTree().setFocus();
+        mainWidget = new EntryEditorWidget( configuration );
+        mainWidget.createWidget( composite );
+        mainWidget.getViewer().getTree().setFocus();
 
         // create actions
-        this.actionGroup = new EntryEditorWidgetActionGroupWithAttribute( this.mainWidget, this.configuration );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.fillContextMenu( this.mainWidget.getContextMenuManager() );
+        actionGroup = new EntryEditorWidgetActionGroupWithAttribute( mainWidget, configuration );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
         IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
             IContextService.class );
         contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
-        actionGroup.activateGlobalActionHandlers(); 
+        actionGroup.activateGlobalActionHandlers();
+
+        // hack to activate the action handlers when changing the selection 
+        mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                actionGroup.deactivateGlobalActionHandlers();
+                actionGroup.activateGlobalActionHandlers();
+            }
+        } );
 
         // create the listener
-        this.universalListener = new EntryEditorWidgetUniversalListener( this.mainWidget.getViewer(), this.actionGroup
+        universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), actionGroup
             .getOpenDefaultEditorAction() );
 
         try
         {
-
             if ( ldifRecord instanceof LdifContentRecord )
             {
                 entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) ldifRecord, connection );
@@ -220,7 +230,7 @@ public class LdifEntryEditorDialog extends Dialog
 
             if ( entry != null )
             {
-                this.mainWidget.getViewer().setInput( entry );
+                mainWidget.getViewer().setInput( entry );
             }
 
         }

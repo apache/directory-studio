@@ -40,20 +40,18 @@ import org.apache.directory.studio.connection.ui.actions.StudioActionProxy;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.apache.directory.studio.connection.ui.dnd.DragConnectionListener;
 import org.apache.directory.studio.connection.ui.dnd.DropConnectionListener;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.commands.ICommandService;
 
 
 /**
@@ -273,9 +271,6 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
      */
     public void activateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) connectionActionMap
@@ -292,25 +287,21 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         }
         else
         {
-            if ( commandService != null )
-            {
-                IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
-                ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
-                commandService.getCommand( ca.getActionDefinitionId() ).setHandler( new ActionHandler( ca ) );
+            IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
+            ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
+            ActionUtils.activateActionHandler( ca );
 
-                IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
-                pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
-                commandService.getCommand( pa.getActionDefinitionId() ).setHandler( new ActionHandler( pa ) );
+            IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
+            pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
+            ActionUtils.activateActionHandler( pa );
 
-                IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
-                da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
-                commandService.getCommand( da.getActionDefinitionId() ).setHandler( new ActionHandler( da ) );
+            IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
+            da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
+            ActionUtils.activateActionHandler( da );
 
-                IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
-                pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
-                commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
-
-            }
+            IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
+            pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
+            ActionUtils.activateActionHandler( pda );
         }
     }
 
@@ -320,9 +311,6 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
      */
     public void deactivateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
@@ -334,21 +322,14 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         }
         else
         {
-            if ( commandService != null )
-            {
-                IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
-                commandService.getCommand( ca.getActionDefinitionId() ).setHandler( null );
-
-                IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
-                commandService.getCommand( pa.getActionDefinitionId() ).setHandler( null );
-
-                IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
-                commandService.getCommand( da.getActionDefinitionId() ).setHandler( null );
-
-                IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
-                commandService.getCommand( pda.getActionDefinitionId() ).setHandler( null );
-
-            }
+            IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
+            ActionUtils.deactivateActionHandler( ca );
+            IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
+            ActionUtils.deactivateActionHandler( pa );
+            IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
+            ActionUtils.deactivateActionHandler( da );
+            IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
+            ActionUtils.deactivateActionHandler( pda );
         }
     }
 

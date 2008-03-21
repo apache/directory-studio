@@ -48,6 +48,7 @@ import org.apache.directory.studio.ldifeditor.editor.actions.OpenDefaultValueEdi
 import org.apache.directory.studio.ldifeditor.editor.actions.OpenValueEditorAction;
 import org.apache.directory.studio.ldifeditor.editor.text.LdifPartitionScanner;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.apache.directory.studio.valueeditors.AbstractDialogValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
@@ -64,7 +65,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -95,7 +95,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.editors.text.EditorsUI;
@@ -854,17 +853,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void activateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction elaa = getAction( EditLdifAttributeAction.class.getName() );
-            commandService.getCommand( elaa.getActionDefinitionId() ).setHandler( new ActionHandler( elaa ) );
-            IAction elva = getAction( OpenDefaultValueEditorAction.class.getName() );
-            commandService.getCommand( elva.getActionDefinitionId() ).setHandler( new ActionHandler( elva ) );
-            IAction elra = getAction( EditLdifRecordAction.class.getName() );
-            commandService.getCommand( elra.getActionDefinitionId() ).setHandler( new ActionHandler( elra ) );
-        }
+        IAction elaa = getAction( EditLdifAttributeAction.class.getName() );
+        ActionUtils.activateActionHandler( elaa );
+        IAction elva = getAction( OpenDefaultValueEditorAction.class.getName() );
+        ActionUtils.activateActionHandler( elva );
+        IAction elra = getAction( EditLdifRecordAction.class.getName() );
+        ActionUtils.activateActionHandler( elra );
     }
 
 
@@ -873,17 +867,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void deactivateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction elaa = getAction( EditLdifAttributeAction.class.getName() );
-            commandService.getCommand( elaa.getActionDefinitionId() ).setHandler( null );
-            IAction elva = getAction( OpenDefaultValueEditorAction.class.getName() );
-            commandService.getCommand( elva.getActionDefinitionId() ).setHandler( null );
-            IAction elra = getAction( EditLdifRecordAction.class.getName() );
-            commandService.getCommand( elra.getActionDefinitionId() ).setHandler( null );
-        }
+        IAction elaa = getAction( EditLdifAttributeAction.class.getName() );
+        ActionUtils.deactivateActionHandler( elaa );
+        IAction elva = getAction( OpenDefaultValueEditorAction.class.getName() );
+        ActionUtils.deactivateActionHandler( elva );
+        IAction elra = getAction( EditLdifRecordAction.class.getName() );
+        ActionUtils.deactivateActionHandler( elra );
     }
 
 
