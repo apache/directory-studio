@@ -20,9 +20,9 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -82,7 +82,7 @@ public class ConnectionIO
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static Set<ConnectionParameter> load( FileInputStream stream ) throws ConnectionIOException
+    public static Set<ConnectionParameter> load( InputStream stream ) throws ConnectionIOException
     {
         Set<ConnectionParameter> connections = new HashSet<ConnectionParameter>();
 
@@ -242,7 +242,7 @@ public class ConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void save( Set<ConnectionParameter> connections, FileOutputStream stream ) throws IOException
+    public static void save( Set<ConnectionParameter> connections, OutputStream stream ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -330,7 +330,7 @@ public class ConnectionIO
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static Set<ConnectionFolder> loadConnectionFolders( FileInputStream stream ) throws ConnectionIOException
+    public static Set<ConnectionFolder> loadConnectionFolders( InputStream stream ) throws ConnectionIOException
     {
         Set<ConnectionFolder> connectionFolders = new HashSet<ConnectionFolder>();
 
@@ -438,7 +438,7 @@ public class ConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void saveConnectionFolders( Set<ConnectionFolder> connectionFolders, FileOutputStream stream ) throws IOException
+    public static void saveConnectionFolders( Set<ConnectionFolder> connectionFolders, OutputStream stream ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();

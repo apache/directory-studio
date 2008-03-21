@@ -121,6 +121,18 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
 
 
     /**
+     * Gets an array of connection folders.
+     *
+     * @return
+     *      an array of connection folders
+     */
+    public ConnectionFolder[] getConnectionFolders()
+    {
+        return folderList.toArray( new ConnectionFolder[0] );
+    }
+
+
+    /**
      * Gets a connection folder from its id.
      *
      * @param id
@@ -181,8 +193,8 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
         }
         return getRootConnectionFolder();
     }
-    
-    
+
+
     /**
      * Gets the parent connection folder of the given connection folder 
      * or null if the folder doesn't have a parent folder.
@@ -216,7 +228,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     public Set<ConnectionFolder> getAllSubFolders( ConnectionFolder folder )
     {
         Set<ConnectionFolder> allSubFolders = new HashSet<ConnectionFolder>();
-        
+
         List<String> ids = new ArrayList<String>();
         ids.add( folder.getId() );
         while ( !ids.isEmpty() )
@@ -224,10 +236,10 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
             String id = ids.remove( 0 );
             ConnectionFolder subFolder = getConnectionFolderById( id );
             allSubFolders.add( subFolder );
-            
+
             ids.addAll( subFolder.getSubFolderIds() );
         }
-        
+
         return allSubFolders;
     }
 
@@ -242,18 +254,18 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     public Set<ConnectionFolder> getAllParentFolders( ConnectionFolder folder )
     {
         Set<ConnectionFolder> allParentFolders = new HashSet<ConnectionFolder>();
-        
+
         do
         {
             allParentFolders.add( folder );
             folder = getParentConnectionFolder( folder );
         }
         while ( folder != null );
-        
+
         return allParentFolders;
     }
-    
-    
+
+
     /**
      * Gets the root connection folder.
      * 
