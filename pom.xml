@@ -52,8 +52,6 @@
     <url>https://svn.apache.org/repos/asf/directory/studio/trunk/</url>
   </scm>
 
-  <inceptionYear>2003</inceptionYear>
-
   <distributionManagement>
     <site>
       <id>apache.directory.studio</id>
