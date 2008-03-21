@@ -1842,19 +1842,6 @@
   <reporting>
     <excludeDefaults>true</excludeDefaults>
     <plugins>
-      <plugin>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>license</report>
-              <report>dependencies</report>
-              <report>issue-tracking</report>
-              <report>index</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
       <!--
         <plugin>
         <groupId>org.codehaus.mojo</groupId>
