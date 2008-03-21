@@ -39,17 +39,15 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.commands.ICommandService;
 
 
 /**
@@ -369,7 +367,6 @@ public class BrowserViewActionGroup extends BrowserActionGroup
      */
     public void activateGlobalActionHandlers()
     {
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) browserActionMap
@@ -386,14 +383,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         super.activateGlobalActionHandlers();
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
-            commandService.getCommand( leid.getActionDefinitionId() ).setHandler( new ActionHandler( leid ) );
-        }
-
+        IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
+        ActionUtils.activateActionHandler( leid );
     }
 
 
@@ -402,7 +393,6 @@ public class BrowserViewActionGroup extends BrowserActionGroup
      */
     public void deactivateGlobalActionHandlers()
     {
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
@@ -414,14 +404,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         super.deactivateGlobalActionHandlers();
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
-            commandService.getCommand( leid.getActionDefinitionId() ).setHandler( null );
-        }
-
+        IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
+        ActionUtils.deactivateActionHandler( leid );
     }
 
 }

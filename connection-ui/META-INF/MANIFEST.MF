@@ -18,5 +18,6 @@ Export-Package: org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.connection.ui.dnd,
  org.apache.directory.studio.connection.ui.properties,
  org.apache.directory.studio.connection.ui.widgets,
- org.apache.directory.studio.connection.ui.wizards
+ org.apache.directory.studio.connection.ui.wizards,
+ org.apache.directory.studio.utils
 Bundle-ClassPath: .

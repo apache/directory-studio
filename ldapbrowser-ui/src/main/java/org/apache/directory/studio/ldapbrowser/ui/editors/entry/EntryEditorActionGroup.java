@@ -42,19 +42,18 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.LocateDnInDitAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ContributionItemFactory;
-import org.eclipse.ui.commands.ICommandService;
 
 
 /**
@@ -249,13 +248,13 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     public void fillToolBar( IToolBarManager toolBarManager )
     {
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );
+        toolBarManager.add( entryEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( entryEditorActionMap.get( newAttributeAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( deleteAllValuesAction ) );
+        toolBarManager.add( entryEditorActionMap.get( deleteAction ) );
+        toolBarManager.add( entryEditorActionMap.get( deleteAllValuesAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( refreshAttributesAction ) );
+        toolBarManager.add( entryEditorActionMap.get( refreshAttributesAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( expandAllAction );
         toolBarManager.add( collapseAllAction );
@@ -296,21 +295,21 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     protected void contextMenuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newSearchAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newBatchOperationAction ) );
+        menuManager.add( entryEditorActionMap.get( newAttributeAction ) );
+        menuManager.add( entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( entryEditorActionMap.get( newSearchAction ) );
+        menuManager.add( entryEditorActionMap.get( newBatchOperationAction ) );
         menuManager.add( new Separator() );
 
         // navigation
-        menuManager.add( ( IAction ) entryEditorActionMap.get( locateDnInDitAction ) );
+        menuManager.add( entryEditorActionMap.get( locateDnInDitAction ) );
         MenuManager schemaMenuManager = new MenuManager( "Open Schema Browser" );
-        schemaMenuManager.add( ( IAction ) entryEditorActionMap.get( showOcdAction ) );
-        schemaMenuManager.add( ( IAction ) entryEditorActionMap.get( showAtdAction ) );
-        schemaMenuManager.add( ( IAction ) entryEditorActionMap.get( showEqualityMrdAction ) );
-        schemaMenuManager.add( ( IAction ) entryEditorActionMap.get( showSubstringMrdAction ) );
-        schemaMenuManager.add( ( IAction ) entryEditorActionMap.get( showOrderingMrdAction ) );
-        schemaMenuManager.add( ( IAction ) entryEditorActionMap.get( showLsdAction ) );
+        schemaMenuManager.add( entryEditorActionMap.get( showOcdAction ) );
+        schemaMenuManager.add( entryEditorActionMap.get( showAtdAction ) );
+        schemaMenuManager.add( entryEditorActionMap.get( showEqualityMrdAction ) );
+        schemaMenuManager.add( entryEditorActionMap.get( showSubstringMrdAction ) );
+        schemaMenuManager.add( entryEditorActionMap.get( showOrderingMrdAction ) );
+        schemaMenuManager.add( entryEditorActionMap.get( showLsdAction ) );
         menuManager.add( schemaMenuManager );
         MenuManager showInSubMenu = new MenuManager( "Show In" );
         showInSubMenu.add( ContributionItemFactory.VIEWS_SHOW_IN.create( PlatformUI.getWorkbench()
@@ -320,45 +319,45 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( ( IAction ) entryEditorActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( entryEditorActionMap.get( copyAction ) );
+        menuManager.add( entryEditorActionMap.get( pasteAction ) );
+        menuManager.add( entryEditorActionMap.get( deleteAction ) );
+        menuManager.add( entryEditorActionMap.get( selectAllAction ) );
         MenuManager advancedMenuManager = new MenuManager( "Advanced" );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyDnAction ) );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyUrlAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyDnAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyUrlAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyAttriuteDescriptionAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyAttriuteDescriptionAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyValueUtf8Action ) );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyValueBase64Action ) );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyValueHexAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyValueUtf8Action ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyValueBase64Action ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyValueHexAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyValueAsLdifAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyValueAsLdifAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copySearchFilterAction ) );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyNotSearchFilterAction ) );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyAndSearchFilterAction ) );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( copyOrSearchFilterAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copySearchFilterAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyNotSearchFilterAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyAndSearchFilterAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( copyOrSearchFilterAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) entryEditorActionMap.get( deleteAllValuesAction ) );
+        advancedMenuManager.add( entryEditorActionMap.get( deleteAllValuesAction ) );
         menuManager.add( advancedMenuManager );
         menuManager.add( new Separator() );
 
         // edit
-        menuManager.add( ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction ) );
+        menuManager.add( entryEditorActionMap.get( editAttributeDescriptionAction ) );
         super.addEditMenu( menuManager );
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( ( IAction ) entryEditorActionMap.get( refreshAttributesAction ) );
+        menuManager.add( entryEditorActionMap.get( refreshAttributesAction ) );
         menuManager.add( new Separator() );
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
 
         // properties
-        menuManager.add( ( IAction ) entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( entryEditorActionMap.get( propertyDialogAction ) );
     }
 
 
@@ -369,23 +368,18 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     {
         if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), entryEditorActionMap
                 .get( refreshAttributesAction ) );
         }
 
         super.activateGlobalActionHandlers();
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
-            commandService.getCommand( naa.getActionDefinitionId() ).setHandler( new ActionHandler( naa ) );
-            IAction lid = ( IAction ) entryEditorActionMap.get( locateDnInDitAction );
-            commandService.getCommand( lid.getActionDefinitionId() ).setHandler( new ActionHandler( lid ) );
-            IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
-            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( new ActionHandler( eada ) );
-        }
+        IAction naa = entryEditorActionMap.get( newAttributeAction );
+        ActionUtils.activateActionHandler( naa );
+        IAction lid = entryEditorActionMap.get( locateDnInDitAction );
+        ActionUtils.activateActionHandler( lid );
+        IAction eada = entryEditorActionMap.get( editAttributeDescriptionAction );
+        ActionUtils.activateActionHandler( eada );
     }
 
 
@@ -401,17 +395,12 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
         super.deactivateGlobalActionHandlers();
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
-            commandService.getCommand( naa.getActionDefinitionId() ).setHandler( null );
-            IAction lid = ( IAction ) entryEditorActionMap.get( locateDnInDitAction );
-            commandService.getCommand( lid.getActionDefinitionId() ).setHandler( null );
-            IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
-            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( null );
-        }
+        IAction naa = entryEditorActionMap.get( newAttributeAction );
+        ActionUtils.deactivateActionHandler( naa );
+        IAction lid = entryEditorActionMap.get( locateDnInDitAction );
+        ActionUtils.deactivateActionHandler( lid );
+        IAction eada = entryEditorActionMap.get( editAttributeDescriptionAction );
+        ActionUtils.deactivateActionHandler( eada );
     }
 
 

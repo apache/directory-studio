@@ -44,7 +44,6 @@ public class EditLdifRecordAction extends AbstractLdifAction
 
     protected void doRun()
     {
-
         LdifContainer[] containers = getSelectedLdifContainers();
         if ( containers.length == 1
             && ( containers[0] instanceof LdifContentRecord || containers[0] instanceof LdifChangeAddRecord ) )

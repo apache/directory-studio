@@ -48,6 +48,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSearchResultAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.SearchResultEditorActionProxy;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.action.IAction;
@@ -56,14 +57,12 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ContributionItemFactory;
-import org.eclipse.ui.commands.ICommandService;
 
 
 public class SearchResultEditorActionGroup implements ActionHandlerManager, IMenuListener
@@ -330,7 +329,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-        this.activateGlobalActionHandlers();
+//        this.activateGlobalActionHandlers();
     }
 
 
@@ -441,19 +440,13 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             actionBars.updateActionBars();
         }
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction nva = ( IAction ) this.searchResultEditorActionMap.get( newValueAction );
-            commandService.getCommand( nva.getActionDefinitionId() ).setHandler( new ActionHandler( nva ) );
-            IAction lid = ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction );
-            commandService.getCommand( lid.getActionDefinitionId() ).setHandler( new ActionHandler( lid ) );
-            IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
-            commandService.getCommand( osr.getActionDefinitionId() ).setHandler( new ActionHandler( osr ) );
-            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler(
-                new ActionHandler( openDefaultValueEditorActionProxy ) );
-        }
+        IAction nva = ( IAction ) this.searchResultEditorActionMap.get( newValueAction );
+        ActionUtils.activateActionHandler( nva );
+        IAction lid = ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction );
+        ActionUtils.activateActionHandler( lid );
+        IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
+        ActionUtils.activateActionHandler( osr );
+        ActionUtils.activateActionHandler( openDefaultValueEditorActionProxy );
     }
 
 
@@ -470,18 +463,13 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             actionBars.updateActionBars();
         }
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction nva = ( IAction ) this.searchResultEditorActionMap.get( newValueAction );
-            commandService.getCommand( nva.getActionDefinitionId() ).setHandler( null );
-            IAction lid = ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction );
-            commandService.getCommand( lid.getActionDefinitionId() ).setHandler( null );
-            IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
-            commandService.getCommand( osr.getActionDefinitionId() ).setHandler( null );
-            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler( null );
-        }
+        IAction nva = ( IAction ) this.searchResultEditorActionMap.get( newValueAction );
+        ActionUtils.deactivateActionHandler( nva );
+        IAction lid = ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction );
+        ActionUtils.deactivateActionHandler( lid );
+        IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
+        ActionUtils.deactivateActionHandler( osr );
+        ActionUtils.deactivateActionHandler( openDefaultValueEditorActionProxy );
     }
 
 

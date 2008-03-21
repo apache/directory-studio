@@ -34,17 +34,15 @@ import org.apache.directory.studio.ldapbrowser.common.actions.UpAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserViewActionProxy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.commands.ICommandService;
 
 
 /**
@@ -149,7 +147,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-        activateGlobalActionHandlers();
+//        activateGlobalActionHandlers();
     }
 
 
@@ -226,9 +224,6 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      */
     public void activateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) browserActionMap
@@ -239,22 +234,16 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         }
         else
         {
-            if ( commandService != null )
-            {
-                IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
-                pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
-                commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
+            IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
+            pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
+            ActionUtils.activateActionHandler( pda );
 
-                IAction ra = ( IAction ) browserActionMap.get( refreshAction );
-                commandService.getCommand( ra.getActionDefinitionId() ).setHandler( new ActionHandler( ra ) );
-            }
+            IAction ra = ( IAction ) browserActionMap.get( refreshAction );
+            ActionUtils.activateActionHandler( ra );
         }
 
-        if ( commandService != null )
-        {
-            IAction ua = ( IAction ) browserActionMap.get( upAction );
-            commandService.getCommand( ua.getActionDefinitionId() ).setHandler( new ActionHandler( ua ) );
-        }
+        IAction ua = ( IAction ) browserActionMap.get( upAction );
+        ActionUtils.activateActionHandler( ua );
     }
 
 
@@ -263,10 +252,6 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      */
     public void deactivateGlobalActionHandlers()
     {
-
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), null );
@@ -275,22 +260,15 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         }
         else
         {
-            if ( commandService != null )
-            {
-                IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
-                commandService.getCommand( pda.getActionDefinitionId() ).setHandler( null );
-
-                IAction ra = ( IAction ) browserActionMap.get( refreshAction );
-                commandService.getCommand( ra.getActionDefinitionId() ).setHandler( null );
-            }
+            IAction ra = ( IAction ) browserActionMap.get( refreshAction );
+            ActionUtils.deactivateActionHandler( ra );
+            
+            IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
+            ActionUtils.deactivateActionHandler( pda );
         }
 
-        if ( commandService != null )
-        {
-            IAction ua = ( IAction ) browserActionMap.get( upAction );
-            commandService.getCommand( ua.getActionDefinitionId() ).setHandler( null );
-        }
-
+        IAction ua = ( IAction ) browserActionMap.get( upAction );
+        ActionUtils.deactivateActionHandler( ua );
     }
 
 

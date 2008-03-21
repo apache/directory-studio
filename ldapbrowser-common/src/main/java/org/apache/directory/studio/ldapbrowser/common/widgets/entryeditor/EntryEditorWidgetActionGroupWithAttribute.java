@@ -24,15 +24,13 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAllValuesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.commands.ICommandService;
 
 
 /**
@@ -128,15 +126,10 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
     {
         super.activateGlobalActionHandlers();
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
-            commandService.getCommand( naa.getActionDefinitionId() ).setHandler( new ActionHandler( naa ) );
-            IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
-            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( new ActionHandler( eada ) );
-        }
+        IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
+        ActionUtils.activateActionHandler( naa );
+        IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
+        ActionUtils.activateActionHandler( eada );
     }
 
 
@@ -147,15 +140,10 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
     {
         super.deactivateGlobalActionHandlers();
 
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-        if ( commandService != null )
-        {
-            IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
-            commandService.getCommand( naa.getActionDefinitionId() ).setHandler( null );
-            IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
-            commandService.getCommand( eada.getActionDefinitionId() ).setHandler( null );
-        }
+        IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
+        ActionUtils.deactivateActionHandler( naa );
+        IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
+        ActionUtils.deactivateActionHandler( eada );
     }
 
 }

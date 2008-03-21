@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPrefere
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -44,12 +45,9 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.commands.ICommandService;
 
 
 /**
@@ -195,7 +193,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-        activateGlobalActionHandlers();
+//        activateGlobalActionHandlers();
     }
 
 
@@ -206,9 +204,9 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( entryEditorActionMap.get( newValueAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
+        toolBarManager.add( entryEditorActionMap.get( deleteAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( showQuickFilterAction );
         toolBarManager.update( true );
@@ -262,14 +260,14 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     protected void contextMenuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( entryEditorActionMap.get( newValueAction ) );
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( ( IAction ) entryEditorActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( entryEditorActionMap.get( copyAction ) );
+        menuManager.add( entryEditorActionMap.get( pasteAction ) );
+        menuManager.add( entryEditorActionMap.get( deleteAction ) );
+        menuManager.add( entryEditorActionMap.get( selectAllAction ) );
         menuManager.add( new Separator() );
 
         // edit
@@ -277,7 +275,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( entryEditorActionMap.get( propertyDialogAction ) );
     }
 
 
@@ -315,20 +313,17 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
      */
     public void activateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-
         if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), entryEditorActionMap
                 .get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), entryEditorActionMap
                 .get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), entryEditorActionMap
                 .get( deleteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), ( IAction ) entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), entryEditorActionMap
                 .get( selectAllAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) entryEditorActionMap
+            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), entryEditorActionMap
                 .get( propertyDialogAction ) );
             actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickFilterAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
 
@@ -336,37 +331,29 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         }
         else
         {
-            if ( commandService != null )
-            {
-                IAction da = ( IAction ) entryEditorActionMap.get( deleteAction );
-                da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
-                commandService.getCommand( da.getActionDefinitionId() ).setHandler( new ActionHandler( da ) );
+            IAction da = entryEditorActionMap.get( deleteAction );
+            da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
+            ActionUtils.activateActionHandler( da );
 
-                IAction ca = ( IAction ) entryEditorActionMap.get( copyAction );
-                ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
-                commandService.getCommand( ca.getActionDefinitionId() ).setHandler( new ActionHandler( ca ) );
+            IAction ca = entryEditorActionMap.get( copyAction );
+            ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
+            ActionUtils.activateActionHandler( ca );
 
-                IAction pa = ( IAction ) entryEditorActionMap.get( pasteAction );
-                pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
-                commandService.getCommand( pa.getActionDefinitionId() ).setHandler( new ActionHandler( pa ) );
+            IAction pa = entryEditorActionMap.get( pasteAction );
+            pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
+            ActionUtils.activateActionHandler( pa );
 
-                showQuickFilterAction.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.find" );
-                commandService.getCommand( showQuickFilterAction.getActionDefinitionId() ).setHandler(
-                    new ActionHandler( showQuickFilterAction ) );
+            showQuickFilterAction.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.find" );
+            ActionUtils.activateActionHandler( showQuickFilterAction );
 
-                IAction pda = ( IAction ) entryEditorActionMap.get( propertyDialogAction );
-                pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
-                commandService.getCommand( pda.getActionDefinitionId() ).setHandler( new ActionHandler( pda ) );
-            }
+            IAction pda = entryEditorActionMap.get( propertyDialogAction );
+            pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
+            ActionUtils.activateActionHandler( pda );
         }
 
-        if ( commandService != null )
-        {
-            IAction nva = ( IAction ) entryEditorActionMap.get( newValueAction );
-            commandService.getCommand( nva.getActionDefinitionId() ).setHandler( new ActionHandler( nva ) );
-            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler(
-                new ActionHandler( openDefaultValueEditorActionProxy ) );
-        }
+        IAction nva = entryEditorActionMap.get( newValueAction );
+        ActionUtils.activateActionHandler( nva );
+        ActionUtils.activateActionHandler( openDefaultValueEditorActionProxy );
     }
 
 
@@ -375,9 +362,6 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
      */
     public void deactivateGlobalActionHandlers()
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
-            ICommandService.class );
-
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
@@ -391,30 +375,20 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         }
         else
         {
-            if ( commandService != null )
-            {
-                IAction da = ( IAction ) entryEditorActionMap.get( deleteAction );
-                commandService.getCommand( da.getActionDefinitionId() ).setHandler( null );
-
-                IAction ca = ( IAction ) entryEditorActionMap.get( copyAction );
-                commandService.getCommand( ca.getActionDefinitionId() ).setHandler( null );
-
-                IAction pa = ( IAction ) entryEditorActionMap.get( pasteAction );
-                commandService.getCommand( pa.getActionDefinitionId() ).setHandler( null );
-
-                commandService.getCommand( showQuickFilterAction.getActionDefinitionId() ).setHandler( null );
-
-                IAction pda = ( IAction ) entryEditorActionMap.get( propertyDialogAction );
-                commandService.getCommand( pda.getActionDefinitionId() ).setHandler( null );
-            }
+            IAction ca = entryEditorActionMap.get( copyAction );
+            ActionUtils.deactivateActionHandler( ca );
+            IAction pa = entryEditorActionMap.get( pasteAction );
+            ActionUtils.deactivateActionHandler( pa );
+            IAction da = entryEditorActionMap.get( deleteAction );
+            ActionUtils.deactivateActionHandler( da );
+            ActionUtils.deactivateActionHandler( showQuickFilterAction );
+            IAction pda = entryEditorActionMap.get( propertyDialogAction );
+            ActionUtils.deactivateActionHandler( pda );
         }
 
-        if ( commandService != null )
-        {
-            IAction nva = ( IAction ) entryEditorActionMap.get( newValueAction );
-            commandService.getCommand( nva.getActionDefinitionId() ).setHandler( null );
-            commandService.getCommand( openDefaultValueEditorActionProxy.getActionDefinitionId() ).setHandler( null );
-        }
+        IAction nva = entryEditorActionMap.get( newValueAction );
+        ActionUtils.deactivateActionHandler( nva );
+        ActionUtils.deactivateActionHandler( openDefaultValueEditorActionProxy );
     }
 
 
