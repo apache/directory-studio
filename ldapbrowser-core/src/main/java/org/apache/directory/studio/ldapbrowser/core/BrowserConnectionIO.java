@@ -20,9 +20,9 @@
 package org.apache.directory.studio.ldapbrowser.core;
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +95,7 @@ public class BrowserConnectionIO
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static void load( FileInputStream stream, Map<String, IBrowserConnection> browserConnectionMap ) throws ConnectionIOException
+    public static void load( InputStream stream, Map<String, IBrowserConnection> browserConnectionMap ) throws ConnectionIOException
     {
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -351,7 +351,7 @@ public class BrowserConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void save( FileOutputStream stream, Map<String, IBrowserConnection> browserConnectionMap ) throws IOException
+    public static void save( OutputStream stream, Map<String, IBrowserConnection> browserConnectionMap ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
