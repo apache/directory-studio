@@ -23,6 +23,8 @@ package org.apache.directory.studio.maven.plugins;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -413,6 +415,8 @@ public abstract class AbstractStudioMojo extends AbstractMojo
     protected List<Artifact> createArtifactList()
     {
         List<Artifact> list = new ArrayList<Artifact>();
+        
+        // Copying only artifacts with 'provided' scope
         for ( Iterator<Artifact> artifactItem = project.getArtifacts().iterator(); artifactItem.hasNext(); )
         {
             Artifact artifact = ( Artifact ) artifactItem.next();
@@ -421,6 +425,25 @@ public abstract class AbstractStudioMojo extends AbstractMojo
                 list.add( artifact );
             }
         }
+
+        // Sorting list before returning it
+        Collections.sort( list, new Comparator<Artifact>()
+        {
+            public int compare( Artifact o1, Artifact o2 )
+            {
+                String artifactId1 = o1.getArtifactId();
+                String artifactId2 = o2.getArtifactId();
+
+                if ( ( artifactId1 != null ) && ( artifactId2 != null ) )
+                {
+                    return artifactId1.compareToIgnoreCase( artifactId2 );
+                }
+
+                // Default
+                return o1.toString().compareToIgnoreCase( o2.toString() );
+            }
+        } );
+        
         return list;
     }
 
