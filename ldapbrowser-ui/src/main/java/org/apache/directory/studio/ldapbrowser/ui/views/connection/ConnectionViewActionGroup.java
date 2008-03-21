@@ -23,6 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 import org.apache.directory.studio.connection.ui.actions.ConnectionViewActionProxy;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionActionGroup;
+import org.apache.directory.studio.ldapbrowser.ui.actions.ExportConnectionsAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.ImportConnectionsAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
 import org.eclipse.jface.action.IAction;
@@ -66,6 +68,12 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant exportExcelAction. */
     private static final String exportExcelAction = "exportExcelAction";
 
+    /** The Constant importConnectionsAction. */
+    private static final String importConnectionsAction = "importConnectionsAction";
+
+    /** The Constant importConnectionsAction. */
+    private static final String exportConnectionsAction = "exportConnectionsAction";
+
     /** The Constant openSchemaBrowserAction. */
     private static final String openSchemaBrowserAction = "openSchemaBrowserAction";
 
@@ -95,6 +103,10 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
         connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, this,
             new ImportExportAction( ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
+        connectionActionMap.put( importConnectionsAction, new ConnectionViewActionProxy( viewer, this,
+            new ImportConnectionsAction() ) );
+        connectionActionMap.put( exportConnectionsAction, new ConnectionViewActionProxy( viewer, this,
+            new ExportConnectionsAction() ) );
 
         connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer, this,
             new OpenSchemaBrowserAction() ) );
@@ -153,6 +165,8 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         importMenuManager.add( ( IAction ) connectionActionMap.get( importLdifAction ) );
         importMenuManager.add( ( IAction ) connectionActionMap.get( importDsmlAction ) );
         importMenuManager.add( new Separator() );
+        importMenuManager.add( ( IAction ) connectionActionMap.get( importConnectionsAction ) );
+        importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
         MenuManager exportMenuManager = new MenuManager( "Export" );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportLdifAction ) );
@@ -160,6 +174,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         exportMenuManager.add( new Separator() );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportCsvAction ) );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportExcelAction ) );
+        exportMenuManager.add( new Separator() );
+        exportMenuManager.add( ( IAction ) connectionActionMap.get( exportConnectionsAction ) );
+        exportMenuManager.add( new Separator() );
         menuManager.add( exportMenuManager );
         menuManager.add( new Separator() );
 

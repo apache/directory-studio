@@ -71,6 +71,10 @@ public interface BrowserUIConstants
 
     public static final String IMG_EXPORT_LDIF_WIZARD = "resources/icons/export_ldif_wizard.gif";
 
+    public static final String IMG_IMPORT_CONNECTIONS_WIZARD = "resources/icons/import_connections_wizard.gif";
+    
+    public static final String IMG_EXPORT_CONNECTIONS_WIZARD = "resources/icons/export_connections_wizard.gif";
+    
     public static final String IMG_IMPORT_CSV_WIZARD = "resources/icons/import_csv_wizard.gif";
 
     public static final String IMG_EXPORT_CSV_WIZARD = "resources/icons/export_csv_wizard.gif";
@@ -87,6 +91,10 @@ public interface BrowserUIConstants
 
     public static final String IMG_EXPORT_LDIF = "resources/icons/export_ldif.gif";
 
+    public static final String IMG_IMPORT_CONNECTIONS = "resources/icons/import_connections.gif";
+
+    public static final String IMG_EXPORT_CONNECTIONS = "resources/icons/export_connections.gif";
+    
     public static final String IMG_IMPORT_CSV = "resources/icons/import_csv.gif";
 
     public static final String IMG_EXPORT_CSV = "resources/icons/export_csv.gif";
