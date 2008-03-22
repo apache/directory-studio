@@ -375,8 +375,9 @@
 			<title>Connect with directory and its schema</title>
 			<para>
 				The LDIF editor could be connected to a directory server and its schema. 
-				A prerequirement is that the connection is defined. 
-				Then you could select a connection from the drop-down list.
+				You could select a connection at the top of the LDIF editor by pushing 
+				the <emphasis role="strong">Browse...</emphasis> button and selecting 
+				a connection from the dialog.
 				Doing this will provide you the following features:
 				<itemizedlist>
 					<listitem>
