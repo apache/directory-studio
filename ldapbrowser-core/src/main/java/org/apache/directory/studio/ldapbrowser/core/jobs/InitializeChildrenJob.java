@@ -174,24 +174,22 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             
             // determine alias and referral handling
             SearchScope scope = SearchScope.ONELEVEL;
-            AliasDereferencingMethod derefAliasMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
-            ReferralHandlingMethod handleReferralsMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
+            AliasDereferencingMethod aliasesDereferencingMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
+            if ( parent.isAlias() )
+            {
+                aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
+            }
+            ReferralHandlingMethod referralsHandlingMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
+            if ( parent.isReferral() )
+            {
+                referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
+            }
             Control[] controls = null;
-//            if( parent.isReferral() && handleReferralsMethod == ReferralHandlingMethod.MANAGE )
-//            {
-//                handleReferralsMethod = ReferralHandlingMethod.FOLLOW;
-//                scope = SearchScope.OBJECT;
-//            }
-//            if( parent.isAlias() && derefAliasMethod == AliasDereferencingMethod.NEVER )
-//            {
-//                derefAliasMethod = AliasDereferencingMethod.FINDING;
-//                scope = SearchScope.OBJECT;
-//            }
             
             // get children,
             ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
                 .getChildrenFilter(), ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
-                parent.getBrowserConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod,
+                parent.getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
                 BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                     BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), controls );
             SearchJob.searchAndUpdateModel( parent.getBrowserConnection(), search, monitor );
@@ -238,7 +236,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             ISearch subSearch = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
                 .getChildrenFilter() != null ? parent.getChildrenFilter() : ISearch.FILTER_SUBENTRY,
                 ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent
-                    .getBrowserConnection().getTimeLimit(), derefAliasMethod, handleReferralsMethod, BrowserCorePlugin
+                    .getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod, BrowserCorePlugin
                     .getDefault().getPluginPreferences()
                     .getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), new Control[]
                     { Control.SUBENTRIES_CONTROL } );
