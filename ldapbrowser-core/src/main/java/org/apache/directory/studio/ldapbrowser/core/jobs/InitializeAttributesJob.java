@@ -35,6 +35,8 @@ import javax.naming.InvalidNameException;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -222,11 +224,22 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         }
         else
         {
+            AliasDereferencingMethod aliasesDereferencingMethod = entry.getBrowserConnection()
+                .getAliasesDereferencingMethod();
+            if ( entry.isAlias() )
+            {
+                aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
+            }
+            ReferralHandlingMethod referralsHandlingMethod = entry.getBrowserConnection().getReferralsHandlingMethod();
+            if ( entry.isReferral() )
+            {
+                referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
+            }
+            
             // search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
-                0, entry.getBrowserConnection().getAliasesDereferencingMethod(), entry.getBrowserConnection()
-                    .getReferralsHandlingMethod(), false, null );
+                0, aliasesDereferencingMethod, referralsHandlingMethod, false, null );
             SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
             // set initialized state
@@ -394,8 +407,8 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         ISearch search;
         IEntry entry;
         // search the entry
-        Connection.AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
-        Connection.ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
+        AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
+        ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
         search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
             SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
         SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
