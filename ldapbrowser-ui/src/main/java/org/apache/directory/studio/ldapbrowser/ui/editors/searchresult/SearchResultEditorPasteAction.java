@@ -24,8 +24,10 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 
 
 /**
@@ -35,12 +37,18 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 public class SearchResultEditorPasteAction extends PasteAction
 {
 
+    /**
+     * Creates a new instance of SearchResultEditorPasteAction.
+     */
     public SearchResultEditorPasteAction()
     {
         super();
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.PasteAction#getText()
+     */
     public String getText()
     {
         IValue[] values = getValuesToPaste();
@@ -53,6 +61,9 @@ public class SearchResultEditorPasteAction extends PasteAction
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.PasteAction#isEnabled()
+     */
     public boolean isEnabled()
     {
         if ( this.getValuesToPaste() != null )
@@ -64,25 +75,24 @@ public class SearchResultEditorPasteAction extends PasteAction
     }
 
 
+    /**
+     * @see org.apache.directory.studio.ldapbrowser.common.actions.PasteAction#run()
+     */
     public void run()
     {
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-//            String attributeDescription = getSelectedAttributeHierarchies()[0].getAttribute().getDescription();
-//
-//            String[] attributeDescriptions = new String[values.length];
-//            Object[] rawValues = new Object[values.length];
-//            for ( int v = 0; v < values.length; v++ )
-//            {
-//                attributeDescriptions[v] = attributeDescription;
-//                rawValues[v] = values[v].getRawValue();
-//            }
-//            IEntry entry = getSelectedAttributeHierarchies()[0].getAttribute().getEntry();
-//
-//            new CreateValuesJob( entry, attributeDescriptions, rawValues ).execute();
-            IEntry entry = getSelectedAttributeHierarchies()[0].getAttribute().getEntry();
-            new CreateValuesJob( entry, values ).execute();
+            IAttribute attribute = getSelectedAttributeHierarchies()[0].getAttribute();
+            IEntry entry = attribute.getEntry();
+
+            IValue[] newValues = new IValue[values.length]; 
+            for ( int v = 0; v < values.length; v++ )
+            {
+                newValues[v] = new Value( attribute, values[v].getRawValue() );
+            }
+            
+            new CreateValuesJob( entry, newValues ).execute();
         }
     }
 
@@ -108,14 +118,6 @@ public class SearchResultEditorPasteAction extends PasteAction
                 IValue[] values = ( IValue[] ) content;
                 return values;
             }
-
-            // Object content =
-            // this.getFromClipboard(LdifAttrValLinesTransfer.getInstance());
-            // if (content != null && content instanceof LdifAttrValLine[])
-            // {
-            // LdifAttrValLine[] lines = (LdifAttrValLine[]) content;
-            // return lines;
-            // }
         }
 
         return null;
