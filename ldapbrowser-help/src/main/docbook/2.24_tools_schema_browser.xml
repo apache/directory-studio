@@ -50,8 +50,9 @@
 			<title>Layout</title>
 			<para>
 				The header of the Schema Browser contains the title and
-				the toolbar. The title shows the connection of the
-				currently displayed schema.
+				the toolbar. The toolbar shows the connection of the
+				currently displayed schema and a Browse... button to select
+				another connection.
 			</para>
 			<para>
 				The Schema Browser consists of five pages:

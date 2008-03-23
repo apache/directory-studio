@@ -124,31 +124,33 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>Anonymous Authentication</entry>
+						<entry>Authentication Method</entry>
 						<entry>
-							Uses anonymous authentication, no
-							authentication parameters required.
+							Select one of the following options:
+							<itemizedlist spacing="normal" mark="bullet">
+								<listitem>Anonymous Authentication: connects to the directory without authentication.</listitem>
+								<listitem>Simple Authentication: uses simple authentication using a bind DN and password, the credentials are transmitted in clear-text over the network.</listitem>
+								<listitem>CRAM-MD5 (SASL): authenticates to the directory using a challenge-response authentication mechanism, the credentials are not transmitted in clear-text over the network.</listitem>
+								<listitem>DIGEST-MD5 (SASL): another challenge-response authentication mechanism, additionally you could define your realm.</listitem>
+							</itemizedlist>
 						</entry>
 					</row>
-					<row>
-						<entry>Simple Authentication</entry>
-						<entry>
-							Uses simple authentication, requires
-							authenticaton parameters.
-						</entry>
-					</row>
-					<row>
-						<entry>Bind DN</entry>
-						<entry>
-							The distinguished name used to bind.
-							Previously entered DNs could be selected
-							from drop-down list.
-						</entry>
-					</row>
-					<row>
-						<entry>Bind password</entry>
-						<entry>The password used to bind.</entry>
-					</row>
+						<row>
+							<entry>Bind DN or user</entry>
+							<entry>
+								The distinguished name or user ID used to bind.
+								Previously entered DNs could be selected
+								from drop-down list.
+							</entry>
+						</row>
+						<row>
+							<entry>Bind Password</entry>
+							<entry>The password used to bind.</entry>
+						</row>
+						<row>
+							<entry>SASL Realm</entry>
+							<entry>The SASL Relam used to bind, only applicaple if DIGEST-MD5 is choosen.</entry>
+						</row>
 					<row>
 						<entry>Save password</entry>
 						<entry>
@@ -251,21 +253,28 @@
 						</entry>
 					</row>
 					<row>
-						<entry>Aliases Dereferencing</entry>
+						<entry>Alias Dereferencing</entry>
 						<entry>
 							Specifies whether aliases should be
-							derefenced while finding the search base
-							entry or when performing the search or both.
+							dereferenced while finding the search base
+							entry or when performing the search or
+							both.
+							To manage (create, modify, delete) aliases
+							you have to uncheck both options. 
 						</entry>
 					</row>
 					<row>
-						<entry>Referral Handling</entry>
+						<entry>Referrals Handling</entry>
 						<entry>
-							Specifies the referral handling. Ignore
-							means that referrals returned from server
-							are ignored, Follow means that the LDAP
-							Browser will follow referrals returned from
-							server.
+							Specifies the referral handling. 
+							Follow means that the LDAP Browser will follow 
+							referrals returned from server. 
+							Ignore means that referrals returned from server 
+							are ignored. 
+							Select Manage to be able to manage (create,
+							modify, delete) referral entries. In that case
+							the browser sends the Manage DSA IT control
+							in each request.  
 						</entry>
 					</row>
 				</tbody>
