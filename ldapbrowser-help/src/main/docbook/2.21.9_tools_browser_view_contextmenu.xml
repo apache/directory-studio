@@ -295,8 +295,7 @@
 						to the system clipboard. The entries are copied
 						in an internal format and could be pasted inside
 						the LDAP Browser view. The DNs are copied as
-						text and could be pasted even outside the
-						workbench.
+						text and could be pasted even outside of Studio.
 					</para>
 				</listitem>
 				<listitem>
@@ -347,11 +346,8 @@
 				<listitem>
 					<para>
 						Description: Pastes the previously copied
-						entries as children into the selected entry. The
-						new entries will receive the same RDNs and
-						attributes as the copied entries. If there is
-						already an entry with the same RDN the new
-						entries RDN value is prefixed with 'Copy of '.
+						entries as children into the selected entry. 
+						
 						If the copied entries have children you are
 						asked for the copy depth.
 						<screenshot>
@@ -359,6 +355,18 @@
 								<imageobject>
 									<imagedata scale="50"
 										fileref="images/tools_browser_view_3.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+						The	new entries will receive the same RDNs and
+						attributes as the copied entries. If there is
+						already an entry with the same RDN you are asked
+						how to proceed. 
+						<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_browser_view_11.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</screenshot>

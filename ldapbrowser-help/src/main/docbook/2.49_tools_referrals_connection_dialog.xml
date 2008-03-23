@@ -18,5 +18,21 @@
 -->
 <section id="tools_referral_connection_dialog">
 	<title>Select Referral Connection dialog</title>
-	<para>TODO..</para>
+	<para>
+		The Select Referral Connection dialog is used to select
+		the target connection of an referral. If the host and port
+		one of the available connection matches the host and port
+		of the referral URL this connection is preselected. It is 
+		also possible to create a new connection for the referral.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/tools_referral_connection_dialog_1.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>	
+	</para>	
 </section>

@@ -1104,7 +1104,7 @@
 						Edits the selected value using the default value
 						editor. To change the default value editor see
 						<link linkend="preferences_value_editors">
-							Value Provider preferences
+							Value Editors preferences
 						</link>
 						.
 					</para>

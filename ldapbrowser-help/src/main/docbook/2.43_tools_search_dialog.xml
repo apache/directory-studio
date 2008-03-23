@@ -137,23 +137,21 @@
 					<row>
 						<entry>Filter</entry>
 						<entry>
-							Enter a valid LDAP search filter. Hit 
-							<shortcut><keycombo><keycap>Strg</keycap><keycap>Space</keycap></keycombo></shortcut> 
-							to get content assistance. The drop-down list
-							provides a history of recently used
-							filters. A click to the
+							Enter a valid LDAP search filter. The drop-down list
+							provides a history of recently used	filters. A click to the
 							<emphasis role="strong">
 								Filter Editor
 							</emphasis>
 							button opens the 
-							<link linkend="tools_filter_editor_dialog">Filter Editor dialog</link>.
+							<link linkend="tools_filter_editor_dialog">Filter Editor dialog</link>
+							, it also explains how the content assistance works.
 						</entry>
 						<entry>
 							<superscript>*</superscript>)
 						</entry>
 					</row>
 					<row>
-						<entry>Returning Attributers</entry>
+						<entry>Returning Attributes</entry>
 						<entry>
 							A comma-separated list of attributes
 							that should be returned and displayed in
@@ -166,6 +164,15 @@
 						<entry>
 							<superscript>*</superscript>
 							)
+						</entry>
+					</row>
+					<row>
+						<entry>Subentries Control</entry>
+						<entry>
+							Activates the subentries control.
+						</entry>
+						<entry>
+							disabled
 						</entry>
 					</row>
 					
@@ -203,7 +210,7 @@
 					<row>
 						<entry>Time Limit</entry>
 						<entry>
-							The maximum time in milliseconds the
+							The maximum time in seconds the
 							server should search. Value 0
 							means no limit. Note that this value is
 							a client-side value, its possible that

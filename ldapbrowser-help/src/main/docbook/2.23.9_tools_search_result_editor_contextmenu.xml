@@ -544,7 +544,7 @@
 	</simplesect>
 
 	<simplesect id="tools_search_result_editor_contextmenu_paste">
-		<title>TODO: Paste Values</title>
+		<title>Paste Values</title>
 		<para>
 			<itemizedlist>
 				<listitem>
@@ -562,11 +562,8 @@
 				</listitem>
 				<listitem>
 					<para>
-						Description: Pasted the previously copied values
-						to the selected attribute. Each value is copied
-						separately, when an error occurs while adding
-						the value the paste operation will continue with
-						the next value.
+						Description: Pastes the previously copied values
+						to the selected attribute.
 					</para>
 				</listitem>
 				<listitem>
@@ -983,7 +980,7 @@
 						value editor. To change the default value editor
 						see
 						<link linkend="preferences_value_editors">
-							Value Provider preferences
+							Value Editor preferences
 						</link>
 						.
 					</para>

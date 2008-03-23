@@ -28,9 +28,14 @@
 	</para>	
 	
 	<para>
-		Note: Some directories doesn't support moving whole trees but
-		only moving leaf entries. Also it is not possible to move base 
-		entries or the root DSE.
+		Note 1: Some directories don't support moving whole trees but
+		only moving of leaf entries. In that case you are ask if you want to
+		simulate the move operation, this is done by copying the whole
+		tree and deleting the old tree afterwards.
+	</para>
+								
+	<para>
+		Note 2: It is not possible to move the root DSE.
 	</para>
 								
 	<para>

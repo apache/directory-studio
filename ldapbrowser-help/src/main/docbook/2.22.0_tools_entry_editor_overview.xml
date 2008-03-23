@@ -77,11 +77,11 @@
 	</simplesect>
 
 	<simplesect id="tools_entry_editor_fonts">
-		<title>Fonts and colors</title>
+		<title>Colors and Fonts</title>
 		<para>
 			To distinguish the different attribute classes the Entry
-			editor uses different fonts. By default the following fonts
-			and colors are used:
+			editor uses different fonts. By default the following colors 
+			and fonts are used:
 			<informaltable frame="all">
 				<tgroup cols="4">
 					<colspec colname="Attribute class" colwidth="2*" />
@@ -162,9 +162,9 @@
 			</informaltable>
 		</para>
 		<para>
-			These fonts and colors could be changed in the
-			<link linkend="preferences_attributes">
-				Attributes preferences
+			These colors and fonts could be changed in the
+			<link linkend="preferences_colors_and_fonts">
+				Colors and Fonts preferences
 			</link>
 			.
 		</para>

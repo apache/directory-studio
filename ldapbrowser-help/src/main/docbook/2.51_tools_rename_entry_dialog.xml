@@ -31,9 +31,14 @@
 	</para>	
 	
 	<para>
-		Note: Some directories doesn't support renaming whole trees but only
-		renaming leaf entries. Also it is not possible to delete base entries 
-		or the Root DSE.
+		Note 1: Some directories don't support renaming whole trees but only
+		renaming of leaf entries. In that case you are ask if you want to
+		simulate the rename operation, this is done by copying the whole
+		tree and deleting the old tree afterwards.
+	</para>
+	
+	<para>
+		Note 2: It is not possible to rename the Root DSE.
 	</para>
 								
 	<para>
@@ -98,16 +103,6 @@
 						</entry>
 						<entry>
 							Current RDN
-						</entry>
-					</row>
-					<row>
-						<entry>Delete old RDN</entry>
-						<entry>
-							If enabled the old RDN name-value pair is removed 
-							from entry, otherwise it remains.
-						</entry>
-						<entry>
-							on
 						</entry>
 					</row>
 				</tbody>

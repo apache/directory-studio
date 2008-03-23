@@ -18,5 +18,145 @@
 -->
 <section id="tools_filter_editor_dialog">
 	<title>Filter Editor dialog</title>
-	<para>TODO..</para>
+	<para>
+		To edit complex and nested filters you could use the filter editor dialog.
+		It provides syntax highlighting, content assistance and a formatter for
+		nested filters. 
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/tools_filter_editor_dialog_1.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>	
+	</para>
+
+	<simplesect id="tools_filter_editor_dialog_syntax_coloring">
+		<title>Syntax coloring</title>
+		<para>
+			Syntax coloring helps you to distinguish the different elements of an LDAP filter. 
+			The following colors and fonts are used:
+		</para>	
+		<informaltable frame="all">
+			<tgroup cols="2">
+				<colspec colname="Element" colwidth="3*" />
+				<colspec colname="Color" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Element</entry>
+						<entry>Color</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>opening and closing parenthesis</entry>
+						<entry>black and bold</entry>
+					</row>
+					<row>
+						<entry>filter operator (&amp; | !)</entry>
+						<entry>green and bold</entry>
+					</row>
+					<row>
+						<entry>attribute</entry>
+						<entry>violett</entry>
+					</row>
+					<row>
+						<entry>filter type</entry>
+						<entry>red and bold</entry>
+					</row>
+					<row>
+						<entry>assertion value</entry>
+						<entry>blue</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</simplesect>
+
+	<simplesect id="tools_filter_editor_dialog_content_assist">
+		<title>Content assistance and code completion</title>
+		<para>
+			The filter editor provides the following helpful features when editing an LDAP filter:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Automatically adds and removes opening and closing parenthesis: just start typing the attribute or filter operator.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Hit <shortcut><keycombo><keycap>Strg</keycap><keycap>Space</keycap></keycombo></shortcut>
+						to open a list of available code completions, press Esc to close the list. 
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Attribute completion: when typing an attribute, e.g. "tel" a list with attributes that start with 
+						the "tel" is opened.
+				 		<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_filter_editor_dialog_2.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Object class completion: if the attribute is objectClass a list with available object classes
+						is opened.
+				 		<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_filter_editor_dialog_3.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Matching rule completion: for filters with extensible matching a list with available 
+						matching rules is provided. 
+				 		<screenshot>
+							<mediaobject>
+								<imageobject>
+									<imagedata scale="50"
+										fileref="images/tools_filter_editor_dialog_4.png" format="PNG" />
+								</imageobject>
+							</mediaobject>
+						</screenshot>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect id="tools_filter_editor_dialog_format">
+		<title>Formatting</title>
+		<para>
+			In the filter editor it is possible to format complex and nested filters.
+			The formatter is invoked by pressing the <emphasis role="strong">Format</emphasis>
+			button and formats the filter the following way:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Each filter item gets its own line.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Each level of a nested filter is intended according to the level.
+					</para>
+				</listitem>
+			</itemizedlist>
+			When opening the editor the filter is formatted automatically.
+			When pressing OK the line breaks and white-spaces are removed.
+		</para>
+	</simplesect>
 </section>

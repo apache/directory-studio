@@ -19,7 +19,7 @@
 <section id="tools_connections_view">
 	<title>Connections view</title>
 	<para>
-		The Connections view shows all the LDAP connections that you have added. 
+		The Connections view shows all the LDAP connections that you have added.
 		Here is an example screenshot of the Connection view:
 	</para>				
 	<para>
@@ -33,7 +33,8 @@
 		</screenshot>
 	</para>
 	<para>
-	 	To re-order connections just drag-and-drop connections.
+	    It is possible to organize connections in folders.   
+	 	Use drag-and-drop to re-organize connections and folders.
 	</para>
 	
 	<simplesect id="tools_connections_view_icons">

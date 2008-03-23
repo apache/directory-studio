@@ -207,65 +207,43 @@
 	</simplesect>
 
 	<simplesect id="tools_browser_view_dit_aliases_and_referrals">
-		<title>Aliases and referrals entries</title>
+		<title>Alias and referral entries</title>
 		<para>
-			In the DIT category there are two ways to handle aliases and
-			referral objects:
-			<itemizedlist>
-				<listitem>
-					<para>
-						If the option "Show alias and referral objects"
-						is checked in the
-						<link linkend="preferences_browser_view">
-							LDAP Browser preferences
-						</link>
-						, aliases and referrals and their target entry
-						are explicitly displayed. Aliases and referrals
-						could by identified by the
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em"
-										fileref="icons/entry_alias.gif" format="GIF" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-						or 
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em"
-										fileref="icons/entry_ref.gif" format="GIF" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-						icon. The target entry is appended as a child of
-						the alias or referral entry. The target entry of
-						an alias entry is labeled by its complete DN.
-						The target entry of a referral entry is labeled
-						by its URL. In case of referrals the
-						<link
-							linkend="tools_referral_connection_dialog">
-							Select Referral Connection dialog
-						</link>
-						appears to select the target connection matching
-						the referral URL.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						If the previous option isn't checked the
-						handling of aliases and referrals is determined
-						by the
-						<link
-							linkend="tools_connection_properties_options">
-							Connection properties
-						</link>
-						.
-					</para>
-				</listitem>
-			</itemizedlist>
+			To manage alias entries you have to disable the options "Finding Base DN" and "Search"
+			in the "Aliases Dereferencing" group of the 
+			<link
+				linkend="tools_connection_properties_options">
+				Connection properties
+			</link>
+			. This setting will display 
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="icons/entry_alias.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			 alias entries in the tree.
 		</para>
+		<para>
+			To manage referral entries you have to enable the options "Manage"
+			in the "Referrals Handling" group of the 
+			<link
+				linkend="tools_connection_properties_options">
+				Connection properties
+			</link>
+			. This setting will display 
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="icons/entry_ref.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			referral entries in the tree.
+		</para>		
 	</simplesect>
 
 	<simplesect id="tools_browser_view_dit_folding">
