@@ -640,7 +640,7 @@
                   <url>${pom.distributionManagement.snapshotRepository.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
                   <groupId>${pom.groupId}</groupId>
-                  <packaging>tar.gz</packaging>
+                  <packaging>zip</packaging>
                   <version>${pom.version}-win32</version>
                   <uniqueVersion>false</uniqueVersion>
                 </configuration>
