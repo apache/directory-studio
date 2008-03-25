@@ -20,6 +20,7 @@
 package org.apache.directory.studio.connection.core.io.jndi;
 
 
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -104,6 +105,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     private boolean isConnected;
 
     private Thread jobThread;
+
+    private Collection<String> binaryAttributes;
 
     /** JNDI constant for "throw" referrals handling */
     public static final String REFERRAL_THROW = "throw";
@@ -219,6 +222,40 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     public boolean isConnected()
     {
         return context != null;
+    }
+
+
+    /**
+     * Sets the binary attributes.
+     * 
+     * @param binaryAttributes the binary attributes
+     */
+    public void setBinaryAttributes( Collection<String> binaryAttributes )
+    {
+        this.binaryAttributes = binaryAttributes;
+        String binaryAttributesString = "";
+        for ( String string : binaryAttributes )
+        {
+            binaryAttributesString += string + " ";
+        }
+
+        if ( environment != null )
+        {
+            environment.put( "java.naming.ldap.attributes.binary", binaryAttributesString );
+        }
+
+        if ( context != null )
+        {
+            try
+            {
+                context.addToEnvironment( "java.naming.ldap.attributes.binary", binaryAttributesString );
+            }
+            catch ( NamingException e )
+            {
+                // TODO: logging
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -376,7 +413,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        if( connection.isReadOnly() )
+        if ( connection.isReadOnly() )
         {
             monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
             return;
@@ -467,7 +504,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        if( connection.isReadOnly() )
+        if ( connection.isReadOnly() )
         {
             monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
             return;
@@ -567,7 +604,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        if( connection.isReadOnly() )
+        if ( connection.isReadOnly() )
         {
             monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
             return;
@@ -655,7 +692,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     public void deleteEntry( final String dn, final ReferralHandlingMethod referralsHandlingMethod,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        if( connection.isReadOnly() )
+        if ( connection.isReadOnly() )
         {
             monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
             return;
@@ -765,6 +802,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         else
         {
             environment.put( Context.PROVIDER_URL, "ldap://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        if ( binaryAttributes != null )
+        {
+            setBinaryAttributes( binaryAttributes );
         }
 
         InnerRunnable runnable = new InnerRunnable()

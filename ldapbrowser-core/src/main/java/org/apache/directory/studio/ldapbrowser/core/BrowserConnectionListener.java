@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.core;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.IConnectionListener;
@@ -38,6 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
@@ -65,6 +69,7 @@ public class BrowserConnectionListener implements IConnectionListener
             {
                 EventRegistry.suspendEventFireingInCurrentThread();
                 openBrowserConnection( browserConnection, monitor );
+                setBinaryAttributes( browserConnection, monitor );
             }
             finally
             {
@@ -180,9 +185,35 @@ public class BrowserConnectionListener implements IConnectionListener
                 browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
                 monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
                 e.printStackTrace();
-                return;
             }
         }
+    }
+
+
+    /**
+     * Extracts the binary attributes from the schema and 
+     * sets the binary attributes to the underlying connection.
+     * 
+     * @param browserConnection the browser connection
+     * @param monitor the progress monitor
+     */
+    private static void setBinaryAttributes( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    {
+        List<String> binaryAttributeNames = new ArrayList<String>();
+
+        Schema schema = browserConnection.getSchema();
+        AttributeTypeDescription[] attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
+        for ( AttributeTypeDescription atd : attributeTypeDescriptions )
+        {
+            if ( atd.isBinary() )
+            {
+                String name = atd.getNames() == null || atd.getNames().length == 0 ? atd.getNumericOID() : atd
+                    .getNames()[0];
+                binaryAttributeNames.add( name );
+            }
+        }
+
+        browserConnection.getConnection().getJNDIConnectionWrapper().setBinaryAttributes( binaryAttributeNames );
     }
 
 }
