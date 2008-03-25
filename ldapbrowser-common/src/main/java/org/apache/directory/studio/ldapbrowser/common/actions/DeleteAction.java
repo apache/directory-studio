@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +33,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
@@ -42,8 +45,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -589,6 +591,7 @@ public class DeleteAction extends BrowserAction
         if ( getSelectedValues().length > 0 && !selectedObjectClasses.isEmpty() )
         {
             IEntry entry = getSelectedValues()[0].getAttribute().getEntry();
+            Schema schema = entry.getBrowserConnection().getSchema();
             // get remaining attributes
             String[] ocValues = entry.getSubschema().getObjectClassNames();
             Set<String> remainingObjectClassesSet = new HashSet<String>( Arrays.asList( ocValues ) );
@@ -596,19 +599,23 @@ public class DeleteAction extends BrowserAction
             Set<AttributeTypeDescription> remainingAttributeSet = new HashSet<AttributeTypeDescription>();
             for ( String oc : remainingObjectClassesSet )
             {
-                ObjectClassDescription ocd = entry.getBrowserConnection().getSchema().getObjectClassDescription( oc );
+                ObjectClassDescription ocd = schema.getObjectClassDescription( oc );
                 if ( ocd != null )
                 {
-                    String[] mustAttrs = ocd.getMustAttributeTypeDescriptionNamesTransitive();
+                    Collection<String> mustAttrs = SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd,
+                        schema );
                     for ( String mustAttr : mustAttrs )
                     {
-                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema().getAttributeTypeDescription( mustAttr );
+                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema()
+                            .getAttributeTypeDescription( mustAttr );
                         remainingAttributeSet.add( atd );
                     }
-                    String[] mayAttrs = ocd.getMayAttributeTypeDescriptionNamesTransitive();
+                    Collection<String> mayAttrs = SchemaUtils.getMayAttributeTypeDescriptionNamesTransitive( ocd,
+                        schema );
                     for ( String mayAttr : mayAttrs )
                     {
-                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema().getAttributeTypeDescription( mayAttr );
+                        AttributeTypeDescription atd = entry.getBrowserConnection().getSchema()
+                            .getAttributeTypeDescription( mayAttr );
                         remainingAttributeSet.add( atd );
                     }
                 }

@@ -22,13 +22,16 @@ package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.DecoratedField;
@@ -124,7 +127,9 @@ public class AttributeTypeWizardPage extends WizardPage
         this.initialShowSubschemaAttributesOnly = initialShowSubschemaAttributesOnly;
         this.initialHideExistingAttributes = initialHideExistingAttributes;
 
-        possibleAttributeTypes = initialEntry.getBrowserConnection().getSchema().getAttributeTypeDescriptionNames();
+        Collection<AttributeTypeDescription> atds = initialEntry.getBrowserConnection().getSchema().getAttributeTypeDescriptions();
+        Collection<String> atdNames = SchemaUtils.getNames( atds );
+        possibleAttributeTypes = atdNames.toArray( new String[atdNames.size()] );
         Arrays.sort( possibleAttributeTypes );
         possibleAttributeTypesSubschemaOnly = initialEntry.getSubschema().getAllAttributeNames();
         Arrays.sort( possibleAttributeTypesSubschemaOnly );

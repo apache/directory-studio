@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -204,7 +204,7 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
             setConnection( connection );
 
             // set schema element and activate tab
-            SchemaPart schemaElement = sbi.getSchemaElement();
+            AbstractSchemaDescription schemaElement = sbi.getSchemaElement();
             if ( schemaElement instanceof ObjectClassDescription )
             {
                 ocdPage.select( schemaElement );

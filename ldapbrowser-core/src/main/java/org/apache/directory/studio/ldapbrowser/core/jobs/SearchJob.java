@@ -37,6 +37,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
@@ -61,7 +62,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
@@ -527,12 +527,13 @@ public class SearchJob extends AbstractNotificationJob
 
                     if ( IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeDescription ) )
                     {
-                        if ( ObjectClassDescription.OC_ALIAS.equalsIgnoreCase( value ) )
+                        if ( SchemaConstants.ALIAS_OC.equalsIgnoreCase( value ) )
                         {
                             entry.setAlias( true );
                             entry.setHasChildrenHint( false );
                         }
-                        if ( ObjectClassDescription.OC_REFERRAL.equalsIgnoreCase( value ) )
+                        
+                        if ( SchemaConstants.REFERRAL_OC.equalsIgnoreCase( value ) )
                         {
                             entry.setReferral( true );
                             entry.setHasChildrenHint( false );

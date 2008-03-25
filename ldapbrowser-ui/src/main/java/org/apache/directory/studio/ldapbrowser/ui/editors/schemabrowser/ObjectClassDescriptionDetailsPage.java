@@ -21,8 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -64,26 +68,14 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
     /** The section with links to superior object classes */
     private Section superclassesSection;
 
-    /** The links to superior object classes */
-    private Hyperlink[] superLinks;
-
     /** The section with links to derived object classes */
     private Section subclassesSection;
-
-    /** The links to derived object classes */
-    private Hyperlink[] subLinks;
 
     /** The section with links to must attribute types */
     private Section mustSection;
 
-    /** The links to must attribute types */
-    private Hyperlink[] mustLinks;
-
     /** The section with links to may attribute types */
     private Section maySection;
-
-    /** The links to may attribute types */
-    private Hyperlink[] mayLinks;
 
 
     /**
@@ -229,34 +221,34 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         if ( ocd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
-            numericOidText = toolkit.createText( mainClient, getNonNullString( ocd.getNumericOID() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( ocd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Objectclass names:", SWT.NONE );
-            namesText = toolkit.createText( mainClient, getNonNullString( ocd.toString() ), SWT.NONE );
+            namesText = toolkit.createText( mainClient, getNonNullString( SchemaUtils.toString( ocd ) ), SWT.NONE );
             namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             namesText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
-            descText = toolkit.createText( mainClient, getNonNullString( ocd.getDesc() ), SWT.WRAP | SWT.MULTI );
+            descText = toolkit.createText( mainClient, getNonNullString( ocd.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
 
             String kind = "";
-            if ( ocd.isStructural() )
+            switch ( ocd.getKind() )
             {
-                kind = "structural";
-            }
-            else if ( ocd.isAbstract() )
-            {
-                kind = "abstract";
-            }
-            else if ( ocd.isAuxiliary() )
-            {
-                kind = "auxiliary";
+                case STRUCTURAL:
+                    kind = "structural";
+                    break;
+                case ABSTRACT:
+                    kind = "abstract";
+                    break;
+                case AUXILIARY:
+                    kind = "auxiliary";
+                    break;
             }
             if ( ocd.isObsolete() )
             {
@@ -295,36 +287,34 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( ocd != null )
         {
-            String[] names = ocd.getMustAttributeTypeDescriptionNamesTransitive();
-            if ( names != null && names.length > 0 )
+            Collection<String> names = SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd, getSchema() );
+            if ( names != null && names.size() > 0 )
             {
-                mustSection.setText( "MUST Attributes (" + names.length + ")" );
-                mustLinks = new Hyperlink[names.length];
-                for ( int i = 0; i < names.length; i++ )
+                mustSection.setText( "MUST Attributes (" + names.size() + ")" );
+                for ( String name : names )
                 {
-                    if ( ocd.getSchema().hasAttributeTypeDescription( names[i] ) )
+                    if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
-                        AttributeTypeDescription mustAtd = ocd.getSchema().getAttributeTypeDescription( names[i] );
-                        mustLinks[i] = toolkit.createHyperlink( mustClient, mustAtd.toString(), SWT.WRAP );
-                        mustLinks[i].setHref( mustAtd );
-                        mustLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                        mustLinks[i].setUnderlined( true );
-                        mustLinks[i].setEnabled( true );
-                        mustLinks[i].addHyperlinkListener( this );
+                        AttributeTypeDescription mustAtd = getSchema().getAttributeTypeDescription( name );
+                        Hyperlink mustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( mustAtd ), SWT.WRAP );
+                        mustLink.setHref( mustAtd );
+                        mustLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                        mustLink.setUnderlined( true );
+                        mustLink.setEnabled( true );
+                        mustLink.addHyperlinkListener( this );
                     }
                     else
                     {
-                        mustLinks[i] = toolkit.createHyperlink( mustClient, names[i], SWT.WRAP );
-                        mustLinks[i].setHref( null );
-                        mustLinks[i].setUnderlined( false );
-                        mustLinks[i].setEnabled( false );
+                        Hyperlink mustLink = toolkit.createHyperlink( mustClient, name, SWT.WRAP );
+                        mustLink.setHref( null );
+                        mustLink.setUnderlined( false );
+                        mustLink.setEnabled( false );
                     }
                 }
             }
             else
             {
                 mustSection.setText( "MUST Attributes (0)" );
-                mustLinks = new Hyperlink[0];
                 Text mustText = toolkit.createText( mustClient, getNonNullString( null ), SWT.NONE );
                 mustText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mustText.setEditable( false );
@@ -362,36 +352,34 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( ocd != null )
         {
-            String[] names = ocd.getMayAttributeTypeDescriptionNamesTransitive();
-            if ( names != null && names.length > 0 )
+            Collection<String> names = SchemaUtils.getMayAttributeTypeDescriptionNamesTransitive( ocd, getSchema() );
+            if ( names != null && names.size() > 0 )
             {
-                maySection.setText( "MAY Attributes (" + names.length + ")" );
-                mayLinks = new Hyperlink[names.length];
-                for ( int i = 0; i < names.length; i++ )
+                maySection.setText( "MAY Attributes (" + names.size() + ")" );
+                for ( String name : names )
                 {
-                    if ( ocd.getSchema().hasAttributeTypeDescription( names[i] ) )
+                    if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
-                        AttributeTypeDescription mayAtd = ocd.getSchema().getAttributeTypeDescription( names[i] );
-                        mayLinks[i] = toolkit.createHyperlink( mayClient, mayAtd.toString(), SWT.WRAP );
-                        mayLinks[i].setHref( mayAtd );
-                        mayLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                        mayLinks[i].setUnderlined( true );
-                        mayLinks[i].setEnabled( true );
-                        mayLinks[i].addHyperlinkListener( this );
+                        AttributeTypeDescription mayAtd = getSchema().getAttributeTypeDescription( name );
+                        Hyperlink mayLink = toolkit.createHyperlink( mayClient, SchemaUtils.toString( mayAtd ), SWT.WRAP );
+                        mayLink.setHref( mayAtd );
+                        mayLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                        mayLink.setUnderlined( true );
+                        mayLink.setEnabled( true );
+                        mayLink.addHyperlinkListener( this );
                     }
                     else
                     {
-                        mayLinks[i] = toolkit.createHyperlink( mayClient, names[i], SWT.WRAP );
-                        mayLinks[i].setHref( null );
-                        mayLinks[i].setUnderlined( false );
-                        mayLinks[i].setEnabled( false );
+                        Hyperlink mayLink = toolkit.createHyperlink( mayClient, name, SWT.WRAP );
+                        mayLink.setHref( null );
+                        mayLink.setUnderlined( false );
+                        mayLink.setEnabled( false );
                     }
                 }
             }
             else
             {
                 maySection.setText( "MAY Attributes (0)" );
-                mayLinks = new Hyperlink[0];
                 Text mayText = toolkit.createText( mayClient, getNonNullString( null ), SWT.NONE );
                 mayText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mayText.setEditable( false );
@@ -406,7 +394,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
 
     /**
-     * Creates the content of the must section. 
+     * Creates the content of the sub classes section. 
      * It is newly created on every input change because the content
      * of this section is dynamic.
      *
@@ -428,25 +416,23 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( ocd != null )
         {
-            ObjectClassDescription[] subOCDs = ocd.getSubObjectClassDescriptions();
-            if ( subOCDs != null && subOCDs.length > 0 )
+            List<ObjectClassDescription> subOcds = SchemaUtils.getSubObjectClassDescriptions( ocd, getSchema() );
+            if ( subOcds != null && subOcds.size() > 0 )
             {
-                subclassesSection.setText( "Subclasses (" + subOCDs.length + ")" );
-                subLinks = new Hyperlink[subOCDs.length];
-                for ( int i = 0; i < subOCDs.length; i++ )
+                subclassesSection.setText( "Subclasses (" + subOcds.size() + ")" );
+                for ( ObjectClassDescription subOcd : subOcds )
                 {
-                    subLinks[i] = toolkit.createHyperlink( subClient, subOCDs[i].toString(), SWT.WRAP );
-                    subLinks[i].setHref( subOCDs[i] );
-                    subLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                    subLinks[i].setUnderlined( true );
-                    subLinks[i].setEnabled( true );
-                    subLinks[i].addHyperlinkListener( this );
+                    Hyperlink subLink = toolkit.createHyperlink( subClient, SchemaUtils.toString( subOcd ), SWT.WRAP );
+                    subLink.setHref( subOcd );
+                    subLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                    subLink.setUnderlined( true );
+                    subLink.setEnabled( true );
+                    subLink.addHyperlinkListener( this );
                 }
             }
             else
             {
                 subclassesSection.setText( "Subclasses (0)" );
-                subLinks = new Hyperlink[0];
                 Text derivedText = toolkit.createText( subClient, getNonNullString( null ), SWT.NONE );
                 derivedText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 derivedText.setEditable( false );
@@ -462,7 +448,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
 
     /**
-     * Creates the content of the must section. 
+     * Creates the content of the super classes section. 
      * It is newly created on every input change because the content
      * of this section is dynamic.
      *
@@ -481,44 +467,42 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         superClient.setLayout( new GridLayout() );
         superclassesSection.setClient( superClient );
 
-        // craete new content
+        // create new content
         if ( ocd != null )
         {
-            String[] names = ocd.getSuperiorObjectClassDescriptionNames();
-            if ( names != null && names.length > 0 )
+            List<String> names = ocd.getSuperiorObjectClasses();
+            if ( names != null && names.size() > 0 )
             {
-                superclassesSection.setText( "Superclasses (" + names.length + ")" );
+                superclassesSection.setText( "Superclasses (" + names.size() + ")" );
                 Composite supClient = toolkit.createComposite( superClient, SWT.WRAP );
                 GridLayout gl = new GridLayout();
                 gl.marginWidth = 0;
                 gl.marginHeight = 0;
                 supClient.setLayout( gl );
-                superLinks = new Hyperlink[names.length];
-                for ( int i = 0; i < names.length; i++ )
+                for ( String name : names )
                 {
-                    if ( ocd.getSchema().hasObjectClassDescription( names[i] ) )
+                    if ( getSchema().hasObjectClassDescription( name ) )
                     {
-                        ObjectClassDescription supOcd = ocd.getSchema().getObjectClassDescription( names[i] );
-                        superLinks[i] = toolkit.createHyperlink( supClient, supOcd.toString(), SWT.WRAP );
-                        superLinks[i].setHref( supOcd );
-                        superLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                        superLinks[i].setUnderlined( true );
-                        superLinks[i].setEnabled( true );
-                        superLinks[i].addHyperlinkListener( this );
+                        ObjectClassDescription supOcd = getSchema().getObjectClassDescription( name );
+                        Hyperlink superLink = toolkit.createHyperlink( supClient, SchemaUtils.toString( supOcd ), SWT.WRAP );
+                        superLink.setHref( supOcd );
+                        superLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                        superLink.setUnderlined( true );
+                        superLink.setEnabled( true );
+                        superLink.addHyperlinkListener( this );
                     }
                     else
                     {
-                        superLinks[i] = toolkit.createHyperlink( supClient, names[i], SWT.WRAP );
-                        superLinks[i].setHref( null );
-                        superLinks[i].setUnderlined( false );
-                        superLinks[i].setEnabled( false );
+                        Hyperlink superLink = toolkit.createHyperlink( supClient, name, SWT.WRAP );
+                        superLink.setHref( null );
+                        superLink.setUnderlined( false );
+                        superLink.setEnabled( false );
                     }
                 }
             }
             else
             {
                 superclassesSection.setText( "Superclasses (0)" );
-                superLinks = new Hyperlink[0];
                 Text superText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 superText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 superText.setEditable( false );

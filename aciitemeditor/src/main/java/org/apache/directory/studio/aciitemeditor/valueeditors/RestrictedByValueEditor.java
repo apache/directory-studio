@@ -21,6 +21,7 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposa
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -279,7 +281,8 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
             BaseWidgetUtils.createLabel( composite, L_CURLY_TYPE, 1 );
 
             // combo widget
-            String[] allAtNames = schema.getAttributeTypeDescriptionNames();
+            Collection<String> names = SchemaUtils.getNames( schema.getAttributeTypeDescriptions() );
+            String[] allAtNames = names.toArray( new String[names.size()] );
             Arrays.sort( allAtNames );
 
             final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(

@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
+import java.util.Collection;
+
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -76,7 +79,7 @@ public class SchemaObjectClassesPropertyPage extends PropertyPage implements IWo
             IBrowserConnection connection = ( IBrowserConnection ) getElement();
             if ( connection != null )
             {
-                Object[] ocds = connection.getSchema().getObjectClassDescriptions();
+                Collection<ObjectClassDescription> ocds = connection.getSchema().getObjectClassDescriptions();
                 viewer.setInput( ocds );
                 column.pack();
             }

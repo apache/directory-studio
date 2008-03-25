@@ -28,7 +28,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
@@ -46,8 +50,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -232,7 +234,7 @@ public abstract class AbstractEntry implements IEntry
             for ( int i = 0; i < ocValues.length; i++ )
             {
                 ObjectClassDescription ocd = getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
-                if ( ocd.isStructural() )
+                if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
                 {
                     structuralObjectClassAvailable = true;
                     break;
@@ -247,7 +249,7 @@ public abstract class AbstractEntry implements IEntry
             AttributeTypeDescription[] mustAtds = getSubschema().getMustAttributeTypeDescriptions();
             for ( AttributeTypeDescription mustAtd : mustAtds )
             {
-                if ( !ai.attributeMap.containsKey( mustAtd.getNumericOID().toLowerCase() ) )
+                if ( !ai.attributeMap.containsKey( mustAtd.getNumericOid().toLowerCase() ) )
                 {
                     return false;
                 }
@@ -296,7 +298,7 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_ALIAS );
+            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.ALIAS_OC );
         }
 
         return false;
@@ -332,7 +334,7 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_REFERRAL );
+            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.REFERRAL_OC );
         }
 
         return false;
@@ -368,7 +370,7 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_SUBENTRY );
+            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.SUBENTRY_OC );
         }
 
         return false;

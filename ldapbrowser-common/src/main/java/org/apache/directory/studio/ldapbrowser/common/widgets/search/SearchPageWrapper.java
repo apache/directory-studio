@@ -23,9 +23,11 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
@@ -36,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -699,10 +700,10 @@ public class SearchPageWrapper extends BrowserWidget
                 {
                     if ( returnOperationalAttributesButton.getSelection() )
                     {
-                        AttributeTypeDescription[] opAtds = SchemaUtils
+                        Collection<AttributeTypeDescription> opAtds = SchemaUtils
                             .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection().getSchema() );
-                        String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( opAtds );
-                        raList.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
+                        Collection<String> opAtdNames = SchemaUtils.getNames( opAtds );
+                        raList.addAll( opAtdNames );
                         raList.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
                     }
                     if ( returnOperationalAttributesButton.getSelection() != isActive( RETURN_OPERATIONALATTRIBUTES_CHECKED ) )

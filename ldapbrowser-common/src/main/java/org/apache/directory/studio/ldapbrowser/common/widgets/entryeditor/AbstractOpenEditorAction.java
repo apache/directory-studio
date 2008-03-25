@@ -107,7 +107,6 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
      */
     private void activateEditor()
     {
-
         if ( !viewer.isCellEditorActive()
             && getSelectedValues().length == 1
             && getSelectedAttributes().length == 0
@@ -147,8 +146,7 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
      */
     private void editorClosed()
     {
-
-        // remove cell editors from viewer to prevend auto-editing
+        // remove cell editors from viewer to prevent auto-editing
         for ( int i = 0; i < viewer.getCellEditors().length; i++ )
         {
             viewer.getCellEditors()[i] = null;

@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
@@ -105,7 +106,7 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
         contentAssistant.setAutoActivationDelay( store
             .getInt( LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_AUTOACTIVATIONDELAY ) );
 
-        List proposalList = new ArrayList();
+        List<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>();
 
         LdifFile model = editor.getLdifModel();
         LdifContainer container = LdifFile.getContainer( model, offset );
@@ -224,19 +225,19 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
                 {
                     Schema schema = editor.getConnection() != null ? editor.getConnection().getSchema()
                         : Schema.DEFAULT_SCHEMA;
-                    String[] attributeNames = schema.getAttributeTypeDescriptionNames();
+                    String[] attributeNames = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
                     Arrays.sort( attributeNames );
-                    for ( int a = 0; a < attributeNames.length; a++ )
+                    for ( String attributeName : attributeNames )
                     {
                         if ( rawAttributeDescription.length() == 0
-                            || attributeNames[a].toLowerCase().startsWith( rawAttributeDescription.toLowerCase() ) )
+                            || attributeName.toLowerCase().startsWith( rawAttributeDescription.toLowerCase() ) )
                         {
 
-                            String proposal = attributeNames[a];
+                            String proposal = attributeName;
 
                             if ( rawValueType.length() == 0 )
                             {
-                                if ( schema.getAttributeTypeDescription( proposal ).isBinary() )
+                                if ( SchemaUtils.isBinary( schema.getAttributeTypeDescription( proposal ), schema ) )
                                 {
                                     proposal += ":: ";
                                 }

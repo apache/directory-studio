@@ -21,11 +21,11 @@
 package org.apache.directory.studio.valueeditors.objectclass;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
@@ -81,19 +81,19 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
         {
             Schema schema = value.getAttribute().getEntry().getBrowserConnection().getSchema();
             ObjectClassDescription ocd = schema.getObjectClassDescription( displayValue );
-            if ( ocd.isStructural() )
+            switch ( ocd.getKind() )
             {
-                displayValue = displayValue + " (structural)";
+                case STRUCTURAL:
+                    displayValue = displayValue + " (structural)";
+                    break;
+                case ABSTRACT:
+                    displayValue = displayValue + " (abstract)";
+                    break;
+                case AUXILIARY:
+                    displayValue = displayValue + " (auxiliary)";
+                    break;
             }
-            else if ( ocd.isAbstract() )
-            {
-                displayValue = displayValue + " (abstract)";
-            }
-            else if ( ocd.isAuxiliary() )
-            {
-                displayValue = displayValue + " (auxiliary)";
-            }
-            else if ( ocd.isObsolete() )
+            if ( ocd.isObsolete() )
             {
                 displayValue = displayValue + " (obsolete)";
             }

@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.FormColors;
+import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
@@ -324,7 +324,7 @@ public abstract class SchemaPage
         this.detailForm.setExpandHorizontal( true );
         this.detailForm.setExpandVertical( true );
         this.detailForm.setBackground( this.toolkit.getColors().getBackground() );
-        this.detailForm.setForeground( this.toolkit.getColors().getColor( FormColors.TITLE ) );
+        this.detailForm.setForeground( this.toolkit.getColors().getColor( IFormColors.TITLE ) );
         this.detailForm.setFont( JFaceResources.getHeaderFont() );
         this.sashForm.setWeights( new int[]
             { 50, 50 } );
@@ -350,9 +350,9 @@ public abstract class SchemaPage
 
                     // Do not set the input of the schema browser if 
                     // the selection was changed programatically.
-                    if ( !inChange && obj instanceof SchemaPart )
+                    if ( !inChange && obj instanceof AbstractSchemaDescription )
                     {
-                        schemaBrowser.setInput( new SchemaBrowserInput( getConnection(), ( SchemaPart ) obj ) );
+                        schemaBrowser.setInput( new SchemaBrowserInput( getConnection(), ( AbstractSchemaDescription ) obj ) );
                     }
                 }
             }

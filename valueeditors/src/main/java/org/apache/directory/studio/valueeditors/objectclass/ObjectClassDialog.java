@@ -26,6 +26,7 @@ import java.util.Arrays;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
@@ -134,7 +135,7 @@ public class ObjectClassDialog extends Dialog
         composite.setLayoutData( gd );
 
         // combo widget
-        String[] allOcNames = schema.getObjectClassDescriptionNames();
+        String[] allOcNames = SchemaUtils.getNamesAsArray( schema.getObjectClassDescriptions() );
         Arrays.sort( allOcNames );
 
         final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(

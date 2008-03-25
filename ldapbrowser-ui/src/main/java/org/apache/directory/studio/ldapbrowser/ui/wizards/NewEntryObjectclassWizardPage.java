@@ -22,11 +22,12 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -34,7 +35,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.fieldassist.DecoratedField;
@@ -112,6 +114,22 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private LabelProvider labelProvider = new LabelProvider()
     {
         /* (non-Javadoc)
+         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+         */
+        public String getText( Object element )
+        {
+            if ( element instanceof ObjectClassDescription )
+            {
+                ObjectClassDescription ocd = ( ObjectClassDescription ) element;
+                return SchemaUtils.toString( ocd );
+            }
+            
+            // Default
+            return super.getText( element );
+        }
+        
+        
+        /* (non-Javadoc)
          * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
          */
         public Image getImage( Object element )
@@ -119,22 +137,16 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             if ( element instanceof ObjectClassDescription )
             {
                 ObjectClassDescription ocd = ( ObjectClassDescription ) element;
-
-                if ( ocd.isAbstract() )
+                switch ( ocd.getKind() )
                 {
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_ABSTRACT );
-                }
-                else if ( ocd.isAuxiliary() )
-                {
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_AUXILIARY );
-                }
-                else if ( ocd.isStructural() )
-                {
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_STRUCTURAL );
-                }
-                else
-                {
-                    return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD );
+                    case STRUCTURAL:
+                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_STRUCTURAL );
+                    case ABSTRACT:
+                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_ABSTRACT );
+                    case AUXILIARY:
+                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_AUXILIARY );
+                    default:
+                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD );
                 }
             }
 
@@ -174,7 +186,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             boolean hasOneStructuralOC = false;
             for ( ObjectClassDescription ocd : selectedObjectClasses )
             {
-                if ( ocd.isStructural() )
+                if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
                 {
                     hasOneStructuralOC = true;
                     break;
@@ -217,8 +229,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             //                RunnableContextJobAdapter.execute( job, getContainer() );
             //            }
 
-            availableObjectClasses.addAll( Arrays.asList( wizard.getSelectedConnection().getSchema()
-                .getObjectClassDescriptions() ) );
+            availableObjectClasses.addAll( wizard.getSelectedConnection().getSchema()
+                .getObjectClassDescriptions() );
 
             DummyEntry newEntry = wizard.getPrototypeEntry();
             IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
@@ -260,14 +272,13 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 newEntry.addAttribute( ocAttribute );
             }
             IValue[] values = ocAttribute.getValues();
-            for ( int i = 0; i < values.length; i++ )
+            for ( IValue value : values )
             {
-                ocAttribute.deleteValue( values[i] );
+                ocAttribute.deleteValue( value );
             }
-            for ( Iterator<ObjectClassDescription> it = selectedObjectClasses.iterator(); it.hasNext(); )
+            for ( ObjectClassDescription ocd : selectedObjectClasses )
             {
-                ObjectClassDescription ocd = it.next();
-                ocAttribute.addValue( new Value( ocAttribute, ocd.getNames()[0] ) );
+                ocAttribute.addValue( new Value( ocAttribute, ocd.getNames().get( 0 ) ) );
             }
         }
         finally
@@ -458,7 +469,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private void add( ISelection iselection )
     {
         IStructuredSelection selection = ( IStructuredSelection ) iselection;
-        Iterator it = selection.iterator();
+        Schema schema = wizard.getSelectedConnection().getSchema();
+        Iterator<?> it = selection.iterator();
         while ( it.hasNext() )
         {
             ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
@@ -468,8 +480,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 selectedObjectClasses.add( ocd );
 
                 // recursively add superior object classes
-                ObjectClassDescription[] superiorObjectClassDescriptions = ocd.getSuperiorObjectClassDescriptions();
-                if ( superiorObjectClassDescriptions.length > 0 )
+                List<ObjectClassDescription> superiorObjectClassDescriptions = SchemaUtils.getSuperiorObjectClassDescriptions( ocd, schema );
+                if ( !superiorObjectClassDescriptions.isEmpty() )
                 {
                     add( new StructuredSelection( superiorObjectClassDescriptions ) );
                 }
@@ -497,7 +509,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     private void remove( ISelection iselection )
     {
         IStructuredSelection selection = ( IStructuredSelection ) iselection;
-        Iterator it = selection.iterator();
+        Schema schema = wizard.getSelectedConnection().getSchema();
+        Iterator<?> it = selection.iterator();
         while ( it.hasNext() )
         {
             ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
@@ -507,8 +520,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 availableObjectClasses.add( ocd );
 
                 // recursively remove sub object classes
-                ObjectClassDescription[] subObjectClassDescriptions = ocd.getSubObjectClassDescriptions();
-                if ( subObjectClassDescriptions.length > 0 )
+                List<ObjectClassDescription> subObjectClassDescriptions = SchemaUtils.getSuperiorObjectClassDescriptions( ocd, schema );
+                if ( !subObjectClassDescriptions.isEmpty() )
                 {
                     remove( new StructuredSelection( subObjectClassDescriptions ) );
                 }
@@ -558,10 +571,9 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             if ( element instanceof ObjectClassDescription )
             {
                 ObjectClassDescription ocd = ( ObjectClassDescription ) element;
-                Set<String> lowerCaseIdentifierSet = ocd.getLowerCaseIdentifierSet();
-                for ( Iterator<String> it = lowerCaseIdentifierSet.iterator(); it.hasNext(); )
+                Collection<String> lowerCaseIdentifiers = SchemaUtils.getLowerCaseIdentifiers( ocd );
+                for ( String s : lowerCaseIdentifiers )
                 {
-                    String s = it.next();
                     if ( s.toLowerCase().startsWith( filterText.getText().toLowerCase() ) )
                     {
                         return true;

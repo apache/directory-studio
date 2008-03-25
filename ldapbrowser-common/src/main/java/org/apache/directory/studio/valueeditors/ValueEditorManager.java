@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -40,9 +42,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -185,49 +186,48 @@ public class ValueEditorManager
      */
     public IValueEditor getCurrentValueEditor( Schema schema, String attributeType )
     {
-
         // check user-selected (forced) value editor
-        if ( this.userSelectedValueEditor != null )
+        if ( userSelectedValueEditor != null )
         {
-            return this.userSelectedValueEditor;
+            return userSelectedValueEditor;
         }
 
         // check attribute preferences
         AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeType );
         Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
-        if ( atd.getNumericOID() != null && attributeValueEditorMap.containsKey( atd.getNumericOID().toLowerCase() ) )
+        if ( atd.getNumericOid() != null && attributeValueEditorMap.containsKey( atd.getNumericOid().toLowerCase() ) )
         {
-            return ( IValueEditor ) this.class2ValueEditors.get( attributeValueEditorMap.get( atd.getNumericOID()
+            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( atd.getNumericOid()
                 .toLowerCase() ) );
         }
-        String[] names = atd.getNames();
+        List<String> names = atd.getNames();
         for ( String name : names )
         {
             if ( attributeValueEditorMap.containsKey( name.toLowerCase() ) )
             {
-                return ( IValueEditor ) this.class2ValueEditors.get( attributeValueEditorMap.get( name.toLowerCase() ) );
+                return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( name.toLowerCase() ) );
             }
         }
 
         // check syntax preferences
-        LdapSyntaxDescription lsd = atd.getSyntaxDescription();
+        String syntaxNumericOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, schema );
         Map<String, String> syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getSyntaxValueEditorMap();
-        if ( lsd.getNumericOID() != null && syntaxValueEditorMap.containsKey( lsd.getNumericOID().toLowerCase() ) )
+        if ( syntaxNumericOid != null && syntaxValueEditorMap.containsKey( syntaxNumericOid.toLowerCase() ) )
         {
-            return ( IValueEditor ) this.class2ValueEditors.get( syntaxValueEditorMap.get( lsd.getNumericOID()
-                .toLowerCase() ) );
+            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( syntaxNumericOid.toLowerCase() ) );
         }
 
         // return default
-        if ( lsd.isBinary() )
+        LdapSyntaxDescription lsd = schema.getLdapSyntaxDescription( syntaxNumericOid );
+        if ( SchemaUtils.isBinary( lsd ) )
         {
-            return this.defaultBinaryValueEditor;
+            return defaultBinaryValueEditor;
         }
         else
         {
-            return this.defaultStringSingleLineValueEditor;
+            return defaultStringSingleLineValueEditor;
         }
 
     }
@@ -261,15 +261,15 @@ public class ValueEditorManager
             .getDescription() );
 
         // here the value is known, we can check for single-line or multi-line
-        if ( ve == this.defaultStringSingleLineValueEditor )
+        if ( ve == defaultStringSingleLineValueEditor )
         {
             if ( value.getStringValue().indexOf( '\n' ) == -1 && value.getStringValue().indexOf( '\r' ) == -1 )
             {
-                ve = this.defaultStringSingleLineValueEditor;
+                ve = defaultStringSingleLineValueEditor;
             }
             else
             {
-                ve = this.defaultStringMultiLineValueEditor;
+                ve = defaultStringMultiLineValueEditor;
             }
         }
 
@@ -292,7 +292,7 @@ public class ValueEditorManager
         }
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
         {
-            return this.getCurrentValueEditor( attributeHierarchy.getAttribute().getEntry(), attributeHierarchy
+            return getCurrentValueEditor( attributeHierarchy.getAttribute().getEntry(), attributeHierarchy
                 .getAttribute().getDescription() );
         }
         else if ( attributeHierarchy.size() == 1
@@ -304,18 +304,18 @@ public class ValueEditorManager
             // perhaps this should be moved somewhere else
             if ( attributeHierarchy.getAttribute().isObjectClassAttribute() )
             {
-                return this.multiValuedValueEditor;
+                return multiValuedValueEditor;
             }
             if ( attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
             {
-                return this.multiValuedValueEditor;
+                return multiValuedValueEditor;
             }
 
-            return this.getCurrentValueEditor( attributeHierarchy.getAttribute().getValues()[0] );
+            return getCurrentValueEditor( attributeHierarchy.getAttribute().getValues()[0] );
         }
         else
         {
-            return this.multiValuedValueEditor;
+            return multiValuedValueEditor;
         }
     }
 
@@ -349,20 +349,20 @@ public class ValueEditorManager
 
         AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeName );
 
-        if ( atd.getSyntaxDescription().isBinary() )
+        if ( SchemaUtils.isBinary( atd, schema ) )
         {
-            alternativeList.add( this.defaultBinaryValueEditor );
-            alternativeList.add( this.defaultStringSingleLineValueEditor );
-            alternativeList.add( this.defaultStringMultiLineValueEditor );
+            alternativeList.add( defaultBinaryValueEditor );
+            alternativeList.add( defaultStringSingleLineValueEditor );
+            alternativeList.add( defaultStringMultiLineValueEditor );
         }
-        else if ( atd.getSyntaxDescription().isString() )
+        else if ( SchemaUtils.isString( atd, schema ) )
         {
-            alternativeList.add( this.defaultStringSingleLineValueEditor );
-            alternativeList.add( this.defaultStringMultiLineValueEditor );
-            alternativeList.add( this.defaultBinaryValueEditor );
+            alternativeList.add( defaultStringSingleLineValueEditor );
+            alternativeList.add( defaultStringMultiLineValueEditor );
+            alternativeList.add( defaultBinaryValueEditor );
         }
 
-        alternativeList.add( this.multiValuedValueEditor );
+        alternativeList.add( multiValuedValueEditor );
 
         alternativeList.remove( getCurrentValueEditor( schema, attributeName ) );
 
@@ -384,18 +384,18 @@ public class ValueEditorManager
 
         if ( value.isBinary() )
         {
-            alternativeList.add( this.defaultBinaryValueEditor );
-            alternativeList.add( this.defaultStringSingleLineValueEditor );
-            alternativeList.add( this.defaultStringMultiLineValueEditor );
+            alternativeList.add( defaultBinaryValueEditor );
+            alternativeList.add( defaultStringSingleLineValueEditor );
+            alternativeList.add( defaultStringMultiLineValueEditor );
         }
         else if ( value.isString() )
         {
-            alternativeList.add( this.defaultStringSingleLineValueEditor );
-            alternativeList.add( this.defaultStringMultiLineValueEditor );
-            alternativeList.add( this.defaultBinaryValueEditor );
+            alternativeList.add( defaultStringSingleLineValueEditor );
+            alternativeList.add( defaultStringMultiLineValueEditor );
+            alternativeList.add( defaultBinaryValueEditor );
         }
 
-        alternativeList.add( this.multiValuedValueEditor );
+        alternativeList.add( multiValuedValueEditor );
 
         alternativeList.remove( getCurrentValueEditor( value ) );
 
@@ -419,7 +419,7 @@ public class ValueEditorManager
         }
         else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
         {
-            return this.getAlternativeValueEditors( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
+            return getAlternativeValueEditors( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
         }
         else if ( ah.size() == 1
             && ah.getAttribute().getValueSize() == 1
@@ -438,7 +438,7 @@ public class ValueEditorManager
                 return new IValueEditor[0];
             }
 
-            return this.getAlternativeValueEditors( ah.getAttribute().getValues()[0] );
+            return getAlternativeValueEditors( ah.getAttribute().getValues()[0] );
         }
         else
         /* if(attribute.getValueSize() > 1) */{
@@ -457,13 +457,13 @@ public class ValueEditorManager
         // use a set to avoid double entries
         Set<IValueEditor> list = new LinkedHashSet<IValueEditor>();
 
-        list.add( this.defaultStringSingleLineValueEditor );
-        list.add( this.defaultStringMultiLineValueEditor );
+        list.add( defaultStringSingleLineValueEditor );
+        list.add( defaultStringMultiLineValueEditor );
         list.add( defaultBinaryValueEditor );
 
-        list.addAll( this.class2ValueEditors.values() );
+        list.addAll( class2ValueEditors.values() );
 
-        list.add( this.multiValuedValueEditor );
+        list.add( multiValuedValueEditor );
 
         return list.toArray( new IValueEditor[list.size()] );
     }
@@ -542,8 +542,8 @@ public class ValueEditorManager
                 EventRegistry.resumeEventFireingInCurrentThread();
 
                 Object newValue;
-                if ( entry.getBrowserConnection().getSchema().getAttributeTypeDescription( attributeDescription )
-                    .getSyntaxDescription().isString() )
+                if ( SchemaUtils.isString( entry.getBrowserConnection().getSchema().getAttributeTypeDescription(
+                    attributeDescription ), entry.getBrowserConnection().getSchema() ) )
                 {
                     if ( newRawValue instanceof String )
                     {

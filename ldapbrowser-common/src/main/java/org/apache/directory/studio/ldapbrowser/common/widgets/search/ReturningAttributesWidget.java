@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.events.ModifyEvent;
@@ -137,8 +138,8 @@ public class ReturningAttributesWidget extends BrowserWidget
     public void setBrowserConnection( IBrowserConnection browserConnection )
     {
         this.browserConnection = browserConnection;
-        contentAssistProcessor.setPossibleAttributeTypes( browserConnection == null ? new String[0] : browserConnection.getSchema()
-            .getAttributeTypeDescriptionNames() );
+        contentAssistProcessor.setPossibleAttributeTypes( browserConnection == null ? new String[0] : SchemaUtils
+            .getNamesAsArray( browserConnection.getSchema().getAttributeTypeDescriptions() ) );
     }
 
 

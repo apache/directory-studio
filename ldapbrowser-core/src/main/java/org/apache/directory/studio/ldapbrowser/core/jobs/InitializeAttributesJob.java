@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -33,6 +34,7 @@ import java.util.Set;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -50,7 +52,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 
@@ -179,10 +180,10 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         raSet.add( ISearch.ALL_USER_ATTRIBUTES );
         if ( initOperationalAttributes )
         {
-            AttributeTypeDescription[] opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry
+            Collection<AttributeTypeDescription> opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry
                 .getBrowserConnection().getSchema() );
-            String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( opAtds );
-            raSet.addAll( Arrays.asList( attributeTypeDescriptionNames ) );
+            Collection<String> atdNames = SchemaUtils.getNames( opAtds );
+            raSet.addAll( atdNames );
             if ( entry.getBrowserConnection().getRootDSE().isFeatureSupported(
                 IRootDSE.FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID ) )
             {

@@ -21,11 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -124,7 +122,7 @@ public class MatchingRuleDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class MRDContentProvider implements IStructuredContentProvider
+    class MRDContentProvider implements IStructuredContentProvider
     {
         /**
          * {@inheritDoc}
@@ -134,10 +132,9 @@ public class MatchingRuleDescriptionPage extends SchemaPage
             if ( inputElement instanceof Schema )
             {
                 Schema schema = ( Schema ) inputElement;
-                if ( schema != null && schema.getMrdMapByName() != null )
+                if ( schema != null && schema.getMatchingRuleDescriptions() != null )
                 {
-                    Set<Object> set = new HashSet<Object>( schema.getMrdMapByName().values() );
-                    return set.toArray();
+                    return schema.getMatchingRuleDescriptions().toArray();
                 }
             }
             return new Object[0];
@@ -166,13 +163,17 @@ public class MatchingRuleDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class MRDLabelProvider extends LabelProvider implements ITableLabelProvider
+    class MRDLabelProvider extends LabelProvider implements ITableLabelProvider
     {
         /**
          * {@inheritDoc}
          */
         public String getColumnText( Object obj, int index )
         {
+            if ( obj instanceof MatchingRuleDescription )
+            {
+                return SchemaUtils.toString( ( MatchingRuleDescription ) obj );
+            }
             return obj.toString();
         }
 
@@ -192,13 +193,21 @@ public class MatchingRuleDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class MRDViewerSorter extends ViewerSorter
+    class MRDViewerSorter extends ViewerSorter
     {
         /**
          * {@inheritDoc}
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
+            if ( e1 instanceof MatchingRuleDescription )
+            {
+                e1 = SchemaUtils.toString( ( MatchingRuleDescription ) e1 );
+            }
+            if ( e2 instanceof MatchingRuleDescription )
+            {
+                e2 = SchemaUtils.toString( ( MatchingRuleDescription ) e2 );
+            }
             return e1.toString().compareTo( e2.toString() );
         }
     }
@@ -209,7 +218,7 @@ public class MatchingRuleDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class MRDViewerFilter extends ViewerFilter
+    class MRDViewerFilter extends ViewerFilter
     {
         /**
          * {@inheritDoc}
@@ -219,13 +228,9 @@ public class MatchingRuleDescriptionPage extends SchemaPage
             if ( element instanceof MatchingRuleDescription )
             {
                 MatchingRuleDescription mrd = ( MatchingRuleDescription ) element;
-                boolean matched = false;
-
-                if ( !matched )
-                    matched = mrd.toString().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-                if ( !matched )
-                    matched = mrd.getNumericOID().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-
+                boolean matched = SchemaUtils.toString( mrd ).toLowerCase()
+                    .indexOf( filterText.getText().toLowerCase() ) != -1
+                    || mrd.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

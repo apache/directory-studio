@@ -21,29 +21,53 @@
 package org.apache.directory.studio.ldapbrowser.core.model.schema;
 
 
+/**
+ * Bean class to store the numeric OID or the name of a binary attribute.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BinaryAttribute
 {
 
     private String attributeNumericOidOrName;
 
 
+    /**
+     * Creates a new instance of BinaryAttribute.
+     */
     public BinaryAttribute()
     {
     }
 
 
+    /**
+     * Creates a new instance of BinaryAttribute.
+     * 
+     * @param attributeNumericOidOrName the attribute numeric oid or name
+     */
     public BinaryAttribute( String attributeNumericOidOrName )
     {
         this.attributeNumericOidOrName = attributeNumericOidOrName;
     }
 
 
+    /**
+     * Gets the attribute numeric OID or name.
+     * 
+     * @return the attribute numeric OID or name
+     */
     public String getAttributeNumericOidOrName()
     {
         return attributeNumericOidOrName;
     }
 
 
+    /**
+     * Sets the attribute numeric OID or name.
+     * 
+     * @param attributeNumericOidOrName the new attribute numeric OID or name
+     */
     public void setAttributeNumericOidOrName( String attributeNumericOidOrName )
     {
         this.attributeNumericOidOrName = attributeNumericOidOrName;

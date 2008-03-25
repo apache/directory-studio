@@ -26,11 +26,19 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
+/**
+ * A subschema represents the schema information for an entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class Subschema implements Serializable
 {
 
@@ -40,7 +48,7 @@ public class Subschema implements Serializable
 
     private Schema schema;
 
-    private Set allAttributeNameSet;
+    private Set<String> allAttributeNameSet;
 
 
     protected Subschema()
@@ -48,6 +56,11 @@ public class Subschema implements Serializable
     }
 
 
+    /**
+     * Creates a new instance of Subschema.
+     * 
+     * @param entry the entry
+     */
     public Subschema( IEntry entry )
     {
         if ( entry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE ) != null )
@@ -62,6 +75,12 @@ public class Subschema implements Serializable
     }
 
 
+    /**
+     * Creates a new instance of Subschema.
+     * 
+     * @param objectClassNames the object class names
+     * @param connection the connection
+     */
     public Subschema( String[] objectClassNames, IBrowserConnection connection )
     {
         this.objectClassNames = objectClassNames;
@@ -81,27 +100,25 @@ public class Subschema implements Serializable
 
 
     /**
-     * Returns the must attribute names of this and all super object
-     * classes.
+     * Gets the must attribute names of this subschema.
      * 
-     * @return
+     * @return the must attribute names of this subschema
      */
     public String[] getMustAttributeNames()
     {
-        Set mustAttrSet = new TreeSet();
-        for ( int i = 0; i < this.objectClassNames.length; i++ )
+        Set<String> mustAttributeNames = new TreeSet<String>();
+        for ( String objectClassName : objectClassNames )
         {
-            this.fetchMust( this.objectClassNames[i], mustAttrSet );
+            fetchMust( objectClassName, mustAttributeNames );
         }
-        return ( String[] ) mustAttrSet.toArray( new String[0] );
+        return ( String[] ) mustAttributeNames.toArray( new String[0] );
     }
 
 
     /**
-     * Returns the must attribute types of this and all super object
-     * classes.
+     * Gets the must attribute types descriptions of this subschema.
      * 
-     * @return
+     * @return the must attribute types descriptions of this subschema
      */
     public AttributeTypeDescription[] getMustAttributeTypeDescriptions()
     {
@@ -116,43 +133,43 @@ public class Subschema implements Serializable
     }
 
 
-    private void fetchMust( String ocName, Set attributeSet )
+    private void fetchMust( String ocName, Set<String> mustAttributeNames )
     {
         // add own must attributes
-        ObjectClassDescription ocd = this.getSchema().getObjectClassDescription( ocName );
-        attributeSet.addAll( Arrays.asList( ocd.getMustAttributeTypeDescriptionNames() ) );
+        ObjectClassDescription ocd = getSchema().getObjectClassDescription( ocName );
+        mustAttributeNames.addAll( ocd.getMustAttributeTypes() );
 
         // add must attributes of super object classes
-        if ( ocd.getSuperiorObjectClassDescriptionNames() != null )
+        if ( ocd.getSuperiorObjectClasses() != null )
         {
-            for ( int k = 0; k < ocd.getSuperiorObjectClassDescriptionNames().length; k++ )
+            for ( String superior : ocd.getSuperiorObjectClasses() )
             {
-                fetchMust( ocd.getSuperiorObjectClassDescriptionNames()[k], attributeSet );
+                fetchMust( superior, mustAttributeNames );
             }
         }
     }
 
 
     /**
-     * Returns the may attribute names of this and all super object classes.
+     * Gets the may attribute names of this subschema.
      * 
-     * @return
+     * @return the may attribute names of this subschema
      */
     public String[] getMayAttributeNames()
     {
-        Set mayAttrSet = new TreeSet();
-        for ( int i = 0; i < this.objectClassNames.length; i++ )
+        Set<String> mayAttrSet = new TreeSet<String>();
+        for ( String objectClassName : objectClassNames )
         {
-            this.fetchMay( this.objectClassNames[i], mayAttrSet );
+            fetchMay( objectClassName, mayAttrSet );
         }
         return ( String[] ) mayAttrSet.toArray( new String[0] );
     }
 
 
     /**
-     * Returns the may attribute types of this and all super object classes.
+     * Gets the may attribute types descriptions of this subschema.
      * 
-     * @return
+     * @return the may attribute types descriptions of this subschema
      */
     public AttributeTypeDescription[] getMayAttributeTypeDescriptions()
     {
@@ -167,28 +184,27 @@ public class Subschema implements Serializable
     }
 
 
-    private void fetchMay( String ocName, Set attributeSet )
+    private void fetchMay( String ocName, Set<String> mustAttributeNames )
     {
         // add own may attributes
         ObjectClassDescription ocd = this.getSchema().getObjectClassDescription( ocName );
-        attributeSet.addAll( Arrays.asList( ocd.getMayAttributeTypeDescriptionNames() ) );
+        mustAttributeNames.addAll( ocd.getMayAttributeTypes() );
 
         // add may attributes of super object classes
-        if ( ocd.getSuperiorObjectClassDescriptionNames() != null )
+        if ( ocd.getSuperiorObjectClasses() != null )
         {
-            for ( int k = 0; k < ocd.getSuperiorObjectClassDescriptionNames().length; k++ )
+            for ( String superior : ocd.getSuperiorObjectClasses() )
             {
-                fetchMay( ocd.getSuperiorObjectClassDescriptionNames()[k], attributeSet );
+                fetchMust( superior, mustAttributeNames );
             }
         }
     }
 
 
     /**
-     * Returns the must and may attribute names of this and all super object
-     * classes.
+     * Gets the must and may attribute names of this subschema.
      * 
-     * @return
+     * @return the must and may attribute names of this subschema
      */
     public String[] getAllAttributeNames()
     {
@@ -196,24 +212,27 @@ public class Subschema implements Serializable
     }
 
 
-    public Set getAllAttributeNameSet()
+    public Set<String> getAllAttributeNameSet()
     {
-        if ( this.allAttributeNameSet == null )
+        if ( allAttributeNameSet == null )
         {
-            this.allAttributeNameSet = new TreeSet();
-            this.allAttributeNameSet.addAll( Arrays.asList( this.getMustAttributeNames() ) );
-            this.allAttributeNameSet.addAll( Arrays.asList( this.getMayAttributeNames() ) );
+            allAttributeNameSet = new TreeSet<String>();
+            allAttributeNameSet.addAll( Arrays.asList( this.getMustAttributeNames() ) );
+            allAttributeNameSet.addAll( Arrays.asList( this.getMayAttributeNames() ) );
         }
 
-        return this.allAttributeNameSet;
+        return allAttributeNameSet;
     }
 
 
+    /**
+     * Gets the schema.
+     * 
+     * @return the schema
+     */
     private Schema getSchema()
     {
         return schema;
-        // return
-        // BrowserCorePlugin.getDefault().getConnectionManager().getConnection(this.connectionName).getSchema();
     }
 
 }

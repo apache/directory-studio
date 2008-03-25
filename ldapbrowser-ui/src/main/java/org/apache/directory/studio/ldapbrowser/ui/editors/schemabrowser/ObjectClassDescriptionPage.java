@@ -21,8 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -133,7 +134,7 @@ public class ObjectClassDescriptionPage extends SchemaPage
                 Schema schema = ( Schema ) inputElement;
                 if ( schema != null )
                 {
-                    return schema.getObjectClassDescriptions();
+                    return schema.getObjectClassDescriptions().toArray();
                 }
             }
             return new Object[0];
@@ -169,6 +170,10 @@ public class ObjectClassDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
+            if ( obj instanceof ObjectClassDescription )
+            {
+                return SchemaUtils.toString( ( ObjectClassDescription ) obj );
+            }
             return obj.toString();
         }
 
@@ -195,6 +200,14 @@ public class ObjectClassDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
+            if ( e1 instanceof ObjectClassDescription )
+            {
+                e1 = SchemaUtils.toString( ( ObjectClassDescription ) e1 );
+            }
+            if ( e2 instanceof ObjectClassDescription )
+            {
+                e2 = SchemaUtils.toString( ( ObjectClassDescription ) e2 );
+            }
             return e1.toString().compareTo( e2.toString() );
         }
     }
@@ -215,13 +228,9 @@ public class ObjectClassDescriptionPage extends SchemaPage
             if ( element instanceof ObjectClassDescription )
             {
                 ObjectClassDescription ocd = ( ObjectClassDescription ) element;
-                boolean matched = false;
-
-                if ( !matched )
-                    matched = ocd.toString().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-                if ( !matched )
-                    matched = ocd.getNumericOID().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-
+                boolean matched = SchemaUtils.toString( ocd ).toLowerCase()
+                    .indexOf( filterText.getText().toLowerCase() ) != -1
+                    || ocd.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

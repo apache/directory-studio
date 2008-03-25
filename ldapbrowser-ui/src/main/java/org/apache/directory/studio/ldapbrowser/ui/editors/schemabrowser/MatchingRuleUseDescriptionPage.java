@@ -21,11 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -135,10 +133,9 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
             if ( inputElement instanceof Schema )
             {
                 Schema schema = ( Schema ) inputElement;
-                if ( schema != null && schema.getMrudMapByName() != null )
+                if ( schema != null && schema.getMatchingRuleUseDescriptions() != null )
                 {
-                    Set<Object> set = new HashSet<Object>( schema.getMrudMapByName().values() );
-                    return set.toArray();
+                    return schema.getMatchingRuleUseDescriptions().toArray();
                 }
             }
             return new Object[0];
@@ -174,6 +171,10 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
          */
         public String getColumnText( Object obj, int index )
         {
+            if ( obj instanceof MatchingRuleUseDescription )
+            {
+                return SchemaUtils.toString( ( MatchingRuleUseDescription ) obj );
+            }
             return obj.toString();
         }
 
@@ -200,6 +201,14 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
+            if ( e1 instanceof MatchingRuleUseDescription )
+            {
+                e1 = SchemaUtils.toString( ( MatchingRuleUseDescription ) e1 );
+            }
+            if ( e2 instanceof MatchingRuleUseDescription )
+            {
+                e2 = SchemaUtils.toString( ( MatchingRuleUseDescription ) e2 );
+            }
             return e1.toString().compareTo( e2.toString() );
         }
     }
@@ -220,13 +229,8 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
             if ( element instanceof MatchingRuleUseDescription )
             {
                 MatchingRuleUseDescription mrud = ( MatchingRuleUseDescription ) element;
-                boolean matched = false;
-
-                if ( !matched )
-                    matched = mrud.toString().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-                if ( !matched )
-                    matched = mrud.getNumericOID().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-
+                boolean matched = SchemaUtils.toString( mrud ).toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1
+                    || mrud.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

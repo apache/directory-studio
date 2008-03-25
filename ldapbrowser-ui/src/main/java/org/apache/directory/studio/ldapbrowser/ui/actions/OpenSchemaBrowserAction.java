@@ -21,14 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowserManager;
@@ -282,12 +284,16 @@ public class OpenSchemaBrowserAction extends BrowserAction
      */
     private LdapSyntaxDescription getLsd()
     {
-        AttributeTypeDescription atd = getAtd();
-
-        if ( atd != null && atd.getSyntaxDescriptionNumericOIDTransitive() != null
-            && atd.getSchema().hasLdapSyntaxDescription( atd.getSyntaxDescriptionNumericOIDTransitive() ) )
+        if ( getConnection() != null )
         {
-            return atd.getSchema().getLdapSyntaxDescription( atd.getSyntaxDescriptionNumericOIDTransitive() );
+            Schema schema = getConnection().getSchema();
+            AttributeTypeDescription atd = getAtd();
+
+            if ( atd != null && SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) != null
+                && schema.hasLdapSyntaxDescription( SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) ) )
+            {
+                return schema.getLdapSyntaxDescription( SchemaUtils.getSyntaxNumericOidTransitive( atd, schema ) );
+            }
         }
 
         return null;
@@ -298,7 +304,7 @@ public class OpenSchemaBrowserAction extends BrowserAction
      * Gets the Object Class Description.
      *
      * @return
-     *      the Object Class Drescription
+     *      the Object Class Description
      */
     private ObjectClassDescription getOcd()
     {
@@ -378,8 +384,8 @@ public class OpenSchemaBrowserAction extends BrowserAction
         else if ( getSelectedConnections().length == 1 )
         {
             Connection connection = getSelectedConnections()[0];
-            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
-                connection );
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnection( connection );
             return browserConnection;
         }
         else if ( getSelectedEntries().length == 1 )
@@ -411,14 +417,19 @@ public class OpenSchemaBrowserAction extends BrowserAction
      */
     private MatchingRuleDescription getEmrd()
     {
-        AttributeTypeDescription atd = getAtd();
-
-        if ( atd != null && atd.getEqualityMatchingRuleDescriptionOIDTransitive() != null
-            && atd.getSchema().hasMatchingRuleDescription( atd.getEqualityMatchingRuleDescriptionOIDTransitive() ) )
+        if ( getConnection() != null )
         {
-            return atd.getSchema().getMatchingRuleDescription( atd.getEqualityMatchingRuleDescriptionOIDTransitive() );
+            Schema schema = getConnection().getSchema();
+            AttributeTypeDescription atd = getAtd();
+            if ( atd != null
+                && SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
+                && schema.hasLdapSyntaxDescription( SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd,
+                    schema ) ) )
+            {
+                return schema.getMatchingRuleDescription( SchemaUtils
+                    .getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) );
+            }
         }
-
         return null;
     }
 
@@ -431,14 +442,19 @@ public class OpenSchemaBrowserAction extends BrowserAction
      */
     private MatchingRuleDescription getSmrd()
     {
-        AttributeTypeDescription atd = getAtd();
-
-        if ( atd != null && atd.getSubstringMatchingRuleDescriptionOIDTransitive() != null
-            && atd.getSchema().hasMatchingRuleDescription( atd.getSubstringMatchingRuleDescriptionOIDTransitive() ) )
+        if ( getConnection() != null )
         {
-            return atd.getSchema().getMatchingRuleDescription( atd.getSubstringMatchingRuleDescriptionOIDTransitive() );
+            Schema schema = getConnection().getSchema();
+            AttributeTypeDescription atd = getAtd();
+            if ( atd != null
+                && SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
+                && schema.hasLdapSyntaxDescription( SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive(
+                    atd, schema ) ) )
+            {
+                return schema.getMatchingRuleDescription( SchemaUtils
+                    .getSubstringMatchingRuleNameOrNumericOidTransitive( atd, schema ) );
+            }
         }
-
         return null;
     }
 
@@ -451,14 +467,19 @@ public class OpenSchemaBrowserAction extends BrowserAction
      */
     private MatchingRuleDescription getOmrd()
     {
-        AttributeTypeDescription atd = getAtd();
-
-        if ( atd != null && atd.getOrderingMatchingRuleDescriptionOIDTransitive() != null
-            && atd.getSchema().hasMatchingRuleDescription( atd.getOrderingMatchingRuleDescriptionOIDTransitive() ) )
+        if ( getConnection() != null )
         {
-            return atd.getSchema().getMatchingRuleDescription( atd.getOrderingMatchingRuleDescriptionOIDTransitive() );
+            Schema schema = getConnection().getSchema();
+            AttributeTypeDescription atd = getAtd();
+            if ( atd != null
+                && SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, schema ) != null
+                && schema.hasLdapSyntaxDescription( SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd,
+                    schema ) ) )
+            {
+                return schema.getMatchingRuleDescription( SchemaUtils
+                    .getOrderingMatchingRuleNameOrNumericOidTransitive( atd, schema ) );
+            }
         }
-
         return null;
     }
 }

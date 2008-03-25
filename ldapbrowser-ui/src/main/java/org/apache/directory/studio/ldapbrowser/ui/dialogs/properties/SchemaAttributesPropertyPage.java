@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
+import java.util.Collection;
+
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -50,7 +53,6 @@ public class SchemaAttributesPropertyPage extends PropertyPage implements IWorkb
 
     protected Control createContents( Composite parent )
     {
-
         Table table = new Table( parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
         GridData gridData = new GridData( GridData.FILL_BOTH );
@@ -76,7 +78,7 @@ public class SchemaAttributesPropertyPage extends PropertyPage implements IWorkb
             IBrowserConnection connection = ( IBrowserConnection ) getElement();
             if ( connection != null )
             {
-                Object[] atds = connection.getSchema().getAttributeTypeDescriptions();
+                Collection<AttributeTypeDescription> atds = connection.getSchema().getAttributeTypeDescriptions();
                 viewer.setInput( atds );
                 column.pack();
             }

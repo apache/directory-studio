@@ -44,22 +44,22 @@ public class BrowserCorePreferences
 
 
     /**
-     * Gets the oids and names of the binary attributes
+     * Gets the OIDs and names of the binary attributes
      *
      * @return
-     *      the oids and names of the binary attributes
+     *      the OIDs and names of the binary attributes
      */
-    public Set getBinaryAttributeOidsAndNames()
+    public Set<String> getUpperCasedBinaryAttributeOidsAndNames()
     {
         if ( binaryAttributeCache == null )
         {
             binaryAttributeCache = new HashSet<String>();
-            BinaryAttribute[] binaryAttributes =getBinaryAttributes();
-            for ( int i = 0; i < binaryAttributes.length; i++ )
+            BinaryAttribute[] binaryAttributes = getBinaryAttributes();
+            for ( BinaryAttribute binaryAttribute : binaryAttributes )
             {
-                if ( binaryAttributes[i].getAttributeNumericOidOrName() != null )
+                if ( binaryAttribute.getAttributeNumericOidOrName() != null )
                 {
-                    binaryAttributeCache.add( binaryAttributes[i].getAttributeNumericOidOrName() );
+                    binaryAttributeCache.add( binaryAttribute.getAttributeNumericOidOrName().toUpperCase() );
                 }
             }
         }
@@ -119,21 +119,21 @@ public class BrowserCorePreferences
 
 
     /**
-     * Gets the binary syntax oids.
+     * Gets the binary syntax OIDs.
      * 
-     * @return the binary syntax oids
+     * @return the binary syntax OIDs
      */
-    public Set<String> getBinarySyntaxOids()
+    public Set<String> getUpperCasedBinarySyntaxOids()
     {
         if ( binarySyntaxCache == null )
         {
             binarySyntaxCache = new HashSet<String>();
             BinarySyntax[] binarySyntaxes = getBinarySyntaxes();
-            for ( int i = 0; i < binarySyntaxes.length; i++ )
+            for ( BinarySyntax binarySyntax : binarySyntaxes )
             {
-                if ( binarySyntaxes[i].getSyntaxNumericOid() != null )
+                if ( binarySyntax.getSyntaxNumericOid() != null )
                 {
-                    binarySyntaxCache.add( binarySyntaxes[i].getSyntaxNumericOid() );
+                    binarySyntaxCache.add( binarySyntax.getSyntaxNumericOid().toUpperCase() );
                 }
             }
         }

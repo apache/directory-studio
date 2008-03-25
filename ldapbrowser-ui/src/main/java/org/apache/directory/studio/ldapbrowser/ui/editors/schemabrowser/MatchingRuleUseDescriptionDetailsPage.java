@@ -21,9 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
+import java.util.List;
+
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,10 +50,10 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
 
     /** The numeric oid field */
     private Text numericOidText;
-    
+
     /** The name link */
     private Hyperlink nameLink;
-    
+
     /** The description field */
     private Text descText;
 
@@ -61,9 +65,6 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
 
     /** The applies section, contains links */
     private Section appliesSection;
-
-    /** The links to attribute types the matching rule is applicaple to */
-    private Hyperlink[] appliesLinks;
 
 
     /**
@@ -149,10 +150,10 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
 
         // create main content
         this.createMainContent( mrud );
-        
+
         // set flag
         isObsoleteText.setEnabled( mrud != null && mrud.isObsolete() );
-        
+
         // create contents of dynamic sections
         this.createAppliesContents( mrud );
         super.createRawContents( mrud );
@@ -186,7 +187,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         if ( mrud != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
-            numericOidText = toolkit.createText( mainClient, getNonNullString( mrud.getNumericOID() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( mrud.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
@@ -195,15 +196,17 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             nameLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             nameLink.addHyperlinkListener( this );
 
-            MatchingRuleDescription mrd = mrud.getSchema().hasMatchingRuleDescription( mrud.getNumericOID() ) ? mrud
-                .getSchema().getMatchingRuleDescription( mrud.getNumericOID() ) : null;
-            nameLink.setText( getNonNullString( mrd != null ? mrd.toString() : mrud.toString() ) );
+            Schema schema = getSchema();
+            MatchingRuleDescription mrd = schema.hasMatchingRuleDescription( mrud.getNumericOid() ) ? schema
+                .getMatchingRuleDescription( mrud.getNumericOid() ) : null;
+            nameLink
+                .setText( getNonNullString( mrd != null ? SchemaUtils.toString( mrd ) : SchemaUtils.toString( mrud ) ) );
             nameLink.setHref( mrd );
             nameLink.setUnderlined( mrd != null );
             nameLink.setEnabled( mrd != null );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
-            descText = toolkit.createText( mainClient, getNonNullString( mrud.getDesc() ), SWT.WRAP | SWT.MULTI );
+            descText = toolkit.createText( mainClient, getNonNullString( mrud.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
@@ -237,36 +240,36 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         // create content
         if ( mrud != null )
         {
-            String[] names = mrud.getAppliesAttributeTypeDescriptionOIDs();
-            if ( names != null && names.length > 0 )
+            List<String> names = mrud.getApplicableAttributes();
+            if ( names != null && !names.isEmpty() )
             {
-                appliesSection.setText( "Applies (" + names.length + ")" );
-                appliesLinks = new Hyperlink[names.length];
-                for ( int i = 0; i < names.length; i++ )
+                appliesSection.setText( "Applies (" + names.size() + ")" );
+                Schema schema = getSchema();
+                for ( String name : names )
                 {
-                    if ( mrud.getSchema().hasAttributeTypeDescription( names[i] ) )
+                    if ( schema.hasAttributeTypeDescription( name ) )
                     {
-                        AttributeTypeDescription appliesAtd = mrud.getSchema().getAttributeTypeDescription( names[i] );
-                        appliesLinks[i] = toolkit.createHyperlink( appliesClient, appliesAtd.toString(), SWT.WRAP );
-                        appliesLinks[i].setHref( appliesAtd );
-                        appliesLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                        appliesLinks[i].setUnderlined( true );
-                        appliesLinks[i].setEnabled( true );
-                        appliesLinks[i].addHyperlinkListener( this );
+                        AttributeTypeDescription appliesAtd = schema.getAttributeTypeDescription( name );
+                        Hyperlink appliesLink = toolkit.createHyperlink( appliesClient, SchemaUtils
+                            .toString( appliesAtd ), SWT.WRAP );
+                        appliesLink.setHref( appliesAtd );
+                        appliesLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                        appliesLink.setUnderlined( true );
+                        appliesLink.setEnabled( true );
+                        appliesLink.addHyperlinkListener( this );
                     }
                     else
                     {
-                        appliesLinks[i] = toolkit.createHyperlink( appliesClient, names[i], SWT.WRAP );
-                        appliesLinks[i].setHref( null );
-                        appliesLinks[i].setUnderlined( false );
-                        appliesLinks[i].setEnabled( false );
+                        Hyperlink appliesLink = toolkit.createHyperlink( appliesClient, name, SWT.WRAP );
+                        appliesLink.setHref( null );
+                        appliesLink.setUnderlined( false );
+                        appliesLink.setEnabled( false );
                     }
                 }
             }
             else
             {
                 appliesSection.setText( "Applies (0)" );
-                appliesLinks = new Hyperlink[0];
                 Text usedFromText = toolkit.createText( appliesClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );

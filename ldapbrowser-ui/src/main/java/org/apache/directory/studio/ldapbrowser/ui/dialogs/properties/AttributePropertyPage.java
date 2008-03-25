@@ -21,14 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import java.util.Arrays;
-
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -90,7 +89,6 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
 
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         Composite mainGroup = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
@@ -188,6 +186,7 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
         IAttribute attribute = getAttribute( getElement() );
         if ( attribute != null )
         {
+            Schema schema = attribute.getEntry().getBrowserConnection().getSchema();
 
             int bytes = 0;
             int valCount = 0;
@@ -207,33 +206,36 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
             attributeValuesText.setText( "" + valCount );
             attributeSizeText.setText( Utils.formatBytes( bytes ) );
 
-            if ( attribute.getEntry().getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                attribute.getDescription() ) )
+            if ( schema.hasAttributeTypeDescription( attribute.getDescription() ) )
             {
-                AttributeTypeDescription atd = attribute.getEntry().getBrowserConnection().getSchema()
-                    .getAttributeTypeDescription( attribute.getDescription() );
+                AttributeTypeDescription atd = schema.getAttributeTypeDescription( attribute.getDescription() );
 
-                atdOidText.setText( atd.getNumericOID() );
-                String atdNames = Arrays.asList( atd.getNames() ).toString();
+                atdOidText.setText( atd.getNumericOid() );
+                String atdNames = atd.getNames().toString();
                 atdNamesText.setText( atdNames.substring( 1, atdNames.length() - 1 ) );
-                atdDescText.setText( Utils.getNonNullString( atd.getDesc() ) );
+                atdDescText.setText( Utils.getNonNullString( atd.getDescription() ) );
                 atdUsageText.setText( Utils.getNonNullString( atd.getUsage() ) );
 
                 singleValuedFlag.setSelection( atd.isSingleValued() );
-                noUserModificationFlag.setSelection( atd.isNoUserModification() );
+                noUserModificationFlag.setSelection( !atd.isUserModifiable() );
                 collectiveFlag.setSelection( atd.isCollective() );
                 obsoleteFlag.setSelection( atd.isObsolete() );
 
-                syntaxOidText.setText( Utils.getNonNullString( atd.getSyntaxDescriptionNumericOIDTransitive() ) );
-                syntaxDescText.setText( Utils.getNonNullString( atd.getSyntaxDescription().getDesc() ) );
-                syntaxLengthText.setText( Utils.getNonNullString( atd.getSyntaxDescriptionLengthTransitive() ) );
+                String syntaxNumericOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, schema );
+                int syntaxLength = SchemaUtils.getSyntaxLengthTransitive( atd, schema );
+                String syntaxDescription = syntaxNumericOid != null ? schema
+                    .getLdapSyntaxDescription( syntaxNumericOid ).getDescription() : null;
+                syntaxOidText.setText( Utils.getNonNullString( syntaxNumericOid ) );
+                syntaxDescText.setText( Utils.getNonNullString( syntaxDescription ) );
+                syntaxLengthText.setText( Utils.getNonNullString( syntaxLength > 0 ? Integer.toString( syntaxLength )
+                    : null ) );
 
-                equalityMatchingRuleText.setText( Utils.getNonNullString( atd
-                    .getEqualityMatchingRuleDescriptionOIDTransitive() ) );
-                substringMatchingRuleText.setText( Utils.getNonNullString( atd
-                    .getSubstringMatchingRuleDescriptionOIDTransitive() ) );
-                orderingMatchingRuleText.setText( Utils.getNonNullString( atd
-                    .getOrderingMatchingRuleDescriptionOIDTransitive() ) );
+                equalityMatchingRuleText.setText( Utils.getNonNullString( SchemaUtils
+                    .getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema ) ) );
+                substringMatchingRuleText.setText( Utils.getNonNullString( SchemaUtils
+                    .getSubstringMatchingRuleNameOrNumericOidTransitive( atd, schema ) ) );
+                orderingMatchingRuleText.setText( Utils.getNonNullString( SchemaUtils
+                    .getOrderingMatchingRuleNameOrNumericOidTransitive( atd, schema ) ) );
             }
         }
 

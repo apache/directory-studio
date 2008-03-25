@@ -21,9 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
+import java.util.Collection;
+
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -77,9 +81,6 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 
     /** The used from section, contains links to attribute types */
     private Section usedFromSection;
-
-    /** The links to attribute types using the matching rule */
-    private Hyperlink[] usedFromLinks;
 
 
     /**
@@ -200,17 +201,18 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         LdapSyntaxDescription lsd = null;
         if ( mrd != null )
         {
-            lsdOid = mrd.getSyntaxDescriptionNumericOID();
-            if ( lsdOid != null && mrd.getSchema().hasLdapSyntaxDescription( lsdOid ) )
+            Schema schema = getSchema();
+            lsdOid = mrd.getSyntax();
+            if ( lsdOid != null && schema.hasLdapSyntaxDescription( lsdOid ) )
             {
-                lsd = mrd.getSchema().getLdapSyntaxDescription( lsdOid );
+                lsd = schema.getLdapSyntaxDescription( lsdOid );
             }
         }
-        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getNumericOID() : lsdOid ) );
+        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getNumericOid() : lsdOid ) );
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
         syntaxLink.setEnabled( lsd != null );
-        syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDesc() : null ) );
+        syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDescription() : null ) );
         syntaxSection.layout();
 
         // create contents of dynamic sections
@@ -246,17 +248,17 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         if ( mrd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
-            numericOidText = toolkit.createText( mainClient, getNonNullString( mrd.getNumericOID() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( mrd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Matching rule names:", SWT.NONE );
-            namesText = toolkit.createText( mainClient, getNonNullString( mrd.toString() ), SWT.NONE );
+            namesText = toolkit.createText( mainClient, getNonNullString( SchemaUtils.toString( mrd ) ), SWT.NONE );
             namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             namesText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
-            descText = toolkit.createText( mainClient, getNonNullString( mrd.getDesc() ), SWT.WRAP | SWT.MULTI );
+            descText = toolkit.createText( mainClient, getNonNullString( mrd.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
@@ -290,25 +292,23 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( mrd != null )
         {
-            AttributeTypeDescription[] usedFromATDs = mrd.getUsedFromAttributeTypeDescriptions();
-            if ( usedFromATDs != null && usedFromATDs.length > 0 )
+            Collection<AttributeTypeDescription> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd, getSchema() );
+            if ( usedFromATDs != null && usedFromATDs.size() > 0 )
             {
-                usedFromSection.setText( "Used from (" + usedFromATDs.length + ")" );
-                usedFromLinks = new Hyperlink[usedFromATDs.length];
-                for ( int i = 0; i < usedFromATDs.length; i++ )
+                usedFromSection.setText( "Used from (" + usedFromATDs.size() + ")" );
+                for ( AttributeTypeDescription atd : usedFromATDs )
                 {
-                    usedFromLinks[i] = toolkit.createHyperlink( usedFromClient, usedFromATDs[i].toString(), SWT.WRAP );
-                    usedFromLinks[i].setHref( usedFromATDs[i] );
-                    usedFromLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                    usedFromLinks[i].setUnderlined( true );
-                    usedFromLinks[i].setEnabled( true );
-                    usedFromLinks[i].addHyperlinkListener( this );
+                    Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ), SWT.WRAP );
+                    usedFromLink.setHref( atd );
+                    usedFromLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                    usedFromLink.setUnderlined( true );
+                    usedFromLink.setEnabled( true );
+                    usedFromLink.addHyperlinkListener( this );
                 }
             }
             else
             {
                 usedFromSection.setText( "Used from (0)" );
-                usedFromLinks = new Hyperlink[0];
                 Text usedFromText = toolkit.createText( usedFromClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );

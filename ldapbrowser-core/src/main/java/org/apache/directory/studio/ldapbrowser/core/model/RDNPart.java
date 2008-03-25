@@ -269,7 +269,7 @@ public class RDNPart implements Serializable
      */
     public String toOidString( Schema schema )
     {
-        String oid = schema != null ? schema.getAttributeTypeDescription( getType() ).getNumericOID() : getType();
+        String oid = schema != null ? schema.getAttributeTypeDescription( getType() ).getNumericOid() : getType();
         return oid.toLowerCase() + "=" + getValue().toLowerCase(); //$NON-NLS-1$
     }
 

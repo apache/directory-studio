@@ -21,11 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -124,7 +122,7 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class LSDContentProvider implements IStructuredContentProvider
+    class LSDContentProvider implements IStructuredContentProvider
     {
         /**
          * {@inheritDoc}
@@ -134,10 +132,9 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
             if ( inputElement instanceof Schema )
             {
                 Schema schema = ( Schema ) inputElement;
-                if ( schema != null && schema.getLsdMapByNumericOID() != null )
+                if ( schema != null && schema.getLdapSyntaxDescriptions() != null )
                 {
-                    Set<Object> set = new HashSet<Object>( schema.getLsdMapByNumericOID().values() );
-                    return set.toArray();
+                    return schema.getLdapSyntaxDescriptions().toArray();
                 }
             }
             return new Object[0];
@@ -166,13 +163,17 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class LSDLabelProvider extends LabelProvider implements ITableLabelProvider
+    class LSDLabelProvider extends LabelProvider implements ITableLabelProvider
     {
         /**
          * {@inheritDoc}
          */
         public String getColumnText( Object obj, int index )
         {
+            if ( obj instanceof LdapSyntaxDescription )
+            {
+                return SchemaUtils.toString( ( LdapSyntaxDescription ) obj );
+            }
             return obj.toString();
         }
 
@@ -192,13 +193,21 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class LSDViewerSorter extends ViewerSorter
+    class LSDViewerSorter extends ViewerSorter
     {
         /**
          * {@inheritDoc}
          */
         public int compare( Viewer viewer, Object e1, Object e2 )
         {
+            if ( e1 instanceof LdapSyntaxDescription )
+            {
+                e1 = SchemaUtils.toString( ( LdapSyntaxDescription ) e1 );
+            }
+            if ( e2 instanceof LdapSyntaxDescription )
+            {
+                e2 = SchemaUtils.toString( ( LdapSyntaxDescription ) e2 );
+            }
             return e1.toString().compareTo( e2.toString() );
         }
     }
@@ -209,7 +218,7 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    private class LSDViewerFilter extends ViewerFilter
+    class LSDViewerFilter extends ViewerFilter
     {
         /**
          * {@inheritDoc}
@@ -219,13 +228,9 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
             if ( element instanceof LdapSyntaxDescription )
             {
                 LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) element;
-                boolean matched = false;
-
-                if ( !matched )
-                    matched = lsd.toString().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-                if ( !matched )
-                    matched = lsd.getNumericOID().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
-
+                boolean matched = SchemaUtils.toString( lsd ).toLowerCase()
+                    .indexOf( filterText.getText().toLowerCase() ) != -1
+                    || lsd.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }
             return false;

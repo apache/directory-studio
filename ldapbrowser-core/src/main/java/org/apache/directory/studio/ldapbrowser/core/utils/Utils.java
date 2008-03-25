@@ -101,7 +101,7 @@ public class Utils
 
     private static String getOidString( AttributeTypeAndValue atav, Schema schema )
     {
-        String oid = schema != null ? schema.getAttributeTypeDescription( atav.getNormType() ).getNumericOID() : atav
+        String oid = schema != null ? schema.getAttributeTypeDescription( atav.getNormType() ).getNumericOid() : atav
             .getNormType();
         return oid.trim().toLowerCase() + "=" + ( ( String ) atav.getUpValue() ).trim().toLowerCase(); //$NON-NLS-1$
     }

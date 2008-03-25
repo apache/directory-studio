@@ -23,12 +23,16 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -37,10 +41,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterExten
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.text.Document;
@@ -174,14 +176,13 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
 
         if ( schema != null )
         {
-            AttributeTypeDescription[] attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
-            for ( int i = 0; i < attributeTypeDescriptions.length; i++ )
+            Collection<AttributeTypeDescription> attributeTypeDescriptions = schema.getAttributeTypeDescriptions();
+            for ( AttributeTypeDescription atd : attributeTypeDescriptions )
             {
-                AttributeTypeDescription description = attributeTypeDescriptions[i];
-                possibleAttributeTypes.put( description.getNumericOID(), description );
-                for ( int k = 0; k < description.getNames().length; k++ )
+                possibleAttributeTypes.put( atd.getNumericOid(), atd );
+                for ( String atdName : atd.getNames() )
                 {
-                    possibleAttributeTypes.put( description.getNames()[k], description );
+                    possibleAttributeTypes.put( atdName, atd );
                 }
             }
 
@@ -191,25 +192,23 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             possibleFilterTypes.put( ">=", ">= (greater than or equals)" );
             possibleFilterTypes.put( "~=", "~= (approximately)" );
 
-            ObjectClassDescription[] objectClassDescriptions = schema.getObjectClassDescriptions();
-            for ( int i = 0; i < objectClassDescriptions.length; i++ )
+            Collection<ObjectClassDescription> ocds = schema.getObjectClassDescriptions();
+            for ( ObjectClassDescription ocd : ocds )
             {
-                ObjectClassDescription description = objectClassDescriptions[i];
-                possibleObjectClasses.put( description.getNumericOID(), description );
-                for ( int k = 0; k < description.getNames().length; k++ )
+                possibleObjectClasses.put( ocd.getNumericOid(), ocd );
+                for ( String name : ocd.getNames() )
                 {
-                    possibleObjectClasses.put( description.getNames()[k], description );
+                    possibleObjectClasses.put( name, ocd );
                 }
             }
 
-            MatchingRuleDescription[] matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
-            for ( int i = 0; i < matchingRuleDescriptions.length; i++ )
+            Collection<MatchingRuleDescription> matchingRuleDescriptions = schema.getMatchingRuleDescriptions();
+            for ( MatchingRuleDescription description : matchingRuleDescriptions )
             {
-                MatchingRuleDescription description = matchingRuleDescriptions[i];
-                possibleMatchingRules.put( description.getNumericOID(), description );
-                for ( int k = 0; k < description.getNames().length; k++ )
+                possibleMatchingRules.put( description.getNumericOid(), description );
+                for ( String name : description.getNames() )
                 {
-                    possibleMatchingRules.put( description.getNames()[k], description );
+                    possibleMatchingRules.put( name, description );
                 }
             }
         }
@@ -295,7 +294,8 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
      */
     private ICompletionProposal[] computeCompletionProposals( int offset )
     {
-        String[] possibleObjectClasses = schema == null ? new String[0] : schema.getObjectClassDescriptionNames();
+        String[] possibleObjectClasses = schema == null ? new String[0] : SchemaUtils.getNamesAsArray( schema
+            .getObjectClassDescriptions() );
         Arrays.sort( possibleObjectClasses );
 
         List<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>();
@@ -436,18 +436,17 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 {
                     String replacementString = possibleAttributeType;
                     String displayString = possibleAttributeType;
-                    if ( displayString.equals( description.getNumericOID() ) )
+                    if ( displayString.equals( description.getNumericOid() ) )
                     {
-                        displayString += " (" + description.toString() + ")";
+                        displayString += " (" + SchemaUtils.toString( description ) + ")";
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOID() + ")";
+                        displayString += " (" + description.getNumericOid() + ")";
                     }
-
+                    String info = SchemaUtils.getLdifLine( description );
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, attributeType
-                        .length(), replacementString.length(), getAttributeTypeImage(), displayString, null, schema
-                        .getAttributeTypeDescription( possibleAttributeType ).getLine().getUnfoldedValue() );
+                        .length(), replacementString.length(), getAttributeTypeImage(), displayString, null, info );
                     proposalList.add( proposal );
                 }
             }
@@ -468,12 +467,14 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
         if ( schema != null )
         {
             Map<String, String> copy = new LinkedHashMap<String, String>( possibleFilterTypes );
-            if ( schema.getAttributeTypeDescription( attributeType ).getEqualityMatchingRuleDescriptionOIDTransitive() == null )
+            if ( SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( schema
+                .getAttributeTypeDescription( attributeType ), schema ) == null )
             {
                 copy.remove( "=" );
                 copy.remove( "~=" );
             }
-            if ( schema.getAttributeTypeDescription( attributeType ).getOrderingMatchingRuleDescriptionOIDTransitive() == null )
+            if ( SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( schema
+                .getAttributeTypeDescription( attributeType ), schema ) == null )
             {
                 copy.remove( "<=" );
                 copy.remove( ">=" );
@@ -510,18 +511,18 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 {
                     String replacementString = possibleObjectClass;
                     String displayString = possibleObjectClass;
-                    if ( displayString.equals( description.getNumericOID() ) )
+                    if ( displayString.equals( description.getNumericOid() ) )
                     {
-                        displayString += " (" + description.toString() + ")";
+                        displayString += " (" + SchemaUtils.toString( description ) + ")";
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOID() + ")";
+                        displayString += " (" + description.getNumericOid() + ")";
                     }
 
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, objectClass
-                        .length(), replacementString.length(), getObjectClassImage(), displayString, null, schema
-                        .getObjectClassDescription( possibleObjectClass ).getLine().getUnfoldedValue() );
+                        .length(), replacementString.length(), getObjectClassImage(), displayString, null, SchemaUtils
+                        .getLdifLine( schema.getObjectClassDescription( possibleObjectClass ) ) );
                     proposalList.add( proposal );
                 }
             }
@@ -556,18 +557,17 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                         replacementString += "=";
                     }
                     String displayString = possibleMatchingRule;
-                    if ( displayString.equals( description.getNumericOID() ) )
+                    if ( displayString.equals( description.getNumericOid() ) )
                     {
-                        displayString += " (" + description.toString() + ")";
+                        displayString += " (" + SchemaUtils.toString( description ) + ")";
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOID() + ")";
+                        displayString += " (" + description.getNumericOid() + ")";
                     }
-
+                    String info = SchemaUtils.getLdifLine( description );
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, matchingRule
-                        .length(), replacementString.length(), getMatchingRuleImage(), displayString, null, schema
-                        .getMatchingRuleDescription( possibleMatchingRule ).getLine().getUnfoldedValue() );
+                        .length(), replacementString.length(), getMatchingRuleImage(), displayString, null, info );
                     proposalList.add( proposal );
                 }
             }

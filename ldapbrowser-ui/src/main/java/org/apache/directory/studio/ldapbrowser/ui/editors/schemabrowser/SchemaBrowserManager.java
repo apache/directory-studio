@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -47,7 +47,7 @@ public class SchemaBrowserManager
      * @param connection the connection
      * @param schemaElement the schema element
      */
-    public static void setInput( IBrowserConnection connection, SchemaPart schemaElement )
+    public static void setInput( IBrowserConnection connection, AbstractSchemaDescription schemaElement )
     {
         SchemaBrowserInput input = new SchemaBrowserInput( connection, schemaElement );
         setInput( input );

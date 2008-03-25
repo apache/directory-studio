@@ -30,15 +30,16 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
@@ -241,13 +242,12 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createAttributeMaps( Schema schema )
     {
-        AttributeTypeDescription[] atds = schema.getAttributeTypeDescriptions();
+        Collection<AttributeTypeDescription> atds = schema.getAttributeTypeDescriptions();
         for ( AttributeTypeDescription atd : atds )
         {
-            attributeOid2AtdMap.put( atd.getNumericOID(), atd );
+            attributeOid2AtdMap.put( atd.getNumericOid(), atd );
 
-            String[] names = atd.getNames();
-            for ( String name : names )
+            for ( String name : atd.getNames() )
             {
                 attributeNames2AtdMap.put( name, atd );
             }
@@ -257,14 +257,14 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
 
     private void createSyntaxMaps( Schema schema )
     {
-        LdapSyntaxDescription[] lsds = schema.getLdapSyntaxDescriptions();
+        Collection<LdapSyntaxDescription> lsds = schema.getLdapSyntaxDescriptions();
         for ( LdapSyntaxDescription lsd : lsds )
         {
-            syntaxOid2LsdMap.put( lsd.getNumericOID(), lsd );
+            syntaxOid2LsdMap.put( lsd.getNumericOid(), lsd );
 
-            if ( lsd.getDesc() != null )
+            if ( lsd.getDescription() != null )
             {
-                syntaxDesc2LsdMap.put( lsd.getDesc(), lsd );
+                syntaxDesc2LsdMap.put( lsd.getDescription(), lsd );
             }
         }
     }
@@ -540,7 +540,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                         {
                             AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeNames2AtdMap
                                 .get( relation.getAttributeNumericOidOrType() );
-                            String s = atd.getNumericOID();
+                            String s = atd.getNumericOid();
                             for ( String name : atd.getNames() )
                             {
                                 if ( !relation.getAttributeNumericOidOrType().equals( name ) )
@@ -612,7 +612,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                         {
                             LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) syntaxOid2LsdMap.get( relation
                                 .getSyntaxOID() );
-                            return lsd.toString();
+                            return SchemaUtils.toString( lsd );
                         }
                     }
                 }

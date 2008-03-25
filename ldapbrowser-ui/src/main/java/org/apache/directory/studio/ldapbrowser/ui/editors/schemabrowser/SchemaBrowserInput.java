@@ -21,10 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -57,7 +55,7 @@ public class SchemaBrowserInput implements IEditorInput
     private IBrowserConnection connection;
     
     /** The schema element */
-    private SchemaPart schemaElement;
+    private AbstractSchemaDescription schemaElement;
     
     /** One instance hack flag */
     private static boolean oneInstanceHackEnabled = true;
@@ -66,10 +64,10 @@ public class SchemaBrowserInput implements IEditorInput
     /**
      * Creates a new instance of SchemaBrowserInput.
      *
-     *@param connection the connection
+     * @param connection the connection
      * @param schemaElement the schema element input
      */
-    public SchemaBrowserInput( IBrowserConnection connection, SchemaPart schemaElement )
+    public SchemaBrowserInput( IBrowserConnection connection, AbstractSchemaDescription schemaElement )
     {
         this.connection = connection;
         this.schemaElement = schemaElement;
@@ -166,7 +164,7 @@ public class SchemaBrowserInput implements IEditorInput
      *
      * @return the schema element or null
      */
-    public SchemaPart getSchemaElement()
+    public AbstractSchemaDescription getSchemaElement()
     {
         return schemaElement;
     }

@@ -24,24 +24,31 @@ package org.apache.directory.studio.ldapbrowser.core.model.schema;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Serializable;
-import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.syntax.parser.AttributeTypeDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.syntax.parser.LdapSyntaxDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.syntax.parser.MatchingRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.syntax.parser.MatchingRuleUseDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.syntax.parser.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.parser.SchemaLexer;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.parser.SchemaParser;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
@@ -50,13 +57,17 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.parser.LdifParser;
 
 
-public class Schema implements Serializable
+/**
+ * The schema is the central access point to all schema information.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class Schema
 {
 
-    private static final long serialVersionUID = 2439355717760227167L;
-
     public static final String SCHEMA_FILTER = "(objectClass=subschema)";
-    
+
     public static final String SCHEMA_ATTRIBUTE_OBJECTCLASSES = "objectClasses";
 
     public static final String SCHEMA_ATTRIBUTE_ATTRIBUTETYPES = "attributeTypes";
@@ -67,6 +78,18 @@ public class Schema implements Serializable
 
     public static final String SCHEMA_ATTRIBUTE_MATCHINGRULEUSE = "matchingRuleUse";
 
+    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE";
+
+    public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12";
+
+    public static final LdapSyntaxDescription DUMMY_LDAP_SYNTAX;
+    static
+    {
+        DUMMY_LDAP_SYNTAX = new LdapSyntaxDescription();
+        DUMMY_LDAP_SYNTAX.setNumericOid( "" );
+        DUMMY_LDAP_SYNTAX.setDescription( "" );
+    }
+
     public static final Schema DEFAULT_SCHEMA;
     static
     {
@@ -74,8 +97,7 @@ public class Schema implements Serializable
 
         try
         {
-            URL url = Schema.class.getClassLoader().getResource(
-                "default_schema.ldif" );
+            URL url = Schema.class.getClassLoader().getResource( "default_schema.ldif" );
             InputStream is = url.openStream();
             Reader reader = new InputStreamReader( is );
 
@@ -103,41 +125,35 @@ public class Schema implements Serializable
 
     private LdapDN dn;
 
-    private String[] objectClasses;
-
     private String createTimestamp;
 
     private String modifyTimestamp;
 
-    private Map ocdMapByName;
+    private Map<String, ObjectClassDescription> ocdMapByNameOrNumericOid;
 
-    private Map atdMapByName;
+    private Map<String, AttributeTypeDescription> atdMapByNameOrNumericOid;
 
-    private Map lsdMapByNumericOID;
+    private Map<String, LdapSyntaxDescription> lsdMapByNumericOid;
 
-    private Map mrdMapByName;
+    private Map<String, MatchingRuleDescription> mrdMapByNameOrNumericOid;
 
-    private Map mrdMapByNumericOID;
-
-    private Map mrudMapByName;
-
-    private Map mrudMapByNumericOID;
+    private Map<String, MatchingRuleUseDescription> mrudMapByNameOrNumericOid;
 
 
+    /**
+     * Creates a new instance of Schema.
+     */
     public Schema()
     {
         this.schemaRecord = null;
         this.dn = null;
-        this.objectClasses = new String[0];
         this.createTimestamp = null;
         this.modifyTimestamp = null;
-        this.ocdMapByName = new HashMap();
-        this.atdMapByName = new HashMap();
-        this.lsdMapByNumericOID = new HashMap();
-        this.mrdMapByName = new HashMap();
-        this.mrdMapByNumericOID = new HashMap();
-        this.mrudMapByName = new HashMap();
-        this.mrudMapByNumericOID = new HashMap();
+        this.ocdMapByNameOrNumericOid = new HashMap<String, ObjectClassDescription>();
+        this.atdMapByNameOrNumericOid = new HashMap<String, AttributeTypeDescription>();
+        this.lsdMapByNumericOid = new HashMap<String, LdapSyntaxDescription>();
+        this.mrdMapByNameOrNumericOid = new HashMap<String, MatchingRuleDescription>();
+        this.mrudMapByNameOrNumericOid = new HashMap<String, MatchingRuleUseDescription>();
     }
 
 
@@ -145,7 +161,7 @@ public class Schema implements Serializable
      * Loads all schema elements from the given reader. The input must be in
      * LDIF format.
      * 
-     * @param reader
+     * @param reader the reader
      */
     public void loadFromLdif( Reader reader )
     {
@@ -159,7 +175,7 @@ public class Schema implements Serializable
                 if ( container instanceof LdifContentRecord )
                 {
                     LdifContentRecord schemaRecord = ( LdifContentRecord ) container;
-                    this.parseSchemaRecord( schemaRecord );
+                    parseSchemaRecord( schemaRecord );
                 }
             }
         }
@@ -170,11 +186,16 @@ public class Schema implements Serializable
     }
 
 
+    /**
+     * Load all schema elements from the given schema record.
+     * 
+     * @param schemaRecord the schema record
+     */
     public void loadFromRecord( LdifContentRecord schemaRecord )
     {
         try
         {
-            this.parseSchemaRecord( schemaRecord );
+            parseSchemaRecord( schemaRecord );
         }
         catch ( Exception e )
         {
@@ -192,7 +213,7 @@ public class Schema implements Serializable
     {
         try
         {
-            writer.write( this.getSchemaRecord().toFormattedString( LdifFormatParameters.DEFAULT ) );
+            writer.write( getSchemaRecord().toFormattedString( LdifFormatParameters.DEFAULT ) );
         }
         catch ( Exception e )
         {
@@ -201,11 +222,17 @@ public class Schema implements Serializable
     }
 
 
+    /**
+     * Parses the schema record.
+     * 
+     * @param schemaRecord the schema record
+     * 
+     * @throws Exception the exception
+     */
     private void parseSchemaRecord( LdifContentRecord schemaRecord ) throws Exception
     {
-
-        this.setSchemaRecord( schemaRecord );
-        this.setDn( new LdapDN( schemaRecord.getDnLine().getValueAsString() ) );
+        setSchemaRecord( schemaRecord );
+        setDn( new LdapDN( schemaRecord.getDnLine().getValueAsString() ) );
 
         LdifAttrValLine[] lines = schemaRecord.getAttrVals();
         for ( int i = 0; i < lines.length; i++ )
@@ -213,54 +240,53 @@ public class Schema implements Serializable
             LdifAttrValLine line = lines[i];
             String attributeName = line.getUnfoldedAttributeDescription();
             String value = line.getValueAsString();
-
-            SchemaLexer lexer = new SchemaLexer( new StringReader( value ) );
-            SchemaParser parser = new SchemaParser( lexer );
+            List<String> ldifValues = new ArrayList<String>( 1 );
+            ldifValues.add( value );
 
             try
             {
                 if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES ) )
                 {
-                    ObjectClassDescription ocd = parser.objectClassDescription();
-                    ocd.setSchema( this );
-                    ocd.setLine( line );
-                    this.addObjectClassDescription( ocd );
+                    ObjectClassDescription ocd = new ObjectClassDescriptionSchemaParser()
+                        .parseObjectClassDescription( value );
+                    ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
+                    addObjectClassDescription( ocd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES ) )
                 {
-                    AttributeTypeDescription atd = parser.attributeTypeDescription();
-                    atd.setSchema( this );
-                    atd.setLine( line );
-                    this.addAttributeTypeDescription( atd );
+                    AttributeTypeDescription atd = new AttributeTypeDescriptionSchemaParser()
+                        .parseAttributeTypeDescription( value );
+                    atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
+                    addAttributeTypeDescription( atd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES ) )
                 {
-                    LdapSyntaxDescription lsd = parser.syntaxDescription();
-                    lsd.setSchema( this );
-                    lsd.setLine( line );
-                    this.addLdapSyntaxDescription( lsd );
+                    LdapSyntaxDescription lsd = new LdapSyntaxDescriptionSchemaParser()
+                        .parseLdapSyntaxDescription( value );
+                    lsd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
+                    addLdapSyntaxDescription( lsd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES ) )
                 {
-                    MatchingRuleDescription mrd = parser.matchingRuleDescription();
-                    mrd.setSchema( this );
-                    mrd.setLine( line );
-                    this.addMatchingRuleDescription( mrd );
+                    MatchingRuleDescription mrd = new MatchingRuleDescriptionSchemaParser()
+                        .parseMatchingRuleDescription( value );
+                    mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
+                    addMatchingRuleDescription( mrd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE ) )
                 {
-                    MatchingRuleUseDescription mrud = parser.matchingRuleUseDescription();
-                    mrud.setSchema( this );
-                    mrud.setLine( line );
-                    this.addMatchingRuleUseDescription( mrud );
+                    MatchingRuleUseDescription mrud = new MatchingRuleUseDescriptionSchemaParser()
+                        .parseMatchingRuleUseDescription( value );
+                    mrud.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
+                    addMatchingRuleUseDescription( mrud );
                 }
                 else if ( attributeName.equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) )
                 {
-                    this.setCreateTimestamp( value );
+                    setCreateTimestamp( value );
                 }
                 else if ( attributeName.equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) )
                 {
-                    this.setModifyTimestamp( value );
+                    setModifyTimestamp( value );
                 }
             }
             catch ( Exception e )
@@ -272,14 +298,16 @@ public class Schema implements Serializable
 
         // set extensibleObject may attributes
         ObjectClassDescription extensibleObjectOcd = this
-            .getObjectClassDescription( ObjectClassDescription.EXTENSIBLEOBJECT_OBJECTCLASSNAME );
-        AttributeTypeDescription[] userAtds = SchemaUtils.getUserAttributeDescriptions( this );
-        String[] attributeTypeDescriptionNames = SchemaUtils.getAttributeTypeDescriptionNames( userAtds );
-        extensibleObjectOcd.setMayAttributeTypeDescriptionNames( attributeTypeDescriptionNames );
+            .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
+        Collection<AttributeTypeDescription> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
+        Collection<String> atdNames = SchemaUtils.getNames( userAtds );
+        List<String> atdNames2 = new ArrayList<String>( atdNames );
+        extensibleObjectOcd.setMayAttributeTypes( atdNames2 );
     }
 
 
     /**
+     * Gets the schema record.
      * 
      * @return the schema record when the schema was created using the
      *         loadFromLdif() method, null otherwise
@@ -290,6 +318,11 @@ public class Schema implements Serializable
     }
 
 
+    /**
+     * Sets the schema record.
+     * 
+     * @param schemaRecord the new schema record
+     */
     public void setSchemaRecord( LdifContentRecord schemaRecord )
     {
         this.schemaRecord = schemaRecord;
@@ -297,8 +330,9 @@ public class Schema implements Serializable
 
 
     /**
+     * Gets the DN of the schema record, may be null.
      * 
-     * @return the dn of the schema record, may be null
+     * @return the DN of the schema record, may be null
      */
     public LdapDN getDn()
     {
@@ -306,6 +340,11 @@ public class Schema implements Serializable
     }
 
 
+    /**
+     * Sets the DN.
+     * 
+     * @param dn the new DN
+     */
     public void setDn( LdapDN dn )
     {
         this.dn = dn;
@@ -313,6 +352,7 @@ public class Schema implements Serializable
 
 
     /**
+     * Gets the create timestamp of the schema record, may be null.
      * 
      * @return the create timestamp of the schema record, may be null
      */
@@ -322,6 +362,11 @@ public class Schema implements Serializable
     }
 
 
+    /**
+     * Sets the creates the timestamp.
+     * 
+     * @param createTimestamp the new creates the timestamp
+     */
     public void setCreateTimestamp( String createTimestamp )
     {
         this.createTimestamp = createTimestamp;
@@ -329,6 +374,7 @@ public class Schema implements Serializable
 
 
     /**
+     * Gets the modify timestamp of the schema record, may be null.
      * 
      * @return the modify timestamp of the schema record, may be null
      */
@@ -338,343 +384,63 @@ public class Schema implements Serializable
     }
 
 
+    /**
+     * Sets the modify timestamp.
+     * 
+     * @param modifyTimestamp the new modify timestamp
+     */
     public void setModifyTimestamp( String modifyTimestamp )
     {
         this.modifyTimestamp = modifyTimestamp;
     }
 
 
-    /**
-     * 
-     * @return the object classes of the schema record, may be an empty
-     *         array.
-     */
-    public String[] getObjectClasses()
-    {
-        return objectClasses;
-    }
-
-
-    public void setObjectClasses( String[] objectClasses )
-    {
-        this.objectClasses = objectClasses;
-    }
-
+    ////////////////////// Object Class Description //////////////////////
 
     /**
+     * Adds the object class description.
      * 
-     * @return a Map of name to attribute type description
+     * @param ocd the object class description
      */
-    Map getAtdMapByName()
+    private void addObjectClassDescription( ObjectClassDescription ocd )
     {
-        return atdMapByName;
-    }
-
-
-    void setAtdMapByName( Map atdMapByName )
-    {
-        this.atdMapByName = atdMapByName;
-    }
-
-
-    public void addAttributeTypeDescription( AttributeTypeDescription atd )
-    {
-        if ( atd.getNames() != null && atd.getNames().length > 0 )
+        if ( ocd.getNumericOid() != null )
         {
-            for ( int i = 0; i < atd.getNames().length; i++ )
+            ocdMapByNameOrNumericOid.put( ocd.getNumericOid().toLowerCase(), ocd );
+        }
+        if ( ocd.getNames() != null && !ocd.getNames().isEmpty() )
+        {
+            for ( String ocdName : ocd.getNames() )
             {
-                this.atdMapByName.put( atd.getNames()[i].toLowerCase(), atd );
+                ocdMapByNameOrNumericOid.put( ocdName.toLowerCase(), ocd );
             }
         }
-        if ( atd.getNumericOID() != null )
-        {
-            this.atdMapByName.put( atd.getNumericOID().toLowerCase(), atd );
-        }
     }
 
 
     /**
+     * Gets the object class descriptions.
      * 
-     * @return an array of all attribute type description names
+     * @return the object class descriptions
      */
-    public String[] getAttributeTypeDescriptionNames()
+    public Collection<ObjectClassDescription> getObjectClassDescriptions()
     {
-        Set set = new HashSet();
-        for ( Iterator it = this.atdMapByName.values().iterator(); it.hasNext(); )
-        {
-            AttributeTypeDescription atd = ( AttributeTypeDescription ) it.next();
-            for ( int i = 0; i < atd.getNames().length; i++ )
-            {
-                set.add( atd.getNames()[i] );
-            }
-        }
-        return ( String[] ) set.toArray( new String[set.size()] );
-    }
-
-
-    public AttributeTypeDescription[] getAttributeTypeDescriptions()
-    {
-        Set set = new HashSet();
-        for ( Iterator it = this.atdMapByName.values().iterator(); it.hasNext(); )
-        {
-            AttributeTypeDescription atd = ( AttributeTypeDescription ) it.next();
-            set.add( atd );
-        }
-        return ( AttributeTypeDescription[] ) set.toArray( new AttributeTypeDescription[set.size()] );
+        Set<ObjectClassDescription> set = new HashSet<ObjectClassDescription>( ocdMapByNameOrNumericOid.values() );
+        return set;
     }
 
 
     /**
+     * Checks if an object class descriptions with the given name or OID exists.
      * 
-     * @return a Map of oid to syntax description
-     */
-    public Map getLsdMapByNumericOID()
-    {
-        return lsdMapByNumericOID;
-    }
-
-
-    public void setLsdMapByNumericOID( Map lsdMapByNumericOID )
-    {
-        this.lsdMapByNumericOID = lsdMapByNumericOID;
-    }
-
-
-    public void addLdapSyntaxDescription( LdapSyntaxDescription lsd )
-    {
-        if ( lsd.getNumericOID() != null )
-        {
-            this.lsdMapByNumericOID.put( lsd.getNumericOID().toLowerCase(), lsd );
-        }
-    }
-
-
-    /**
+     * @param nameOrOid the name numeric OID of the object class description
      * 
-     * @return an array of all syntax description oids
+     * @return true if an object class description with the given name
+     *         or OID exists.
      */
-    public String[] getLdapSyntaxDescriptionOids()
+    public boolean hasObjectClassDescription( String nameOrOid )
     {
-        Set set = new HashSet();
-        for ( Iterator it = this.lsdMapByNumericOID.values().iterator(); it.hasNext(); )
-        {
-            LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) it.next();
-            set.add( lsd.getNumericOID() );
-        }
-        return ( String[] ) set.toArray( new String[set.size()] );
-    }
-
-
-    public LdapSyntaxDescription[] getLdapSyntaxDescriptions()
-    {
-        Set set = new HashSet();
-        for ( Iterator it = this.lsdMapByNumericOID.values().iterator(); it.hasNext(); )
-        {
-            LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) it.next();
-            set.add( lsd );
-        }
-        return ( LdapSyntaxDescription[] ) set.toArray( new LdapSyntaxDescription[set.size()] );
-    }
-
-
-    /**
-     * 
-     * @return a Map of name to matching rule description
-     */
-    public Map getMrdMapByName()
-    {
-        return mrdMapByName;
-    }
-
-
-    public void setMrdMapByName( Map mrdMapByName )
-    {
-        this.mrdMapByName = mrdMapByName;
-    }
-
-    
-    /**
-     * 
-     * @return an array of all matching rule description names
-     */
-    public String[] getMatchingRuleDescriptionNames()
-    {
-        Set set = new HashSet();
-        for ( Iterator it = this.mrdMapByName.values().iterator(); it.hasNext(); )
-        {
-            MatchingRuleDescription mrd = ( MatchingRuleDescription ) it.next();
-            for ( int i = 0; i < mrd.getNames().length; i++ )
-            {
-                set.add( mrd.getNames()[i] );
-            }
-        }
-        return ( String[] ) set.toArray( new String[set.size()] );
-    }
-
-
-    public MatchingRuleDescription[] getMatchingRuleDescriptions()
-    {
-        Set set = new HashSet();
-        for ( Iterator it = this.mrdMapByName.values().iterator(); it.hasNext(); )
-        {
-            MatchingRuleDescription mrd = ( MatchingRuleDescription ) it.next();
-            set.add( mrd );
-        }
-        return ( MatchingRuleDescription[] ) set.toArray( new MatchingRuleDescription[set.size()] );
-    }
-
-    public void addMatchingRuleDescription( MatchingRuleDescription mrd )
-    {
-        if ( mrd.getNames() != null && mrd.getNames().length > 0 )
-        {
-            for ( int i = 0; i < mrd.getNames().length; i++ )
-            {
-                this.mrdMapByName.put( mrd.getNames()[i].toLowerCase(), mrd );
-            }
-        }
-        if ( mrd.getNumericOID() != null )
-        {
-            this.mrdMapByNumericOID.put( mrd.getNumericOID().toLowerCase(), mrd );
-        }
-    }
-
-
-    /**
-     * 
-     * @return a Map of oid to matching rule description
-     */
-    public Map getMrdMapByNumericOID()
-    {
-        return mrdMapByNumericOID;
-    }
-
-
-    public void setMrdMapByNumericOID( Map mrdMapByNumericOID )
-    {
-        this.mrdMapByNumericOID = mrdMapByNumericOID;
-    }
-
-
-    /**
-     * 
-     * @return a Map of name to matching rule use description
-     */
-    public Map getMrudMapByName()
-    {
-        return mrudMapByName;
-    }
-
-
-    public void setMrudMapByName( Map mrudMapByName )
-    {
-        this.mrudMapByName = mrudMapByName;
-    }
-
-
-    public void addMatchingRuleUseDescription( MatchingRuleUseDescription mrud )
-    {
-        if ( mrud.getNames() != null && mrud.getNames().length > 0 )
-        {
-            for ( int i = 0; i < mrud.getNames().length; i++ )
-            {
-                this.mrudMapByName.put( mrud.getNames()[i].toLowerCase(), mrud );
-            }
-        }
-        if ( mrud.getNumericOID() != null )
-        {
-            this.mrudMapByNumericOID.put( mrud.getNumericOID().toLowerCase(), mrud );
-        }
-    }
-
-
-    /**
-     * 
-     * @return a Map of oid to matching rule use description
-     */
-    public Map getMrudMapByNumericOID()
-    {
-        return mrudMapByNumericOID;
-    }
-
-
-    public void setMrduMapByNumericOID( Map mrudMapByNumericOID )
-    {
-        this.mrudMapByNumericOID = mrudMapByNumericOID;
-    }
-
-
-    /**
-     * 
-     * @return a Map of name to object class description
-     */
-    Map getOcdMapByName()
-    {
-        return ocdMapByName;
-    }
-
-
-    void setOcdMapByName( Map ocdMapByName )
-    {
-        this.ocdMapByName = ocdMapByName;
-    }
-
-
-    public void addObjectClassDescription( ObjectClassDescription ocd )
-    {
-        if ( ocd.getNames() != null && ocd.getNames().length > 0 )
-        {
-            for ( int i = 0; i < ocd.getNames().length; i++ )
-            {
-                this.ocdMapByName.put( ocd.getNames()[i].toLowerCase(), ocd );
-            }
-        }
-        if ( ocd.getNumericOID() != null )
-        {
-            this.ocdMapByName.put( ocd.getNumericOID().toLowerCase(), ocd );
-        }
-    }
-
-
-    /**
-     * 
-     * @return an array of all object class names
-     */
-    public String[] getObjectClassDescriptionNames()
-    {
-        Set set = new HashSet();
-        for ( Iterator it = this.ocdMapByName.values().iterator(); it.hasNext(); )
-        {
-            ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
-            for ( int i = 0; i < ocd.getNames().length; i++ )
-            {
-                set.add( ocd.getNames()[i] );
-            }
-        }
-        return ( String[] ) set.toArray( new String[set.size()] );
-    }
-
-
-    public ObjectClassDescription[] getObjectClassDescriptions()
-    {
-        Set set = new HashSet();
-        for ( Iterator it = this.ocdMapByName.values().iterator(); it.hasNext(); )
-        {
-            ObjectClassDescription ocd = ( ObjectClassDescription ) it.next();
-            set.add( ocd );
-        }
-        return ( ObjectClassDescription[] ) set.toArray( new ObjectClassDescription[set.size()] );
-    }
-
-
-    /**
-     * 
-     * @param name
-     * @return true if a object class description with the given name
-     *         exists.
-     */
-    public boolean hasObjectClassDescription( String name )
-    {
-        return this.ocdMapByName.containsKey( name.toLowerCase() );
+        return ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
     }
 
 
@@ -683,42 +449,79 @@ public class Schema implements Serializable
      * object exists the default or a dummy object class description is
      * returned.
      * 
-     * @param name
-     *                the object class name
-     * @return the object class description, the default or a dummy
+     * @param nameOrOid the name numeric OID of the object class description
+     * 
+     * @return the object class description, or the default or a dummy
      */
-    public ObjectClassDescription getObjectClassDescription( String name )
+    public ObjectClassDescription getObjectClassDescription( String nameOrOid )
     {
-        if ( this.ocdMapByName.containsKey( name.toLowerCase() ) )
+        if ( ocdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
-            return ( ObjectClassDescription ) this.ocdMapByName.get( name.toLowerCase() );
+            return ocdMapByNameOrNumericOid.get( nameOrOid.toLowerCase() );
         }
-        else if ( !this.isDefault() )
+        else if ( !isDefault() )
         {
-            return DEFAULT_SCHEMA.getObjectClassDescription( name );
+            return DEFAULT_SCHEMA.getObjectClassDescription( nameOrOid );
         }
         else
         {
             // DUMMY
+            List<String> names = new ArrayList<String>();
+            names.add( nameOrOid );
             ObjectClassDescription ocd = new ObjectClassDescription();
-            ocd.setSchema( this );
-            ocd.setNumericOID( name );
-            ocd.setNames( new String[]
-                { name } );
+            ocd.setNumericOid( nameOrOid );
+            ocd.setNames( names );
             return ocd;
         }
     }
 
 
+    ////////////////////// Attribute Type Description //////////////////////
+
     /**
+     * Adds the attribute type description.
      * 
-     * @param name
-     * @return true if a attribute type description with the given name
-     *         exists.
+     * @param atd the attribute type description
      */
-    public boolean hasAttributeTypeDescription( String name )
+    private void addAttributeTypeDescription( AttributeTypeDescription atd )
     {
-        return this.atdMapByName.containsKey( name.toLowerCase() );
+        if ( atd.getNumericOid() != null )
+        {
+            atdMapByNameOrNumericOid.put( atd.getNumericOid().toLowerCase(), atd );
+        }
+        if ( atd.getNames() != null && !atd.getNames().isEmpty() )
+        {
+            for ( String atdName : atd.getNames() )
+            {
+                atdMapByNameOrNumericOid.put( atdName.toLowerCase(), atd );
+            }
+        }
+    }
+
+
+    /**
+     * Gets the attribute type descriptions.
+     * 
+     * @return the attribute type descriptions
+     */
+    public Collection<AttributeTypeDescription> getAttributeTypeDescriptions()
+    {
+        Set<AttributeTypeDescription> set = new HashSet<AttributeTypeDescription>( atdMapByNameOrNumericOid.values() );
+        return set;
+    }
+
+
+    /**
+     * Checks if an attribute type descriptions with the given name or OID exists.
+     * 
+     * @param nameOrOid the name numeric OID of the attribute type description
+     * 
+     * @return true if an attribute type description with the given name
+     *         or OID exists.
+     */
+    public boolean hasAttributeTypeDescription( String nameOrOid )
+    {
+        return atdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
     }
 
 
@@ -727,177 +530,264 @@ public class Schema implements Serializable
      * object exists the default or a dummy attribute type description is
      * returned.
      * 
-     * @param description
-     *                the attribute description
+     * @param nameOrOid the name numeric OID of the attribute type description
+     * 
      * @return the attribute type description, or the default or a dummy
      */
-    public AttributeTypeDescription getAttributeTypeDescription( String description )
+    public AttributeTypeDescription getAttributeTypeDescription( String nameOrOid )
     {
-        AttributeDescription ad = new AttributeDescription( description );
+        AttributeDescription ad = new AttributeDescription( nameOrOid );
         String attributeType = ad.getParsedAttributeType();
 
-        if ( this.atdMapByName.containsKey( attributeType.toLowerCase() ) )
+        if ( atdMapByNameOrNumericOid.containsKey( attributeType.toLowerCase() ) )
         {
-            return ( AttributeTypeDescription ) this.atdMapByName.get( attributeType.toLowerCase() );
+            return atdMapByNameOrNumericOid.get( attributeType.toLowerCase() );
         }
-        else if ( !this.isDefault() )
+        else if ( !isDefault() )
         {
             return DEFAULT_SCHEMA.getAttributeTypeDescription( attributeType );
         }
         else
         {
             // DUMMY
+            List<String> attributeTypes = new ArrayList<String>();
+            attributeTypes.add( attributeType );
             AttributeTypeDescription atd = new AttributeTypeDescription();
-            atd.setSchema( this );
-            atd.setNumericOID( attributeType );
-            atd.setNames( new String[]
-                { attributeType } );
-            atd.setNoUserModification( true );
-            atd.setUsage( "" );
+            atd.setNumericOid( attributeType );
+            atd.setNames( attributeTypes );
+            atd.setUserModifiable( false );
+            atd.setUsage( UsageEnum.USER_APPLICATIONS );
             return atd;
         }
     }
 
 
+    //////////////////////// LDAP Syntax Description ////////////////////////
+
     /**
+     * Adds the LDAP syntax description.
      * 
-     * @param name
-     * @return true if a syntax description with the given name exists.
+     * @param lsd the LDAP syntax description
      */
-    public boolean hasLdapSyntaxDescription( String numericOID )
+    private void addLdapSyntaxDescription( LdapSyntaxDescription lsd )
     {
-        return this.lsdMapByNumericOID.containsKey( numericOID.toLowerCase() );
+        if ( lsd.getNumericOid() != null )
+        {
+            lsdMapByNumericOid.put( lsd.getNumericOid().toLowerCase(), lsd );
+        }
     }
 
 
     /**
-     * Returns the syntax description of the given name. If no such object
+     * Gets the LDAP syntax descriptions.
+     * 
+     * @return the LDAP syntax descriptions
+     */
+    public Collection<LdapSyntaxDescription> getLdapSyntaxDescriptions()
+    {
+        Set<LdapSyntaxDescription> set = new HashSet<LdapSyntaxDescription>( lsdMapByNumericOid.values() );
+        return set;
+    }
+
+
+    /**
+     * Checks if an LDAP syntax descriptions with the given OID exists.
+     * 
+     * @param numericOid the numeric OID of the LDAP syntax description
+     * 
+     * @return true if an LDAP syntax description with the given OID exists.
+     */
+    public boolean hasLdapSyntaxDescription( String numericOid )
+    {
+        return lsdMapByNumericOid.containsKey( numericOid.toLowerCase() );
+    }
+
+
+    /**
+     * Returns the syntax description of the given OID. If no such object
      * exists the default or a dummy syntax description is returned.
      * 
-     * @param name
-     *                the attribute name
-     * @return the attribute type description, or the default or a dummy
+     * @param numericOid the numeric OID of the LDAP syntax description
+     * 
+     * @return the attribute type description or the default or a dummy
      */
-    public LdapSyntaxDescription getLdapSyntaxDescription( String numericOID )
+    public LdapSyntaxDescription getLdapSyntaxDescription( String numericOid )
     {
-        if ( this.lsdMapByNumericOID.containsKey( numericOID.toLowerCase() ) )
+        if ( numericOid == null )
         {
-            return ( LdapSyntaxDescription ) this.lsdMapByNumericOID.get( numericOID.toLowerCase() );
+            return DUMMY_LDAP_SYNTAX;
         }
-        else if ( !this.isDefault() )
+        else if ( lsdMapByNumericOid.containsKey( numericOid.toLowerCase() ) )
         {
-            return DEFAULT_SCHEMA.getLdapSyntaxDescription( numericOID );
+            return lsdMapByNumericOid.get( numericOid.toLowerCase() );
+        }
+        else if ( !isDefault() )
+        {
+            return DEFAULT_SCHEMA.getLdapSyntaxDescription( numericOid );
         }
         else
         {
             // DUMMY
             LdapSyntaxDescription lsd = new LdapSyntaxDescription();
-            lsd.setSchema( this );
-            lsd.setNumericOID( numericOID );
+            lsd.setNumericOid( numericOid );
             return lsd;
         }
     }
 
 
+    ////////////////////////// Matching Rule Description //////////////////////////
+
     /**
+     * Adds the matching rule description.
      * 
-     * @param name
-     * @return true if a matching rule description with the given name or
-     *         oid exists.
+     * @param mrud the matching rule description
      */
-    public boolean hasMatchingRuleDescription( String nameOrOID )
+    private void addMatchingRuleDescription( MatchingRuleDescription mrd )
     {
-        return this.mrdMapByName.containsKey( nameOrOID.toLowerCase() )
-            || this.mrdMapByNumericOID.containsKey( nameOrOID.toLowerCase() );
+        if ( mrd.getNumericOid() != null )
+        {
+            mrdMapByNameOrNumericOid.put( mrd.getNumericOid().toLowerCase(), mrd );
+        }
+        if ( mrd.getNames() != null && !mrd.getNames().isEmpty() )
+        {
+            for ( String mrdName : mrd.getNames() )
+            {
+                mrdMapByNameOrNumericOid.put( mrdName.toLowerCase(), mrd );
+            }
+        }
     }
 
 
     /**
-     * Returns the matching rule description of the given name or oid. If no
+     * Gets the matching rule descriptions.
+     * 
+     * @return the matching rule descriptions
+     */
+    public Collection<MatchingRuleDescription> getMatchingRuleDescriptions()
+    {
+        Set<MatchingRuleDescription> set = new HashSet<MatchingRuleDescription>( mrdMapByNameOrNumericOid.values() );
+        return set;
+    }
+
+
+    /**
+     * Checks if an matching rule descriptions with the given name or OID exists.
+     * 
+     * @param nameOrOid the name numeric OID of the matching rule description
+     * 
+     * @return true if a matching rule description with the given name
+     *         or OID exists.
+     */
+    public boolean hasMatchingRuleDescription( String nameOrOid )
+    {
+        return mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+    }
+
+
+    /**
+     * Returns the matching rule description of the given name or OID. If no
      * such object exists the default or a dummy matching rule description
      * is returned.
      * 
-     * @param name
-     *                the matching rule
-     * @return the matching rule description, or the default or a dummy
+     * @param nameOrOid the name or numeric OID of the matching rule description
+     * 
+     * @return the matching rule description or the default or a dummy
      */
-    public MatchingRuleDescription getMatchingRuleDescription( String nameOrOID )
+    public MatchingRuleDescription getMatchingRuleDescription( String nameOrOid )
     {
-        if ( this.mrdMapByName.containsKey( nameOrOID.toLowerCase() ) )
+        if ( mrdMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
-            return ( MatchingRuleDescription ) this.mrdMapByName.get( nameOrOID.toLowerCase() );
+            return mrdMapByNameOrNumericOid.get( nameOrOid.toLowerCase() );
         }
-        else if ( this.mrdMapByNumericOID.containsKey( nameOrOID.toLowerCase() ) )
+        else if ( !isDefault() )
         {
-            return ( MatchingRuleDescription ) this.mrdMapByNumericOID.get( nameOrOID.toLowerCase() );
-        }
-        else if ( !this.isDefault() )
-        {
-            return DEFAULT_SCHEMA.getMatchingRuleDescription( nameOrOID );
+            return DEFAULT_SCHEMA.getMatchingRuleDescription( nameOrOid );
         }
         else
         {
             // DUMMY
             MatchingRuleDescription mrd = new MatchingRuleDescription();
-            mrd.setSchema( this );
-            mrd.setNumericOID( nameOrOID );
+            mrd.setNumericOid( nameOrOid );
             return mrd;
         }
     }
 
 
+    //////////////////////// Matching Rule Use Description ////////////////////////
+
     /**
+     * Adds the matching rule use description.
      * 
-     * @param name
-     * @return true if a matching rule use description with the given name
-     *         or oid exists.
+     * @param mrud the matching rule use description
      */
-    public boolean hasMatchingRuleUseDescription( String nameOrOID )
+    private void addMatchingRuleUseDescription( MatchingRuleUseDescription mrud )
     {
-        return this.mrudMapByName.containsKey( nameOrOID.toLowerCase() )
-            || this.mrudMapByNumericOID.containsKey( nameOrOID.toLowerCase() );
+        if ( mrud.getNumericOid() != null )
+        {
+            mrudMapByNameOrNumericOid.put( mrud.getNumericOid().toLowerCase(), mrud );
+        }
+        if ( mrud.getNames() != null && !mrud.getNames().isEmpty() )
+        {
+            for ( String mrudName : mrud.getNames() )
+            {
+                mrudMapByNameOrNumericOid.put( mrudName.toLowerCase(), mrud );
+            }
+        }
     }
 
 
     /**
-     * Returns the matching rule description of the given name or oid. If no
-     * such object exists the default or a dummy matching rule description
+     * Gets the matching rule use descriptions.
+     * 
+     * @return the matching rule use descriptions
+     */
+    public Collection<MatchingRuleUseDescription> getMatchingRuleUseDescriptions()
+    {
+        Set<MatchingRuleUseDescription> set = new HashSet<MatchingRuleUseDescription>( mrudMapByNameOrNumericOid.values() );
+        return set;
+    }
+
+
+    /**
+     * Checks if an matching rule use descriptions with the given name or OID exists.
+     * 
+     * @param nameOrOid the name numeric OID of the matching rule use description
+     * 
+     * @return true if a matching rule use description with the given name
+     *         or OID exists.
+     */
+    public boolean hasMatchingRuleUseDescription( String nameOrOid )
+    {
+        return mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() );
+    }
+
+
+    /**
+     * Returns the matching rule use description of the given name or OID. If no
+     * such object exists the default or a dummy matching rule use description
      * is returned.
      * 
-     * @param name
-     *                the matching rule
-     * @return the matching rule description, or the default or a dummy
+     * @param nameOrOid the name or numeric OID of the matching rule use description
+     * 
+     * @return the matching rule use description or the default or a dummy
      */
-    public MatchingRuleUseDescription getMatchingRuleUseDescription( String nameOrOID )
+    public MatchingRuleUseDescription getMatchingRuleUseDescription( String nameOrOid )
     {
-        if ( this.mrudMapByName.containsKey( nameOrOID.toLowerCase() ) )
+        if ( mrudMapByNameOrNumericOid.containsKey( nameOrOid.toLowerCase() ) )
         {
-            return ( MatchingRuleUseDescription ) this.mrudMapByName.get( nameOrOID.toLowerCase() );
+            return mrudMapByNameOrNumericOid.get( nameOrOid.toLowerCase() );
         }
-        else if ( this.mrudMapByNumericOID.containsKey( nameOrOID.toLowerCase() ) )
+        else if ( !isDefault() )
         {
-            return ( MatchingRuleUseDescription ) this.mrudMapByNumericOID.get( nameOrOID.toLowerCase() );
-        }
-        else if ( !this.isDefault() )
-        {
-            return DEFAULT_SCHEMA.getMatchingRuleUseDescription( nameOrOID );
+            return DEFAULT_SCHEMA.getMatchingRuleUseDescription( nameOrOid );
         }
         else
         {
             // DUMMY
             MatchingRuleUseDescription mrud = new MatchingRuleUseDescription();
-            mrud.setSchema( this );
-            mrud.setNumericOID( nameOrOID );
+            mrud.setNumericOid( nameOrOid );
             return mrud;
         }
-    }
-
-
-    static String[] addValue( String[] array, String value )
-    {
-        List list = new ArrayList( Arrays.asList( array ) );
-        list.add( value );
-        return ( String[] ) list.toArray( new String[list.size()] );
     }
 
 }

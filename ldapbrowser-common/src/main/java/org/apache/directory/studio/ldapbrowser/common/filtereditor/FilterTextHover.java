@@ -21,16 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewer;
@@ -96,8 +97,8 @@ public class FilterTextHover implements ITextHover
                     String attributeType = fc.getAttributeToken().getValue();
                     AttributeTypeDescription attributeTypeDescription = schema
                         .getAttributeTypeDescription( attributeType );
-                    return attributeTypeDescription.getLine() != null ? attributeTypeDescription.getLine()
-                        .getUnfoldedValue() : null;
+                    String ldifLine = SchemaUtils.getLdifLine( attributeTypeDescription );
+                    return ldifLine;
                 }
                 if ( fc.getAttributeToken() != null
                     && IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( fc.getAttributeToken().getValue() )
@@ -106,8 +107,8 @@ public class FilterTextHover implements ITextHover
                 {
                     String objectClass = fc.getValueToken().getValue();
                     ObjectClassDescription objectClassDescription = schema.getObjectClassDescription( objectClass );
-                    return objectClassDescription.getLine() != null ? objectClassDescription.getLine()
-                        .getUnfoldedValue() : null;
+                    String ldifLine = SchemaUtils.getLdifLine( objectClassDescription );
+                    return ldifLine;
                 }
             }
             if ( filter.getFilterComponent() instanceof LdapFilterExtensibleComponent )
@@ -121,8 +122,8 @@ public class FilterTextHover implements ITextHover
                     String attributeType = fc.getAttributeToken().getValue();
                     AttributeTypeDescription attributeTypeDescription = schema
                         .getAttributeTypeDescription( attributeType );
-                    return attributeTypeDescription.getLine() != null ? attributeTypeDescription.getLine()
-                        .getUnfoldedValue() : null;
+                    String ldifLine = SchemaUtils.getLdifLine( attributeTypeDescription );
+                    return ldifLine;
                 }
                 if ( fc.getMatchingRuleToken() != null
                     && fc.getMatchingRuleToken().getOffset() <= hoverRegion.getOffset()
@@ -131,8 +132,8 @@ public class FilterTextHover implements ITextHover
                 {
                     String matchingRule = fc.getMatchingRuleToken().getValue();
                     MatchingRuleDescription matchingRuleDescription = schema.getMatchingRuleDescription( matchingRule );
-                    return matchingRuleDescription.getLine() != null ? matchingRuleDescription.getLine()
-                        .getUnfoldedValue() : null;
+                    String info = SchemaUtils.getLdifLine( matchingRuleDescription );
+                    return info;
                 }
             }
         }

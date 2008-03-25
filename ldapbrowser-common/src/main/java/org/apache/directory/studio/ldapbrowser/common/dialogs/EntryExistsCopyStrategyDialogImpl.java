@@ -29,6 +29,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.jobs.EntryExistsCopyStrategyDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -198,8 +199,8 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
             }
         } );
         dnBuilderWidget.createContents( group );
-        dnBuilderWidget.setInput( browserConnection, browserConnection.getSchema().getAttributeTypeDescriptionNames(),
-            dn.getRdn(), null );
+        dnBuilderWidget.setInput( browserConnection, SchemaUtils.getNamesAsArray( browserConnection.getSchema()
+            .getAttributeTypeDescriptions() ), dn.getRdn(), null );
 
 //        rememberCheckbox = BaseWidgetUtils.createCheckbox( composite, "Remember decision", 2 );
 

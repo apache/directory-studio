@@ -23,19 +23,21 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -197,13 +199,11 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
 
     private void createAttributeMaps( Schema schema )
     {
-        AttributeTypeDescription[] atds = schema.getAttributeTypeDescriptions();
+        Collection<AttributeTypeDescription> atds = schema.getAttributeTypeDescriptions();
         for ( AttributeTypeDescription atd : atds )
         {
-            attributeOid2AtdMap.put( atd.getNumericOID(), atd );
-
-            String[] names = atd.getNames();
-            for ( String name : names )
+            attributeOid2AtdMap.put( atd.getNumericOid(), atd );
+            for ( String name : atd.getNames() )
             {
                 attributeNames2AtdMap.put( name, atd );
             }
@@ -213,14 +213,14 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
 
     private void createSyntaxMaps( Schema schema )
     {
-        LdapSyntaxDescription[] lsds = schema.getLdapSyntaxDescriptions();
+        Collection<LdapSyntaxDescription> lsds = schema.getLdapSyntaxDescriptions();
         for ( LdapSyntaxDescription lsd : lsds )
         {
-            syntaxOid2LsdMap.put( lsd.getNumericOID(), lsd );
+            syntaxOid2LsdMap.put( lsd.getNumericOid(), lsd );
 
-            if ( lsd.getDesc() != null )
+            if ( lsd.getDescription() != null )
             {
-                syntaxDesc2LsdMap.put( lsd.getDesc(), lsd );
+                syntaxDesc2LsdMap.put( lsd.getDescription(), lsd );
             }
         }
     }
@@ -484,7 +484,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                         {
                             AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeNames2AtdMap
                                 .get( attribute.getAttributeNumericOidOrName() );
-                            String s = atd.getNumericOID();
+                            String s = atd.getNumericOid();
                             for ( String attributeName : atd.getNames() )
                             {
                                 if ( !attribute.getAttributeNumericOidOrName().equals( attributeName ) )
@@ -498,7 +498,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                         {
                             AttributeTypeDescription atd = ( AttributeTypeDescription ) attributeOid2AtdMap
                                 .get( attribute.getAttributeNumericOidOrName() );
-                            return atd.toString();
+                            return SchemaUtils.toString( atd );
                         }
                     }
                 }
@@ -532,7 +532,7 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                         {
                             LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) syntaxOid2LsdMap.get( syntax
                                 .getSyntaxNumericOid() );
-                            return lsd.toString();
+                            return SchemaUtils.toString( lsd );
                         }
                     }
                 }

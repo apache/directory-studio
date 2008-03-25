@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
 
@@ -163,7 +163,7 @@ public class AttributeDescription implements Serializable
         }
 
         AttributeTypeDescription atd = schema.getAttributeTypeDescription( parsedAttributeType );
-        String oidString = atd.getNumericOID();
+        String oidString = atd.getNumericOid();
 
         if ( !parsedLangList.isEmpty() )
         {
@@ -228,7 +228,7 @@ public class AttributeDescription implements Serializable
         if ( myAtd != otherAtd )
         {
             AttributeTypeDescription superiorAtd = null;
-            String superiorName = myAtd.getSuperiorAttributeTypeDescriptionName();
+            String superiorName = myAtd.getSuperType();
             while ( superiorName != null )
             {
                 superiorAtd = schema.getAttributeTypeDescription( superiorName );
@@ -236,7 +236,7 @@ public class AttributeDescription implements Serializable
                 {
                     break;
                 }
-                superiorName = superiorAtd.getSuperiorAttributeTypeDescriptionName();
+                superiorName = superiorAtd.getSuperType();
             }
             if ( superiorAtd != otherAtd )
             {

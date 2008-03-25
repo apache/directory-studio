@@ -21,14 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
+import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleUseDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
@@ -60,32 +60,32 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     public String getText()
     {
-        SchemaPart schemaElement = getSchemElement();
+        AbstractSchemaDescription schemaElement = getSchemElement();
         if ( schemaElement != null )
         {
-            if(schemaElement instanceof ObjectClassDescription)
+            if ( schemaElement instanceof ObjectClassDescription )
             {
                 return "Object Class " + schemaElement.toString();
             }
-            else if(schemaElement instanceof AttributeTypeDescription )
+            else if ( schemaElement instanceof AttributeTypeDescription )
             {
                 return "Attribute Type " + schemaElement.toString();
             }
-            else if(schemaElement instanceof LdapSyntaxDescription )
+            else if ( schemaElement instanceof LdapSyntaxDescription )
             {
                 return "Syntax " + schemaElement.toString();
             }
-            else if(schemaElement instanceof MatchingRuleDescription)
+            else if ( schemaElement instanceof MatchingRuleDescription )
             {
                 return "Matching Rule " + schemaElement.toString();
             }
-            else if(schemaElement instanceof MatchingRuleUseDescription )
+            else if ( schemaElement instanceof MatchingRuleUseDescription )
             {
                 return "Matching Rule Use " + schemaElement.toString();
             }
             else
             {
-                return schemaElement.getNumericOID();
+                return schemaElement.getNumericOid();
             }
         }
         else
@@ -101,10 +101,10 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     public void saveState( IMemento memento )
     {
         IBrowserConnection connection = getConnection();
-        SchemaPart schemaElement = getSchemElement();
+        AbstractSchemaDescription schemaElement = getSchemElement();
         memento.putString( "CONNECTION", connection.getConnection().getId() );
         memento.putString( "SCHEMAELEMENTYPE", schemaElement.getClass().getName() );
-        memento.putString( "SCHEMAELEMENTOID", schemaElement.getNumericOID() );
+        memento.putString( "SCHEMAELEMENTOID", schemaElement.getNumericOid() );
     }
 
 
@@ -117,29 +117,29 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
             memento.getString( "CONNECTION" ) );
         String schemaElementType = memento.getString( "SCHEMAELEMENTYPE" );
         String schemaElementOid = memento.getString( "SCHEMAELEMENTOID" );
-        SchemaPart schemaElement = null;
-        if(ObjectClassDescription.class.getName().equals( schemaElementType ) )
+        AbstractSchemaDescription schemaElement = null;
+        if ( ObjectClassDescription.class.getName().equals( schemaElementType ) )
         {
             schemaElement = connection.getSchema().getObjectClassDescription( schemaElementOid );
         }
-        else if(AttributeTypeDescription.class.getName().equals( schemaElementType ) )
+        else if ( AttributeTypeDescription.class.getName().equals( schemaElementType ) )
         {
             schemaElement = connection.getSchema().getAttributeTypeDescription( schemaElementOid );
         }
-        else if(LdapSyntaxDescription.class.getName().equals( schemaElementType ) )
+        else if ( LdapSyntaxDescription.class.getName().equals( schemaElementType ) )
         {
             schemaElement = connection.getSchema().getLdapSyntaxDescription( schemaElementOid );
         }
-        else if(MatchingRuleDescription.class.getName().equals( schemaElementType ) )
+        else if ( MatchingRuleDescription.class.getName().equals( schemaElementType ) )
         {
             schemaElement = connection.getSchema().getMatchingRuleDescription( schemaElementOid );
         }
-        else if(MatchingRuleUseDescription.class.getName().equals( schemaElementType ) )
+        else if ( MatchingRuleUseDescription.class.getName().equals( schemaElementType ) )
         {
             schemaElement = connection.getSchema().getMatchingRuleUseDescription( schemaElementOid );
         }
-        
-        super.setInput( new SchemaBrowserInput( connection, schemaElement  ) );
+
+        super.setInput( new SchemaBrowserInput( connection, schemaElement ) );
     }
 
 
@@ -153,10 +153,10 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
         {
             SchemaBrowser schemaBrowser = ( SchemaBrowser ) editorPart;
             Object input = getInput();
-            if(input != null && input instanceof SchemaBrowserInput)
+            if ( input != null && input instanceof SchemaBrowserInput )
             {
-                SchemaBrowserInput sbi = (SchemaBrowserInput)input;
-                if(sbi.getConnection() != null && sbi.getSchemaElement() != null) 
+                SchemaBrowserInput sbi = ( SchemaBrowserInput ) input;
+                if ( sbi.getConnection() != null && sbi.getSchemaElement() != null )
                 {
                     schemaBrowser.setInput( sbi );
                 }
@@ -181,8 +181,8 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
         }
 
         SchemaBrowserNavigationLocation location = ( SchemaBrowserNavigationLocation ) currentLocation;
-        SchemaPart other = location.getSchemElement();
-        SchemaPart element = getSchemElement();
+        AbstractSchemaDescription other = location.getSchemElement();
+        AbstractSchemaDescription element = getSchemElement();
 
         if ( other == null && element == null )
         {
@@ -212,14 +212,14 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      *
      * @return the schema element
      */
-    private SchemaPart getSchemElement()
+    private AbstractSchemaDescription getSchemElement()
     {
 
         Object editorInput = getInput();
         if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
-            SchemaPart schemaElement = schemaBrowserInput.getSchemaElement();
+            AbstractSchemaDescription schemaElement = schemaBrowserInput.getSchemaElement();
             if ( schemaElement != null )
             {
                 return schemaElement;
@@ -237,18 +237,18 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     private IBrowserConnection getConnection()
     {
-        
+
         Object editorInput = getInput();
         if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
             return schemaBrowserInput.getConnection();
         }
-        
+
         return null;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

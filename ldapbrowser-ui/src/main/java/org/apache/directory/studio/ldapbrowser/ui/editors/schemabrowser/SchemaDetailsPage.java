@@ -21,7 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaPart;
+import java.util.List;
+
+import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -88,10 +92,10 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     public void linkActivated( HyperlinkEvent e )
     {
         Object obj = e.getHref();
-        if ( obj instanceof SchemaPart )
+        if ( obj instanceof AbstractSchemaDescription )
         {
             schemaPage.getSchemaBrowser().setInput(
-                new SchemaBrowserInput( schemaPage.getConnection(), ( SchemaPart ) obj ) );
+                new SchemaBrowserInput( schemaPage.getConnection(), ( AbstractSchemaDescription ) obj ) );
         }
     }
 
@@ -154,7 +158,7 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
      *
      * @param schemaPart the schema part to display
      */
-    protected void createRawContents( SchemaPart schemaPart )
+    protected void createRawContents( AbstractSchemaDescription asd )
     {
 
         if ( rawSection.getClient() != null && !rawSection.getClient().isDisposed() )
@@ -166,9 +170,9 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
         client.setLayout( new GridLayout() );
         rawSection.setClient( client );
 
-        if ( schemaPart != null )
+        if ( asd != null )
         {
-            rawText = toolkit.createText( client, getNonNullString( schemaPart.getLine().getValueAsString() ), SWT.WRAP
+            rawText = toolkit.createText( client, getNonNullString( SchemaUtils.getLdifLine( asd ) ), SWT.WRAP
                 | SWT.MULTI );
             GridData gd2 = new GridData( GridData.FILL_HORIZONTAL );
             gd2.widthHint = detailForm.getForm().getSize().x - 100 - 60;
@@ -184,6 +188,17 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
 
 
     /**
+     * Gets the schema.
+     * 
+     * @return the schema
+     */
+    protected Schema getSchema()
+    {
+        return schemaPage.getConnection().getSchema();
+    }
+
+
+    /**
      * Helper method, return a dash "-" if the given string is null. 
      *
      * @param s the string
@@ -192,6 +207,23 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     protected String getNonNullString( String s )
     {
         return s == null ? "-" : s;
+    }
+
+
+    /**
+     * Helper method, return a dash "-" if the given string is null. 
+     *
+     * @param s the string
+     * @return the given string or a dash "-" if the given string is null.
+     */
+    private String getNonNullString( List<String> s )
+    {
+        if ( s == null || s.isEmpty() )
+        {
+            return "-";
+        }
+
+        return s.get( 0 );
     }
 
 }

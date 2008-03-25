@@ -26,6 +26,7 @@ import java.util.Arrays;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.DecoratedField;
@@ -247,7 +248,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         modSpec.modType = BaseWidgetUtils.createCombo( modSpecComposite, new String[]
             { "add", "replace", "delete" }, 0, 1 );
         modSpec.modType.addModifyListener( this );
-        String[] attributeDescriptions = schema.getAttributeTypeDescriptionNames();
+        String[] attributeDescriptions = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
         Arrays.sort( attributeDescriptions );
 
         // attribute combo with field decoration

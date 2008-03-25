@@ -21,10 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.MatchingRuleDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
+import java.util.Collection;
+
+import org.apache.directory.shared.ldap.schema.UsageEnum;
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -79,7 +83,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     /** The no-user-modification field */
     private Label noUserModificationText;
 
-    /** The syntax section, contains syntax description, lenth and a link to the syntax */ 
+    /** The syntax section, contains syntax description, lenth and a link to the syntax */
     private Section syntaxSection;
 
     /** The syntax description field */
@@ -106,32 +110,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     /** The section with other matching rules */
     private Section otherMatchSection;
 
-    /** The links to other matching rules applicaple to the selected attribute */
-    private Hyperlink[] otherMatchLinks;
-
     /** The section with links to object classes using the selected attribute as must */
     private Section usedAsMustSection;
-
-    /** The links to object classes using the selected attribute as must */
-    private Hyperlink[] usedAsMustLinks;
 
     /** The section with links to object classes using the selected attribute as may */
     private Section usedAsMaySection;
 
-    /** The links to object classes using the selected attribute as may */
-    private Hyperlink[] usedAsMayLinks;
-
     /** The section with a link to the superior attribute type */
     private Section supertypeSection;
 
-    /** The link to the superior attribute type */
-    private Hyperlink superLink;
-
     /** The section with links to the derived attribute types */
     private Section subtypesSection;
-
-    /** The links to derived attribute types */
-    private Hyperlink[] subAttributeTypeLinks;
 
 
     /**
@@ -358,28 +347,28 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         singleValuedText.setEnabled( atd != null && atd.isSingleValued() );
         isObsoleteText.setEnabled( atd != null && atd.isObsolete() );
         collectiveText.setEnabled( atd != null && atd.isCollective() );
-        noUserModificationText.setEnabled( atd != null && atd.isNoUserModification() );
+        noUserModificationText.setEnabled( atd != null && !atd.isUserModifiable() );
         flagSection.layout();
 
         // set syntax content
         String lsdOid = null;
         LdapSyntaxDescription lsd = null;
-        String lsdLength = null;
+        int lsdLength = 0;
         if ( atd != null )
         {
-            lsdOid = atd.getSyntaxDescriptionNumericOIDTransitive();
-            if ( lsdOid != null && atd.getSchema().hasLdapSyntaxDescription( lsdOid ) )
+            lsdOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, getSchema() );
+            if ( lsdOid != null && getSchema().hasLdapSyntaxDescription( lsdOid ) )
             {
-                lsd = atd.getSchema().getLdapSyntaxDescription( lsdOid );
+                lsd = getSchema().getLdapSyntaxDescription( lsdOid );
             }
-            lsdLength = atd.getSyntaxDescriptionLengthTransitive();
+            lsdLength = SchemaUtils.getSyntaxLengthTransitive( atd, getSchema() );
         }
-        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getNumericOID() : lsdOid ) );
+        syntaxLink.setText( getNonNullString( lsd != null ? lsd.getNumericOid() : lsdOid ) );
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
         syntaxLink.setEnabled( lsd != null );
-        syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDesc() : null ) );
-        lengthText.setText( getNonNullString( lsdLength ) );
+        syntaxDescText.setText( getNonNullString( lsd != null ? lsd.getDescription() : null ) );
+        lengthText.setText( getNonNullString( lsdLength > 0 ? Integer.toString( lsdLength ) : null ) );
         syntaxSection.layout();
 
         // set matching rules content
@@ -387,13 +376,13 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         MatchingRuleDescription emr = null;
         if ( atd != null )
         {
-            emrOid = atd.getEqualityMatchingRuleDescriptionOIDTransitive();
-            if ( emrOid != null && atd.getSchema().hasMatchingRuleDescription( emrOid ) )
+            emrOid = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            if ( emrOid != null && getSchema().hasMatchingRuleDescription( emrOid ) )
             {
-                emr = atd.getSchema().getMatchingRuleDescription( emrOid );
+                emr = getSchema().getMatchingRuleDescription( emrOid );
             }
         }
-        equalityLink.setText( getNonNullString( emr != null ? emr.toString() : emrOid ) );
+        equalityLink.setText( getNonNullString( emr != null ? SchemaUtils.toString( emr ) : emrOid ) );
         equalityLink.setHref( emr );
         equalityLink.setUnderlined( emr != null );
         equalityLink.setEnabled( emr != null );
@@ -402,13 +391,13 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         MatchingRuleDescription smr = null;
         if ( atd != null )
         {
-            smrOid = atd.getSubstringMatchingRuleDescriptionOIDTransitive();
-            if ( smrOid != null && atd.getSchema().hasMatchingRuleDescription( smrOid ) )
+            smrOid = SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            if ( smrOid != null && getSchema().hasMatchingRuleDescription( smrOid ) )
             {
-                smr = atd.getSchema().getMatchingRuleDescription( smrOid );
+                smr = getSchema().getMatchingRuleDescription( smrOid );
             }
         }
-        substringLink.setText( getNonNullString( smr != null ? smr.toString() : smrOid ) );
+        substringLink.setText( getNonNullString( smr != null ? SchemaUtils.toString( smr ) : smrOid ) );
         substringLink.setHref( smr );
         substringLink.setUnderlined( smr != null );
         substringLink.setEnabled( smr != null );
@@ -417,13 +406,13 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         MatchingRuleDescription omr = null;
         if ( atd != null )
         {
-            omrOid = atd.getOrderingMatchingRuleDescriptionOIDTransitive();
-            if ( omrOid != null && atd.getSchema().hasMatchingRuleDescription( omrOid ) )
+            omrOid = SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            if ( omrOid != null && getSchema().hasMatchingRuleDescription( omrOid ) )
             {
-                omr = atd.getSchema().getMatchingRuleDescription( omrOid );
+                omr = getSchema().getMatchingRuleDescription( omrOid );
             }
         }
-        orderingLink.setText( getNonNullString( omr != null ? omr.toString() : omrOid ) );
+        orderingLink.setText( getNonNullString( omr != null ? SchemaUtils.toString( omr ) : omrOid ) );
         orderingLink.setHref( omr );
         orderingLink.setUnderlined( omr != null );
         orderingLink.setEnabled( omr != null );
@@ -466,24 +455,25 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         if ( atd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
-            numericOidText = toolkit.createText( mainClient, getNonNullString( atd.getNumericOID() ), SWT.NONE );
+            numericOidText = toolkit.createText( mainClient, getNonNullString( atd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Attribute names:", SWT.NONE );
-            namesText = toolkit.createText( mainClient, getNonNullString( atd.toString() ), SWT.NONE );
+            namesText = toolkit.createText( mainClient, getNonNullString( SchemaUtils.toString( atd ) ), SWT.NONE );
             namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             namesText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.WRAP );
-            descText = toolkit.createText( mainClient, getNonNullString( atd.getDesc() ), SWT.WRAP | SWT.MULTI );
+            descText = toolkit.createText( mainClient, getNonNullString( atd.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Usage:", SWT.NONE );
-            usageText = toolkit.createText( mainClient, getNonNullString( atd.getUsage() ), SWT.NONE );
+            usageText = toolkit.createText( mainClient, getNonNullString( UsageEnum.render( atd.getUsage() ) ),
+                SWT.NONE );
             usageText.setLayoutData( new GridData( GridData.GRAB_HORIZONTAL ) );
             usageText.setEditable( false );
 
@@ -517,36 +507,35 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // or a dash if no other matching rules exist.
         if ( atd != null )
         {
-            String[] names = atd.getOtherMatchingRuleDescriptionNames();
-            if ( names != null && names.length > 0 )
+            Collection<String> otherMrdNames = SchemaUtils.getOtherMatchingRuleDescriptionNames( atd, getSchema() );
+            if ( otherMrdNames != null && otherMrdNames.size() > 0 )
             {
-                otherMatchSection.setText( "Other Matching Rules (" + names.length + ")" );
-                otherMatchLinks = new Hyperlink[names.length];
-                for ( int i = 0; i < names.length; i++ )
+                otherMatchSection.setText( "Other Matching Rules (" + otherMrdNames.size() + ")" );
+                for ( String mrdName : otherMrdNames )
                 {
-                    if ( atd.getSchema().hasMatchingRuleDescription( names[i] ) )
+                    if ( getSchema().hasMatchingRuleDescription( mrdName ) )
                     {
-                        MatchingRuleDescription mrd = atd.getSchema().getMatchingRuleDescription( names[i] );
-                        otherMatchLinks[i] = toolkit.createHyperlink( otherMatchClient, mrd.toString(), SWT.WRAP );
-                        otherMatchLinks[i].setHref( mrd );
-                        otherMatchLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                        otherMatchLinks[i].setUnderlined( true );
-                        otherMatchLinks[i].setEnabled( true );
-                        otherMatchLinks[i].addHyperlinkListener( this );
+                        MatchingRuleDescription mrd = getSchema().getMatchingRuleDescription( mrdName );
+                        Hyperlink otherMatchLink = toolkit.createHyperlink( otherMatchClient, SchemaUtils
+                            .toString( mrd ), SWT.WRAP );
+                        otherMatchLink.setHref( mrd );
+                        otherMatchLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                        otherMatchLink.setUnderlined( true );
+                        otherMatchLink.setEnabled( true );
+                        otherMatchLink.addHyperlinkListener( this );
                     }
                     else
                     {
-                        otherMatchLinks[i] = toolkit.createHyperlink( otherMatchClient, names[i], SWT.WRAP );
-                        otherMatchLinks[i].setHref( null );
-                        otherMatchLinks[i].setUnderlined( false );
-                        otherMatchLinks[i].setEnabled( false );
+                        Hyperlink otherMatchLink = toolkit.createHyperlink( otherMatchClient, mrdName, SWT.WRAP );
+                        otherMatchLink.setHref( null );
+                        otherMatchLink.setUnderlined( false );
+                        otherMatchLink.setEnabled( false );
                     }
                 }
             }
             else
             {
                 otherMatchSection.setText( "Other Matching Rules (0)" );
-                otherMatchLinks = new Hyperlink[0];
                 Text otherText = toolkit.createText( otherMatchClient, getNonNullString( null ), SWT.NONE );
                 otherText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 otherText.setEditable( false );
@@ -585,14 +574,15 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // or a dash if no supertype exists.
         if ( atd != null )
         {
-            String superName = atd.getSuperiorAttributeTypeDescriptionName();
-            if ( superName != null )
+            String superType = atd.getSuperType();
+            if ( superType != null )
             {
                 supertypeSection.setText( "Supertype (" + "1" + ")" );
-                if ( atd.getSchema().hasAttributeTypeDescription( superName ) )
+                if ( getSchema().hasAttributeTypeDescription( superType ) )
                 {
-                    AttributeTypeDescription supAtd = atd.getSchema().getAttributeTypeDescription( superName );
-                    superLink = toolkit.createHyperlink( superClient, supAtd.toString(), SWT.WRAP );
+                    AttributeTypeDescription supAtd = getSchema().getAttributeTypeDescription( superType );
+                    Hyperlink superLink = toolkit.createHyperlink( superClient, SchemaUtils.toString( supAtd ),
+                        SWT.WRAP );
                     superLink.setHref( supAtd );
                     superLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     superLink.setUnderlined( true );
@@ -601,7 +591,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 }
                 else
                 {
-                    superLink = toolkit.createHyperlink( superClient, superName, SWT.WRAP );
+                    Hyperlink superLink = toolkit.createHyperlink( superClient, superType, SWT.WRAP );
                     superLink.setHref( null );
                     superLink.setUnderlined( false );
                     superLink.setEnabled( false );
@@ -610,7 +600,6 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 supertypeSection.setText( "Supertype (0)" );
-                superLink = null;
                 Text supText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 supText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 supText.setEditable( false );
@@ -648,25 +637,25 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to subtypes or a dash if no subtypes exist.
         if ( atd != null )
         {
-            AttributeTypeDescription[] subATDs = atd.getDerivedAttributeTypeDescriptions();
-            if ( subATDs != null && subATDs.length > 0 )
+            Collection<AttributeTypeDescription> derivedAtds = SchemaUtils.getDerivedAttributeTypeDescriptions( atd,
+                getSchema() );
+            if ( derivedAtds != null && derivedAtds.size() > 0 )
             {
-                subtypesSection.setText( "Subtypes (" + subATDs.length + ")" );
-                subAttributeTypeLinks = new Hyperlink[subATDs.length];
-                for ( int i = 0; i < subATDs.length; i++ )
+                subtypesSection.setText( "Subtypes (" + derivedAtds.size() + ")" );
+                for ( AttributeTypeDescription derivedAtd : derivedAtds )
                 {
-                    subAttributeTypeLinks[i] = toolkit.createHyperlink( subClient, subATDs[i].toString(), SWT.WRAP );
-                    subAttributeTypeLinks[i].setHref( subATDs[i] );
-                    subAttributeTypeLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                    subAttributeTypeLinks[i].setUnderlined( true );
-                    subAttributeTypeLinks[i].setEnabled( true );
-                    subAttributeTypeLinks[i].addHyperlinkListener( this );
+                    Hyperlink subAttributeTypeLink = toolkit.createHyperlink( subClient, SchemaUtils
+                        .toString( derivedAtd ), SWT.WRAP );
+                    subAttributeTypeLink.setHref( derivedAtd );
+                    subAttributeTypeLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                    subAttributeTypeLink.setUnderlined( true );
+                    subAttributeTypeLink.setEnabled( true );
+                    subAttributeTypeLink.addHyperlinkListener( this );
                 }
             }
             else
             {
                 subtypesSection.setText( "Subtypes (0)" );
-                subAttributeTypeLinks = new Hyperlink[0];
                 Text subText = toolkit.createText( subClient, getNonNullString( null ), SWT.NONE );
                 subText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 subText.setEditable( false );
@@ -705,25 +694,24 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to objectclasses or a dash
         if ( atd != null )
         {
-            ObjectClassDescription[] usedAsMusts = atd.getUsedAsMust();
-            if ( usedAsMusts != null && usedAsMusts.length > 0 )
+            Collection<ObjectClassDescription> usedAsMusts = SchemaUtils.getUsedAsMust( atd, getSchema() );
+            if ( usedAsMusts != null && usedAsMusts.size() > 0 )
             {
-                usedAsMustSection.setText( "Used as MUST (" + usedAsMusts.length + ")" );
-                usedAsMustLinks = new Hyperlink[usedAsMusts.length];
-                for ( int i = 0; i < usedAsMusts.length; i++ )
+                usedAsMustSection.setText( "Used as MUST (" + usedAsMusts.size() + ")" );
+                for ( ObjectClassDescription ocd : usedAsMusts )
                 {
-                    usedAsMustLinks[i] = toolkit.createHyperlink( mustClient, usedAsMusts[i].toString(), SWT.WRAP );
-                    usedAsMustLinks[i].setHref( usedAsMusts[i] );
-                    usedAsMustLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                    usedAsMustLinks[i].setUnderlined( true );
-                    usedAsMustLinks[i].setEnabled( true );
-                    usedAsMustLinks[i].addHyperlinkListener( this );
+                    Hyperlink usedAsMustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( ocd ),
+                        SWT.WRAP );
+                    usedAsMustLink.setHref( ocd );
+                    usedAsMustLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                    usedAsMustLink.setUnderlined( true );
+                    usedAsMustLink.setEnabled( true );
+                    usedAsMustLink.addHyperlinkListener( this );
                 }
             }
             else
             {
                 usedAsMustSection.setText( "Used as MUST (0)" );
-                usedAsMustLinks = new Hyperlink[0];
                 Text mustText = toolkit.createText( mustClient, getNonNullString( null ), SWT.NONE );
                 mustText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mustText.setEditable( false );
@@ -762,25 +750,24 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content, either links to objectclasses or a dash
         if ( atd != null )
         {
-            ObjectClassDescription[] usedAsMays = atd.getUsedAsMay();
-            if ( usedAsMays != null && usedAsMays.length > 0 )
+            Collection<ObjectClassDescription> usedAsMays = SchemaUtils.getUsedAsMay( atd, getSchema() );
+            if ( usedAsMays != null && usedAsMays.size() > 0 )
             {
-                usedAsMaySection.setText( "Used as MAY (" + usedAsMays.length + ")" );
-                usedAsMayLinks = new Hyperlink[usedAsMays.length];
-                for ( int i = 0; i < usedAsMays.length; i++ )
+                usedAsMaySection.setText( "Used as MAY (" + usedAsMays.size() + ")" );
+                for ( ObjectClassDescription ocd : usedAsMays )
                 {
-                    usedAsMayLinks[i] = toolkit.createHyperlink( mayClient, usedAsMays[i].toString(), SWT.WRAP );
-                    usedAsMayLinks[i].setHref( usedAsMays[i] );
-                    usedAsMayLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                    usedAsMayLinks[i].setUnderlined( true );
-                    usedAsMayLinks[i].setEnabled( true );
-                    usedAsMayLinks[i].addHyperlinkListener( this );
+                    Hyperlink usedAsMayLink = toolkit
+                        .createHyperlink( mayClient, SchemaUtils.toString( ocd ), SWT.WRAP );
+                    usedAsMayLink.setHref( ocd );
+                    usedAsMayLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                    usedAsMayLink.setUnderlined( true );
+                    usedAsMayLink.setEnabled( true );
+                    usedAsMayLink.addHyperlinkListener( this );
                 }
             }
             else
             {
                 usedAsMaySection.setText( "Used as MAY (0)" );
-                usedAsMayLinks = new Hyperlink[0];
                 Text mayText = toolkit.createText( mayClient, getNonNullString( null ), SWT.NONE );
                 mayText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mayText.setEditable( false );

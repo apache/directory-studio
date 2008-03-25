@@ -22,11 +22,13 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -130,7 +132,8 @@ public class AttributeTypeDialog extends Dialog
         composite.setLayoutData( gd );
 
         // combo widget
-        String[] allAtNames = schema.getAttributeTypeDescriptionNames();
+        Collection<String> names = SchemaUtils.getNames( schema.getAttributeTypeDescriptions() );
+        String[] allAtNames = names.toArray( new String[names.size()] );
         Arrays.sort( allAtNames );
 
         final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(

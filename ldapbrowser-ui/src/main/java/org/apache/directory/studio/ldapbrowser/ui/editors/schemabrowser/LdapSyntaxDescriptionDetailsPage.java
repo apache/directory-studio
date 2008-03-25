@@ -21,8 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.LdapSyntaxDescription;
+import java.util.Collection;
+
+import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,17 +52,8 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
     /** The main section, contains oid and desc */
     private Section mainSection;
 
-    /** The numeric oid field */
-    private Text numericOidText;
-
-    /** The description field */
-    private Text descText;
-
     /** The used from section, contains links to attribute types */
     private Section usedFromSection;
-
-    /** The links to attributes using the syntax */
-    private Hyperlink[] usedFromLinks;
 
 
     /**
@@ -106,7 +100,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
             }
         } );
 
-        // create raw aection
+        // create raw section
         createRawSection();
     }
 
@@ -155,12 +149,13 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         if ( lsd != null )
         {
             toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
-            numericOidText = toolkit.createText( mainClient, getNonNullString( lsd.getNumericOID() ), SWT.NONE );
+            Text numericOidText = toolkit.createText( mainClient, getNonNullString( lsd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
             toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
-            descText = toolkit.createText( mainClient, getNonNullString( lsd.getDesc() ), SWT.WRAP | SWT.MULTI );
+            Text descText = toolkit.createText( mainClient, getNonNullString( lsd.getDescription() ), SWT.WRAP
+                | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
@@ -194,25 +189,24 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         // create content
         if ( lsd != null )
         {
-            AttributeTypeDescription[] usedFromATDs = lsd.getUsedFromAttributeTypeDescription();
-            if ( usedFromATDs != null && usedFromATDs.length > 0 )
+            Collection<AttributeTypeDescription> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( lsd,
+                getSchema() );
+            if ( usedFromATDs != null && !usedFromATDs.isEmpty() )
             {
-                usedFromSection.setText( "Used from (" + usedFromATDs.length + ")" );
-                usedFromLinks = new Hyperlink[usedFromATDs.length];
-                for ( int i = 0; i < usedFromATDs.length; i++ )
+                usedFromSection.setText( "Used from (" + usedFromATDs.size() + ")" );
+                for ( AttributeTypeDescription atd : usedFromATDs )
                 {
-                    usedFromLinks[i] = toolkit.createHyperlink( usedFromClient, usedFromATDs[i].toString(), SWT.WRAP );
-                    usedFromLinks[i].setHref( usedFromATDs[i] );
-                    usedFromLinks[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-                    usedFromLinks[i].setUnderlined( true );
-                    usedFromLinks[i].setEnabled( true );
-                    usedFromLinks[i].addHyperlinkListener( this );
+                    Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ), SWT.WRAP );
+                    usedFromLink.setHref( atd );
+                    usedFromLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+                    usedFromLink.setUnderlined( true );
+                    usedFromLink.setEnabled( true );
+                    usedFromLink.addHyperlinkListener( this );
                 }
             }
             else
             {
                 usedFromSection.setText( "Used from (0)" );
-                usedFromLinks = new Hyperlink[0];
                 Text usedFromText = toolkit.createText( usedFromClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );

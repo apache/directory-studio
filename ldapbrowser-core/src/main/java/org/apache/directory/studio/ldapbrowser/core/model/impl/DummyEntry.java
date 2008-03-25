@@ -27,8 +27,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -39,7 +42,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.URL;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 
 
@@ -314,7 +316,7 @@ public class DummyEntry implements IEntry
      */
     public boolean isAlias()
     {
-        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_ALIAS );
+        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.ALIAS_OC );
     }
 
 
@@ -361,7 +363,7 @@ public class DummyEntry implements IEntry
         for ( String ocValue : ocValues )
         {
             ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValue );
-            if ( ocd.isStructural() )
+            if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
             {
                 structuralObjectClassAvailable = true;
                 break;
@@ -402,7 +404,7 @@ public class DummyEntry implements IEntry
      */
     public boolean isReferral()
     {
-        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_REFERRAL );
+        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.REFERRAL_OC );
     }
 
 
@@ -411,7 +413,7 @@ public class DummyEntry implements IEntry
      */
     public boolean isSubentry()
     {
-        return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains( ObjectClassDescription.OC_SUBENTRY );
+        return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains( SchemaConstants.SUBENTRY_OC );
     }
 
 
