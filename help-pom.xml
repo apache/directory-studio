@@ -25,11 +25,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.1.0.v20080303</version>
+    <version>1.1.0.v20080331</version>
   </parent>
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent-help</artifactId>
-  <version>1.1.0.v20080303</version>
+  <version>1.1.0.v20080331</version>
   <name>Parent Help</name>
   <packaging>pom</packaging>
   
@@ -185,7 +185,14 @@
         <filtering>true</filtering>
       </resource>
     </resources>
-    <plugins>
+    <plugins>   
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>maven-studio-plugin</artifactId>
+        <configuration>
+          <goalPrefix>studio</goalPrefix>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
