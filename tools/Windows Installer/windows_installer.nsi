@@ -18,8 +18,8 @@
 #
 
 !define AppName "Apache Directory Studio"
-!define AppVersion "1.1.0 RC2"
-!define OutFile "Apache_Directory_Studio_1.1.0_RC2_Windows"
+!define AppVersion "1.1.0"
+!define OutFile "Apache_Directory_Studio_1.1.0_Windows"
 !define ShortName "Apache Directory Studio"
 !define JRE_VERSION "1.5.0"
 !define Vendor "Apache Software Foundation"
