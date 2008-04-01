@@ -2,7 +2,115 @@ Release Notes
 
 Apache Directory Studio 1.1.0
 
-Sub-task  * [DIRSTUDIO-142] - Add SASL authenticationBug  * [DIRSTUDIO-48] - Errors when help is open  * [DIRSTUDIO-95] - Not returning large queries  * [DIRSTUDIO-97] - Unable to display attributes of subschemasubentry cn=schema of TivoliDS 6.0 in Entry Editor  * [DIRSTUDIO-120] - 100% CPU when deleting thousands of entries  * [DIRSTUDIO-139] - Operational attributes not shown in the Entry Editor  * [DIRSTUDIO-152] - New entry creator does not know that 'dc' and 'domainComponent' is the same thing  * [DIRSTUDIO-154] - Studio getting slower and slower on bulk operations  * [DIRSTUDIO-161] - Unable to enter Base DN ending in 'dc='  * [DIRSTUDIO-163] - Schema Editor keep leaking GDI Handles  * [DIRSTUDIO-166] - LDif Import changetype: modify add attribute attrId is not case insensitive  * [DIRSTUDIO-184] - Error while reading entry in Active Directory  * [DIRSTUDIO-191] - Connection Name mess up if it contains non-ascii chars  * [DIRSTUDIO-196] - Error dialog displayed after Problems View is closed  * [DIRSTUDIO-197] - Following referrals throws NPE  * [DIRSTUDIO-198] - Search string is not working properly with metacharacters (*, +...)  * [DIRSTUDIO-201] - Project Name mess up if it contains non-ascii chars  * [DIRSTUDIO-203] - Help contexts of LDAP Browser does not display in the Dynamic Help window  * [DIRSTUDIO-204] - Warning displayed when showing the properties of a connection  * [DIRSTUDIO-205] - Windows installer's publisher is set to "Unknown Publisher"  * [DIRSTUDIO-206] - Browse does not work in subtree editor base selection  * [DIRSTUDIO-210] - Filter parser accepts bad filters  * [DIRSTUDIO-211] - Connections window doesn't display swedish characters properly  * [DIRSTUDIO-213] - NullPointerException raised when selecting an OC with no alias as a superior in the NewObjectClassWizard  * [DIRSTUDIO-214] - IllegalArgumentException raised when selecting an AT with no alias as superior in the NewAttributeTypeWizard  * [DIRSTUDIO-217] - Eclipse 3.3 New Connections shows "Browser Options" without possibility to add new address  * [DIRSTUDIO-220] - lowercase {crypt} in userPassword is an "Unsupported Hash Method"  * [DIRSTUDIO-222] - Pb when creating an entry with an invalid atribute as a RDN  * [DIRSTUDIO-223] - NullPointerException raised when adding values in the New Entry Wizard  * [DIRSTUDIO-224] - Can't Open Schema View with JDK 6.0  * [DIRSTUDIO-226] - Attribute Type Description is not imported when reading an OpenLDAP schema file  * [DIRSTUDIO-230] - Locate Dn in DIT Action does not work well  * [DIRSTUDIO-231] - F3 locate in DIT does not work correctly  * [DIRSTUDIO-233] - Browsing base DN returns [LDAP: error code 10 - Referral]  * [DIRSTUDIO-235] - Non ASCII characters are not rendered properly in the LDAP Browser View when label is limited to a certain number of characters  * [DIRSTUDIO-239] - No error message when importing a bad schema  * [DIRSTUDIO-242] - Inconsistent state of the Entry Editor after using "New Value" (or "New Attribute...") and pressing "Escape".  * [DIRSTUDIO-243] - Modified value of Equality Matching Rule in the AttributeTypeEditor is not saved  * [DIRSTUDIO-245] - Apache DS Configuration Plugin cannot parse server.xml file correctly  * [DIRSTUDIO-247] - Don't use implicit ManageDsaIT control magic of JNDI  * [DIRSTUDIO-249] - Modification Logs view does not display request controls, if sent to the server  * [DIRSTUDIO-250] - Unable to load entries if RDN is quoted and contains unescaped comma  * [DIRSTUDIO-252] - Advanced value editors don't work in NewEntryWizard  * [DIRSTUDIO-253] - cant open server.xml with directory studio  * [DIRSTUDIO-258] - ArrayIndexOutOfBoundsException when changing Base DN  * [DIRSTUDIO-259] - NPE when trying to turn back on "save password" on connection properties  * [DIRSTUDIO-261] - LDAP Browser shows same root objects two times under Root DSE  * [DIRSTUDIO-264] - ldif parser doesn't accept attributes with empty values  * [DIRSTUDIO-267] - Clicking on a bookmark loops and does not display attributes  * [DIRSTUDIO-269] - Attributes not displayed when browsing BEA Weblogic embedded LDAP  * [DIRSTUDIO-270] - Copy and paste does not work when value being edited  * [DIRSTUDIO-278] - Error when looking at a connection property  * [DIRSTUDIO-279] - Filter Editor doesn't remove spaces and line breaks after OK  * [DIRSTUDIO-281] - LDIF and Apache DS configuration files can't be saved in RCP mode  * [DIRSTUDIO-284] - Changing "Supported Authentication Mechanism" doesn't set the dirty flag.  * [DIRSTUDIO-285] - Export into LDIF format could be corrupted  * [DIRSTUDIO-286] - Update Site is not working, missing dependencies in ldifeditor, ldapbrower and schemaeditor feature  * [DIRSTUDIO-287] - NullPointerException raised by ValueEditorsPreferences.getSyntaxValueEditorMap(...) method  * [DIRSTUDIO-288] - "SWTError: No more handles" error when repeatedly adding a new entry  * [DIRSTUDIO-296] - The Modifications Log view is not refreshed when running the 'Execute LDIF' action from an LDIF file  * [DIRSTUDIO-299] - java.lang.NoSuchMethod error when attempting to edit a value  * [DIRSTUDIO-300] - user guide point to a wrong default port  * [DIRSTUDIO-302] - LDIF Editor does not work when loading LDIF file outside of workspace with Eclipse 3.3.x  * [DIRSTUDIO-310] - mangled values in binary or octetstring attribute typesImprovement  * [DIRSTUDIO-37] - Improve authentication methods and security mechanisms  * [DIRSTUDIO-119] - Allow user to disabled the Modification logs windows  * [DIRSTUDIO-123] - Refactor IConnection interface and Connection class  * [DIRSTUDIO-136] - Remove the "Apache DS" menu from the Java Perspective  * [DIRSTUDIO-138] - Add visual feedback to the user, if SSL (ldaps) is enabled  * [DIRSTUDIO-156] - useability improvement: when exporting an OU use the applied filter by default  * [DIRSTUDIO-187] - Add the ability to organize connections in folders  * [DIRSTUDIO-189] - Replace connection combo-box with BrowserConnectionWidget  * [DIRSTUDIO-195] - Add key bindings to the Schema Editor  * [DIRSTUDIO-199] - Add scopes for OC and AT in search  * [DIRSTUDIO-200] - Add an OC and AT hierarchical global view  * [DIRSTUDIO-202] - Add help contexts to the help plugin of the Schema Editor  * [DIRSTUDIO-216] - Improve Type Hierarchy View  * [DIRSTUDIO-221] - Improve Object Class selection in the New Entry Wizard  * [DIRSTUDIO-227] - Add the ability to select OpenLDAP schema files as core schemas when creating a project  * [DIRSTUDIO-237] - It would be good to be able to import 'core' schemas into an existing project  * [DIRSTUDIO-238] - Automatically add an alias when the 'ok' button is selected  * [DIRSTUDIO-240] - Memorize the last import's path  * [DIRSTUDIO-251] - Replace the Text Widget for the OID in the new AT and OC wizards by a Drop-Down Combo with history of the last used OIDs  * [DIRSTUDIO-254] - schema import does not provide error reporting when parsing schema file  * [DIRSTUDIO-257] - Use system small fonts on Mac OS X  * [DIRSTUDIO-275] - Import/Export wizards should display an error if no Schema Project is open  * [DIRSTUDIO-289] - Windows Installer should detect previous installation and propose to uninstall it before installing the newestNew Feature  * [DIRSTUDIO-192] - Add an extension point in the Schema Editor for SchemaConnectors  * [DIRSTUDIO-193] - Add the abitilty to import/export the Schema from/to a directory Server  * [DIRSTUDIO-194] - Add a SchemaConnector for Apache Directory Server  * [DIRSTUDIO-246] - Add support for simulated renaming of non-leaf entries  * [DIRSTUDIO-248] - Add support for simulated moving of non-leaf entriesTask  * [DIRSTUDIO-218] - Some packages are not signed  * [DIRSTUDIO-225] - Update documentation for Schema Editor Plugin  * [DIRSTUDIO-229] - Replace internal DN/RDN/RDNPart with LdapDN/Rdn/ATAV of shared-ldap  * [DIRSTUDIO-236] - Update the Apache DS Configuration plugin to work with the server.xml file of Apache DS 1.5.1  * [DIRSTUDIO-265] - Migrate our build system from Ant+Ivy to Maven  * [DIRSTUDIO-280] - Remove remaining unwanted contributions from Eclipse  * [DIRSTUDIO-290] - Check creation and proper disposal of SWT Graphics objects
+Sub-task
+  * [DIRSTUDIO-142] - Add SASL authentication
+
+Bug
+  * [DIRSTUDIO-48] - Errors when help is open
+  * [DIRSTUDIO-95] - Not returning large queries
+  * [DIRSTUDIO-97] - Unable to display attributes of subschemasubentry cn=schema of TivoliDS 6.0 in Entry Editor
+  * [DIRSTUDIO-120] - 100% CPU when deleting thousands of entries
+  * [DIRSTUDIO-139] - Operational attributes not shown in the Entry Editor
+  * [DIRSTUDIO-152] - New entry creator does not know that 'dc' and 'domainComponent' is the same thing
+  * [DIRSTUDIO-154] - Studio getting slower and slower on bulk operations
+  * [DIRSTUDIO-161] - Unable to enter Base DN ending in 'dc='
+  * [DIRSTUDIO-163] - Schema Editor keep leaking GDI Handles
+  * [DIRSTUDIO-166] - LDif Import changetype: modify add attribute attrId is not case insensitive
+  * [DIRSTUDIO-184] - Error while reading entry in Active Directory
+  * [DIRSTUDIO-191] - Connection Name mess up if it contains non-ascii chars
+  * [DIRSTUDIO-196] - Error dialog displayed after Problems View is closed
+  * [DIRSTUDIO-197] - Following referrals throws NPE
+  * [DIRSTUDIO-198] - Search string is not working properly with metacharacters (*, +...)
+  * [DIRSTUDIO-201] - Project Name mess up if it contains non-ascii chars
+  * [DIRSTUDIO-203] - Help contexts of LDAP Browser does not display in the Dynamic Help window
+  * [DIRSTUDIO-204] - Warning displayed when showing the properties of a connection
+  * [DIRSTUDIO-205] - Windows installer's publisher is set to "Unknown Publisher"
+  * [DIRSTUDIO-206] - Browse does not work in subtree editor base selection
+  * [DIRSTUDIO-210] - Filter parser accepts bad filters
+  * [DIRSTUDIO-211] - Connections window doesn't display swedish characters properly
+  * [DIRSTUDIO-213] - NullPointerException raised when selecting an OC with no alias as a superior in the NewObjectClassWizard
+  * [DIRSTUDIO-214] - IllegalArgumentException raised when selecting an AT with no alias as superior in the NewAttributeTypeWizard
+  * [DIRSTUDIO-217] - Eclipse 3.3 New Connections shows "Browser Options" without possibility to add new address
+  * [DIRSTUDIO-220] - lowercase {crypt} in userPassword is an "Unsupported Hash Method"
+  * [DIRSTUDIO-222] - Pb when creating an entry with an invalid atribute as a RDN
+  * [DIRSTUDIO-223] - NullPointerException raised when adding values in the New Entry Wizard
+  * [DIRSTUDIO-224] - Can't Open Schema View with JDK 6.0
+  * [DIRSTUDIO-226] - Attribute Type Description is not imported when reading an OpenLDAP schema file
+  * [DIRSTUDIO-230] - Locate Dn in DIT Action does not work well
+  * [DIRSTUDIO-231] - F3 locate in DIT does not work correctly
+  * [DIRSTUDIO-233] - Browsing base DN returns [LDAP: error code 10 - Referral]
+  * [DIRSTUDIO-235] - Non ASCII characters are not rendered properly in the LDAP Browser View when label is limited to a certain number of characters
+  * [DIRSTUDIO-239] - No error message when importing a bad schema
+  * [DIRSTUDIO-242] - Inconsistent state of the Entry Editor after using "New Value" (or "New Attribute...") and pressing "Escape".
+  * [DIRSTUDIO-243] - Modified value of Equality Matching Rule in the AttributeTypeEditor is not saved
+  * [DIRSTUDIO-245] - Apache DS Configuration Plugin cannot parse server.xml file correctly
+  * [DIRSTUDIO-247] - Don't use implicit ManageDsaIT control magic of JNDI
+  * [DIRSTUDIO-249] - Modification Logs view does not display request controls, if sent to the server
+  * [DIRSTUDIO-250] - Unable to load entries if RDN is quoted and contains unescaped comma
+  * [DIRSTUDIO-252] - Advanced value editors don't work in NewEntryWizard
+  * [DIRSTUDIO-253] - cant open server.xml with directory studio
+  * [DIRSTUDIO-258] - ArrayIndexOutOfBoundsException when changing Base DN
+  * [DIRSTUDIO-259] - NPE when trying to turn back on "save password" on connection properties
+  * [DIRSTUDIO-261] - LDAP Browser shows same root objects two times under Root DSE
+  * [DIRSTUDIO-264] - ldif parser doesn't accept attributes with empty values
+  * [DIRSTUDIO-267] - Clicking on a bookmark loops and does not display attributes
+  * [DIRSTUDIO-269] - Attributes not displayed when browsing BEA Weblogic embedded LDAP
+  * [DIRSTUDIO-270] - Copy and paste does not work when value being edited
+  * [DIRSTUDIO-278] - Error when looking at a connection property
+  * [DIRSTUDIO-279] - Filter Editor doesn't remove spaces and line breaks after OK
+  * [DIRSTUDIO-281] - LDIF and Apache DS configuration files can't be saved in RCP mode
+  * [DIRSTUDIO-284] - Changing "Supported Authentication Mechanism" doesn't set the dirty flag.
+  * [DIRSTUDIO-285] - Export into LDIF format could be corrupted
+  * [DIRSTUDIO-286] - Update Site is not working, missing dependencies in ldifeditor, ldapbrower and schemaeditor feature
+  * [DIRSTUDIO-287] - NullPointerException raised by ValueEditorsPreferences.getSyntaxValueEditorMap(...) method
+  * [DIRSTUDIO-288] - "SWTError: No more handles" error when repeatedly adding a new entry
+  * [DIRSTUDIO-296] - The Modifications Log view is not refreshed when running the 'Execute LDIF' action from an LDIF file
+  * [DIRSTUDIO-299] - java.lang.NoSuchMethod error when attempting to edit a value
+  * [DIRSTUDIO-300] - user guide point to a wrong default port
+  * [DIRSTUDIO-302] - LDIF Editor does not work when loading LDIF file outside of workspace with Eclipse 3.3.x
+  * [DIRSTUDIO-310] - mangled values in binary or octetstring attribute types
+  * [DIRSTUDIO-313] - Copyright in Splash Screen and Help Dialog is still 2007
+
+Improvement
+  * [DIRSTUDIO-37] - Improve authentication methods and security mechanisms
+  * [DIRSTUDIO-119] - Allow user to disabled the Modification logs windows
+  * [DIRSTUDIO-123] - Refactor IConnection interface and Connection class
+  * [DIRSTUDIO-136] - Remove the "Apache DS" menu from the Java Perspective
+  * [DIRSTUDIO-138] - Add visual feedback to the user, if SSL (ldaps) is enabled
+  * [DIRSTUDIO-156] - useability improvement: when exporting an OU use the applied filter by default
+  * [DIRSTUDIO-187] - Add the ability to organize connections in folders
+  * [DIRSTUDIO-189] - Replace connection combo-box with BrowserConnectionWidget
+  * [DIRSTUDIO-195] - Add key bindings to the Schema Editor
+  * [DIRSTUDIO-199] - Add scopes for OC and AT in search
+  * [DIRSTUDIO-200] - Add an OC and AT hierarchical global view
+  * [DIRSTUDIO-202] - Add help contexts to the help plugin of the Schema Editor
+  * [DIRSTUDIO-216] - Improve Type Hierarchy View
+  * [DIRSTUDIO-221] - Improve Object Class selection in the New Entry Wizard
+  * [DIRSTUDIO-227] - Add the ability to select OpenLDAP schema files as core schemas when creating a project
+  * [DIRSTUDIO-237] - It would be good to be able to import 'core' schemas into an existing project
+  * [DIRSTUDIO-238] - Automatically add an alias when the 'ok' button is selected
+  * [DIRSTUDIO-240] - Memorize the last import's path
+  * [DIRSTUDIO-251] - Replace the Text Widget for the OID in the new AT and OC wizards by a Drop-Down Combo with history of the last used OIDs
+  * [DIRSTUDIO-254] - schema import does not provide error reporting when parsing schema file
+  * [DIRSTUDIO-257] - Use system small fonts on Mac OS X
+  * [DIRSTUDIO-275] - Import/Export wizards should display an error if no Schema Project is open
+  * [DIRSTUDIO-289] - Windows Installer should detect previous installation and propose to uninstall it before installing the newest
+
+New Feature
+  * [DIRSTUDIO-192] - Add an extension point in the Schema Editor for SchemaConnectors
+  * [DIRSTUDIO-193] - Add the abitilty to import/export the Schema from/to a directory Server
+  * [DIRSTUDIO-194] - Add a SchemaConnector for Apache Directory Server
+  * [DIRSTUDIO-246] - Add support for simulated renaming of non-leaf entries
+  * [DIRSTUDIO-248] - Add support for simulated moving of non-leaf entries
+
+Task
+  * [DIRSTUDIO-218] - Some packages are not signed
+  * [DIRSTUDIO-225] - Update documentation for Schema Editor Plugin
+  * [DIRSTUDIO-229] - Replace internal DN/RDN/RDNPart with LdapDN/Rdn/ATAV of shared-ldap
+  * [DIRSTUDIO-236] - Update the Apache DS Configuration plugin to work with the server.xml file of Apache DS 1.5.1
+  * [DIRSTUDIO-265] - Migrate our build system from Ant+Ivy to Maven
+  * [DIRSTUDIO-280] - Remove remaining unwanted contributions from Eclipse
+  * [DIRSTUDIO-290] - Check creation and proper disposal of SWT Graphics objects
 
 
 ---------------------------------------------------------------------------------
