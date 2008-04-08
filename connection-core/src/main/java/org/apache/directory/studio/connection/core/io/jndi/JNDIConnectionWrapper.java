@@ -785,6 +785,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // timeouts
+        // Don't use a timeout when using ldaps: JNDI throws a SocketException 
+        // when setting a timeout on SSL connections.
         if ( !useLdaps )
         {
             environment.put( "com.sun.jndi.ldap.connect.timeout", "10000" ); //$NON-NLS-1$ //$NON-NLS-2$
