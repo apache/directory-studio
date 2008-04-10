@@ -97,14 +97,14 @@
     <aciitemeditor.version>1.1.0.v20080331</aciitemeditor.version>
     <apacheds.configuration.version>1.1.0.v20080331</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.1.0.v20080331</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.1.0.v20080331</apacheds.configuration.help.version>
+    <apacheds.configuration.help.version>1.1.1.SNAPSHOT</apacheds.configuration.help.version>
     <connection.core.version>1.1.0.v20080331</connection.core.version>
     <connection.ui.version>1.1.0.v20080331</connection.ui.version>
     <jars.version>1.1.0.v20080331</jars.version>
     <ldapbrowser.common.version>1.1.0.v20080331</ldapbrowser.common.version>
     <ldapbrowser.core.version>1.1.0.v20080331</ldapbrowser.core.version>
     <ldapbrowser.feature.version>1.1.0.v20080331</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.1.0.v20080331</ldapbrowser.help.version>
+    <ldapbrowser.help.version>1.1.1.SNAPSHOT</ldapbrowser.help.version>
     <ldapbrowser.ui.version>1.1.0.v20080331</ldapbrowser.ui.version>
     <ldifeditor.version>1.1.0.v20080331</ldifeditor.version>
     <ldifeditor.feature.version>1.1.0.v20080331</ldifeditor.feature.version>
@@ -112,11 +112,11 @@
     <ldifparser.version>1.1.0.v20080331</ldifparser.version>
     <rcp.version>1.1.0.v20080331</rcp.version>
     <rcp.feature.version>1.1.0.v20080331</rcp.feature.version>
-    <rcp.help.version>1.1.0.v20080331</rcp.help.version>
+    <rcp.help.version>1.1.1.SNAPSHOT</rcp.help.version>
     <repository.version>1.1.0.v20080331</repository.version>
     <schemaeditor.version>1.1.0.v20080331</schemaeditor.version>
     <schemaeditor.feature.version>1.1.0.v20080331</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.1.0.v20080331</schemaeditor.help.version>
+    <schemaeditor.help.version>1.1.1.SNAPSHOT</schemaeditor.help.version>
     <studio.dsml.parser.version>0.4.1</studio.dsml.parser.version>
     <updatesite.version>1.1.0.v20080331</updatesite.version>
     <valueeditors.version>1.1.0.v20080331</valueeditors.version>
