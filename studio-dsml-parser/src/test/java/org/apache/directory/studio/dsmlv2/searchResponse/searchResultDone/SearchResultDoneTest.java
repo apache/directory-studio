@@ -55,7 +55,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_1_control.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_1_control.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -77,7 +78,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a response with a (optional) Control element with empty value
      */
@@ -88,7 +90,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_1_control_empty_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -100,7 +103,7 @@ public class SearchResultDoneTest extends AbstractResponseTest
         SearchResultDone searchResultDone = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getSearchResultDone();
         Control control = searchResultDone.getCurrentControl();
-        
+
         assertEquals( 1, searchResultDone.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -118,7 +121,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_2_controls.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_2_controls.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -152,8 +156,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_3_controls_without_value.xml" )
-                .getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_3_controls_without_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -187,8 +191,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_requestID_attribute.xml" )
-                .getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -202,8 +206,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
 
         assertEquals( 456, searchResultDone.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute equals 0
      */
@@ -241,7 +245,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_result_code.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_result_code.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -269,7 +274,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_error_message.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_error_message.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -286,7 +292,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         assertEquals( "Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2", ldapResult
             .getErrorMessage() );
     }
-    
+
+
     /**
      * Test parsing of a response with empty Error Message
      */
@@ -297,7 +304,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_empty_error_message.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_empty_error_message.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -325,7 +333,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_1_referral.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_1_referral.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -354,7 +363,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
             fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a response with an empty Referral
      */
@@ -365,7 +375,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_1_empty_referral.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_1_empty_referral.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -395,7 +406,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_2_referrals.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_2_referrals.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -447,8 +459,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource(
-                "response_with_1_referral_and_error_message.xml" ).getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_1_referral_and_error_message.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -489,8 +501,8 @@ public class SearchResultDoneTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultDoneTest.class.getResource( "response_with_matchedDN_attribute.xml" )
-                .getFile() );
+            parser.setInput( SearchResultDoneTest.class.getResource( "response_with_matchedDN_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }

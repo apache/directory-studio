@@ -49,7 +49,7 @@ public abstract class AbstractResponseTest extends TestCase
         {
             Dsmlv2ResponseParser parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( testClass.getResource( filename ).getFile() );
+            parser.setInput( testClass.getResource( filename ).openStream(), "UTF-8" );
 
             parser.parse();
         }

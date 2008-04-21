@@ -51,8 +51,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser
-                .setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_control.xml" ).getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_1_control.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -74,7 +74,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
 
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a response with a (optional) Control element with empty value
      */
@@ -85,8 +86,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser
-                .setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_1_control_empty_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -120,8 +121,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_2_controls.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResultReferenceTest.class.getResource( "response_with_2_controls.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -155,8 +156,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultReferenceTest.class.getResource(
-                "response_with_3_controls_without_value.xml" ).getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_3_controls_without_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -190,8 +191,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_requestID_attribute.xml" )
-                .getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -205,7 +206,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
 
         assertEquals( 456, searchResultReference.getMessageId() );
     }
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute equals 0
      */
@@ -234,7 +236,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_ref.xml" ).getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_1_ref.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -259,7 +262,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
             fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a Response with 1 Ref
      */
@@ -270,7 +274,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_1_empty_ref.xml" ).getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_1_empty_ref.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -288,7 +293,6 @@ public class SearchResultReferenceTest extends AbstractResponseTest
     }
 
 
-
     /**
      * Test parsing of a Response with 2 Ref
      */
@@ -299,7 +303,8 @@ public class SearchResultReferenceTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultReferenceTest.class.getResource( "response_with_2_ref.xml" ).getFile() );
+            parser.setInput( SearchResultReferenceTest.class.getResource( "response_with_2_ref.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }

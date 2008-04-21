@@ -54,7 +54,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_control.xml" ).getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_1_control.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -88,8 +89,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_control_empty_value.xml" )
-                .getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_1_control_empty_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -119,7 +120,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_2_controls.xml" ).getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_2_controls.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -153,8 +155,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_3_controls_without_value.xml" )
-                .getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_3_controls_without_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -206,7 +208,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_dn_attribute.xml" ).getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_dn_attribute.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -232,8 +235,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_requestID_attribute.xml" )
-                .getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -268,7 +271,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_0_attr.xml" ).getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_0_attr.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -291,8 +295,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_0_value.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResultEntryTest.class.getResource( "response_with_1_attr_0_value.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -326,8 +330,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_value.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResultEntryTest.class.getResource( "response_with_1_attr_1_value.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -378,8 +382,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_base64_value.xml" )
-                .getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_base64_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -433,8 +437,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_empty_value.xml" )
-                .getFile() );
+            parser.setInput( SearchResultEntryTest.class.getResource( "response_with_1_attr_1_empty_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -484,8 +488,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_1_attr_2_value.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResultEntryTest.class.getResource( "response_with_1_attr_2_value.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -539,8 +543,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResultEntryTest.class.getResource( "response_with_2_attr_1_value.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResultEntryTest.class.getResource( "response_with_2_attr_1_value.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }

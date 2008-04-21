@@ -55,8 +55,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser
-                .setInputFile( AddResponseTest.class.getResource( "response_with_requestID_attribute.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_requestID_attribute.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -69,7 +69,8 @@ public class AddResponseTest extends AbstractResponseTest
 
         assertEquals( 456, addResponse.getMessageId() );
     }
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute equals 0
      */
@@ -89,7 +90,7 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_1_control.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_1_control.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -111,6 +112,7 @@ public class AddResponseTest extends AbstractResponseTest
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
 
+
     /**
      * Test parsing of a response with a (optional) Control element with emptyValue
      */
@@ -121,7 +123,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_1_control_empty_value.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_1_control_empty_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -132,12 +135,13 @@ public class AddResponseTest extends AbstractResponseTest
 
         AddResponse addResponse = ( AddResponse ) parser.getBatchResponse().getCurrentResponse();
         Control control = addResponse.getCurrentControl();
-        
+
         assertEquals( 1, addResponse.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
-        assertEquals( StringTools.EMPTY_BYTES,  ( byte[] ) control.getControlValue() );
+        assertEquals( StringTools.EMPTY_BYTES, ( byte[] ) control.getControlValue() );
     }
+
 
     /**
      * Test parsing of a response with 2 (optional) Control elements
@@ -149,7 +153,7 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_2_controls.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_2_controls.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -182,8 +186,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_3_controls_without_value.xml" )
-                .getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_3_controls_without_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -234,7 +238,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_result_code.xml" ).getFile() );
+            parser
+                .setInput( AddResponseTest.class.getResource( "response_with_result_code.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -261,7 +266,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_error_message.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_error_message.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -277,7 +283,8 @@ public class AddResponseTest extends AbstractResponseTest
         assertEquals( "Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2", ldapResult
             .getErrorMessage() );
     }
-    
+
+
     /**
      * Test parsing of a response with empty Error Message
      */
@@ -288,7 +295,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_empty_error_message.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_empty_error_message.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -315,7 +323,7 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_1_referral.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_1_referral.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -343,7 +351,8 @@ public class AddResponseTest extends AbstractResponseTest
             fail();
         }
     }
-    
+
+
     /**
      * Test parsing of a response with an empty Referral
      */
@@ -354,7 +363,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_1_empty_referral.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_1_empty_referral.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -383,7 +393,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_2_referrals.xml" ).getFile() );
+            parser
+                .setInput( AddResponseTest.class.getResource( "response_with_2_referrals.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -434,8 +445,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( AddResponseTest.class.getResource( "response_with_1_referral_and_error_message.xml" )
-                .getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_1_referral_and_error_message.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -475,8 +486,8 @@ public class AddResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser
-                .setInputFile( AddResponseTest.class.getResource( "response_with_matchedDN_attribute.xml" ).getFile() );
+            parser.setInput( AddResponseTest.class.getResource( "response_with_matchedDN_attribute.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }

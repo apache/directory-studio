@@ -21,6 +21,8 @@
 package org.apache.directory.studio.dsmlv2;
 
 
+import java.io.FileInputStream;
+
 import junit.framework.TestCase;
 
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
@@ -49,7 +51,7 @@ public abstract class AbstractTest extends TestCase
         {
             Dsmlv2Parser parser = new Dsmlv2Parser();
 
-            parser.setInputFile( testClass.getResource( filename ).getFile() );
+            parser.setInput( testClass.getResource( filename ).openStream(), "UTF-8" );
 
             parser.parse();
         }

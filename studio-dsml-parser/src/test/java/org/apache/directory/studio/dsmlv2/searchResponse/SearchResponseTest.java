@@ -44,8 +44,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_requestID_attribute.xml" )
-                .getFile() );
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -58,8 +58,8 @@ public class SearchResponseTest extends AbstractResponseTest
 
         assertEquals( 456, searchResponse.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute equals 0
      */
@@ -79,7 +79,7 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_1_SRD.xml" ).getFile() );
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_1_SRD.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -104,7 +104,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_1_SRE_1_SRD.xml" ).getFile() );
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_1_SRE_1_SRD.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -131,7 +132,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_1_SRR_1_SRD.xml" ).getFile() );
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_1_SRR_1_SRD.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -158,8 +160,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_1_SRE_1_SRR_1_SRD.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResponseTest.class.getResource( "response_with_1_SRE_1_SRR_1_SRD.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -188,7 +190,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_2_SRE_1_SRD.xml" ).getFile() );
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_2_SRE_1_SRD.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -215,7 +218,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_2_SRR_1_SRD.xml" ).getFile() );
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_2_SRR_1_SRD.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -242,8 +246,8 @@ public class SearchResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( SearchResponseTest.class.getResource( "response_with_2_SRE_2_SRR_1_SRD.xml" )
-                .getFile() );
+            parser.setInput(
+                SearchResponseTest.class.getResource( "response_with_2_SRE_2_SRR_1_SRD.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }

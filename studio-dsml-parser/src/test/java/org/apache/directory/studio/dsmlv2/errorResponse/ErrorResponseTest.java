@@ -46,8 +46,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_requestID_attribute.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_requestID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -60,8 +60,8 @@ public class ErrorResponseTest extends AbstractResponseTest
 
         assertEquals( 456, errorResponse.getMessageId() );
     }
-    
-    
+
+
     /**
      * Test parsing of a Response with the (optional) requestID attribute equals 0
      */
@@ -90,8 +90,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser
-                .setInputFile( ErrorResponseTest.class.getResource( "response_with_type_notAttempted.xml" ).getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_notAttempted.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -116,8 +116,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_couldNotConnect.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_couldNotConnect.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -142,8 +142,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_connectionClosed.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_connectionClosed.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -168,8 +168,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_malformedRequest.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_malformedRequest.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -194,8 +194,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_gatewayInternalError.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_gatewayInternalError.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -220,8 +220,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_authenticationFailed.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_authenticationFailed.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -246,8 +246,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_unresolvableURI.xml" )
-                .getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_unresolvableURI.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -272,7 +272,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_type_other.xml" ).getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_type_other.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -306,7 +307,7 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_message.xml" ).getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_message.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -319,7 +320,8 @@ public class ErrorResponseTest extends AbstractResponseTest
 
         assertEquals( "Connection refused", errorResponse.getMessage() );
     }
-    
+
+
     /**
      * Test parsing of a response with empty Message
      */
@@ -330,7 +332,8 @@ public class ErrorResponseTest extends AbstractResponseTest
         {
             parser = new Dsmlv2ResponseParser();
 
-            parser.setInputFile( ErrorResponseTest.class.getResource( "response_with_empty_message.xml" ).getFile() );
+            parser.setInput( ErrorResponseTest.class.getResource( "response_with_empty_message.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }

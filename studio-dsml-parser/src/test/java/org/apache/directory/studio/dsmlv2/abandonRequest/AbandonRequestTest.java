@@ -55,8 +55,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_abandonID_attribute.xml" )
-                .getFile() );
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_abandonID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -76,9 +76,10 @@ public class AbandonRequestTest extends AbstractTest
      */
     public void testRequestWithRequestIdEquals0()
     {
-    	testParsingFail( AbandonRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( AbandonRequestTest.class, "request_with_requestID_equals_0.xml" );
     }
-    
+
+
     /**
      * Test parsing of a request with the (optional) requestID attribute
      */
@@ -89,8 +90,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_requestID_attribute.xml" )
-                .getFile() );
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_requestID_attribute.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -116,7 +117,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
+            parser
+                .setInput( AbandonRequestTest.class.getResource( "request_with_1_control.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -127,13 +129,14 @@ public class AbandonRequestTest extends AbstractTest
 
         AbandonRequest abandonRequest = ( AbandonRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 1, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
         assertEquals( "Some text", StringTools.utf8ToString( ( byte[] ) control.getControlValue() ) );
     }
-    
+
+
     /**
      * Test parsing of a request with a (optional) Control element with Base64 value
      */
@@ -145,7 +148,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).getFile() );
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -156,7 +160,7 @@ public class AbandonRequestTest extends AbstractTest
 
         AbandonRequest abandonRequest = ( AbandonRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 1, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -175,8 +179,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_1_control_empty_value.xml" )
-                .getFile() );
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_1_control_empty_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -187,7 +191,7 @@ public class AbandonRequestTest extends AbstractTest
 
         AbandonRequest abandonRequest = ( AbandonRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 1, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.643", control.getControlType() );
@@ -206,7 +210,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_2_controls.xml" ).getFile() );
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_2_controls.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -217,7 +222,7 @@ public class AbandonRequestTest extends AbstractTest
 
         AbandonRequest abandonRequest = ( AbandonRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 2, abandonRequest.getControls().size() );
         assertFalse( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.789", control.getControlType() );
@@ -236,8 +241,8 @@ public class AbandonRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AbandonRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
-                .getFile() );
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -248,14 +253,14 @@ public class AbandonRequestTest extends AbstractTest
 
         AbandonRequest abandonRequest = ( AbandonRequest ) parser.getBatchRequest().getCurrentRequest();
         Control control = abandonRequest.getCurrentControl();
-        
+
         assertEquals( 3, abandonRequest.getControls().size() );
         assertTrue( control.getCriticality() );
         assertEquals( "1.2.840.113556.1.4.456", control.getControlType() );
         assertEquals( StringTools.EMPTY_BYTES, control.getControlValue() );
     }
-    
-    
+
+
     /**
      * Test parsing of a request with a needed requestID attribute
      * 

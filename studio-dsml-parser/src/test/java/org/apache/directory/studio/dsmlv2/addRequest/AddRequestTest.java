@@ -60,7 +60,7 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_dn_attribute.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_dn_attribute.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -85,7 +85,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_requestID_attribute.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -119,7 +120,7 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_control.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_control.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -152,8 +153,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_control_base64_value.xml" )
-                .getFile() );
+            parser.setInput(
+                AddRequestTest.class.getResource( "request_with_1_control_base64_value.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -182,8 +183,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser
-                .setInputFile( AddRequestTest.class.getResource( "request_with_1_control_empty_value.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_control_empty_value.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -212,7 +213,7 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_2_controls.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_2_controls.xml" ).openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -241,8 +242,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
-                .getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_3_controls_without_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -271,7 +272,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_without_value.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_attr_without_value.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -326,7 +328,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_empty_value.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_attr_empty_value.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -381,7 +384,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_with_value.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_attr_with_value.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -446,8 +450,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_with_base64_value.xml" )
-                .getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_attr_with_base64_value.xml" )
+                .openStream(), "UTF-8" );
 
             parser.parse();
         }
@@ -512,7 +516,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_2_attr_with_value.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_2_attr_with_value.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
@@ -597,7 +602,8 @@ public class AddRequestTest extends AbstractTest
         {
             parser = new Dsmlv2Parser();
 
-            parser.setInputFile( AddRequestTest.class.getResource( "request_with_1_attr_with_2_values.xml" ).getFile() );
+            parser.setInput( AddRequestTest.class.getResource( "request_with_1_attr_with_2_values.xml" ).openStream(),
+                "UTF-8" );
 
             parser.parse();
         }
