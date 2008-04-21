@@ -84,7 +84,7 @@
     <schemaeditor.version>1.2.0.SNAPSHOT</schemaeditor.version>
     <schemaeditor.feature.version>1.2.0.SNAPSHOT</schemaeditor.feature.version>
     <schemaeditor.help.version>1.2.0.SNAPSHOT</schemaeditor.help.version>
-    <studio.dsml.parser.version>0.4.1.SNAPSHOT</studio.dsml.parser.version>
+    <studio.dsml.parser.version>0.4.2.SNAPSHOT</studio.dsml.parser.version>
     <updatesite.version>1.2.0.SNAPSHOT</updatesite.version>
     <valueeditors.version>1.2.0.SNAPSHOT</valueeditors.version>
   </properties>
