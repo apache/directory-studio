@@ -847,6 +847,10 @@
                   <artifactId>editors</artifactId>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.eclipse.ui</groupId>
+                  <artifactId>net</artifactId>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.eclipse</groupId>
                   <artifactId>text</artifactId>
                 </artifactItem>
@@ -982,8 +986,6 @@
                   <groupId>org.eclipse.core</groupId>
                   <artifactId>runtime</artifactId>
                 </artifactItem>
-                
-                
                 <artifactItem>
                     <groupId>javax</groupId>
                     <artifactId>servlet</artifactId>
@@ -1052,7 +1054,6 @@
                     <groupId>org.mortbay</groupId>
                     <artifactId>jetty</artifactId>
                 </artifactItem>
-                
               </artifactItems>
             </configuration>
           </execution>
