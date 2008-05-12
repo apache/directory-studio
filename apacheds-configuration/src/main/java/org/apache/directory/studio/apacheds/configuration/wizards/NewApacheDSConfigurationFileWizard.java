@@ -20,12 +20,12 @@
 package org.apache.directory.studio.apacheds.configuration.wizards;
 
 
-import org.apache.directory.studio.apacheds.configuration.Activator;
-import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.editor.NonExistingServerConfigurationInput;
+import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParser;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParserException;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV151IO;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
@@ -57,18 +57,19 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
     {
         try
         {
-            ServerConfigurationParser parser = new ServerConfigurationParser();
-            ServerConfiguration serverConfiguration = parser.parse( Activator.class
+            ServerXmlV151IO serverXmlIO = new ServerXmlV151IO();
+            ServerConfiguration serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
                 .getResourceAsStream( "default-server.xml" ) );
 
             IWorkbenchPage page = window.getActivePage();
-            page.openEditor( new NonExistingServerConfigurationInput( serverConfiguration ), ServerConfigurationEditor.ID );
+            page.openEditor( new NonExistingServerConfigurationInput( serverConfiguration ),
+                ServerConfigurationEditor.ID );
         }
         catch ( PartInitException e )
         {
             return false;
         }
-        catch ( ServerConfigurationParserException e )
+        catch ( ServerXmlIOException e )
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );

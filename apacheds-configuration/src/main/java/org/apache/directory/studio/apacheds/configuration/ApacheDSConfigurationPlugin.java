@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.configuration;
 
 import java.net.URL;
 
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV152IO;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
@@ -35,6 +37,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV150IO;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV151IO;
+
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -42,19 +47,22 @@ import org.osgi.framework.BundleContext;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class Activator extends AbstractUIPlugin
+public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
 {
     /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.apacheds.configuration"; //$NON-NLS-1$
 
     /** The shared instance */
-    private static Activator plugin;
+    private static ApacheDSConfigurationPlugin plugin;
+
+    private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
+        { new ServerXmlV152IO(), new ServerXmlV151IO(), new ServerXmlV150IO(), };
 
 
     /**
      * Creates a new instance of Activator.
      */
-    public Activator()
+    public ApacheDSConfigurationPlugin()
     {
         plugin = this;
     }
@@ -86,9 +94,22 @@ public class Activator extends AbstractUIPlugin
      * @return
      *      the shared instance
      */
-    public static Activator getDefault()
+    public static ApacheDSConfigurationPlugin getDefault()
     {
         return plugin;
+    }
+
+
+    /**
+     * Gets the array of available {@link ServerXmlIO} classes that 
+     * implements a parser and a writer for the 'server.xml' file. 
+     *
+     * @return
+     *      the array of available {@link ServerXmlIO} classes
+     */
+    public ServerXmlIO[] getServerXmlIOs()
+    {
+        return serverXmlIOs;
     }
 
 

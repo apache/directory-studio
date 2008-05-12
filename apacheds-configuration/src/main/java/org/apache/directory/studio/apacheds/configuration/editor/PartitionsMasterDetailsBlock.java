@@ -22,8 +22,8 @@ package org.apache.directory.studio.apacheds.configuration.editor;
 
 import java.util.List;
 
-import org.apache.directory.studio.apacheds.configuration.Activator;
-import org.apache.directory.studio.apacheds.configuration.PluginConstants;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.model.Partition;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.jface.action.Action;
@@ -138,9 +138,9 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
             public Image getImage( Object element )
             {
 
-                return Activator.getDefault().getImage(
-                    ( ( Partition ) element ).isSystemPartition() ? PluginConstants.IMG_PARTITION_SYSTEM
-                        : PluginConstants.IMG_PARTITION );
+                return ApacheDSConfigurationPlugin.getDefault().getImage(
+                    ( ( Partition ) element ).isSystemPartition() ? ApacheDSConfigurationPluginConstants.IMG_PARTITION_SYSTEM
+                        : ApacheDSConfigurationPluginConstants.IMG_PARTITION );
             }
         } );
 
@@ -270,8 +270,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         };
         horizontalAction.setChecked( true );
         horizontalAction.setToolTipText( "Horizontal Orientation" ); //$NON-NLS-1$
-        horizontalAction.setImageDescriptor( Activator.getDefault().getImageDescriptor(
-            PluginConstants.IMG_HORIZONTAL_ORIENTATION ) );
+        horizontalAction.setImageDescriptor( ApacheDSConfigurationPlugin.getDefault().getImageDescriptor(
+            ApacheDSConfigurationPluginConstants.IMG_HORIZONTAL_ORIENTATION ) );
 
         // Vertical layout Action
         Action verticalAction = new Action( "Vertical Orientation", Action.AS_RADIO_BUTTON ) { //$NON-NLS-1$
@@ -283,8 +283,8 @@ public class PartitionsMasterDetailsBlock extends MasterDetailsBlock
         };
         verticalAction.setChecked( false );
         verticalAction.setToolTipText( "Vertical Orientation" ); //$NON-NLS-1$
-        verticalAction.setImageDescriptor( Activator.getDefault().getImageDescriptor(
-            PluginConstants.IMG_VERTICAL_ORIENTATION ) );
+        verticalAction.setImageDescriptor( ApacheDSConfigurationPlugin.getDefault().getImageDescriptor(
+            ApacheDSConfigurationPluginConstants.IMG_VERTICAL_ORIENTATION ) );
 
         form.getToolBarManager().add( horizontalAction );
         form.getToolBarManager().add( verticalAction );

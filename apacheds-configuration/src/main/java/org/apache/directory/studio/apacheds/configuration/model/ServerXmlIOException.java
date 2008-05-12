@@ -27,7 +27,7 @@ package org.apache.directory.studio.apacheds.configuration.model;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerConfigurationParserException extends Exception
+public class ServerXmlIOException extends Exception
 {
     /** The Serial Version UID */
     private static final long serialVersionUID = 7274953743060751973L;
@@ -40,7 +40,7 @@ public class ServerConfigurationParserException extends Exception
      *      the detail message (which is saved for later retrieval by the 
      *      getMessage() method).
      */
-    public ServerConfigurationParserException( String message )
+    public ServerXmlIOException( String message )
     {
         super( message );
     }
@@ -57,7 +57,7 @@ public class ServerConfigurationParserException extends Exception
      *      method). (A null value is permitted, and indicates that the cause 
      *      is nonexistent or unknown.)
      */
-    public ServerConfigurationParserException( String message, Throwable cause )
+    public ServerXmlIOException( String message, Throwable cause )
     {
         super( message, cause );
     }

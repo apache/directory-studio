@@ -26,7 +26,7 @@ package org.apache.directory.studio.apacheds.configuration;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface PluginConstants
+public interface ApacheDSConfigurationPluginConstants
 {
     // Images
     public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";

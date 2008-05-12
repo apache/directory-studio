@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Apache DS Configuration
 Bundle-SymbolicName: org.apache.directory.studio.apacheds.configuration;singleton:=true
 Bundle-Version: 1.2.0.SNAPSHOT
-Bundle-Activator: org.apache.directory.studio.apacheds.configuration.Activator
+Bundle-Activator: org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Eclipse-LazyStart: true

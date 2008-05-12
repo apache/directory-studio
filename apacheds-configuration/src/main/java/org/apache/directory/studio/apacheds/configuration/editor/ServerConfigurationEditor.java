@@ -24,16 +24,17 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.directory.studio.apacheds.configuration.Activator;
-import org.apache.directory.studio.apacheds.configuration.PluginUtils;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationParser;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationWriter;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationWriterException;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -76,6 +77,9 @@ public class ServerConfigurationEditor extends FormEditor
     /** The Server Configuration */
     private ServerConfiguration serverConfiguration;
 
+    /** The associated ServerXmlIO class */
+    private ServerXmlIO serverXmlIO;
+
     /** The dirty flag */
     private boolean dirty = false;
 
@@ -94,40 +98,42 @@ public class ServerConfigurationEditor extends FormEditor
         super.init( site, input );
         setPartName( input.getName() );
 
-        String inputClassName = input.getClass().getName();
+        //
+        //        String inputClassName = input.getClass().getName();
         try
         {
-            if ( input instanceof FileEditorInput )
-            // The 'FileEditorInput' class is used when the file is opened
-            // from a project in the workspace.
-            {
-                ServerConfigurationParser parser = new ServerConfigurationParser();
-                serverConfiguration = parser.parse( ( ( FileEditorInput ) input ).getFile().getContents() );
-            }
-            else if ( input instanceof IPathEditorInput )
-            {
-                ServerConfigurationParser parser = new ServerConfigurationParser();
-                serverConfiguration = parser.parse( new FileInputStream( new File( ( ( IPathEditorInput ) input )
-                    .getPath().toOSString() ) ) );
-            }
-            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
-            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-            // opening a file from the menu File > Open... in Eclipse 3.3.x
-            {
-                // We use the tooltip to get the full path of the file
-                ServerConfigurationParser parser = new ServerConfigurationParser();
-                serverConfiguration = parser.parse( new FileInputStream( new File( input.getToolTipText() ) ) );
-            }
-            else if ( input instanceof NonExistingServerConfigurationInput )
-            {
-                // The 'ServerConfigurationEditorInput' class is used when a
-                // new Server Configuration File is created.
-                serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
-                dirty = true;
-            }
+            readServerConfiguration( input );
+            //            if ( input instanceof FileEditorInput )
+            //            // The 'FileEditorInput' class is used when the file is opened
+            //            // from a project in the workspace.
+            //            {
+            //                ServerConfigurationParser parser = new ServerConfigurationParser();
+            //                serverConfiguration = parser.parse( ( ( FileEditorInput ) input ).getFile().getContents() );
+            //            }
+            //            else if ( input instanceof IPathEditorInput )
+            //            {
+            //                ServerConfigurationParser parser = new ServerConfigurationParser();
+            //                serverConfiguration = parser.parse( new FileInputStream( new File( ( ( IPathEditorInput ) input )
+            //                    .getPath().toOSString() ) ) );
+            //            }
+            //            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
+            //                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+            //            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+            //            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+            //            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+            //            // opening a file from the menu File > Open... in Eclipse 3.3.x
+            //            {
+            //                // We use the tooltip to get the full path of the file
+            //                ServerConfigurationParser parser = new ServerConfigurationParser();
+            //                serverConfiguration = parser.parse( new FileInputStream( new File( input.getToolTipText() ) ) );
+            //            }
+            //            else if ( input instanceof NonExistingServerConfigurationInput )
+            //            {
+            //                // The 'ServerConfigurationEditorInput' class is used when a
+            //                // new Server Configuration File is created.
+            //                serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
+            //                dirty = true;
+            //            }
         }
         catch ( Exception e )
         {
@@ -138,6 +144,82 @@ public class ServerConfigurationEditor extends FormEditor
             messageBox.open();
             return;
         }
+    }
+
+
+    /**
+     * Reads the server configuration from the given editor input.
+     *
+     * @param input
+     *      the editor input
+     * @throws CoreException 
+     * @throws FileNotFoundException 
+     * @throws ServerXmlIOException 
+     */
+    private void readServerConfiguration( IEditorInput input ) throws CoreException, FileNotFoundException,
+        ServerXmlIOException
+    {
+        // If the input is a NonExistingServerConfigurationInput, then we only 
+        // need to get the server configuration and return
+        if ( input instanceof NonExistingServerConfigurationInput )
+        {
+            // The 'ServerConfigurationEditorInput' class is used when a
+            // new Server Configuration File is created.
+            serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
+            dirty = true;
+            return;
+        }
+
+        // Looping on the ServerXmlIO classes to find a corresponding one
+        ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
+        for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
+        {
+            // Checking if the ServerXmlIO
+            if ( validationServerXmlIO.isValid( getInputStream( input ) ) )
+            {
+                serverXmlIO = validationServerXmlIO;
+                serverConfiguration = serverXmlIO.parse( getInputStream( input ) );
+                return;
+            }
+        }
+    }
+
+
+    /**
+     * Gets an input stream from the editor input.
+     *
+     * @param input
+     *      the editor input
+     * @return
+     *      an input stream from the editor input, or <code>null</code>
+     * @throws CoreException
+     * @throws FileNotFoundException
+     */
+    private InputStream getInputStream( IEditorInput input ) throws CoreException, FileNotFoundException
+    {
+        String inputClassName = input.getClass().getName();
+        if ( input instanceof FileEditorInput )
+        // The 'FileEditorInput' class is used when the file is opened
+        // from a project in the workspace.
+        {
+            return ( ( FileEditorInput ) input ).getFile().getContents();
+        }
+        else if ( input instanceof IPathEditorInput )
+        {
+            return new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
+        }
+        else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
+            || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+        // opening a file from the menu File > Open... in Eclipse 3.3.x
+        {
+            // We use the tooltip to get the full path of the file
+            return new FileInputStream( new File( input.getToolTipText() ) );
+        }
+
+        return null;
     }
 
 
@@ -162,8 +244,9 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( PartInitException e )
         {
-            Activator.getDefault().getLog().log(
-                new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getMessage(), e.getCause() ) );
+            ApacheDSConfigurationPlugin.getDefault().getLog().log(
+                new Status( Status.ERROR, ApacheDSConfigurationPlugin.PLUGIN_ID, Status.OK, e.getMessage(), e
+                    .getCause() ) );
         }
     }
 
@@ -277,10 +360,10 @@ public class ServerConfigurationEditor extends FormEditor
      * @throws IOException
      * @throws ServerConfigurationWriterException
      */
-    private void saveConfiguration( String path ) throws IOException, ServerConfigurationWriterException
+    private void saveConfiguration( String path ) throws IOException
     {
         BufferedWriter outFile = new BufferedWriter( new FileWriter( path ) );
-        String xml = ServerConfigurationWriter.toXml( serverConfiguration );
+        String xml = serverXmlIO.toXml( serverConfiguration );
         outFile.write( xml );
         outFile.close();
     }
@@ -294,10 +377,9 @@ public class ServerConfigurationEditor extends FormEditor
      * @throws ServerConfigurationWriterException 
      * @throws CoreException 
      */
-    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor )
-        throws ServerConfigurationWriterException, CoreException
+    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor ) throws CoreException
     {
-        String xml = ServerConfigurationWriter.toXml( serverConfiguration );
+        String xml = serverXmlIO.toXml( serverConfiguration );
         fei.getFile().setContents( new ByteArrayInputStream( xml.getBytes() ), true, true, monitor );
     }
 
@@ -360,7 +442,7 @@ public class ServerConfigurationEditor extends FormEditor
     {
         // detect IDE or RCP:
         // check if perspective org.eclipse.ui.resourcePerspective is available
-        boolean isIDE = PluginUtils.isIDEEnvironment();
+        boolean isIDE = ApacheDSConfigurationPluginUtils.isIDEEnvironment();
 
         if ( isIDE )
         {

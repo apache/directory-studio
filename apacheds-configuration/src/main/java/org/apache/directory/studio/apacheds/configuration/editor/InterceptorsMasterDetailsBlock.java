@@ -22,8 +22,8 @@ package org.apache.directory.studio.apacheds.configuration.editor;
 
 import java.util.List;
 
-import org.apache.directory.studio.apacheds.configuration.Activator;
-import org.apache.directory.studio.apacheds.configuration.PluginConstants;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.model.Interceptor;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.eclipse.jface.action.Action;
@@ -140,7 +140,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         {
             public Image getImage( Object element )
             {
-                return Activator.getDefault().getImage( PluginConstants.IMG_INTERCEPTOR );
+                return ApacheDSConfigurationPlugin.getDefault().getImage( ApacheDSConfigurationPluginConstants.IMG_INTERCEPTOR );
             }
         } );
 
@@ -342,8 +342,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         };
         horizontalAction.setChecked( true );
         horizontalAction.setToolTipText( "Horizontal Orientation" ); //$NON-NLS-1$
-        horizontalAction.setImageDescriptor( Activator.getDefault().getImageDescriptor(
-            PluginConstants.IMG_HORIZONTAL_ORIENTATION ) );
+        horizontalAction.setImageDescriptor( ApacheDSConfigurationPlugin.getDefault().getImageDescriptor(
+            ApacheDSConfigurationPluginConstants.IMG_HORIZONTAL_ORIENTATION ) );
 
         // Vertical layout Action
         Action verticalAction = new Action( "Vertical Orientation", Action.AS_RADIO_BUTTON ) { //$NON-NLS-1$
@@ -355,8 +355,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         };
         verticalAction.setChecked( false );
         verticalAction.setToolTipText( "Vertical Orientation" ); //$NON-NLS-1$
-        verticalAction.setImageDescriptor( Activator.getDefault().getImageDescriptor(
-            PluginConstants.IMG_VERTICAL_ORIENTATION ) );
+        verticalAction.setImageDescriptor( ApacheDSConfigurationPlugin.getDefault().getImageDescriptor(
+            ApacheDSConfigurationPluginConstants.IMG_VERTICAL_ORIENTATION ) );
 
         form.getToolBarManager().add( horizontalAction );
         form.getToolBarManager().add( verticalAction );

@@ -20,24 +20,22 @@
 package org.apache.directory.studio.apacheds.configuration.model;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
+import javax.xml.transform.TransformerException;
 
-import org.apache.directory.shared.ldap.ldif.LdifReader;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
-import org.apache.directory.shared.ldap.util.StringTools;
-import org.apache.directory.studio.apacheds.configuration.Activator;
-import org.dom4j.Attribute;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.xml.sax.EntityResolver;
@@ -45,116 +43,128 @@ import org.xml.sax.InputSource;
 
 
 /**
- * This class represents the Server Configuration Parser. It can be used to parse a 'server.xml' file 
- * and get Server Configuration Object from it.
+ * This class implements a parser and a writer for the 'server.xml' file of 
+ * Apache Directory Server version 1.5.1.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerConfigurationParser
+public class ServerXmlV151IO extends AbstractServerXmlIO implements ServerXmlIO
 {
-    /**
-     * Parses a 'server.xml' file located at the given path and returns 
-     * the corresponding ServerConfiguration Object.
-     *
-     * @param path
-     *      the path of the file to parse
-     * @return
-     *      the corresponding ServerConfiguration Object
-     * @throws ServerConfigurationParserException
-     *      if an error occurrs when reading the Server Configuration file
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
      */
-    public ServerConfiguration parse( String path ) throws ServerConfigurationParserException
+    public boolean isValid( InputStream is )
     {
         try
         {
-            EntityResolver resolver = new EntityResolver()
-            {
-                public InputSource resolveEntity( String publicId, String systemId )
-                {
-                    if ( publicId.equals( "-//SPRING//DTD BEAN//EN" ) )
-                    {
-                        InputStream in = Activator.class.getResourceAsStream( "spring-beans.dtd" );
-                        return new InputSource( in );
-                    }
-                    return null;
-                }
-            };
+            SAXReader saxReader = new SAXReader();
 
-            SAXReader reader = new SAXReader();
-            reader.setEntityResolver( resolver );
-            Document document = reader.read( path );
-
-            ServerConfiguration serverConfiguration = new ServerConfiguration();
-            parse( document, serverConfiguration );
-
-            return serverConfiguration;
+            return isValid( saxReader.read( is ) );
         }
         catch ( Exception e )
         {
-            if ( e instanceof ServerConfigurationParserException )
-            {
-                throw ( ServerConfigurationParserException ) e;
-            }
-            else
-            {
-                ServerConfigurationParserException exception = new ServerConfigurationParserException( e.getMessage(),
-                    e.getCause() );
-                exception.setStackTrace( e.getStackTrace() );
-                throw exception;
-            }
+            return false;
         }
     }
 
 
     /**
-     * Parses a 'server.xml' file located at the given path and returns 
-     * the corresponding ServerConfiguration Object.
+     * Checks if the InputStream is valid.
      *
      * @param inputStream
-     *      the Input Stream of the file to parse
+     *      the InputStream
      * @return
-     *      the corresponding ServerConfiguration Object
-     * @throws ServerConfigurationParserException
-     *      if an error occurrs when reading the Server Configuration file
+     *      true if the InputStream is valid, false if not
      */
-    public ServerConfiguration parse( InputStream inputStream ) throws ServerConfigurationParserException
+    public boolean isValid( Reader reader )
     {
         try
         {
+            SAXReader saxReader = new SAXReader();
+
+            return isValid( saxReader.read( reader ) );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * Checks if the Document is valid.
+     *
+     * @param document
+     *      the Document
+     * @return
+     *      true if the Document is valid, false if not
+     */
+    private boolean isValid( Document document )
+    {
+        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
+        {
+            Element element = ( Element ) i.next();
+            org.dom4j.Attribute classAttribute = element.attribute( "class" );
+            if ( classAttribute != null
+                && ( classAttribute.getValue()
+                    .equals( "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" ) ) )
+            {
+                String partitionId = readBeanProperty( "id", element );
+
+                if ( partitionId != null )
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#parse(java.io.InputStream)
+     */
+    public ServerConfiguration parse( InputStream is ) throws ServerXmlIOException
+    {
+        try
+        {
+            // Assigning the Spring Beans DTD to an entity resoler
+            // (This will prevent the parser to try to get it online)
             EntityResolver resolver = new EntityResolver()
             {
                 public InputSource resolveEntity( String publicId, String systemId )
                 {
                     if ( publicId.equalsIgnoreCase( "-//SPRING//DTD BEAN//EN" ) )
                     {
-                        InputStream in = Activator.class.getResourceAsStream( "spring-beans.dtd" );
+                        InputStream in = ApacheDSConfigurationPlugin.class.getResourceAsStream( "spring-beans.dtd" );
                         return new InputSource( in );
                     }
                     return null;
                 }
             };
 
+            // Reading and creating the document
             SAXReader reader = new SAXReader();
             reader.setEntityResolver( resolver );
-            Document document = reader.read( inputStream );
+            Document document = reader.read( is );
 
+            // Parsing the document
             ServerConfiguration serverConfiguration = new ServerConfiguration();
-
             parse( document, serverConfiguration );
 
             return serverConfiguration;
         }
         catch ( Exception e )
         {
-            if ( e instanceof ServerConfigurationParserException )
+            if ( e instanceof ServerXmlIOException )
             {
-                throw ( ServerConfigurationParserException ) e;
+                throw ( ServerXmlIOException ) e;
             }
             else
             {
-                ServerConfigurationParserException exception = new ServerConfigurationParserException( e.getMessage(),
-                    e.getCause() );
+                ServerXmlIOException exception = new ServerXmlIOException( e.getMessage(), e.getCause() );
                 exception.setStackTrace( e.getStackTrace() );
                 throw exception;
             }
@@ -171,10 +181,10 @@ public class ServerConfigurationParser
      *      the Server Configuration
      * @throws NumberFormatException
      * @throws BooleanFormatException
-     * @throws ServerConfigurationParserException
+     * @throws ServerXmlIOException
      */
     private void parse( Document document, ServerConfiguration serverConfiguration ) throws NumberFormatException,
-        BooleanFormatException, ServerConfigurationParserException
+        BooleanFormatException, ServerXmlIOException
     {
         // Reading the 'Environment' Bean
         readEnvironmentBean( document, serverConfiguration );
@@ -263,7 +273,7 @@ public class ServerConfigurationParser
                 for ( Iterator<?> i = propsElement.elementIterator( "prop" ); i.hasNext(); )
                 {
                     Element propElement = ( Element ) i.next();
-                    Attribute keyAttribute = propElement.attribute( "key" );
+                    org.dom4j.Attribute keyAttribute = propElement.attribute( "key" );
                     if ( keyAttribute != null && ( keyAttribute.getValue().equals( property ) ) )
                     {
                         return propElement.getText();
@@ -551,10 +561,10 @@ public class ServerConfigurationParser
      *      the Server Configuration
      * @throws NumberFormatException
      * @throws BooleanFormatException 
-     * @throws ServerConfigurationParserException 
+     * @throws ServerXmlIOException 
      */
     private void readConfigurationBean( Document document, ServerConfiguration serverConfiguration )
-        throws NumberFormatException, BooleanFormatException, ServerConfigurationParserException
+        throws NumberFormatException, BooleanFormatException, ServerXmlIOException
     {
         Element configurationBean = getBeanElementById( document, "configuration" );
 
@@ -605,7 +615,7 @@ public class ServerConfigurationParser
         }
         else
         {
-            throw new ServerConfigurationParserException(
+            throw new ServerXmlIOException(
                 "The Server Configuration does not contain a 'systemPartitionConfiguration' property." );
         }
 
@@ -639,7 +649,7 @@ public class ServerConfigurationParser
                 for ( Iterator<?> i = setElement.elementIterator( "ref" ); i.hasNext(); )
                 {
                     Element element = ( Element ) i.next();
-                    Attribute beanAttribute = element.attribute( "bean" );
+                    org.dom4j.Attribute beanAttribute = element.attribute( "bean" );
                     if ( beanAttribute != null )
                     {
                         Partition partition = readPartition( configurationBean.getDocument(), beanAttribute.getValue(),
@@ -770,7 +780,7 @@ public class ServerConfigurationParser
      */
     private IndexedAttribute readIndexedAttribute( Element beanElement ) throws NumberFormatException
     {
-        Attribute classAttribute = beanElement.attribute( "class" );
+        org.dom4j.Attribute classAttribute = beanElement.attribute( "class" );
         if ( classAttribute != null
             && classAttribute.getValue().equals(
                 "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" ) )
@@ -813,67 +823,6 @@ public class ServerConfigurationParser
 
 
     /**
-     * Read an entry (without DN)
-     * 
-     * @param text
-     *            The ldif format text
-     * @return An Attributes.
-     */
-    private Attributes readContextEntry( String text )
-    {
-        StringReader strIn = new StringReader( text );
-        BufferedReader in = new BufferedReader( strIn );
-
-        String line = null;
-        Attributes attributes = new AttributesImpl( true );
-
-        try
-        {
-            while ( ( line = ( ( BufferedReader ) in ).readLine() ) != null )
-            {
-                if ( line.length() == 0 )
-                {
-                    continue;
-                }
-
-                String addedLine = line.trim();
-
-                if ( StringTools.isEmpty( addedLine ) )
-                {
-                    continue;
-                }
-
-                javax.naming.directory.Attribute attribute = LdifReader.parseAttributeValue( addedLine );
-                javax.naming.directory.Attribute oldAttribute = attributes.get( attribute.getID() );
-
-                if ( oldAttribute != null )
-                {
-                    try
-                    {
-                        oldAttribute.add( attribute.get() );
-                        attributes.put( oldAttribute );
-                    }
-                    catch ( NamingException ne )
-                    {
-                        // Do nothing
-                    }
-                }
-                else
-                {
-                    attributes.put( attribute );
-                }
-            }
-        }
-        catch ( IOException ioe )
-        {
-            // Do nothing : we can't reach this point !
-        }
-
-        return attributes;
-    }
-
-
-    /**
      * Reads and adds the Interceptors to the Server Configuration.
      *
      * @param configurationBean
@@ -912,7 +861,7 @@ public class ServerConfigurationParser
      */
     private Interceptor readInterceptor( Element element )
     {
-        Attribute classAttribute = element.attribute( "class" );
+        org.dom4j.Attribute classAttribute = element.attribute( "class" );
         if ( classAttribute != null
             && classAttribute.getValue().equals(
                 "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" ) )
@@ -971,7 +920,7 @@ public class ServerConfigurationParser
      */
     private ExtendedOperation readExtendedOperation( Element element )
     {
-        Attribute classAttribute = element.attribute( "class" );
+        org.dom4j.Attribute classAttribute = element.attribute( "class" );
         if ( classAttribute != null )
         {
             return new ExtendedOperation( classAttribute.getValue() );
@@ -981,138 +930,626 @@ public class ServerConfigurationParser
     }
 
 
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#toXml(org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration)
+     */
+    public String toXml( ServerConfiguration serverConfiguration )
+    {
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement( "beans" );
+
+        // Environment Bean
+        createEnvironmentBean( root, serverConfiguration );
+
+        // Change Password Configuration Bean
+        createChangePasswordConfigurationBean( root, serverConfiguration );
+
+        // NTP Configuration Bean
+        createNtpConfigurationBean( root, serverConfiguration );
+
+        // DNS Configuration Bean
+        createDnsConfigurationBean( root, serverConfiguration );
+
+        // KDC Configuration Bean
+        createKdcConfigurationBean( root, serverConfiguration );
+
+        // LDAPS Configuration Bean
+        createLdapsConfigurationBean( root, serverConfiguration );
+
+        // LDAP Configuration Bean
+        createLdapConfigurationBean( root, serverConfiguration );
+
+        // Configuration Bean
+        createConfigurationBean( root, serverConfiguration );
+
+        // System Partition Configuration Bean
+        createSystemPartitionConfigurationBean( root, serverConfiguration );
+
+        // User Partitions Beans
+        createUserPartitionsConfigurationsBean( root, serverConfiguration );
+
+        // CustomEditors Bean
+        createCustomEditorsBean( root );
+
+        Document stylizedDocument = null;
+        try
+        {
+            stylizedDocument = styleDocument( document );
+        }
+        catch ( TransformerException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
+            "http://www.springframework.org/dtd/spring-beans.dtd" );
+
+        return stylizedDocument.asXML();
+    }
+
+
     /**
-     * Gets the Bean element corresponding to the given ID.
+     * Creates the Environment Bean
      *
-     * @param document
-     *      the document to use
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createEnvironmentBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        Element environmentBean = root.addElement( "bean" );
+        environmentBean.addAttribute( "id", "environment" );
+        environmentBean.addAttribute( "class", "org.springframework.beans.factory.config.PropertiesFactoryBean" );
+
+        Element propertyElement = environmentBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "properties" );
+        Element propsElement = propertyElement.addElement( "props" );
+
+        // Key 'java.naming.security.authentication'
+        Element propElement = propsElement.addElement( "prop" );
+        propElement.addAttribute( "key", "java.naming.security.authentication" );
+        propElement.setText( "simple" );
+
+        // Key 'java.naming.security.principal'
+        propElement = propsElement.addElement( "prop" );
+        propElement.addAttribute( "key", "java.naming.security.principal" );
+        propElement.setText( serverConfiguration.getPrincipal() );
+
+        // Key 'java.naming.security.credentials'
+        propElement = propsElement.addElement( "prop" );
+        propElement.addAttribute( "key", "java.naming.security.credentials" );
+        propElement.setText( serverConfiguration.getPassword() );
+
+        // Key 'java.naming.ldap.attributes.binary'
+        if ( !serverConfiguration.getBinaryAttributes().isEmpty() )
+        {
+            propElement = propsElement.addElement( "prop" );
+            propElement.addAttribute( "key", "java.naming.ldap.attributes.binary" );
+            StringBuffer sb = new StringBuffer();
+            for ( String attribute : serverConfiguration.getBinaryAttributes() )
+            {
+                sb.append( attribute );
+                sb.append( " " );
+            }
+            String attributes = sb.toString();
+            propElement.setText( attributes.substring( 0, attributes.length() - 1 ) );
+        }
+
+    }
+
+
+    /**
+     * Creates the Change Password Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createChangePasswordConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "changePasswordConfiguration",
+            "org.apache.directory.server.changepw.ChangePasswordConfiguration", serverConfiguration
+                .isEnableChangePassword(), serverConfiguration.getChangePasswordPort() );
+    }
+
+
+    /**
+     * Creates the NTP Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createNtpConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "ntpConfiguration", "org.apache.directory.server.ntp.NtpConfiguration",
+            serverConfiguration.isEnableNtp(), serverConfiguration.getNtpPort() );
+    }
+
+
+    /**
+     * Creates the DNS Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createDnsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "dnsConfiguration", "org.apache.directory.server.dns.DnsConfiguration",
+            serverConfiguration.isEnableDns(), serverConfiguration.getDnsPort() );
+    }
+
+
+    /**
+     * Creates the Kerberos Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createKdcConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        createProtocolConfigurationBean( root, "kdcConfiguration", "org.apache.directory.server.kdc.KdcConfiguration",
+            serverConfiguration.isEnableKerberos(), serverConfiguration.getKerberosPort() );
+    }
+
+
+    /**
+     * Creates the LDAPS Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createLdapsConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        Element ldapsConfiguration = createProtocolConfigurationBean( root, "ldapsConfiguration",
+            "org.apache.directory.server.ldap.LdapConfiguration", serverConfiguration.isEnableLdaps(),
+            serverConfiguration.getLdapsPort() );
+
+        // Enable LDAPS
+        Element enableLdapsPropertyElement = ldapsConfiguration.addElement( "property" );
+        enableLdapsPropertyElement.addAttribute( "name", "enableLdaps" );
+        enableLdapsPropertyElement.addAttribute( "value", "" + true );
+    }
+
+
+    /**
+     * Creates the LDAP Configuration Bean.
+     *
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
+     */
+    private static void createLdapConfigurationBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        Element ldapConfiguration = createProtocolConfigurationBean( root, "ldapConfiguration",
+            "org.apache.directory.server.ldap.LdapConfiguration", true, serverConfiguration.getLdapPort() );
+
+        // AllowAnonymousAccess
+        Element propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "allowAnonymousAccess" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isAllowAnonymousAccess() );
+
+        // Supported Mechanisms
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "supportedMechanisms" );
+        if ( serverConfiguration.getSupportedMechanisms().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( String supportedMechanism : serverConfiguration.getSupportedMechanisms() )
+            {
+                listElement.addElement( "value" ).setText( supportedMechanism );
+            }
+        }
+
+        // SASL Host
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslHost" );
+        propertyElement.addAttribute( "value", serverConfiguration.getSaslHost() );
+
+        // SASL Principal
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslPrincipal" );
+        propertyElement.addAttribute( "value", serverConfiguration.getSaslPrincipal() );
+
+        // SASL QOP
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslQop" );
+        if ( serverConfiguration.getSaslQops().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( String saslQop : serverConfiguration.getSaslQops() )
+            {
+                listElement.addElement( "value" ).setText( saslQop );
+            }
+        }
+
+        // SASL Realms
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "saslRealms" );
+        if ( serverConfiguration.getSaslRealms().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( String saslRealm : serverConfiguration.getSaslRealms() )
+            {
+                listElement.addElement( "value" ).setText( saslRealm );
+            }
+        }
+
+        // Search Base DN
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "searchBaseDN" );
+        propertyElement.addAttribute( "value", serverConfiguration.getSearchBaseDn() );
+
+        // MaxTimeLimit
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "maxTimeLimit" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxTimeLimit() );
+
+        // MaxSizeLimit
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "maxSizeLimit" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxSizeLimit() );
+
+        // ExtendedOperationHandlers
+        propertyElement = ldapConfiguration.addElement( "property" );
+        propertyElement.addAttribute( "name", "extendedOperationHandlers" );
+        if ( serverConfiguration.getExtendedOperations().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( ExtendedOperation extendedOperation : serverConfiguration.getExtendedOperations() )
+            {
+                listElement.addElement( "bean" ).addAttribute( "class", extendedOperation.getClassType() );
+            }
+        }
+    }
+
+
+    /**
+     * Creates a Protocol Configuration Bean.
+     *
+     * @param root
+     *      the root Element
      * @param id
-     *      the id
+     *      the id of the Bean
+     * @param className
+     *      the class name of the Bean
+     * @param enabled
+     *      the enabled flag
+     * @param ipPort
+     *      the port
      * @return
-     *       the Bean element corresponding to the given ID or null if the bean was not found
+     *      the corresponding Protocol Configuration Bean
      */
-    private Element getBeanElementById( Document document, String id )
+    private static Element createProtocolConfigurationBean( Element root, String id, String className, boolean enabled,
+        int ipPort )
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
-        {
-            Element element = ( Element ) i.next();
-            Attribute idAttribute = element.attribute( "id" );
-            if ( idAttribute != null && ( idAttribute.getValue().equals( id ) ) )
-            {
-                return element;
-            }
-        }
+        Element protocolConfigurationBean = root.addElement( "bean" );
+        protocolConfigurationBean.addAttribute( "id", id );
+        protocolConfigurationBean.addAttribute( "class", className );
 
-        return null;
+        // Enabled
+        Element enabledPropertyElement = protocolConfigurationBean.addElement( "property" );
+        enabledPropertyElement.addAttribute( "name", "enabled" );
+        enabledPropertyElement.addAttribute( "value", "" + enabled );
+
+        // IP Port
+        Element ipPortPropertyElement = protocolConfigurationBean.addElement( "property" );
+        ipPortPropertyElement.addAttribute( "name", "ipPort" );
+        ipPortPropertyElement.addAttribute( "value", "" + ipPort );
+
+        return protocolConfigurationBean;
     }
 
 
     /**
-     * Reads the given property in the Bean and returns its value.
+     * Creates the Configuration Bean.
      *
-     * @param property
-     *      the property
-     * @param element
-     *      the Bean Element
-     * @return
-     *      the value of the property, or null if the property has not been found
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
      */
-    private String readBeanProperty( String property, Element element )
+    private static void createConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
-        Element propertyElement = getBeanPropertyElement( property, element );
-        if ( propertyElement != null )
-        {
-            Attribute valueAttribute = propertyElement.attribute( "value" );
-            if ( valueAttribute != null )
-            {
-                return valueAttribute.getValue();
-            }
+        Element configurationBean = root.addElement( "bean" );
+        configurationBean.addAttribute( "id", "configuration" );
+        configurationBean.addAttribute( "class",
+            "org.apache.directory.server.configuration.MutableServerStartupConfiguration" );
 
-            Attribute refAttribute = propertyElement.attribute( "ref" );
-            if ( refAttribute != null )
+        // Working directory
+        Element propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "workingDirectory" );
+        propertyElement.addAttribute( "value", "example.com" ); // TODO Ask Alex about this value.
+
+        // LDIF Directory
+        // TODO Ask Alex about this value.
+
+        // LDIF Filters
+        // TODO Ask Alex about this value.
+
+        // SynchPeriodMillis
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "synchPeriodMillis" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getSynchronizationPeriod() );
+
+        // MaxThreads
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "maxThreads" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxThreads() );
+
+        // AllowAnonymousAccess
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "allowAnonymousAccess" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isAllowAnonymousAccess() );
+
+        // AccessControlEnabled
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "accessControlEnabled" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableAccessControl() );
+
+        // DenormalizeOpAttrsEnabled
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "denormalizeOpAttrsEnabled" );
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isDenormalizeOpAttr() );
+
+        // NTP Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "ntpConfiguration" );
+        propertyElement.addAttribute( "ref", "ntpConfiguration" );
+
+        // DNS Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "dnsConfiguration" );
+        propertyElement.addAttribute( "ref", "dnsConfiguration" );
+
+        // Change Password Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "changePasswordConfiguration" );
+        propertyElement.addAttribute( "ref", "changePasswordConfiguration" );
+
+        // KDC Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "kdcConfiguration" );
+        propertyElement.addAttribute( "ref", "kdcConfiguration" );
+
+        // LDAPS Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "ldapsConfiguration" );
+        propertyElement.addAttribute( "ref", "ldapsConfiguration" );
+
+        // LDAP Configuration Ref
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "ldapConfiguration" );
+        propertyElement.addAttribute( "ref", "ldapConfiguration" );
+
+        // SystemPartitionConfiguration
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "systemPartitionConfiguration" );
+        propertyElement.addAttribute( "ref", "systemPartitionConfiguration" );
+
+        // PartitionConfigurations
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "partitionConfigurations" );
+        if ( serverConfiguration.getPartitions().size() > 1 )
+        {
+            Element setElement = propertyElement.addElement( "set" );
+            int partitionCounter = 1;
+            for ( Partition partition : serverConfiguration.getPartitions() )
             {
-                return refAttribute.getValue();
+                if ( !partition.isSystemPartition() )
+                {
+                    setElement.addElement( "ref" ).addAttribute( "bean", "partition-" + partitionCounter );
+                    partitionCounter++;
+                }
             }
         }
 
-        return null;
+        // InterceptorConfigurations
+        propertyElement = configurationBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "interceptorConfigurations" );
+        if ( serverConfiguration.getInterceptors().size() > 1 )
+        {
+            Element listElement = propertyElement.addElement( "list" );
+            for ( Interceptor interceptor : serverConfiguration.getInterceptors() )
+            {
+                Element interceptorBeanElement = listElement.addElement( "bean" );
+                interceptorBeanElement.addAttribute( "class",
+                    "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" );
+
+                Element interceptorPropertyElement = interceptorBeanElement.addElement( "property" );
+                interceptorPropertyElement.addAttribute( "name", "name" );
+                interceptorPropertyElement.addAttribute( "value", interceptor.getName() );
+
+                interceptorPropertyElement = interceptorBeanElement.addElement( "property" );
+                interceptorPropertyElement.addAttribute( "name", "interceptorClassName" );
+                interceptorPropertyElement.addAttribute( "value", ( interceptor.getClassType() == null ? ""
+                    : interceptor.getClassType() ) );
+            }
+        }
+
     }
 
 
     /**
-     * Gets the given property Element in the the bean
+     * Creates the SystemPartitionConfiguration Bean.
      *
-     * @param property
-     *      the propery
-     * @param element
-     *      the bean Element
-     * @return
-     *      the associated property, or null if the property has not been found
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
      */
-    private Element getBeanPropertyElement( String property, Element element )
+    private static void createSystemPartitionConfigurationBean( Element root, ServerConfiguration serverConfiguration )
     {
-        for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); )
+        Partition systemPartition = null;
+        for ( Partition partition : serverConfiguration.getPartitions() )
         {
-            Element propertyElement = ( Element ) i.next();
-            Attribute nameAttribute = propertyElement.attribute( "name" );
-            if ( nameAttribute != null && ( nameAttribute.getValue().equals( property ) ) )
+            if ( partition.isSystemPartition() )
             {
-                return propertyElement;
+                systemPartition = partition;
+                break;
             }
         }
 
-        return null;
+        if ( systemPartition != null )
+        {
+            createPartitionConfigurationBean( root, systemPartition, "systemPartitionConfiguration" );
+        }
     }
 
 
     /**
-     * Parses the string argument as a boolean.
+     * Creates the UserPartitionConfigurations Bean.
      *
-     * @param s
-     *      a String containing the boolean representation to be parsed
-     * @return
-     *      the boolean value represented by the argument.
-     * @throws BooleanFormatException
-     *      if the string does not contain a parsable boolean.
+     * @param root
+     *      the root Element
+     * @param serverConfiguration
+     *      the Server Configuration
      */
-    private boolean parseBoolean( String s ) throws BooleanFormatException
+    private static void createUserPartitionsConfigurationsBean( Element root, ServerConfiguration serverConfiguration )
     {
-        if ( "true".equals( s ) )
+        int counter = 1;
+        for ( Partition partition : serverConfiguration.getPartitions() )
         {
-            return true;
-        }
-        else if ( "false".equals( s ) )
-        {
-            return false;
-        }
-        else
-        {
-            throw new BooleanFormatException( "The String '" + s + "' could not be parsed as a boolean." );
+            if ( !partition.isSystemPartition() )
+            {
+                createPartitionConfigurationBean( root, partition, "partition-" + counter );
+                counter++;
+            }
         }
     }
 
+
     /**
-     * Thrown to indicate that the application has attempted to convert a string to a boolean, 
-     * but that the string does not have the appropriate format.
+     * Creates a Partition Configuration Bean.
      *
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     * @version $Rev$, $Date$
+     * @param root
+     *      the root Element
+     * @param partition
+     *      the Partition
+     * @param name
+     *      the name to use
      */
-    private class BooleanFormatException extends Exception
+    private static void createPartitionConfigurationBean( Element root, Partition partition, String name )
     {
-        /** The Serial Version UID */
-        private static final long serialVersionUID = -6426955193802317452L;
+        Element partitionBean = root.addElement( "bean" );
+        partitionBean.addAttribute( "id", name );
+        partitionBean.addAttribute( "class",
+            "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" );
 
+        // ID
+        Element propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "id" );
+        propertyElement.addAttribute( "value", partition.getId() );
 
-        /**
-         * Creates a new instance of BooleanFormatException.
-         *
-         * @param message
-         * @param cause
-         */
-        public BooleanFormatException( String message )
+        // CacheSize
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "cacheSize" );
+        propertyElement.addAttribute( "value", "" + partition.getCacheSize() );
+
+        // Suffix
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "suffix" );
+        propertyElement.addAttribute( "value", partition.getSuffix() );
+
+        // PartitionClassName
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "partitionClassName" );
+        propertyElement.addAttribute( "value",
+            "org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition" );
+
+        // OptimizerEnabled
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "optimizerEnabled" );
+        propertyElement.addAttribute( "value", "" + partition.isEnableOptimizer() );
+
+        // SynchOnWrite
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "synchOnWrite" );
+        propertyElement.addAttribute( "value", "" + partition.isSynchronizationOnWrite() );
+
+        // Indexed Attributes
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "indexedAttributes" );
+        if ( partition.getIndexedAttributes().size() > 1 )
         {
-            super( message );
+            Element setElement = propertyElement.addElement( "set" );
+            for ( IndexedAttribute indexedAttribute : partition.getIndexedAttributes() )
+            {
+                Element beanElement = setElement.addElement( "bean" );
+                beanElement.addAttribute( "class",
+                    "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" );
+
+                // AttributeID
+                Element beanPropertyElement = beanElement.addElement( "property" );
+                beanPropertyElement.addAttribute( "name", "attributeId" );
+                beanPropertyElement.addAttribute( "value", indexedAttribute.getAttributeId() );
+
+                // CacheSize
+                beanPropertyElement = beanElement.addElement( "property" );
+                beanPropertyElement.addAttribute( "name", "cacheSize" );
+                beanPropertyElement.addAttribute( "value", "" + indexedAttribute.getCacheSize() );
+            }
         }
+
+        // ContextEntry
+        propertyElement = partitionBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "contextEntry" );
+        if ( partition.getContextEntry() != null )
+        {
+            Element valueElement = propertyElement.addElement( "value" );
+
+            Attributes contextEntry = partition.getContextEntry();
+            StringBuffer sb = new StringBuffer();
+            NamingEnumeration<? extends Attribute> ne = contextEntry.getAll();
+            while ( ne.hasMoreElements() )
+            {
+                Attribute attribute = ( Attribute ) ne.nextElement();
+                try
+                {
+                    NamingEnumeration<?> values = attribute.getAll();
+                    while ( values.hasMoreElements() )
+                    {
+                        sb.append( attribute.getID() + ": " + values.nextElement() + "\n" );
+                    }
+                }
+                catch ( NamingException e )
+                {
+                }
+            }
+
+            valueElement.setText( sb.toString() );
+        }
+    }
+
+
+    /**
+     * Creates the Custom Editors Bean.
+     *
+     * @param root
+     *      the root Element
+     */
+    private static void createCustomEditorsBean( Element root )
+    {
+        Element customEditorsBean = root.addElement( "bean" );
+        customEditorsBean.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
+        Element propertyElement = customEditorsBean.addElement( "property" );
+        propertyElement.addAttribute( "name", "customEditors" );
+        Element mapElement = propertyElement.addElement( "map" );
+        Element entryElement = mapElement.addElement( "entry" );
+        entryElement.addAttribute( "key", "javax.naming.directory.Attributes" );
+        Element entryBeanElement = entryElement.addElement( "bean" );
+        entryBeanElement.addAttribute( "class",
+            "org.apache.directory.server.core.configuration.AttributesPropertyEditor" );
     }
 }
