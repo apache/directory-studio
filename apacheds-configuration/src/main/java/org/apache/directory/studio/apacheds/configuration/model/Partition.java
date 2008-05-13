@@ -73,14 +73,14 @@ public class Partition
     /**
      * Creates a new instance of Partition.
      *
-     * @param name
-     *      the name of the partition
+     * @param id
+     *      the id of the partition
      */
-    public Partition( String name )
+    public Partition( String id )
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
         contextEntry = new BasicAttributes( true );
-        this.id = name;
+        this.id = id;
     }
 
 
