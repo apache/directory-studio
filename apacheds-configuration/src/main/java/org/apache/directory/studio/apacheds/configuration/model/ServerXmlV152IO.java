@@ -26,11 +26,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.directory.Attributes;
+import javax.xml.transform.TransformerException;
 
-import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO.BooleanFormatException;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 
 
@@ -43,6 +46,13 @@ import org.dom4j.io.SAXReader;
  */
 public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
 {
+    private static final Namespace NAMESPACE_APACHEDS = new Namespace( null, "http://apacheds.org/config/1.0" );
+    private static final Namespace NAMESPACE_SPRINGFRAMEWORK = new Namespace( "s",
+        "http://www.springframework.org/schema/beans" );
+    private static final Namespace NAMESPACE_XBEAN_SPRING = new Namespace( "spring",
+        "http://xbean.apache.org/schemas/spring/1.0" );
+
+
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
      */
@@ -811,7 +821,317 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
      */
     public String toXml( ServerConfiguration serverConfiguration )
     {
+        // Creating the document
+        Document document = DocumentHelper.createDocument();
+
+        // Creating the root element with its namespaces definitions
+        Element root = document.addElement( new QName( "beans", NAMESPACE_XBEAN_SPRING ) );
+        root.add( NAMESPACE_SPRINGFRAMEWORK );
+        root.add( NAMESPACE_APACHEDS );
+
+        // DefaultDirectoryService Bean
+        createDefaultDirectoryServiceBean( root, serverConfiguration );
+
+        // Adding the 'standardThreadPool' element
+        Element standardThreadPoolElement = root.addElement( "standardThreadPool" );
+        standardThreadPoolElement.addAttribute( "id", "standardThreadPool" );
+        standardThreadPoolElement.addAttribute( "maxThreads", "" + serverConfiguration.getMaxThreads() );
+
+        // Adding the 'datagramAcceptor' element
+        Element datagramAcceptorElement = root.addElement( "datagramAcceptor" );
+        datagramAcceptorElement.addAttribute( "id", "datagramAcceptor" );
+        datagramAcceptorElement.addAttribute( "logicExecutor", "#standardThreadPool" );
+
+        // Adding the 'socketAcceptor' element
+        Element socketAcceptorElement = root.addElement( "socketAcceptor" );
+        socketAcceptorElement.addAttribute( "id", "socketAcceptor" );
+        socketAcceptorElement.addAttribute( "logicExecutor", "#standardThreadPool" );
+
+        // ChangePasswordServer Bean
+        createChangePasswordServerBean( root, serverConfiguration );
+
+        // KdcServer Bean
+        createKdcServerBean( root, serverConfiguration );
+
+        // NtpServer Bean
+        createNtpServerBean( root, serverConfiguration );
+
+        // DnsServer Bean
+        createDnsServerBean( root, serverConfiguration );
+
+        // LdapsServer Bean
+        createLdapsServerBean( root, serverConfiguration );
+
+        // LdapServer Bean
+        createLdapServerBean( root, serverConfiguration );
+
+        // ApacheDS Bean
+        createApacheDSBean( root, serverConfiguration );
+
+        // CustomEditorConfigurer Bean
+        createCustomEditorConfigurerBean( root, serverConfiguration );
+
+        Document stylizedDocument = null;
+        try
+        {
+            stylizedDocument = styleDocument( document );
+        }
+        catch ( TransformerException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return stylizedDocument.asXML();
+    }
+
+
+    /**
+     * Creates the DefaultDirectoryService bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createDefaultDirectoryServiceBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        // Adding the 'defaultDirectoryService' element
+        Element defaultDirectoryServiceElement = root.addElement( "defaultDirectoryService" );
+
+        // Id
+        defaultDirectoryServiceElement.addAttribute( "id", "directoryService" );
+
+        // InstanceId
+        defaultDirectoryServiceElement.addAttribute( "instanceId", "default" );
+
+        // WorkingDirectory
+        defaultDirectoryServiceElement.addAttribute( "workingDirectory", "example.com" );
+
+        // AllowAnonymousAccess
+        defaultDirectoryServiceElement.addAttribute( "allowAnonymousAccess", ""
+            + serverConfiguration.isAllowAnonymousAccess() );
+
+        // AccessControlEnabled
+        defaultDirectoryServiceElement.addAttribute( "accessControlEnabled", ""
+            + serverConfiguration.isEnableAccessControl() );
+
+        // DenormalizeOpAttrsEnabled
+        defaultDirectoryServiceElement.addAttribute( "denormalizeOpAttrsEnabled", ""
+            + serverConfiguration.isDenormalizeOpAttr() );
+
+        // Adding the 'systemPartition' element
+        Element systemPartitionElement = defaultDirectoryServiceElement.addElement( "systemPartition" );
+
+        // TODO Add the system partition
+
+        // Adding the 'partitions' element
+        Element partitionsElement = defaultDirectoryServiceElement.addElement( "partitions" );
+
+        // TODO Add the partitions
+
+        // Adding the 'interceptors' element
+        Element interceptorsElement = defaultDirectoryServiceElement.addElement( "interceptors" );
+
+        // TODO Add the interceptors
+    }
+
+
+    /**
+     * Creates the ChangePasswordServer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createChangePasswordServerBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        if ( serverConfiguration.isEnableChangePassword() )
+        {
+            // Adding the 'changePasswordServer' element
+            Element changePasswordServerElement = root.addElement( "changePasswordServer" );
+
+            // IpPort
+            changePasswordServerElement.addAttribute( "ipPort", "" + serverConfiguration.getChangePasswordPort() );
+
+            // Adding 'directoryService' element
+            changePasswordServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+
+            // Adding 'datagramAcceptor' element
+            changePasswordServerElement.addElement( "datagramAcceptor" ).setText( "#datagramAcceptor" );
+
+            // Adding 'socketAcceptor' element
+            changePasswordServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
+        }
+    }
+
+
+    /**
+     * Creates the KdcServer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createKdcServerBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        if ( serverConfiguration.isEnableKerberos() )
+        {
+            // Adding the 'kdcServer' element
+            Element kdcServerElement = root.addElement( "kdcServer" );
+
+            // IpPort
+            kdcServerElement.addAttribute( "ipPort", "" + serverConfiguration.getKerberosPort() );
+
+            // Adding 'directoryService' element
+            kdcServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+
+            // Adding 'datagramAcceptor' element
+            kdcServerElement.addElement( "datagramAcceptor" ).setText( "#datagramAcceptor" );
+
+            // Adding 'socketAcceptor' element
+            kdcServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
+        }
+    }
+
+
+    /**
+     * Creates the NtpServer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createNtpServerBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        if ( serverConfiguration.isEnableNtp() )
+        {
+            // Adding the 'ntpServer' element
+            Element ntpServerElement = root.addElement( "ntpServer" );
+
+            // IpPort
+            ntpServerElement.addAttribute( "ipPort", "" + serverConfiguration.getNtpPort() );
+
+            // Adding 'datagramAcceptor' element
+            ntpServerElement.addElement( "datagramAcceptor" ).setText( "#datagramAcceptor" );
+
+            // Adding 'socketAcceptor' element
+            ntpServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
+        }
+    }
+
+
+    /**
+     * Creates the DnsServer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createDnsServerBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        if ( serverConfiguration.isEnableDns() )
+        {
+            // Adding the 'dnsServer' element
+            Element dnsServerElement = root.addElement( "dnsServer" );
+
+            // IpPort
+            dnsServerElement.addAttribute( "ipPort", "" + serverConfiguration.getDnsPort() );
+
+            // Adding 'directoryService' element
+            dnsServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+
+            // Adding 'datagramAcceptor' element
+            dnsServerElement.addElement( "datagramAcceptor" ).setText( "#datagramAcceptor" );
+
+            // Adding 'socketAcceptor' element
+            dnsServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
+        }
+    }
+
+
+    /**
+     * Creates the LdapsServer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createLdapsServerBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        if ( serverConfiguration.isEnableLdaps() )
+        {
+            // Adding the 'ldapServer' element
+            Element ldapServerElement = root.addElement( "ldapServer" );
+
+            // Id
+            ldapServerElement.addAttribute( "id", "ldapsServer" );
+
+            // IpPort
+            ldapServerElement.addAttribute( "ipPort", "" + serverConfiguration.getDnsPort() );
+
+            // Enable
+            ldapServerElement.addAttribute( "enable", "" + "true" );
+
+            // EnableLdaps
+            ldapServerElement.addAttribute( "enableLdaps", "" + "true" );
+
+            // Adding 'directoryService' element
+            ldapServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+
+            // Adding 'socketAcceptor' element
+            ldapServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
+        }
+    }
+
+
+    private void createLdapServerBean( Element root, ServerConfiguration serverConfiguration )
+    {
         // TODO Auto-generated method stub
-        return null;
+
+    }
+
+
+    private void createApacheDSBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    /**
+     * Creates the CustomEditorConfigurer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createCustomEditorConfigurerBean( Element root, ServerConfiguration serverConfiguration )
+    {
+        // Adding the 'bean' element
+        Element beanElement = root.addElement( new QName( "bean", NAMESPACE_XBEAN_SPRING ) );
+        beanElement.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
+
+        // Adding the 'property' element
+        Element propertyElement = beanElement.addElement( new QName( "property", NAMESPACE_XBEAN_SPRING ) );
+        propertyElement.addAttribute( "name", "customEditors" );
+
+        // Adding the 'map' element
+        Element mapElement = propertyElement.addElement( new QName( "map", NAMESPACE_XBEAN_SPRING ) );
+
+        // Adding the 'entry' element
+        Element entryElement = mapElement.addElement( new QName( "entry", NAMESPACE_XBEAN_SPRING ) );
+        entryElement.addAttribute( "key", "javax.naming.directory.Attributes" );
+
+        // Adding the inner 'bean' element
+        Element innerBeanElement = entryElement.addElement( new QName( "entry", NAMESPACE_XBEAN_SPRING ) );
+        innerBeanElement.addAttribute( "class",
+            "org.apache.directory.server.core.configuration.AttributesPropertyEditor" );
     }
 }
