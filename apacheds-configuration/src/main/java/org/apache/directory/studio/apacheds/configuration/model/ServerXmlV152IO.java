@@ -1024,7 +1024,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         createIndexedAttributes( element, partition.getIndexedAttributes() );
 
         // ContextEntry
-        createContextEntry( element, partition.getContextEntry(), partition.getId() );
+        createContextEntry( element, partition.getContextEntry(), partition.getId(), partition.getSuffix() );
     }
 
 
@@ -1047,7 +1047,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             for ( IndexedAttribute indexedAttribute : indexedAttributes )
             {
                 // Adding the 'jdbmIndex' element
-                Element jdbmIndexElement = indexedAttributeElement.element( "jdbmIndex" );
+                Element jdbmIndexElement = indexedAttributeElement.addElement( "jdbmIndex" );
                 jdbmIndexElement.addAttribute( "attributeId", indexedAttribute.getAttributeId() );
                 jdbmIndexElement.addAttribute( "cacheSize", "" + indexedAttribute.getCacheSize() );
             }
@@ -1064,8 +1064,10 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
      *      the attributes
      * @param id
      *      the partition id
+     * @param dn 
+     *      the dn
      */
-    private void createContextEntry( Element element, Attributes contextEntry, String id )
+    private void createContextEntry( Element element, Attributes contextEntry, String id, String dn )
     {
         // Adding the 'contextEntry' element
         element.addElement( "contextEntry" ).setText( "#" + id + "ContextEntry" );
@@ -1081,8 +1083,8 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         targetObjectPropertyElement.addAttribute( "name", "targetObject" );
 
         // Adding the targetObject 'ref' element
-        Element targetObjectRefElement = targetObjectPropertyElement
-            .element( new QName( "ref", NAMESPACE_XBEAN_SPRING ) );
+        Element targetObjectRefElement = targetObjectPropertyElement.addElement( new QName( "ref",
+            NAMESPACE_XBEAN_SPRING ) );
         targetObjectRefElement.addAttribute( "local", "directoryService" );
 
         // Adding the targetMethod 'property' element
@@ -1100,11 +1102,14 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         Element argumentsListElement = argumentsPropertyElement
             .addElement( new QName( "list", NAMESPACE_XBEAN_SPRING ) );
 
-        // Adding the arguments 'value' element
-        Element argumentsValueElement = argumentsListElement.addElement( new QName( "value", new Namespace( "spring",
-            "http://www.springframework.org/schema/beans" ) ) );
+        // Adding the arguments attributes 'value' element
+        Element argumentsAttributesValueElement = argumentsListElement.addElement( new QName( "value", new Namespace(
+            "spring", "http://www.springframework.org/schema/beans" ) ) );
 
+        // Creating a string buffer to contain the LDIF data
         StringBuffer sb = new StringBuffer();
+
+        // Looping on attributes
         NamingEnumeration<? extends Attribute> ne = contextEntry.getAll();
         while ( ne.hasMoreElements() )
         {
@@ -1122,7 +1127,11 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             }
         }
 
-        argumentsValueElement.setText( sb.toString() );
+        // Assigning the value to the element
+        argumentsAttributesValueElement.setText( sb.toString() );
+
+        // Adding the arguments dn 'value' element
+        argumentsListElement.addElement( new QName( "value", NAMESPACE_XBEAN_SPRING ) ).setText( dn );
     }
 
 
