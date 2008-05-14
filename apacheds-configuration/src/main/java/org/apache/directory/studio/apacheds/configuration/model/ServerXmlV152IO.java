@@ -1021,10 +1021,10 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         jdbmPartitionElement.addAttribute( "synchOnWrite", "" + partition.isSynchronizationOnWrite() );
 
         // IndexedAttributes
-        createIndexedAttributes( element, partition.getIndexedAttributes() );
+        createIndexedAttributes( jdbmPartitionElement, partition.getIndexedAttributes() );
 
         // ContextEntry
-        createContextEntry( element, partition.getContextEntry(), partition.getId(), partition.getSuffix() );
+        createContextEntry( jdbmPartitionElement, partition.getContextEntry(), partition.getId(), partition.getSuffix() );
     }
 
 
@@ -1365,13 +1365,13 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             saslQopElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslQop );
         }
 
-        // Adding 'SaslRealm' element
-        Element saslRealmElement = root.addElement( "saslRealm" );
+        // Adding 'SaslRealms' element
+        Element saslRealmsElement = root.addElement( "saslRealms" );
 
         // Adding each SaslRealm item
         for ( String saslRealm : serverConfiguration.getSaslRealms() )
         {
-            saslRealmElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslRealm );
+            saslRealmsElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslRealm );
         }
     }
 
