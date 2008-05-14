@@ -317,17 +317,17 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             partition.setEnableOptimizer( parseBoolean( optimizerEnabledAttribute.getValue() ) );
         }
 
-        // Synch On Write
-        org.dom4j.Attribute synchOnWriteAttribute = element.attribute( "synchOnWrite" );
-        if ( synchOnWriteAttribute == null )
+        // Sync On Write
+        org.dom4j.Attribute syncOnWriteAttribute = element.attribute( "syncOnWrite" );
+        if ( syncOnWriteAttribute == null )
         {
             // If the 'synchOnWrite' attribute does not exists,
             // we throw an exception
-            throw new ServerXmlIOException( "Unable to find the 'synchOnWrite' attribute for a partition." );
+            throw new ServerXmlIOException( "Unable to find the 'syncOnWrite' attribute for a partition." );
         }
         else
         {
-            partition.setSynchronizationOnWrite( parseBoolean( synchOnWriteAttribute.getValue() ) );
+            partition.setSynchronizationOnWrite( parseBoolean( syncOnWriteAttribute.getValue() ) );
         }
 
         // Indexed attributes
