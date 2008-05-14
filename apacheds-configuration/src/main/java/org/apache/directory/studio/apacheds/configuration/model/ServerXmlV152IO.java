@@ -1347,7 +1347,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         ldapServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
 
         // Adding 'supportedMechanisms' element
-        Element supportedMechanismsElement = root.addElement( "supportedMechanisms" );
+        Element supportedMechanismsElement = ldapServerElement.addElement( "supportedMechanisms" );
 
         // Adding each supported mechanism
         for ( String supportedMechanism : serverConfiguration.getSupportedMechanisms() )
@@ -1357,7 +1357,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         // Adding 'SaslQop' element
-        Element saslQopElement = root.addElement( "saslQop" );
+        Element saslQopElement = ldapServerElement.addElement( "saslQop" );
 
         // Adding each SaslQop item
         for ( String saslQop : serverConfiguration.getSaslQops() )
@@ -1366,13 +1366,15 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         // Adding 'SaslRealms' element
-        Element saslRealmsElement = root.addElement( "saslRealms" );
+        Element saslRealmsElement = ldapServerElement.addElement( "saslRealms" );
 
         // Adding each SaslRealm item
         for ( String saslRealm : serverConfiguration.getSaslRealms() )
         {
             saslRealmsElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslRealm );
         }
+        
+        // TODO Add Extended Operations
     }
 
 
