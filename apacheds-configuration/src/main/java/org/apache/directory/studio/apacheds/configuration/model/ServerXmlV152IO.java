@@ -25,10 +25,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.xml.transform.TransformerException;
 
-import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -160,7 +162,8 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             //            }
 
             // Access Control Enabled
-            Attribute accessControlEnabledAttribute = defaultDirectoryServiceElement.attribute( "accessControlEnabled" );
+            org.dom4j.Attribute accessControlEnabledAttribute = defaultDirectoryServiceElement
+                .attribute( "accessControlEnabled" );
             if ( accessControlEnabledAttribute == null )
             {
                 // If the 'accessControlEnabled' attribute does not exists,
@@ -174,7 +177,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             }
 
             // Denormalize Op Attrs Enabled
-            Attribute denormalizeOpAttrsEnabledAttribute = defaultDirectoryServiceElement
+            org.dom4j.Attribute denormalizeOpAttrsEnabledAttribute = defaultDirectoryServiceElement
                 .attribute( "denormalizeOpAttrsEnabled" );
             if ( denormalizeOpAttrsEnabledAttribute == null )
             {
@@ -263,7 +266,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         NumberFormatException, BooleanFormatException
     {
         // Id
-        Attribute idAttribute = element.attribute( "id" );
+        org.dom4j.Attribute idAttribute = element.attribute( "id" );
         if ( idAttribute == null )
         {
             // If the 'id' attribute does not exists,
@@ -276,7 +279,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         // Cache Size
-        Attribute cacheSizeAttribute = element.attribute( "cacheSize" );
+        org.dom4j.Attribute cacheSizeAttribute = element.attribute( "cacheSize" );
         if ( cacheSizeAttribute == null )
         {
             // If the 'cacheSize' attribute does not exists,
@@ -289,7 +292,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         // Suffix
-        Attribute suffixAttribute = element.attribute( "suffix" );
+        org.dom4j.Attribute suffixAttribute = element.attribute( "suffix" );
         if ( suffixAttribute == null )
         {
             // If the 'suffix' attribute does not exists,
@@ -302,7 +305,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         // Optimizer Enabled
-        Attribute optimizerEnabledAttribute = element.attribute( "optimizerEnabled" );
+        org.dom4j.Attribute optimizerEnabledAttribute = element.attribute( "optimizerEnabled" );
         if ( optimizerEnabledAttribute == null )
         {
             // If the 'optimizeEnabled' attribute does not exists,
@@ -315,7 +318,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         // Synch On Write
-        Attribute synchOnWriteAttribute = element.attribute( "synchOnWrite" );
+        org.dom4j.Attribute synchOnWriteAttribute = element.attribute( "synchOnWrite" );
         if ( synchOnWriteAttribute == null )
         {
             // If the 'synchOnWrite' attribute does not exists,
@@ -359,11 +362,11 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                 Element jdbmIndexElement = ( Element ) i.next();
 
                 // Getting the 'attributeId' attribute
-                Attribute attributeIdAttribute = jdbmIndexElement.attribute( "attributeId" );
+                org.dom4j.Attribute attributeIdAttribute = jdbmIndexElement.attribute( "attributeId" );
                 if ( attributeIdAttribute != null )
                 {
                     // Getting the 'cacheSize' attribute
-                    Attribute cacheSizeAttribute = jdbmIndexElement.attribute( "cacheSize" );
+                    org.dom4j.Attribute cacheSizeAttribute = jdbmIndexElement.attribute( "cacheSize" );
                     if ( cacheSizeAttribute != null )
                     {
                         // Adding a new indexed attribute to the list
@@ -414,7 +417,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                 Element beanElement = ( Element ) i.next();
 
                 // Getting the id attribute
-                Attribute idAttribute = beanElement.attribute( "id" );
+                org.dom4j.Attribute idAttribute = beanElement.attribute( "id" );
                 if ( idAttribute != null )
                 {
                     // Checking if we've found the correct bean
@@ -433,7 +436,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                             Element propertyElement = ( Element ) i2.next();
 
                             // Getting the name attribute
-                            Attribute nameAttribute = propertyElement.attribute( "name" );
+                            org.dom4j.Attribute nameAttribute = propertyElement.attribute( "name" );
                             if ( nameAttribute != null )
                             {
                                 if ( nameAttribute.getValue().equalsIgnoreCase( "arguments" ) )
@@ -558,7 +561,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             serverConfiguration.setEnableChangePassword( true );
 
             // Getting the 'ipPort' attribute
-            Attribute ipPortAttribute = changePasswordServerElement.attribute( "ipPort" );
+            org.dom4j.Attribute ipPortAttribute = changePasswordServerElement.attribute( "ipPort" );
             if ( ipPortAttribute == null )
             {
                 // If the 'ipPort' attribute does not exists,
@@ -595,7 +598,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             serverConfiguration.setEnableKerberos( true );
 
             // Getting the 'ipPort' attribute
-            Attribute ipPortAttribute = kdcServerElement.attribute( "ipPort" );
+            org.dom4j.Attribute ipPortAttribute = kdcServerElement.attribute( "ipPort" );
             if ( ipPortAttribute == null )
             {
                 // If the 'ipPort' attribute does not exists,
@@ -631,7 +634,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             serverConfiguration.setEnableNtp( true );
 
             // Getting the 'ipPort' attribute
-            Attribute ipPortAttribute = ntpServerElement.attribute( "ipPort" );
+            org.dom4j.Attribute ipPortAttribute = ntpServerElement.attribute( "ipPort" );
             if ( ipPortAttribute == null )
             {
                 // If the 'ipPort' attribute does not exists,
@@ -667,7 +670,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             serverConfiguration.setEnableDns( true );
 
             // Getting the 'ipPort' attribute
-            Attribute ipPortAttribute = dnsServerElement.attribute( "ipPort" );
+            org.dom4j.Attribute ipPortAttribute = dnsServerElement.attribute( "ipPort" );
             if ( ipPortAttribute == null )
             {
                 // If the 'ipPort' attribute does not exists,
@@ -703,7 +706,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             Element ldapServerElement = ( Element ) i.next();
 
             // Getting the 'id' attribute
-            Attribute idAttribute = ldapServerElement.attribute( "id" );
+            org.dom4j.Attribute idAttribute = ldapServerElement.attribute( "id" );
             if ( idAttribute == null )
             {
                 // TODO throw an error
@@ -714,7 +717,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                 if ( "ldapsServer".equalsIgnoreCase( idAttribute.getValue() ) )
                 {
                     // Getting the 'enableLdaps' attribute
-                    Attribute enableLdapsAttribute = ldapServerElement.attribute( "enableLdaps" );
+                    org.dom4j.Attribute enableLdapsAttribute = ldapServerElement.attribute( "enableLdaps" );
                     if ( enableLdapsAttribute == null )
                     {
                         // Enabling by default
@@ -726,7 +729,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Getting the 'ipPort' attribute
-                    Attribute ipPortAttribute = ldapServerElement.attribute( "ipPort" );
+                    org.dom4j.Attribute ipPortAttribute = ldapServerElement.attribute( "ipPort" );
                     if ( ipPortAttribute == null )
                     {
                         // If the 'ipPort' attribute does not exists,
@@ -767,7 +770,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             Element ldapServerElement = ( Element ) i.next();
 
             // Getting the 'id' attribute
-            Attribute idAttribute = ldapServerElement.attribute( "id" );
+            org.dom4j.Attribute idAttribute = ldapServerElement.attribute( "id" );
             if ( idAttribute == null )
             {
                 // TODO throw an error
@@ -778,7 +781,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                 if ( "ldapServer".equalsIgnoreCase( idAttribute.getValue() ) )
                 {
                     // Getting the 'ipPort' attribute
-                    Attribute ipPortAttribute = ldapServerElement.attribute( "ipPort" );
+                    org.dom4j.Attribute ipPortAttribute = ldapServerElement.attribute( "ipPort" );
                     if ( ipPortAttribute == null )
                     {
                         // If the 'ipPort' attribute does not exists,
@@ -792,7 +795,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Allow Anonymous Access
-                    Attribute allowAnonymousAccess = ldapServerElement.attribute( "allowAnonymousAccess" );
+                    org.dom4j.Attribute allowAnonymousAccess = ldapServerElement.attribute( "allowAnonymousAccess" );
                     if ( allowAnonymousAccess == null )
                     {
                         // TODO throw an error
@@ -923,17 +926,218 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
         // Adding the 'systemPartition' element
         Element systemPartitionElement = defaultDirectoryServiceElement.addElement( "systemPartition" );
 
-        // TODO Add the system partition
+        // Adding System Partition Bean
+        createSystemPartitionBean( systemPartitionElement, serverConfiguration );
 
         // Adding the 'partitions' element
         Element partitionsElement = defaultDirectoryServiceElement.addElement( "partitions" );
 
-        // TODO Add the partitions
+        // Adding User Partitions Beans
+        createUserPartitions( partitionsElement, serverConfiguration );
 
         // Adding the 'interceptors' element
         Element interceptorsElement = defaultDirectoryServiceElement.addElement( "interceptors" );
 
-        // TODO Add the interceptors
+        // Adding Interceptors Beans
+        createInterceptors( interceptorsElement, serverConfiguration );
+    }
+
+
+    /**
+     * Creates the system partition bean.
+     *
+     * @param systemPartitionElement
+     *      the systemPartition element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createSystemPartitionBean( Element systemPartitionElement, ServerConfiguration serverConfiguration )
+    {
+        // Looping on partitions to find the system partition
+        Partition systemPartition = null;
+        for ( Partition partition : serverConfiguration.getPartitions() )
+        {
+            if ( partition.isSystemPartition() )
+            {
+                systemPartition = partition;
+                break;
+            }
+        }
+
+        if ( systemPartition != null )
+        {
+            createPartition( systemPartitionElement, systemPartition );
+        }
+    }
+
+
+    /**
+     * Creates the user partition beans.
+     *
+     * @param partitionsElement
+     *      the partitions element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createUserPartitions( Element partitionsElement, ServerConfiguration serverConfiguration )
+    {
+        // Looping on partitions
+        for ( Partition partition : serverConfiguration.getPartitions() )
+        {
+            if ( !partition.isSystemPartition() )
+            {
+                createPartition( partitionsElement, partition );
+            }
+        }
+    }
+
+
+    /**
+     * Creates the partition bean.
+     *
+     * @param element
+     *      the element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createPartition( Element element, Partition partition )
+    {
+        // Adding the 'jdbmPartition' element
+        Element jdbmPartitionElement = element.addElement( "jdbmPartition" );
+
+        // Id
+        jdbmPartitionElement.addAttribute( "id", partition.getId() );
+
+        // CacheSize
+        jdbmPartitionElement.addAttribute( "cacheSize", "" + partition.getCacheSize() );
+
+        // Suffix
+        jdbmPartitionElement.addAttribute( "suffix", partition.getSuffix() );
+
+        // OptimizerEnabled
+        jdbmPartitionElement.addAttribute( "optimizerEnabled", "" + partition.isEnableOptimizer() );
+
+        // SynchOnWrite
+        jdbmPartitionElement.addAttribute( "synchOnWrite", "" + partition.isSynchronizationOnWrite() );
+
+        // IndexedAttributes
+        createIndexedAttributes( element, partition.getIndexedAttributes() );
+
+        // ContextEntry
+        createContextEntry( element, partition.getContextEntry(), partition.getId() );
+    }
+
+
+    /**
+     * Creates the indexed attributes bean.
+     *
+     * @param element
+     *      the element
+     * @param indexedAttributes
+     *      the indexed attributes list
+     */
+    private void createIndexedAttributes( Element element, List<IndexedAttribute> indexedAttributes )
+    {
+        // Adding the 'indexedAttribute' element
+        Element indexedAttributeElement = element.addElement( "indexedAttribute" );
+
+        if ( indexedAttributes != null )
+        {
+            // Looping on indexed attributes
+            for ( IndexedAttribute indexedAttribute : indexedAttributes )
+            {
+                // Adding the 'jdbmIndex' element
+                Element jdbmIndexElement = indexedAttributeElement.element( "jdbmIndex" );
+                jdbmIndexElement.addAttribute( "attributeId", indexedAttribute.getAttributeId() );
+                jdbmIndexElement.addAttribute( "cacheSize", "" + indexedAttribute.getCacheSize() );
+            }
+        }
+    }
+
+
+    /**
+     * Creates the context entry bean.
+     *
+     * @param element
+     *      the element
+     * @param contextEntry
+     *      the attributes
+     * @param id
+     *      the partition id
+     */
+    private void createContextEntry( Element element, Attributes contextEntry, String id )
+    {
+        // Adding the 'contextEntry' element
+        element.addElement( "contextEntry" ).setText( "#" + id + "ContextEntry" );
+
+        // Adding the 'bean' element
+        Element beanElement = element.getDocument().getRootElement().addElement(
+            new QName( "bean", NAMESPACE_XBEAN_SPRING ) );
+        beanElement.addAttribute( "id", id + "ContextEntry" );
+        beanElement.addAttribute( "class", "org.springframework.beans.factory.config.MethodInvokingFactoryBean" );
+
+        // Adding the targetObject 'property' element
+        Element targetObjectPropertyElement = beanElement.addElement( new QName( "property", NAMESPACE_XBEAN_SPRING ) );
+        targetObjectPropertyElement.addAttribute( "name", "targetObject" );
+
+        // Adding the targetObject 'ref' element
+        Element targetObjectRefElement = targetObjectPropertyElement
+            .element( new QName( "ref", NAMESPACE_XBEAN_SPRING ) );
+        targetObjectRefElement.addAttribute( "local", "directoryService" );
+
+        // Adding the targetMethod 'property' element
+        Element targetMethodPropertyElement = beanElement.addElement( new QName( "property", NAMESPACE_XBEAN_SPRING ) );
+        targetMethodPropertyElement.addAttribute( "name", "targetMethod" );
+
+        // Adding the targetMethod 'value' element
+        targetMethodPropertyElement.addElement( new QName( "value", NAMESPACE_XBEAN_SPRING ) ).setText( "newEntry" );
+
+        // Adding the arguments 'property' element
+        Element argumentsPropertyElement = beanElement.addElement( new QName( "property", NAMESPACE_XBEAN_SPRING ) );
+        argumentsPropertyElement.addAttribute( "name", "arguments" );
+
+        // Adding the arguments 'list' element
+        Element argumentsListElement = argumentsPropertyElement
+            .addElement( new QName( "list", NAMESPACE_XBEAN_SPRING ) );
+
+        // Adding the arguments 'value' element
+        Element argumentsValueElement = argumentsListElement.addElement( new QName( "value", new Namespace( "spring",
+            "http://www.springframework.org/schema/beans" ) ) );
+
+        StringBuffer sb = new StringBuffer();
+        NamingEnumeration<? extends Attribute> ne = contextEntry.getAll();
+        while ( ne.hasMoreElements() )
+        {
+            Attribute attribute = ( Attribute ) ne.nextElement();
+            try
+            {
+                NamingEnumeration<?> values = attribute.getAll();
+                while ( values.hasMoreElements() )
+                {
+                    sb.append( attribute.getID() + ": " + values.nextElement() + "\n" );
+                }
+            }
+            catch ( NamingException e )
+            {
+            }
+        }
+
+        argumentsValueElement.setText( sb.toString() );
+    }
+
+
+    /**
+     * Creates the interceptor beans.
+     *
+     * @param interceptorsElement
+     *      the interceptors element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void createInterceptors( Element interceptorsElement, ServerConfiguration serverConfiguration )
+    {
+        // TODO Auto-generated method stub
+
     }
 
 
@@ -1073,7 +1277,7 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
             ldapServerElement.addAttribute( "id", "ldapsServer" );
 
             // IpPort
-            ldapServerElement.addAttribute( "ipPort", "" + serverConfiguration.getDnsPort() );
+            ldapServerElement.addAttribute( "ipPort", "" + serverConfiguration.getLdapsPort() );
 
             // Enable
             ldapServerElement.addAttribute( "enable", "" + "true" );
@@ -1090,17 +1294,120 @@ public class ServerXmlV152IO extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
+    /**
+     * Creates the LdapServer bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
     private void createLdapServerBean( Element root, ServerConfiguration serverConfiguration )
     {
-        // TODO Auto-generated method stub
+        // Adding the 'ldapServer' element
+        Element ldapServerElement = root.addElement( "ldapServer" );
 
+        // Id
+        ldapServerElement.addAttribute( "id", "ldapServer" );
+
+        // IpPort
+        ldapServerElement.addAttribute( "ipPort", "" + serverConfiguration.getLdapPort() );
+
+        // AllowAnonymousAccess
+        ldapServerElement.addAttribute( "allowAnonymousAccess", "" + serverConfiguration.isAllowAnonymousAccess() );
+
+        // SaslHost
+        ldapServerElement.addAttribute( "saslHost", "" + serverConfiguration.getSaslHost() );
+
+        // SaslPrincipal
+        ldapServerElement.addAttribute( "saslPrincipal", "" + serverConfiguration.getSaslPrincipal() );
+
+        // SearchBaseDn
+        ldapServerElement.addAttribute( "searchBaseDn", "ou=users,ou=system" );
+
+        // MaxTimeLimit
+        ldapServerElement.addAttribute( "maxTimeLimit", "" + serverConfiguration.getMaxTimeLimit() );
+
+        // MaxSizeLimit
+        ldapServerElement.addAttribute( "maxSizeLimit", "" + serverConfiguration.getMaxSizeLimit() );
+
+        // Adding 'directoryService' element
+        ldapServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+
+        // Adding 'socketAcceptor' element
+        ldapServerElement.addElement( "socketAcceptor" ).setText( "#socketAcceptor" );
+
+        // Adding 'supportedMechanisms' element
+        Element supportedMechanismsElement = root.addElement( "supportedMechanisms" );
+
+        // Adding each supported mechanism
+        for ( String supportedMechanism : serverConfiguration.getSupportedMechanisms() )
+        {
+            supportedMechanismsElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                supportedMechanism );
+        }
+
+        // Adding 'SaslQop' element
+        Element saslQopElement = root.addElement( "saslQop" );
+
+        // Adding each SaslQop item
+        for ( String saslQop : serverConfiguration.getSaslQops() )
+        {
+            saslQopElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslQop );
+        }
+
+        // Adding 'SaslRealm' element
+        Element saslRealmElement = root.addElement( "saslRealm" );
+
+        // Adding each SaslRealm item
+        for ( String saslRealm : serverConfiguration.getSaslRealms() )
+        {
+            saslRealmElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslRealm );
+        }
     }
 
 
+    /**
+     * Creates the ApacheDS bean.
+     *
+     * @param root
+     *      the root element
+     * @param serverConfiguration
+     *      the server configuration
+     */
     private void createApacheDSBean( Element root, ServerConfiguration serverConfiguration )
     {
-        // TODO Auto-generated method stub
+        // Adding the 'apacheDS' element
+        Element apacheDSElement = root.addElement( "apacheDS" );
 
+        // Id
+        apacheDSElement.addAttribute( "id", "apacheDS" );
+
+        // SyncPeriodMillis
+        apacheDSElement.addAttribute( "syncPeriodMillis", "" + serverConfiguration.getSynchronizationPeriod() );
+
+        // AllowAnonymousAccess
+        apacheDSElement.addAttribute( "allowAnonymousAccess", "" + serverConfiguration.isAllowAnonymousAccess() );
+
+        // Adding 'directoryService' element
+        apacheDSElement.addElement( "directoryService" ).setText( "#directoryService" );
+
+        // Adding 'ldapServer' element
+        apacheDSElement.addElement( "ldapServer" ).setText( "#ldapServer" );
+
+        // LDAP Protocol
+        if ( serverConfiguration.isEnableLdaps() )
+        {
+            // Adding 'ldapsServer' element
+            apacheDSElement.addElement( "ldapsServer" ).setText( "#ldapsServer" );
+        }
+
+        // LDAPS Protocol
+        if ( serverConfiguration.isEnableLdaps() )
+        {
+            // Adding 'ldapsServer' element
+            apacheDSElement.addElement( "ldapsServer" ).setText( "#ldapsServer" );
+        }
     }
 
 
