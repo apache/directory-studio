@@ -61,7 +61,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      * @return
      *       the Bean element corresponding to the given ID or null if the bean was not found
      */
-    Element getBeanElementById( Document document, String id )
+    public Element getBeanElementById( Document document, String id )
     {
         for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
         {
@@ -87,7 +87,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      * @return
      *      the associated property, or null if the property has not been found
      */
-    Element getBeanPropertyElement( String property, Element element )
+    public Element getBeanPropertyElement( String property, Element element )
     {
         for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); )
         {
@@ -113,7 +113,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      * @return
      *      the value of the property, or null if the property has not been found
      */
-    String readBeanProperty( String property, Element element )
+    public String readBeanProperty( String property, Element element )
     {
         Element propertyElement = getBeanPropertyElement( property, element );
         if ( propertyElement != null )
@@ -145,7 +145,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      * @throws BooleanFormatException
      *      if the string does not contain a parsable boolean.
      */
-    boolean parseBoolean( String s ) throws BooleanFormatException
+    public boolean parseBoolean( String s ) throws BooleanFormatException
     {
         if ( "true".equals( s ) )
         {
@@ -168,7 +168,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    class BooleanFormatException extends Exception
+    public class BooleanFormatException extends Exception
     {
         /** The Serial Version UID */
         private static final long serialVersionUID = -6426955193802317452L;
@@ -194,7 +194,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      *            The ldif format text
      * @return An Attributes.
      */
-    Attributes readContextEntry( String text )
+    public Attributes readContextEntry( String text )
     {
         StringReader strIn = new StringReader( text );
         BufferedReader in = new BufferedReader( strIn );
@@ -257,7 +257,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      *      the stylized Document
      * @throws TransformerException 
      */
-    static Document styleDocument( Document document ) throws TransformerException
+    public static Document styleDocument( Document document ) throws TransformerException
     {
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();

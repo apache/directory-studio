@@ -17,23 +17,23 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration;
+package org.apache.directory.studio.apacheds.configuration.editor;
+
+
+import org.eclipse.ui.forms.editor.FormPage;
+import org.eclipse.ui.forms.editor.IFormPage;
 
 
 /**
- * This interface contains all the Constants used in the Plugin.
+ * This interface defines a {@link FormPage} that can be saved.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ApacheDSConfigurationPluginConstants
+public interface SavableFormPage extends IFormPage
 {
-    // Images
-    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif";
-    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif";
-    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif";
-    public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif";
-    public static final String IMG_PARTITION = "resources/icons/partition.gif";
-    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif";
-    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";
+    /**
+     * Saves the necessary elements to the input model.
+     */
+    public void save();
 }

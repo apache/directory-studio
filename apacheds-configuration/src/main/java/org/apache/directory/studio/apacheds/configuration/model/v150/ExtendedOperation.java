@@ -17,22 +17,62 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration.model;
+package org.apache.directory.studio.apacheds.configuration.model.v150;
 
 
 /**
- * This interface represents a Server Configuration.
+ * This class represents an Extended Operation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ServerConfiguration
+public class ExtendedOperation
 {
+    /** The class of the partition */
+    private String classType;
+
+
     /**
-     * Gets the version of the server configuration
+     * Creates a new instance of Partition.
+     *
+     * @param classType
+     *      the classType of the partition
+     */
+    public ExtendedOperation( String classType )
+    {
+        this.classType = classType;
+    }
+
+
+    /**
+     * Gets the class type of the partition.
      *
      * @return
-     *      the version of the server configuration
+     *      the class type of the partition
      */
-    public ServerConfigurationVersionEnum getVersion();
+    public String getClassType()
+    {
+        return this.classType;
+    }
+
+
+    /**
+     * Sets the class type of the partition.
+     *
+     * @param classType
+     *      the new class type to set
+     */
+    public void setClassType( String classType )
+    {
+        this.classType = classType;
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return classType;
+    }
 }

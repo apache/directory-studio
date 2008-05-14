@@ -32,6 +32,10 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginUtils;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.ExtendedOperationsPage;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.GeneralPage;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.InterceptorsPage;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.PartitionsPage;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
@@ -84,10 +88,10 @@ public class ServerConfigurationEditor extends FormEditor
     private boolean dirty = false;
 
     // The Pages
-    private GeneralPage generalPage;
-    private PartitionsPage partitionsPage;
-    private InterceptorsPage interceptorsPage;
-    private ExtendedOperationsPage extendedOperationsPage;
+    private SavableFormPage generalPage;
+    private SavableFormPage partitionsPage;
+    private SavableFormPage interceptorsPage;
+    private SavableFormPage extendedOperationsPage;
 
 
     /* (non-Javadoc)
@@ -98,42 +102,9 @@ public class ServerConfigurationEditor extends FormEditor
         super.init( site, input );
         setPartName( input.getName() );
 
-        //
-        //        String inputClassName = input.getClass().getName();
         try
         {
             readServerConfiguration( input );
-            //            if ( input instanceof FileEditorInput )
-            //            // The 'FileEditorInput' class is used when the file is opened
-            //            // from a project in the workspace.
-            //            {
-            //                ServerConfigurationParser parser = new ServerConfigurationParser();
-            //                serverConfiguration = parser.parse( ( ( FileEditorInput ) input ).getFile().getContents() );
-            //            }
-            //            else if ( input instanceof IPathEditorInput )
-            //            {
-            //                ServerConfigurationParser parser = new ServerConfigurationParser();
-            //                serverConfiguration = parser.parse( new FileInputStream( new File( ( ( IPathEditorInput ) input )
-            //                    .getPath().toOSString() ) ) );
-            //            }
-            //            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-            //                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
-            //            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-            //            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-            //            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-            //            // opening a file from the menu File > Open... in Eclipse 3.3.x
-            //            {
-            //                // We use the tooltip to get the full path of the file
-            //                ServerConfigurationParser parser = new ServerConfigurationParser();
-            //                serverConfiguration = parser.parse( new FileInputStream( new File( input.getToolTipText() ) ) );
-            //            }
-            //            else if ( input instanceof NonExistingServerConfigurationInput )
-            //            {
-            //                // The 'ServerConfigurationEditorInput' class is used when a
-            //                // new Server Configuration File is created.
-            //                serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
-            //                dirty = true;
-            //            }
         }
         catch ( Exception e )
         {
@@ -230,17 +201,64 @@ public class ServerConfigurationEditor extends FormEditor
     {
         try
         {
-            generalPage = new GeneralPage( this );
-            addPage( generalPage );
+            if ( serverConfiguration != null )
+            {
+                switch ( serverConfiguration.getVersion() )
+                {
+                    case VERSION_1_5_2:
+                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.GeneralPage(
+                            this );
+                        addPage( generalPage );
 
-            partitionsPage = new PartitionsPage( this );
-            addPage( partitionsPage );
+                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.PartitionsPage(
+                            this );
+                        addPage( partitionsPage );
 
-            interceptorsPage = new InterceptorsPage( this );
-            addPage( interceptorsPage );
+                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.InterceptorsPage(
+                            this );
+                        addPage( interceptorsPage );
 
-            extendedOperationsPage = new ExtendedOperationsPage( this );
-            addPage( extendedOperationsPage );
+                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.ExtendedOperationsPage(
+                            this );
+                        addPage( extendedOperationsPage );
+                        break;
+                    case VERSION_1_5_1:
+                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.GeneralPage(
+                            this );
+                        addPage( generalPage );
+
+                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.PartitionsPage(
+                            this );
+                        addPage( partitionsPage );
+
+                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.InterceptorsPage(
+                            this );
+                        addPage( interceptorsPage );
+
+                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.ExtendedOperationsPage(
+                            this );
+                        addPage( extendedOperationsPage );
+                        break;
+                    case VERSION_1_5_0:
+                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.GeneralPage(
+                            this );
+                        addPage( generalPage );
+
+                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.PartitionsPage(
+                            this );
+                        addPage( partitionsPage );
+
+                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.InterceptorsPage(
+                            this );
+                        addPage( interceptorsPage );
+
+                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.ExtendedOperationsPage(
+                            this );
+                        addPage( extendedOperationsPage );
+                        break;
+                }
+            }
+
         }
         catch ( PartInitException e )
         {

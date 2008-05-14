@@ -17,23 +17,50 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration;
+package org.apache.directory.studio.apacheds.configuration.model;
 
 
 /**
- * This interface contains all the Constants used in the Plugin.
+ * This enum contains all the versions supported by the plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ApacheDSConfigurationPluginConstants
+public enum ServerConfigurationVersionEnum
 {
-    // Images
-    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif";
-    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif";
-    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif";
-    public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif";
-    public static final String IMG_PARTITION = "resources/icons/partition.gif";
-    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif";
-    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";
+    /** Version 1.5.2 */
+    VERSION_1_5_2
+    {
+        /* (non-Javadoc)
+         * @see java.lang.Enum#toString()
+         */
+        public String toString()
+        {
+            return "Version 1.5.2";
+        }
+    },
+
+    /** Version 1.5.1 */
+    VERSION_1_5_1
+    {
+        /* (non-Javadoc)
+         * @see java.lang.Enum#toString()
+         */
+        public String toString()
+        {
+            return "Version 1.5.1";
+        }
+    },
+
+    /** Version 1.5.0 */
+    VERSION_1_5_0
+    {
+        /* (non-Javadoc)
+         * @see java.lang.Enum#toString()
+         */
+        public String toString()
+        {
+            return "Version 1.5.0";
+        }
+    }
 }

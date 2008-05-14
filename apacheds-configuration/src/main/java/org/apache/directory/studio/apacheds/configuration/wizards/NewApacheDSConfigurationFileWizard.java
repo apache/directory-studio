@@ -24,8 +24,11 @@ import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationP
 import org.apache.directory.studio.apacheds.configuration.editor.NonExistingServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV151IO;
+import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
+import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
+import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
@@ -49,6 +52,19 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
     /** The window */
     private IWorkbenchWindow window;
 
+    /** The page */
+    private NewApacheDSConfigurationFileWizardPage page;
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.wizard.Wizard#addPages()
+     */
+    public void addPages()
+    {
+        page = new NewApacheDSConfigurationFileWizardPage();
+        addPage( page );
+    }
+
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#performFinish()
@@ -57,9 +73,32 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
     {
         try
         {
-            ServerXmlV151IO serverXmlIO = new ServerXmlV151IO();
-            ServerConfiguration serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                .getResourceAsStream( "default-server.xml" ) );
+            // Getting the default server configuration for the target version
+            ServerConfiguration serverConfiguration = null;
+            ServerXmlIO serverXmlIO = null;
+            switch ( page.getTargetVersion() )
+            {
+                case VERSION_1_5_2:
+                    serverXmlIO = new ServerXmlIOV152();
+                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
+                        .getResourceAsStream( "default-server-1.5.2.xml" ) );
+                    break;
+                case VERSION_1_5_1:
+                    serverXmlIO = new ServerXmlIOV151();
+                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
+                        .getResourceAsStream( "default-server-1.5.1.xml" ) );
+                    break;
+                case VERSION_1_5_0:
+                    serverXmlIO = new ServerXmlIOV150();
+                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
+                        .getResourceAsStream( "default-server-1.5.0.xml" ) );
+                    break;
+                default:
+                    serverXmlIO = new ServerXmlIOV152();
+                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
+                        .getResourceAsStream( "default-server-1.5.2.xml" ) );
+                    break;
+            }
 
             IWorkbenchPage page = window.getActivePage();
             page.openEditor( new NonExistingServerConfigurationInput( serverConfiguration ),

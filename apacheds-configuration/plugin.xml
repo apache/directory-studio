@@ -47,10 +47,10 @@
       <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            canFinishEarly="true"
+            canFinishEarly="false"
             category="org.apache.directory.studio.apacheds.configuration.newWizards"
             class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
-            hasPages="false"
+            hasPages="true"
             icon="resources/icons/editor_new.gif"
             id="org.apache.directory.studio.apacheds.configuration.NewApacheDSConfigurationFileWizard"
             name="Apache DS Configuration File"

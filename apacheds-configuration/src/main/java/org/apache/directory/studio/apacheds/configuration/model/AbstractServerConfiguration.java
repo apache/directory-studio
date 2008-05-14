@@ -17,23 +17,41 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.apacheds.configuration;
+package org.apache.directory.studio.apacheds.configuration.model;
+
+
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 
 
 /**
- * This interface contains all the Constants used in the Plugin.
+ * This abstract class provides a default implementation of a server configuration.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ApacheDSConfigurationPluginConstants
+public abstract class AbstractServerConfiguration implements ServerConfiguration
 {
-    // Images
-    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif";
-    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif";
-    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif";
-    public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif";
-    public static final String IMG_PARTITION = "resources/icons/partition.gif";
-    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif";
-    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";
+    /** The version */
+    private ServerConfigurationVersionEnum version;
+
+
+    /**
+     * Creates a new instance of AbstractServerConfiguration.
+     *
+     * @param version
+     *      the version
+     */
+    public AbstractServerConfiguration( ServerConfigurationVersionEnum version )
+    {
+        this.version = version;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration#getVersion()
+     */
+    public ServerConfigurationVersionEnum getVersion()
+    {
+        return version;
+    }
 }

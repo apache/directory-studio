@@ -23,7 +23,6 @@ package org.apache.directory.studio.apacheds.configuration;
 import java.net.URL;
 
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV152IO;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
@@ -37,8 +36,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV150IO;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlV151IO;
+import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
+import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
+import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 
 
 /**
@@ -56,7 +56,7 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     private static ApacheDSConfigurationPlugin plugin;
 
     private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
-        { new ServerXmlV152IO(), new ServerXmlV151IO(), new ServerXmlV150IO(), };
+        { new ServerXmlIOV152(), new ServerXmlIOV151(), new ServerXmlIOV150(), };
 
 
     /**
