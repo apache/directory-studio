@@ -37,6 +37,7 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
 import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
+import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -107,11 +108,16 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( Exception e )
         {
+            // Displaying an error message
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
             messageBox.setText( "Error!" );
             messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
             messageBox.open();
+
+            // Creating a defualt (empty) server configuration and assigning the serverXmlIO
+            serverConfiguration = new ServerConfigurationV152();
+            serverXmlIO = new ServerXmlIOV152();
             return;
         }
     }
