@@ -977,8 +977,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
         }
         catch ( TransformerException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Will never occur
         }
 
         stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN",

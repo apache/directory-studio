@@ -943,8 +943,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         }
         catch ( TransformerException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Will never occur
         }
 
         return stylizedDocument.asXML();
