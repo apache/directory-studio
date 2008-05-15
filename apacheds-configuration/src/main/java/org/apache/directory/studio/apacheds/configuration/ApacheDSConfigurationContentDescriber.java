@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurationContentTypeChecker;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.ITextContentDescriber;
@@ -48,7 +48,7 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
      */
     public int describe( Reader contents, IContentDescription description ) throws IOException
     {
-        if ( ServerConfigurationContentTypeChecker.isValid( contents ) )
+        if ( isValid( contents ) )
         {
             return ITextContentDescriber.VALID;
         }
@@ -64,7 +64,7 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
      */
     public int describe( InputStream contents, IContentDescription description ) throws IOException
     {
-        if ( ServerConfigurationContentTypeChecker.isValid( contents ) )
+        if ( isValid( contents ) )
         {
             return ITextContentDescriber.VALID;
         }
@@ -81,5 +81,57 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
     public QualifiedName[] getSupportedOptions()
     {
         return SUPPORTED_OPTIONS;
+    }
+
+
+    /**
+     * Indicates if the given {@link Reader} is a valid server configuration.
+     *
+     * @param contents
+     *      the contents reader
+     * @return
+     *      <code>true</code> if the given reader is a valid server 
+     *      configuration, <code>false</code> if not
+     */
+    private boolean isValid( Reader contents )
+    {
+        // Looping on the ServerXmlIO classes to find a corresponding one
+        ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
+        for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
+        {
+            // Checking if the ServerXmlIO is valid
+            if ( validationServerXmlIO.isValid( contents ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Indicates if the given {@link InputStream} is a valid server configuration.
+     *
+     * @param contents
+     *      the contents input stream
+     * @return
+     *      <code>true</code> if the given input stream is a valid server 
+     *      configuration, <code>false</code> if not
+     */
+    private boolean isValid( InputStream contents )
+    {
+        // Looping on the ServerXmlIO classes to find a corresponding one
+        ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
+        for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
+        {
+            // Checking if the ServerXmlIO is valid
+            if ( validationServerXmlIO.isValid( contents ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

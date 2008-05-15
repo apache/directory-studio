@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.model;
 
 
 import java.io.InputStream;
+import java.io.Reader;
 
 
 /**
@@ -43,6 +44,19 @@ public interface ServerXmlIO
      *      'server.xml' file, <code>false</code> if not
      */
     public boolean isValid( InputStream is );
+
+
+    /**
+     * Indicates whether or not the given reader is a valid 'server.xml' 
+     * file.
+     *
+     * @param reader
+     *      the reader to use
+     * @return
+     *      <code>true</code> if the given reader is a valid 
+     *      'server.xml' file, <code>false</code> if not
+     */
+    public boolean isValid( Reader reader );
 
 
     /**

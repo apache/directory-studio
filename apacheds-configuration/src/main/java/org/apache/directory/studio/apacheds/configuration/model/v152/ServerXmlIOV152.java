@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.configuration.model.v152;
 
 
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,6 +64,16 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
      */
     public boolean isValid( InputStream is )
+    {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
+     */
+    public boolean isValid( Reader reader )
     {
         // TODO Auto-generated method stub
         return true;
@@ -1025,8 +1036,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         // OptimizerEnabled
         jdbmPartitionElement.addAttribute( "optimizerEnabled", "" + partition.isEnableOptimizer() );
 
-        // SynchOnWrite
-        jdbmPartitionElement.addAttribute( "synchOnWrite", "" + partition.isSynchronizationOnWrite() );
+        // SyncOnWrite
+        jdbmPartitionElement.addAttribute( "syncOnWrite", "" + partition.isSynchronizationOnWrite() );
 
         // IndexedAttributes
         createIndexedAttributes( jdbmPartitionElement, partition.getIndexedAttributes() );

@@ -73,13 +73,8 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    /**
-     * Checks if the InputStream is valid.
-     *
-     * @param inputStream
-     *      the InputStream
-     * @return
-     *      true if the InputStream is valid, false if not
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
      */
     public boolean isValid( Reader reader )
     {

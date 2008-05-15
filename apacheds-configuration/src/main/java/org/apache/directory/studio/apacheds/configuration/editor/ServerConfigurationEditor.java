@@ -158,7 +158,7 @@ public class ServerConfigurationEditor extends FormEditor
         ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
         for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
         {
-            // Checking if the ServerXmlIO
+            // Checking if the ServerXmlIO is valid
             if ( validationServerXmlIO.isValid( getInputStream( input ) ) )
             {
                 serverXmlIO = validationServerXmlIO;
