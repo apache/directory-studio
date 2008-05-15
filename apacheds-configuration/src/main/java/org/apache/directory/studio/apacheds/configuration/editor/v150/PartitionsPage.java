@@ -25,7 +25,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
-import org.apache.directory.studio.apacheds.configuration.editor.SavableFormPage;
+import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 
 
@@ -35,7 +35,7 @@ import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigura
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PartitionsPage extends FormPage implements SavableFormPage
+public class PartitionsPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".V150.PartitionsPage";

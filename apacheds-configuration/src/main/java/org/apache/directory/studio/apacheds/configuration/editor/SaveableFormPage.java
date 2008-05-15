@@ -30,7 +30,7 @@ import org.eclipse.ui.forms.editor.IFormPage;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface SavableFormPage extends IFormPage
+public interface SaveableFormPage extends IFormPage
 {
     /**
      * Saves the necessary elements to the input model.

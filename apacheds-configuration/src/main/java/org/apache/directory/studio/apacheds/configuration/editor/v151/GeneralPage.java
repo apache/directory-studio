@@ -23,7 +23,7 @@ package org.apache.directory.studio.apacheds.configuration.editor.v151;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.apacheds.configuration.editor.SavableFormPage;
+import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.editor.v151.dialogs.BinaryAttributeDialog;
 import org.apache.directory.studio.apacheds.configuration.model.v151.ServerConfigurationV151;
@@ -69,7 +69,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class GeneralPage extends FormPage implements SavableFormPage
+public class GeneralPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".V151.GeneralPage";

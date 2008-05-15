@@ -32,13 +32,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginUtils;
-import org.apache.directory.studio.apacheds.configuration.editor.v152.ExtendedOperationsPage;
-import org.apache.directory.studio.apacheds.configuration.editor.v152.GeneralPage;
-import org.apache.directory.studio.apacheds.configuration.editor.v152.InterceptorsPage;
-import org.apache.directory.studio.apacheds.configuration.editor.v152.PartitionsPage;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
+import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
+import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
+import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -88,10 +87,10 @@ public class ServerConfigurationEditor extends FormEditor
     private boolean dirty = false;
 
     // The Pages
-    private SavableFormPage generalPage;
-    private SavableFormPage partitionsPage;
-    private SavableFormPage interceptorsPage;
-    private SavableFormPage extendedOperationsPage;
+    private SaveableFormPage generalPage;
+    private SaveableFormPage partitionsPage;
+    private SaveableFormPage interceptorsPage;
+    private SaveableFormPage extendedOperationsPage;
 
 
     /* (non-Javadoc)
@@ -138,6 +137,20 @@ public class ServerConfigurationEditor extends FormEditor
             // new Server Configuration File is created.
             serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
             dirty = true;
+
+            // Setting the ServerXmlIO class
+            switch ( serverConfiguration.getVersion() )
+            {
+                case VERSION_1_5_2:
+                    serverXmlIO = new ServerXmlIOV152();
+                    break;
+                case VERSION_1_5_1:
+                    serverXmlIO = new ServerXmlIOV151();
+                    break;
+                case VERSION_1_5_0:
+                    serverXmlIO = new ServerXmlIOV150();
+                    break;
+            }
             return;
         }
 

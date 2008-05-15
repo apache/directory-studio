@@ -20,7 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v152;
 
 
-import org.apache.directory.studio.apacheds.configuration.editor.SavableFormPage;
+import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -34,7 +34,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ExtendedOperationsPage extends FormPage implements SavableFormPage
+public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
     public static final String ID = ServerConfigurationEditor.ID + ".V152.ExtendedOperationsPage";
