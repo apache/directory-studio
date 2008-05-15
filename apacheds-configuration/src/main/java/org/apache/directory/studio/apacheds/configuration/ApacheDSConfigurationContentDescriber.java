@@ -99,10 +99,30 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
         ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
         for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
         {
+            // Marking the reader
+            try
+            {
+                contents.mark( -1 );
+            }
+            catch ( IOException e1 )
+            {
+                return false;
+            }
+
             // Checking if the ServerXmlIO is valid
             if ( validationServerXmlIO.isValid( contents ) )
             {
                 return true;
+            }
+
+            // Reseting the reader to the mark
+            try
+            {
+                contents.reset();
+            }
+            catch ( IOException e )
+            {
+                return false;
             }
         }
 
@@ -125,10 +145,23 @@ public class ApacheDSConfigurationContentDescriber implements ITextContentDescri
         ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
         for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
         {
+            // Marking the input stream
+            contents.mark( -1 );
+
             // Checking if the ServerXmlIO is valid
             if ( validationServerXmlIO.isValid( contents ) )
             {
                 return true;
+            }
+
+            // Reseting the input stream to the mark
+            try
+            {
+                contents.reset();
+            }
+            catch ( IOException e )
+            {
+                return false;
             }
         }
 

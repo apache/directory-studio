@@ -65,8 +65,16 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      */
     public boolean isValid( InputStream is )
     {
-        // TODO Auto-generated method stub
-        return true;
+        try
+        {
+            SAXReader saxReader = new SAXReader();
+
+            return isValid( saxReader.read( is ) );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
     }
 
 
@@ -75,8 +83,43 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      */
     public boolean isValid( Reader reader )
     {
-        // TODO Auto-generated method stub
-        return true;
+        try
+        {
+            SAXReader saxReader = new SAXReader();
+
+            return isValid( saxReader.read( reader ) );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * Checks if the Document is valid.
+     *
+     * @param document
+     *      the Document
+     * @return
+     *      true if the Document is valid, false if not
+     */
+    private boolean isValid( Document document )
+    {
+        Element rootElement = document.getRootElement();
+
+        if ( rootElement != null )
+        {
+            // Checking if the root element is named 'beans'
+            if ( "beans".equalsIgnoreCase( rootElement.getName() ) )
+            {
+                // Looking for the 'apacheDS' element
+                Element apacheDSElement = rootElement.element( "apacheDS" );
+                return ( apacheDSElement != null );
+            }
+        }
+
+        return false;
     }
 
 
