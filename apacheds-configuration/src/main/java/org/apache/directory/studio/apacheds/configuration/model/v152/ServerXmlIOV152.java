@@ -938,10 +938,37 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
-    private void readApacheDSBean( Element element, ServerConfiguration serverConfiguration )
+    /**
+     * Reads the ApacheDS Bean.
+     *
+     * @param element
+     *      the element
+     * @param serverConfiguration
+     *      the server configuration
+     * @throws ServerXmlIOException
+     * @throws NumberFormatException
+     */
+    private void readApacheDSBean( Element element, ServerConfigurationV152 serverConfiguration )
+        throws ServerXmlIOException, NumberFormatException
     {
-        // TODO Auto-generated method stub
-
+        // Getting the 'apacheDS' element
+        Element apacheDsElement = element.element( "apacheDS" );
+        if ( apacheDsElement != null )
+        {
+            // SynchPeriodMillis
+            org.dom4j.Attribute synchPeriodMillisAttribute = apacheDsElement.attribute( "synchPeriodMillis" );
+            if ( synchPeriodMillisAttribute == null )
+            {
+                // If the 'synchPeriodMillis' attribute does not exists,
+                // we throw an exception
+                throw new ServerXmlIOException( "Unable to find the 'synchPeriodMillis' attribute for a partition." );
+            }
+            else
+            {
+                serverConfiguration
+                    .setSynchronizationPeriod( Integer.parseInt( synchPeriodMillisAttribute.getValue() ) );
+            }
+        }
     }
 
 

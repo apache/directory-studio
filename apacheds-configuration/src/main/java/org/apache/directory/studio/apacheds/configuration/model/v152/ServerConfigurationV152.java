@@ -700,7 +700,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      true if this list contained the specified element.
      */
-    public boolean removeInterceptor( Interceptor interceptor )
+    public boolean removeInterceptor( InterceptorEnum interceptor )
     {
         return interceptors.remove( interceptor );
     }
