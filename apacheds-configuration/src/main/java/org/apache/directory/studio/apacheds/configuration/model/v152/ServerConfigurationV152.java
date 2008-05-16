@@ -133,7 +133,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     private List<Partition> partitions;
 
     /** The Interceptors */
-    private List<Interceptor> interceptors;
+    private List<InterceptorEnum> interceptors;
 
     /** The Extended Operations */
     private List<ExtendedOperation> extendedOperations;
@@ -150,7 +150,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
         saslQops = new ArrayList<String>();
         saslRealms = new ArrayList<String>();
         partitions = new ArrayList<Partition>();
-        interceptors = new ArrayList<Interceptor>();
+        interceptors = new ArrayList<InterceptorEnum>();
         extendedOperations = new ArrayList<ExtendedOperation>();
         binaryAttributes = new ArrayList<String>();
     }
@@ -192,7 +192,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      true (as per the general contract of the Collection.add method).
      */
-    public boolean addInterceptor( Interceptor interceptor )
+    public boolean addInterceptor( InterceptorEnum interceptor )
     {
         return interceptors.add( interceptor );
     }
@@ -344,7 +344,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      the Interceptors List
      */
-    public List<Interceptor> getInterceptors()
+    public List<InterceptorEnum> getInterceptors()
     {
         return interceptors;
     }
@@ -898,7 +898,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @param interceptors
      *      the new value
      */
-    public void setInterceptors( List<Interceptor> interceptors )
+    public void setInterceptors( List<InterceptorEnum> interceptors )
     {
         this.interceptors = interceptors;
     }

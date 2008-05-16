@@ -25,15 +25,17 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.v152.Interceptor;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.InterceptorDialog;
+import org.apache.directory.studio.apacheds.configuration.model.v152.InterceptorEnum;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -68,7 +70,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     private ServerConfigurationV152 serverConfiguration;
 
     /** The Interceptors List */
-    private List<Interceptor> interceptors;
+    private List<InterceptorEnum> interceptors;
 
     /** The Details Page */
     private InterceptorDetailsPage detailsPage;
@@ -76,7 +78,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     private static final String NEW_NAME = "New Interceptor ";
 
     // UI Fields
-    private CheckboxTableViewer viewer;
+    private TableViewer viewer;
     private Button addButton;
     private Button deleteButton;
     private Button upButton;
@@ -91,7 +93,8 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     public InterceptorsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
+        serverConfiguration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) page.getEditor() )
+            .getServerConfiguration();
         interceptors = serverConfiguration.getInterceptors();
     }
 
@@ -121,14 +124,14 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         section.setClient( client );
 
         // Creatig the Table and Table Viewer
-        Table table = toolkit.createTable( client, SWT.CHECK );
+        Table table = toolkit.createTable( client, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 4 );
         gd.heightHint = 20;
         gd.widthHint = 100;
         table.setLayoutData( gd );
         final SectionPart spart = new SectionPart( section );
         managedForm.addPart( spart );
-        viewer = new CheckboxTableViewer( table );
+        viewer = new TableViewer( table );
         viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -141,7 +144,20 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         {
             public Image getImage( Object element )
             {
-                return ApacheDSConfigurationPlugin.getDefault().getImage( ApacheDSConfigurationPluginConstants.IMG_INTERCEPTOR );
+                return ApacheDSConfigurationPlugin.getDefault().getImage(
+                    ApacheDSConfigurationPluginConstants.IMG_INTERCEPTOR );
+            }
+
+
+            public String getText( Object element )
+            {
+                if ( element instanceof InterceptorEnum )
+                {
+                    return ( ( InterceptorEnum ) element ).getName();
+
+                }
+
+                return super.getText( element );
             }
         } );
 
@@ -185,9 +201,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
             public void selectionChanged( SelectionChangedEvent event )
             {
                 viewer.refresh();
-
                 deleteButton.setEnabled( !event.getSelection().isEmpty() );
-
                 enableDisableUpDownButtons();
             }
         } );
@@ -196,11 +210,15 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         {
             public void widgetSelected( SelectionEvent e )
             {
-                Interceptor newInterceptor = new Interceptor( getNewName() );
-                interceptors.add( newInterceptor );
-                viewer.refresh();
-                viewer.setSelection( new StructuredSelection( newInterceptor ) );
-                setEditorDirty();
+                InterceptorDialog dialog = new InterceptorDialog( interceptors );
+                if ( Dialog.OK == dialog.open() )
+                {
+                    InterceptorEnum newInterceptor = dialog.getInterceptor();
+                    interceptors.add( newInterceptor );
+                    viewer.refresh();
+                    viewer.setSelection( new StructuredSelection( newInterceptor ) );
+                    setEditorDirty();
+                }
             }
         } );
 
@@ -211,8 +229,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
                 StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
                 if ( !selection.isEmpty() )
                 {
-                    Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
-
+                    InterceptorEnum interceptor = ( InterceptorEnum ) selection.getFirstElement();
                     interceptors.remove( interceptor );
                     viewer.refresh();
                     setEditorDirty();
@@ -227,17 +244,16 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
                 StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
                 if ( !selection.isEmpty() )
                 {
-                    Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+                    InterceptorEnum interceptor = ( InterceptorEnum ) selection.getFirstElement();
 
                     int index = interceptors.indexOf( interceptor );
                     if ( index > 0 )
                     {
-                        Interceptor interceptorBefore = interceptors.get( index - 1 );
+                        InterceptorEnum interceptorBefore = interceptors.get( index - 1 );
                         if ( interceptorBefore != null )
                         {
                             interceptors.set( index - 1, interceptor );
                             interceptors.set( index, interceptorBefore );
-
                             viewer.refresh();
                             setEditorDirty();
                             enableDisableUpDownButtons();
@@ -254,12 +270,12 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
                 StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
                 if ( !selection.isEmpty() )
                 {
-                    Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+                    InterceptorEnum interceptor = ( InterceptorEnum ) selection.getFirstElement();
 
                     int index = interceptors.indexOf( interceptor );
                     if ( index < ( interceptors.size() - 1 ) )
                     {
-                        Interceptor interceptorAfter = interceptors.get( index + 1 );
+                        InterceptorEnum interceptorAfter = interceptors.get( index + 1 );
                         if ( interceptorAfter != null )
                         {
                             interceptors.set( index + 1, interceptor );
@@ -293,7 +309,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
             ok = true;
             name = NEW_NAME + counter;
 
-            for ( Interceptor interceptor : interceptors )
+            for ( InterceptorEnum interceptor : interceptors )
             {
                 if ( interceptor.getName().equalsIgnoreCase( name ) )
                 {
@@ -319,7 +335,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         downButton.setEnabled( !selection.isEmpty() );
         if ( !selection.isEmpty() )
         {
-            Interceptor interceptor = ( Interceptor ) selection.getFirstElement();
+            InterceptorEnum interceptor = ( InterceptorEnum ) selection.getFirstElement();
             upButton.setEnabled( interceptors.indexOf( interceptor ) != 0 );
             downButton.setEnabled( interceptors.indexOf( interceptor ) != ( interceptors.size() - 1 ) );
         }
@@ -370,7 +386,7 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     protected void registerPages( DetailsPart detailsPart )
     {
         detailsPage = new InterceptorDetailsPage( this );
-        detailsPart.registerPage( Interceptor.class, detailsPage );
+        detailsPart.registerPage( InterceptorEnum.class, detailsPage );
     }
 
 

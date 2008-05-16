@@ -20,7 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v152;
 
 
-import org.apache.directory.studio.apacheds.configuration.model.v152.Interceptor;
+import org.apache.directory.studio.apacheds.configuration.model.v152.InterceptorEnum;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -54,14 +54,14 @@ public class InterceptorDetailsPage implements IDetailsPage
     private IManagedForm mform;
 
     /** The input Interceptor */
-    private Interceptor input;
+    private InterceptorEnum input;
 
     /** The dirty flag */
     private boolean dirty = false;
 
     // UI fields
     private Text nameText;
-    private Text classText;
+    private Text descriptionText;
 
     // Listeners
     /** The Modify Listener for Text Widgets */
@@ -130,12 +130,16 @@ public class InterceptorDetailsPage implements IDetailsPage
         // Name
         toolkit.createLabel( client, "Name:" );
         nameText = toolkit.createText( client, "" );
+        nameText.setEditable( false );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        // Class
-        toolkit.createLabel( client, "Class:" );
-        classText = toolkit.createText( client, "" );
-        classText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        // Description
+        toolkit.createLabel( client, "Description:" );
+        descriptionText = toolkit.createText( client, "" );
+        descriptionText.setEditable( false );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        gridData.heightHint = 75;
+        descriptionText.setLayoutData( gridData );
     }
 
 
@@ -145,7 +149,7 @@ public class InterceptorDetailsPage implements IDetailsPage
     private void addListeners()
     {
         nameText.addModifyListener( textModifyListener );
-        classText.addModifyListener( textModifyListener );
+        descriptionText.addModifyListener( textModifyListener );
     }
 
 
@@ -155,7 +159,7 @@ public class InterceptorDetailsPage implements IDetailsPage
     private void removeListeners()
     {
         nameText.removeModifyListener( textModifyListener );
-        classText.removeModifyListener( textModifyListener );
+        descriptionText.removeModifyListener( textModifyListener );
     }
 
 
@@ -167,7 +171,7 @@ public class InterceptorDetailsPage implements IDetailsPage
         IStructuredSelection ssel = ( IStructuredSelection ) selection;
         if ( ssel.size() == 1 )
         {
-            input = ( Interceptor ) ssel.getFirstElement();
+            input = ( InterceptorEnum ) ssel.getFirstElement();
         }
         else
         {
@@ -184,8 +188,7 @@ public class InterceptorDetailsPage implements IDetailsPage
     {
         if ( input != null )
         {
-            input.setName( nameText.getText() );
-            input.setClassType( classText.getText() );
+            //TODO
         }
     }
 
@@ -236,9 +239,9 @@ public class InterceptorDetailsPage implements IDetailsPage
         String name = input.getName();
         nameText.setText( ( name == null ) ? "" : name );
 
-        // Class
-        String classType = input.getClassType();
-        classText.setText( ( classType == null ) ? "" : classType );
+        // Description
+        String description = input.getDescription();
+        descriptionText.setText( ( description == null ) ? "" : description );
 
         addListeners();
     }

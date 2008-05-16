@@ -208,17 +208,6 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         }
         else
         {
-            // Allow Anonymous Access
-            //            Attribute allowAnonymousAccess = defaultDirectoryServiceElement.attribute( "allowAnonymousAccess" );
-            //            if ( allowAnonymousAccess == null )
-            //            {
-            //                // TODO throw an error
-            //            }
-            //            else
-            //            {
-            //                serverConfiguration.setAllowAnonymousAccess( parseBoolean( allowAnonymousAccess.getValue() ) );
-            //            }
-
             // Access Control Enabled
             org.dom4j.Attribute accessControlEnabledAttribute = defaultDirectoryServiceElement
                 .attribute( "accessControlEnabled" );
@@ -591,10 +580,82 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
+    /**
+     * Reads the interceptors.
+     *
+     * @param element
+     *      the element
+     * @param serverConfiguration
+     *      the server configuration
+     */
     private void readInterceptors( Element element, ServerConfigurationV152 serverConfiguration )
     {
-        // TODO Auto-generated method stub
+        // Getting the 'interceptors
+        Element interceptorsElement = element.element( "interceptors" );
+        if ( interceptorsElement != null )
+        {
+            // Looping on all interceptor elements
+            for ( Iterator<?> i = interceptorsElement.elementIterator(); i.hasNext(); )
+            {
+                // Getting the 'jbdmPartition' element
+                Element interceptorElement = ( Element ) i.next();
 
+                // Checking which interceptor it is
+                String interceptorElementName = interceptorElement.getName();
+                if ( "normalizationInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.NORMALIZATION );
+                }
+                else if ( "authenticationInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.AUTHENTICATION );
+                }
+                else if ( "referralInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.REFERRAL );
+                }
+                else if ( "aciAuthorizationInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.ACI_AUTHORIZATION );
+                }
+                else if ( "defaultAuthorizationInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.DEFAULT_AUTHORIZATION );
+                }
+                else if ( "exceptionInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.EXCEPTION );
+                }
+                else if ( "operationalAttributeInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.OPERATIONAL_ATTRIBUTE );
+                }
+                else if ( "schemaInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.SCHEMA );
+                }
+                else if ( "subentryInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.SUBENTRY );
+                }
+                else if ( "collectiveAttributeInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.COLLECTIVE_ATTRIBUTE );
+                }
+                else if ( "eventInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.EVENT );
+                }
+                else if ( "triggerInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.TRIGGER );
+                }
+                else if ( "replicationInterceptor".equalsIgnoreCase( interceptorElementName ) )
+                {
+                    serverConfiguration.addInterceptor( InterceptorEnum.REPLICATION );
+                }
+            }
+        }
     }
 
 

@@ -115,7 +115,7 @@ public class ServerConfigurationEditor extends FormEditor
             messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
             messageBox.open();
 
-            // Creating a defualt (empty) server configuration and assigning the serverXmlIO
+            // Creating a default (empty) server configuration and assigning the serverXmlIO
             serverConfiguration = new ServerConfigurationV152();
             serverXmlIO = new ServerXmlIOV152();
             return;
