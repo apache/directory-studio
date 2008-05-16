@@ -903,7 +903,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 // Checking if the 'ldapServer' element is the one for LDAP
                 if ( "ldapServer".equalsIgnoreCase( idAttribute.getValue() ) )
                 {
-                    // Getting the 'ipPort' attribute
+                    // IpPort
                     org.dom4j.Attribute ipPortAttribute = ldapServerElement.attribute( "ipPort" );
                     if ( ipPortAttribute == null )
                     {
@@ -918,8 +918,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Allow Anonymous Access
-                    org.dom4j.Attribute allowAnonymousAccess = ldapServerElement.attribute( "allowAnonymousAccess" );
-                    if ( allowAnonymousAccess == null )
+                    org.dom4j.Attribute allowAnonymousAccessAttribute = ldapServerElement
+                        .attribute( "allowAnonymousAccess" );
+                    if ( allowAnonymousAccessAttribute == null )
                     {
                         // If the 'allowAnonymousAccess' attribute does not exists,
                         // we throw an exception
@@ -928,7 +929,78 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
                     else
                     {
-                        serverConfiguration.setAllowAnonymousAccess( parseBoolean( allowAnonymousAccess.getValue() ) );
+                        serverConfiguration.setAllowAnonymousAccess( parseBoolean( allowAnonymousAccessAttribute
+                            .getValue() ) );
+                    }
+
+                    // SaslHost
+                    org.dom4j.Attribute saslHostAttribute = ldapServerElement.attribute( "saslHost" );
+                    if ( saslHostAttribute == null )
+                    {
+                        // If the 'saslHost' attribute does not exists,
+                        // we throw an exception
+                        throw new ServerXmlIOException(
+                            "Unable to find the 'saslHost' attribute for the 'ldapServer' bean." );
+                    }
+                    else
+                    {
+                        serverConfiguration.setSaslHost( saslHostAttribute.getValue() );
+                    }
+
+                    // SaslPrincipal
+                    org.dom4j.Attribute saslPrincipalAttribute = ldapServerElement.attribute( "saslPrincipal" );
+                    if ( saslPrincipalAttribute == null )
+                    {
+                        // If the 'saslPrincipal' attribute does not exists,
+                        // we throw an exception
+                        throw new ServerXmlIOException(
+                            "Unable to find the 'saslPrincipal' attribute for the 'ldapServer' bean." );
+                    }
+                    else
+                    {
+                        serverConfiguration.setSaslPrincipal( saslPrincipalAttribute.getValue() );
+                    }
+
+                    // SearchBaseDn
+                    org.dom4j.Attribute searchBaseDnAttribute = ldapServerElement.attribute( "searchBaseDn" );
+                    if ( searchBaseDnAttribute == null )
+                    {
+                        // If the 'searchBaseDn' attribute does not exists,
+                        // we throw an exception
+                        throw new ServerXmlIOException(
+                            "Unable to find the 'searchBaseDn' attribute for the 'ldapServer' bean." );
+                    }
+                    else
+                    {
+                        serverConfiguration.setSearchBaseDn( searchBaseDnAttribute.getValue() );
+                    }
+
+                    // MaxTimeLimit
+                    org.dom4j.Attribute maxTimeLimitAttribute = ldapServerElement.attribute( "maxTimeLimit" );
+                    if ( maxTimeLimitAttribute == null )
+                    {
+                        // If the 'maxTimeLimit' attribute does not exists,
+                        // we throw an exception
+                        throw new ServerXmlIOException(
+                            "Unable to find the 'maxTimeLimit' attribute for the 'ldapServer' bean." );
+                    }
+                    else
+                    {
+                        serverConfiguration.setMaxTimeLimit( Integer.parseInt( maxTimeLimitAttribute.getValue() ) );
+                    }
+
+                    // MaxSizeLimit
+                    org.dom4j.Attribute maxSizeLimitAttribute = ldapServerElement.attribute( "maxSizeLimit" );
+                    if ( maxSizeLimitAttribute == null )
+                    {
+                        // If the 'maxSizeLimit' attribute does not exists,
+                        // we throw an exception
+                        throw new ServerXmlIOException(
+                            "Unable to find the 'maxSizeLimit' attribute for the 'ldapServer' bean." );
+                    }
+                    else
+                    {
+                        serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimitAttribute.getValue() ) );
                     }
 
                     // Extended operations
