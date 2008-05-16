@@ -136,7 +136,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     private List<InterceptorEnum> interceptors;
 
     /** The Extended Operations */
-    private List<ExtendedOperation> extendedOperations;
+    private List<ExtendedOperationEnum> extendedOperations;
 
 
     /**
@@ -151,7 +151,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
         saslRealms = new ArrayList<String>();
         partitions = new ArrayList<Partition>();
         interceptors = new ArrayList<InterceptorEnum>();
-        extendedOperations = new ArrayList<ExtendedOperation>();
+        extendedOperations = new ArrayList<ExtendedOperationEnum>();
         binaryAttributes = new ArrayList<String>();
     }
 
@@ -178,7 +178,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      true (as per the general contract of the Collection.add method).
      */
-    public boolean addExtendedOperation( ExtendedOperation extendedOperation )
+    public boolean addExtendedOperation( ExtendedOperationEnum extendedOperation )
     {
         return extendedOperations.add( extendedOperation );
     }
@@ -332,7 +332,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      the Extended Operations List
      */
-    public List<ExtendedOperation> getExtendedOperations()
+    public List<ExtendedOperationEnum> getExtendedOperations()
     {
         return extendedOperations;
     }
@@ -672,7 +672,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      true if this list contained the specified element.
      */
-    public boolean removeExtendedOperation( ExtendedOperation extendedOperation )
+    public boolean removeExtendedOperation( ExtendedOperationEnum extendedOperation )
     {
         return extendedOperations.remove( extendedOperation );
     }
@@ -886,7 +886,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @param extendedOperations
      *      the new value
      */
-    public void setExtendedOperations( List<ExtendedOperation> extendedOperations )
+    public void setExtendedOperations( List<ExtendedOperationEnum> extendedOperations )
     {
         this.extendedOperations = extendedOperations;
     }

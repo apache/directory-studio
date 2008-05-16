@@ -24,9 +24,6 @@ import org.apache.directory.studio.apacheds.configuration.model.v152.Interceptor
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -63,17 +60,6 @@ public class InterceptorDetailsPage implements IDetailsPage
     // UI fields
     private Text nameText;
     private Text descriptionText;
-
-    // Listeners
-    /** The Modify Listener for Text Widgets */
-    private ModifyListener textModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            masterDetailsBlock.setEditorDirty();
-            dirty = true;
-        }
-    };
 
 
     /**
@@ -115,10 +101,9 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     private void createDetailsSection( Composite parent, FormToolkit toolkit )
     {
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.marginWidth = 10;
         section.setText( "Interceptor Details" ); //$NON-NLS-1$
-        section.setDescription( "Set the properties of the interceptor." ); //$NON-NLS-1$
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
         section.setLayoutData( td );
@@ -145,22 +130,6 @@ public class InterceptorDetailsPage implements IDetailsPage
     }
 
 
-    /**
-     * Adds listeners to UI fields.
-     */
-    private void addListeners()
-    {
-    }
-
-
-    /**
-     * Removes listeners to UI fields.
-     */
-    private void removeListeners()
-    {
-    }
-
-
     /* (non-Javadoc)
      * @see org.eclipse.ui.forms.IPartSelectionListener#selectionChanged(org.eclipse.ui.forms.IFormPart, org.eclipse.jface.viewers.ISelection)
      */
@@ -184,10 +153,6 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        if ( input != null )
-        {
-            //TODO
-        }
     }
 
 
@@ -231,8 +196,6 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     public void refresh()
     {
-        removeListeners();
-
         // Name
         String name = input.getName();
         nameText.setText( ( name == null ) ? "" : name );
@@ -240,8 +203,6 @@ public class InterceptorDetailsPage implements IDetailsPage
         // Description
         String description = input.getDescription();
         descriptionText.setText( ( description == null ) ? "" : description );
-
-        addListeners();
     }
 
 

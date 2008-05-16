@@ -20,7 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v152;
 
 
-import org.apache.directory.studio.apacheds.configuration.model.v152.ExtendedOperation;
+import org.apache.directory.studio.apacheds.configuration.model.v152.ExtendedOperationEnum;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -54,13 +54,14 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
     private IManagedForm mform;
 
     /** The input Interceptor */
-    private ExtendedOperation input;
+    private ExtendedOperationEnum input;
 
     /** The dirty flag */
     private boolean dirty = false;
 
     // UI fields
-    private Text classTypeText;
+    private Text nameText;
+    private Text descriptionText;
 
     // Listeners
     /** The Modify Listener for Text Widgets */
@@ -113,43 +114,32 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     private void createDetailsSection( Composite parent, FormToolkit toolkit )
     {
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
         section.marginWidth = 10;
         section.setText( "Extended Operation Details" ); //$NON-NLS-1$
-        section.setDescription( "Set the properties of the extended operation." ); //$NON-NLS-1$
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
         section.setLayoutData( td );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 3, false );
+        GridLayout glayout = new GridLayout( 2, false );
         client.setLayout( glayout );
         section.setClient( client );
 
-        // Class
-        toolkit.createLabel( client, "Class:" );
-        classTypeText = toolkit.createText( client, "" );
-        classTypeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        // Name
+        toolkit.createLabel( client, "Name:" );
+        nameText = toolkit.createText( client, "" );
+        nameText.setEditable( false );
+        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        addListeners();
-    }
-
-
-    /**
-     * Adds listeners to UI fields.
-     */
-    private void addListeners()
-    {
-        classTypeText.addModifyListener( textModifyListener );
-    }
-
-
-    /**
-     * Removes listeners to UI fields.
-     */
-    private void removeListeners()
-    {
-        classTypeText.removeModifyListener( textModifyListener );
+        // Description
+        toolkit.createLabel( client, "Description:" );
+        descriptionText = toolkit.createText( client, "", SWT.MULTI | SWT.WRAP | SWT.V_SCROLL );
+        descriptionText.setEditable( false );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        gridData.widthHint = 100;
+        gridData.heightHint = 75;
+        descriptionText.setLayoutData( gridData );
     }
 
 
@@ -161,7 +151,7 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
         IStructuredSelection ssel = ( IStructuredSelection ) selection;
         if ( ssel.size() == 1 )
         {
-            input = ( ExtendedOperation ) ssel.getFirstElement();
+            input = ( ExtendedOperationEnum ) ssel.getFirstElement();
         }
         else
         {
@@ -176,10 +166,6 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public void commit( boolean onSave )
     {
-        if ( input != null )
-        {
-            input.setClassType( classTypeText.getText() );
-        }
     }
 
 
@@ -223,11 +209,13 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public void refresh()
     {
-        removeListeners();
+        // Name
+        String name = input.getName();
+        nameText.setText( ( name == null ) ? "" : name );
 
-        classTypeText.setText( input.getClassType() );
-
-        addListeners();
+        // Description
+        String description = input.getDescription();
+        descriptionText.setText( ( description == null ) ? "" : description );
     }
 
 
@@ -236,7 +224,7 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
      */
     public void setFocus()
     {
-        classTypeText.setFocus();
+        nameText.setFocus();
     }
 
 

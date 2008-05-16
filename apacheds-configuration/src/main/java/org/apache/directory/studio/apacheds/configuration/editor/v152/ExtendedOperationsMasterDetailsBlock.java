@@ -25,15 +25,18 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ExtendedOperation;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.ExtendedOperationDialog;
+import org.apache.directory.studio.apacheds.configuration.model.v152.ExtendedOperationEnum;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -68,15 +71,13 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     private ServerConfigurationV152 serverConfiguration;
 
     /** The Extended Operations List */
-    private List<ExtendedOperation> extendedOperations;
+    private List<ExtendedOperationEnum> extendedOperations;
 
     /** The Details Page */
     private ExtendedOperationDetailsPage detailsPage;
 
-    private static final String NEW_NAME = "newExtendedOperation";
-
     // UI Fields
-    private CheckboxTableViewer viewer;
+    private TableViewer viewer;
     private Button addButton;
     private Button deleteButton;
 
@@ -89,7 +90,8 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     public ExtendedOperationsMasterDetailsBlock( FormPage page )
     {
         this.page = page;
-        serverConfiguration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) page.getEditor() ).getServerConfiguration();
+        serverConfiguration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) page.getEditor() )
+            .getServerConfiguration();
         extendedOperations = serverConfiguration.getExtendedOperations();
     }
 
@@ -117,14 +119,14 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
         section.setClient( client );
 
         // Creatig the Table and Table Viewer
-        Table table = toolkit.createTable( client, SWT.CHECK );
+        Table table = toolkit.createTable( client, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         gd.heightHint = 20;
         gd.widthHint = 100;
         table.setLayoutData( gd );
         final SectionPart spart = new SectionPart( section );
         managedForm.addPart( spart );
-        viewer = new CheckboxTableViewer( table );
+        viewer = new TableViewer( table );
         viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -183,11 +185,15 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
         {
             public void widgetSelected( SelectionEvent e )
             {
-                ExtendedOperation newExtendedOperation = new ExtendedOperation( getNewName() );
-                extendedOperations.add( newExtendedOperation );
-                viewer.refresh();
-                viewer.setSelection( new StructuredSelection( newExtendedOperation ) );
-                setEditorDirty();
+                ExtendedOperationDialog dialog = new ExtendedOperationDialog( extendedOperations );
+                if ( Dialog.OK == dialog.open() )
+                {
+                    ExtendedOperationEnum newExtendedOperation = dialog.getExtendedOperation();
+                    extendedOperations.add( newExtendedOperation );
+                    viewer.refresh();
+                    viewer.setSelection( new StructuredSelection( newExtendedOperation ) );
+                    setEditorDirty();
+                }
             }
         } );
 
@@ -198,7 +204,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
                 StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
                 if ( !selection.isEmpty() )
                 {
-                    ExtendedOperation extendedOperation = ( ExtendedOperation ) selection.getFirstElement();
+                    ExtendedOperationEnum extendedOperation = ( ExtendedOperationEnum ) selection.getFirstElement();
 
                     extendedOperations.remove( extendedOperation );
                     viewer.refresh();
@@ -206,38 +212,6 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
                 }
             }
         } );
-    }
-
-
-    /**
-     * Gets a new Name for a new Extended Operation.
-     *
-     * @return 
-     *      a new Name for a new Extended Operation
-     */
-    private String getNewName()
-    {
-        int counter = 1;
-        String name = NEW_NAME;
-        boolean ok = false;
-
-        while ( !ok )
-        {
-            ok = true;
-            name = NEW_NAME + counter;
-
-            for ( ExtendedOperation extendedOperation : extendedOperations )
-            {
-                if ( extendedOperation.getClassType().equalsIgnoreCase( name ) )
-                {
-                    ok = false;
-                }
-            }
-
-            counter++;
-        }
-
-        return name;
     }
 
 
@@ -285,7 +259,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     protected void registerPages( DetailsPart detailsPart )
     {
         detailsPage = new ExtendedOperationDetailsPage( this );
-        detailsPart.registerPage( ExtendedOperation.class, detailsPage );
+        detailsPart.registerPage( ExtendedOperationEnum.class, detailsPage );
     }
 
 

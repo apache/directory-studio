@@ -597,7 +597,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             // Looping on all interceptor elements
             for ( Iterator<?> i = interceptorsElement.elementIterator(); i.hasNext(); )
             {
-                // Getting the 'jbdmPartition' element
+                // Getting the element
                 Element interceptorElement = ( Element ) i.next();
 
                 // Checking which interceptor it is
@@ -910,7 +910,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                         // If the 'ipPort' attribute does not exists,
                         // we throw an exception
                         throw new ServerXmlIOException(
-                            "Unable to find the 'ipPort' attribute for the 'ldapsServer' bean." );
+                            "Unable to find the 'ipPort' attribute for the 'ldapServer' bean." );
                     }
                     else
                     {
@@ -924,16 +924,59 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                         // If the 'allowAnonymousAccess' attribute does not exists,
                         // we throw an exception
                         throw new ServerXmlIOException(
-                            "Unable to find the 'allowAnonymousAccess' attribute for the 'ldapsServer' bean." );
+                            "Unable to find the 'allowAnonymousAccess' attribute for the 'ldapServer' bean." );
                     }
                     else
                     {
                         serverConfiguration.setAllowAnonymousAccess( parseBoolean( allowAnonymousAccess.getValue() ) );
                     }
 
+                    // Extended operations
+                    readExtendedOperations( ldapServerElement, serverConfiguration );
+
                     return;
                 }
             }
+        }
+    }
+
+
+    /**
+     * Reads the extended operations.
+     *
+     * @param element
+     *      the element
+     * @param serverConfiguration
+     *      the server configuration
+     */
+    private void readExtendedOperations( Element element, ServerConfigurationV152 serverConfiguration )
+    {
+        // Getting the 'interceptors
+        Element interceptorsElement = element.element( "extendedOperationHandlers" );
+        if ( interceptorsElement != null )
+        {
+            // Looping on all interceptor elements
+            for ( Iterator<?> i = interceptorsElement.elementIterator(); i.hasNext(); )
+            {
+                // Getting the element
+                Element extendedOperationElement = ( Element ) i.next();
+
+                // Checking which extended operation it is
+                String extendedOperationElementName = extendedOperationElement.getName();
+                if ( "startTlsHandler".equalsIgnoreCase( extendedOperationElementName ) )
+                {
+                    serverConfiguration.addExtendedOperation( ExtendedOperationEnum.START_TLS );
+                }
+                if ( "gracefulShutdownHandler".equalsIgnoreCase( extendedOperationElementName ) )
+                {
+                    serverConfiguration.addExtendedOperation( ExtendedOperationEnum.GRACEFUL_SHUTDOWN );
+                }
+                if ( "launchDiagnosticUiHandler".equalsIgnoreCase( extendedOperationElementName ) )
+                {
+                    serverConfiguration.addExtendedOperation( ExtendedOperationEnum.LAUNCH_DIAGNOSTIC_UI );
+                }
+            }
+
         }
     }
 
@@ -1580,7 +1623,23 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             saslRealmsElement.addElement( new QName( "value", NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslRealm );
         }
 
-        // TODO Add Extended Operations
+        // Adding 'ExtendedOperations' element
+        Element extendedOperationsElement = ldapServerElement.addElement( "extendedOperations" );
+
+        // Adding each extended operation item
+        List<ExtendedOperationEnum> extendedOperations = serverConfiguration.getExtendedOperations();
+        if ( extendedOperations.contains( ExtendedOperationEnum.START_TLS ) )
+        {
+            extendedOperationsElement.addElement( "startTlsHandler" );
+        }
+        if ( extendedOperations.contains( ExtendedOperationEnum.GRACEFUL_SHUTDOWN ) )
+        {
+            extendedOperationsElement.addElement( "gracefulShutDownHandler" );
+        }
+        if ( extendedOperations.contains( ExtendedOperationEnum.LAUNCH_DIAGNOSTIC_UI ) )
+        {
+            extendedOperationsElement.addElement( "launchDiagnosticUiHandler" );
+        }
     }
 
 
@@ -1600,8 +1659,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         // Id
         apacheDSElement.addAttribute( "id", "apacheDS" );
 
-        // SyncPeriodMillis
-        apacheDSElement.addAttribute( "syncPeriodMillis", "" + serverConfiguration.getSynchronizationPeriod() );
+        // SynchPeriodMillis
+        apacheDSElement.addAttribute( "synchPeriodMillis", "" + serverConfiguration.getSynchronizationPeriod() );
 
         // AllowAnonymousAccess
         apacheDSElement.addAttribute( "allowAnonymousAccess", "" + serverConfiguration.isAllowAnonymousAccess() );
