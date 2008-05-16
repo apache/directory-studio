@@ -24,6 +24,7 @@ import org.apache.directory.studio.apacheds.configuration.model.v152.Interceptor
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
@@ -123,7 +124,7 @@ public class InterceptorDetailsPage implements IDetailsPage
         section.setLayoutData( td );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 3, false );
+        GridLayout glayout = new GridLayout( 2, false );
         client.setLayout( glayout );
         section.setClient( client );
 
@@ -131,13 +132,14 @@ public class InterceptorDetailsPage implements IDetailsPage
         toolkit.createLabel( client, "Name:" );
         nameText = toolkit.createText( client, "" );
         nameText.setEditable( false );
-        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Description
         toolkit.createLabel( client, "Description:" );
-        descriptionText = toolkit.createText( client, "" );
+        descriptionText = toolkit.createText( client, "", SWT.MULTI | SWT.WRAP | SWT.V_SCROLL );
         descriptionText.setEditable( false );
-        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        gridData.widthHint = 100;
         gridData.heightHint = 75;
         descriptionText.setLayoutData( gridData );
     }
@@ -148,8 +150,6 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
-        nameText.addModifyListener( textModifyListener );
-        descriptionText.addModifyListener( textModifyListener );
     }
 
 
@@ -158,8 +158,6 @@ public class InterceptorDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
-        nameText.removeModifyListener( textModifyListener );
-        descriptionText.removeModifyListener( textModifyListener );
     }
 
 

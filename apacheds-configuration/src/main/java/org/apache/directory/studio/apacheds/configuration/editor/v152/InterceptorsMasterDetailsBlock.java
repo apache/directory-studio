@@ -75,8 +75,6 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
     /** The Details Page */
     private InterceptorDetailsPage detailsPage;
 
-    private static final String NEW_NAME = "New Interceptor ";
-
     // UI Fields
     private TableViewer viewer;
     private Button addButton;
@@ -289,38 +287,6 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
                 }
             }
         } );
-    }
-
-
-    /**
-     * Gets a new Name for a new Extended Operation.
-     *
-     * @return 
-     *      a new Name for a new Extended Operation
-     */
-    private String getNewName()
-    {
-        int counter = 1;
-        String name = NEW_NAME;
-        boolean ok = false;
-
-        while ( !ok )
-        {
-            ok = true;
-            name = NEW_NAME + counter;
-
-            for ( InterceptorEnum interceptor : interceptors )
-            {
-                if ( interceptor.getName().equalsIgnoreCase( name ) )
-                {
-                    ok = false;
-                }
-            }
-
-            counter++;
-        }
-
-        return name;
     }
 
 

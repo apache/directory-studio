@@ -215,6 +215,10 @@ public class InterceptorDialog extends Dialog
         {
             availableInterceptors.add( InterceptorEnum.SCHEMA );
         }
+        if ( !initialInterceptors.contains( InterceptorEnum.SUBENTRY ) )
+        {
+            availableInterceptors.add( InterceptorEnum.SUBENTRY );
+        }
         if ( !initialInterceptors.contains( InterceptorEnum.COLLECTIVE_ATTRIBUTE ) )
         {
             availableInterceptors.add( InterceptorEnum.COLLECTIVE_ATTRIBUTE );

@@ -828,7 +828,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             org.dom4j.Attribute idAttribute = ldapServerElement.attribute( "id" );
             if ( idAttribute == null )
             {
-                // TODO throw an error
+                // If the 'id' attribute does not exists,
+                // we throw an exception
+                throw new ServerXmlIOException( "Unable to find the 'id' attribute for the 'ldapServer' bean." );
             }
             else
             {
@@ -892,7 +894,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             org.dom4j.Attribute idAttribute = ldapServerElement.attribute( "id" );
             if ( idAttribute == null )
             {
-                // TODO throw an error
+                // If the 'id' attribute does not exists,
+                // we throw an exception
+                throw new ServerXmlIOException( "Unable to find the 'id' attribute for the 'ldapServer' bean." );
             }
             else
             {
@@ -1267,8 +1271,61 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createInterceptors( Element interceptorsElement, ServerConfigurationV152 serverConfiguration )
     {
-        // TODO Auto-generated method stub
+        List<InterceptorEnum> interceptors = serverConfiguration.getInterceptors();
 
+        if ( interceptors.contains( InterceptorEnum.NORMALIZATION ) )
+        {
+            interceptorsElement.addElement( "normalizationInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.AUTHENTICATION ) )
+        {
+            interceptorsElement.addElement( "authenticationInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.REFERRAL ) )
+        {
+            interceptorsElement.addElement( "referralInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.ACI_AUTHORIZATION ) )
+        {
+            interceptorsElement.addElement( "aciAuthorizationInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.DEFAULT_AUTHORIZATION ) )
+        {
+            interceptorsElement.addElement( "defaultAuthorizationInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.EXCEPTION ) )
+        {
+            interceptorsElement.addElement( "exceptionInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.OPERATIONAL_ATTRIBUTE ) )
+        {
+            interceptorsElement.addElement( "operationalAttributeInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.SCHEMA ) )
+        {
+            interceptorsElement.addElement( "schemaInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.SUBENTRY ) )
+        {
+            interceptorsElement.addElement( "subentryInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.COLLECTIVE_ATTRIBUTE ) )
+        {
+            interceptorsElement.addElement( "collectiveAttributeInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.EVENT ) )
+        {
+            interceptorsElement.addElement( "eventInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.TRIGGER ) )
+        {
+            interceptorsElement.addElement( "triggerInterceptor" );
+        }
+        if ( interceptors.contains( InterceptorEnum.REPLICATION ) )
+        {
+            // TODO support replication interceptor
+            //            interceptorsElement.addElement( "replicationInterceptor" );
+        }
     }
 
 

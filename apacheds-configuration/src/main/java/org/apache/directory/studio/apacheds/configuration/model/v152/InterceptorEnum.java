@@ -20,6 +20,8 @@
 package org.apache.directory.studio.apacheds.configuration.model.v152;
 
 
+
+
 /**
  * This enum contains all the interceptors.
  *
@@ -29,43 +31,63 @@ package org.apache.directory.studio.apacheds.configuration.model.v152;
 public enum InterceptorEnum
 {
     /** The Normalization Interceptor */
-    NORMALIZATION("Normalization", "Description"),
+    NORMALIZATION("Normalization", "A name normalization interceptor. This interceptor makes sure all relative "
+        + "and distinguished names are normalized before calls are made against "
+        + "the respective interface methods on PartitionNexus."),
 
     /** The Authentication Interceptor */
-    AUTHENTICATION("Authentication", "Description"),
+    AUTHENTICATION("Authentication", "An interceptor that authenticates users."),
 
     /** The Referral Interceptor */
-    REFERRAL("Referral", "Description"),
+    REFERRAL("Referral", "An interceptor which is responsible referral handling behaviors.  It "
+        + "manages  referral handling behavior when the Context#REFERRAL "
+        + "is implicitly or explicitly set to \"ignore\", when set to \"throw\" " + "and when set to \"follow\"."),
 
     /** The ACI Authorization Interceptor */
-    ACI_AUTHORIZATION("ACI Authorization", "Description"),
+    ACI_AUTHORIZATION("ACI Authorization", "An ACI based authorization interceptor."),
 
     /** The Default Authorization Interceptor */
-    DEFAULT_AUTHORIZATION("Default Authorization", "Description"),
+    DEFAULT_AUTHORIZATION("Default Authorization", "An interceptor that controls access to PartitionNexus. If a user "
+        + "tries to perform any operations that requires permission he or she "
+        + "doesn't have, NoPermissionException will be thrown and therefore the "
+        + "current invocation chain will terminate."),
 
     /** The Exception Interceptor */
-    EXCEPTION("Exception", "Description"),
+    EXCEPTION("Exception", "An interceptor that detects any operations that breaks integrity of "
+        + "Partition and terminates the current invocation chain by throwing a "
+        + "NamingException. Those operations include when an entry already "
+        + "exists at a DN and is added once again to the same DN."),
 
     /** The Operational Attribute Interceptor */
-    OPERATIONAL_ATTRIBUTE("Operational Attribute", "Description"),
+    OPERATIONAL_ATTRIBUTE("Operational Attribute", "An interceptor that adds or modifies the default attributes of "
+        + "entries. There are four default attributes for now; 'creatorsName', "
+        + "'createTimestamp', 'modifiersName', 'modifyTimestamp'."),
 
     /** The Schema Interceptor */
-    SCHEMA("Schema", "Description"),
+    SCHEMA("Schema", "An interceptor that manages and enforces schemas."),
 
     /** The Sub-Entry Interceptor */
-    SUBENTRY("Sub-Entry", "Description"),
+    SUBENTRY("Sub-Entry", "The sub-entry interceptor service which is responsible for filtering "
+        + "out sub-entries on search operations and injecting operational attributes"),
 
     /** The Collective Attribute Interceptor */
-    COLLECTIVE_ATTRIBUTE("Collective Attribute", "Description"),
+    COLLECTIVE_ATTRIBUTE("Collective Attribute", "An interceptor based service dealing with collective attribute "
+        + "management. This service intercepts read operations on entries to "
+        + "inject collective attribute value pairs into the response based on "
+        + "the entires inclusion within collectiveAttributeSpecificAreas and collectiveAttributeInnerAreas."),
 
     /** The Event Interceptor */
-    EVENT("Event", "Description"),
+    EVENT("Event", "An interceptor based serivice for notifying NamingListeners of "
+        + "EventContext and EventDirContext changes."),
 
     /** The Trigger Interceptor */
-    TRIGGER("Trigger", "Description"),
+    TRIGGER("Trigger", "The trigger interceptor based on the Trigger Specification."),
 
     /** The Replication Interceptor */
-    REPLICATION("Replication", "Description", new ReplicationInterceptorConfiguration());
+    REPLICATION("Replication", "An interceptor that intercepts LDAP operations and propagates the "
+        + "changes occurred by the operations into other ReplicaIds so the DIT "
+        + "of each ReplicaId in the cluster has the same content without any conflict.",
+        new ReplicationInterceptorConfiguration());
 
     /** The name */
     private String name;
