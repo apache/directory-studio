@@ -307,17 +307,17 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
             }
 
             // Aliases
-            if ( ( getNames() == null ) && ( oc.getNames() != null ) )
+            if ( ( getNamesRef() == null ) && ( oc.getNamesRef() != null ) )
             {
                 return false;
             }
-            else if ( ( getNames() != null ) && ( oc.getNames() == null ) )
+            else if ( ( getNamesRef() != null ) && ( oc.getNamesRef() == null ) )
             {
                 return false;
             }
-            else if ( ( getNames() != null ) && ( oc.getNames() != null ) )
+            else if ( ( getNamesRef() != null ) && ( oc.getNamesRef() != null ) )
             {
-                if ( !getNames().equals( oc.getNames() ) )
+                if ( !getNamesRef().equals( oc.getNamesRef() ) )
                 {
                     return false;
                 }

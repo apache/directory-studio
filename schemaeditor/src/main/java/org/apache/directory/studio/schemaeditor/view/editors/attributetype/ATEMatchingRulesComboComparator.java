@@ -41,8 +41,8 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof MatchingRuleImpl && o2 instanceof MatchingRuleImpl )
         {
-            String[] mr1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
-            String[] mr2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+            String[] mr1Names = ( ( MatchingRuleImpl ) o1 ).getNamesRef();
+            String[] mr2Names = ( ( MatchingRuleImpl ) o2 ).getNamesRef();
 
             if ( ( mr1Names != null ) && ( mr2Names != null ) && ( mr1Names.length > 0 ) && ( mr2Names.length > 0 ) )
             {
@@ -51,7 +51,7 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
         }
         else if ( o1 instanceof MatchingRuleImpl && o2 instanceof NonExistingMatchingRule )
         {
-            String[] mr1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
+            String[] mr1Names = ( ( MatchingRuleImpl ) o1 ).getNamesRef();
             String mr2Name = ( ( NonExistingMatchingRule ) o2 ).getName();
 
             if ( ( mr1Names != null ) && ( mr2Name != null ) && ( mr1Names.length > 0 ) )
@@ -62,7 +62,7 @@ public class ATEMatchingRulesComboComparator implements Comparator<Object>
         else if ( o1 instanceof NonExistingMatchingRule && o2 instanceof MatchingRuleImpl )
         {
             String mr1Name = ( ( NonExistingMatchingRule ) o1 ).getName();
-            String[] mr2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+            String[] mr2Names = ( ( MatchingRuleImpl ) o2 ).getNamesRef();
 
             if ( ( mr1Name != null ) && ( mr2Names != null ) && ( mr2Names.length > 0 ) )
             {

@@ -252,7 +252,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             holder.setDescription( at.getDescription() );
             holder.setEquality( at.getEqualityName() );
             List<String> names = new ArrayList<String>();
-            for ( String name : at.getNames() )
+            for ( String name : at.getNamesRef() )
             {
                 names.add( name );
             }
@@ -345,7 +345,7 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
             }
             holder.setMust( mustList );
             List<String> names = new ArrayList<String>();
-            for ( String name : oc.getNames() )
+            for ( String name : oc.getNamesRef() )
             {
                 names.add( name );
             }

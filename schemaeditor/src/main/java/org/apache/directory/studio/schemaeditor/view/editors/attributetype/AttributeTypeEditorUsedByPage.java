@@ -262,7 +262,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // As Mandatory Attribute Section
         Section mandatoryAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        String names[] = modifiedAttributeType.getNames();
+        String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
             mandatoryAttributeSection.setDescription( "The attribute type" + " '" + ViewUtils.concateAliases( names )
@@ -305,7 +305,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         // Matching Rules Section
         Section optionalAttributeSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        String names[] = modifiedAttributeType.getNames();
+        String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
             optionalAttributeSection.setDescription( "The attribute type" + " '" + ViewUtils.concateAliases( names )

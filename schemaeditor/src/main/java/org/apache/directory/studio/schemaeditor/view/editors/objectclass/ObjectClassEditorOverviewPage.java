@@ -266,7 +266,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNames() );
+            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedObjectClass.getNamesRef() );
             if ( editDialog.open() != Window.OK )
             {
                 return;
@@ -274,9 +274,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
             if ( editDialog.isDirty() )
             {
                 modifiedObjectClass.setNames( editDialog.getAliases() );
-                if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().length != 0 ) )
+                if ( ( modifiedObjectClass.getNamesRef() != null ) && ( modifiedObjectClass.getNamesRef().length != 0 ) )
                 {
-                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
+                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
                 }
                 else
                 {
@@ -477,7 +477,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMusts.add( must );
                 }
             }
-            String[] names = at.getNames();
+            String[] names = at.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 newMusts.add( names[0] );
@@ -516,7 +516,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
                 if ( selectedElement instanceof AttributeTypeImpl )
                 {
-                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNames() )
+                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNamesRef() )
                     {
                         newMusts.remove( name );
                     }
@@ -614,7 +614,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                     newMays.add( may );
                 }
             }
-            String[] names = at.getNames();
+            String[] names = at.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 newMays.add( names[0] );
@@ -653,7 +653,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
                 if ( selectedElement instanceof AttributeTypeImpl )
                 {
-                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNames() )
+                    for ( String name : ( ( AttributeTypeImpl ) selectedElement ).getNamesRef() )
                     {
                         newMays.remove( name );
                     }
@@ -745,7 +745,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
             {
                 superiors.add( sup );
             }
-            String[] names = oc.getNames();
+            String[] names = oc.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 superiors.add( names[0] );
@@ -784,7 +784,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
                 if ( selectedElement instanceof ObjectClassImpl )
                 {
-                    for ( String name : ( ( ObjectClassImpl ) selectedElement ).getNames() )
+                    for ( String name : ( ( ObjectClassImpl ) selectedElement ).getNamesRef() )
                     {
                         superiors.remove( name );
                     }
@@ -1036,9 +1036,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
     private void fillInUiFields()
     {
         // ALIASES Label
-        if ( ( modifiedObjectClass.getNames() != null ) && ( modifiedObjectClass.getNames().length != 0 ) )
+        if ( ( modifiedObjectClass.getNamesRef() != null ) && ( modifiedObjectClass.getNamesRef().length != 0 ) )
         {
-            aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNames() ) );
+            aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
         }
         else
         {

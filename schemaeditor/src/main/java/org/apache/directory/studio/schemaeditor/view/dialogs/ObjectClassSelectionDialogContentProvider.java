@@ -89,8 +89,8 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             {
                 public int compare( ObjectClassImpl oc1, ObjectClassImpl oc2 )
                 {
-                    String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
-                    String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
+                    String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNamesRef();
+                    String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNamesRef();
 
                     if ( ( oc1Names == null || oc1Names.length == 0 ) && ( oc2Names == null || oc2Names.length == 0 ) )
                     {
@@ -116,7 +116,7 @@ public class ObjectClassSelectionDialogContentProvider implements IStructuredCon
             // Searching for all matching elements
             for ( ObjectClassImpl oc : ocList )
             {
-                for ( String name : oc.getNames() )
+                for ( String name : oc.getNamesRef() )
                 {
                     Matcher m = pattern.matcher( name );
                     if ( m.matches() )

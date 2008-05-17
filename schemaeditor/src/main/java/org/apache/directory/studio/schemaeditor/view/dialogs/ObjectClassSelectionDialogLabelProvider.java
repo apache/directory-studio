@@ -61,7 +61,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) element;
 
-            String[] names = oc.getNames();
+            String[] names = oc.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";

@@ -74,32 +74,32 @@ public class SearchViewContentProvider implements IStructuredContentProvider, IT
                     AttributeTypeImpl at1 = ( AttributeTypeImpl ) o1;
                     AttributeTypeImpl at2 = ( AttributeTypeImpl ) o2;
 
-                    o1Names = at1.getNames();
-                    o2Names = at2.getNames();
+                    o1Names = at1.getNamesRef();
+                    o2Names = at2.getNamesRef();
                 }
                 else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof ObjectClassImpl ) )
                 {
                     ObjectClassImpl oc1 = ( ObjectClassImpl ) o1;
                     ObjectClassImpl oc2 = ( ObjectClassImpl ) o2;
 
-                    o1Names = oc1.getNames();
-                    o2Names = oc2.getNames();
+                    o1Names = oc1.getNamesRef();
+                    o2Names = oc2.getNamesRef();
                 }
                 else if ( ( o1 instanceof AttributeTypeImpl ) && ( o2 instanceof ObjectClassImpl ) )
                 {
                     AttributeTypeImpl at = ( AttributeTypeImpl ) o1;
                     ObjectClassImpl oc = ( ObjectClassImpl ) o2;
 
-                    o1Names = at.getNames();
-                    o2Names = oc.getNames();
+                    o1Names = at.getNamesRef();
+                    o2Names = oc.getNamesRef();
                 }
                 else if ( ( o1 instanceof ObjectClassImpl ) && ( o2 instanceof AttributeTypeImpl ) )
                 {
                     ObjectClassImpl oc = ( ObjectClassImpl ) o1;
                     AttributeTypeImpl at = ( AttributeTypeImpl ) o2;
 
-                    o1Names = oc.getNames();
-                    o2Names = at.getNames();
+                    o1Names = oc.getNamesRef();
+                    o2Names = at.getNamesRef();
                 }
 
                 // Comparing the First Name

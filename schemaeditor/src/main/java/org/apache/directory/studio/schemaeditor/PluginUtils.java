@@ -91,7 +91,7 @@ public class PluginUtils
     public static AttributeTypeImpl getClone( AttributeTypeImpl at )
     {
         AttributeTypeImpl clone = new AttributeTypeImpl( at.getOid() );
-        clone.setNames( at.getNames() );
+        clone.setNames( at.getNamesRef() );
         clone.setSchema( at.getSchema() );
         clone.setDescription( at.getDescription() );
         clone.setSuperiorName( at.getSuperiorName() );
@@ -121,7 +121,7 @@ public class PluginUtils
     public static ObjectClassImpl getClone( ObjectClassImpl oc )
     {
         ObjectClassImpl clone = new ObjectClassImpl( oc.getOid() );
-        clone.setNames( oc.getNames() );
+        clone.setNames( oc.getNamesRef() );
         clone.setSchema( oc.getSchema() );
         clone.setDescription( oc.getDescription() );
         clone.setSuperClassesNames( oc.getSuperClassesNames() );

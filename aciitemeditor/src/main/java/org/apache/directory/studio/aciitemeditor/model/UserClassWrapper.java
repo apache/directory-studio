@@ -35,6 +35,7 @@ import javax.naming.Name;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.UserClass;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
@@ -166,7 +167,7 @@ public class UserClassWrapper
         if ( userClass.getClass() == UserClass.Name.class )
         {
             UserClass.Name name = ( UserClass.Name ) userClass;
-            Set<Name> jndiNames = name.getNames();
+            Set<LdapDN> jndiNames = name.getNames();
             for ( Name jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );
@@ -175,7 +176,7 @@ public class UserClassWrapper
         else if ( userClass.getClass() == UserClass.UserGroup.class )
         {
             UserClass.UserGroup userGrops = ( UserClass.UserGroup ) userClass;
-            Set<Name> jndiNames = userGrops.getNames();
+            Set<LdapDN> jndiNames = userGrops.getNames();
             for ( Name jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );

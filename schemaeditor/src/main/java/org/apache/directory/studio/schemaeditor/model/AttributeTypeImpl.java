@@ -357,17 +357,17 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
             }
 
             // Aliases
-            if ( ( getNames() == null ) && ( at.getNames() != null ) )
+            if ( ( getNamesRef() == null ) && ( at.getNamesRef() != null ) )
             {
                 return false;
             }
-            else if ( ( getNames() != null ) && ( at.getNames() == null ) )
+            else if ( ( getNamesRef() != null ) && ( at.getNamesRef() == null ) )
             {
                 return false;
             }
-            else if ( ( getNames() != null ) && ( at.getNames() != null ) )
+            else if ( ( getNamesRef() != null ) && ( at.getNamesRef() != null ) )
             {
-                if ( !getNames().equals( at.getNames() ) )
+                if ( !getNamesRef().equals( at.getNamesRef() ) )
                 {
                     return false;
                 }

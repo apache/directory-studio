@@ -174,8 +174,8 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
                 {
                     if ( ( o1 instanceof MatchingRuleImpl ) && ( o2 instanceof MatchingRuleImpl ) )
                     {
-                        String[] o1Names = ( ( MatchingRuleImpl ) o1 ).getNames();
-                        String[] o2Names = ( ( MatchingRuleImpl ) o2 ).getNames();
+                        String[] o1Names = ( ( MatchingRuleImpl ) o1 ).getNamesRef();
+                        String[] o2Names = ( ( MatchingRuleImpl ) o2 ).getNamesRef();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )
@@ -235,7 +235,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         {
             MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
 
-            String[] names = mr.getNames();
+            String[] names = mr.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return mr.getName();
@@ -264,7 +264,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         {
             MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
 
-            String[] names = mr.getNames();
+            String[] names = mr.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return mr.getName();
@@ -293,7 +293,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
         {
             MatchingRuleImpl mr = ( ( MatchingRuleImpl ) selection );
 
-            String[] names = mr.getNames();
+            String[] names = mr.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return mr.getName();

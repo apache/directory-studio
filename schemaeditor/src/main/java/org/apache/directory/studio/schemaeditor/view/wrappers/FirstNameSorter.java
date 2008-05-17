@@ -45,32 +45,32 @@ public class FirstNameSorter implements Comparator<TreeNode>
             AttributeTypeImpl at1 = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
             AttributeTypeImpl at2 = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
-            o1Names = at1.getNames();
-            o2Names = at2.getNames();
+            o1Names = at1.getNamesRef();
+            o2Names = at2.getNamesRef();
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
             ObjectClassImpl oc1 = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
             ObjectClassImpl oc2 = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
-            o1Names = oc1.getNames();
-            o2Names = oc2.getNames();
+            o1Names = oc1.getNamesRef();
+            o2Names = oc2.getNamesRef();
         }
         else if ( ( o1 instanceof AttributeTypeWrapper ) && ( o2 instanceof ObjectClassWrapper ) )
         {
             AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o1 ).getAttributeType();
             ObjectClassImpl oc = ( ( ObjectClassWrapper ) o2 ).getObjectClass();
 
-            o1Names = at.getNames();
-            o2Names = oc.getNames();
+            o1Names = at.getNamesRef();
+            o2Names = oc.getNamesRef();
         }
         else if ( ( o1 instanceof ObjectClassWrapper ) && ( o2 instanceof AttributeTypeWrapper ) )
         {
             ObjectClassImpl oc = ( ( ObjectClassWrapper ) o1 ).getObjectClass();
             AttributeTypeImpl at = ( ( AttributeTypeWrapper ) o2 ).getAttributeType();
 
-            o1Names = oc.getNames();
-            o2Names = at.getNames();
+            o1Names = oc.getNamesRef();
+            o2Names = at.getNamesRef();
         }
 
         // Comparing the First Name

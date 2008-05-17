@@ -41,8 +41,8 @@ public class ATESyntaxComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof SyntaxImpl && o2 instanceof SyntaxImpl )
         {
-            String[] syntax1Names = ( ( SyntaxImpl ) o1 ).getNames();
-            String[] syntax2Names = ( ( SyntaxImpl ) o2 ).getNames();
+            String[] syntax1Names = ( ( SyntaxImpl ) o1 ).getNamesRef();
+            String[] syntax2Names = ( ( SyntaxImpl ) o2 ).getNamesRef();
 
             if ( ( syntax1Names != null ) && ( syntax2Names != null ) && ( syntax1Names.length > 0 )
                 && ( syntax2Names.length > 0 ) )
@@ -52,7 +52,7 @@ public class ATESyntaxComboComparator implements Comparator<Object>
         }
         else if ( o1 instanceof SyntaxImpl && o2 instanceof NonExistingSyntax )
         {
-            String[] syntax1Names = ( ( SyntaxImpl ) o1 ).getNames();
+            String[] syntax1Names = ( ( SyntaxImpl ) o1 ).getNamesRef();
             String syntax2Name = ( ( NonExistingSyntax ) o2 ).getName();
 
             if ( ( syntax1Names != null ) && ( syntax2Name != null ) && ( syntax1Names.length > 0 ) )
@@ -63,7 +63,7 @@ public class ATESyntaxComboComparator implements Comparator<Object>
         else if ( o1 instanceof NonExistingSyntax && o2 instanceof SyntaxImpl )
         {
             String syntax1Name = ( ( NonExistingSyntax ) o1 ).getName();
-            String[] syntax2Names = ( ( SyntaxImpl ) o2 ).getNames();
+            String[] syntax2Names = ( ( SyntaxImpl ) o2 ).getNamesRef();
 
             if ( ( syntax1Name != null ) && ( syntax2Names != null ) && ( syntax2Names.length > 0 ) )
             {

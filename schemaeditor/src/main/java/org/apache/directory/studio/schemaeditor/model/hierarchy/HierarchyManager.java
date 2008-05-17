@@ -233,7 +233,7 @@ public class HierarchyManager
     private void checkAliasesAndOID( SchemaObject object )
     {
         // Aliases
-        String[] aliases = object.getNames();
+        String[] aliases = object.getNamesRef();
         if ( aliases != null )
         {
             for ( String alias : aliases )
@@ -538,7 +538,7 @@ public class HierarchyManager
     {
         if ( childSuperClassesNames != null )
         {
-            List<String> aliases = Arrays.asList( oc.getNames() );
+            List<String> aliases = Arrays.asList( oc.getNamesRef() );
             if ( aliases != null )
             {
                 for ( String childSuperClassName : childSuperClassesNames )

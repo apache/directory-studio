@@ -525,7 +525,7 @@ public class SchemaHandler
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) object;
             attributeTypesList.add( at );
-            String[] names = at.getNames();
+            String[] names = at.getNamesRef();
             if ( names != null )
             {
                 for ( String name : names )
@@ -539,7 +539,7 @@ public class SchemaHandler
         {
             MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
             matchingRulesList.add( mr );
-            String[] names = mr.getNames();
+            String[] names = mr.getNamesRef();
             if ( names != null )
             {
                 for ( String name : names )
@@ -553,7 +553,7 @@ public class SchemaHandler
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) object;
             objectClassesList.add( oc );
-            String[] names = oc.getNames();
+            String[] names = oc.getNamesRef();
             if ( names != null )
             {
                 for ( String name : names )
@@ -567,7 +567,7 @@ public class SchemaHandler
         {
             SyntaxImpl syntax = ( SyntaxImpl ) object;
             syntaxesList.add( syntax );
-            String[] names = syntax.getNames();
+            String[] names = syntax.getNamesRef();
             if ( names != null )
             {
                 for ( String name : names )
@@ -632,7 +632,7 @@ public class SchemaHandler
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) object;
             attributeTypesList.remove( at );
-            String[] names = at.getNames();
+            String[] names = at.getNamesRef();
             if ( names != null )
             {
                 for ( String name : names )
@@ -646,10 +646,10 @@ public class SchemaHandler
         {
             MatchingRuleImpl mr = ( MatchingRuleImpl ) object;
             matchingRulesList.remove( mr );
-            String[] names = mr.getNames();
+            String[] names = mr.getNamesRef();
             if ( names != null )
             {
-                for ( String name : mr.getNames() )
+                for ( String name : names )
                 {
                     matchingRulesMap.remove( name.toLowerCase() );
                 }
@@ -660,10 +660,10 @@ public class SchemaHandler
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) object;
             objectClassesList.remove( oc );
-            String[] names = oc.getNames();
+            String[] names = oc.getNamesRef();
             if ( names != null )
             {
-                for ( String name : oc.getNames() )
+                for ( String name : names )
                 {
                     objectClassesMap.remove( name.toLowerCase() );
                 }
@@ -674,10 +674,10 @@ public class SchemaHandler
         {
             SyntaxImpl syntax = ( SyntaxImpl ) object;
             syntaxesList.remove( syntax );
-            String[] names = syntax.getNames();
+            String[] names = syntax.getNamesRef();
             if ( names != null )
             {
-                for ( String name : syntax.getNames() )
+                for ( String name : names )
                 {
                     syntaxesMap.remove( name.toLowerCase() );
                 }
@@ -725,7 +725,7 @@ public class SchemaHandler
         removeSchemaObject( at1 );
 
         // Updating the attribute type
-        at1.setNames( at2.getNames() );
+        at1.setNames( at2.getNamesRef() );
         at1.setOid( at2.getOid() );
         at1.setDescription( at2.getDescription() );
         at1.setSuperiorName( at2.getSuperiorName() );
@@ -809,7 +809,7 @@ public class SchemaHandler
         removeSchemaObject( oc1 );
 
         // Updating the object class
-        oc1.setNames( oc2.getNames() );
+        oc1.setNames( oc2.getNamesRef() );
         oc1.setOid( oc2.getOid() );
         oc1.setDescription( oc2.getDescription() );
         oc1.setSuperClassesNames( oc2.getSuperClassesNames() );

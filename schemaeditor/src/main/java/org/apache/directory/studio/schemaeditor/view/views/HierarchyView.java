@@ -176,7 +176,7 @@ public class HierarchyView extends ViewPart
     {
         StringBuffer sb = new StringBuffer();
 
-        String[] names = object.getNames();
+        String[] names = object.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
             sb.append( ViewUtils.concateAliases( names ) );

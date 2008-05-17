@@ -404,7 +404,7 @@ public class DifferenceEngine
     {
         List<PropertyDifference> differences = new ArrayList<PropertyDifference>();
 
-        String[] so1Names = so1.getNames();
+        String[] so1Names = so1.getNamesRef();
         List<String> so1NamesList = new ArrayList<String>();
         if ( so1Names != null )
         {
@@ -414,7 +414,7 @@ public class DifferenceEngine
             }
         }
 
-        String[] so2Names = so2.getNames();
+        String[] so2Names = so2.getNamesRef();
         List<String> so2NamesList = new ArrayList<String>();
         if ( so2Names != null )
         {

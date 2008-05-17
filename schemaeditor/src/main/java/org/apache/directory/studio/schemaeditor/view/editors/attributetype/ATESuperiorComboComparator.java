@@ -41,8 +41,8 @@ public class ATESuperiorComboComparator implements Comparator<Object>
     {
         if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
         {
-            String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
-            String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+            String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNamesRef();
+            String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNamesRef();
 
             if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
             {
@@ -51,7 +51,7 @@ public class ATESuperiorComboComparator implements Comparator<Object>
         }
         else if ( o1 instanceof AttributeTypeImpl && o2 instanceof NonExistingAttributeType )
         {
-            String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
+            String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNamesRef();
             String at2Name = ( ( NonExistingAttributeType ) o2 ).getName();
 
             if ( ( at1Names != null ) && ( at2Name != null ) && ( at1Names.length > 0 ) )
@@ -62,7 +62,7 @@ public class ATESuperiorComboComparator implements Comparator<Object>
         else if ( o1 instanceof NonExistingAttributeType && o2 instanceof AttributeTypeImpl )
         {
             String at1Name = ( ( NonExistingAttributeType ) o1 ).getName();
-            String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+            String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNamesRef();
 
             if ( ( at1Name != null ) && ( at2Names != null ) && ( at2Names.length > 0 ) )
             {

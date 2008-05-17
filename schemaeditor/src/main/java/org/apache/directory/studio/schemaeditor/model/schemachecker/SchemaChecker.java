@@ -357,7 +357,7 @@ public class SchemaChecker
         }
 
         // Checking aliases
-        String[] aliases = at.getNames();
+        String[] aliases = at.getNamesRef();
         if ( ( aliases == null ) || ( aliases.length == 0 ) )
         {
             SchemaWarning warning = new NoAliasWarning( at );
@@ -541,7 +541,7 @@ public class SchemaChecker
         }
 
         // Checking aliases
-        String[] aliases = oc.getNames();
+        String[] aliases = oc.getNamesRef();
         if ( ( aliases == null ) || ( aliases.length == 0 ) )
         {
             SchemaWarning warning = new NoAliasWarning( oc );
@@ -923,7 +923,7 @@ public class SchemaChecker
         }
 
         // Checking aliases
-        String[] aliases = sc.getNames();
+        String[] aliases = sc.getNamesRef();
         if ( ( aliases != null ) && ( aliases.length > 0 ) )
         {
             for ( String alias : aliases )

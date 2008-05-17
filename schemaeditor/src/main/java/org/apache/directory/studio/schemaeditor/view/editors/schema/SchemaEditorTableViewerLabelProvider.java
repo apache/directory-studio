@@ -67,7 +67,7 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
         {
             ObjectClassImpl oc = ( ObjectClassImpl ) element;
 
-            String[] names = oc.getNames();
+            String[] names = oc.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
@@ -81,7 +81,7 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) element;
 
-            String[] names = at.getNames();
+            String[] names = at.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";

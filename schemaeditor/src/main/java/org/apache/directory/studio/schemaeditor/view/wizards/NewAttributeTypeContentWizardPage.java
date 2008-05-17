@@ -136,7 +136,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 if ( dialog.open() == Dialog.OK )
                 {
                     AttributeTypeImpl selectedAT = dialog.getSelectedAttributeType();
-                    String[] aliases = selectedAT.getNames();
+                    String[] aliases = selectedAT.getNamesRef();
                     if ( ( aliases != null ) && ( aliases.length > 0 ) )
                     {
                         superiorText.setText( aliases[0] );
@@ -261,8 +261,8 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 {
                     if ( ( o1 instanceof SyntaxImpl ) && ( o2 instanceof SyntaxImpl ) )
                     {
-                        String[] o1Names = ( ( SyntaxImpl ) o1 ).getNames();
-                        String[] o2Names = ( ( SyntaxImpl ) o2 ).getNames();
+                        String[] o1Names = ( ( SyntaxImpl ) o1 ).getNamesRef();
+                        String[] o2Names = ( ( SyntaxImpl ) o2 ).getNamesRef();
 
                         // Comparing the First Name
                         if ( ( o1Names != null ) && ( o2Names != null ) )

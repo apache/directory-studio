@@ -54,7 +54,7 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
 
             List<String> names = new ArrayList<String>();
 
-            String[] atNames = inputAT.getNames();
+            String[] atNames = inputAT.getNamesRef();
             if ( atNames != null )
             {
                 for ( String name : atNames )
@@ -86,8 +86,8 @@ public class ATEUsedByOptionalTableContentProvider implements IStructuredContent
                 {
                     if ( oc1 instanceof ObjectClassImpl && oc1 instanceof ObjectClassImpl )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNames();
-                        String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNames();
+                        String[] oc1Names = ( ( ObjectClassImpl ) oc1 ).getNamesRef();
+                        String[] oc2Names = ( ( ObjectClassImpl ) oc2 ).getNamesRef();
 
                         if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
                             && ( oc2Names.length > 0 ) )

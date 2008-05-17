@@ -88,8 +88,8 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                 {
                     if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
-                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNamesRef();
+                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNamesRef();
 
                         if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
                             && ( oc2Names.length > 0 ) )
@@ -99,7 +99,7 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                     }
                     else if ( o1 instanceof ObjectClassImpl && o2 instanceof NonExistingObjectClass )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
+                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNamesRef();
                         String oc2Name = ( ( NonExistingObjectClass ) o2 ).getName();
 
                         if ( ( oc1Names != null ) && ( oc2Name != null ) && ( oc1Names.length > 0 ) )
@@ -110,7 +110,7 @@ public class ObjectClassEditorSuperiorsTableContentProvider implements IStructur
                     else if ( o1 instanceof NonExistingObjectClass && o2 instanceof ObjectClassImpl )
                     {
                         String oc1Name = ( ( NonExistingObjectClass ) o1 ).getName();
-                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNamesRef();
 
                         if ( ( oc1Name != null ) && ( oc2Names != null ) && ( oc2Names.length > 0 ) )
                         {

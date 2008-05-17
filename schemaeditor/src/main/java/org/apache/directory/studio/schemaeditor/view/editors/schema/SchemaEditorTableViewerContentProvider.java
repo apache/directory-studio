@@ -61,8 +61,8 @@ public class SchemaEditorTableViewerContentProvider implements IStructuredConten
                 {
                     if ( o1 instanceof AttributeTypeImpl && o2 instanceof AttributeTypeImpl )
                     {
-                        String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNames();
-                        String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNames();
+                        String[] at1Names = ( ( AttributeTypeImpl ) o1 ).getNamesRef();
+                        String[] at2Names = ( ( AttributeTypeImpl ) o2 ).getNamesRef();
 
                         if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 )
                             && ( at2Names.length > 0 ) )
@@ -72,8 +72,8 @@ public class SchemaEditorTableViewerContentProvider implements IStructuredConten
                     }
                     else if ( o1 instanceof ObjectClassImpl && o2 instanceof ObjectClassImpl )
                     {
-                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNames();
-                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNames();
+                        String[] oc1Names = ( ( ObjectClassImpl ) o1 ).getNamesRef();
+                        String[] oc2Names = ( ( ObjectClassImpl ) o2 ).getNamesRef();
 
                         if ( ( oc1Names != null ) && ( oc2Names != null ) && ( oc1Names.length > 0 )
                             && ( oc2Names.length > 0 ) )

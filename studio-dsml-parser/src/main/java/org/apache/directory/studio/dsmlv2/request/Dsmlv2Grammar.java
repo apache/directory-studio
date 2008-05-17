@@ -51,6 +51,9 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.entry.Value;
+import org.apache.directory.shared.ldap.entry.client.ClientBinaryValue;
+import org.apache.directory.shared.ldap.entry.client.ClientStringValue;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
@@ -2471,11 +2474,13 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        assertion.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        Value<byte[]> value = new ClientBinaryValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        assertion.setAssertionValue( value );
                     }
                     else
                     {
-                        assertion.setAssertionValue( nextText.trim() );
+                        Value<String> value = new ClientStringValue( nextText.trim() );
+                        assertion.setAssertionValue( value );
                     }
                 }
             }

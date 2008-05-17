@@ -71,7 +71,7 @@ public class ObjectClassEditorInput implements IEditorInput
      */
     public String getName()
     {
-        String[] names = objectClass.getNames();
+        String[] names = objectClass.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
             return names[0];

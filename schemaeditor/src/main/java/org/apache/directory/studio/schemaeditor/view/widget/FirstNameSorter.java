@@ -49,32 +49,32 @@ public class FirstNameSorter implements Comparator<Object>
             switch ( atd1.getType() )
             {
                 case ADDED:
-                    o1Names = ( ( SchemaObject ) atd1.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd1.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o1Names = ( ( SchemaObject ) atd1.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd1.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o1Names = ( ( SchemaObject ) atd1.getSource() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd1.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o1Names = ( ( SchemaObject ) atd1.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd1.getDestination() ).getNamesRef();
                     break;
             }
 
             switch ( atd2.getType() )
             {
                 case ADDED:
-                    o2Names = ( ( SchemaObject ) atd2.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd2.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o2Names = ( ( SchemaObject ) atd2.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd2.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o2Names = ( ( SchemaObject ) atd2.getSource() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd2.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o2Names = ( ( SchemaObject ) atd2.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd2.getDestination() ).getNamesRef();
                     break;
             }
         }
@@ -86,32 +86,32 @@ public class FirstNameSorter implements Comparator<Object>
             switch ( ocd1.getType() )
             {
                 case ADDED:
-                    o1Names = ( ( SchemaObject ) ocd1.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd1.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o1Names = ( ( SchemaObject ) ocd1.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd1.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o1Names = ( ( SchemaObject ) ocd1.getSource() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd1.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o1Names = ( ( SchemaObject ) ocd1.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd1.getDestination() ).getNamesRef();
                     break;
             }
 
             switch ( ocd2.getType() )
             {
                 case ADDED:
-                    o2Names = ( ( SchemaObject ) ocd2.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd2.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o2Names = ( ( SchemaObject ) ocd2.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd2.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o2Names = ( ( SchemaObject ) ocd2.getSource() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd2.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o2Names = ( ( SchemaObject ) ocd2.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd2.getDestination() ).getNamesRef();
                     break;
             }
         }
@@ -123,32 +123,32 @@ public class FirstNameSorter implements Comparator<Object>
             switch ( atd.getType() )
             {
                 case ADDED:
-                    o1Names = ( ( SchemaObject ) atd.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o1Names = ( ( SchemaObject ) atd.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o1Names = ( ( SchemaObject ) atd.getSource() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o1Names = ( ( SchemaObject ) atd.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) atd.getDestination() ).getNamesRef();
                     break;
             }
 
             switch ( ocd.getType() )
             {
                 case ADDED:
-                    o2Names = ( ( SchemaObject ) ocd.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o2Names = ( ( SchemaObject ) ocd.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o2Names = ( ( SchemaObject ) ocd.getSource() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o2Names = ( ( SchemaObject ) ocd.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) ocd.getDestination() ).getNamesRef();
                     break;
             }
         }
@@ -160,32 +160,32 @@ public class FirstNameSorter implements Comparator<Object>
             switch ( ocd.getType() )
             {
                 case ADDED:
-                    o1Names = ( ( SchemaObject ) ocd.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o1Names = ( ( SchemaObject ) ocd.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o1Names = ( ( SchemaObject ) ocd.getSource() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o1Names = ( ( SchemaObject ) ocd.getDestination() ).getNames();
+                    o1Names = ( ( SchemaObject ) ocd.getDestination() ).getNamesRef();
                     break;
             }
 
             switch ( atd.getType() )
             {
                 case ADDED:
-                    o2Names = ( ( SchemaObject ) atd.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd.getDestination() ).getNamesRef();
                     break;
                 case MODIFIED:
-                    o2Names = ( ( SchemaObject ) atd.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd.getDestination() ).getNamesRef();
                     break;
                 case REMOVED:
-                    o2Names = ( ( SchemaObject ) atd.getSource() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd.getSource() ).getNamesRef();
                     break;
                 case IDENTICAL:
-                    o2Names = ( ( SchemaObject ) atd.getDestination() ).getNames();
+                    o2Names = ( ( SchemaObject ) atd.getDestination() ).getNamesRef();
                     break;
             }
         }

@@ -81,7 +81,7 @@ public class OpenLdapSchemaFileExporter
         sb.append( "attributetype ( " + at.getOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // NAME(S)
-        String[] names = at.getNames();
+        String[] names = at.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
             sb.append( "\tNAME " ); //$NON-NLS-1$
@@ -211,7 +211,7 @@ public class OpenLdapSchemaFileExporter
         sb.append( "objectclass ( " + oc.getOid() + " \n" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // NAME(S)
-        String[] names = oc.getNames();
+        String[] names = oc.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
             sb.append( "\tNAME " ); //$NON-NLS-1$

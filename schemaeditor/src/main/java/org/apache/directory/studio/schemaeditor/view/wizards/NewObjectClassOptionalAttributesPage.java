@@ -124,7 +124,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
                 {
                     AttributeTypeImpl at = ( AttributeTypeImpl ) element;
 
-                    String[] names = at.getNames();
+                    String[] names = at.getNamesRef();
                     if ( ( names != null ) && ( names.length > 0 ) )
                     {
                         return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
@@ -214,8 +214,8 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
         {
             public int compare( AttributeTypeImpl o1, AttributeTypeImpl o2 )
             {
-                String[] at1Names = o1.getNames();
-                String[] at2Names = o2.getNames();
+                String[] at1Names = o1.getNamesRef();
+                String[] at2Names = o2.getNamesRef();
 
                 if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
                 {

@@ -703,7 +703,7 @@ public class SearchView extends ViewPart
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )
                         {
-                            if ( checkArray( pattern, at.getNames() ) )
+                            if ( checkArray( pattern, at.getNamesRef() ) )
                             {
                                 searchResults.add( at );
                                 continue;
@@ -787,7 +787,7 @@ public class SearchView extends ViewPart
                         // Aliases
                         if ( searchScope.contains( SearchInEnum.ALIASES ) )
                         {
-                            if ( checkArray( pattern, oc.getNames() ) )
+                            if ( checkArray( pattern, oc.getNamesRef() ) )
                             {
                                 searchResults.add( oc );
                                 continue;

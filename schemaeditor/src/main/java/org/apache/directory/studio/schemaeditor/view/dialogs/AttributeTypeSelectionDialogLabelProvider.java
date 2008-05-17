@@ -61,7 +61,7 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
         {
             AttributeTypeImpl at = ( AttributeTypeImpl ) element;
 
-            String[] names = at.getNames();
+            String[] names = at.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
                 return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";

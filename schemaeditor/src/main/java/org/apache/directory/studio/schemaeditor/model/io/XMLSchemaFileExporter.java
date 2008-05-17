@@ -240,7 +240,7 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = at.getNames();
+        String[] aliases = at.getNamesRef();
         if ( ( aliases != null ) && ( aliases.length >= 1 ) )
         {
             Element aliasesNode = atNode.addElement( ALIASES_TAG );
@@ -368,7 +368,7 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = oc.getNames();
+        String[] aliases = oc.getNamesRef();
         if ( ( aliases != null ) && ( aliases.length >= 1 ) )
         {
             Element aliasesNode = ocNode.addElement( ALIASES_TAG );
@@ -457,7 +457,7 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = mr.getNames();
+        String[] aliases = mr.getNamesRef();
         if ( ( aliases != null ) && ( aliases.length >= 1 ) )
         {
             Element aliasesNode = mrNode.addElement( ALIASES_TAG );
@@ -516,7 +516,7 @@ public class XMLSchemaFileExporter
         }
 
         // Aliases
-        String[] aliases = syntax.getNames();
+        String[] aliases = syntax.getNamesRef();
         if ( ( aliases != null ) && ( aliases.length >= 1 ) )
         {
             Element aliasesNode = syntaxNode.addElement( ALIASES_TAG );

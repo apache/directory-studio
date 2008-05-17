@@ -259,7 +259,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNames() );
+            EditAliasesDialog editDialog = new EditAliasesDialog( modifiedAttributeType.getNamesRef() );
             if ( editDialog.open() != Window.OK )
             {
                 return;
@@ -267,9 +267,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             if ( editDialog.isDirty() )
             {
                 modifiedAttributeType.setNames( editDialog.getAliases() );
-                if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().length != 0 ) )
+                if ( ( modifiedAttributeType.getNamesRef() != null ) && ( modifiedAttributeType.getNamesRef().length != 0 ) )
                 {
-                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
+                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
                 }
                 else
                 {
@@ -391,7 +391,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             if ( selectedItem instanceof AttributeTypeImpl )
             {
                 AttributeTypeImpl at = ( AttributeTypeImpl ) selectedItem;
-                String[] names = at.getNames();
+                String[] names = at.getNamesRef();
                 if ( ( names != null ) && ( names.length > 0 ) )
                 {
                     modifiedAttributeType.setSuperiorName( names[0] );
@@ -843,9 +843,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     private void fillInUiFields()
     {
         // ALIASES Label
-        if ( ( modifiedAttributeType.getNames() != null ) && ( modifiedAttributeType.getNames().length != 0 ) )
+        if ( ( modifiedAttributeType.getNamesRef() != null ) && ( modifiedAttributeType.getNamesRef().length != 0 ) )
         {
-            aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNames() ) );
+            aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
         }
         else
         {

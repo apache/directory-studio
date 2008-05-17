@@ -89,8 +89,8 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             {
                 public int compare( AttributeTypeImpl at1, AttributeTypeImpl at2 )
                 {
-                    String[] at1Names = ( ( AttributeTypeImpl ) at1 ).getNames();
-                    String[] at2Names = ( ( AttributeTypeImpl ) at2 ).getNames();
+                    String[] at1Names = ( ( AttributeTypeImpl ) at1 ).getNamesRef();
+                    String[] at2Names = ( ( AttributeTypeImpl ) at2 ).getNamesRef();
 
                     if ( ( at1Names == null || at1Names.length == 0 ) && ( at2Names == null || at2Names.length == 0 ) )
                     {
@@ -116,7 +116,7 @@ public class AttributeTypeSelectionDialogContentProvider implements IStructuredC
             // Searching for all matching elements
             for ( AttributeTypeImpl at : atList )
             {
-                for ( String name : at.getNames() )
+                for ( String name : at.getNamesRef() )
                 {
                     Matcher m = pattern.matcher( name );
                     if ( m.matches() )

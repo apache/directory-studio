@@ -956,7 +956,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "foobar", assertion.getAssertionValue() );
+        assertEquals( "foobar", assertion.getAssertionValue().get() );
     }
 
 
@@ -993,8 +993,8 @@ public class SearchRequestTest extends AbstractTest
         AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
 
         assertEquals( "sn", assertion.getAttributeDesc() );
-
-        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
+        
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue().get() ) );
     }
 
 
@@ -1097,7 +1097,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "foobar", assertion.getAssertionValue() );
+        assertEquals( "foobar", assertion.getAssertionValue().get() );
     }
 
 
@@ -1135,7 +1135,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue().get() ) );
     }
 
 
@@ -1238,7 +1238,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "foobar", assertion.getAssertionValue() );
+        assertEquals( "foobar", assertion.getAssertionValue().get() );
     }
 
 
@@ -1276,7 +1276,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue().get() ) );
     }
 
 
@@ -1379,7 +1379,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "foobar", assertion.getAssertionValue() );
+        assertEquals( "foobar", assertion.getAssertionValue().get() );
     }
 
 
@@ -1417,7 +1417,7 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "sn", assertion.getAttributeDesc() );
 
-        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue() ) );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue().get() ) );
     }
 
 

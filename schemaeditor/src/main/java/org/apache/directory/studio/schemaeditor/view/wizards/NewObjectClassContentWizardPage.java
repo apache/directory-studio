@@ -133,7 +133,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
                 {
                     ObjectClassImpl oc = ( ObjectClassImpl ) element;
 
-                    String[] names = oc.getNames();
+                    String[] names = oc.getNamesRef();
                     if ( ( names != null ) && ( names.length > 0 ) )
                     {
                         return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
@@ -280,8 +280,8 @@ public class NewObjectClassContentWizardPage extends WizardPage
         {
             public int compare( ObjectClassImpl o1, ObjectClassImpl o2 )
             {
-                String[] at1Names = o1.getNames();
-                String[] at2Names = o2.getNames();
+                String[] at1Names = o1.getNamesRef();
+                String[] at2Names = o2.getNamesRef();
 
                 if ( ( at1Names != null ) && ( at2Names != null ) && ( at1Names.length > 0 ) && ( at2Names.length > 0 ) )
                 {
@@ -308,7 +308,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
         List<String> names = new ArrayList<String>();
         for ( ObjectClassImpl oc : superiorsList )
         {
-            String[] aliases = oc.getNames();
+            String[] aliases = oc.getNamesRef();
 
             if ( ( aliases != null ) && ( aliases.length > 0 ) )
             {
