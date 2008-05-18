@@ -126,7 +126,7 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
 
             EventRegistry.removeEntryUpdateListener( this );
             EventRegistry.removeSearchUpdateListener( this );
-            EventRegistry.removeBrowserConnectionpdateListener( this );
+            EventRegistry.removeBrowserConnectionUpdateListener( this );
             view = null;
         }
     }

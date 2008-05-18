@@ -244,7 +244,7 @@ public class EventRegistry
      *
      * @param listener the listener
      */
-    public static void removeBrowserConnectionpdateListener( BrowserConnectionUpdateListener listener )
+    public static void removeBrowserConnectionUpdateListener( BrowserConnectionUpdateListener listener )
     {
         if ( browserConnectionUpdateListeners.containsKey( listener ) )
         {
