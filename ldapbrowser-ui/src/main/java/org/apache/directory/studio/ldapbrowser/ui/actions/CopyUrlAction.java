@@ -21,12 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -54,7 +53,7 @@ public class CopyUrlAction extends BrowserAction
      */
     public void run()
     {
-        URL url = null;
+        LdapURL url = null;
         if ( getSelectedSearches().length > 0 )
         {
             url = getSelectedSearches()[0].getUrl();

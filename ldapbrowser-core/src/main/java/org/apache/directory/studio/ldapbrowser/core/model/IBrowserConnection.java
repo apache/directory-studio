@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
@@ -73,7 +74,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the URL of this connection
      */
-    public abstract URL getUrl();
+    public abstract LdapURL getUrl();
 
 
     /**

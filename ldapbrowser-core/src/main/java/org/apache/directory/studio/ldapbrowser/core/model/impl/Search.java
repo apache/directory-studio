@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -36,7 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
@@ -165,9 +166,9 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public URL getUrl()
+    public LdapURL getUrl()
     {
-        return new URL( this );
+        return Utils.getLdapURL( this );
     }
 
 

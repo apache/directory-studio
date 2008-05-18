@@ -26,15 +26,21 @@ import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
@@ -43,7 +49,6 @@ import org.eclipse.core.runtime.Preferences;
 
 public class Utils
 {
-
 
     /**
      * Transforms the given DN into a normalized String, usable by the schema cache.
@@ -284,6 +289,86 @@ public class Utils
         String lineSeparator = store.getString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR );
         LdifFormatParameters ldifFormatParameters = new LdifFormatParameters( spaceAfterColon, lineWidth, lineSeparator );
         return ldifFormatParameters;
+    }
+
+
+    /**
+     * Transforms an IBrowserConnection to an LdapURL. The following parameters are
+     * used to create the LDAP URL:
+     * <ul>
+     * <li>scheme
+     * <li>host
+     * <li>port
+     * </ul>
+     *
+     * @param entry the entry
+     * @return the LDAP URL
+     */
+    public static LdapURL getLdapURL( IBrowserConnection browserConnection )
+    {
+        LdapURL url = new LdapURL();
+        if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
+        {
+            url.setScheme( LdapURL.LDAPS_SCHEME );
+        }
+        else
+        {
+            url.setScheme( LdapURL.LDAP_SCHEME );
+        }
+        url.setHost( browserConnection.getConnection().getHost() );
+        url.setPort( browserConnection.getConnection().getPort() );
+        return url;
+    }
+
+
+    /**
+     * Transforms an IEntry to an LdapURL. The following parameters are
+     * used to create the LDAP URL:
+     * <ul>
+     * <li>scheme
+     * <li>host
+     * <li>port
+     * <li>dn
+     * </ul>
+     *
+     * @param entry the entry
+     * @return the LDAP URL
+     */
+    public static LdapURL getLdapURL( IEntry entry )
+    {
+        LdapURL url = getLdapURL( entry.getBrowserConnection() );
+        url.setDn( entry.getDn() );
+        return url;
+    }
+
+
+    /**
+     * Transforms an ISearch to an LdapURL. The following search parameters are
+     * used to create the LDAP URL:
+     * <ul>
+     * <li>scheme
+     * <li>host
+     * <li>port
+     * <li>search base
+     * <li>returning attributes
+     * <li>scope
+     * <li>filter
+     * </ul>
+     *
+     * @param search the search
+     * @return the LDAP URL
+     */
+    public static LdapURL getLdapURL( ISearch search )
+    {
+        LdapURL url = getLdapURL( search.getBrowserConnection() );
+        url.setDn( search.getSearchBase() );
+        if ( search.getReturningAttributes() != null )
+        {
+            url.setAttributes( Arrays.asList( search.getReturningAttributes() ) );
+        }
+        url.setScope( search.getScope().getOrdinal() );
+        url.setFilter( search.getFilter() );
+        return url;
     }
 
 }

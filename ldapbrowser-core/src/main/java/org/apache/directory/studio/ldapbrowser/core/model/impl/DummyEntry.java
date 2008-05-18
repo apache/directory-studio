@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
@@ -41,8 +42,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 
 /**
@@ -223,9 +224,9 @@ public class DummyEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public URL getUrl()
+    public LdapURL getUrl()
     {
-        return new URL( getBrowserConnection(), getDn() );
+        return Utils.getLdapURL( this );
     }
 
 

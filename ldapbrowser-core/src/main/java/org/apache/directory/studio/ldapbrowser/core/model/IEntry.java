@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
@@ -413,6 +414,6 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the  LDAP URL of this entry
      */
-    public abstract URL getUrl();
+    public abstract LdapURL getUrl();
 
 }

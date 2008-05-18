@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.naming.InvalidNameException;
 
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -38,7 +39,6 @@ import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPa
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.URL;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
@@ -121,9 +121,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public URL getUrl()
+    public LdapURL getUrl()
     {
-        return new URL( this );
+        return Utils.getLdapURL( this );
     }
 
 
