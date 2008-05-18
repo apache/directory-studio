@@ -27,6 +27,7 @@ import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;
+import org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -123,11 +124,23 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
             catch ( NullPointerException e )
             {
             }
-            
+
             try
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( ModificationLogsView.getId(),
-                    null, IWorkbenchPage.VIEW_VISIBLE );
+                    null, IWorkbenchPage.VIEW_CREATE );
+            }
+            catch ( PartInitException e )
+            {
+            }
+            catch ( NullPointerException e )
+            {
+            }
+
+            try
+            {
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( SearchLogsView.getId(),
+                    null, IWorkbenchPage.VIEW_CREATE );
             }
             catch ( PartInitException e )
             {

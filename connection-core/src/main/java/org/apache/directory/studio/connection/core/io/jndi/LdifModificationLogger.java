@@ -43,6 +43,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
+import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
@@ -53,6 +54,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.IJndiLogger;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
@@ -73,7 +75,7 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 
 
 /**
- * The ModificationLogger is used to log modifications in LDIF format into a file.
+ * The LdifModificationLogger is used to log modifications in LDIF format into a file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -98,7 +100,7 @@ public class LdifModificationLogger implements IJndiLogger
 
 
     /**
-     * Creates a new instance of ModificationLogger.
+     * Creates a new instance of LdifModificationLogger.
      */
     public LdifModificationLogger()
     {
@@ -217,12 +219,12 @@ public class LdifModificationLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IModificationLogger#logChangetypeAdd(java.lang.String, javax.naming.directory.Attributes, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeAdd(org.apache.directory.studio.connection.core.Connection, java.lang.String, javax.naming.directory.Attributes, javax.naming.ldap.Control[], javax.naming.NamingException)
      */
     public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
         final Control[] controls, NamingException ex )
     {
-        if (!isModificationLogEnabled())
+        if ( !isModificationLogEnabled() )
         {
             return;
         }
@@ -263,12 +265,12 @@ public class LdifModificationLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IModificationLogger#logChangetypeDelete(java.lang.String, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeDelete(org.apache.directory.studio.connection.core.Connection, java.lang.String, javax.naming.ldap.Control[], javax.naming.NamingException)
      */
     public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
         NamingException ex )
     {
-        if (!isModificationLogEnabled())
+        if ( !isModificationLogEnabled() )
         {
             return;
         }
@@ -284,12 +286,12 @@ public class LdifModificationLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IModificationLogger#logChangetypeModify(java.lang.String, javax.naming.directory.ModificationItem[], javax.naming.ldap.Control[], javax.naming.NamingException)
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeModify(org.apache.directory.studio.connection.core.Connection, java.lang.String, javax.naming.directory.ModificationItem[], javax.naming.ldap.Control[], javax.naming.NamingException)
      */
     public void logChangetypeModify( Connection connection, final String dn,
         final ModificationItem[] modificationItems, final Control[] controls, NamingException ex )
     {
-        if (!isModificationLogEnabled())
+        if ( !isModificationLogEnabled() )
         {
             return;
         }
@@ -347,12 +349,12 @@ public class LdifModificationLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IModificationLogger#logChangetypeModDn(java.lang.String, java.lang.String, boolean, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeModDn(org.apache.directory.studio.connection.core.Connection, java.lang.String, java.lang.String, boolean, javax.naming.ldap.Control[], javax.naming.NamingException)
      */
     public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex )
     {
-        if (!isModificationLogEnabled())
+        if ( !isModificationLogEnabled() )
         {
             return;
         }
@@ -377,6 +379,36 @@ public class LdifModificationLogger implements IJndiLogger
         catch ( InvalidNameException e )
         {
         }
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logSearchRequest(org.apache.directory.studio.connection.core.Connection, java.lang.String, java.lang.String, javax.naming.directory.SearchControls, org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod, javax.naming.ldap.Control[], long, javax.naming.NamingException)
+     */
+    public void logSearchRequest( Connection connection, String searchBase, String filter,
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
+        long requestNum, NamingException ex )
+    {
+        // don't log searches
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logSearchResultEntry(org.apache.directory.studio.connection.core.Connection, org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult, long, javax.naming.NamingException)
+     */
+    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
+        NamingException ex )
+    {
+        // don't log searches 
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.IJndiLogger#logSearchResultDone(org.apache.directory.studio.connection.core.Connection, long, long, javax.naming.NamingException)
+     */
+    public void logSearchResultDone( Connection connection, long count, long requestNum, NamingException namingException )
+    {
+        // don't log searches 
     }
 
 
@@ -472,6 +504,7 @@ public class LdifModificationLogger implements IJndiLogger
         return null;
     }
 
+
     /**
      * Checks if modification log is enabled.
      * 
@@ -479,9 +512,10 @@ public class LdifModificationLogger implements IJndiLogger
      */
     private boolean isModificationLogEnabled()
     {
-        return ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .getBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE );
+        return ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE );
     }
+
 
     public String getId()
     {

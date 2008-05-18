@@ -18,33 +18,33 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
+package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 
 
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.eclipse.jface.action.Action;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
- * This action opens the prefence page of the modification logs view.
+ * This action is used to toggle the "enable search request logs" preference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenModificationLogsPreferencePageAction extends Action
+public class EnableSearchRequestLogsAction extends Action
 {
 
     /**
-     * Creates a new instance of OpenModificationLogsPreferencePageAction.
+     * Creates a new instance of EnableSearchRequestLogsAction.
      */
-    public OpenModificationLogsPreferencePageAction()
+    public EnableSearchRequestLogsAction()
     {
-        setText( "Preferences..." );
-        setToolTipText( "Preferences..." );
+        super( "Enable Search Request Logs", AS_CHECK_BOX );
+        setToolTipText( getText() );
         setEnabled( true );
+        setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
+            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
     }
 
 
@@ -53,10 +53,8 @@ public class OpenModificationLogsPreferencePageAction extends Action
      */
     public void run()
     {
-        Shell shell = Display.getCurrent().getActiveShell();
-        String mlPageId = BrowserUIConstants.PREFERENCEPAGEID_MODIFICATIONLOGS;
-        PreferencesUtil.createPreferenceDialogOn( shell, mlPageId, new String[]
-            { mlPageId }, null ).open();
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, super.isChecked() );
     }
 
 }

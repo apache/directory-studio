@@ -26,6 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;
+import org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.NewEntryWizard;
@@ -89,6 +90,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         layout.addShowViewShortcut( ConnectionView.getId() );
         layout.addShowViewShortcut( BrowserView.getId() );
         layout.addShowViewShortcut( ModificationLogsView.getId() );
+        layout.addShowViewShortcut( SearchLogsView.getId() );
         layout.addShowViewShortcut( IPageLayout.ID_OUTLINE );
         layout.addShowViewShortcut( "org.eclipse.ui.views.ProgressView" );
     }
@@ -128,6 +130,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         // Log folder
         IFolderLayout logFolder = layout.createFolder( "logFolder", IPageLayout.BOTTOM, ( float ) 0.75, editorArea );
         logFolder.addView( ModificationLogsView.getId() );
+        logFolder.addView( SearchLogsView.getId() );
         logFolder.addPlaceholder( "*" );
 
         // non-closable?

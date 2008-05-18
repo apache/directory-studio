@@ -83,6 +83,27 @@ public class ConnectionManager implements ConnectionUpdateListener
 
 
     /**
+     * Gets the Search Log filename for the corresponding connection.
+     *
+     * @param connection
+     *      the connection
+     * @return
+     *      the Search Log filename
+     */
+    public static final String getSearchLogFileName( Connection connection )
+    {
+        IPath p = ConnectionCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
+        File file = p.toFile();
+        if ( !file.exists() )
+        {
+            file.mkdir();
+        }
+        return p
+            .append( "search-" + Utils.getFilenameString( connection.getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+
+    /**
      * Gets the filename of the Connection Store.
      *
      * @return

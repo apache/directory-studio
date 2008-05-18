@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
+import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -238,6 +239,25 @@ public class ConnectionCorePlugin extends Plugin
             if(jndiLogger instanceof LdifModificationLogger)
             {
                 return ( LdifModificationLogger ) jndiLogger;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Gets the LDIF search logger.
+     * 
+     * @return the LDIF search logger, null if none found.
+     */
+    public LdifSearchLogger getLdifSearchLogger()
+    {
+        List<IJndiLogger> jndiLoggers = getJndiLoggers();
+        for ( IJndiLogger jndiLogger : jndiLoggers )
+        {
+            if(jndiLogger instanceof LdifSearchLogger)
+            {
+                return ( LdifSearchLogger ) jndiLogger;
             }
         }
         return null;

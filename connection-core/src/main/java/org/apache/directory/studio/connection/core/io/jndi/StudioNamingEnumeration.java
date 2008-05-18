@@ -30,6 +30,8 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
@@ -46,6 +48,9 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
 {
     private final Connection connection;
     private NamingEnumeration<SearchResult> delegate;
+
+    private long requestNum;
+    private long resultEntryCounter;
 
     private String searchBase;
     private String filter;
@@ -73,11 +78,13 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      */
     public StudioNamingEnumeration( Connection connection, NamingEnumeration<SearchResult> delegate, String searchBase,
         String filter, SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        ReferralHandlingMethod referralsHandlingMethod, Control[] controls, StudioProgressMonitor monitor,
-        ReferralsInfo referralsInfo )
+        ReferralHandlingMethod referralsHandlingMethod, Control[] controls, long requestNum,
+        StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
         this.connection = connection;
         this.delegate = delegate;
+        this.requestNum = requestNum;
+        this.resultEntryCounter = 0;
 
         this.searchBase = searchBase;
         this.filter = filter;
@@ -104,14 +111,22 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      */
     public boolean hasMore() throws NamingException
     {
+        NamingException logResultDoneException = null;
+        boolean logResultDone = false;
+
         while ( true )
         {
             try
             {
-                return delegate != null && delegate.hasMore();
+                boolean hasMore = delegate != null && delegate.hasMore();
+                logResultDone = !hasMore;
+                return hasMore;
             }
             catch ( PartialResultException pre )
             {
+                logResultDone = true;
+                logResultDoneException = pre;
+
                 // ignore exception if referrals handling method is IGNORE
                 // report exception if referrals handling method is FOLLOW or MANGAGE
                 if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE )
@@ -125,6 +140,9 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
             }
             catch ( ReferralException re )
             {
+                logResultDone = true;
+                logResultDoneException = re;
+
                 // ignore exception if referrals handling method is IGNORE
                 // report exception if referrals handling method is MANGAGE
                 // follow referral if referrals handling method is FOLLOW
@@ -135,6 +153,7 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                 else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
                 {
                     referralsInfo = JNDIConnectionWrapper.handleReferralException( re, referralsInfo );
+                    logResultDone = false;
                     UrlAndDn urlAndDn = referralsInfo.getNext();
                     if ( urlAndDn != null )
                     {
@@ -169,6 +188,22 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                     throw re;
                 }
             }
+            catch ( NamingException ne )
+            {
+                logResultDone = true;
+                logResultDoneException = ne;
+                throw ne;
+            }
+            finally
+            {
+                if ( logResultDone )
+                {
+                    for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+                    {
+                        logger.logSearchResultDone( connection, resultEntryCounter, requestNum, logResultDoneException );
+                    }
+                }
+            }
         }
     }
 
@@ -178,7 +213,15 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      */
     public boolean hasMoreElements()
     {
-        return delegate.hasMoreElements();
+        boolean hasMore = delegate.hasMoreElements();
+        if ( !hasMore )
+        {
+            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+            {
+                logger.logSearchResultDone( connection, resultEntryCounter, requestNum, null );
+            }
+        }
+        return hasMore;
     }
 
 
@@ -187,10 +230,27 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      */
     public SearchResult next() throws NamingException
     {
-        SearchResult searchResult = delegate.next();
-        StudioSearchResult studioSearchResult = new StudioSearchResult( searchResult, getConnection(),
-            referralsInfo != null );
-        return studioSearchResult;
+        StudioSearchResult studioSearchResult = null;
+        NamingException namingException = null;
+        try
+        {
+            SearchResult searchResult = delegate.next();
+            resultEntryCounter++;
+            studioSearchResult = new StudioSearchResult( searchResult, getConnection(), referralsInfo != null );
+            return studioSearchResult;
+        }
+        catch ( NamingException ne )
+        {
+            namingException = ne;
+            throw ne;
+        }
+        finally
+        {
+            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+            {
+                logger.logSearchResultEntry( connection, studioSearchResult, requestNum, namingException );
+            }
+        }
     }
 
 
@@ -200,7 +260,14 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
     public SearchResult nextElement()
     {
         SearchResult searchResult = delegate.nextElement();
-        return new StudioSearchResult( searchResult, getConnection(), referralsInfo != null );
+        resultEntryCounter++;
+        StudioSearchResult studioSearchResult = new StudioSearchResult( searchResult, getConnection(),
+            referralsInfo != null );
+        for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+        {
+            logger.logSearchResultEntry( connection, studioSearchResult, requestNum, null );
+        }
+        return studioSearchResult;
     }
 
 

@@ -82,6 +82,13 @@
          icon="resources/icons/browser_modificationlogview.gif"
          id="org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView"
          name="Modification Logs"/>            
+   <view
+         allowMultiple="false"
+         category="org.apache.directory.studio.ldapbrowser.ui.category"
+         class="org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView"
+         icon="resources/icons/browser_modificationlogview.gif"
+         id="org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView"
+         name="Search Logs"/>            
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -235,6 +242,13 @@
             class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.ModificationLogsPreferencePage"
             id="org.apache.directory.studio.ldapbrowser.preferences.ModificationLogsPreferencePage"
             name="Modification Logs">
+         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+      </page>
+      <page
+            category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
+            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchLogsPreferencePage"
+            id="org.apache.directory.studio.ldapbrowser.preferences.SearchLogsPreferencePage"
+            name="Search Logs">
          <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
       </page>
    </extension>

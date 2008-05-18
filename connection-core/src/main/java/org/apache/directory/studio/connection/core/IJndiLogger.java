@@ -23,7 +23,11 @@ package org.apache.directory.studio.connection.core;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.ModificationItem;
+import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
+
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 
 
 /**
@@ -44,7 +48,8 @@ public interface IJndiLogger
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */
-    public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes, final Control[] controls, NamingException ex );
+    public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
+        final Control[] controls, NamingException ex );
 
 
     /**
@@ -56,7 +61,8 @@ public interface IJndiLogger
      * @param ex the naming exception if an error occurred, null otherwise
      * 
      */
-    public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls, NamingException ex );
+    public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
+        NamingException ex );
 
 
     /**
@@ -68,7 +74,8 @@ public interface IJndiLogger
      * @param ex the naming exception if an error occurred, null otherwise
      * @param controls the controls
      */
-    public void logChangetypeModify( Connection connection, final String dn, final ModificationItem[] modificationItems, final Control[] controls, NamingException ex );
+    public void logChangetypeModify( Connection connection, final String dn,
+        final ModificationItem[] modificationItems, final Control[] controls, NamingException ex );
 
 
     /**
@@ -81,7 +88,8 @@ public interface IJndiLogger
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */
-    public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn, final boolean deleteOldRdn, final Control[] controls, NamingException ex );
+    public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
+        final boolean deleteOldRdn, final Control[] controls, NamingException ex );
 
 
     /**
@@ -98,8 +106,8 @@ public interface IJndiLogger
      * @return the logger ID
      */
     public String getId();
-    
-    
+
+
     /**
      * Sets the logger name.
      * 
@@ -114,21 +122,61 @@ public interface IJndiLogger
      * @return the logger name
      */
     public String getName();
-    
-    
+
+
     /**
      * Sets the logger description.
      * 
      * @param description the new logger description
      */
     public void setDescription( String description );
-    
-    
+
+
     /**
      * Gets the logger description.
      * 
      * @return the logger description
      */
     public String getDescription();
+
+
+    /**
+     * Logs a search request.
+     *
+     * @param connection the connection
+     * @param searchBase the search base
+     * @param filter the filter
+     * @param searchControls the search controls
+     * @param aliasesDereferencingMethod the aliases dereferncing method
+     * @param controls the LDAP controls 
+     * @param requestNum the request number
+     * @param namingException the naming exception if an error occurred, null otherwise
+     */
+    public void logSearchRequest( Connection connection, String searchBase, String filter,
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
+        long requestNum, NamingException namingException );
+
+
+    /**
+     * Logs a search result entry.
+     *
+     * @param connection the connection
+     * @param studioSearchResult the search result
+     * @param requestNum the request number
+     * @param the naming exception if an error occurred, null otherwise
+     */
+    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
+        NamingException namingException );
+
+
+    /**
+     * Logs a search result done.
+     *
+     * @param connection the connection
+     * @param count the number of received entries
+     * @param requestNum the request number
+     * @param the naming exception if an error occurred, null otherwise
+     */
+    public void logSearchResultDone( Connection connection, long count, long requestNum, NamingException namingException );
 
 }

@@ -20,7 +20,17 @@
 
 package org.apache.directory.studio.connection.core;
 
+
+import java.util.Arrays;
+
+import javax.naming.InvalidNameException;
+import javax.naming.directory.SearchControls;
+
+import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 
 
 /**
@@ -78,7 +88,6 @@ public class Utils
         return sb.toString();
     }
 
-    
 
     /**
      * Converts a String into a String that could be used as a filename.
@@ -95,7 +104,6 @@ public class Utils
             return null;
         }
 
-        
         byte[] b = StringTools.getBytesUtf8( s );
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < b.length; i++ )
@@ -119,6 +127,130 @@ public class Utils
         }
 
         return sb.toString();
+    }
+
+
+    /**
+     * Transforms the given search parameters into an LDAP URL.
+     *
+     * @param connection the connection
+     * @param searchBase the search base
+     * @param scope the search scope
+     * @param filter the search filter
+     * @param attributes the returning attributes
+     * 
+     * @return the LDAP URL for the given search parameters
+     */
+    public static LdapURL getLdapURL( Connection connection, String searchBase, int scope, String filter,
+        String[] attributes )
+    {
+        LdapURL url = new LdapURL();
+        url.setScheme( connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? "ldaps://" : "ldap://" );
+        url.setHost( connection.getHost() );
+        url.setPort( connection.getPort() );
+        try
+        {
+            url.setDn( new LdapDN( searchBase ) );
+        }
+        catch ( InvalidNameException e )
+        {
+        }
+        url.setAttributes( Arrays.asList( attributes ) );
+        url.setScope( scope );
+        url.setFilter( filter );
+        return url;
+    }
+
+
+    /**
+     * Transforms the given search parameters into an ldapsearch command line.
+     *
+     * @param connection the connection
+     * @param searchBase the search base
+     * @param scope the search scope
+     * @param aliasesDereferencingMethod the aliases dereferencing method
+     * @param sizeLimit the size limit
+     * @param timeLimit the time limit
+     * @param filter the search filter
+     * @param attributes the returning attributes
+     * 
+     * @return the ldapsearch command line for the given search parameters
+     */
+    public static String getLdapSearchCommandLine( Connection connection, String searchBase, int scope,
+        AliasDereferencingMethod aliasesDereferencingMethod, long sizeLimit, long timeLimit, String filter,
+        String[] attributes )
+    {
+        StringBuilder cmdLine = new StringBuilder();
+
+        cmdLine.append( "ldapsearch" );
+
+        cmdLine.append( " -H " ).append(
+            connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? "ldaps://" : "ldap://" ).append(
+            connection.getHost() ).append( ":" ).append( connection.getPort() );
+
+        if ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS )
+        {
+            cmdLine.append( " -ZZ" );
+        }
+
+        switch ( connection.getAuthMethod() )
+        {
+            case SIMPLE:
+                cmdLine.append( " -x" );
+                cmdLine.append( " -D \"" ).append( connection.getBindPrincipal() ).append( "\"" );
+                cmdLine.append( " -W" );
+                break;
+            case SASL_CRAM_MD5:
+                cmdLine.append( " -U \"" ).append( connection.getBindPrincipal() ).append( "\"" );
+                cmdLine.append( " -Y \"CRAM-MD5\"" );
+                break;
+            case SASL_DIGEST_MD5:
+                cmdLine.append( " -U \"" ).append( connection.getBindPrincipal() ).append( "\"" );
+                cmdLine.append( " -Y \"DIGEST-MD5\"" );
+                break;
+            case SASL_GSSAPI:
+                cmdLine.append( " -Y \"GSSAPI\"" );
+                break;
+        }
+
+        cmdLine.append( " -b \"" ).append( searchBase ).append( "\"" );
+
+        String scopeAsString = scope == SearchControls.SUBTREE_SCOPE ? "sub"
+            : scope == SearchControls.ONELEVEL_SCOPE ? "one" : "base";
+        cmdLine.append( " -s " ).append( scopeAsString );
+
+        if ( aliasesDereferencingMethod != AliasDereferencingMethod.NEVER )
+        {
+            String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "always"
+                : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "find"
+                    : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "search" : "never";
+            cmdLine.append( " -a " ).append( aliasAsString );
+        }
+
+        if ( sizeLimit > 0 )
+        {
+            cmdLine.append( " -z " ).append( sizeLimit );
+        }
+        if ( timeLimit > 0 )
+        {
+            cmdLine.append( " -l " ).append( timeLimit );
+        }
+
+        cmdLine.append( " \"" ).append( filter ).append( "\"" );
+
+        if ( attributes != null )
+        {
+            if ( attributes.length == 0 )
+            {
+                cmdLine.append( " \"1.1\"" );
+            }
+            for ( String attribute : attributes )
+            {
+                cmdLine.append( " \"" ).append( attribute ).append( "\"" );
+            }
+        }
+
+        return cmdLine.toString();
     }
 
 }

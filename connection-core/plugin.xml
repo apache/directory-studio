@@ -29,6 +29,12 @@
             id="org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger"
             name="LDIF Modification Logger">
       </jndiLogger>
+      <jndiLogger
+            class="org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger"
+            description="Logs searches in LDIF format to a file."
+            id="org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger"
+            name="LDIF Search Logger">
+      </jndiLogger>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

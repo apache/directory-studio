@@ -84,6 +84,8 @@ import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndD
 public class JNDIConnectionWrapper implements ConnectionWrapper
 {
 
+    private static int SEARCH_RESQUEST_NUM = 0;
+
     private Connection connection;
 
     private boolean useLdaps;
@@ -285,6 +287,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             {
                 // add ManageDsaIT control
                 Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
+                long requestNum = SEARCH_RESQUEST_NUM++;
 
                 try
                 {
@@ -299,10 +302,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    namingEnumeration = searchCtx.search( new LdapName( searchBase ), filter, searchControls );
-                    namingEnumeration = new StudioNamingEnumeration( connection, namingEnumeration, searchBase, filter,
-                        searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
-                        referralsInfo );
+                    NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapName( searchBase ), filter,
+                        searchControls );
+                    namingEnumeration = new StudioNamingEnumeration( connection, ne, searchBase, filter,
+                        searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
+                        monitor, referralsInfo );
                 }
                 catch ( PartialResultException pre )
                 {
@@ -352,10 +356,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                                     referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                                     referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                                    namingEnumeration = referralConnection.getJNDIConnectionWrapper().search(
-                                        referralSearchBase, referralFilter, referralSearchControls,
-                                        aliasesDereferencingMethod, referralsHandlingMethod, controls, monitor,
-                                        newReferralsInfo );
+                                    namingEnumeration = ( StudioNamingEnumeration ) referralConnection
+                                        .getJNDIConnectionWrapper().search( referralSearchBase, referralFilter,
+                                            referralSearchControls, aliasesDereferencingMethod,
+                                            referralsHandlingMethod, controls, monitor, newReferralsInfo );
                                 }
                             }
                         }
@@ -369,6 +373,21 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 {
                     // report each other naming exception
                     namingException = e;
+                }
+
+                for ( IJndiLogger logger : getJndiLoggers() )
+                {
+                    if ( namingEnumeration != null )
+                    {
+                        logger.logSearchRequest( connection, searchBase, filter, searchControls,
+                            aliasesDereferencingMethod, localControls, requestNum, namingException );
+                    }
+                    else
+                    {
+                        logger.logSearchRequest( connection, searchBase, filter, searchControls,
+                            aliasesDereferencingMethod, localControls, requestNum, namingException );
+                        logger.logSearchResultDone( connection, 0, requestNum, namingException );
+                    }
                 }
             }
         };
@@ -1063,7 +1082,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
     abstract class InnerRunnable implements Runnable
     {
-        protected NamingEnumeration<SearchResult> namingEnumeration = null;
+        protected StudioNamingEnumeration namingEnumeration = null;
         protected NamingException namingException = null;
 
 

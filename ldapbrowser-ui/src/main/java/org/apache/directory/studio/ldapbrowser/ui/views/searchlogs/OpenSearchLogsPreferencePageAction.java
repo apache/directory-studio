@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
+package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 
 
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -29,18 +29,18 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
- * This action opens the prefence page of the modification logs view.
+ * This action opens the prefence page of the search logs view.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenModificationLogsPreferencePageAction extends Action
+public class OpenSearchLogsPreferencePageAction extends Action
 {
 
     /**
-     * Creates a new instance of OpenModificationLogsPreferencePageAction.
+     * Creates a new instance of OpenSearchLogsPreferencePageAction.
      */
-    public OpenModificationLogsPreferencePageAction()
+    public OpenSearchLogsPreferencePageAction()
     {
         setText( "Preferences..." );
         setToolTipText( "Preferences..." );
@@ -54,7 +54,7 @@ public class OpenModificationLogsPreferencePageAction extends Action
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
-        String mlPageId = BrowserUIConstants.PREFERENCEPAGEID_MODIFICATIONLOGS;
+        String mlPageId = BrowserUIConstants.PREFERENCEPAGEID_SEARCHLOGS;
         PreferencesUtil.createPreferenceDialogOn( shell, mlPageId, new String[]
             { mlPageId }, null ).open();
     }

@@ -18,34 +18,32 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core;
+package org.apache.directory.studio.ldapbrowser.ui.actions.proxy;
 
 
-import org.eclipse.core.runtime.Preferences;
-import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
+import org.eclipse.jface.viewers.Viewer;
 
 
 /**
- * This class is used to set default preference values.
+ * The SearchLogsViewActionProxy is a proxy for a real action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInitializer
+public class SearchLogsViewActionProxy extends BrowserActionProxy
 {
+
     /**
-     * {@inheritDoc}
+     * Creates a new instance of SearchLogsViewActionProxy.
+     * 
+     * @param viewer the viewer
+     * @param action the real action
      */
-    public void initializeDefaultPreferences()
+    public SearchLogsViewActionProxy( Viewer viewer, BrowserAction action )
     {
-        Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
-
-        // Modification Logs
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
-
-        // Search Logs
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true );
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false );
+        super( viewer, action );
     }
 
 }

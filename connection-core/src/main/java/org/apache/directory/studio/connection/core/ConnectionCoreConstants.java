@@ -38,4 +38,10 @@ public interface ConnectionCoreConstants
     /** The constant used to identify the "enable modification logs" preference  */
     public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable";
 
+    /** The constant used to identify the "enable search request logs" preference  */
+    public static final String PREFERENCE_SEARCHREQUESTLOGS_ENABLE = "searchRequestLogsEnable";
+
+    /** The constant used to identify the "enable search result entry logs" preference  */
+    public static final String PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE = "searchResultEntryLogsEnable";
+
 }

@@ -194,7 +194,7 @@ public abstract class AbstractEntry implements IEntry
         }
         else
         {
-            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": " + attributeToDelete );
         }
     }
 
