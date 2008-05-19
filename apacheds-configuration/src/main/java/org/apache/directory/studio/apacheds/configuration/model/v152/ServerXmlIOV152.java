@@ -53,75 +53,88 @@ import org.dom4j.io.SAXReader;
  */
 public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
 {
-    private static final String ELEMENT_SOCKET_ACCEPTOR = "socketAcceptor";
-    private static final String ELEMENT_LOGIC_EXECUTOR = "logicExecutor";
-    private static final String ELEMENT_DATAGRAM_ACCEPTOR = "datagramAcceptor";
-    private static final String ELEMENT_BEANS = "beans";
-    private static final String ATTRIBUTE_SYNCH_PERIOD_MILLIS = "synchPeriodMillis";
-    private static final String ELEMENT_APACHE_DS = "apacheDS";
-    private static final String ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER = "launchDiagnosticUiHandler";
-    private static final String ELEMENT_GRACEFUL_SHUTDOWN_HANDLER = "gracefulShutdownHandler";
-    private static final String ELEMENT_START_TLS_HANDLER = "startTlsHandler";
-    private static final String ELEMENT_EXTENDED_OPERATION_HANDLERS = "extendedOperationHandlers";
-    private static final String ELEMENT_SASL_REALMS = "saslRealms";
-    private static final String ELEMENT_SASL_QOP = "saslQop";
-    private static final String ELEMENT_SUPPORTED_MECHANISMS = "supportedMechanisms";
-    private static final String ATTRIBUTE_MAX_SIZE_LIMIT = "maxSizeLimit";
-    private static final String ATTRIBUTE_MAX_TIME_LIMIT = "maxTimeLimit";
-    private static final String ATTRIBUTE_SEARCH_BASE_DN = "searchBaseDn";
-    private static final String ATTRIBUTE_SASL_PRINCIPAL = "saslPrincipal";
-    private static final String ATTRIBUTE_SASL_HOST = "saslHost";
-    private static final String ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS = "allowAnonymousAccess";
-    private static final String ATTRIBUTE_ENABLE_LDAPS = "enableLdaps";
-    private static final String ELEMENT_LDAP_SERVER = "ldapServer";
-    private static final String ELEMENT_DNS_SERVER = "dnsServer";
-    private static final String ELEMENT_NTP_SERVER = "ntpServer";
-    private static final String ELEMENT_KDC_SERVER = "kdcServer";
-    private static final String ATTRIBUTE_IP_PORT = "ipPort";
-    private static final String ATTRIBUTE_ENABLED = "enabled";
-    private static final String ELEMENT_CHANGE_PASSWORD_SERVER = "changePasswordServer";
-    private static final String ELEMENT_REPLICATION_INTERCEPTOR = "replicationInterceptor";
-    private static final String ELEMENT_TRIGGER_INTERCEPTOR = "triggerInterceptor";
-    private static final String ELEMENT_EVENT_INTERCEPTOR = "eventInterceptor";
-    private static final String ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR = "collectiveAttributeInterceptor";
-    private static final String ELEMENT_SUBENTRY_INTERCEPTOR = "subentryInterceptor";
-    private static final String ELEMENT_SCHEMA_INTERCEPTOR = "schemaInterceptor";
-    private static final String ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR = "operationalAttributeInterceptor";
-    private static final String ELEMENT_EXCEPTION_INTERCEPTOR = "exceptionInterceptor";
-    private static final String ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR = "defaultAuthorizationInterceptor";
-    private static final String ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR = "aciAuthorizationInterceptor";
-    private static final String ELEMENT_REFERRAL_INTERCEPTOR = "referralInterceptor";
-    private static final String ELEMENT_AUTHENTICATION_INTERCEPTOR = "authenticationInterceptor";
-    private static final String ELEMENT_NORMALIZATION_INTERCEPTOR = "normalizationInterceptor";
-    private static final String ELEMENT_INTERCEPTORS = "interceptors";
-    private static final String ELEMENT_PARTITIONS = "partitions";
-    private static final String ELEMENT_VALUE = "value";
-    private static final String ELEMENT_LIST = "list";
-    private static final String VALUE_ARGUMENTS = "arguments";
-    private static final String ATTRIBUTE_NAME = "name";
-    private static final String ELEMENT_PROPERTY = "property";
-    private static final String ELEMENT_BEAN = "bean";
-    private static final String ELEMENT_CONTEXT_ENTRY = "contextEntry";
-    private static final String ATTRIBUTE_ATTRIBUTE_ID = "attributeId";
-    private static final String ELEMENT_JDBM_INDEX = "jdbmIndex";
-    private static final String ELEMENT_INDEXED_ATTRIBUTES = "indexedAttributes";
-    private static final String ATTRIBUTE_SYNC_ON_WRITE = "syncOnWrite";
-    private static final String ATTRIBUTE_OPTIMIZER_ENABLED = "optimizerEnabled";
-    private static final String ATTRIBUTE_SUFFIX = "suffix";
-    private static final String ATTRIBUTE_CACHE_SIZE = "cacheSize";
-    private static final String ATTRIBUTE_ID = "id";
-    private static final String ELEMENT_JDBM_PARTITION = "jdbmPartition";
-    private static final String ELEMENT_SYSTEM_PARTITION = "systemPartition";
-    private static final String ATTRIBUTE_MAX_THREADS = "maxThreads";
-    private static final String ELEMENT_STANDARD_THREAD_POOL = "standardThreadPool";
-    private static final String ATTRIBUTE_DENORMALIZE_OP_ATTRS_ENABLED = "denormalizeOpAttrsEnabled";
     private static final String ATTRIBUTE_ACCESS_CONTROL_ENABLED = "accessControlEnabled";
+    private static final String ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS = "allowAnonymousAccess";
+    private static final String ATTRIBUTE_ATTRIBUTE_ID = "attributeId";
+    private static final String ATTRIBUTE_CACHE_SIZE = "cacheSize";
+    private static final String ATTRIBUTE_CLASS = "class";
+    private static final String ATTRIBUTE_DENORMALIZE_OP_ATTRS_ENABLED = "denormalizeOpAttrsEnabled";
+    private static final String ATTRIBUTE_ENABLE_LDAPS = "enableLdaps";
+    private static final String ATTRIBUTE_ENABLED = "enabled";
+    private static final String ATTRIBUTE_ID = "id";
+    private static final String ATTRIBUTE_INSTANCE_ID = "instanceId";
+    private static final String ATTRIBUTE_IP_PORT = "ipPort";
+    private static final String ATTRIBUTE_KEY = "key";
+    private static final String ATTRIBUTE_LOCAL = "local";
+    private static final String ATTRIBUTE_MAX_SIZE_LIMIT = "maxSizeLimit";
+    private static final String ATTRIBUTE_MAX_THREADS = "maxThreads";
+    private static final String ATTRIBUTE_MAX_TIME_LIMIT = "maxTimeLimit";
+    private static final String ATTRIBUTE_NAME = "name";
+    private static final String ATTRIBUTE_OPTIMIZER_ENABLED = "optimizerEnabled";
+    private static final String ATTRIBUTE_SASL_HOST = "saslHost";
+    private static final String ATTRIBUTE_SASL_PRINCIPAL = "saslPrincipal";
+    private static final String ATTRIBUTE_SEARCH_BASE_DN = "searchBaseDn";
+    private static final String ATTRIBUTE_SUFFIX = "suffix";
+    private static final String ATTRIBUTE_SYNC_ON_WRITE = "syncOnWrite";
+    private static final String ATTRIBUTE_SYNCH_PERIOD_MILLIS = "synchPeriodMillis";
+    private static final String ATTRIBUTE_WORKING_DIRECTORY = "workingDirectory";
+    private static final String ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR = "aciAuthorizationInterceptor";
+    private static final String ELEMENT_APACHE_DS = "apacheDS";
+    private static final String ELEMENT_AUTHENTICATION_INTERCEPTOR = "authenticationInterceptor";
+    private static final String ELEMENT_BEAN = "bean";
+    private static final String ELEMENT_BEANS = "beans";
+    private static final String ELEMENT_CHANGE_PASSWORD_SERVER = "changePasswordServer";
+    private static final String ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR = "collectiveAttributeInterceptor";
+    private static final String ELEMENT_CONTEXT_ENTRY = "contextEntry";
+    private static final String ELEMENT_DATAGRAM_ACCEPTOR = "datagramAcceptor";
+    private static final String ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR = "defaultAuthorizationInterceptor";
     private static final String ELEMENT_DEFAULT_DIRECTORY_SERVICE = "defaultDirectoryService";
+    private static final String ELEMENT_DNS_SERVER = "dnsServer";
+    private static final String ELEMENT_ENTRY = "entry";
+    private static final String ELEMENT_EVENT_INTERCEPTOR = "eventInterceptor";
+    private static final String ELEMENT_EXCEPTION_INTERCEPTOR = "exceptionInterceptor";
+    private static final String ELEMENT_EXTENDED_OPERATION_HANDLERS = "extendedOperationHandlers";
+    private static final String ELEMENT_GRACEFUL_SHUTDOWN_HANDLER = "gracefulShutdownHandler";
+    private static final String ELEMENT_INDEXED_ATTRIBUTES = "indexedAttributes";
+    private static final String ELEMENT_INTERCEPTORS = "interceptors";
+    private static final String ELEMENT_JDBM_INDEX = "jdbmIndex";
+    private static final String ELEMENT_JDBM_PARTITION = "jdbmPartition";
+    private static final String ELEMENT_KDC_SERVER = "kdcServer";
+    private static final String ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER = "launchDiagnosticUiHandler";
+    private static final String ELEMENT_LDAP_SERVER = "ldapServer";
+    private static final String ELEMENT_LDAPS_SERVER = "ldapsServer";
+    private static final String ELEMENT_LIST = "list";
+    private static final String ELEMENT_LOGIC_EXECUTOR = "logicExecutor";
+    private static final String ELEMENT_MAP = "map";
+    private static final String ELEMENT_NORMALIZATION_INTERCEPTOR = "normalizationInterceptor";
+    private static final String ELEMENT_NTP_SERVER = "ntpServer";
+    private static final String ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR = "operationalAttributeInterceptor";
+    private static final String ELEMENT_PARTITIONS = "partitions";
+    private static final String ELEMENT_PROPERTY = "property";
+    private static final String ELEMENT_REF = "ref";
+    private static final String ELEMENT_REFERRAL_INTERCEPTOR = "referralInterceptor";
+    private static final String ELEMENT_REPLICATION_INTERCEPTOR = "replicationInterceptor";
+    private static final String ELEMENT_SASL_QOP = "saslQop";
+    private static final String ELEMENT_SASL_REALMS = "saslRealms";
+    private static final String ELEMENT_SCHEMA_INTERCEPTOR = "schemaInterceptor";
+    private static final String ELEMENT_SOCKET_ACCEPTOR = "socketAcceptor";
+    private static final String ELEMENT_STANDARD_THREAD_POOL = "standardThreadPool";
+    private static final String ELEMENT_START_TLS_HANDLER = "startTlsHandler";
+    private static final String ELEMENT_SUBENTRY_INTERCEPTOR = "subentryInterceptor";
+    private static final String ELEMENT_SUPPORTED_MECHANISMS = "supportedMechanisms";
+    private static final String ELEMENT_SYSTEM_PARTITION = "systemPartition";
+    private static final String ELEMENT_TRIGGER_INTERCEPTOR = "triggerInterceptor";
+    private static final String ELEMENT_VALUE = "value";
     private static final Namespace NAMESPACE_APACHEDS = new Namespace( null, "http://apacheds.org/config/1.0" );
     private static final Namespace NAMESPACE_SPRINGFRAMEWORK = new Namespace( "s",
         "http://www.springframework.org/schema/beans" );
     private static final Namespace NAMESPACE_XBEAN_SPRING = new Namespace( "spring",
         "http://xbean.apache.org/schemas/spring/1.0" );
+    private static final String VALUE_ARGUMENTS = "arguments";
+    private static final String VALUE_CUSTOM_EDITORS = "customEditors";
+    private static final String VALUE_DEFAULT = "default";
+    private static final String VALUE_DIRECTORY_SERVICE = "directoryService";
+    private static final String VALUE_EXAMPLE_DOT_COM = "example.com";
 
 
     /* (non-Javadoc)
@@ -350,7 +363,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         else
         {
             // MaxThreads
-            org.dom4j.Attribute maxThreadsAttribute = standardThreadPoolElement.attribute( ServerXmlIOV152.ATTRIBUTE_MAX_THREADS );
+            org.dom4j.Attribute maxThreadsAttribute = standardThreadPoolElement
+                .attribute( ServerXmlIOV152.ATTRIBUTE_MAX_THREADS );
             if ( maxThreadsAttribute == null )
             {
                 // If the 'maxThreads' attribute does not exists,
@@ -518,17 +532,20 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         if ( indexedAttributesElement != null )
         {
             // Looping on 'jdbmIndex' elements
-            for ( Iterator<?> i = indexedAttributesElement.elementIterator( ServerXmlIOV152.ELEMENT_JDBM_INDEX ); i.hasNext(); )
+            for ( Iterator<?> i = indexedAttributesElement.elementIterator( ServerXmlIOV152.ELEMENT_JDBM_INDEX ); i
+                .hasNext(); )
             {
                 // Getting the 'jdbmIndex' element
                 Element jdbmIndexElement = ( Element ) i.next();
 
                 // Getting the 'attributeId' attribute
-                org.dom4j.Attribute attributeIdAttribute = jdbmIndexElement.attribute( ServerXmlIOV152.ATTRIBUTE_ATTRIBUTE_ID );
+                org.dom4j.Attribute attributeIdAttribute = jdbmIndexElement
+                    .attribute( ServerXmlIOV152.ATTRIBUTE_ATTRIBUTE_ID );
                 if ( attributeIdAttribute != null )
                 {
                     // Getting the 'cacheSize' attribute
-                    org.dom4j.Attribute cacheSizeAttribute = jdbmIndexElement.attribute( ServerXmlIOV152.ATTRIBUTE_CACHE_SIZE );
+                    org.dom4j.Attribute cacheSizeAttribute = jdbmIndexElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_CACHE_SIZE );
                     if ( cacheSizeAttribute != null )
                     {
                         // Adding a new indexed attribute to the list
@@ -573,7 +590,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             boolean foundBean = false;
 
             // Looping on all 'bean' tags
-            for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator( ServerXmlIOV152.ELEMENT_BEAN ); i.hasNext(); )
+            for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator( ServerXmlIOV152.ELEMENT_BEAN ); i
+                .hasNext(); )
             {
                 // Getting the bean element
                 Element beanElement = ( Element ) i.next();
@@ -592,13 +610,15 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                         boolean foundProperty = false;
 
                         // Looping on all 'property' tags
-                        for ( Iterator<?> i2 = beanElement.elementIterator( ServerXmlIOV152.ELEMENT_PROPERTY ); i2.hasNext(); )
+                        for ( Iterator<?> i2 = beanElement.elementIterator( ServerXmlIOV152.ELEMENT_PROPERTY ); i2
+                            .hasNext(); )
                         {
                             // Getting the property element
                             Element propertyElement = ( Element ) i2.next();
 
                             // Getting the name attribute
-                            org.dom4j.Attribute nameAttribute = propertyElement.attribute( ServerXmlIOV152.ATTRIBUTE_NAME );
+                            org.dom4j.Attribute nameAttribute = propertyElement
+                                .attribute( ServerXmlIOV152.ATTRIBUTE_NAME );
                             if ( nameAttribute != null )
                             {
                                 if ( nameAttribute.getValue().equalsIgnoreCase( ServerXmlIOV152.VALUE_ARGUMENTS ) )
@@ -611,7 +631,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                                     if ( listElement != null )
                                     {
                                         // Looping on all 'value' tags
-                                        for ( Iterator<?> i3 = listElement.elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); i3.hasNext(); )
+                                        for ( Iterator<?> i3 = listElement
+                                            .elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); i3.hasNext(); )
                                         {
                                             // Getting the value element
                                             Element valueElement = ( Element ) i3.next();
@@ -677,7 +698,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         if ( partitionsElement != null )
         {
             // Looping on all 'jdbmPartition' tags
-            for ( Iterator<?> i = partitionsElement.elementIterator( ServerXmlIOV152.ELEMENT_JDBM_PARTITION ); i.hasNext(); )
+            for ( Iterator<?> i = partitionsElement.elementIterator( ServerXmlIOV152.ELEMENT_JDBM_PARTITION ); i
+                .hasNext(); )
             {
                 // Getting the 'jbdmPartition' element
                 Element jdbmPartitionElement = ( Element ) i.next();
@@ -729,11 +751,13 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.REFERRAL );
                 }
-                else if ( ServerXmlIOV152.ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
+                else if ( ServerXmlIOV152.ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR
+                    .equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.ACI_AUTHORIZATION );
                 }
-                else if ( ServerXmlIOV152.ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
+                else if ( ServerXmlIOV152.ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR
+                    .equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.DEFAULT_AUTHORIZATION );
                 }
@@ -741,7 +765,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.EXCEPTION );
                 }
-                else if ( ServerXmlIOV152.ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
+                else if ( ServerXmlIOV152.ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR
+                    .equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.OPERATIONAL_ATTRIBUTE );
                 }
@@ -753,7 +778,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.SUBENTRY );
                 }
-                else if ( ServerXmlIOV152.ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
+                else if ( ServerXmlIOV152.ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR
+                    .equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.COLLECTIVE_ATTRIBUTE );
                 }
@@ -793,7 +819,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         if ( changePasswordServerElement != null )
         {
             // Getting the 'enabled' attribute
-            org.dom4j.Attribute enabledAttribute = changePasswordServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_ENABLED );
+            org.dom4j.Attribute enabledAttribute = changePasswordServerElement
+                .attribute( ServerXmlIOV152.ATTRIBUTE_ENABLED );
             if ( enabledAttribute == null )
             {
                 // By default, the protocol is not enabled
@@ -805,7 +832,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             }
 
             // Getting the 'ipPort' attribute
-            org.dom4j.Attribute ipPortAttribute = changePasswordServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
+            org.dom4j.Attribute ipPortAttribute = changePasswordServerElement
+                .attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
             if ( ipPortAttribute == null )
             {
                 // If the 'ipPort' attribute does not exists,
@@ -974,7 +1002,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
         // Looping on all 'ldapServer' elements
-        for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator( ServerXmlIOV152.ELEMENT_LDAP_SERVER ); i.hasNext(); )
+        for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator(
+            ServerXmlIOV152.ELEMENT_LDAP_SERVER ); i.hasNext(); )
         {
             // Getting the 'ldapServer' element
             Element ldapServerElement = ( Element ) i.next();
@@ -990,10 +1019,11 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             else
             {
                 // Checking if the 'ldapServer' element is the one for LDAPS
-                if ( "ldapsServer".equalsIgnoreCase( idAttribute.getValue() ) )
+                if ( ServerXmlIOV152.ELEMENT_LDAPS_SERVER.equalsIgnoreCase( idAttribute.getValue() ) )
                 {
                     // Getting the 'enableLdaps' attribute
-                    org.dom4j.Attribute enableLdapsAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_ENABLE_LDAPS );
+                    org.dom4j.Attribute enableLdapsAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_ENABLE_LDAPS );
                     if ( enableLdapsAttribute == null )
                     {
                         // By default, the protocol is not enabled
@@ -1002,7 +1032,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     else
                     {
                         // Getting the 'enabled' attribute
-                        org.dom4j.Attribute enabledAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_ENABLED );
+                        org.dom4j.Attribute enabledAttribute = ldapServerElement
+                            .attribute( ServerXmlIOV152.ATTRIBUTE_ENABLED );
                         if ( enabledAttribute == null )
                         {
                             // By default, the protocol is not enabled
@@ -1016,7 +1047,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Getting the 'ipPort' attribute
-                    org.dom4j.Attribute ipPortAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
+                    org.dom4j.Attribute ipPortAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
                     if ( ipPortAttribute == null )
                     {
                         // If the 'ipPort' attribute does not exists,
@@ -1051,7 +1083,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
         // Looping on all 'ldapServer' elements
-        for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator( ServerXmlIOV152.ELEMENT_LDAP_SERVER ); i.hasNext(); )
+        for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator(
+            ServerXmlIOV152.ELEMENT_LDAP_SERVER ); i.hasNext(); )
         {
             // Getting the 'ldapServer' element
             Element ldapServerElement = ( Element ) i.next();
@@ -1070,7 +1103,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 if ( ServerXmlIOV152.ELEMENT_LDAP_SERVER.equalsIgnoreCase( idAttribute.getValue() ) )
                 {
                     // IpPort
-                    org.dom4j.Attribute ipPortAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
+                    org.dom4j.Attribute ipPortAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
                     if ( ipPortAttribute == null )
                     {
                         // If the 'ipPort' attribute does not exists,
@@ -1100,7 +1134,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SaslHost
-                    org.dom4j.Attribute saslHostAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_SASL_HOST );
+                    org.dom4j.Attribute saslHostAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_SASL_HOST );
                     if ( saslHostAttribute == null )
                     {
                         // If the 'saslHost' attribute does not exists,
@@ -1114,7 +1149,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SaslPrincipal
-                    org.dom4j.Attribute saslPrincipalAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_SASL_PRINCIPAL );
+                    org.dom4j.Attribute saslPrincipalAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_SASL_PRINCIPAL );
                     if ( saslPrincipalAttribute == null )
                     {
                         // If the 'saslPrincipal' attribute does not exists,
@@ -1128,7 +1164,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SearchBaseDn
-                    org.dom4j.Attribute searchBaseDnAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_SEARCH_BASE_DN );
+                    org.dom4j.Attribute searchBaseDnAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_SEARCH_BASE_DN );
                     if ( searchBaseDnAttribute == null )
                     {
                         // If the 'searchBaseDn' attribute does not exists,
@@ -1142,7 +1179,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // MaxTimeLimit
-                    org.dom4j.Attribute maxTimeLimitAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_MAX_TIME_LIMIT );
+                    org.dom4j.Attribute maxTimeLimitAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_MAX_TIME_LIMIT );
                     if ( maxTimeLimitAttribute == null )
                     {
                         // If the 'maxTimeLimit' attribute does not exists,
@@ -1156,7 +1194,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // MaxSizeLimit
-                    org.dom4j.Attribute maxSizeLimitAttribute = ldapServerElement.attribute( ServerXmlIOV152.ATTRIBUTE_MAX_SIZE_LIMIT );
+                    org.dom4j.Attribute maxSizeLimitAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_MAX_SIZE_LIMIT );
                     if ( maxSizeLimitAttribute == null )
                     {
                         // If the 'maxSizeLimit' attribute does not exists,
@@ -1170,12 +1209,13 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Supported Mechanisms
-                    Element supportedMechanismsElement = ldapServerElement.element( ServerXmlIOV152.ELEMENT_SUPPORTED_MECHANISMS );
+                    Element supportedMechanismsElement = ldapServerElement
+                        .element( ServerXmlIOV152.ELEMENT_SUPPORTED_MECHANISMS );
                     if ( supportedMechanismsElement != null )
                     {
                         // Looping on all 'value' elements
-                        for ( Iterator<?> iterator = supportedMechanismsElement.elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); iterator
-                            .hasNext(); )
+                        for ( Iterator<?> iterator = supportedMechanismsElement
+                            .elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); iterator.hasNext(); )
                         {
                             // Getting the 'value' element
                             Element supportedMechanismValueElement = ( Element ) iterator.next();
@@ -1192,7 +1232,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     if ( SaslQopElement != null )
                     {
                         // Looping on all 'value' elements
-                        for ( Iterator<?> iterator = SaslQopElement.elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); iterator.hasNext(); )
+                        for ( Iterator<?> iterator = SaslQopElement.elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); iterator
+                            .hasNext(); )
                         {
                             // Getting the 'value' element
                             Element saslQopValueElement = ( Element ) iterator.next();
@@ -1208,7 +1249,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     if ( SaslRealmsElement != null )
                     {
                         // Looping on all 'value' elements
-                        for ( Iterator<?> iterator = SaslRealmsElement.elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); iterator.hasNext(); )
+                        for ( Iterator<?> iterator = SaslRealmsElement.elementIterator( ServerXmlIOV152.ELEMENT_VALUE ); iterator
+                            .hasNext(); )
                         {
                             // Getting the 'value' element
                             Element saslRealmValueElement = ( Element ) iterator.next();
@@ -1259,7 +1301,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 {
                     serverConfiguration.addExtendedOperation( ExtendedOperationEnum.GRACEFUL_SHUTDOWN );
                 }
-                if ( ServerXmlIOV152.ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER.equalsIgnoreCase( extendedOperationElementName ) )
+                if ( ServerXmlIOV152.ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER
+                    .equalsIgnoreCase( extendedOperationElementName ) )
                 {
                     serverConfiguration.addExtendedOperation( ExtendedOperationEnum.LAUNCH_DIAGNOSTIC_UI );
                 }
@@ -1287,7 +1330,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         if ( apacheDsElement != null )
         {
             // SynchPeriodMillis
-            org.dom4j.Attribute synchPeriodMillisAttribute = apacheDsElement.attribute( ServerXmlIOV152.ATTRIBUTE_SYNCH_PERIOD_MILLIS );
+            org.dom4j.Attribute synchPeriodMillisAttribute = apacheDsElement
+                .attribute( ServerXmlIOV152.ATTRIBUTE_SYNCH_PERIOD_MILLIS );
             if ( synchPeriodMillisAttribute == null )
             {
                 // If the 'synchPeriodMillis' attribute does not exists,
@@ -1321,7 +1365,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
 
         // Adding the 'standardThreadPool' element
         Element standardThreadPoolElement = root.addElement( ServerXmlIOV152.ELEMENT_STANDARD_THREAD_POOL );
-        standardThreadPoolElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, ServerXmlIOV152.ELEMENT_STANDARD_THREAD_POOL );
+        standardThreadPoolElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID,
+            ServerXmlIOV152.ELEMENT_STANDARD_THREAD_POOL );
         standardThreadPoolElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_MAX_THREADS, ""
             + ( ( ServerConfigurationV152 ) serverConfiguration ).getMaxThreads() );
 
@@ -1387,13 +1432,16 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         Element defaultDirectoryServiceElement = root.addElement( ServerXmlIOV152.ELEMENT_DEFAULT_DIRECTORY_SERVICE );
 
         // Id
-        defaultDirectoryServiceElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, "directoryService" );
+        defaultDirectoryServiceElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID,
+            ServerXmlIOV152.VALUE_DIRECTORY_SERVICE );
 
         // InstanceId
-        defaultDirectoryServiceElement.addAttribute( "instanceId", "default" );
+        defaultDirectoryServiceElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_INSTANCE_ID,
+            ServerXmlIOV152.VALUE_DEFAULT );
 
         // WorkingDirectory
-        defaultDirectoryServiceElement.addAttribute( "workingDirectory", "example.com" );
+        defaultDirectoryServiceElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_WORKING_DIRECTORY,
+            ServerXmlIOV152.VALUE_EXAMPLE_DOT_COM );
 
         // AllowAnonymousAccess
         defaultDirectoryServiceElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, ""
@@ -1408,7 +1456,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             + serverConfiguration.isDenormalizeOpAttr() );
 
         // Adding the 'systemPartition' element
-        Element systemPartitionElement = defaultDirectoryServiceElement.addElement( ServerXmlIOV152.ELEMENT_SYSTEM_PARTITION );
+        Element systemPartitionElement = defaultDirectoryServiceElement
+            .addElement( ServerXmlIOV152.ELEMENT_SYSTEM_PARTITION );
 
         // Adding System Partition Bean
         createSystemPartitionBean( systemPartitionElement, serverConfiguration );
@@ -1499,10 +1548,12 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         jdbmPartitionElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SUFFIX, partition.getSuffix() );
 
         // OptimizerEnabled
-        jdbmPartitionElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_OPTIMIZER_ENABLED, "" + partition.isEnableOptimizer() );
+        jdbmPartitionElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_OPTIMIZER_ENABLED, ""
+            + partition.isEnableOptimizer() );
 
         // SyncOnWrite
-        jdbmPartitionElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SYNC_ON_WRITE, "" + partition.isSynchronizationOnWrite() );
+        jdbmPartitionElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SYNC_ON_WRITE, ""
+            + partition.isSynchronizationOnWrite() );
 
         // IndexedAttributes
         createIndexedAttributes( jdbmPartitionElement, partition.getIndexedAttributes() );
@@ -1532,8 +1583,10 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 // Adding the 'jdbmIndex' element
                 Element jdbmIndexElement = indexedAttributeElement.addElement( ServerXmlIOV152.ELEMENT_JDBM_INDEX );
-                jdbmIndexElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ATTRIBUTE_ID, indexedAttribute.getAttributeId() );
-                jdbmIndexElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_CACHE_SIZE, "" + indexedAttribute.getCacheSize() );
+                jdbmIndexElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ATTRIBUTE_ID, indexedAttribute
+                    .getAttributeId() );
+                jdbmIndexElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_CACHE_SIZE, ""
+                    + indexedAttribute.getCacheSize() );
             }
         }
     }
@@ -1560,35 +1613,40 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         Element beanElement = element.getDocument().getRootElement().addElement(
             new QName( ServerXmlIOV152.ELEMENT_BEAN, NAMESPACE_XBEAN_SPRING ) );
         beanElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, id + "ContextEntry" );
-        beanElement.addAttribute( "class", "org.springframework.beans.factory.config.MethodInvokingFactoryBean" );
+        beanElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_CLASS,
+            "org.springframework.beans.factory.config.MethodInvokingFactoryBean" );
 
         // Adding the targetObject 'property' element
-        Element targetObjectPropertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY, NAMESPACE_XBEAN_SPRING ) );
+        Element targetObjectPropertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY,
+            NAMESPACE_XBEAN_SPRING ) );
         targetObjectPropertyElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_NAME, "targetObject" );
 
         // Adding the targetObject 'ref' element
-        Element targetObjectRefElement = targetObjectPropertyElement.addElement( new QName( "ref",
-            NAMESPACE_XBEAN_SPRING ) );
-        targetObjectRefElement.addAttribute( "local", "directoryService" );
+        Element targetObjectRefElement = targetObjectPropertyElement.addElement( new QName(
+            ServerXmlIOV152.ELEMENT_REF, NAMESPACE_XBEAN_SPRING ) );
+        targetObjectRefElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_LOCAL, ServerXmlIOV152.VALUE_DIRECTORY_SERVICE );
 
         // Adding the targetMethod 'property' element
-        Element targetMethodPropertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY, NAMESPACE_XBEAN_SPRING ) );
+        Element targetMethodPropertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY,
+            NAMESPACE_XBEAN_SPRING ) );
         targetMethodPropertyElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_NAME, "targetMethod" );
 
         // Adding the targetMethod 'value' element
-        targetMethodPropertyElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_XBEAN_SPRING ) ).setText( "newEntry" );
+        targetMethodPropertyElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_XBEAN_SPRING ) )
+            .setText( "newEntry" );
 
         // Adding the arguments 'property' element
-        Element argumentsPropertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY, NAMESPACE_XBEAN_SPRING ) );
+        Element argumentsPropertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY,
+            NAMESPACE_XBEAN_SPRING ) );
         argumentsPropertyElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_NAME, ServerXmlIOV152.VALUE_ARGUMENTS );
 
         // Adding the arguments 'list' element
-        Element argumentsListElement = argumentsPropertyElement
-            .addElement( new QName( ServerXmlIOV152.ELEMENT_LIST, NAMESPACE_XBEAN_SPRING ) );
+        Element argumentsListElement = argumentsPropertyElement.addElement( new QName( ServerXmlIOV152.ELEMENT_LIST,
+            NAMESPACE_XBEAN_SPRING ) );
 
         // Adding the arguments attributes 'value' element
-        Element argumentsAttributesValueElement = argumentsListElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, new Namespace(
-            "spring", "http://www.springframework.org/schema/beans" ) ) );
+        Element argumentsAttributesValueElement = argumentsListElement.addElement( new QName(
+            ServerXmlIOV152.ELEMENT_VALUE, new Namespace( "spring", "http://www.springframework.org/schema/beans" ) ) );
 
         // Creating a string buffer to contain the LDIF data
         StringBuffer sb = new StringBuffer();
@@ -1615,7 +1673,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         argumentsAttributesValueElement.setText( sb.toString() );
 
         // Adding the arguments dn 'value' element
-        argumentsListElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_XBEAN_SPRING ) ).setText( dn );
+        argumentsListElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_XBEAN_SPRING ) ).setText(
+            dn );
     }
 
 
@@ -1703,19 +1762,24 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             Element changePasswordServerElement = root.addElement( ServerXmlIOV152.ELEMENT_CHANGE_PASSWORD_SERVER );
 
             // Enabled
-            changePasswordServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ENABLED, "" + serverConfiguration.isEnableChangePassword() );
+            changePasswordServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ENABLED, ""
+                + serverConfiguration.isEnableChangePassword() );
 
             // IpPort
-            changePasswordServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getChangePasswordPort() );
+            changePasswordServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, ""
+                + serverConfiguration.getChangePasswordPort() );
 
             // Adding 'directoryService' element
-            changePasswordServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+            changePasswordServerElement.addElement( ServerXmlIOV152.VALUE_DIRECTORY_SERVICE ).setText(
+                "#directoryService" );
 
             // Adding 'datagramAcceptor' element
-            changePasswordServerElement.addElement( ServerXmlIOV152.ELEMENT_DATAGRAM_ACCEPTOR ).setText( "#datagramAcceptor" );
+            changePasswordServerElement.addElement( ServerXmlIOV152.ELEMENT_DATAGRAM_ACCEPTOR ).setText(
+                "#datagramAcceptor" );
 
             // Adding 'socketAcceptor' element
-            changePasswordServerElement.addElement( ServerXmlIOV152.ELEMENT_SOCKET_ACCEPTOR ).setText( "#socketAcceptor" );
+            changePasswordServerElement.addElement( ServerXmlIOV152.ELEMENT_SOCKET_ACCEPTOR ).setText(
+                "#socketAcceptor" );
         }
     }
 
@@ -1736,13 +1800,15 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             Element kdcServerElement = root.addElement( ServerXmlIOV152.ELEMENT_KDC_SERVER );
 
             // Enabled
-            kdcServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ENABLED, "" + serverConfiguration.isEnableKerberos() );
+            kdcServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ENABLED, ""
+                + serverConfiguration.isEnableKerberos() );
 
             // IpPort
-            kdcServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getKerberosPort() );
+            kdcServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, ""
+                + serverConfiguration.getKerberosPort() );
 
             // Adding 'directoryService' element
-            kdcServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+            kdcServerElement.addElement( ServerXmlIOV152.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
             // Adding 'datagramAcceptor' element
             kdcServerElement.addElement( ServerXmlIOV152.ELEMENT_DATAGRAM_ACCEPTOR ).setText( "#datagramAcceptor" );
@@ -1805,7 +1871,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             dnsServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getDnsPort() );
 
             // Adding 'directoryService' element
-            dnsServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+            dnsServerElement.addElement( ServerXmlIOV152.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
             // Adding 'datagramAcceptor' element
             dnsServerElement.addElement( ServerXmlIOV152.ELEMENT_DATAGRAM_ACCEPTOR ).setText( "#datagramAcceptor" );
@@ -1832,7 +1898,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             Element ldapServerElement = root.addElement( ServerXmlIOV152.ELEMENT_LDAP_SERVER );
 
             // Id
-            ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, "ldapsServer" );
+            ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, ServerXmlIOV152.ELEMENT_LDAPS_SERVER );
 
             // IpPort
             ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getLdapsPort() );
@@ -1844,7 +1910,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ENABLE_LDAPS, "" + "true" );
 
             // Adding 'directoryService' element
-            ldapServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+            ldapServerElement.addElement( ServerXmlIOV152.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
             // Adding 'socketAcceptor' element
             ldapServerElement.addElement( ServerXmlIOV152.ELEMENT_SOCKET_ACCEPTOR ).setText( "#socketAcceptor" );
@@ -1872,37 +1938,43 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getLdapPort() );
 
         // AllowAnonymousAccess
-        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, "" + serverConfiguration.isAllowAnonymousAccess() );
+        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, ""
+            + serverConfiguration.isAllowAnonymousAccess() );
 
         // SaslHost
         ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SASL_HOST, "" + serverConfiguration.getSaslHost() );
 
         // SaslPrincipal
-        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SASL_PRINCIPAL, "" + serverConfiguration.getSaslPrincipal() );
+        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SASL_PRINCIPAL, ""
+            + serverConfiguration.getSaslPrincipal() );
 
         // SearchBaseDn
         ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SEARCH_BASE_DN, "ou=users,ou=system" );
 
         // MaxTimeLimit
-        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_MAX_TIME_LIMIT, "" + serverConfiguration.getMaxTimeLimit() );
+        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_MAX_TIME_LIMIT, ""
+            + serverConfiguration.getMaxTimeLimit() );
 
         // MaxSizeLimit
-        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_MAX_SIZE_LIMIT, "" + serverConfiguration.getMaxSizeLimit() );
+        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_MAX_SIZE_LIMIT, ""
+            + serverConfiguration.getMaxSizeLimit() );
 
         // Adding 'directoryService' element
-        ldapServerElement.addElement( "directoryService" ).setText( "#directoryService" );
+        ldapServerElement.addElement( ServerXmlIOV152.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
         // Adding 'socketAcceptor' element
         ldapServerElement.addElement( ServerXmlIOV152.ELEMENT_SOCKET_ACCEPTOR ).setText( "#socketAcceptor" );
 
         // Adding 'supportedMechanisms' element
-        Element supportedMechanismsElement = ldapServerElement.addElement( ServerXmlIOV152.ELEMENT_SUPPORTED_MECHANISMS );
+        Element supportedMechanismsElement = ldapServerElement
+            .addElement( ServerXmlIOV152.ELEMENT_SUPPORTED_MECHANISMS );
 
         // Adding each supported mechanism
         for ( String supportedMechanism : serverConfiguration.getSupportedMechanisms() )
         {
-            supportedMechanismsElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
-                supportedMechanism );
+            supportedMechanismsElement
+                .addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                    supportedMechanism );
         }
 
         // Adding 'SaslQop' element
@@ -1911,7 +1983,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         // Adding each SaslQop item
         for ( String saslQop : serverConfiguration.getSaslQops() )
         {
-            saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslQop );
+            saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                saslQop );
         }
 
         // Adding 'SaslRealms' element
@@ -1920,11 +1993,13 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         // Adding each SaslRealm item
         for ( String saslRealm : serverConfiguration.getSaslRealms() )
         {
-            saslRealmsElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( saslRealm );
+            saslRealmsElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
+                .setText( saslRealm );
         }
 
         // Adding 'ExtendedOperations' element
-        Element extendedOperationsElement = ldapServerElement.addElement( ServerXmlIOV152.ELEMENT_EXTENDED_OPERATION_HANDLERS );
+        Element extendedOperationsElement = ldapServerElement
+            .addElement( ServerXmlIOV152.ELEMENT_EXTENDED_OPERATION_HANDLERS );
 
         // Adding each extended operation item
         List<ExtendedOperationEnum> extendedOperations = serverConfiguration.getExtendedOperations();
@@ -1960,13 +2035,15 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         apacheDSElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, ServerXmlIOV152.ELEMENT_APACHE_DS );
 
         // SynchPeriodMillis
-        apacheDSElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SYNCH_PERIOD_MILLIS, "" + serverConfiguration.getSynchronizationPeriod() );
+        apacheDSElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_SYNCH_PERIOD_MILLIS, ""
+            + serverConfiguration.getSynchronizationPeriod() );
 
         // AllowAnonymousAccess
-        apacheDSElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, "" + serverConfiguration.isAllowAnonymousAccess() );
+        apacheDSElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS, ""
+            + serverConfiguration.isAllowAnonymousAccess() );
 
         // Adding 'directoryService' element
-        apacheDSElement.addElement( "directoryService" ).setText( "#directoryService" );
+        apacheDSElement.addElement( ServerXmlIOV152.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
         // Adding 'ldapServer' element
         apacheDSElement.addElement( ServerXmlIOV152.ELEMENT_LDAP_SERVER ).setText( "#ldapServer" );
@@ -1975,14 +2052,14 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         if ( serverConfiguration.isEnableLdaps() )
         {
             // Adding 'ldapsServer' element
-            apacheDSElement.addElement( "ldapsServer" ).setText( "#ldapsServer" );
+            apacheDSElement.addElement( ServerXmlIOV152.ELEMENT_LDAPS_SERVER ).setText( "#ldapsServer" );
         }
 
         // LDAPS Protocol
         if ( serverConfiguration.isEnableLdaps() )
         {
             // Adding 'ldapsServer' element
-            apacheDSElement.addElement( "ldapsServer" ).setText( "#ldapsServer" );
+            apacheDSElement.addElement( ServerXmlIOV152.ELEMENT_LDAPS_SERVER ).setText( "#ldapsServer" );
         }
     }
 
@@ -1999,22 +2076,27 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
     {
         // Adding the 'bean' element
         Element beanElement = root.addElement( new QName( ServerXmlIOV152.ELEMENT_BEAN, NAMESPACE_XBEAN_SPRING ) );
-        beanElement.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
+        beanElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_CLASS,
+            "org.springframework.beans.factory.config.CustomEditorConfigurer" );
 
         // Adding the 'property' element
-        Element propertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY, NAMESPACE_XBEAN_SPRING ) );
-        propertyElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_NAME, "customEditors" );
+        Element propertyElement = beanElement.addElement( new QName( ServerXmlIOV152.ELEMENT_PROPERTY,
+            NAMESPACE_XBEAN_SPRING ) );
+        propertyElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_NAME, ServerXmlIOV152.VALUE_CUSTOM_EDITORS );
 
         // Adding the 'map' element
-        Element mapElement = propertyElement.addElement( new QName( "map", NAMESPACE_XBEAN_SPRING ) );
+        Element mapElement = propertyElement
+            .addElement( new QName( ServerXmlIOV152.ELEMENT_MAP, NAMESPACE_XBEAN_SPRING ) );
 
         // Adding the 'entry' element
-        Element entryElement = mapElement.addElement( new QName( "entry", NAMESPACE_XBEAN_SPRING ) );
-        entryElement.addAttribute( "key", "javax.naming.directory.Attributes" );
+        Element entryElement = mapElement
+            .addElement( new QName( ServerXmlIOV152.ELEMENT_ENTRY, NAMESPACE_XBEAN_SPRING ) );
+        entryElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_KEY, "javax.naming.directory.Attributes" );
 
         // Adding the inner 'bean' element
-        Element innerBeanElement = entryElement.addElement( new QName( ServerXmlIOV152.ELEMENT_BEAN, NAMESPACE_XBEAN_SPRING ) );
-        innerBeanElement.addAttribute( "class",
+        Element innerBeanElement = entryElement.addElement( new QName( ServerXmlIOV152.ELEMENT_BEAN,
+            NAMESPACE_XBEAN_SPRING ) );
+        innerBeanElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_CLASS,
             "org.apache.directory.server.core.configuration.AttributesPropertyEditor" );
     }
 }
