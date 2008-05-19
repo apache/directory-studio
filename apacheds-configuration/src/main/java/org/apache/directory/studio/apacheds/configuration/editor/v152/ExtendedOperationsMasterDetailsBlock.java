@@ -150,7 +150,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
                     return ( ( ExtendedOperationEnum ) element ).getName();
 
                 }
-                
+
                 return super.getText( element );
             }
         } );
@@ -269,7 +269,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
      */
     protected void registerPages( DetailsPart detailsPart )
     {
-        detailsPage = new ExtendedOperationDetailsPage( this );
+        detailsPage = new ExtendedOperationDetailsPage();
         detailsPart.registerPage( ExtendedOperationEnum.class, detailsPage );
     }
 

@@ -24,8 +24,6 @@ import org.apache.directory.studio.apacheds.configuration.model.v152.ExtendedOpe
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -47,9 +45,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class ExtendedOperationDetailsPage implements IDetailsPage
 {
-    /** The associated Master Details Block */
-    private ExtendedOperationsMasterDetailsBlock masterDetailsBlock;
-
     /** The Managed Form */
     private IManagedForm mform;
 
@@ -62,29 +57,6 @@ public class ExtendedOperationDetailsPage implements IDetailsPage
     // UI fields
     private Text nameText;
     private Text descriptionText;
-
-    // Listeners
-    /** The Modify Listener for Text Widgets */
-    private ModifyListener textModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            masterDetailsBlock.setEditorDirty();
-            dirty = true;
-        }
-    };
-
-
-    /**
-     * Creates a new instance of ExtendedOperationDetailsPage.
-     *
-     * @param emdb
-     *      the associated Master Details Block
-     */
-    public ExtendedOperationDetailsPage( ExtendedOperationsMasterDetailsBlock emdb )
-    {
-        masterDetailsBlock = emdb;
-    }
 
 
     /* (non-Javadoc)
