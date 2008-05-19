@@ -25,20 +25,11 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.BinaryAttributeDialog;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -77,13 +68,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     /** The Page Title */
     private static final String TITLE = "General";
 
-    /** The Binary Attribute List */
-    private List<String> binaryAttributes;
-
     // UI Fields
-    private Text principalText;
-    private Text passwordText;
-    private Button showPasswordCheckbox;
     private Button allowAnonymousAccessCheckbox;
     private Text maxTimeLimitText;
     private Text maxSizeLimitText;
@@ -93,10 +78,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     private Button enableKerberosCheckbox;
     private Button enableChangePasswordCheckbox;
     private Button denormalizeOpAttrCheckbox;
-    private TableViewer binaryAttributesTableViewer;
-    private Button binaryAttributesAddButton;
-    private Button binaryAttributesEditButton;
-    private Button binaryAttributesDeleteButton;
     private Button enableLdapCheckbox;
     private Text ldapPortText;
     private Button enableLdapsCheckbox;
@@ -147,7 +128,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         leftCompositeTableWrapData.grabHorizontal = true;
         leftComposite.setLayoutData( leftCompositeTableWrapData );
 
-        createAdministratorSettingsSection( leftComposite, toolkit );
         createProtocolsSection( leftComposite, toolkit );
         createSupportedAuthenticationMechanismsSection( leftComposite, toolkit );
 
@@ -159,67 +139,11 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         rightCompositeTableWrapData.grabHorizontal = true;
         rightComposite.setLayoutData( rightCompositeTableWrapData );
 
-        createBinaryAttributesSection( rightComposite, toolkit );
         createLimitsSection( rightComposite, toolkit );
         createOptionsSection( rightComposite, toolkit );
 
         initFromInput();
         addListeners();
-    }
-
-
-    /**
-     * Creates the Administrator Settings Section.
-     *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
-     */
-    private void createAdministratorSettingsSection( Composite parent, FormToolkit toolkit )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section.marginWidth = 4;
-        section.setText( "Administrator settings" );
-        section.setDescription( "Set the settings about the administrator of the server." );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, false );
-        client.setLayout( glayout );
-        section.setClient( client );
-
-        // Principal
-        toolkit.createLabel( client, "Principal:" );
-        principalText = toolkit.createText( client, "" );
-        principalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Password
-        toolkit.createLabel( client, "Password:" );
-        passwordText = toolkit.createText( client, "" );
-        passwordText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        passwordText.setEchoChar( '\u2022' );
-
-        // Show Password
-        toolkit.createLabel( client, "" );
-        showPasswordCheckbox = toolkit.createButton( client, "Show password", SWT.CHECK );
-        showPasswordCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
-        showPasswordCheckbox.setSelection( false );
-        showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                if ( showPasswordCheckbox.getSelection() )
-                {
-                    passwordText.setEchoChar( '\0' );
-                }
-                else
-                {
-                    passwordText.setEchoChar( '\u2022' );
-                }
-            }
-        } );
     }
 
 
@@ -337,51 +261,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         // Denormalize Operational Attributes
         denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
         denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
-    }
-
-
-    /**
-     * Creates the Options Section
-     *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
-     */
-    private void createBinaryAttributesSection( Composite parent, FormToolkit toolkit )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section.marginWidth = 4;
-        section.setText( "Binary Attributes" );
-        section.setDescription( "Set attribute type names and OID's if you want them to be handled as binary content." );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, false );
-        client.setLayout( glayout );
-        section.setClient( client );
-
-        Table binaryAttributesTable = toolkit.createTable( client, SWT.NONE );
-        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 103;
-        binaryAttributesTable.setLayoutData( gd );
-        binaryAttributesTableViewer = new TableViewer( binaryAttributesTable );
-        binaryAttributesTableViewer.setContentProvider( new ArrayContentProvider() );
-
-        GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
-        buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
-
-        binaryAttributesAddButton = toolkit.createButton( client, "Add...", SWT.PUSH );
-        binaryAttributesAddButton.setLayoutData( buttonsGD );
-
-        binaryAttributesEditButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
-        binaryAttributesEditButton.setEnabled( false );
-        binaryAttributesEditButton.setLayoutData( buttonsGD );
-
-        binaryAttributesDeleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
-        binaryAttributesDeleteButton.setEnabled( false );
-        binaryAttributesDeleteButton.setLayoutData( buttonsGD );
     }
 
 
@@ -557,24 +436,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         ServerConfigurationV152 configuration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();
 
-        // Principal
-        String principal = configuration.getPrincipal();
-        if ( principal != null )
-        {
-            principalText.setText( principal );
-        }
-
-        // Password
-        String password = configuration.getPassword();
-        if ( password != null )
-        {
-            passwordText.setText( password );
-        }
-
-        // Binary Attributes
-        binaryAttributes = configuration.getBinaryAttributes();
-        binaryAttributesTableViewer.setInput( binaryAttributes );
-
         // LDAP Protocol
         enableLdapCheckbox.setSelection( true );
         ldapPortText.setEnabled( enableLdapCheckbox.getSelection() );
@@ -653,72 +514,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
             }
         };
 
-        // The ISelectionChangedListener for the Binary Attributes Table
-        ISelectionChangedListener binaryAttributesTableViewerListener = new ISelectionChangedListener()
-        {
-            public void selectionChanged( SelectionChangedEvent event )
-            {
-                binaryAttributesEditButton.setEnabled( !event.getSelection().isEmpty() );
-                binaryAttributesDeleteButton.setEnabled( !event.getSelection().isEmpty() );
-            }
-        };
-
-        // The IDoubleClickListener for the Binary Attributes Table
-        IDoubleClickListener binaryAttributesTableViewerDoubleClickListener = new IDoubleClickListener()
-        {
-            public void doubleClick( DoubleClickEvent event )
-            {
-                editSelectedBinaryAttribute();
-            }
-        };
-
-        // The SelectionListener for the Binary Attributes Add Button
-        SelectionListener binaryAttributesAddButtonListener = new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                BinaryAttributeDialog dialog = new BinaryAttributeDialog( "" );
-                if ( Dialog.OK == dialog.open() && dialog.isDirty() )
-                {
-                    String newAttribute = dialog.getAttribute();
-                    if ( newAttribute != null && !"".equals( newAttribute )
-                        && !binaryAttributes.contains( newAttribute ) )
-                    {
-                        binaryAttributes.add( newAttribute );
-
-                        binaryAttributesTableViewer.refresh();
-                        setEditorDirty();
-                    }
-                }
-            }
-        };
-
-        // The SelectionListener for the Binary Attributes Edit Button
-        SelectionListener binaryAttributesEditButtonListener = new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                editSelectedBinaryAttribute();
-            }
-        };
-
-        // The SelectionListener for the Binary Attributes Delete Button
-        SelectionListener binaryAttributesDeleteButtonListener = new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                StructuredSelection selection = ( StructuredSelection ) binaryAttributesTableViewer.getSelection();
-                if ( !selection.isEmpty() )
-                {
-                    String attribute = ( String ) selection.getFirstElement();
-                    binaryAttributes.remove( attribute );
-
-                    binaryAttributesTableViewer.refresh();
-                    setEditorDirty();
-                }
-            }
-        };
-
         selectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -734,9 +529,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
                 supportedMechanismsTableViewer.setAllChecked( false );
             }
         } );
-
-        principalText.addModifyListener( modifyListener );
-        passwordText.addModifyListener( modifyListener );
 
         enableLdapCheckbox.addSelectionListener( selectionListener );
         enableLdapCheckbox.addSelectionListener( new SelectionAdapter()
@@ -804,12 +596,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         selectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
         deselectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
 
-        binaryAttributesTableViewer.addSelectionChangedListener( binaryAttributesTableViewerListener );
-        binaryAttributesTableViewer.addDoubleClickListener( binaryAttributesTableViewerDoubleClickListener );
-        binaryAttributesAddButton.addSelectionListener( binaryAttributesAddButtonListener );
-        binaryAttributesEditButton.addSelectionListener( binaryAttributesEditButtonListener );
-        binaryAttributesDeleteButton.addSelectionListener( binaryAttributesDeleteButtonListener );
-
         maxTimeLimitText.addModifyListener( modifyListener );
         maxSizeLimitText.addModifyListener( modifyListener );
         synchPeriodText.addModifyListener( modifyListener );
@@ -818,35 +604,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         allowAnonymousAccessCheckbox.addSelectionListener( selectionListener );
         enableAccesControlCheckbox.addSelectionListener( selectionListener );
         denormalizeOpAttrCheckbox.addSelectionListener( selectionListener );
-    }
-
-
-    /**
-     * Opens a Binary Attribute Dialog with the selected Attribute Value Object in the
-     * Binary Attributes Table Viewer.
-     */
-    private void editSelectedBinaryAttribute()
-    {
-        StructuredSelection selection = ( StructuredSelection ) binaryAttributesTableViewer.getSelection();
-        if ( !selection.isEmpty() )
-        {
-            String oldAttribute = ( String ) selection.getFirstElement();
-
-            BinaryAttributeDialog dialog = new BinaryAttributeDialog( oldAttribute );
-            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
-            {
-                binaryAttributes.remove( oldAttribute );
-
-                String newAttribute = dialog.getAttribute();
-                if ( newAttribute != null && !"".equals( newAttribute ) && !binaryAttributes.contains( newAttribute ) )
-                {
-                    binaryAttributes.add( newAttribute );
-                }
-
-                binaryAttributesTableViewer.refresh();
-                setEditorDirty();
-            }
-        }
     }
 
 
@@ -866,11 +623,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     {
         ServerConfigurationV152 configuration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();
-
-        configuration.setPrincipal( principalText.getText() );
-        configuration.setPassword( passwordText.getText() );
-
-        configuration.setBinaryAttributes( binaryAttributes );
 
         configuration.setLdapPort( Integer.parseInt( ldapPortText.getText() ) );
         configuration.setEnableLdaps( enableLdapsCheckbox.getSelection() );

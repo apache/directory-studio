@@ -37,7 +37,6 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
 import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -87,6 +86,9 @@ public class ServerConfigurationEditor extends FormEditor
     /** The dirty flag */
     private boolean dirty = false;
 
+    /** The error message */
+    private String errorMessage;
+
     // The Pages
     private SaveableFormPage generalPage;
     private SaveableFormPage partitionsPage;
@@ -108,17 +110,7 @@ public class ServerConfigurationEditor extends FormEditor
         }
         catch ( Exception e )
         {
-            // Displaying an error message
-            MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( "Error!" );
-            messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
-            messageBox.open();
-
-            // Creating a default (empty) server configuration and assigning the serverXmlIO
-            serverConfiguration = new ServerConfigurationV152();
-            serverXmlIO = new ServerXmlIOV152();
-            return;
+            errorMessage = e.getMessage();
         }
     }
 
@@ -220,7 +212,12 @@ public class ServerConfigurationEditor extends FormEditor
     {
         try
         {
-            if ( serverConfiguration != null )
+            if ( serverConfiguration == null )
+            {
+                ErrorPage errorPage = new ErrorPage( this );
+                addPage( errorPage );
+            }
+            else
             {
                 switch ( serverConfiguration.getVersion() )
                 {
@@ -617,6 +614,18 @@ public class ServerConfigurationEditor extends FormEditor
     {
         return serverConfiguration;
     }
+
+
+    /**
+     * Gets the error message.
+     *
+     * @return
+     *      the error message
+     */
+    public String getErrorMessage()
+    {
+        return errorMessage;
+    }
 }
 
 /**
@@ -747,7 +756,7 @@ class PathEditorInput implements IPathEditorInput
     /**
      * Returns the path.
      */
-    public IPath getPath( Object element )
+    public IPath getErrorMessage( Object element )
     {
         if ( element instanceof PathEditorInput )
         {
@@ -757,4 +766,5 @@ class PathEditorInput implements IPathEditorInput
 
         return null;
     }
+
 }

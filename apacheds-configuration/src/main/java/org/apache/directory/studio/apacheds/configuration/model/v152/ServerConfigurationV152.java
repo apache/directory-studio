@@ -41,12 +41,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     /** The port */
     private int ldapPort;
 
-    /** The principal */
-    private String principal;
-
-    /** The password */
-    private String password;
-
     // Limits
 
     /** The Max Time Limit */
@@ -126,9 +120,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 
     // Other configuration elements
 
-    /** The Binary Attributes */
-    private List<String> binaryAttributes;
-
     /** The Partitions */
     private List<Partition> partitions;
 
@@ -152,21 +143,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
         partitions = new ArrayList<Partition>();
         interceptors = new ArrayList<InterceptorEnum>();
         extendedOperations = new ArrayList<ExtendedOperationEnum>();
-        binaryAttributes = new ArrayList<String>();
-    }
-
-
-    /**
-     * Adds a Binary Attribute.
-     *
-     * @param binaryAttribute
-     *      the Partition to add
-     * @return
-     *      true (as per the general contract of the Collection.add method).
-     */
-    public boolean addBinaryAttribute( String binaryAttribute )
-    {
-        return binaryAttributes.add( binaryAttribute );
     }
 
 
@@ -255,15 +231,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 
 
     /**
-     * Removes all Binary Attributes.
-     */
-    public void clearBinaryAttributes()
-    {
-        binaryAttributes.clear();
-    }
-
-
-    /**
      * Removes all ExtendedOperations.
      */
     public void clearExtendedOperations()
@@ -287,18 +254,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     public void clearPartitions()
     {
         partitions.clear();
-    }
-
-
-    /**
-     * Gets the Binary Attributes List.
-     *
-     * @return
-     *      the Binary Attributes  List
-     */
-    public List<String> getBinaryAttributes()
-    {
-        return binaryAttributes;
     }
 
 
@@ -435,18 +390,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 
 
     /**
-     * Gets the password.
-     *
-     * @return
-     *      the password
-     */
-    public String getPassword()
-    {
-        return password;
-    }
-
-
-    /**
      * Gets the LDAP Port.
      *
      * @return
@@ -455,18 +398,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     public int getLdapPort()
     {
         return ldapPort;
-    }
-
-
-    /**
-     * Gets the Principal
-     *
-     * @return
-     *      the Principal
-     */
-    public String getPrincipal()
-    {
-        return principal;
     }
 
 
@@ -651,20 +582,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 
 
     /**
-     * Removes a Binary Attribute.
-     *
-     * @param binaryAttribute
-     *      the Binary Attribute to remove
-     * @return
-     *      true if this list contained the specified element.
-     */
-    public boolean removeBinaryAttribute( String binaryAttribute )
-    {
-        return binaryAttributes.remove( binaryAttribute );
-    }
-
-
-    /**
      * Removes an Extended Operation.
      *
      * @param extendedOperation
@@ -757,18 +674,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     public void setAllowAnonymousAccess( boolean allowAnonymousAccess )
     {
         this.allowAnonymousAccess = allowAnonymousAccess;
-    }
-
-
-    /**
-     * Sets the Binary Attributes  List.
-     *
-     * @param binaryAttributes
-     *      the new value
-     */
-    public void setBinaryAttributes( List<String> binaryAttributes )
-    {
-        this.binaryAttributes = binaryAttributes;
     }
 
 
@@ -988,18 +893,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 
 
     /**
-     * Sets the password.
-     *
-     * @param password
-     *      the new password
-     */
-    public void setPassword( String password )
-    {
-        this.password = password;
-    }
-
-
-    /**
      * Sets the LDAP Port
      *
      * @param ldapPort
@@ -1008,18 +901,6 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     public void setLdapPort( int ldapPort )
     {
         this.ldapPort = ldapPort;
-    }
-
-
-    /**
-     * Sets the Principal
-     *
-     * @param principal
-     *      the new value
-     */
-    public void setPrincipal( String principal )
-    {
-        this.principal = principal;
     }
 
 

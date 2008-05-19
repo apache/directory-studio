@@ -117,7 +117,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
         toolkit.paintBordersFor( client );
         section.setClient( client );
 
-        // Creatig the Table and Table Viewer
+        // Creating the Table and Table Viewer
         Table table = toolkit.createTable( client, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         gd.heightHint = 20;
@@ -140,6 +140,18 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
             {
                 return ApacheDSConfigurationPlugin.getDefault().getImage(
                     ApacheDSConfigurationPluginConstants.IMG_EXTENDED_OPERATION );
+            }
+
+
+            public String getText( Object element )
+            {
+                if ( element instanceof ExtendedOperationEnum )
+                {
+                    return ( ( ExtendedOperationEnum ) element ).getName();
+
+                }
+                
+                return super.getText( element );
             }
         } );
 
