@@ -29,13 +29,18 @@ package org.apache.directory.studio.apacheds.configuration.model.v152;
 public enum ExtendedOperationEnum
 {
     /** The Start TLS Extended Operation */
-    START_TLS("Start TLS", "Description"),
+    START_TLS("Start TLS", "The Start TLS extended operation allows an application to serialize secure and "
+        + "plain requests against an LDAP server on a single connection."),
 
     /** The Graceful Shutdown Extended Operation */
-    GRACEFUL_SHUTDOWN("Graceful Shutdown", "Description"),
+    GRACEFUL_SHUTDOWN("Graceful Shutdown", "The Graceful Shutdown TLS extended operation allows an application to "
+        + "gracefully manage server's that must go offline or shutdown with proper notification to bound clients."),
 
     /** The Launch Diagnostic UI Extended Operation */
-    LAUNCH_DIAGNOSTIC_UI("Launch Diagnostic UI", "Description");
+    LAUNCH_DIAGNOSTIC_UI("Launch Diagnostic UI",
+        "The Launch Diagnostic UI extended operation allows an application to "
+            + "launch the diagnostic user interface which can be used to look at "
+            + "the master table and the indices.");
 
     /** The name */
     private String name;
