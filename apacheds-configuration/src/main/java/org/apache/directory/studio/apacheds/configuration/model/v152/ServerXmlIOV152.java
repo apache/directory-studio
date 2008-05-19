@@ -36,6 +36,7 @@ import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXm
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
+import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO.BooleanFormatException;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -175,6 +176,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         // Reading the 'defaultDirectoryService' Bean
         readDefaultDirectoryServiceBean( rootElement, serverConfiguration );
 
+        // Reading the 'standardThreadPool' Bean
+        readStandardThreadPoolBean( rootElement, serverConfiguration );
+
         // Reading the 'changePasswordServer' Bean
         readChangePasswordServerBean( rootElement, serverConfiguration );
 
@@ -198,6 +202,17 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
     }
 
 
+    /**
+     * Reads the DefaultDirectoryService Bean.
+     *
+     * @param element
+     *      the element
+     * @param serverConfiguration
+     *      the server configuration
+     * @throws ServerXmlIOException
+     * @throws NumberFormatException
+     * @throws BooleanFormatException
+     */
     private void readDefaultDirectoryServiceBean( Element element, ServerConfigurationV152 serverConfiguration )
         throws ServerXmlIOException, NumberFormatException, BooleanFormatException
     {
@@ -252,7 +267,44 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
 
 
     /**
-     * Reads the system partition
+     * Reads the StandardThreadPool Bean.
+     *
+     * @param element
+     *      the element
+     * @param serverConfiguration
+     *      the server configuration
+     * @throws ServerXmlIOException
+     * @throws NumberFormatException
+     */
+    private void readStandardThreadPoolBean( Element element, ServerConfigurationV152 serverConfiguration )
+        throws ServerXmlIOException, NumberFormatException
+    {
+        Element standardThreadPoolElement = element.element( "standardThreadPool" );
+        if ( standardThreadPoolElement == null )
+        {
+            throw new ServerXmlIOException( "Unable to find the 'standardThreadPool' tag." );
+        }
+        else
+        {
+            // MaxThreads
+            org.dom4j.Attribute maxThreadsAttribute = standardThreadPoolElement.attribute( "maxThreads" );
+            if ( maxThreadsAttribute == null )
+            {
+                // If the 'maxThreads' attribute does not exists,
+                // we throw an exception
+                throw new ServerXmlIOException(
+                    "Unable to find the 'maxThreads' attribute for the StandardThreadPool bean." );
+            }
+            else
+            {
+                serverConfiguration.setMaxThreads( Integer.parseInt( maxThreadsAttribute.getValue() ) );
+            }
+        }
+    }
+
+
+    /**
+     * Reads the system partition.
      *
      * @param element
      *      the element
@@ -668,16 +720,26 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      *      the server configuration
      * @throws NumberFormatException
      * @throws ServerXmlIOException 
+     * @throws BooleanFormatException 
      */
     private void readChangePasswordServerBean( Element element, ServerConfigurationV152 serverConfiguration )
-        throws NumberFormatException, ServerXmlIOException
+        throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
         // Getting the 'changePasswordServer' element
         Element changePasswordServerElement = element.element( "changePasswordServer" );
         if ( changePasswordServerElement != null )
         {
-            // Enabling the Change Password protocol
-            serverConfiguration.setEnableChangePassword( true );
+            // Getting the 'enabled' attribute
+            org.dom4j.Attribute enabledAttribute = changePasswordServerElement.attribute( "enabled" );
+            if ( enabledAttribute == null )
+            {
+                // By default, the protocol is not enabled
+                serverConfiguration.setEnableChangePassword( false );
+            }
+            else
+            {
+                serverConfiguration.setEnableChangePassword( parseBoolean( enabledAttribute.getValue() ) );
+            }
 
             // Getting the 'ipPort' attribute
             org.dom4j.Attribute ipPortAttribute = changePasswordServerElement.attribute( "ipPort" );
@@ -705,16 +767,26 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      *      the server configuration
      * @throws NumberFormatException
      * @throws ServerXmlIOException 
+     * @throws BooleanFormatException 
      */
     private void readKdcServerBean( Element element, ServerConfigurationV152 serverConfiguration )
-        throws NumberFormatException, ServerXmlIOException
+        throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
         // Getting the 'kdcServer' element
         Element kdcServerElement = element.element( "kdcServer" );
         if ( kdcServerElement != null )
         {
-            // Enabling the Kerberos protocol
-            serverConfiguration.setEnableKerberos( true );
+            // Getting the 'enabled' attribute
+            org.dom4j.Attribute enabledAttribute = kdcServerElement.attribute( "enabled" );
+            if ( enabledAttribute == null )
+            {
+                // By default, the protocol is not enabled
+                serverConfiguration.setEnableKerberos( false );
+            }
+            else
+            {
+                serverConfiguration.setEnableKerberos( parseBoolean( enabledAttribute.getValue() ) );
+            }
 
             // Getting the 'ipPort' attribute
             org.dom4j.Attribute ipPortAttribute = kdcServerElement.attribute( "ipPort" );
@@ -741,16 +813,26 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      *      the server configuration
      * @throws NumberFormatException
      * @throws ServerXmlIOException 
+     * @throws BooleanFormatException 
      */
     private void readNtpServerBean( Element element, ServerConfigurationV152 serverConfiguration )
-        throws NumberFormatException, ServerXmlIOException
+        throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
         // Getting the 'ntpServer' element
         Element ntpServerElement = element.element( "ntpServer" );
         if ( ntpServerElement != null )
         {
-            // Enabling the NTP protocol
-            serverConfiguration.setEnableNtp( true );
+            // Getting the 'enabled' attribute
+            org.dom4j.Attribute enabledAttribute = ntpServerElement.attribute( "enabled" );
+            if ( enabledAttribute == null )
+            {
+                // By default, the protocol is not enabled
+                serverConfiguration.setEnableNtp( false );
+            }
+            else
+            {
+                serverConfiguration.setEnableNtp( parseBoolean( enabledAttribute.getValue() ) );
+            }
 
             // Getting the 'ipPort' attribute
             org.dom4j.Attribute ipPortAttribute = ntpServerElement.attribute( "ipPort" );
@@ -777,16 +859,26 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
      *      the server configuration
      * @throws NumberFormatException
      * @throws ServerXmlIOException 
+     * @throws BooleanFormatException 
      */
     private void readDnsServerBean( Element element, ServerConfigurationV152 serverConfiguration )
-        throws NumberFormatException, ServerXmlIOException
+        throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
         // Getting the 'dnsServer' element
         Element dnsServerElement = element.element( "dnsServer" );
         if ( dnsServerElement != null )
         {
-            // Enabling the DNS protocol
-            serverConfiguration.setEnableDns( true );
+            // Getting the 'enabled' attribute
+            org.dom4j.Attribute enabledAttribute = dnsServerElement.attribute( "enabled" );
+            if ( enabledAttribute == null )
+            {
+                // By default, the protocol is not enabled
+                serverConfiguration.setEnableDns( false );
+            }
+            else
+            {
+                serverConfiguration.setEnableDns( parseBoolean( enabledAttribute.getValue() ) );
+            }
 
             // Getting the 'ipPort' attribute
             org.dom4j.Attribute ipPortAttribute = dnsServerElement.attribute( "ipPort" );
@@ -841,12 +933,23 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                     org.dom4j.Attribute enableLdapsAttribute = ldapServerElement.attribute( "enableLdaps" );
                     if ( enableLdapsAttribute == null )
                     {
-                        // Enabling by default
-                        serverConfiguration.setEnableLdaps( true );
+                        // By default, the protocol is not enabled
+                        serverConfiguration.setEnableLdaps( false );
                     }
                     else
                     {
-                        serverConfiguration.setEnableLdaps( parseBoolean( enableLdapsAttribute.getValue() ) );
+                        // Getting the 'enabled' attribute
+                        org.dom4j.Attribute enabledAttribute = ldapServerElement.attribute( "enabled" );
+                        if ( enabledAttribute == null )
+                        {
+                            // By default, the protocol is not enabled
+                            serverConfiguration.setEnableDns( false );
+                        }
+                        else
+                        {
+                            serverConfiguration.setEnableLdaps( parseBoolean( enableLdapsAttribute.getValue() )
+                                && parseBoolean( enabledAttribute.getValue() ) );
+                        }
                     }
 
                     // Getting the 'ipPort' attribute
