@@ -36,7 +36,6 @@ import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXm
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO.BooleanFormatException;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -1106,6 +1105,56 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                         serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimitAttribute.getValue() ) );
                     }
 
+                    // Supported Mechanisms
+                    Element supportedMechanismsElement = ldapServerElement.element( "supportedMechanisms" );
+                    if ( supportedMechanismsElement != null )
+                    {
+                        // Looping on all 'value' elements
+                        for ( Iterator<?> iterator = supportedMechanismsElement.elementIterator( "value" ); iterator
+                            .hasNext(); )
+                        {
+                            // Getting the 'value' element
+                            Element supportedMechanismValueElement = ( Element ) iterator.next();
+
+                            // Adding the supported mechanism value
+                            serverConfiguration.addSupportedMechanism( supportedMechanismValueElement.getText().trim()
+                                .toUpperCase() );
+
+                        }
+                    }
+
+                    // SaslQop
+                    Element SaslQopElement = ldapServerElement.element( "saslQop" );
+                    if ( SaslQopElement != null )
+                    {
+                        // Looping on all 'value' elements
+                        for ( Iterator<?> iterator = SaslQopElement.elementIterator( "value" ); iterator.hasNext(); )
+                        {
+                            // Getting the 'value' element
+                            Element saslQopValueElement = ( Element ) iterator.next();
+
+                            // Adding the SaslQop value
+                            serverConfiguration.addSaslQop( saslQopValueElement.getText().trim() );
+
+                        }
+                    }
+
+                    // SaslRealms
+                    Element SaslRealmsElement = ldapServerElement.element( "saslRealms" );
+                    if ( SaslRealmsElement != null )
+                    {
+                        // Looping on all 'value' elements
+                        for ( Iterator<?> iterator = SaslRealmsElement.elementIterator( "value" ); iterator.hasNext(); )
+                        {
+                            // Getting the 'value' element
+                            Element saslRealmValueElement = ( Element ) iterator.next();
+
+                            // Adding the SaslRealm value
+                            serverConfiguration.addSaslRealm( saslRealmValueElement.getText().trim() );
+
+                        }
+                    }
+
                     // Extended operations
                     readExtendedOperations( ldapServerElement, serverConfiguration );
 
@@ -1589,6 +1638,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             // Adding the 'changePasswordServer' element
             Element changePasswordServerElement = root.addElement( "changePasswordServer" );
 
+            // Enabled
+            changePasswordServerElement.addAttribute( "enabled", "" + serverConfiguration.isEnableChangePassword() );
+
             // IpPort
             changePasswordServerElement.addAttribute( "ipPort", "" + serverConfiguration.getChangePasswordPort() );
 
@@ -1618,6 +1670,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         {
             // Adding the 'kdcServer' element
             Element kdcServerElement = root.addElement( "kdcServer" );
+
+            // Enabled
+            kdcServerElement.addAttribute( "enabled", "" + serverConfiguration.isEnableKerberos() );
 
             // IpPort
             kdcServerElement.addAttribute( "ipPort", "" + serverConfiguration.getKerberosPort() );
@@ -1649,6 +1704,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             // Adding the 'ntpServer' element
             Element ntpServerElement = root.addElement( "ntpServer" );
 
+            // Enabled
+            ntpServerElement.addAttribute( "enabled", "" + serverConfiguration.isEnableNtp() );
+
             // IpPort
             ntpServerElement.addAttribute( "ipPort", "" + serverConfiguration.getNtpPort() );
 
@@ -1675,6 +1733,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         {
             // Adding the 'dnsServer' element
             Element dnsServerElement = root.addElement( "dnsServer" );
+
+            // Enabled
+            dnsServerElement.addAttribute( "enabled", "" + serverConfiguration.isEnableDns() );
 
             // IpPort
             dnsServerElement.addAttribute( "ipPort", "" + serverConfiguration.getDnsPort() );
@@ -1712,8 +1773,8 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             // IpPort
             ldapServerElement.addAttribute( "ipPort", "" + serverConfiguration.getLdapsPort() );
 
-            // Enable
-            ldapServerElement.addAttribute( "enable", "" + "true" );
+            // Enabled
+            ldapServerElement.addAttribute( "enabled", "" + "true" );
 
             // EnableLdaps
             ldapServerElement.addAttribute( "enableLdaps", "" + "true" );
