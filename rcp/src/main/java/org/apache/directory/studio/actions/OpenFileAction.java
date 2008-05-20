@@ -21,27 +21,24 @@
 package org.apache.directory.studio.actions;
 
 
-import java.io.File;
 import java.text.MessageFormat;
 
 import org.apache.directory.studio.Messages;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileInfo;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.ui.IEditorDescriptor;
-import org.eclipse.ui.IEditorRegistry;
-import org.eclipse.ui.IPathEditorInput;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.ide.IDE;
 
 
 /**
@@ -53,10 +50,6 @@ import org.eclipse.ui.PartInitException;
  */
 public class OpenFileAction extends Action implements IWorkbenchWindowActionDelegate
 {
-
-    /** The workbench window */
-    private IWorkbenchWindow workbenchWindow;
-
 
     /**
      * Creates a new instance of OpenFileAction.
@@ -81,27 +74,32 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
         init( window );
     }
 
+    private IWorkbenchWindow window;
+    private String filterPath;
 
-    /**
-     * {@inheritDoc}
+
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
      */
     public void dispose()
     {
-        workbenchWindow = null;
+        window = null;
+        filterPath = null;
     }
 
 
-    /**
-     * {@inheritDoc}
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
      */
     public void init( IWorkbenchWindow window )
     {
-        workbenchWindow = window;
+        this.window = window;
+        filterPath = System.getProperty( "user.home" ); //$NON-NLS-1$
     }
 
 
-    /**
-     * {@inheritDoc}
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     public void run( IAction action )
     {
@@ -109,81 +107,66 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
     }
 
 
-    /**
-     * {@inheritDoc}
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
      */
     public void selectionChanged( IAction action, ISelection selection )
     {
     }
 
 
-    /**
-     * {@inheritDoc}
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.action.Action#run()
      */
     public void run()
     {
-        // get path
-        FileDialog dialog = new FileDialog( workbenchWindow.getShell(), SWT.OPEN );
-        dialog.setText( Messages.getString( "OpenFileAction.Open_File" ) ); //$NON-NLS-1$
-        String path = dialog.open();
-        if ( path == null || path.length() == 0 )
-        {
-            // canceled
-            return;
-        }
+        FileDialog dialog = new FileDialog( window.getShell(), SWT.OPEN | SWT.MULTI );
+        dialog.setText( Messages.getString( "OpenFileAction.Open_File" ) );
+        dialog.setFilterPath( filterPath );
+        dialog.open();
+        String[] names = dialog.getFileNames();
 
-        // check file 
-        File file = new File( path );
-        if ( !file.exists() )
+        if ( names != null )
         {
-            String msg = MessageFormat.format(
-                Messages.getString( "OpenFileAction.File_x_does_not_exist" ), new Object[] //$NON-NLS-1$
-                    { file.getName() } );
-            MessageDialog.openWarning( workbenchWindow.getShell(), Messages
-                .getString( "OpenFileAction.Warning_message" ), msg ); //$NON-NLS-1$
-            return;
-        }
-        if ( !file.canRead() )
-        {
-            String msg = MessageFormat.format(
-                Messages.getString( "OpenFileAction.File_x_is_not_readable" ), new Object[] //$NON-NLS-1$
-                    { file.getName() } );
-            MessageDialog.openWarning( workbenchWindow.getShell(), Messages
-                .getString( "OpenFileAction.Warning_message" ), msg ); //$NON-NLS-1$
-            return;
-        }
+            filterPath = dialog.getFilterPath();
 
-        // get editor for this file
-        IWorkbench workbench = workbenchWindow.getWorkbench();
-        IEditorRegistry editorRegistry = workbench.getEditorRegistry();
-        IEditorDescriptor descriptor = editorRegistry.getDefaultEditor( file.getName() );
+            int numberOfFilesNotFound = 0;
+            StringBuffer notFound = new StringBuffer();
+            IWorkbenchPage page = window.getActivePage();
+            for ( String name : names )
+            {
+                IFileStore fileStore = EFS.getLocalFileSystem().getStore( new Path( filterPath ) ).getChild( name );
+                IFileInfo fetchInfo = fileStore.fetchInfo();
+                if ( !fetchInfo.isDirectory() && fetchInfo.exists() )
+                {
+                    try
+                    {
+                        IDE.openEditorOnFileStore( page, fileStore );
+                    }
+                    catch ( PartInitException e )
+                    {
+                        MessageDialog.openError( window.getShell(), Messages.getString( "OpenFileAction.Error" ), e
+                            .getMessage() );
+                    }
+                }
+                else
+                {
+                    if ( ++numberOfFilesNotFound > 1 )
+                    {
+                        notFound.append( '\n' );
+                    }
+                    notFound.append( fileStore.getName() );
+                }
+            }
 
-        if ( descriptor == null )
-        {
-            String msg = MessageFormat.format(
-                Messages.getString( "OpenFileAction.No_appropriate_editor_found_for_x" ), new Object[] //$NON-NLS-1$
-                { file.getName() } );
-            MessageDialog.openWarning( workbenchWindow.getShell(), Messages
-                .getString( "OpenFileAction.Warning_message" ), msg ); //$NON-NLS-1$
-            return;
-        }
-
-        // create IEdiorInput
-        IPath location = new Path( file.getAbsolutePath() );
-        ImageDescriptor imageDescriptor = descriptor.getImageDescriptor();
-        IPathEditorInput input = new PathEditorInput( location, imageDescriptor );
-
-        // activate editor
-        IWorkbenchPage page = workbenchWindow.getActivePage();
-        String editorId = descriptor.getId();
-        try
-        {
-            page.openEditor( input, editorId );
-        }
-        catch ( PartInitException e )
-        {
-            e.printStackTrace();
+            if ( numberOfFilesNotFound > 0 )
+            {
+                String msg = MessageFormat.format( numberOfFilesNotFound == 1 ? Messages
+                    .getString( "OpenFileAction.File_not_found" ) : Messages
+                    .getString( "OpenFileAction.Files_not_found" ), new Object[]
+                    { notFound.toString() } );
+                MessageDialog.openError( window.getShell(), Messages.getString( "OpenFileAction.Error" ), msg );
+            }
         }
     }
-
 }
