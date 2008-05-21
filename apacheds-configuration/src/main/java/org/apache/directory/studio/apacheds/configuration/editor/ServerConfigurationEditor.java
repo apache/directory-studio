@@ -91,6 +91,7 @@ public class ServerConfigurationEditor extends FormEditor
 
     // The Pages
     private SaveableFormPage generalPage;
+    private SaveableFormPage authenticationPage;
     private SaveableFormPage partitionsPage;
     private SaveableFormPage interceptorsPage;
     private SaveableFormPage extendedOperationsPage;
@@ -225,8 +226,8 @@ public class ServerConfigurationEditor extends FormEditor
                         generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.GeneralPage(
                             this );
                         addPage( generalPage );
-                        
-                        SaveableFormPage authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.AuthenticationPage(
+
+                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.AuthenticationPage(
                             this );
                         addPage( authenticationPage );
 
@@ -278,7 +279,6 @@ public class ServerConfigurationEditor extends FormEditor
                         break;
                 }
             }
-
         }
         catch ( PartInitException e )
         {
@@ -294,10 +294,10 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        monitor.beginTask( "Saving the Server Configuration", 5 );
+        monitor.beginTask( "Saving the Server Configuration", IProgressMonitor.UNKNOWN );
 
         // Saving the editor pages
-        saveEditorPages( monitor );
+        saveEditorPages();
 
         try
         {
@@ -338,7 +338,6 @@ public class ServerConfigurationEditor extends FormEditor
                 success = doSaveAs( monitor );
             }
 
-            monitor.worked( 1 );
             setDirty( !success );
             monitor.done();
         }
@@ -362,30 +361,33 @@ public class ServerConfigurationEditor extends FormEditor
      * @param monitor
      *      the monitor to use
      */
-    private void saveEditorPages( IProgressMonitor monitor )
+    private void saveEditorPages()
     {
-        generalPage.save();
-        if ( monitor != null )
+        if ( serverConfiguration != null )
         {
-            monitor.worked( 1 );
-        }
-
-        partitionsPage.save();
-        if ( monitor != null )
-        {
-            monitor.worked( 1 );
-        }
-
-        interceptorsPage.save();
-        if ( monitor != null )
-        {
-            monitor.worked( 1 );
-        }
-
-        extendedOperationsPage.save();
-        if ( monitor != null )
-        {
-            monitor.worked( 1 );
+            switch ( serverConfiguration.getVersion() )
+            {
+                case VERSION_1_5_2:
+                    generalPage.save();
+                    authenticationPage.save();
+                    partitionsPage.save();
+                    interceptorsPage.save();
+                    extendedOperationsPage.save();
+                    break;
+                case VERSION_1_5_1:
+                    generalPage.save();
+                    partitionsPage.save();
+                    interceptorsPage.save();
+                    extendedOperationsPage.save();
+                    break;
+                case VERSION_1_5_0:
+                    generalPage.save();
+                    authenticationPage.save();
+                    partitionsPage.save();
+                    interceptorsPage.save();
+                    extendedOperationsPage.save();
+                    break;
+            }
         }
     }
 
@@ -435,10 +437,9 @@ public class ServerConfigurationEditor extends FormEditor
                 {
                     try
                     {
-                        monitor.beginTask( "Saving the Server Configuration", 5 );
-                        saveEditorPages( monitor );
+                        monitor.beginTask( "Saving the Server Configuration", IProgressMonitor.UNKNOWN );
+                        saveEditorPages();
                         boolean success = doSaveAs( monitor );
-                        monitor.worked( 1 );
                         setDirty( !success );
                         monitor.done();
                     }
@@ -509,7 +510,7 @@ public class ServerConfigurationEditor extends FormEditor
             FileEditorInput fei = new FileEditorInput( file );
 
             // Saving the file to disk
-            saveEditorPages( monitor );
+            saveEditorPages();
             saveConfiguration( fei, monitor );
 
             // Setting the new input to the editor
@@ -560,7 +561,7 @@ public class ServerConfigurationEditor extends FormEditor
             }
 
             // Saving the file to disk
-            saveEditorPages( monitor );
+            saveEditorPages();
             saveConfiguration( path );
 
             // Creating the new input for the editor

@@ -524,7 +524,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
 
         // SASL Quality Of Protection
         List<SaslQualityOfProtectionEnum> saslQoPList = new ArrayList<SaslQualityOfProtectionEnum>();
-        for ( Object qop : supportedMechanismsTableViewer.getCheckedElements() )
+        for ( Object qop : saslQualityOfProtectionTableViewer.getCheckedElements() )
         {
             saslQoPList.add( ( SaslQualityOfProtectionEnum ) qop );
         }
