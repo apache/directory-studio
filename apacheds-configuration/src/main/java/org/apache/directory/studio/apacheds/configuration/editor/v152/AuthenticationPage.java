@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
+import org.apache.directory.studio.apacheds.configuration.model.v152.SupportedMechanismEnum;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -138,8 +139,9 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         supportedMechanismsTable.setLayoutData( gd );
         supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
         supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
-        supportedMechanismsTableViewer.setInput( new String[]
-            { "SIMPLE", "CRAM-MD5 (SASL)", "DIGEST-MD5 (SASL)", "GSSAPI (SASL)" } );
+        supportedMechanismsTableViewer.setInput( new SupportedMechanismEnum[]
+            { SupportedMechanismEnum.SIMPLE, SupportedMechanismEnum.CRAM_MD5, SupportedMechanismEnum.DIGEST_MD5,
+                SupportedMechanismEnum.GSSAPI } );
 
         // Select All Button
         selectAllSupportedMechanismsButton = toolkit.createButton( client, "Select All", SWT.PUSH );
@@ -345,10 +347,10 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         ServerConfigurationV152 configuration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();
 
-        List<String> supportedMechanismsList = new ArrayList<String>();
+        List<SupportedMechanismEnum> supportedMechanismsList = new ArrayList<SupportedMechanismEnum>();
         for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
         {
-            supportedMechanismsList.add( ( String ) supportedMechanism );
+            supportedMechanismsList.add( ( SupportedMechanismEnum ) supportedMechanism );
         }
         configuration.setSupportedMechanisms( supportedMechanismsList );
     }

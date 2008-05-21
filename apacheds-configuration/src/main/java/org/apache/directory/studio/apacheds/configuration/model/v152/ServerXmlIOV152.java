@@ -1220,10 +1220,24 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                             // Getting the 'value' element
                             Element supportedMechanismValueElement = ( Element ) iterator.next();
 
-                            // Adding the supported mechanism value
-                            serverConfiguration.addSupportedMechanism( supportedMechanismValueElement.getText().trim()
-                                .toUpperCase() );
+                            String supportedMechanismValue = supportedMechanismValueElement.getText().trim();
 
+                            if ( "SIMPLE".equalsIgnoreCase( supportedMechanismValue ) )
+                            {
+                                serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.SIMPLE );
+                            }
+                            else if ( "CRAM-MD5".equalsIgnoreCase( supportedMechanismValue ) )
+                            {
+                                serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.CRAM_MD5 );
+                            }
+                            else if ( "DIGEST-MD5".equalsIgnoreCase( supportedMechanismValue ) )
+                            {
+                                serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.DIGEST_MD5 );
+                            }
+                            else if ( "GSSAPI".equalsIgnoreCase( supportedMechanismValue ) )
+                            {
+                                serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.GSSAPI );
+                            }
                         }
                     }
 
@@ -1970,11 +1984,27 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             .addElement( ServerXmlIOV152.ELEMENT_SUPPORTED_MECHANISMS );
 
         // Adding each supported mechanism
-        for ( String supportedMechanism : serverConfiguration.getSupportedMechanisms() )
+        for ( SupportedMechanismEnum supportedMechanism : serverConfiguration.getSupportedMechanisms() )
         {
-            supportedMechanismsElement
-                .addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
-                    supportedMechanism );
+            switch ( supportedMechanism )
+            {
+                case SIMPLE:
+                    supportedMechanismsElement.addElement(
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "SIMPLE" );
+                    break;
+                case CRAM_MD5:
+                    supportedMechanismsElement.addElement(
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "CRAM-MD5" );
+                    break;
+                case DIGEST_MD5:
+                    supportedMechanismsElement.addElement(
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "DIGEST-MD5" );
+                    break;
+                case GSSAPI:
+                    supportedMechanismsElement.addElement(
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "GSSAPI" );
+                    break;
+            }
         }
 
         // Adding 'SaslQop' element

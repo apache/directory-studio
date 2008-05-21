@@ -56,7 +56,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     private int maxThreads;
 
     /** The Supported Mechanisms */
-    private List<String> supportedMechanisms;
+    private List<SupportedMechanismEnum> supportedMechanisms;
 
     // SASL Properties
 
@@ -137,7 +137,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     {
         super( ServerConfigurationVersionEnum.VERSION_1_5_2 );
 
-        supportedMechanisms = new ArrayList<String>();
+        supportedMechanisms = new ArrayList<SupportedMechanismEnum>();
         saslQops = new ArrayList<String>();
         saslRealms = new ArrayList<String>();
         partitions = new ArrayList<Partition>();
@@ -224,7 +224,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      true (as per the general contract of the Collection.add method).
      */
-    public boolean addSupportedMechanism( String supportedMechanism )
+    public boolean addSupportedMechanism( SupportedMechanismEnum supportedMechanism )
     {
         return supportedMechanisms.add( supportedMechanism );
     }
@@ -467,7 +467,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      the Supported Mechanisms List
      */
-    public List<String> getSupportedMechanisms()
+    public List<SupportedMechanismEnum> getSupportedMechanisms()
     {
         return supportedMechanisms;
     }
@@ -970,7 +970,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @param supportedMechanisms
      *      the new value
      */
-    public void setSupportedMechanisms( List<String> supportedMechanisms )
+    public void setSupportedMechanisms( List<SupportedMechanismEnum> supportedMechanisms )
     {
         this.supportedMechanisms = supportedMechanisms;
     }
