@@ -25,18 +25,25 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs.SaslRealmDialog;
 import org.apache.directory.studio.apacheds.configuration.model.v152.SaslQualityOfProtectionEnum;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.apache.directory.studio.apacheds.configuration.model.v152.SupportedMechanismEnum;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -67,12 +74,22 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     /** The Page Title */
     private static final String TITLE = "Authentication";
 
+    private List<String> saslRealms;
+
     // UI Fields
     private CheckboxTableViewer supportedMechanismsTableViewer;
     private Button selectAllSupportedMechanismsButton;
     private Button deselectAllSupportedMechanismsButton;
-
+    private Text saslHostText;
+    private Text saslPrincipalText;
+    private Text searchBaseDnText;
     private CheckboxTableViewer saslQualityOfProtectionTableViewer;
+    private Button selectAllQualityOfProtectionButton;
+    private Button deselectAllQualityOfProtectionButton;
+    private CheckboxTableViewer saslRealmsTableViewer;
+    private Button addSaslRealmButton;
+    private Button editSaslRealmsButton;
+    private Button deleteSaslRealmButton;
 
 
     /**
@@ -84,6 +101,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     public AuthenticationPage( FormEditor editor )
     {
         super( editor, ID, TITLE );
+        saslRealms = new ArrayList<String>();
     }
 
 
@@ -157,48 +175,6 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
 
 
     /**
-     * Creates the SASL Realms Section
-     *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
-     */
-    private void createSaslRealmsSection( Composite parent, FormToolkit toolkit )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "SASL Realms" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, false );
-        client.setLayout( glayout );
-        section.setClient( client );
-
-        // SASL Realms Table
-        Table saslRealmsTable = toolkit.createTable( client, SWT.NONE );
-        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 82;
-        saslRealmsTable.setLayoutData( gd );
-        TableViewer saslRealmsTableViewer = new CheckboxTableViewer( saslRealmsTable );
-        saslRealmsTableViewer.setContentProvider( new ArrayContentProvider() );
-
-        // Add Button
-        Button addSaslRealmButton = toolkit.createButton( client, "Add...", SWT.PUSH );
-        addSaslRealmButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-
-        // Edit Button
-        Button editSaslRealmsButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
-        editSaslRealmsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-
-        // Delete Button
-        Button deleteSaslRealmButton = toolkit.createButton( client, "Delete", SWT.PUSH );
-        deleteSaslRealmButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-    }
-
-
-    /**
      * Creates the SASL Settings Section
      *
      * @param parent
@@ -220,17 +196,17 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
 
         // SASL Host
         toolkit.createLabel( client, "SASL Host:" );
-        Text saslHostText = toolkit.createText( client, "" );
+        saslHostText = toolkit.createText( client, "" );
         saslHostText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SASL Principal
         toolkit.createLabel( client, "SASL Principal:" );
-        Text saslPrincipalText = toolkit.createText( client, "" );
+        saslPrincipalText = toolkit.createText( client, "" );
         saslPrincipalText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Search Base DN
         toolkit.createLabel( client, "Search Base DN:" );
-        Text searchBaseDnText = toolkit.createText( client, "" );
+        searchBaseDnText = toolkit.createText( client, "" );
         searchBaseDnText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -267,12 +243,56 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
                 SaslQualityOfProtectionEnum.AUTH_CONF } );
 
         // Select All Button
-        Button selectAllQualityOfProtectionButton = toolkit.createButton( client, "Select All", SWT.PUSH );
+        selectAllQualityOfProtectionButton = toolkit.createButton( client, "Select All", SWT.PUSH );
         selectAllQualityOfProtectionButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
         // Deselect All Button
-        Button deselectAllQualityOfProtectionButton = toolkit.createButton( client, "Deselect All", SWT.PUSH );
+        deselectAllQualityOfProtectionButton = toolkit.createButton( client, "Deselect All", SWT.PUSH );
         deselectAllQualityOfProtectionButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+    }
+
+
+    /**
+     * Creates the SASL Realms Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createSaslRealmsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "SASL Realms" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        GridLayout glayout = new GridLayout( 2, false );
+        client.setLayout( glayout );
+        section.setClient( client );
+
+        // SASL Realms Table
+        Table saslRealmsTable = toolkit.createTable( client, SWT.NONE );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
+        gd.heightHint = 82;
+        saslRealmsTable.setLayoutData( gd );
+        saslRealmsTableViewer = new CheckboxTableViewer( saslRealmsTable );
+        saslRealmsTableViewer.setContentProvider( new ArrayContentProvider() );
+
+        // Add Button
+        addSaslRealmButton = toolkit.createButton( client, "Add...", SWT.PUSH );
+        addSaslRealmButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+
+        // Edit Button
+        editSaslRealmsButton = toolkit.createButton( client, "Edit...", SWT.PUSH );
+        editSaslRealmsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        editSaslRealmsButton.setEnabled( false );
+
+        // Delete Button
+        deleteSaslRealmButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        deleteSaslRealmButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        deleteSaslRealmButton.setEnabled( false );
     }
 
 
@@ -287,9 +307,21 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         // Supported Authentication Mechanisms
         supportedMechanismsTableViewer.setCheckedElements( configuration.getSupportedMechanisms().toArray() );
 
+        // SASL Host
+        saslHostText.setText( configuration.getSaslHost() );
+
+        // SASL Principal
+        saslPrincipalText.setText( configuration.getSaslPrincipal() );
+
+        // Search Base DN
+        searchBaseDnText.setText( configuration.getSearchBaseDn() );
+
         // SASL Quality Of Protection
         saslQualityOfProtectionTableViewer.setCheckedElements( configuration.getSaslQops().toArray() );
 
+        // SASL Realms
+        saslRealms.addAll( configuration.getSaslRealms() );
+        saslRealmsTableViewer.setInput( saslRealms );
     }
 
 
@@ -298,31 +330,32 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
      */
     private void addListeners()
     {
-        //  The Selection Listener
-        SelectionListener selectionListener = new SelectionAdapter()
+        //  The Modify Listener
+        ModifyListener modifyListener = new ModifyListener()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void modifyText( ModifyEvent e )
             {
                 setEditorDirty();
             }
         };
 
+        // Supported Authentication Mechanisms
         selectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 supportedMechanismsTableViewer.setAllChecked( true );
+                setEditorDirty();
             }
         } );
-
         deselectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 supportedMechanismsTableViewer.setAllChecked( false );
+                setEditorDirty();
             }
         } );
-
         supportedMechanismsTableViewer.addCheckStateListener( new ICheckStateListener()
         {
             public void checkStateChanged( CheckStateChangedEvent event )
@@ -331,8 +364,127 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
             }
         } );
 
-        selectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
-        deselectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
+        // SASL Host
+        saslHostText.addModifyListener( modifyListener );
+
+        // SASL Principal
+        saslPrincipalText.addModifyListener( modifyListener );
+
+        // Search Base DN
+        searchBaseDnText.addModifyListener( modifyListener );
+
+        // SASL Quality Of Protection
+        selectAllQualityOfProtectionButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                saslQualityOfProtectionTableViewer.setAllChecked( true );
+                setEditorDirty();
+            }
+        } );
+        deselectAllQualityOfProtectionButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                saslQualityOfProtectionTableViewer.setAllChecked( false );
+                setEditorDirty();
+            }
+        } );
+        saslQualityOfProtectionTableViewer.addCheckStateListener( new ICheckStateListener()
+        {
+            public void checkStateChanged( CheckStateChangedEvent event )
+            {
+                setEditorDirty();
+            }
+        } );
+
+        // SASL Realms
+        saslRealmsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
+        {
+            public void selectionChanged( SelectionChangedEvent event )
+            {
+                editSaslRealmsButton.setEnabled( !event.getSelection().isEmpty() );
+                deleteSaslRealmButton.setEnabled( !event.getSelection().isEmpty() );
+            }
+        } );
+        saslRealmsTableViewer.addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                editSelectedSaslRealm();
+            }
+        } );
+        addSaslRealmButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                SaslRealmDialog dialog = new SaslRealmDialog( "" );
+                if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+                {
+                    String newSaslRealm = dialog.getSaslRealm();
+                    if ( newSaslRealm != null && !"".equals( newSaslRealm ) && !saslRealms.contains( newSaslRealm ) )
+                    {
+                        saslRealms.add( newSaslRealm );
+
+                        saslRealmsTableViewer.refresh();
+                        setEditorDirty();
+                    }
+                }
+            }
+        } );
+        editSaslRealmsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                editSelectedSaslRealm();
+            }
+        } );
+
+        // The SelectionListener for the Binary Attributes Delete Button
+        deleteSaslRealmButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                StructuredSelection selection = ( StructuredSelection ) saslRealmsTableViewer.getSelection();
+                if ( !selection.isEmpty() )
+                {
+                    String saslRealm = ( String ) selection.getFirstElement();
+                    saslRealms.remove( saslRealm );
+
+                    saslRealmsTableViewer.refresh();
+                    setEditorDirty();
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Opens a SASL Realm Dialog with the selected SASL Realm in the SASL 
+     * Realms Table Viewer.
+     */
+    private void editSelectedSaslRealm()
+    {
+        StructuredSelection selection = ( StructuredSelection ) saslRealmsTableViewer.getSelection();
+        if ( !selection.isEmpty() )
+        {
+            String oldSaslRealm = ( String ) selection.getFirstElement();
+
+            SaslRealmDialog dialog = new SaslRealmDialog( oldSaslRealm );
+            if ( Dialog.OK == dialog.open() && dialog.isDirty() )
+            {
+                saslRealms.remove( oldSaslRealm );
+
+                String newSaslRealm = dialog.getSaslRealm();
+                if ( newSaslRealm != null && !"".equals( newSaslRealm ) && !saslRealms.contains( newSaslRealm ) )
+                {
+                    saslRealms.add( newSaslRealm );
+                }
+
+                saslRealmsTableViewer.refresh();
+                setEditorDirty();
+            }
+        }
     }
 
 
@@ -353,11 +505,32 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         ServerConfigurationV152 configuration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();
 
+        // Supported Authentication Mechanisms
         List<SupportedMechanismEnum> supportedMechanismsList = new ArrayList<SupportedMechanismEnum>();
         for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
         {
             supportedMechanismsList.add( ( SupportedMechanismEnum ) supportedMechanism );
         }
         configuration.setSupportedMechanisms( supportedMechanismsList );
+
+        // SASL Host
+        configuration.setSaslHost( saslHostText.getText() );
+
+        // SASL Principal
+        configuration.setSaslPrincipal( saslPrincipalText.getText() );
+
+        // Search Base DN
+        configuration.setSearchBaseDn( searchBaseDnText.getText() );
+
+        // SASL Quality Of Protection
+        List<SaslQualityOfProtectionEnum> saslQoPList = new ArrayList<SaslQualityOfProtectionEnum>();
+        for ( Object qop : supportedMechanismsTableViewer.getCheckedElements() )
+        {
+            saslQoPList.add( ( SaslQualityOfProtectionEnum ) qop );
+        }
+        configuration.setSaslQops( saslQoPList );
+
+        // SASL Realms
+        configuration.setSaslRealms( saslRealms );
     }
 }

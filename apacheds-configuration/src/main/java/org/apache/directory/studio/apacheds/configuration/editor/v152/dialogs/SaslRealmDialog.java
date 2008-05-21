@@ -35,12 +35,12 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the Dialog for Binary Attribute.
+ * This class implements the Dialog for SASL Realm.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BinaryAttributeDialog extends Dialog
+public class SaslRealmDialog extends Dialog
 {
     /** The initial value */
     private String initialValue;
@@ -52,13 +52,13 @@ public class BinaryAttributeDialog extends Dialog
     private boolean dirty = false;
 
     // UI Fields
-    private Text attributeText;
+    private Text saslRealmText;
 
 
     /**
-     * Creates a new instance of AttributeValueDialog.
+     * Creates a new instance of SaslRealmDialog.
      */
-    public BinaryAttributeDialog( String initialValue )
+    public SaslRealmDialog( String initialValue )
     {
         super( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
         this.initialValue = initialValue;
@@ -71,7 +71,7 @@ public class BinaryAttributeDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Binary Attribute Dialog" );
+        newShell.setText( "SASL Realm Dialog" );
     }
 
 
@@ -85,11 +85,11 @@ public class BinaryAttributeDialog extends Dialog
         composite.setLayout( layout );
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
-        Label attributeLabel = new Label( composite, SWT.NONE );
-        attributeLabel.setText( "Attribute:" );
+        Label saslRealmLabel = new Label( composite, SWT.NONE );
+        saslRealmLabel.setText( "SASL Realm:" );
 
-        attributeText = new Text( composite, SWT.BORDER );
-        attributeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        saslRealmText = new Text( composite, SWT.BORDER );
+        saslRealmText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         initFromInput();
         addListeners();
@@ -103,7 +103,7 @@ public class BinaryAttributeDialog extends Dialog
      */
     private void initFromInput()
     {
-        attributeText.setText( ( initialValue == null ) ? "" : initialValue );
+        saslRealmText.setText( ( initialValue == null ) ? "" : initialValue );
     }
 
 
@@ -112,7 +112,7 @@ public class BinaryAttributeDialog extends Dialog
      */
     private void addListeners()
     {
-        attributeText.addModifyListener( new ModifyListener()
+        saslRealmText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -127,19 +127,19 @@ public class BinaryAttributeDialog extends Dialog
      */
     protected void okPressed()
     {
-        returnValue = attributeText.getText();
+        returnValue = saslRealmText.getText();
 
         super.okPressed();
     }
 
 
     /**
-     * Gets the Attribute.
+     * Gets the SASL Realm.
      *
      * @return
-     *      the Attribute
+     *      the SASL Realm
      */
-    public String getAttribute()
+    public String getSaslRealm()
     {
         return returnValue;
     }
