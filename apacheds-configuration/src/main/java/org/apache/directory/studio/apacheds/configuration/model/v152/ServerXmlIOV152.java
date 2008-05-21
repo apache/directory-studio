@@ -1221,7 +1221,6 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                             Element supportedMechanismValueElement = ( Element ) iterator.next();
 
                             String supportedMechanismValue = supportedMechanismValueElement.getText().trim();
-
                             if ( "SIMPLE".equalsIgnoreCase( supportedMechanismValue ) )
                             {
                                 serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.SIMPLE );
@@ -1253,8 +1252,19 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                             Element saslQopValueElement = ( Element ) iterator.next();
 
                             // Adding the SaslQop value
-                            serverConfiguration.addSaslQop( saslQopValueElement.getText().trim() );
-
+                            String saslQopValue = saslQopValueElement.getText().trim();
+                            if ( "auth".equalsIgnoreCase( saslQopValue ) )
+                            {
+                                serverConfiguration.addSaslQop( SaslQualityOfProtectionEnum.AUTH );
+                            }
+                            else if ( "auth-int".equalsIgnoreCase( saslQopValue ) )
+                            {
+                                serverConfiguration.addSaslQop( SaslQualityOfProtectionEnum.AUTH_INT );
+                            }
+                            else if ( "auth-conf".equalsIgnoreCase( saslQopValue ) )
+                            {
+                                serverConfiguration.addSaslQop( SaslQualityOfProtectionEnum.AUTH_CONF );
+                            }
                         }
                     }
 
@@ -2011,10 +2021,23 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         Element saslQopElement = ldapServerElement.addElement( ServerXmlIOV152.ELEMENT_SASL_QOP );
 
         // Adding each SaslQop item
-        for ( String saslQop : serverConfiguration.getSaslQops() )
+        for ( SaslQualityOfProtectionEnum saslQop : serverConfiguration.getSaslQops() )
         {
-            saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
-                saslQop );
+            switch ( saslQop )
+            {
+                case AUTH:
+                    saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
+                        .setText( "auth" );
+                    break;
+                case AUTH_INT:
+                    saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
+                        .setText( "auth-int" );
+                    break;
+                case AUTH_CONF:
+                    saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
+                        .setText( "auth-conf" );
+                    break;
+            }
         }
 
         // Adding 'SaslRealms' element

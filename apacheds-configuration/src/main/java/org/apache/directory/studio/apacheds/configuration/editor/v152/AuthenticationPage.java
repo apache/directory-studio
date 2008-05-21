@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.apacheds.configuration.model.v152.SaslQualityOfProtectionEnum;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.apache.directory.studio.apacheds.configuration.model.v152.SupportedMechanismEnum;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -70,6 +71,8 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
     private CheckboxTableViewer supportedMechanismsTableViewer;
     private Button selectAllSupportedMechanismsButton;
     private Button deselectAllSupportedMechanismsButton;
+
+    private CheckboxTableViewer saslQualityOfProtectionTableViewer;
 
 
     /**
@@ -257,11 +260,11 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gd.heightHint = 76;
         saslQualityOfProtectionTable.setLayoutData( gd );
-        TableViewer saslQualityOfProtectionTableViewer = new CheckboxTableViewer( saslQualityOfProtectionTable );
+        saslQualityOfProtectionTableViewer = new CheckboxTableViewer( saslQualityOfProtectionTable );
         saslQualityOfProtectionTableViewer.setContentProvider( new ArrayContentProvider() );
-        saslQualityOfProtectionTableViewer.setInput( new String[]
-            { "auth (Authentication only)", "auth-int (Authentication with integrity protection)",
-                "auth-conf (Authentication with integrity and privacy protection)" } );
+        saslQualityOfProtectionTableViewer.setInput( new SaslQualityOfProtectionEnum[]
+            { SaslQualityOfProtectionEnum.AUTH, SaslQualityOfProtectionEnum.AUTH_INT,
+                SaslQualityOfProtectionEnum.AUTH_CONF } );
 
         // Select All Button
         Button selectAllQualityOfProtectionButton = toolkit.createButton( client, "Select All", SWT.PUSH );
@@ -283,6 +286,9 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
 
         // Supported Authentication Mechanisms
         supportedMechanismsTableViewer.setCheckedElements( configuration.getSupportedMechanisms().toArray() );
+
+        // SASL Quality Of Protection
+        saslQualityOfProtectionTableViewer.setCheckedElements( configuration.getSaslQops().toArray() );
 
     }
 

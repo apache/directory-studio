@@ -67,7 +67,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     private String saslPrincipal;
 
     /** The SASL QOP */
-    private List<String> saslQops;
+    private List<SaslQualityOfProtectionEnum> saslQops;
 
     /** The SASL Realms */
     private List<String> saslRealms;
@@ -138,7 +138,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
         super( ServerConfigurationVersionEnum.VERSION_1_5_2 );
 
         supportedMechanisms = new ArrayList<SupportedMechanismEnum>();
-        saslQops = new ArrayList<String>();
+        saslQops = new ArrayList<SaslQualityOfProtectionEnum>();
         saslRealms = new ArrayList<String>();
         partitions = new ArrayList<Partition>();
         interceptors = new ArrayList<InterceptorEnum>();
@@ -196,7 +196,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      true (as per the general contract of the Collection.add method).
      */
-    public boolean addSaslQop( String saslQop )
+    public boolean addSaslQop( SaslQualityOfProtectionEnum saslQop )
     {
         return saslQops.add( saslQop );
     }
@@ -431,7 +431,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @return
      *      the SASL Quality Of Protection List
      */
-    public List<String> getSaslQops()
+    public List<SaslQualityOfProtectionEnum> getSaslQops()
     {
         return saslQops;
     }
@@ -934,7 +934,7 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
      * @param saslQops
      *      the new value
      */
-    public void setSaslQops( List<String> saslQops )
+    public void setSaslQops( List<SaslQualityOfProtectionEnum> saslQops )
     {
         this.saslQops = saslQops;
     }
