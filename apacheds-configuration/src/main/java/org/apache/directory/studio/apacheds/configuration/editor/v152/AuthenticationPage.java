@@ -156,7 +156,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         // Supported Authentication Mechanisms Table
         Table supportedMechanismsTable = toolkit.createTable( client, SWT.CHECK );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 76;
+        gd.heightHint = 50;
         supportedMechanismsTable.setLayoutData( gd );
         supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
         supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
@@ -234,7 +234,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         // SASL Quality Of Protection Table
         Table saslQualityOfProtectionTable = toolkit.createTable( client, SWT.CHECK );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 76;
+        gd.heightHint = 50;
         saslQualityOfProtectionTable.setLayoutData( gd );
         saslQualityOfProtectionTableViewer = new CheckboxTableViewer( saslQualityOfProtectionTable );
         saslQualityOfProtectionTableViewer.setContentProvider( new ArrayContentProvider() );
@@ -275,7 +275,7 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         // SASL Realms Table
         Table saslRealmsTable = toolkit.createTable( client, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 82;
+        gd.heightHint = 60;
         saslRealmsTable.setLayoutData( gd );
         saslRealmsTableViewer = new CheckboxTableViewer( saslRealmsTable );
         saslRealmsTableViewer.setContentProvider( new ArrayContentProvider() );
