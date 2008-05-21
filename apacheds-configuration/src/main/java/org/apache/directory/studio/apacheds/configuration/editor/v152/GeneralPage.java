@@ -20,16 +20,9 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v152;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -42,7 +35,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -89,10 +81,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     private Text dnsPortText;
     private Text changePasswordPortText;
 
-    private CheckboxTableViewer supportedMechanismsTableViewer;
-    private Button selectAllSupportedMechanismsButton;
-    private Button deselectAllSupportedMechanismsButton;
-
 
     /**
      * Creates a new instance of GeneralPage.
@@ -120,185 +108,30 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         parent.setLayout( twl );
         FormToolkit toolkit = managedForm.getToolkit();
 
+        Composite composite = toolkit.createComposite( parent );
+        composite.setLayout( new GridLayout() );
+        TableWrapData compositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 2 );
+        compositeTableWrapData.grabHorizontal = true;
+        composite.setLayoutData( compositeTableWrapData );
+
         Composite leftComposite = toolkit.createComposite( parent );
-        GridLayout leftCompositeGridLayout = new GridLayout();
-        leftCompositeGridLayout.marginHeight = leftCompositeGridLayout.marginWidth = 0;
-        leftComposite.setLayout( leftCompositeGridLayout );
+        leftComposite.setLayout( new GridLayout() );
         TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         leftCompositeTableWrapData.grabHorizontal = true;
         leftComposite.setLayoutData( leftCompositeTableWrapData );
 
-        createProtocolsSection( leftComposite, toolkit );
-        createSupportedAuthenticationMechanismsSection( leftComposite, toolkit );
-
         Composite rightComposite = toolkit.createComposite( parent );
-        GridLayout rightCompositeGridLayout = new GridLayout();
-        rightCompositeGridLayout.marginHeight = rightCompositeGridLayout.marginWidth = 0;
-        rightComposite.setLayout( rightCompositeGridLayout );
+        rightComposite.setLayout( new GridLayout() );
         TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         rightCompositeTableWrapData.grabHorizontal = true;
         rightComposite.setLayoutData( rightCompositeTableWrapData );
 
-        createLimitsSection( rightComposite, toolkit );
+        createProtocolsSection( composite, toolkit );
+        createLimitsSection( leftComposite, toolkit );
         createOptionsSection( rightComposite, toolkit );
 
         initFromInput();
         addListeners();
-    }
-
-
-    /**
-     * Creates the Limits Section
-     *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
-     */
-    private void createLimitsSection( Composite parent, FormToolkit toolkit )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.marginWidth = 4;
-        section.setText( "Limits" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, false );
-        client.setLayout( glayout );
-        section.setClient( client );
-
-        // Max. Time Limit
-        toolkit.createLabel( client, "Max. Time Limit:" );
-        maxTimeLimitText = toolkit.createText( client, "" );
-        maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        maxTimeLimitText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-
-        // Max. Size Limit
-        toolkit.createLabel( client, "Max. Size Limit:" );
-        maxSizeLimitText = toolkit.createText( client, "" );
-        maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        maxSizeLimitText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-
-        // Synchronization Period
-        toolkit.createLabel( client, "Synchronization Period:" );
-        synchPeriodText = toolkit.createText( client, "" );
-        synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        synchPeriodText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-
-        // Max. Threads
-        toolkit.createLabel( client, "Max. Threads:" );
-        maxThreadsText = toolkit.createText( client, "" );
-        maxThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        maxThreadsText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-    }
-
-
-    /**
-     * Creates the Options Section
-     *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
-     */
-    private void createOptionsSection( Composite parent, FormToolkit toolkit )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.marginWidth = 4;
-        section.setText( "Options" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        client.setLayout( new GridLayout() );
-        section.setClient( client );
-
-        // Allow Anonymous Access
-        allowAnonymousAccessCheckbox = toolkit.createButton( client, "Allow Anonymous Access", SWT.CHECK );
-        allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
-
-        // Enable Access Control
-        enableAccesControlCheckbox = toolkit.createButton( client, "Enable Access Control", SWT.CHECK );
-        enableAccesControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
-
-        // Denormalize Operational Attributes
-        denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
-        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
-    }
-
-
-    /**
-     * Creates the Supported Authentication Mechanisms Section
-     *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
-     */
-    private void createSupportedAuthenticationMechanismsSection( Composite parent, FormToolkit toolkit )
-    {
-        // Creation of the section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.marginWidth = 4;
-        section.setText( "Supported Authentication Mechanisms" );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        Composite client = toolkit.createComposite( section );
-        toolkit.paintBordersFor( client );
-        GridLayout glayout = new GridLayout( 2, false );
-        client.setLayout( glayout );
-        section.setClient( client );
-
-        Table supportedMechanismsTable = toolkit.createTable( client, SWT.CHECK );
-        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
-        gd.heightHint = 76;
-        supportedMechanismsTable.setLayoutData( gd );
-        supportedMechanismsTableViewer = new CheckboxTableViewer( supportedMechanismsTable );
-        supportedMechanismsTableViewer.setContentProvider( new ArrayContentProvider() );
-        supportedMechanismsTableViewer.setInput( new String[]
-            { "SIMPLE", "CRAM-MD5", "DIGEST-MD5", "GSSAPI" } );
-
-        selectAllSupportedMechanismsButton = toolkit.createButton( client, "Select All", SWT.PUSH );
-        selectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-
-        deselectAllSupportedMechanismsButton = toolkit.createButton( client, "Deselect All", SWT.PUSH );
-        deselectAllSupportedMechanismsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
     }
 
 
@@ -314,12 +147,11 @@ public class GeneralPage extends FormPage implements SaveableFormPage
     {
         // Creation of the section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.marginWidth = 4;
         section.setText( "Protocols" );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite client = toolkit.createComposite( section );
         toolkit.paintBordersFor( client );
-        client.setLayout( new GridLayout( 2, true ) );
+        client.setLayout( new GridLayout( 3, true ) );
         section.setClient( client );
 
         // LDAP
@@ -429,6 +261,121 @@ public class GeneralPage extends FormPage implements SaveableFormPage
 
 
     /**
+     * Creates the Limits Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createLimitsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "Limits" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        GridLayout glayout = new GridLayout( 2, false );
+        client.setLayout( glayout );
+        section.setClient( client );
+
+        // Max. Time Limit
+        toolkit.createLabel( client, "Max. Time Limit:" );
+        maxTimeLimitText = toolkit.createText( client, "" );
+        maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        maxTimeLimitText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+
+        // Max. Size Limit
+        toolkit.createLabel( client, "Max. Size Limit:" );
+        maxSizeLimitText = toolkit.createText( client, "" );
+        maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        maxSizeLimitText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+
+        // Synchronization Period
+        toolkit.createLabel( client, "Synchronization Period:" );
+        synchPeriodText = toolkit.createText( client, "" );
+        synchPeriodText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        synchPeriodText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+
+        // Max. Threads
+        toolkit.createLabel( client, "Max. Threads:" );
+        maxThreadsText = toolkit.createText( client, "" );
+        maxThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        maxThreadsText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Creates the Options Section
+     *
+     * @param parent
+     *      the parent composite
+     * @param toolkit
+     *      the toolkit to use
+     */
+    private void createOptionsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creation of the section
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        section.setText( "Options" );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite client = toolkit.createComposite( section );
+        toolkit.paintBordersFor( client );
+        client.setLayout( new GridLayout() );
+        section.setClient( client );
+
+        // Allow Anonymous Access
+        allowAnonymousAccessCheckbox = toolkit.createButton( client, "Allow Anonymous Access", SWT.CHECK );
+        allowAnonymousAccessCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
+
+        // Enable Access Control
+        enableAccesControlCheckbox = toolkit.createButton( client, "Enable Access Control", SWT.CHECK );
+        enableAccesControlCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
+
+        // Denormalize Operational Attributes
+        denormalizeOpAttrCheckbox = toolkit.createButton( client, "Denormalize Operational Attributes", SWT.CHECK );
+        denormalizeOpAttrCheckbox.setLayoutData( new GridData( SWT.NONE, SWT.NONE, true, false ) );
+    }
+
+
+    /**
      * Initializes the page with the Editor input.
      */
     private void initFromInput()
@@ -478,8 +425,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         // Max Threads
         maxThreadsText.setText( "" + configuration.getMaxThreads() );
 
-        supportedMechanismsTableViewer.setCheckedElements( configuration.getSupportedMechanisms().toArray() );
-
         // Allow Anonymous Access
         allowAnonymousAccessCheckbox.setSelection( configuration.isAllowAnonymousAccess() );
 
@@ -513,22 +458,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
                 setEditorDirty();
             }
         };
-
-        selectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                supportedMechanismsTableViewer.setAllChecked( true );
-            }
-        } );
-
-        deselectAllSupportedMechanismsButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                supportedMechanismsTableViewer.setAllChecked( false );
-            }
-        } );
 
         enableLdapCheckbox.addSelectionListener( selectionListener );
         enableLdapCheckbox.addSelectionListener( new SelectionAdapter()
@@ -585,17 +514,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         } );
         changePasswordPortText.addModifyListener( modifyListener );
 
-        supportedMechanismsTableViewer.addCheckStateListener( new ICheckStateListener()
-        {
-            public void checkStateChanged( CheckStateChangedEvent event )
-            {
-                setEditorDirty();
-            }
-        } );
-
-        selectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
-        deselectAllSupportedMechanismsButton.addSelectionListener( selectionListener );
-
         maxTimeLimitText.addModifyListener( modifyListener );
         maxSizeLimitText.addModifyListener( modifyListener );
         synchPeriodText.addModifyListener( modifyListener );
@@ -640,13 +558,6 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         configuration.setMaxSizeLimit( Integer.parseInt( maxSizeLimitText.getText() ) );
         configuration.setSynchronizationPeriod( Long.parseLong( synchPeriodText.getText() ) );
         configuration.setMaxThreads( Integer.parseInt( maxThreadsText.getText() ) );
-
-        List<String> supportedMechanismsList = new ArrayList<String>();
-        for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
-        {
-            supportedMechanismsList.add( ( String ) supportedMechanism );
-        }
-        configuration.setSupportedMechanisms( supportedMechanismsList );
 
         configuration.setAllowAnonymousAccess( allowAnonymousAccessCheckbox.getSelection() );
         configuration.setEnableAccessControl( enableAccesControlCheckbox.getSelection() );

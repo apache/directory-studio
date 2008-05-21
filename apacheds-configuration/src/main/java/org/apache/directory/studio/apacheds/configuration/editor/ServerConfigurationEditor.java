@@ -225,6 +225,10 @@ public class ServerConfigurationEditor extends FormEditor
                         generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.GeneralPage(
                             this );
                         addPage( generalPage );
+                        
+                        SaveableFormPage authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.AuthenticationPage(
+                            this );
+                        addPage( authenticationPage );
 
                         partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.PartitionsPage(
                             this );
