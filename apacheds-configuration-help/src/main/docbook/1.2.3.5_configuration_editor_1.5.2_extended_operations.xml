@@ -16,13 +16,27 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="configuration_editor_extended_operations">
+<section id="configuration_editor_1.5.2_extended_operations">
 	<title>Extended Operations Page</title>
 	<para>
 		The
 		<emphasis role="strong">Extended Operations Page</emphasis>
 		of the Configuration Editor allows you to edit the server
 		extended operations.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Extended Operations Page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_extended_operations.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
 	</para>
 	<para>The page is divided vertically in two parts.</para>
 	<para>
@@ -50,31 +64,36 @@
 		<mediaobject>
 			<imageobject>
 				<imagedata scale="50"
-					fileref="images/gettingstarted/extended_operations_page_extended_operations_list.png"
+					fileref="images/gettingstarted/editor_1.5.2_extended_operations_list.png"
 					format="PNG" />
 			</imageobject>
 		</mediaobject>
 	</screenshot>
 	<para>
-		The right side of the page display and lets you edit the details
-		of the selected partition in the left side.
+		The right side of the page display and lets you see the details
+		of the selected extended operation in the left side.
 	</para>
 
-	<simplesect id="extended_operations_extended_operation_details">
+	<simplesect id="configuration_editor_1.5.2_extended_operation_details">
 		<title>Extended Operation details</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/extended_operations_page_extended_operation_details.png"
+						fileref="images/gettingstarted/editor_1.5.2_extended_operations_details.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
 		<para>
 			The
-			<emphasis role="strong">Class</emphasis>
-			of the extended operation is mandatory.
+			<emphasis role="strong">Name</emphasis>
+			field displays the name of the extended operation.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Description</emphasis>
+			field displays the description of the extended operation.
 		</para>
 	</simplesect>
 	<para></para>

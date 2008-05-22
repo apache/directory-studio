@@ -16,13 +16,27 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="configuration_editor_partitions">
+<section id="configuration_editor_1.5.2_partitions">
 	<title>Partitions Page</title>
 	<para>
 		The
 		<emphasis role="strong">Partitions Page</emphasis>
 		of the Configuration Editor allows you to edit the server
 		partitions.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Partitions Page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_partitions.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
 	</para>
 	<para>The page is divided vertically in two parts.</para>
 	<para>
@@ -49,7 +63,7 @@
 		<mediaobject>
 			<imageobject>
 				<imagedata scale="50"
-					fileref="images/gettingstarted/partitions_page_partitions_list.png"
+					fileref="images/gettingstarted/editor_1.5.2_partitions_list.png"
 					format="PNG" />
 			</imageobject>
 		</mediaobject>
@@ -59,13 +73,13 @@
 		of the selected partition in the left side.
 	</para>
 
-	<simplesect id="partitions_partition_details">
+	<simplesect id="configuration_editor_1.5.2_partitions_details">
 		<title>Partition details</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/partitions_page_partition_details.png"
+						fileref="images/gettingstarted/editor_1.5.2_partitions_details.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -81,6 +95,11 @@
 			is mandatory for the partition.
 		</para>
 		<para>
+			A
+			<emphasis role="strong">Suffix</emphasis>
+			is mandatory for the partition.
+		</para>
+		<para>
 			Check the
 			<emphasis role="strong">Enable Optimizer</emphasis>
 			checkbox to enable the optimizer for the partition.
@@ -93,7 +112,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="partitions_context_entry">
+	<simplesect
+		id="configuration_editor_1.5.2_partitions_context_entry">
 		<title>Context Entry</title>
 		<para>
 			This section allows you to specify to the server the
@@ -104,7 +124,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/partitions_page_context_entry.png"
+						fileref="images/gettingstarted/editor_1.5.2_partitions_context_entry.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -120,17 +140,18 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="partitions_indexed_attributes">
+	<simplesect
+		id="configuration_editor_1.5.2_partitions_indexed_attributes">
 		<title>Indexed Attributes</title>
 		<para>
 			This section allows you to specify to the server the
-			attributes that should be indexed and the their cache size.
+			attributes that should be indexed and their cache size.
 		</para>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/partitions_page_indexed_attributes.png"
+						fileref="images/gettingstarted/editor_1.5.2_partitions_indexed_attributes.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>

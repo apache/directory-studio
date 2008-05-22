@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="configuration_editor_general">
+<section id="configuration_editor_1.5.2_general">
 	<title>General Page</title>
 	<para>
 		The
@@ -25,60 +25,36 @@
 		settings.
 	</para>
 	<para>
-		It contains six sections :
-		<emphasis role="strong">Administrator Settings</emphasis>
-		,
+		It contains three sections :
 		<emphasis role="strong">Protocols</emphasis>
-		,
-		<emphasis role="strong">
-			Supported Authentication Mechanisms
-		</emphasis>
-		,
-		<emphasis role="strong">Binary Attributes</emphasis>
 		,
 		<emphasis role="strong">Limits</emphasis>
 		and
 		<emphasis role="strong">Options</emphasis>
 		.
 	</para>
-
-	<simplesect id="general_administrator_settings">
-		<title>Administrator Settings</title>
+	<para>
+		Here's what the
+		<emphasis role="strong">General Page</emphasis>
+		looks like:
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_administrator_settings.png"
+						fileref="images/gettingstarted/editor_1.5.2_general.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
-		<para>
-			A
-			<emphasis role="strong">Principal</emphasis>
-			is mandatory and represents the DN of the Administrator of
-			the server.
-		</para>
-		<para>
-			A
-			<emphasis role="strong">Password</emphasis>
-			is mandatory and represents the password of the
-			Administrator of the server.
-		</para>
-		<para>
-			Check the
-			<emphasis role="strong">Show Password</emphasis>
-			checkbox to display the password in a non-hidden form.
-		</para>
-	</simplesect>
+	</para>
 
-	<simplesect id="general_protocols">
+	<simplesect id="configuration_editor_1.5.2_general_protocols">
 		<title>Protocols</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_protocols.png"
+						fileref="images/gettingstarted/editor_1.5.2_general_protocols.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -97,58 +73,8 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="general_supported_authentication_mechanisms">
-		<title>Supported Authentication Mechanisms</title>
-		<screenshot>
-			<mediaobject>
-				<imageobject>
-					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_supported_authentication_mechanisms.png"
-						format="PNG" />
-				</imageobject>
-			</mediaobject>
-		</screenshot>
-		<para>
-			This section allows you to specify the supported
-			authentication mechanisms. You can choose between the
-			following mechanisms:
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>SIMPLE</listitem>
-				<listitem>CRAM-MD5</listitem>
-				<listitem>DIGEST-MD5</listitem>
-				<listitem>GSSAPI</listitem>
-			</itemizedlist>
-		</para>
-	</simplesect>
 
-	<simplesect id="general_binary_attributes">
-		<title>Binary Attributes</title>
-		<para>
-			This section allows you to specify to the server the
-			attribute types that you want to be handled as binary
-			content.
-		</para>
-		<screenshot>
-			<mediaobject>
-				<imageobject>
-					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_binary_attributes.png"
-						format="PNG" />
-				</imageobject>
-			</mediaobject>
-		</screenshot>
-		<para>
-			Use the
-			<emphasis role="strong">Add...</emphasis>
-			,
-			<emphasis role="strong">Edit...</emphasis>
-			and
-			<emphasis role="strong">Delete</emphasis>
-			buttons to set your Binary Attributes.
-		</para>
-	</simplesect>
-
-	<simplesect id="general_limits">
+	<simplesect id="configuration_editor_1.5.2_general_limits">
 		<title>Limits</title>
 		<para>
 			This section allows you to specify the Limits of the server.
@@ -157,7 +83,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_limits.png"
+						fileref="images/gettingstarted/editor_1.5.2_general_limits.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -184,13 +110,13 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="general_options">
+	<simplesect id="configuration_editor_1.5.2_general_options">
 		<title>Options</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/general_page_options.png"
+						fileref="images/gettingstarted/editor_1.5.2_general_options.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>

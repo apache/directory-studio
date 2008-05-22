@@ -16,13 +16,27 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="configuration_editor_interceptors">
+<section id="configuration_editor_1.5.2_interceptors">
 	<title>Interceptors Page</title>
 	<para>
 		The
 		<emphasis role="strong">Interceptors Page</emphasis>
 		of the Configuration Editor allows you to edit the server
 		interceptors.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Interceptors Page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_interceptors.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
 	</para>
 	<para>The page is divided vertically in two parts.</para>
 	<para>
@@ -53,36 +67,36 @@
 		<mediaobject>
 			<imageobject>
 				<imagedata scale="50"
-					fileref="images/gettingstarted/interceptors_page_interceptors_list.png"
+					fileref="images/gettingstarted/editor_1.5.2_interceptors_list.png"
 					format="PNG" />
 			</imageobject>
 		</mediaobject>
 	</screenshot>
 	<para>
-		The right side of the page display and lets you edit the details
-		of the selected partition in the left side.
+		The right side of the page display and lets you see the details
+		of the selected interceptor in the left side.
 	</para>
 
-	<simplesect id="interceptors_interceptor_details">
+	<simplesect id="configuration_editor_1.5.2_interceptors_details">
 		<title>Interceptor details</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/interceptors_page_interceptor_details.png"
+						fileref="images/gettingstarted/editor_1.5.2_interceptors_details.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
 		<para>
-			A
+			The
 			<emphasis role="strong">Name</emphasis>
-			is mandatory for the interceptor.
+			field displays the name of the interceptor.
 		</para>
 		<para>
 			The
-			<emphasis role="strong">Class</emphasis>
-			of the interceptor is mandatory.
+			<emphasis role="strong">Description</emphasis>
+			field displays the description of the interceptor.
 		</para>
 	</simplesect>
 	<para></para>

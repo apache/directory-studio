@@ -16,47 +16,61 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="configuration_editor">
-	<title>Configuration Editor</title>
+<section id="configuration_editor_1.5.1">
+	<title>Editor for Apache DS 1.5.1</title>
 	<para>
-		The Configuration Editor currently supports 3 version of Apache
-		DS. Each version having a specific associated editor.
+		The Configuration Editor for Apache DS consists in a 4 pages
+		Editor:
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				The
 				<emphasis>
-					<link linkend="configuration_editor_1.5.0">
-						Editor for Apache DS 1.5.0
+					<link
+						linkend="configuration_editor_1.5.1_general">
+						General
 					</link>
 				</emphasis>
-				allows you to edit the 'server.xml' file of an Apache DS
-				version 1.5.0 installation.
+				page allows you to set "general" settings about the
+				server such as the server port, administrator DN,
+				password, etc...
 			</listitem>
 			<listitem>
 				The
 				<emphasis>
-					<link linkend="configuration_editor_1.5.1">
-						Editor for Apache DS 1.5.1
+					<link
+						linkend="configuration_editor_1.5.1_partitions">
+						Partitions
 					</link>
 				</emphasis>
-				allows you to edit the 'server.xml' file of an Apache DS
-				version 1.5.1 installation.
+				page allows you to manage your server partitions.
 			</listitem>
 			<listitem>
 				The
 				<emphasis>
-					<link linkend="configuration_editor_1.5.2">
-						Editor for Apache DS 1.5.2
+					<link
+						linkend="configuration_editor_1.5.1_interceptors">
+						Interceptors
 					</link>
 				</emphasis>
-				allows you to edit the 'server.xml' file of an Apache DS
-				version 1.5.2 installation.
+				page allows you to manage your server interceptors.
+			</listitem>
+			<listitem>
+				The
+				<emphasis>
+					<link
+						linkend="configuration_editor_1.5.1_extended_operations">
+						Extended Operations
+					</link>
+				</emphasis>
+				page allows you to manage your server extended
+				operations handlers.
 			</listitem>
 		</itemizedlist>
 	</para>
 
-	&configuration_editor_1.5.0;
-	&configuration_editor_1.5.1;
-	&configuration_editor_1.5.2;
-
+	&configuration_editor_1.5.1_general;
+	&configuration_editor_1.5.1_partitions;
+	&configuration_editor_1.5.1_interceptors;
+	&configuration_editor_1.5.1_extended_operations;
+	
 </section>

@@ -4,11 +4,22 @@
   <!ENTITY gettingstarted SYSTEM "1_gettingstarted.xml">
   <!ENTITY download_install SYSTEM "1.1_download_install.xml">
   <!ENTITY configuration_editor SYSTEM "1.2_configuration_editor.xml">
-  <!ENTITY configuration_editor_general SYSTEM "1.2.1_configuration_editor_general.xml">
-  <!ENTITY configuration_editor_partitions SYSTEM "1.2.2_configuration_editor_partitions.xml">
-  <!ENTITY configuration_editor_interceptors SYSTEM "1.2.3_configuration_editor_interceptors.xml">
-  <!ENTITY configuration_editor_extended_operations SYSTEM "1.2.4_configuration_editor_extended_operations.xml">
-  <!ENTITY configuration_editor_general SYSTEM "1.2.1_configuration_editor_general.xml">
+  <!ENTITY configuration_editor_1.5.0 SYSTEM "1.2.1_configuration_editor_1.5.0.xml">
+  <!ENTITY configuration_editor_1.5.0_general SYSTEM "1.2.1.1_configuration_editor_1.5.0_general.xml">
+  <!ENTITY configuration_editor_1.5.0_partitions SYSTEM "1.2.1.2_configuration_editor_1.5.0_partitions.xml">
+  <!ENTITY configuration_editor_1.5.0_interceptors SYSTEM "1.2.1.3_configuration_editor_1.5.0_interceptors.xml">
+  <!ENTITY configuration_editor_1.5.0_extended_operations SYSTEM "1.2.1.4_configuration_editor_1.5.0_extended_operations.xml">
+  <!ENTITY configuration_editor_1.5.1 SYSTEM "1.2.2_configuration_editor_1.5.1.xml">
+  <!ENTITY configuration_editor_1.5.1_general SYSTEM "1.2.2.1_configuration_editor_1.5.1_general.xml">
+  <!ENTITY configuration_editor_1.5.1_partitions SYSTEM "1.2.2.2_configuration_editor_1.5.1_partitions.xml">
+  <!ENTITY configuration_editor_1.5.1_interceptors SYSTEM "1.2.2.3_configuration_editor_1.5.1_interceptors.xml">
+  <!ENTITY configuration_editor_1.5.1_extended_operations SYSTEM "1.2.2.4_configuration_editor_1.5.1_extended_operations.xml">
+  <!ENTITY configuration_editor_1.5.2 SYSTEM "1.2.3_configuration_editor_1.5.2.xml">
+  <!ENTITY configuration_editor_1.5.2_general SYSTEM "1.2.3.1_configuration_editor_1.5.2_general.xml">
+  <!ENTITY configuration_editor_1.5.2_authentication SYSTEM "1.2.3.2_configuration_editor_1.5.2_authentication.xml">
+  <!ENTITY configuration_editor_1.5.2_partitions SYSTEM "1.2.3.3_configuration_editor_1.5.2_partitions.xml">
+  <!ENTITY configuration_editor_1.5.2_interceptors SYSTEM "1.2.3.4_configuration_editor_1.5.2_interceptors.xml">
+  <!ENTITY configuration_editor_1.5.2_extended_operations SYSTEM "1.2.3.5_configuration_editor_1.5.2_extended_operations.xml">
   <!ENTITY tasks SYSTEM "2_tasks.xml">
   <!ENTITY open_server_configuration SYSTEM "2.1_open_server_configuration.xml">
   <!ENTITY create_new_server_configuration SYSTEM "2.2_create_new_server_configuration.xml">
@@ -45,29 +56,33 @@
 		</copyright>
 		<legalnotice>
 			<literallayout class="monospaced">
-				Licensed to the Apache Software Foundation (ASF) under one
-				or more contributor license agreements.  See the NOTICE file
-				distributed with this work for additional information
-				regarding copyright ownership.  The ASF licenses this file
-				to you under the Apache License, Version 2.0 (the
-				"License"); you may not use this file except in compliance
-				with the License.  You may obtain a copy of the License at
-				
-				  <ulink url="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</ulink>
-				
-				Unless required by applicable law or agreed to in writing,
-				software distributed under the License is distributed on an
-				"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-				KIND, either express or implied.  See the License for the
-				specific language governing permissions and limitations
-				under the License.
-			</literallayout>		
+				Licensed to the Apache Software Foundation (ASF) under
+				one or more contributor license agreements. See the
+				NOTICE file distributed with this work for additional
+				information regarding copyright ownership. The ASF
+				licenses this file to you under the Apache License,
+				Version 2.0 (the "License"); you may not use this file
+				except in compliance with the License. You may obtain a
+				copy of the License at
+
+				<ulink
+					url="http://www.apache.org/licenses/LICENSE-2.0">
+					http://www.apache.org/licenses/LICENSE-2.0
+				</ulink>
+
+				Unless required by applicable law or agreed to in
+				writing, software distributed under the License is
+				distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+				CONDITIONS OF ANY KIND, either express or implied. See
+				the License for the specific language governing
+				permissions and limitations under the License.
+			</literallayout>
 		</legalnotice>
 	</bookinfo>
-	
+
 	&gettingstarted;
 	&tasks;
 	&whats_new;
 	&release_notes;
-	
+
 </book>

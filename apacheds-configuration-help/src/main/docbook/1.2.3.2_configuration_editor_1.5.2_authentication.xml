@@ -1,0 +1,173 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="configuration_editor_1.5.2_authentication">
+	<title>Authentication Page</title>
+	<para>
+		The
+		<emphasis role="strong">Authentication Page</emphasis>
+		of the Configuration Editor allows you to edit the server
+		authentication settings.
+	</para>
+	<para>
+		It contains four sections :
+		<emphasis role="strong">
+			Supported Authentication Mechanisms
+		</emphasis>
+		,
+		<emphasis role="strong">SASL Settings</emphasis>
+		,
+		<emphasis role="strong">SASL Quality Of Protection</emphasis>
+		and
+		<emphasis role="strong">SASL Realms</emphasis>
+		.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Authentication Page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_authentication.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+
+	<simplesect
+		id="configuration_editor_1.5.2_authentication_supported_authentication_mechanisms">
+		<title>Supported Authentication Mechanisms</title>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_authentication_supported_authentication_mechanisms.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			This section allows you to specify the supported
+			authentication mechanisms. You can choose between the
+			following mechanisms:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>SIMPLE</listitem>
+				<listitem>CRAM-MD5</listitem>
+				<listitem>DIGEST-MD5</listitem>
+				<listitem>GSSAPI</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="configuration_editor_1.5.2_authentication_sasl_settings">
+		<title>SASL Settings</title>
+		<para>
+			This section allows you to specify to the SASL setting.
+		</para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_authentication_sasl_settings.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			The
+			<emphasis role="strong">SASL Host</emphasis>
+			field represents the name of the host.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">SASL Principal</emphasis>
+			field represents the service principal name that the
+			server-side of the LDAP protocol provider will use to
+			"accept" a GSSAPI context initiated by the LDAP client. The
+			SASL principal MUST follow the name-form
+			"ldap/[fqdn]@[realm]".
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Search Base DN</emphasis>
+			field represents the Distinguished Name where a
+			subtree-scoped DIT search will be performed. This is BOTH
+			where the LDAP service principal must reside, as well as
+			where user principals must reside.
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="configuration_editor_1.5.2_authentication_sasl_qop">
+		<title>SASL Quality Of Protection</title>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_authentication_sasl_qop.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			This section allows you to specify the SASL quality of
+			protection. You can choose between the following values:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>auth (Authentication only)</listitem>
+				<listitem>
+					auth-int (Authentication with integrity protection)
+				</listitem>
+				<listitem>
+					auth-conf (Authentication with integrity and privacy
+					protection)
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="configuration_editor_1.5.2_authentication_sasl_realms">
+		<title>SASL Realms</title>
+		<para>
+			This section allows you to specify to the SASL realms.
+		</para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.2_authentication_sasl_realms.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			Use the
+			<emphasis role="strong">Add...</emphasis>
+			,
+			<emphasis role="strong">Edit...</emphasis>
+			and
+			<emphasis role="strong">Delete</emphasis>
+			buttons to set your SASL Realms.
+		</para>
+	</simplesect>
+
+</section>
