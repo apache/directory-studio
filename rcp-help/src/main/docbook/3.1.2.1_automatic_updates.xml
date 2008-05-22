@@ -1,0 +1,88 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="automatic_updates">
+	<title>Automatic Updates</title>
+	<para>
+		The following preferences can be changed on the Automatic
+		Updates page:
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1* " />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>
+							Automatically find new updates and notify me
+						</entry>
+						<entry>
+							When selected, Update manager will
+							automatically search for update, as defined
+							by the update schedule
+						</entry>
+						<entry>Off</entry>
+					</row>
+					<row>
+						<entry>Update Schedule</entry>
+						<entry>
+							Look for updates on each startup, or once a
+							day or some day a week, at a predefined
+							time.
+						</entry>
+						<entry>on startup</entry>
+					</row>
+					<row>
+						<entry>Download Options</entry>
+						<entry>
+							This option allows you to choose between
+							having Eclipse search for updates and
+							notifying you of them once they are
+							available or having Eclipse automatically
+							download new updates and asking you to
+							install them.
+						</entry>
+						<entry>on startup</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	<para>
+		Here is what the Automatic Updates preferences page looks like:
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/automatic-updates_screen.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+</section>

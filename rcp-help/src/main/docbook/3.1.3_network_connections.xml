@@ -1,0 +1,135 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="network_connections">
+	<title>Network Connections</title>
+	<para>
+		The following preferences can be changed on the Network
+		Connections page:
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1* " />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Direct connection to the Internet</entry>
+						<entry>
+							Enable this option to have all connections
+							to remote systems happen directly without
+							involving a proxy server.
+						</entry>
+						<entry>Enabled</entry>
+					</row>
+					<row>
+						<entry>Manual proxy configuration</entry>
+						<entry>
+							Use this option if connections to remote
+							systems should happen through a proxy
+							server.
+						</entry>
+						<entry>Disabled</entry>
+					</row>
+					<row>
+						<entry>HTTP Proxy</entry>
+						<entry>
+							Use this option to specify the server and
+							port that is to be used when making HTTP
+							connections. If the port field is empty, the
+							default port of 80 is used. If the "Use this
+							proxy server for SSL" is checked, the HTTP
+							proxy server is used for SSL connections as
+							well.
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>SSL Proxy</entry>
+						<entry>
+							Use this option to specify the server and
+							port that is to be used when making SSL
+							connections. If the port field is empty, the
+							default port of 443 is used.
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>SOCKS Proxy</entry>
+						<entry>
+							Use this option to specify the server and
+							port that is to be used when making SOCKS
+							connections. If the port field is empty, the
+							default port of 1080 is used. [1]
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Non-proxied Hosts (No Proxy for)</entry>
+						<entry>
+							Use this table to specify, either by name or
+							pattern, which hosts should not use any
+							proxy but instead should always be connected
+							to directly.
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Proxy Authentication</entry>
+						<entry>
+							Enable this option to specify a user name
+							and password that is to be used when
+							connecting to the proxy server.
+						</entry>
+						<entry>Disabled</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	<para>
+		Here is what the Network Connections preferences page looks
+		like:
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/network-connections_screen.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		1. The SOCKS proxy support in Java 1.4 had certain limitations.
+		Due to these limitations, the setting of the SOCKS system
+		properties is not performed when a 1.4 VM is used. The SOCKS
+		proxy may still be used by some tooling when running on a 1.4 VM
+		(e.g. CVS). However, users should use a 1.5 (or 5.0) VM if they
+		require full SOCKS proxy support.
+	</para>
+</section>
