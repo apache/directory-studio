@@ -29,11 +29,11 @@ import org.apache.directory.studio.apacheds.configuration.model.v151.ExtendedOpe
 import org.apache.directory.studio.apacheds.configuration.model.v151.ServerConfigurationV151;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -76,7 +76,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
     private static final String NEW_NAME = "newExtendedOperation";
 
     // UI Fields
-    private CheckboxTableViewer viewer;
+    private TableViewer viewer;
     private Button addButton;
     private Button deleteButton;
 
@@ -124,7 +124,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
         table.setLayoutData( gd );
         final SectionPart spart = new SectionPart( section );
         managedForm.addPart( spart );
-        viewer = new CheckboxTableViewer( table );
+        viewer = new TableViewer( table );
         viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
