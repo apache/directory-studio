@@ -18,4 +18,116 @@
 -->
 <section id="configuration_editor_1.5.1_interceptors">
 	<title>Interceptors Page</title>
+	<para>
+		The
+		<emphasis role="strong">Interceptors Page</emphasis>
+		of the Configuration Editor allows you to edit the server
+		interceptors.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Interceptors Page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.1_interceptors.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>The page is divided vertically in two parts.</para>
+	<para>
+		You can choose the orientation of the page by clicking on the
+		appropriate button ("Horizontal Orientation"
+		<imageobject>
+			<imagedata contentdepth="1em"
+				fileref="images/gettingstarted/horizontal_orientation.gif"
+				format="GIF" />
+		</imageobject>
+		or "Vertical Orientation"
+		<imageobject>
+			<imagedata contentdepth="1em"
+				fileref="images/gettingstarted/vertical_orientation.gif"
+				format="GIF" />
+		</imageobject>
+		) at the right of the page.
+	</para>
+	<para>
+		The left side of the page shows the interceptors defined on the
+		server. This is where you can add or delete an interceptor.
+	</para>
+	<para>
+		You can also choose the order of the interceptors in the
+		interceptors' chain using the "Up" and "Down" buttons.
+	</para>
+	<screenshot>
+		<mediaobject>
+			<imageobject>
+				<imagedata scale="50"
+					fileref="images/gettingstarted/editor_1.5.1_interceptors_list.png"
+					format="PNG" />
+			</imageobject>
+		</mediaobject>
+	</screenshot>
+	<para>
+		The right side of the page display and lets you edit the details
+		of the selected partition in the left side.
+	</para>
+
+	<simplesect id="configuration_editor_1.5.2_interceptors_details">
+		<title>Interceptor details</title>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.1_interceptors_details.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			A
+			<emphasis role="strong">Name</emphasis>
+			is mandatory for the interceptor.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Class</emphasis>
+			of the interceptor is mandatory.
+		</para>
+	</simplesect>
+	<para></para>
+	<para>
+		The following icons can appear in the Interceptors Page.
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colname="Icon" colwidth="1* " />
+				<colspec colname="Description" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/interceptor.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Interceptor</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
 </section>
