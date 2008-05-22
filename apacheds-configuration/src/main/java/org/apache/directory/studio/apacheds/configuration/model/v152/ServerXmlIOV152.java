@@ -130,6 +130,13 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
         "http://www.springframework.org/schema/beans" );
     private static final Namespace NAMESPACE_XBEAN_SPRING = new Namespace( "spring",
         "http://xbean.apache.org/schemas/spring/1.0" );
+    private static final String SASL_QOP_AUTH_CONF = "auth-conf";
+    private static final String SASL_QOP_AUTH_INT = "auth-int";
+    private static final String SASL_QOP_AUTH = "auth";
+    private static final String SUPPORTED_MECHANISM_GSSAPI = "GSSAPI";
+    private static final String SUPPORTED_MECHANISM_DIGEST_MD5 = "DIGEST-MD5";
+    private static final String SUPPORTED_MECHANISM_CRAM_MD5 = "CRAM-MD5";
+    private static final String SUPPORTED_MECHANISM_SIMPLE = "SIMPLE";
     private static final String VALUE_ARGUMENTS = "arguments";
     private static final String VALUE_CUSTOM_EDITORS = "customEditors";
     private static final String VALUE_DEFAULT = "default";
@@ -1221,19 +1228,22 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                             Element supportedMechanismValueElement = ( Element ) iterator.next();
 
                             String supportedMechanismValue = supportedMechanismValueElement.getText().trim();
-                            if ( "SIMPLE".equalsIgnoreCase( supportedMechanismValue ) )
+                            if ( ServerXmlIOV152.SUPPORTED_MECHANISM_SIMPLE.equalsIgnoreCase( supportedMechanismValue ) )
                             {
                                 serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.SIMPLE );
                             }
-                            else if ( "CRAM-MD5".equalsIgnoreCase( supportedMechanismValue ) )
+                            else if ( ServerXmlIOV152.SUPPORTED_MECHANISM_CRAM_MD5
+                                .equalsIgnoreCase( supportedMechanismValue ) )
                             {
                                 serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.CRAM_MD5 );
                             }
-                            else if ( "DIGEST-MD5".equalsIgnoreCase( supportedMechanismValue ) )
+                            else if ( ServerXmlIOV152.SUPPORTED_MECHANISM_DIGEST_MD5
+                                .equalsIgnoreCase( supportedMechanismValue ) )
                             {
                                 serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.DIGEST_MD5 );
                             }
-                            else if ( "GSSAPI".equalsIgnoreCase( supportedMechanismValue ) )
+                            else if ( ServerXmlIOV152.SUPPORTED_MECHANISM_GSSAPI
+                                .equalsIgnoreCase( supportedMechanismValue ) )
                             {
                                 serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.GSSAPI );
                             }
@@ -1253,15 +1263,15 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
 
                             // Adding the SaslQop value
                             String saslQopValue = saslQopValueElement.getText().trim();
-                            if ( "auth".equalsIgnoreCase( saslQopValue ) )
+                            if ( ServerXmlIOV152.SASL_QOP_AUTH.equalsIgnoreCase( saslQopValue ) )
                             {
                                 serverConfiguration.addSaslQop( SaslQualityOfProtectionEnum.AUTH );
                             }
-                            else if ( "auth-int".equalsIgnoreCase( saslQopValue ) )
+                            else if ( ServerXmlIOV152.SASL_QOP_AUTH_INT.equalsIgnoreCase( saslQopValue ) )
                             {
                                 serverConfiguration.addSaslQop( SaslQualityOfProtectionEnum.AUTH_INT );
                             }
-                            else if ( "auth-conf".equalsIgnoreCase( saslQopValue ) )
+                            else if ( ServerXmlIOV152.SASL_QOP_AUTH_CONF.equalsIgnoreCase( saslQopValue ) )
                             {
                                 serverConfiguration.addSaslQop( SaslQualityOfProtectionEnum.AUTH_CONF );
                             }
@@ -2000,19 +2010,23 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 case SIMPLE:
                     supportedMechanismsElement.addElement(
-                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "SIMPLE" );
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                        ServerXmlIOV152.SUPPORTED_MECHANISM_SIMPLE );
                     break;
                 case CRAM_MD5:
                     supportedMechanismsElement.addElement(
-                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "CRAM-MD5" );
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                        ServerXmlIOV152.SUPPORTED_MECHANISM_CRAM_MD5 );
                     break;
                 case DIGEST_MD5:
                     supportedMechanismsElement.addElement(
-                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "DIGEST-MD5" );
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                        ServerXmlIOV152.SUPPORTED_MECHANISM_DIGEST_MD5 );
                     break;
                 case GSSAPI:
                     supportedMechanismsElement.addElement(
-                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText( "GSSAPI" );
+                        new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) ).setText(
+                        ServerXmlIOV152.SUPPORTED_MECHANISM_GSSAPI );
                     break;
             }
         }
@@ -2027,15 +2041,15 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 case AUTH:
                     saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
-                        .setText( "auth" );
+                        .setText( ServerXmlIOV152.SASL_QOP_AUTH );
                     break;
                 case AUTH_INT:
                     saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
-                        .setText( "auth-int" );
+                        .setText( ServerXmlIOV152.SASL_QOP_AUTH_INT );
                     break;
                 case AUTH_CONF:
                     saslQopElement.addElement( new QName( ServerXmlIOV152.ELEMENT_VALUE, NAMESPACE_SPRINGFRAMEWORK ) )
-                        .setText( "auth-conf" );
+                        .setText( ServerXmlIOV152.SASL_QOP_AUTH_CONF );
                     break;
             }
         }
