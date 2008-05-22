@@ -49,6 +49,7 @@
 
 	&help;
 	&install_update;
+	&network_connections;
 	&text_editors;
 
 </section>

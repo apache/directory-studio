@@ -14,12 +14,14 @@
   <!ENTITY help SYSTEM "3.1.1_help.xml">
   <!ENTITY help_server SYSTEM "3.1.1.1_help_server.xml">
   <!ENTITY install_update SYSTEM "3.1.2_install_update.xml">
-  <!ENTITY text_editors SYSTEM "3.1.3_text_editors.xml">
-  <!ENTITY accessibility SYSTEM "3.1.3.1_accessibility.xml">
-  <!ENTITY annotations SYSTEM "3.1.3.2_annotations.xml">
-  <!ENTITY linked_mode SYSTEM "3.1.3.3_linked_mode.xml">
-  <!ENTITY quick_diff SYSTEM "3.1.3.4_quick_diff.xml">
-  <!ENTITY spelling SYSTEM "3.1.3.5_spelling.xml">
+  <!ENTITY automatic_updates SYSTEM "3.1.2.1_automatic_updates.xml">
+  <!ENTITY network_connections SYSTEM "3.1.3_network_connections.xml">
+  <!ENTITY text_editors SYSTEM "3.1.4_text_editors.xml">
+  <!ENTITY accessibility SYSTEM "3.1.4.1_accessibility.xml">
+  <!ENTITY annotations SYSTEM "3.1.4.2_annotations.xml">
+  <!ENTITY linked_mode SYSTEM "3.1.4.3_linked_mode.xml">
+  <!ENTITY quick_diff SYSTEM "3.1.4.4_quick_diff.xml">
+  <!ENTITY spelling SYSTEM "3.1.4.5_spelling.xml">
   <!ENTITY whats_new SYSTEM "4_whats_new.xml">
   <!ENTITY release_notes SYSTEM "5_release_notes.xml">
 
