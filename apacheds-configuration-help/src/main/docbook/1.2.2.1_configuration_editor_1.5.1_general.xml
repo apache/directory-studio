@@ -57,7 +57,7 @@
 	</para>
 
 	<simplesect
-		id="configuration_editor_1.5.1_general_options_administrator_settings">
+		id="configuration_editor_1.5.1_general_administrator_settings">
 		<title>Administrator Settings</title>
 		<screenshot>
 			<mediaobject>
@@ -88,7 +88,7 @@
 	</simplesect>
 
 	<simplesect
-		id="configuration_editor_1.5.1_general_options_protocols">
+		id="configuration_editor_1.5.1_general_protocols">
 		<title>Protocols</title>
 		<screenshot>
 			<mediaobject>

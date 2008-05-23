@@ -73,7 +73,7 @@
 		of the selected partition in the left side.
 	</para>
 
-	<simplesect id="partitions_partition_details">
+	<simplesect id="configuration_editor_1.5.1_partitions_details">
 		<title>Partition details</title>
 		<screenshot>
 			<mediaobject>
@@ -107,7 +107,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="partitions_context_entry">
+	<simplesect id="configuration_editor_1.5.1_partitions_context_entry">
 		<title>Context Entry</title>
 		<para>
 			This section allows you to specify to the server the
@@ -134,7 +134,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="partitions_indexed_attributes">
+	<simplesect id="configuration_editor_1.5.1_partitions_indexed_attributes">
 		<title>Indexed Attributes</title>
 		<para>
 			This section allows you to specify to the server the
