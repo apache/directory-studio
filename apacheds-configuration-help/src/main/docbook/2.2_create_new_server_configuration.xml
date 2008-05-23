@@ -52,4 +52,45 @@
 			</mediaobject>
 		</screenshot>
 	</para>
+	<para>The following wizard appears:</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/new_configuration_3.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>Select the Apache DS target version.</para>
+	<para>
+		<informaltable frame="all">
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Apache DS version</entry>
+						<entry>
+							Each version of Apache DS defines its
+							specific settings and 'server.xml' file
+							format. In order to display the right
+							editor, you need to provide the version of
+							Apache DS you're targeting.
+						</entry>
+						<entry>1.5.2</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
 </section>
