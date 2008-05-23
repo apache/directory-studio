@@ -17,20 +17,20 @@
 	under the License.
 -->
 <chapter id="whats_new">
-	<title>What's New</title>
+	<title>What's New in 1.2.0</title>
 
 	<simplesect>
-		<title>Support for Apache DS 1.5.1</title>
+		<title>Support for Apache DS 1.5.2, 1.5.1 and 1.5.0</title>
 		<para>
-			The Apache DS Configuration plugin now supports the 1.5.1 version of Apache Directory Server.
+			The Apache DS Configuration plugin now supports the 1.5.2,
+			1.5.1 and 1.5.0 versions of Apache Directory Server.
 		</para>
 		<para>
 			<screenshot>
 				<mediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="images/whats_new_support_apache_ds_151.png"
-							format="PNG" />
+							fileref="images/whats_new.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
 			</screenshot>
