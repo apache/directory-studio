@@ -117,7 +117,7 @@ public class ExtendedOperationsMasterDetailsBlock extends MasterDetailsBlock
         section.setClient( client );
 
         // Creatig the Table and Table Viewer
-        Table table = toolkit.createTable( client, SWT.CHECK );
+        Table table = toolkit.createTable( client, SWT.NONE );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         gd.heightHint = 20;
         gd.widthHint = 100;
