@@ -506,29 +506,46 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
             .getServerConfiguration();
 
         // Supported Authentication Mechanisms
-        List<SupportedMechanismEnum> supportedMechanismsList = new ArrayList<SupportedMechanismEnum>();
-        for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
+        if ( ( supportedMechanismsTableViewer != null ) && ( supportedMechanismsTableViewer.getTable() != null )
+            && ( !supportedMechanismsTableViewer.getTable().isDisposed() ) )
         {
-            supportedMechanismsList.add( ( SupportedMechanismEnum ) supportedMechanism );
+            List<SupportedMechanismEnum> supportedMechanismsList = new ArrayList<SupportedMechanismEnum>();
+            for ( Object supportedMechanism : supportedMechanismsTableViewer.getCheckedElements() )
+            {
+                supportedMechanismsList.add( ( SupportedMechanismEnum ) supportedMechanism );
+            }
+            configuration.setSupportedMechanisms( supportedMechanismsList );
         }
-        configuration.setSupportedMechanisms( supportedMechanismsList );
 
         // SASL Host
-        configuration.setSaslHost( saslHostText.getText() );
+        if ( ( saslHostText != null ) && ( !saslHostText.isDisposed() ) )
+        {
+            configuration.setSaslHost( saslHostText.getText() );
+        }
 
         // SASL Principal
-        configuration.setSaslPrincipal( saslPrincipalText.getText() );
+        if ( ( saslPrincipalText != null ) && ( !saslPrincipalText.isDisposed() ) )
+        {
+            configuration.setSaslPrincipal( saslPrincipalText.getText() );
+        }
 
         // Search Base DN
-        configuration.setSearchBaseDn( searchBaseDnText.getText() );
+        if ( ( searchBaseDnText != null ) && ( !searchBaseDnText.isDisposed() ) )
+        {
+            configuration.setSearchBaseDn( searchBaseDnText.getText() );
+        }
 
         // SASL Quality Of Protection
-        List<SaslQualityOfProtectionEnum> saslQoPList = new ArrayList<SaslQualityOfProtectionEnum>();
-        for ( Object qop : saslQualityOfProtectionTableViewer.getCheckedElements() )
+        if ( ( saslQualityOfProtectionTableViewer != null ) && ( saslQualityOfProtectionTableViewer.getTable() != null )
+            && ( !saslQualityOfProtectionTableViewer.getTable().isDisposed() ) )
         {
-            saslQoPList.add( ( SaslQualityOfProtectionEnum ) qop );
+            List<SaslQualityOfProtectionEnum> saslQoPList = new ArrayList<SaslQualityOfProtectionEnum>();
+            for ( Object qop : saslQualityOfProtectionTableViewer.getCheckedElements() )
+            {
+                saslQoPList.add( ( SaslQualityOfProtectionEnum ) qop );
+            }
+            configuration.setSaslQops( saslQoPList );
         }
-        configuration.setSaslQops( saslQoPList );
 
         // SASL Realms
         configuration.setSaslRealms( saslRealms );
