@@ -1178,6 +1178,18 @@
                     <groupId>org.eclipse.ui</groupId>
                     <artifactId>console</artifactId>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt</groupId>
+                  <artifactId>core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt</groupId>
+                  <artifactId>debug</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core</groupId>
+                  <artifactId>variables</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -1197,6 +1209,10 @@
                 <artifactItem>
                   <groupId>org.eclipse.help</groupId>
                   <artifactId>webapp</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt</groupId>
+                  <artifactId>debug</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>

@@ -426,8 +426,20 @@
       <artifactId>launching</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>debug</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>console</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>variables</artifactId>
     </dependency>
 
     <!-- Other dependencies -->

@@ -1680,21 +1680,120 @@
         <groupId>org.eclipse.debug</groupId>
         <artifactId>core</artifactId>
         <version>3.3.2.v20080117_r332</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>variables</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>filesystem</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.debug</groupId>
         <artifactId>ui</artifactId>
         <version>3.3.2.v20080117_r332</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>variables</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>help</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.debug</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jface</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.workbench</groupId>
+            <artifactId>texteditor</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>ide</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>editors</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>filesystem</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jdt</groupId>
         <artifactId>launching</artifactId>
         <version>3.3.2.v20080115_r332</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.debug</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>debug</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>variables</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>console</artifactId>
-        <version>3.2.2.v20071031_r332</version><exclusions>
+        <version>3.2.2.v20071031_r332</version>
+        <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
             <artifactId>ui</artifactId>
@@ -1718,6 +1817,60 @@
           <exclusion>
             <groupId>org.eclipse.core</groupId>
             <artifactId>variables</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jdt</groupId>
+        <artifactId>core</artifactId>
+        <version>3.3.3.v_793_R33x</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>filesystem</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.team</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jdt</groupId>
+        <artifactId>debug</artifactId>
+        <version>3.3.1.v20070719_r331</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.debug</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
