@@ -62,6 +62,7 @@
   <properties>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.2.0.SNAPSHOT</aciitemeditor.version>
+    <apacheds.version>1.2.0.SNAPSHOT</apacheds.version>
     <apacheds.configuration.version>1.2.0.SNAPSHOT</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.2.0.SNAPSHOT</apacheds.configuration.feature.version>
     <apacheds.configuration.help.version>1.2.0.SNAPSHOT</apacheds.configuration.help.version>
@@ -1028,37 +1029,6 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.ui</groupId>
-        <artifactId>console</artifactId>
-        <version>3.2.1-v20070824_r331</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.eclipse</groupId>
-            <artifactId>ui</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.jface</groupId>
-            <artifactId>text</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.ui.workbench</groupId>
-            <artifactId>texteditor</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>runtime</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>expressions</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.eclipse.core</groupId>
-            <artifactId>variables</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.ui</groupId>
         <artifactId>externaltools</artifactId>
         <version>3.1.200-v20070416</version>
         <exclusions>
@@ -1540,6 +1510,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>apacheds</artifactId>
+        <version>${apacheds.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>jars</artifactId>
         <version>${jars.version}</version>
       </dependency>
@@ -1699,6 +1674,54 @@
         <artifactId>nlog4j</artifactId>
         <version>1.2.25</version>
       </dependency>
+
+      <!-- Added for the Apache DS plugin -->
+      <dependency>
+        <groupId>org.eclipse.debug</groupId>
+        <artifactId>core</artifactId>
+        <version>3.3.2.v20080117_r332</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.debug</groupId>
+        <artifactId>ui</artifactId>
+        <version>3.3.2.v20080117_r332</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jdt</groupId>
+        <artifactId>launching</artifactId>
+        <version>3.3.2.v20080115_r332</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.ui</groupId>
+        <artifactId>console</artifactId>
+        <version>3.2.2.v20071031_r332</version><exclusions>
+          <exclusion>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jface</groupId>
+            <artifactId>text</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.ui.workbench</groupId>
+            <artifactId>texteditor</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>expressions</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>variables</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -1727,6 +1750,7 @@
     <module>apacheds-configuration</module>
     <module>apacheds-configuration-feature</module>
     <module>apacheds-configuration-help</module>
+    <module>apacheds</module>
     <module>jars</module>
     <module>updatesite</module>
     <module>studio</module>

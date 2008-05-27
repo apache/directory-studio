@@ -412,6 +412,24 @@
       <artifactId>tomcat</artifactId>
     </dependency>
 
+    <!-- Added for the Apache DS plugin -->
+    <dependency>
+      <groupId>org.eclipse.debug</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.debug</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>launching</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>console</artifactId>
+    </dependency>
+
     <!-- Other dependencies -->
     <dependency>
       <groupId>docbook</groupId>

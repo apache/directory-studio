@@ -894,6 +894,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>jars</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -1157,6 +1161,22 @@
                 <artifactItem>
                     <groupId>org.mortbay</groupId>
                     <artifactId>jetty</artifactId>
+                </artifactItem>
+                <artifactItem>
+                    <groupId>org.eclipse.debug</groupId>
+                    <artifactId>core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                    <groupId>org.eclipse.debug</groupId>
+                    <artifactId>ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                    <groupId>org.eclipse.jdt</groupId>
+                    <artifactId>launching</artifactId>
+                </artifactItem>
+                <artifactItem>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>console</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>

@@ -661,30 +661,22 @@
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>core</artifactId>
-      <version>3.3.2.v20080117_r332</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.3.2.v20080117_r332</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>launching</artifactId>
-      <version>3.3.2.v20080115_r332</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-        <groupId>org.apache.directory.installers</groupId>
-        <artifactId>apacheds-noarch-installer</artifactId>
-        <version>1.5.2</version>
-        <scope>provided</scope>
-     </dependency>
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>apacheds.configuration</artifactId>
-      </dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>apacheds.configuration</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 </project>
