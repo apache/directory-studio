@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.directory.studio.apacheds.experimentations.perspectives.Perspective"
+            id="org.apache.directory.studio.apacheds.experimentations.perspective"
+            name="ApacheDS Experimentations">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.apache.directory.studio.apacheds.experimentations.prefs.MainPage"
+            id="org.apache.directory.studio.apacheds.experimentations.MainPage"
+            name="Apache Directory Server">
+      </page>
+      <page
+            class="org.apache.directory.studio.apacheds.experimentations.prefs.ColorsAndFontsPage"
+            id="org.apache.directory.studio.apacheds.experimentations.ColorsAndFontsPage"
+            name="Colors and Fonts"
+            category="org.apache.directory.studio.apacheds.experimentations.MainPage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.directory.studio.apacheds.experimentations.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.apache.directory.studio.apacheds.experimentations.category"
+            name="Apache Directory Server">
+      </category>
+      <view
+            category="org.apache.directory.studio.apacheds.experimentations.category"
+            class="org.apache.directory.studio.apacheds.experimentations.views.ServersView"
+            icon="resources/icons/serverView.png"
+            id="org.apache.directory.studio.apacheds.experimentations.serversView"
+            name="Servers">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.apache.directory.studio.apacheds.experimentations.properties.ServerInstancePropertyPage"
+            id="org.apache.directory.studio.apacheds.experimentations.properties.serverInstanceProperties"
+            name="Info">
+      </page>
+   </extension>
+
+</plugin>

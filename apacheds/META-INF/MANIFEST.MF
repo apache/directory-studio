@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Apache DS Plugin
+Bundle-SymbolicName: org.apache.directory.studio.apacheds.plugin.experimentations;singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: org.apache.directory.studio.apacheds.experimentations.ApacheDsPlugin
+Bundle-Vendor: Apache Software Foundation
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.jface.text,
+ org.eclipse.jdt.launching,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.apache.directory.studio.apacheds.configuration
+Eclipse-LazyStart: true
+Bundle-ClassPath: .,
+ lib/apacheds.configuration-1.2.0.SNAPSHOT.jar,
+ lib/dom4j-1.6.1.jar,
+ lib/log4j-1.2.14.jar,
+ lib/mina-core-1.1.2.jar,
+ lib/slf4j-api-1.4.3.jar,
+ lib/slf4j-log4j12-1.4.3.jar,
+ lib/xml-apis-1.0.b2.jar
