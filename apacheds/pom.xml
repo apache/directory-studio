@@ -42,6 +42,10 @@
         </includes>
       </resource>
       <resource>
+        <directory>resources</directory>
+        <targetPath>resources</targetPath>
+      </resource>
+      <resource>
         <directory>src/main/resources</directory>
       </resource>
     </resources>
