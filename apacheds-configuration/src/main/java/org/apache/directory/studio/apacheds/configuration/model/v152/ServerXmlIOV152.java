@@ -1044,7 +1044,7 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                         if ( enabledAttribute == null )
                         {
                             // By default, the protocol is not enabled
-                            serverConfiguration.setEnableDns( false );
+                            serverConfiguration.setEnableLdaps( false );
                         }
                         else
                         {
@@ -1109,6 +1109,19 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
                 // Checking if the 'ldapServer' element is the one for LDAP
                 if ( ServerXmlIOV152.ELEMENT_LDAP_SERVER.equalsIgnoreCase( idAttribute.getValue() ) )
                 {
+                    // Getting the 'enabled' attribute
+                    org.dom4j.Attribute enabledAttribute = ldapServerElement
+                        .attribute( ServerXmlIOV152.ATTRIBUTE_ENABLED );
+                    if ( enabledAttribute == null )
+                    {
+                        // By default, the protocol is enabled
+                        serverConfiguration.setEnableLdap( true );
+                    }
+                    else
+                    {
+                        serverConfiguration.setEnableLdap( parseBoolean( enabledAttribute.getValue() ) );
+                    }
+
                     // IpPort
                     org.dom4j.Attribute ipPortAttribute = ldapServerElement
                         .attribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT );
@@ -1967,6 +1980,9 @@ public class ServerXmlIOV152 extends AbstractServerXmlIO implements ServerXmlIO
 
         // Id
         ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ID, ServerXmlIOV152.ELEMENT_LDAP_SERVER );
+
+        // Enabled
+        ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_ENABLED, "" + serverConfiguration.isEnableLdap() );
 
         // IpPort
         ldapServerElement.addAttribute( ServerXmlIOV152.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getLdapPort() );

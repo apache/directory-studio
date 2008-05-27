@@ -455,6 +455,17 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     {
         Element ldapConfiguration = getBeanElementById( document, "ldapConfiguration" );
 
+        // Enabled
+        String enabled = readBeanProperty( "enabled", ldapConfiguration );
+        if ( enabled != null )
+        {
+            serverConfiguration.setEnableLdap( parseBoolean( enabled ) );
+        }
+        else
+        {
+            serverConfiguration.setEnableLdap( true );
+        }
+
         // IP Port
         String ipPort = readBeanProperty( "ipPort", ldapConfiguration );
         if ( ipPort != null )
@@ -1131,7 +1142,8 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     private static void createLdapConfigurationBean( Element root, ServerConfigurationV151 serverConfiguration )
     {
         Element ldapConfiguration = createProtocolConfigurationBean( root, "ldapConfiguration",
-            "org.apache.directory.server.ldap.LdapConfiguration", true, serverConfiguration.getLdapPort() );
+            "org.apache.directory.server.ldap.LdapConfiguration", serverConfiguration.isEnableLdap(),
+            serverConfiguration.getLdapPort() );
 
         // AllowAnonymousAccess
         Element propertyElement = ldapConfiguration.addElement( "property" );

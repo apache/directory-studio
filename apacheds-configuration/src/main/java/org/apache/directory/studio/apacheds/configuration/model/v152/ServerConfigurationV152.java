@@ -41,6 +41,9 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     /** The port */
     private int ldapPort;
 
+    /** The flag for Enable LDAP */
+    private boolean enableLdap;
+
     // Limits
 
     /** The Max Time Limit */
@@ -556,7 +559,18 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
         return enableKerberos;
     }
 
-
+    /**
+     * Gets the Enable LDAP flag.
+     *
+     * @return
+     *      true if LDAP is enabled
+     */
+    public boolean isEnableLdap()
+    {
+        return enableLdap;
+    }
+    
+    
     /**
      * Gets the Enable LDAPS flag.
      *
@@ -770,6 +784,18 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     public void setEnableLdaps( boolean enableLdaps )
     {
         this.enableLdaps = enableLdaps;
+    }
+    
+
+    /**
+     * Sets the Enable LDAP flag.
+     *
+     * @param enableLdap
+     *      the new value
+     */
+    public void setEnableLdap( boolean enableLdap )
+    {
+        this.enableLdap = enableLdap;
     }
 
 
