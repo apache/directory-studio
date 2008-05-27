@@ -26,9 +26,9 @@
     <artifactId>parent</artifactId>
     <version>1.2.0.SNAPSHOT</version>
   </parent>
-  <artifactId>apacheds.plugin.experimentations</artifactId>
-  <version>0.0.1</version>
-  <name>Apache Directory Studio Apache DS Plugin</name>
+  <artifactId>apacheds</artifactId>
+  <version>${apacheds.version}</version>
+  <name>Apache Directory Studio Apache DS</name>
   <packaging>jar</packaging>
 
   <description></description>
@@ -150,6 +150,11 @@
         	      <version>1.5.2</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.apache.directory.installers</groupId>
+                  <artifactId>apacheds-noarch-installer</artifactId>
+                  <version>1.5.2</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.apache.directory.server</groupId>
                   <artifactId>apacheds-protocol-changepw</artifactId>
         	      <version>1.5.2</version>
@@ -240,6 +245,26 @@
         	      <version>2.3</version>
                 </artifactItem>
                 <artifactItem>
+                  <groupId>org.apache.directory.daemon</groupId>
+                  <artifactId>daemon-bootstrappers</artifactId>
+        	      <version>1.1.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>jcl104-over-slf4j</artifactId>
+                  <version>1.4.3</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>jdbm</groupId>
+                  <artifactId>jdbm</artifactId>
+        	      <version>1.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>log4j</groupId>
+                  <artifactId>log4j</artifactId>
+                  <version>1.2.14</version>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.apache.mina</groupId>
                   <artifactId>mina-core</artifactId>
         	      <version>1.1.2</version>
@@ -275,14 +300,14 @@
         	      <version>0.9.10</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.daemon</groupId>
-                  <artifactId>daemon-bootstrappers</artifactId>
-        	      <version>1.1.3</version>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-api</artifactId>
+                  <version>1.4.3</version>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>jdbm</groupId>
-                  <artifactId>jdbm</artifactId>
-        	      <version>1.0</version>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>slf4j-log4j12</artifactId>
+                  <version>1.4.3</version>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.springframework</groupId>
@@ -303,31 +328,6 @@
                   <groupId>org.apache.xbean</groupId>
                   <artifactId>xbean-spring</artifactId>
                   <version>3.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.installers</groupId>
-                  <artifactId>apacheds-noarch-installer</artifactId>
-                  <version>1.5.2</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>slf4j-api</artifactId>
-                  <version>1.4.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>jcl104-over-slf4j</artifactId>
-                  <version>1.4.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>slf4j-log4j12</artifactId>
-                  <version>1.4.3</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>log4j</groupId>
-                  <artifactId>log4j</artifactId>
-                  <version>1.2.14</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
