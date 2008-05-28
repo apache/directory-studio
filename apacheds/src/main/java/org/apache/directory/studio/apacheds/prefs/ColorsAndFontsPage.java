@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.prefs;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.LogMessageConsole;
 import org.apache.directory.studio.apacheds.PreferenceStoreUtils;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -39,9 +38,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.MessageConsoleStream;
 
 
 /**
@@ -170,25 +166,29 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
         // Info
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT );
-        rgb = PreferenceConverter.getColor( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_COLOR );
+        rgb = PreferenceConverter.getColor( getPreferenceStore(),
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_COLOR );
         setInfo( fontDatas, rgb );
 
         // Warn
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT );
-        rgb = PreferenceConverter.getColor( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_COLOR );
+        rgb = PreferenceConverter.getColor( getPreferenceStore(),
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_COLOR );
         setWarn( fontDatas, rgb );
 
         // Error
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_FONT );
-        rgb = PreferenceConverter.getColor( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_COLOR );
+        rgb = PreferenceConverter.getColor( getPreferenceStore(),
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_COLOR );
         setError( fontDatas, rgb );
 
         // Fatal
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_FONT );
-        rgb = PreferenceConverter.getColor( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_COLOR );
+        rgb = PreferenceConverter.getColor( getPreferenceStore(),
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_COLOR );
         setFatal( fontDatas, rgb );
     }
 
@@ -255,8 +255,8 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT );
         setFontData( fontDatas, infoBoldCheckbox, infoItalicCheckbox );
-        PreferenceConverter
-            .setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT, fontDatas );
+        PreferenceConverter.setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT,
+            fontDatas );
         PreferenceConverter.setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_COLOR,
             infoColorButton.getColorValue() );
 
@@ -264,8 +264,8 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT );
         setFontData( fontDatas, warnBoldCheckbox, warnItalicCheckbox );
-        PreferenceConverter
-            .setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT, fontDatas );
+        PreferenceConverter.setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT,
+            fontDatas );
         PreferenceConverter.setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_COLOR,
             warnColorButton.getColorValue() );
 
@@ -278,7 +278,7 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
         PreferenceConverter.setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_COLOR,
             errorColorButton.getColorValue() );
 
-        // Error
+        // Fatal
         fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
             ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_FONT );
         setFontData( fontDatas, fatalBoldCheckbox, fatalItalicCheckbox );
@@ -286,36 +286,6 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
             fontDatas );
         PreferenceConverter.setValue( getPreferenceStore(), ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_COLOR,
             fatalColorButton.getColorValue() );
-
-        LogMessageConsole logMessageConsole = new LogMessageConsole( "toto" );
-        ConsolePlugin.getDefault().getConsoleManager().addConsoles( new IConsole[]
-            { logMessageConsole } );
-
-        RGB rgbBlue = new RGB( 0, 0, 192 );
-        RGB rgbGreen = new RGB( 63, 127, 95 );
-        RGB rgbOrange = new RGB( 255, 127, 0 );
-        RGB rgbRed = new RGB( 255, 0, 0 );
-        RGB rgbDarkRed = new RGB( 127, 0, 0 );
-
-        MessageConsoleStream messageConsoleStream = logMessageConsole.getDebugConsoleMessageStream();
-        messageConsoleStream
-            .println( "[11:23:01] DEBUG [org.apache.directory.server.core.DefaultDirectoryService] - You didn't change the admin password of directory service instance 'default'.  Please update the admin password as soon as possible to prevent a possible security breach." );
-
-        messageConsoleStream = logMessageConsole.getInfoConsoleMessageStream();
-        messageConsoleStream
-            .println( "[11:23:01] INFO [org.apache.directory.server.core.DefaultDirectoryService] - You didn't change the admin password of directory service instance 'default'.  Please update the admin password as soon as possible to prevent a possible security breach." );
-
-        messageConsoleStream = logMessageConsole.getWarnConsoleMessageStream();
-        messageConsoleStream
-            .println( "[11:23:01] WARN [org.apache.directory.server.core.DefaultDirectoryService] - You didn't change the admin password of directory service instance 'default'.  Please update the admin password as soon as possible to prevent a possible security breach." );
-
-        messageConsoleStream = logMessageConsole.getErrorConsoleMessageStream();
-        messageConsoleStream
-            .println( "[11:23:01] ERROR [org.apache.directory.server.core.DefaultDirectoryService] - You didn't change the admin password of directory service instance 'default'.  Please update the admin password as soon as possible to prevent a possible security breach." );
-
-        messageConsoleStream = logMessageConsole.getFatalConsoleMessageStream();
-        messageConsoleStream
-            .println( "[11:23:01] FATAL [org.apache.directory.server.core.DefaultDirectoryService] - You didn't change the admin password of directory service instance 'default'.  Please update the admin password as soon as possible to prevent a possible security breach." );
 
         return super.performOk();
     }
