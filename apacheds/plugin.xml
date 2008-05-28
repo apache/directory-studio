@@ -40,8 +40,12 @@
       <page
             class="org.apache.directory.studio.apacheds.properties.ServerInstancePropertyPage"
             id="org.apache.directory.studio.apacheds.properties.serverInstanceProperties"
-            name="Info"
-            objectClass="org.apache.directory.studio.apacheds.model.ServerInstance">
+            name="Info">
+         <enabledWhen>
+            <instanceof
+                  value="org.apache.directory.studio.apacheds.model.ServerInstance">
+            </instanceof>
+         </enabledWhen>
       </page>
    </extension>
 
