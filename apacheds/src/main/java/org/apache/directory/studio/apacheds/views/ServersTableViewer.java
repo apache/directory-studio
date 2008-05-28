@@ -57,7 +57,7 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerTableViewer extends TreeViewer
+public class ServersTableViewer extends TreeViewer
 {
     /** The root element */
     protected static final String ROOT = "root";
@@ -78,7 +78,7 @@ public class ServerTableViewer extends TreeViewer
     private List<ServerInstance> serversNeedingAnimation = new ArrayList<ServerInstance>();
 
 
-    public ServerTableViewer( Tree tree )
+    public ServersTableViewer( Tree tree )
     {
         super( tree );
 
@@ -86,7 +86,7 @@ public class ServerTableViewer extends TreeViewer
         setLabelProvider( labelProvider );
         setContentProvider( new ServersViewContentProvider() );
 
-        setComparator( new ServerViewerComparator( labelProvider ) );
+        setComparator( new ServersViewerComparator( labelProvider ) );
 
         setInput( ROOT );
 
@@ -249,8 +249,8 @@ public class ServerTableViewer extends TreeViewer
                 try
                 {
                     refresh( server );
-                    ISelection sel = ServerTableViewer.this.getSelection();
-                    ServerTableViewer.this.setSelection( sel );
+                    ISelection sel = ServersTableViewer.this.getSelection();
+                    ServersTableViewer.this.setSelection( sel );
                 }
                 catch ( Exception e )
                 {
@@ -374,7 +374,7 @@ public class ServerTableViewer extends TreeViewer
      */
     protected void resortTable( final TreeColumn column, int col )
     {
-        ServerViewerComparator sorter = ( ServerViewerComparator ) getComparator();
+        ServersViewerComparator sorter = ( ServersViewerComparator ) getComparator();
 
         if ( col == sorter.getTopPriority() )
             sorter.reverseTopPriority();
@@ -400,7 +400,7 @@ public class ServerTableViewer extends TreeViewer
     protected void updateDirectionIndicator( TreeColumn column )
     {
         getTree().setSortColumn( column );
-        if ( ( ( ServerViewerComparator ) getComparator() ).getTopPriorityDirection() == ServerViewerComparator.ASCENDING )
+        if ( ( ( ServersViewerComparator ) getComparator() ).getTopPriorityDirection() == ServersViewerComparator.ASCENDING )
             getTree().setSortDirection( SWT.UP );
         else
             getTree().setSortDirection( SWT.DOWN );

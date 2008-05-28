@@ -40,7 +40,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerViewerComparator extends ViewerComparator
+public class ServersViewerComparator extends ViewerComparator
 {
     public static final int MAX_DEPTH = 3;
     public static final int ASCENDING = 1;
@@ -56,12 +56,12 @@ public class ServerViewerComparator extends ViewerComparator
 
 
     /**
-     * Creates a new instance of ServerViewerComparator.
+     * Creates a new instance of ServersViewerComparator.
      *
      * @param labelProvider
      *      the label provider
      */
-    public ServerViewerComparator( ServersViewLabelProvider labelProvider )
+    public ServersViewerComparator( ServersViewLabelProvider labelProvider )
     {
         this.labelProvider = labelProvider;
     }

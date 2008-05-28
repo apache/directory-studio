@@ -68,7 +68,7 @@ public class ServersView extends ViewPart
     public static final String ID = "org.apache.directory.studio.apacheds.serversView";
 
     /** The table viewer */
-    private ServerTableViewer tableViewer;
+    private ServersTableViewer tableViewer;
 
     private static final String TAG_COLUMN_WIDTH = "columnWidth";
     protected int[] cols;
@@ -137,7 +137,7 @@ public class ServersView extends ViewPart
         stateColumn.addSelectionListener( getHeaderListener( 1 ) );
 
         // Creating the viewer
-        tableViewer = new ServerTableViewer( tree );
+        tableViewer = new ServersTableViewer( tree );
 
         initActions();
         initToolbar();
