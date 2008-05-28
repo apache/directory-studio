@@ -59,15 +59,11 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ServerTableViewer extends TreeViewer
 {
+    /** The root element */
     protected static final String ROOT = "root";
 
-    private ServersView view;
-
-    private boolean stopAnimation;
-
+    /** The label provider */
     private ServersViewLabelProvider labelProvider;
-
-    private List<ServerInstance> serversNeedingAnimation = new ArrayList<ServerInstance>();
 
     /** The server handler listener */
     private ServersHandlerListener serversHandlerListener;
@@ -75,11 +71,16 @@ public class ServerTableViewer extends TreeViewer
     /** The server listener */
     private ServerListener serverListener;
 
+    /** A flag to stop the animation */
+    private boolean stopAnimation;
 
-    public ServerTableViewer( ServersView view, Tree tree )
+    /** The list of server needing animation */
+    private List<ServerInstance> serversNeedingAnimation = new ArrayList<ServerInstance>();
+
+
+    public ServerTableViewer( Tree tree )
     {
         super( tree );
-        this.view = view;
 
         labelProvider = new ServersViewLabelProvider();
         setLabelProvider( labelProvider );

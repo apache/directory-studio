@@ -110,20 +110,6 @@ public class ServersView extends ViewPart
             tableViewer.refresh();
         }
     };
-    
-    private SelectionListener getHeaderListener(final int col) {
-        return new SelectionAdapter() {
-            /**
-             * Handles the case of user selecting the header area.
-             */
-            public void widgetSelected(SelectionEvent e) {
-                if (tableViewer == null)
-                    return;
-                TreeColumn column = (TreeColumn) e.widget;
-                tableViewer.resortTable(column, col);
-            }
-        };
-    }
 
     private Tree tree;
 
@@ -151,12 +137,38 @@ public class ServersView extends ViewPart
         stateColumn.addSelectionListener( getHeaderListener( 1 ) );
 
         // Creating the viewer
-        tableViewer = new ServerTableViewer( this, tree );
+        tableViewer = new ServerTableViewer( tree );
 
         initActions();
         initToolbar();
         initContextMenu();
         initListeners();
+    }
+
+
+    /**
+     * Gets a header listener for the given column.
+     * 
+     * @param col
+     *      the column
+     * @return
+     *      a header listener for the given column
+     */
+    private SelectionListener getHeaderListener( final int col )
+    {
+        return new SelectionAdapter()
+        {
+            /**
+             * Handles the case of user selecting the header area.
+             */
+            public void widgetSelected( SelectionEvent e )
+            {
+                if ( tableViewer == null )
+                    return;
+                TreeColumn column = ( TreeColumn ) e.widget;
+                tableViewer.resortTable( column, col );
+            }
+        };
     }
 
 
@@ -166,15 +178,17 @@ public class ServersView extends ViewPart
     public void init( IViewSite site, IMemento memento ) throws PartInitException
     {
         super.init( site, memento );
-        cols = new int[2];
+        cols = new int[]
+            { 200, 60 };
         for ( int i = 0; i < 2; i++ )
         {
-            cols[i] = 200;
             if ( memento != null )
             {
                 Integer in = memento.getInteger( TAG_COLUMN_WIDTH + i );
                 if ( in != null && in.intValue() > 5 )
+                {
                     cols[i] = in.intValue();
+                }
             }
         }
     }
@@ -190,7 +204,9 @@ public class ServersView extends ViewPart
         {
             int width = tc[i].getWidth();
             if ( width != 0 )
+            {
                 memento.putInteger( TAG_COLUMN_WIDTH + i, width );
+            }
         }
     }
 
