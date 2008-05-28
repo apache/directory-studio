@@ -13,14 +13,14 @@
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.apache.directory.studio.apacheds.prefs.MainPage"
-            id="org.apache.directory.studio.apacheds.MainPage"
+            id="org.apache.directory.studio.apacheds.prefs.MainPage"
             name="Apache Directory Server">
       </page>
       <page
             class="org.apache.directory.studio.apacheds.prefs.ColorsAndFontsPage"
             id="org.apache.directory.studio.apacheds.ColorsAndFontsPage"
             name="Colors and Fonts"
-            category="org.apache.directory.studio.apacheds.MainPage">
+            category="org.apache.directory.studio.apacheds.prefs.MainPage">
       </page>
    </extension>
    <extension
