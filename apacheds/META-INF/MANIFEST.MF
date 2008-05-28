@@ -12,12 +12,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.launching,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
+ org.apache.directory.studio.jars,
  org.apache.directory.studio.apacheds.configuration
 Eclipse-LazyStart: true
+Eclipse-RegisterBuddy: org.apache.directory.studio.jars
 Bundle-ClassPath: .,
- lib/dom4j-1.6.1.jar,
- lib/log4j-1.2.14.jar,
  lib/mina-core-1.1.2.jar,
- lib/slf4j-api-1.4.3.jar,
- lib/slf4j-log4j12-1.4.3.jar,
- lib/xml-apis-1.0.b2.jar
+ lib/slf4j-api-1.4.3.jar

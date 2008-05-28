@@ -2,14 +2,6 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="org.apache.directory.studio.apacheds.perspectives.Perspective"
-            id="org.apache.directory.studio.apacheds.perspective"
-            name="ApacheDS">
-      </perspective>
-   </extension>
-   <extension
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.apache.directory.studio.apacheds.prefs.MainPage"
