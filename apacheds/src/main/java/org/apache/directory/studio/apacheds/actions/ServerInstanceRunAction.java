@@ -66,10 +66,11 @@ public class ServerInstanceRunAction extends Action implements IWorkbenchWindowA
      */
     public ServerInstanceRunAction( ServersView view )
     {
-        super( "Run" );
+        super( "&Run" );
         this.view = view;
+        setId( ApacheDsPluginConstants.CMD_RUN );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_RUN );
         setToolTipText( "Run" );
-        setId( ApacheDsPluginConstants.ACTION_SERVER_INSTANCE_RUN );
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor( ApacheDsPluginConstants.IMG_RUN ) );
     }
 

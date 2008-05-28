@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.views;
 
 
+import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.actions.DeleteAction;
 import org.apache.directory.studio.apacheds.actions.NewServerInstanceAction;
 import org.apache.directory.studio.apacheds.actions.OpenAction;
@@ -35,6 +36,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -50,8 +52,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 
 
@@ -74,13 +82,19 @@ public class ServersView extends ViewPart
     /** The table viewer */
     private ServersTableViewer tableViewer;
 
+    /** The view instance */
+    private ServersView instance;
+
+    /** Token used to activate and deactivate shortcuts in the view */
+    private IContextActivation contextActivation;
+
     private static final String TAG_COLUMN_WIDTH = "columnWidth";
     protected int[] columnWidths;
 
     // Actions
-    private NewServerInstanceAction newServerInstance;
-    private ServerInstanceRunAction serverInstanceRun;
-    private ServerInstanceStopAction serverInstanceStop;
+    private NewServerInstanceAction newServer;
+    private ServerInstanceRunAction run;
+    private ServerInstanceStopAction stop;
     private PropertiesAction properties;
     private DeleteAction delete;
     private OpenAction open;
@@ -122,6 +136,8 @@ public class ServersView extends ViewPart
      */
     public void createPartControl( Composite parent )
     {
+        instance = this;
+
         // Creating the Tree
         tree = new Tree( parent, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL );
         tree.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
@@ -233,13 +249,13 @@ public class ServersView extends ViewPart
      */
     private void initActions()
     {
-        newServerInstance = new NewServerInstanceAction();
+        newServer = new NewServerInstanceAction();
 
-        serverInstanceRun = new ServerInstanceRunAction( this );
-        serverInstanceRun.setEnabled( false );
+        run = new ServerInstanceRunAction( this );
+        run.setEnabled( false );
 
-        serverInstanceStop = new ServerInstanceStopAction( this );
-        serverInstanceStop.setEnabled( false );
+        stop = new ServerInstanceStopAction( this );
+        stop.setEnabled( false );
 
         properties = new PropertiesAction( this );
         properties.setEnabled( false );
@@ -261,10 +277,10 @@ public class ServersView extends ViewPart
     private void initToolbar()
     {
         IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-        toolbar.add( newServerInstance );
+        toolbar.add( newServer );
         toolbar.add( new Separator() );
-        toolbar.add( serverInstanceRun );
-        toolbar.add( serverInstanceStop );
+        toolbar.add( run );
+        toolbar.add( stop );
     }
 
 
@@ -279,16 +295,16 @@ public class ServersView extends ViewPart
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager newManager = new MenuManager( "New" );
-                newManager.add( newServerInstance );
+                MenuManager newManager = new MenuManager( "&New" );
+                newManager.add( newServer );
                 manager.add( newManager );
                 manager.add( open );
                 manager.add( new Separator() );
                 manager.add( delete );
                 manager.add( rename );
                 manager.add( new Separator() );
-                manager.add( serverInstanceRun );
-                manager.add( serverInstanceStop );
+                manager.add( run );
+                manager.add( stop );
                 manager.add( new Separator() );
                 manager.add( properties );
             }
@@ -325,6 +341,101 @@ public class ServersView extends ViewPart
                 updateActionsStates();
             }
         } );
+
+        // Initializing the PartListener
+        getSite().getPage().addPartListener( new IPartListener2()
+        {
+            /**
+              * This implementation deactivates the shortcuts when the part is deactivated.
+              */
+            public void partDeactivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == instance && contextActivation != null )
+                {
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( open.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( stop.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler( null );
+                    }
+
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextService.deactivateContext( contextActivation );
+                    contextActivation = null;
+                }
+            }
+
+
+            /**
+             * This implementation activates the shortcuts when the part is activated.
+             */
+            public void partActivated( IWorkbenchPartReference partRef )
+            {
+                if ( partRef.getPart( false ) == instance )
+                {
+                    IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                        IContextService.class );
+                    contextActivation = contextService.activateContext( ApacheDsPluginConstants.CONTEXTS_SERVERS_VIEW );
+
+                    ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+                        ICommandService.class );
+                    if ( commandService != null )
+                    {
+                        commandService.getCommand( newServer.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( newServer ) );
+                        commandService.getCommand( open.getActionDefinitionId() )
+                            .setHandler( new ActionHandler( open ) );
+                        commandService.getCommand( delete.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( delete ) );
+                        commandService.getCommand( rename.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( rename ) );
+                        commandService.getCommand( run.getActionDefinitionId() ).setHandler( new ActionHandler( run ) );
+                        commandService.getCommand( stop.getActionDefinitionId() )
+                            .setHandler( new ActionHandler( stop ) );
+                        commandService.getCommand( properties.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( properties ) );
+                    }
+                }
+            }
+
+
+            public void partBroughtToTop( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partClosed( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partHidden( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partInputChanged( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partOpened( IWorkbenchPartReference partRef )
+            {
+            }
+
+
+            public void partVisible( IWorkbenchPartReference partRef )
+            {
+            }
+
+        } );
     }
 
 
@@ -344,24 +455,24 @@ public class ServersView extends ViewPart
             switch ( serverInstance.getState() )
             {
                 case STARTED:
-                    serverInstanceRun.setEnabled( false );
-                    serverInstanceStop.setEnabled( true );
+                    run.setEnabled( false );
+                    stop.setEnabled( true );
                     break;
                 case STARTING:
-                    serverInstanceRun.setEnabled( false );
-                    serverInstanceStop.setEnabled( false );
+                    run.setEnabled( false );
+                    stop.setEnabled( false );
                     break;
                 case STOPPED:
-                    serverInstanceRun.setEnabled( true );
-                    serverInstanceStop.setEnabled( false );
+                    run.setEnabled( true );
+                    stop.setEnabled( false );
                     break;
                 case STOPPING:
-                    serverInstanceRun.setEnabled( false );
-                    serverInstanceStop.setEnabled( false );
+                    run.setEnabled( false );
+                    stop.setEnabled( false );
                     break;
                 case UNKNONW:
-                    serverInstanceRun.setEnabled( false );
-                    serverInstanceStop.setEnabled( false );
+                    run.setEnabled( false );
+                    stop.setEnabled( false );
                     break;
             }
 
@@ -372,8 +483,8 @@ public class ServersView extends ViewPart
         }
         else
         {
-            serverInstanceRun.setEnabled( false );
-            serverInstanceStop.setEnabled( false );
+            run.setEnabled( false );
+            stop.setEnabled( false );
             open.setEnabled( false );
             delete.setEnabled( false );
             properties.setEnabled( false );

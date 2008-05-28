@@ -46,11 +46,11 @@ public class NewServerInstanceAction extends Action implements IWorkbenchWindowA
      */
     public NewServerInstanceAction()
     {
-        super( "New Server" );
+        super( "New &Server" );
+        setId( ApacheDsPluginConstants.CMD_NEW_SERVER );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_NEW_SERVER );
         setToolTipText( "New Server" );
-        setId( ApacheDsPluginConstants.ACTION_NEW_SERVER );
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor( ApacheDsPluginConstants.IMG_SERVER_NEW ) );
-        setEnabled( true );
     }
 
 

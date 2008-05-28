@@ -48,5 +48,108 @@
          </enabledWhen>
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.apache.directory.studio.apacheds.commands"
+            name="Apache DS">
+      </category>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.NewServerInstanceAction"
+            description="Creates a new server"
+            id="org.apache.directory.studio.apacheds.commands.newServer"
+            name="New Server">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.DeleteAction"
+            description="Deletes a server"
+            id="org.apache.directory.studio.apacheds.commands.delete"
+            name="Delete">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.OpenAction"
+            description="Opens the server configuration"
+            id="org.apache.directory.studio.apacheds.commands.open"
+            name="Open">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.RenameAction"
+            description="Renames the server"
+            id="org.apache.directory.studio.apacheds.commands.rename"
+            name="Rename">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.ServerInstanceRunAction"
+            description="Runs the server"
+            id="org.apache.directory.studio.apacheds.commands.run"
+            name="Run">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.ServerInstanceStopAction"
+            description="Stops the server"
+            id="org.apache.directory.studio.apacheds.commands.stop"
+            name="Stop">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.PropertiesAction"
+            description="Shows the properties of the server"
+            id="org.apache.directory.studio.apacheds.commands.properties"
+            name="Properties">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            description="In Servers View of Apache DS"
+            id="org.apache.directory.studio.apacheds.contexts.serversView"
+            name="In Servers View of Apache DS"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.newServer"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+E"/>
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.open"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F3"/>
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.delete"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="DEL"/>
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.rename"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F2"/>
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.run"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+R"/>
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.stop"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+T"/>
+      <key
+            commandId="org.apache.directory.studio.apacheds.commands.properties"
+            contextId="org.apache.directory.studio.apacheds.contexts.serversView"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="ALT+RETURN"/>
+   </extension>
 
 </plugin>

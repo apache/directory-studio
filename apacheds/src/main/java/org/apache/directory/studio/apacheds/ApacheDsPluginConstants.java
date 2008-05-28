@@ -46,16 +46,21 @@ public interface ApacheDsPluginConstants
     public static final String IMG_RUN = "resources/icons/run.gif";
     public static final String IMG_STOP = "resources/icons/stop.gif";
 
-    // -------
-    // ACTIONS
-    // -------
-    public static final String ACTION_NEW_SERVER = "org.apache.directory.studio.apacheds.actions.newServerAction";
-    public static final String ACTION_SERVER_INSTANCE_RUN = "org.apache.directory.studio.apacheds.actions.serverInstanceRunAction";
-    public static final String ACTION_SERVER_INSTANCE_STOP = "org.apache.directory.studio.apacheds.actions.serverInstanceStopAction";
-    public static final String ACTION_PROPERTIES = "org.apache.directory.studio.apacheds.actions.propertiesAction";
-    public static final String ACTION_OPEN = "org.apache.directory.studio.apacheds.actions.openAction";
-    public static final String ACTION_DELETE = "org.apache.directory.studio.apacheds.actions.deleteAction";
-    public static final String ACTION_RENAME = "org.apache.directory.studio.apacheds.actions.renameAction";
+    // --------
+    // COMMANDS
+    // --------
+    public static final String CMD_NEW_SERVER = "org.apache.directory.studio.apacheds.commands.newServer";
+    public static final String CMD_RUN = "org.apache.directory.studio.apacheds.commands.run";
+    public static final String CMD_STOP = "org.apache.directory.studio.apacheds.commands.stop";
+    public static final String CMD_PROPERTIES = "org.apache.directory.studio.apacheds.commands.properties";
+    public static final String CMD_OPEN = "org.apache.directory.studio.apacheds.commands.open";
+    public static final String CMD_DELETE = "org.apache.directory.studio.apacheds.commands.delete";
+    public static final String CMD_RENAME = "org.apache.directory.studio.apacheds.commands.rename";
+
+    // --------
+    // CONTEXTS
+    // --------
+    public static final String CONTEXTS_SERVERS_VIEW = "org.apache.directory.studio.apacheds.contexts.serversView";
 
     // -----------
     // PREFERENCES

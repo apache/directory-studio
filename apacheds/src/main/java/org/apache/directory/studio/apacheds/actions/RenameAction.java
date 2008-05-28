@@ -85,12 +85,13 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      */
     public RenameAction( ServersView view )
     {
-        super( "Rename..." );
+        super( "R&ename..." );
+        setId( ApacheDsPluginConstants.CMD_RENAME );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_RENAME );
+        setToolTipText( "Rename..." );
         this.view = view;
         this.tree = view.getViewer().getTree();
         this.treeEditor = new TreeEditor( tree );
-        setToolTipText( "Rename..." );
-        setId( ApacheDsPluginConstants.ACTION_RENAME );
     }
 
 

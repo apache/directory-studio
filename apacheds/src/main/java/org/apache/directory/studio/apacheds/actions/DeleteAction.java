@@ -58,12 +58,13 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
      */
     public DeleteAction( ServersView view )
     {
-        super( "Delete" );
+        super( "&Delete" );
         this.view = view;
+        setId( ApacheDsPluginConstants.CMD_DELETE );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_DELETE );
         setToolTipText( "Delete" );
         setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
             ISharedImages.IMG_TOOL_DELETE ) );
-        setId( ApacheDsPluginConstants.ACTION_DELETE );
     }
 
 

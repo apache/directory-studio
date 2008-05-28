@@ -61,10 +61,11 @@ public class OpenAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public OpenAction( ServersView view )
     {
-        super( "Open" );
+        super( "&Open" );
         this.view = view;
+        setId( ApacheDsPluginConstants.CMD_OPEN );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_OPEN );
         setToolTipText( "Open" );
-        setId( ApacheDsPluginConstants.ACTION_OPEN );
     }
 
 

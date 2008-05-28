@@ -53,10 +53,11 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
      */
     public PropertiesAction( ServersView view )
     {
-        super( "Properties" );
+        super( "&Properties" );
         this.view = view;
+        setId( ApacheDsPluginConstants.CMD_PROPERTIES );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_PROPERTIES );
         setToolTipText( "Properties" );
-        setId( ApacheDsPluginConstants.ACTION_PROPERTIES );
     }
 
 
@@ -69,10 +70,8 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
         if ( !selection.isEmpty() )
         {
             ServerInstance serverInstance = ( ServerInstance ) selection.getFirstElement();
-            PreferenceDialog dialog = PreferencesUtil
-                .createPropertyDialogOn( view.getViewSite().getShell(), serverInstance,
-                    "org.apache.directory.studio.apacheds.properties.serverInstanceProperties", null,
-                    null );
+            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(),
+                serverInstance, "org.apache.directory.studio.apacheds.properties.serverInstanceProperties", null, null );
             dialog.getShell().setText( "Properties for '" + shorten( serverInstance.getName(), 30 ) + "'" );
             dialog.open();
         }
