@@ -147,6 +147,9 @@ public class ServerInstanceRunAction extends Action implements IWorkbenchWindowA
                 }
             }
 
+            // Verifying the libraries in the plugin's folder
+            ApacheDsPluginUtils.verifyLibrariesFolder();
+
             // Creating, setting and launching the launch job
             LaunchServerInstanceJob job = new LaunchServerInstanceJob( serverInstance, serverConfiguration );
             serverInstance.setLaunchJob( job );

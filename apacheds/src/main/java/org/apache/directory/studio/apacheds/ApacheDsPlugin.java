@@ -82,9 +82,6 @@ public class ApacheDsPlugin extends AbstractUIPlugin
 
         // Initializing the server instances from the store
         serversHandler.loadServerInstancesFromStore();
-
-        // Verifying the libraries in the plugin's folder
-        ApacheDsPluginUtils.verifyLibrariesFolder();
     }
 
 
