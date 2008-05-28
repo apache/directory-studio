@@ -130,6 +130,8 @@ public class ServersView extends ViewPart
         serverColumn.setText( "Server" );
         serverColumn.setWidth( cols[0] );
         serverColumn.addSelectionListener( getHeaderListener( 0 ) );
+        tree.setSortColumn( serverColumn );
+        tree.setSortDirection( SWT.UP );
 
         TreeColumn stateColumn = new TreeColumn( tree, SWT.SINGLE );
         stateColumn.setText( "State" );

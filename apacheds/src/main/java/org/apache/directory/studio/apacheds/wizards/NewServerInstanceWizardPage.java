@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.wizards;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
