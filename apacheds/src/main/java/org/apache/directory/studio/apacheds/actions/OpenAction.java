@@ -92,7 +92,6 @@ public class OpenAction extends Action implements IWorkbenchWindowActionDelegate
             {
                 // TODO
             }
-
         }
     }
 

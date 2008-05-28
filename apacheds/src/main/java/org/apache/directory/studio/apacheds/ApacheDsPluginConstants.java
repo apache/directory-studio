@@ -55,6 +55,7 @@ public interface ApacheDsPluginConstants
     public static final String ACTION_PROPERTIES = "org.apache.directory.studio.apacheds.actions.propertiesAction";
     public static final String ACTION_OPEN = "org.apache.directory.studio.apacheds.actions.openAction";
     public static final String ACTION_DELETE = "org.apache.directory.studio.apacheds.actions.deleteAction";
+    public static final String ACTION_RENAME = "org.apache.directory.studio.apacheds.actions.renameAction";
 
     // -----------
     // PREFERENCES

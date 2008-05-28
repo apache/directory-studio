@@ -20,7 +20,10 @@
 package org.apache.directory.studio.apacheds.actions;
 
 
+import java.io.File;
+
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
+import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.dialogs.DeleteServerDialog;
 import org.apache.directory.studio.apacheds.model.ServerInstance;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
@@ -73,15 +76,49 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
         StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
 
         // Here's the real object
-        ServerInstance serverInstance = ( ServerInstance ) selection.getFirstElement();
+        ServerInstance server = ( ServerInstance ) selection.getFirstElement();
 
         // Asking for confirmation
-        DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), serverInstance );
+        DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), server );
         if ( dsd.open() == DeleteServerDialog.OK )
         {
-            // Removing the server instance
-            ServersHandler.getDefault().removeServerInstance( serverInstance );
+            // Removing the server
+            ServersHandler.getDefault().removeServerInstance( server );
+
+            // Deleting the associated directory on disk
+            deleteDirectory( new File( ApacheDsPluginUtils.getApacheDsInstancesFolder().append( server.getId() )
+                .toOSString() ) );
         }
+    }
+
+
+    /**
+     * Deletes the given directory
+     *
+     * @param path
+     *      the directory
+     * @return
+     *      <code>true</code> if and only if the directory is 
+     *      successfully deleted; <code>false</code> otherwise
+     */
+    private boolean deleteDirectory( File path )
+    {
+        if ( path.exists() )
+        {
+            File[] files = path.listFiles();
+            for ( int i = 0; i < files.length; i++ )
+            {
+                if ( files[i].isDirectory() )
+                {
+                    deleteDirectory( files[i] );
+                }
+                else
+                {
+                    files[i].delete();
+                }
+            }
+        }
+        return ( path.delete() );
     }
 
 

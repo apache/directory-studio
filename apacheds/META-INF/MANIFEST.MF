@@ -8,6 +8,7 @@ Bundle-Vendor: Apache Software Foundation
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console,
+ org.eclipse.ui.ide,
  org.eclipse.jface.text,
  org.eclipse.jdt.launching,
  org.eclipse.debug.core,

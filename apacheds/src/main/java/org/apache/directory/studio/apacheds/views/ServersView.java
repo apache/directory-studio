@@ -24,6 +24,7 @@ import org.apache.directory.studio.apacheds.actions.DeleteAction;
 import org.apache.directory.studio.apacheds.actions.NewServerInstanceAction;
 import org.apache.directory.studio.apacheds.actions.OpenAction;
 import org.apache.directory.studio.apacheds.actions.PropertiesAction;
+import org.apache.directory.studio.apacheds.actions.RenameAction;
 import org.apache.directory.studio.apacheds.actions.ServerInstanceRunAction;
 import org.apache.directory.studio.apacheds.actions.ServerInstanceStopAction;
 import org.apache.directory.studio.apacheds.model.ServerInstance;
@@ -67,11 +68,14 @@ public class ServersView extends ViewPart
     /** The ID of the view */
     public static final String ID = "org.apache.directory.studio.apacheds.serversView";
 
+    /** The tree*/
+    private Tree tree;
+
     /** The table viewer */
     private ServersTableViewer tableViewer;
 
     private static final String TAG_COLUMN_WIDTH = "columnWidth";
-    protected int[] cols;
+    protected int[] columnWidths;
 
     // Actions
     private NewServerInstanceAction newServerInstance;
@@ -80,6 +84,7 @@ public class ServersView extends ViewPart
     private PropertiesAction properties;
     private DeleteAction delete;
     private OpenAction open;
+    private RenameAction rename;
 
     // Listeners
     private ServersHandlerListener serversHandlerListener = new ServersHandlerListener()
@@ -111,8 +116,6 @@ public class ServersView extends ViewPart
         }
     };
 
-    private Tree tree;
-
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
@@ -128,14 +131,14 @@ public class ServersView extends ViewPart
         // Adding columns
         TreeColumn serverColumn = new TreeColumn( tree, SWT.SINGLE );
         serverColumn.setText( "Server" );
-        serverColumn.setWidth( cols[0] );
+        serverColumn.setWidth( columnWidths[0] );
         serverColumn.addSelectionListener( getHeaderListener( 0 ) );
         tree.setSortColumn( serverColumn );
         tree.setSortDirection( SWT.UP );
 
         TreeColumn stateColumn = new TreeColumn( tree, SWT.SINGLE );
         stateColumn.setText( "State" );
-        stateColumn.setWidth( cols[1] );
+        stateColumn.setWidth( columnWidths[1] );
         stateColumn.addSelectionListener( getHeaderListener( 1 ) );
 
         // Creating the viewer
@@ -180,7 +183,7 @@ public class ServersView extends ViewPart
     public void init( IViewSite site, IMemento memento ) throws PartInitException
     {
         super.init( site, memento );
-        cols = new int[]
+        columnWidths = new int[]
             { 200, 60 };
         for ( int i = 0; i < 2; i++ )
         {
@@ -189,7 +192,7 @@ public class ServersView extends ViewPart
                 Integer in = memento.getInteger( TAG_COLUMN_WIDTH + i );
                 if ( in != null && in.intValue() > 5 )
                 {
-                    cols[i] = in.intValue();
+                    columnWidths[i] = in.intValue();
                 }
             }
         }
@@ -246,6 +249,9 @@ public class ServersView extends ViewPart
 
         delete = new DeleteAction( this );
         delete.setEnabled( false );
+
+        rename = new RenameAction( this );
+        rename.setEnabled( false );
     }
 
 
@@ -279,6 +285,7 @@ public class ServersView extends ViewPart
                 manager.add( open );
                 manager.add( new Separator() );
                 manager.add( delete );
+                manager.add( rename );
                 manager.add( new Separator() );
                 manager.add( serverInstanceRun );
                 manager.add( serverInstanceStop );
@@ -361,6 +368,7 @@ public class ServersView extends ViewPart
             open.setEnabled( true );
             delete.setEnabled( true );
             properties.setEnabled( true );
+            rename.setEnabled( true );
         }
         else
         {
@@ -369,6 +377,7 @@ public class ServersView extends ViewPart
             open.setEnabled( false );
             delete.setEnabled( false );
             properties.setEnabled( false );
+            rename.setEnabled( false );
         }
     }
 

@@ -52,10 +52,7 @@ public class ServersHandler
 
     /** The list of server instances */
     private List<ServerInstance> serverInstancesList;
-
-    /** The map of server instances identified by name */
-    private Map<String, ServerInstance> serverInstancesNameMap;
-
+    
     /** The map of server instances identified by ID */
     private Map<String, ServerInstance> serverInstancesIdMap;
 
@@ -70,7 +67,6 @@ public class ServersHandler
     {
         // Initializing lists and maps
         serverInstancesList = new ArrayList<ServerInstance>();
-        serverInstancesNameMap = new HashMap<String, ServerInstance>();
         serverInstancesIdMap = new HashMap<String, ServerInstance>();
         listeners = new ArrayList<ServersHandlerListener>();
     }
@@ -123,7 +119,6 @@ public class ServersHandler
             // Adding the server instance
             serverInstancesList.add( serverInstance );
             serverInstancesIdMap.put( serverInstance.getId(), serverInstance );
-            serverInstancesNameMap.put( serverInstance.getName(), serverInstance );
 
             // Notifying listeners
             if ( notifyListeners )
@@ -165,9 +160,8 @@ public class ServersHandler
         if ( serverInstancesList.contains( serverInstance ) )
         {
             // Removing the server instance
-            serverInstancesNameMap.remove( serverInstance.getName() );
-            serverInstancesIdMap.remove( serverInstance.getId() );
             serverInstancesList.remove( serverInstance );
+            serverInstancesIdMap.remove( serverInstance.getId() );
 
             // Notifying listeners
             if ( notifyListeners )
@@ -305,7 +299,15 @@ public class ServersHandler
      */
     public boolean isNameAvailable( String name )
     {
-        return !serverInstancesNameMap.containsKey( name );
+        for ( ServerInstance server : serverInstancesList )
+        {
+            if ( server.getName().equalsIgnoreCase( name ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
