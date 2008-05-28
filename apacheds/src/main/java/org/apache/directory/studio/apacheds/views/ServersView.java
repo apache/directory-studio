@@ -41,6 +41,9 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
@@ -107,6 +110,20 @@ public class ServersView extends ViewPart
             tableViewer.refresh();
         }
     };
+    
+    private SelectionListener getHeaderListener(final int col) {
+        return new SelectionAdapter() {
+            /**
+             * Handles the case of user selecting the header area.
+             */
+            public void widgetSelected(SelectionEvent e) {
+                if (tableViewer == null)
+                    return;
+                TreeColumn column = (TreeColumn) e.widget;
+                tableViewer.resortTable(column, col);
+            }
+        };
+    }
 
     private Tree tree;
 
@@ -126,10 +143,12 @@ public class ServersView extends ViewPart
         TreeColumn serverColumn = new TreeColumn( tree, SWT.SINGLE );
         serverColumn.setText( "Server" );
         serverColumn.setWidth( cols[0] );
+        serverColumn.addSelectionListener( getHeaderListener( 0 ) );
 
         TreeColumn stateColumn = new TreeColumn( tree, SWT.SINGLE );
         stateColumn.setText( "State" );
         stateColumn.setWidth( cols[1] );
+        stateColumn.addSelectionListener( getHeaderListener( 1 ) );
 
         // Creating the viewer
         tableViewer = new ServerTableViewer( this, tree );

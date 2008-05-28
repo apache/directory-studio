@@ -23,11 +23,8 @@ package org.apache.directory.studio.apacheds;
 import java.net.URL;
 
 import org.apache.directory.studio.apacheds.model.ServersHandler;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
