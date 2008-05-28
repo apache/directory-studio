@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.apache.directory.studio.apacheds.experimentations.perspectives.Perspective"
+            class="org.apache.directory.studio.apacheds.perspectives.Perspective"
             id="org.apache.directory.studio.apacheds.experimentations.perspective"
             name="ApacheDS Experimentations">
       </perspective>
@@ -12,12 +12,12 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="org.apache.directory.studio.apacheds.experimentations.prefs.MainPage"
+            class="org.apache.directory.studio.apacheds.prefs.MainPage"
             id="org.apache.directory.studio.apacheds.experimentations.MainPage"
             name="Apache Directory Server">
       </page>
       <page
-            class="org.apache.directory.studio.apacheds.experimentations.prefs.ColorsAndFontsPage"
+            class="org.apache.directory.studio.apacheds.prefs.ColorsAndFontsPage"
             id="org.apache.directory.studio.apacheds.experimentations.ColorsAndFontsPage"
             name="Colors and Fonts"
             category="org.apache.directory.studio.apacheds.experimentations.MainPage">
@@ -26,7 +26,7 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="org.apache.directory.studio.apacheds.experimentations.PreferenceInitializer">
+            class="org.apache.directory.studio.apacheds.PreferenceInitializer">
       </initializer>
    </extension>
    <extension
@@ -37,7 +37,7 @@
       </category>
       <view
             category="org.apache.directory.studio.apacheds.experimentations.category"
-            class="org.apache.directory.studio.apacheds.experimentations.views.ServersView"
+            class="org.apache.directory.studio.apacheds.views.ServersView"
             icon="resources/icons/serverView.png"
             id="org.apache.directory.studio.apacheds.experimentations.serversView"
             name="Servers">
@@ -46,7 +46,7 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="org.apache.directory.studio.apacheds.experimentations.properties.ServerInstancePropertyPage"
+            class="org.apache.directory.studio.apacheds.properties.ServerInstancePropertyPage"
             id="org.apache.directory.studio.apacheds.experimentations.properties.serverInstanceProperties"
             name="Info">
       </page>
