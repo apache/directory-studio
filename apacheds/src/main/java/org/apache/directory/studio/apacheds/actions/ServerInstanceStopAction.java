@@ -53,7 +53,7 @@ public class ServerInstanceStopAction extends Action implements IWorkbenchWindow
      */
     public ServerInstanceStopAction( ServersView view )
     {
-        super( "&Stop" );
+        super( "S&top" );
         setId( ApacheDsPluginConstants.CMD_STOP );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_STOP );
         setToolTipText( "Stop" );
