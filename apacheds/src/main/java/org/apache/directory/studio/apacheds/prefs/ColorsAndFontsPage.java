@@ -41,7 +41,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 
 /**
- * This class implements the Preference main page for the Apache Directory Server plugin.
+ * This class implements the Preference main page for the Apache DS plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -73,7 +73,7 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
     {
         super( "Colors and Fonts" );
         setPreferenceStore( ApacheDsPlugin.getDefault().getPreferenceStore() );
-        setDescription( "Colors and Fonts settings for the Apache Directory Server Plugin" );
+        setDescription( "Colors and Fonts settings for the Apache DS Plugin" );
     }
 
 

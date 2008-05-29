@@ -6,7 +6,7 @@
       <page
             class="org.apache.directory.studio.apacheds.prefs.MainPage"
             id="org.apache.directory.studio.apacheds.prefs.MainPage"
-            name="Apache Directory Server">
+            name="Apache DS">
       </page>
       <page
             class="org.apache.directory.studio.apacheds.prefs.ColorsAndFontsPage"
