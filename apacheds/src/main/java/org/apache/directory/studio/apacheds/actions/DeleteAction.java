@@ -25,7 +25,7 @@ import java.io.File;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.dialogs.DeleteServerDialog;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.jface.action.Action;
@@ -39,7 +39,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the delete action for a server instance.
+ * This class implements the delete action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -77,17 +77,17 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
         StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
 
         // Here's the real object
-        ServerInstance server = ( ServerInstance ) selection.getFirstElement();
+        Server server = ( Server ) selection.getFirstElement();
 
         // Asking for confirmation
         DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), server );
         if ( dsd.open() == DeleteServerDialog.OK )
         {
             // Removing the server
-            ServersHandler.getDefault().removeServerInstance( server );
+            ServersHandler.getDefault().removeServer( server );
 
             // Deleting the associated directory on disk
-            deleteDirectory( new File( ApacheDsPluginUtils.getApacheDsInstancesFolder().append( server.getId() )
+            deleteDirectory( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
                 .toOSString() ) );
         }
     }

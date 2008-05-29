@@ -22,7 +22,7 @@ package org.apache.directory.studio.apacheds.model;
 
 /**
  * This exception can be raised when an error occurs when loading or saving 
- * the server instances to the store.
+ * the servers to the store.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

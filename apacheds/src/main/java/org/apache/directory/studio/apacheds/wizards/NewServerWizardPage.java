@@ -35,12 +35,12 @@ import org.eclipse.swt.widgets.Text;
 
 
 /**
- * This class implements the wizard page for the new server instance wizard.
+ * This class implements the wizard page for the new server wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewServerInstanceWizardPage extends WizardPage
+public class NewServerWizardPage extends WizardPage
 {
     /** The servers handler */
     private ServersHandler serversHandler;
@@ -50,11 +50,11 @@ public class NewServerInstanceWizardPage extends WizardPage
 
 
     /**
-     * Creates a new instance of NewServerInstanceWizardPage.
+     * Creates a new instance of NewServerWizardPage.
      */
-    public NewServerInstanceWizardPage()
+    public NewServerWizardPage()
     {
-        super( NewServerInstanceWizardPage.class.getCanonicalName() );
+        super( NewServerWizardPage.class.getCanonicalName() );
         setTitle( "Create a Server" );
         setDescription( "Please specify a name to create a new server." );
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor(
@@ -127,12 +127,12 @@ public class NewServerInstanceWizardPage extends WizardPage
 
 
     /**
-     * Gets the name of the server instance.
+     * Gets the name of the server.
      *
      * @return
-     *      the name of the server instance
+     *      the name of the server
      */
-    public String getServerInstanceName()
+    public String getServerName()
     {
         return nameText.getText();
     }

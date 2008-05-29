@@ -23,7 +23,7 @@ package org.apache.directory.studio.apacheds.actions;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
@@ -42,7 +42,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the open action for a server instance.
+ * This class implements the open action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -78,13 +78,13 @@ public class OpenAction extends Action implements IWorkbenchWindowActionDelegate
         StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
 
         // Here's the real object
-        ServerInstance serverInstance = ( ServerInstance ) selection.getFirstElement();
-        if ( serverInstance != null )
+        Server server = ( Server ) selection.getFirstElement();
+        if ( server != null )
         {
             // Opening the editor
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            PathEditorInput input = new PathEditorInput( ApacheDsPluginUtils.getApacheDsInstancesFolder().append(
-                serverInstance.getId() ).append( "conf" ).append( "server.xml" ) );
+            PathEditorInput input = new PathEditorInput( ApacheDsPluginUtils.getApacheDsServersFolder().append(
+                server.getId() ).append( "conf" ).append( "server.xml" ) );
             try
             {
                 page.openEditor( input, ServerConfigurationEditor.ID );

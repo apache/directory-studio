@@ -29,13 +29,13 @@ package org.apache.directory.studio.apacheds.model;
 public class ServerEvent
 {
     /** The server */
-    private ServerInstance server;
+    private Server server;
 
     /** The kind of event */
     private ServerEventEnum kind;
 
 
-    public ServerEvent( ServerInstance server, ServerEventEnum kind )
+    public ServerEvent( Server server, ServerEventEnum kind )
     {
         super();
         this.server = server;
@@ -43,13 +43,13 @@ public class ServerEvent
     }
 
 
-    public ServerInstance getServer()
+    public Server getServer()
     {
         return server;
     }
 
 
-    public void setServer( ServerInstance server )
+    public void setServer( Server server )
     {
         this.server = server;
     }

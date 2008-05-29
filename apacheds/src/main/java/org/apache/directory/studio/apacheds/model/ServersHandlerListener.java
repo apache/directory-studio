@@ -29,28 +29,28 @@ package org.apache.directory.studio.apacheds.model;
 public interface ServersHandlerListener
 {
     /**
-     * This method is called when a server instance is added.
+     * This method is called when a server is added.
      *
-     * @param serverInstance
-     *      the added server instance
+     * @param server
+     *      the added server
      */
-    void serverInstanceAdded( ServerInstance serverInstance );
+    void serverAdded( Server server );
 
 
     /**
-     * This method is called when a server instance is removed.
+     * This method is called when a server is removed.
      *
-     * @param serverInstance
-     *      the removed server instance
+     * @param server
+     *      the removed server
      */
-    void serverInstanceRemoved( ServerInstance serverInstance );
+    void serverRemoved( Server server );
 
 
     /**
-     * This method is called when a server instance is updated.
+     * This method is called when a server is updated.
      *
-     * @param serverInstance
-     *      the updated server instance
+     * @param server
+     *      the updated server
      */
-    void serverInstanceUpdated( ServerInstance serverInstance );
+    void serverUpdated( Server server );
 }

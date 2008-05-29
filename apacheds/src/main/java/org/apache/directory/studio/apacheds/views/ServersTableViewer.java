@@ -35,7 +35,7 @@ import java.util.List;
 
 import org.apache.directory.studio.apacheds.model.ServerEvent;
 import org.apache.directory.studio.apacheds.model.ServerEventEnum;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerListener;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
@@ -75,7 +75,7 @@ public class ServersTableViewer extends TreeViewer
     private boolean stopAnimation;
 
     /** The list of server needing animation */
-    private List<ServerInstance> serversNeedingAnimation = new ArrayList<ServerInstance>();
+    private List<Server> serversNeedingAnimation = new ArrayList<Server>();
 
 
     public ServersTableViewer( Tree tree )
@@ -102,23 +102,23 @@ public class ServersTableViewer extends TreeViewer
         // The server handler listener
         serversHandlerListener = new ServersHandlerListener()
         {
-            public void serverInstanceAdded( ServerInstance serverInstance )
+            public void serverAdded( Server server )
             {
-                addServer( serverInstance );
-                serverInstance.addListener( serverListener );
+                addServer( server );
+                server.addListener( serverListener );
             }
 
 
-            public void serverInstanceRemoved( ServerInstance serverInstance )
+            public void serverRemoved( Server server )
             {
-                refreshServer( serverInstance );
+                refreshServer( server );
             }
 
 
-            public void serverInstanceUpdated( ServerInstance serverInstance )
+            public void serverUpdated( Server server )
             {
-                removeServer( serverInstance );
-                serverInstance.removeListener( serverListener );
+                removeServer( server );
+                server.removeListener( serverListener );
 
             }
         };
@@ -139,7 +139,7 @@ public class ServersTableViewer extends TreeViewer
 
                 // Getting the kind of event and the associated server 
                 ServerEventEnum kind = event.getKind();
-                ServerInstance server = event.getServer();
+                Server server = event.getServer();
                 switch ( kind )
                 {
                     // The server state has changed
@@ -209,7 +209,7 @@ public class ServersTableViewer extends TreeViewer
         };
 
         // Adding the listener to the servers
-        for ( ServerInstance server : ServersHandler.getDefault().getServerInstancesList() )
+        for ( Server server : ServersHandler.getDefault().getServersList() )
         {
             server.addListener( serverListener );
         }
@@ -222,7 +222,7 @@ public class ServersTableViewer extends TreeViewer
      * @param server
      *      the server
      */
-    private void addServer( final ServerInstance server )
+    private void addServer( final Server server )
     {
         Display.getDefault().asyncExec( new Runnable()
         {
@@ -240,7 +240,7 @@ public class ServersTableViewer extends TreeViewer
      * @param server
      *      the server
      */
-    private void refreshServer( final ServerInstance server )
+    private void refreshServer( final Server server )
     {
         Display.getDefault().asyncExec( new Runnable()
         {
@@ -267,7 +267,7 @@ public class ServersTableViewer extends TreeViewer
      * @param server
      *      the server
      */
-    private void removeServer( final ServerInstance server )
+    private void removeServer( final Server server )
     {
         Display.getDefault().asyncExec( new Runnable()
         {
@@ -302,7 +302,7 @@ public class ServersTableViewer extends TreeViewer
                         labelProvider.animate();
 
                         // Looping on the currently starting servers
-                        for ( ServerInstance server : serversNeedingAnimation.toArray( new ServerInstance[0] ) )
+                        for ( Server server : serversNeedingAnimation.toArray( new Server[0] ) )
                         {
                             if ( server != null && getTree() != null && !getTree().isDisposed() )
                             {
@@ -347,7 +347,7 @@ public class ServersTableViewer extends TreeViewer
      * @param server
      *      the server
      */
-    private void updateAnimation( ServerInstance server )
+    private void updateAnimation( Server server )
     {
         try
         {

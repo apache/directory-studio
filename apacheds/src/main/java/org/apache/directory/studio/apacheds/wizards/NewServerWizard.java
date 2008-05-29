@@ -21,7 +21,7 @@ package org.apache.directory.studio.apacheds.wizards;
 
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -30,15 +30,15 @@ import org.eclipse.ui.IWorkbench;
 
 
 /**
- * This class implements the new server instance wizard.
+ * This class implements the new server wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewServerInstanceWizard extends Wizard implements INewWizard
+public class NewServerWizard extends Wizard implements INewWizard
 {
     /** The wizard page */
-    private NewServerInstanceWizardPage page;
+    private NewServerWizardPage page;
 
 
     /* (non-Javadoc)
@@ -46,7 +46,7 @@ public class NewServerInstanceWizard extends Wizard implements INewWizard
      */
     public void addPages()
     {
-        page = new NewServerInstanceWizardPage();
+        page = new NewServerWizardPage();
         addPage( page );
     }
 
@@ -56,14 +56,14 @@ public class NewServerInstanceWizard extends Wizard implements INewWizard
      */
     public boolean performFinish()
     {
-        // Creating the new server instance
-        ServerInstance serverInstance = new ServerInstance( page.getServerInstanceName() );
+        // Creating the new server
+        Server server = new Server( page.getServerName() );
 
-        // Adding the new server instance to the servers handler
-        ServersHandler.getDefault().addServerInstance( serverInstance );
+        // Adding the new server to the servers handler
+        ServersHandler.getDefault().addServer( server );
 
-        // Creating the complete folder structure for the new server instance
-        ApacheDsPluginUtils.createNewInstanceFolder( serverInstance.getId() );
+        // Creating the complete folder structure for the new server
+        ApacheDsPluginUtils.createNewServerFolder( server.getId() );
 
         return true;
     }

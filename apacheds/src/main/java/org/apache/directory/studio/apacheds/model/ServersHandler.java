@@ -40,7 +40,7 @@ import org.eclipse.core.runtime.IPath;
  * This class implements the servers handler.
  * <p>
  * 
- * It is used to store all the server instances used in the plugin.
+ * It is used to store all the servers used in the plugin.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -50,11 +50,11 @@ public class ServersHandler
     /** The default instance */
     private static ServersHandler instance;
 
-    /** The list of server instances */
-    private List<ServerInstance> serverInstancesList;
+    /** The list of servers */
+    private List<Server> serversList;
     
-    /** The map of server instances identified by ID */
-    private Map<String, ServerInstance> serverInstancesIdMap;
+    /** The map of servers identified by ID */
+    private Map<String, Server> serversIdMap;
 
     /** The listeners */
     private List<ServersHandlerListener> listeners;
@@ -66,8 +66,8 @@ public class ServersHandler
     private ServersHandler()
     {
         // Initializing lists and maps
-        serverInstancesList = new ArrayList<ServerInstance>();
-        serverInstancesIdMap = new HashMap<String, ServerInstance>();
+        serversList = new ArrayList<Server>();
+        serversIdMap = new HashMap<String, Server>();
         listeners = new ArrayList<ServersHandlerListener>();
     }
 
@@ -90,42 +90,42 @@ public class ServersHandler
 
 
     /**
-     * Adds a server instance.
+     * Adds a server.
      *
-     * @param serverInstance
-     *      the server instance to be added
+     * @param server
+     *      the server to be added
      */
-    public void addServerInstance( ServerInstance serverInstance )
+    public void addServer( Server server )
     {
-        addServerInstance( serverInstance, true );
+        addServer( server, true );
 
-        saveServerInstancesToStore();
+        saveServersToStore();
     }
 
 
     /**
-     * Adds a server instance.
+     * Adds a server.
      *
-     * @param serverInstance
-     *      the server instance to be added
+     * @param server
+     *      the server to be added
      * @param notifyListeners
      *      <code>true</code> if the listeners need to be notified, 
      *      <code>false</code> if not.
      */
-    private void addServerInstance( ServerInstance serverInstance, boolean notifyListeners )
+    private void addServer( Server server, boolean notifyListeners )
     {
-        if ( !serverInstancesList.contains( serverInstance ) )
+        if ( !serversList.contains( server ) )
         {
-            // Adding the server instance
-            serverInstancesList.add( serverInstance );
-            serverInstancesIdMap.put( serverInstance.getId(), serverInstance );
+            // Adding the server
+            serversList.add( server );
+            serversIdMap.put( server.getId(), server );
 
             // Notifying listeners
             if ( notifyListeners )
             {
                 for ( ServersHandlerListener listener : listeners.toArray( new ServersHandlerListener[0] ) )
                 {
-                    listener.serverInstanceAdded( serverInstance );
+                    listener.serverAdded( server );
                 }
             }
         }
@@ -133,42 +133,42 @@ public class ServersHandler
 
 
     /**
-     * Removes a server instance
+     * Removes a server.
      *
-     * @param serverInstance
-     *      the server instance to be removed
+     * @param server
+     *      the server to be removed
      */
-    public void removeServerInstance( ServerInstance serverInstance )
+    public void removeServer( Server server )
     {
-        removeServerInstance( serverInstance, true );
+        removeServer( server, true );
 
-        saveServerInstancesToStore();
+        saveServersToStore();
     }
 
 
     /**
-     * Removes a server instance
+     * Removes a server.
      *
-     * @param serverInstance
-     *      the server instance to be removed
+     * @param server
+     *      the server to be removed
      * @param notifyListeners
      *      <code>true</code> if the listeners need to be notified, 
      *      <code>false</code> if not.
      */
-    private void removeServerInstance( ServerInstance serverInstance, boolean notifyListeners )
+    private void removeServer( Server server, boolean notifyListeners )
     {
-        if ( serverInstancesList.contains( serverInstance ) )
+        if ( serversList.contains( server ) )
         {
-            // Removing the server instance
-            serverInstancesList.remove( serverInstance );
-            serverInstancesIdMap.remove( serverInstance.getId() );
+            // Removing the server
+            serversList.remove( server );
+            serversIdMap.remove( server.getId() );
 
             // Notifying listeners
             if ( notifyListeners )
             {
                 for ( ServersHandlerListener listener : listeners.toArray( new ServersHandlerListener[0] ) )
                 {
-                    listener.serverInstanceRemoved( serverInstance );
+                    listener.serverRemoved( server );
                 }
             }
         }
@@ -176,17 +176,17 @@ public class ServersHandler
 
 
     /**
-     * Indicates if the server handler contains the given server instance.
+     * Indicates if the server handler contains the given server.
      *
-     * @param serverInstance
-     *      the server instance
+     * @param server
+     *      the server
      * @return
-     *      <code>true</code> if the server hander contains the given server
-     *      instance, <code>false</code> if not
+     *      <code>true</code> if the server hander contains the given server, 
+     *      <code>false</code> if not
      */
-    public boolean containsServerInstance( ServerInstance serverInstance )
+    public boolean containsServer( Server server )
     {
-        return serverInstancesList.contains( serverInstance );
+        return serversList.contains( server );
     }
 
 
@@ -221,21 +221,21 @@ public class ServersHandler
 
 
     /**
-     * Loads the server instances from the file store.
+     * Loads the server from the file store.
      */
-    public void loadServerInstancesFromStore()
+    public void loadServersFromStore()
     {
-        File store = getServerInstancesStorePath().toFile();
+        File store = getServersStorePath().toFile();
 
         if ( store.exists() )
         {
             try
             {
                 InputStream inputStream = new FileInputStream( store );
-                List<ServerInstance> serverInstances = ServersHandlerIO.read( inputStream );
-                for ( ServerInstance serverInstance : serverInstances )
+                List<Server> servers = ServersHandlerIO.read( inputStream );
+                for ( Server server : servers )
                 {
-                    addServerInstance( serverInstance, false );
+                    addServer( server, false );
                 }
             }
             catch ( FileNotFoundException e )
@@ -253,14 +253,14 @@ public class ServersHandler
 
 
     /**
-     * Saves the server instances to the file store.
+     * Saves the server to the file store.
      */
-    public void saveServerInstancesToStore()
+    public void saveServersToStore()
     {
         try
         {
-            OutputStream outputStream = new FileOutputStream( getServerInstancesStorePath().toFile() );
-            ServersHandlerIO.write( serverInstancesList, outputStream );
+            OutputStream outputStream = new FileOutputStream( getServersStorePath().toFile() );
+            ServersHandlerIO.write( serversList, outputStream );
         }
         catch ( FileNotFoundException e )
         {
@@ -276,20 +276,20 @@ public class ServersHandler
 
 
     /**
-     * Gets the path to the server instances file.
+     * Gets the path to the server file.
      *
      * @return
-     *      the path to the server instances file.
+     *      the path to the server file.
      */
-    private IPath getServerInstancesStorePath()
+    private IPath getServersStorePath()
     {
-        return ApacheDsPlugin.getDefault().getStateLocation().append( "serverInstances.xml" );
+        return ApacheDsPlugin.getDefault().getStateLocation().append( "servers.xml" );
     }
 
 
     /**
      * Indicates if the given is available (i.e. not already taken by another 
-     * server instance).
+     * server).
      *
      * @param name
      *      the name
@@ -299,7 +299,7 @@ public class ServersHandler
      */
     public boolean isNameAvailable( String name )
     {
-        for ( ServerInstance server : serverInstancesList )
+        for ( Server server : serversList )
         {
             if ( server.getName().equalsIgnoreCase( name ) )
             {
@@ -312,25 +312,25 @@ public class ServersHandler
 
 
     /**
-     * Gets the server instances list.
+     * Gets the servers list.
      *
      * @return
-     *      the server instances list.
+     *      the servers list.
      */
-    public List<ServerInstance> getServerInstancesList()
+    public List<Server> getServersList()
     {
-        return serverInstancesList;
+        return serversList;
     }
 
 
     /**
-     * Gets the server instance associated with the given id.
+     * Gets the server associated with the given id.
      *
      * @return
-     *      the server instance associated witht the given id.
+     *      the server associated witht the given id.
      */
-    public ServerInstance getServerInstanceById( String id )
+    public Server getServerById( String id )
     {
-        return serverInstancesIdMap.get( id );
+        return serversIdMap.get( id );
     }
 }

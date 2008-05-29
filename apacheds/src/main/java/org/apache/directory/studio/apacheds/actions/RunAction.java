@@ -32,8 +32,8 @@ import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
-import org.apache.directory.studio.apacheds.jobs.LaunchServerInstanceJob;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.jface.action.Action;
@@ -47,7 +47,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 
 /**
- * This class implements the run action for a server instance.
+ * This class implements the run action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -84,8 +84,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
         if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
         {
-            // Getting the server instance
-            final ServerInstance serverInstance = ( ServerInstance ) selection.getFirstElement();
+            // Getting the server
+            final Server server = ( Server ) selection.getFirstElement();
 
             // Parsing the 'server.xml' file
             ServerXmlIOV152 serverXmlIOV152 = new ServerXmlIOV152();
@@ -93,7 +93,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
             try
             {
                 serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream( new File(
-                    ApacheDsPluginUtils.getApacheDsInstancesFolder().append( serverInstance.getId() ).append( "conf" )
+                    ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" )
                         .append( "server.xml" ).toOSString() ) ) );
             }
             catch ( FileNotFoundException e )
@@ -152,8 +152,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
             ApacheDsPluginUtils.verifyLibrariesFolder();
 
             // Creating, setting and launching the launch job
-            LaunchServerInstanceJob job = new LaunchServerInstanceJob( serverInstance, serverConfiguration );
-            serverInstance.setLaunchJob( job );
+            LaunchServerJob job = new LaunchServerJob( server, serverConfiguration );
+            server.setLaunchJob( job );
             job.schedule();
         }
     }

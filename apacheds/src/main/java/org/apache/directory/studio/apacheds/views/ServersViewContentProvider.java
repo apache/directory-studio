@@ -40,7 +40,7 @@ public class ServersViewContentProvider implements IStructuredContentProvider, I
     public Object[] getElements( Object inputElement )
     {
         ServersHandler serversHandler = ServersHandler.getDefault();
-        return serversHandler.getServerInstancesList().toArray();
+        return serversHandler.getServersList().toArray();
     }
 
 

@@ -23,7 +23,7 @@ package org.apache.directory.studio.apacheds;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -33,7 +33,7 @@ import org.eclipse.ui.console.IConsole;
  * This class implements the consoles handler.
  * <p>
  * 
- * It is used to store all the consoles associated to server instances.
+ * It is used to store all the consoles associated to servers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -43,7 +43,7 @@ public class ConsolesHandler
     /** The default instance */
     private static ConsolesHandler instance;
 
-    /** The map of consoles identified by server instance ID */
+    /** The map of consoles identified by server ID */
     private Map<String, LogMessageConsole> consolesMap;
 
 
@@ -75,26 +75,26 @@ public class ConsolesHandler
 
 
     /**
-     * Gets the log message console associated with the if of the server instance.
+     * Gets the log message console associated with the if of the server.
      *
-     * @param serverInstanceId
-     *      the id of the server instance
+     * @param serverId
+     *      the id of the server
      * @return
      *      the associated log message console.
      */
-    public LogMessageConsole getLogMessageConsole( String serverInstanceId )
+    public LogMessageConsole getLogMessageConsole( String serverId )
     {
-        if ( consolesMap.containsKey( serverInstanceId ) )
+        if ( consolesMap.containsKey( serverId ) )
         {
-            return consolesMap.get( serverInstanceId );
+            return consolesMap.get( serverId );
         }
         else
         {
-            ServerInstance serverInstance = ServersHandler.getDefault().getServerInstanceById( serverInstanceId );
+            Server server = ServersHandler.getDefault().getServerById( serverId );
 
-            LogMessageConsole logMessageConsole = new LogMessageConsole( serverInstance.getName() );
+            LogMessageConsole logMessageConsole = new LogMessageConsole( server.getName() );
 
-            consolesMap.put( serverInstanceId, logMessageConsole );
+            consolesMap.put( serverId, logMessageConsole );
 
             ConsolePlugin.getDefault().getConsoleManager().addConsoles( new IConsole[]
                 { logMessageConsole } );

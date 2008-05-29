@@ -38,12 +38,12 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            class="org.apache.directory.studio.apacheds.properties.ServerInstancePropertyPage"
-            id="org.apache.directory.studio.apacheds.properties.serverInstanceProperties"
+            class="org.apache.directory.studio.apacheds.properties.ServerPropertyPage"
+            id="org.apache.directory.studio.apacheds.properties.serverProperties"
             name="Info">
          <enabledWhen>
             <instanceof
-                  value="org.apache.directory.studio.apacheds.model.ServerInstance">
+                  value="org.apache.directory.studio.apacheds.model.Server">
             </instanceof>
          </enabledWhen>
       </page>
@@ -56,7 +56,7 @@
       </category>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.NewServerInstanceAction"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.NewServerAction"
             description="Creates a new server"
             id="org.apache.directory.studio.apacheds.commands.newServer"
             name="New Server">

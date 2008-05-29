@@ -22,13 +22,13 @@ package org.apache.directory.studio.apacheds.views;
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.actions.DeleteAction;
-import org.apache.directory.studio.apacheds.actions.NewServerInstanceAction;
+import org.apache.directory.studio.apacheds.actions.NewServerAction;
 import org.apache.directory.studio.apacheds.actions.OpenAction;
 import org.apache.directory.studio.apacheds.actions.PropertiesAction;
 import org.apache.directory.studio.apacheds.actions.RenameAction;
 import org.apache.directory.studio.apacheds.actions.RunAction;
 import org.apache.directory.studio.apacheds.actions.StopAction;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.apacheds.model.ServersHandlerListener;
 import org.eclipse.jface.action.IMenuListener;
@@ -92,7 +92,7 @@ public class ServersView extends ViewPart
     protected int[] columnWidths;
 
     // Actions
-    private NewServerInstanceAction newServer;
+    private NewServerAction newServer;
     private RunAction run;
     private StopAction stop;
     private PropertiesAction properties;
@@ -104,27 +104,27 @@ public class ServersView extends ViewPart
     private ServersHandlerListener serversHandlerListener = new ServersHandlerListener()
     {
         /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverInstanceAdded(org.apache.directory.studio.apacheds.model.ServerInstance)
+         * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverAdded(org.apache.directory.studio.apacheds.model.Server)
          */
-        public void serverInstanceAdded( ServerInstance serverInstance )
+        public void serverAdded( Server server )
         {
             tableViewer.refresh();
         }
 
 
         /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverInstanceRemoved(org.apache.directory.studio.apacheds.model.ServerInstance)
+         * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverRemoved(org.apache.directory.studio.apacheds.model.Server)
          */
-        public void serverInstanceRemoved( ServerInstance serverInstance )
+        public void serverRemoved( Server server )
         {
             tableViewer.refresh();
         }
 
 
         /* (non-Javadoc)
-         * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverInstanceUpdated(org.apache.directory.studio.apacheds.model.ServerInstance)
+         * @see org.apache.directory.studio.apacheds.model.ServersHandlerListener#serverUpdated(org.apache.directory.studio.apacheds.model.Server)
          */
-        public void serverInstanceUpdated( ServerInstance serverInstance )
+        public void serverUpdated( Server server )
         {
             tableViewer.refresh();
         }
@@ -249,7 +249,7 @@ public class ServersView extends ViewPart
      */
     private void initActions()
     {
-        newServer = new NewServerInstanceAction();
+        newServer = new NewServerAction();
 
         run = new RunAction( this );
         run.setEnabled( false );
@@ -450,9 +450,9 @@ public class ServersView extends ViewPart
 
         if ( !selection.isEmpty() )
         {
-            ServerInstance serverInstance = ( ServerInstance ) selection.getFirstElement();
+            Server server = ( Server ) selection.getFirstElement();
 
-            switch ( serverInstance.getState() )
+            switch ( server.getState() )
             {
                 case STARTED:
                     run.setEnabled( false );

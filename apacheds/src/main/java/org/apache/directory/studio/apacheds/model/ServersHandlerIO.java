@@ -46,8 +46,8 @@ import org.dom4j.io.XMLWriter;
 public class ServersHandlerIO
 {
     // XML tags and attributes
-    private static final String SERVER_INSTANCES_TAG = "serverInstances";
-    private static final String SERVER_INSTANCE_TAG = "serverInstance";
+    private static final String SERVERS_TAG = "servers";
+    private static final String SERVER_TAG = "server";
     private static final String SERVER_ID_ATTRIBUTE = "id";
     private static final String SERVER_NAME_ATTRIBUTE = "name";
 
@@ -61,9 +61,9 @@ public class ServersHandlerIO
      *      
      * @throws ServersHandlerIOException
      */
-    public static List<ServerInstance> read( InputStream stream ) throws ServersHandlerIOException
+    public static List<Server> read( InputStream stream ) throws ServersHandlerIOException
     {
-        List<ServerInstance> serverInstances = new ArrayList<ServerInstance>();
+        List<Server> servers = new ArrayList<Server>();
 
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -78,73 +78,73 @@ public class ServersHandlerIO
         }
 
         Element rootElement = document.getRootElement();
-        if ( !rootElement.getName().equals( SERVER_INSTANCES_TAG ) )
+        if ( !rootElement.getName().equals( SERVERS_TAG ) )
         {
             throw new ServersHandlerIOException( "The file does not seem to be a valid servers file." );
         }
 
-        for ( Iterator<?> i = rootElement.elementIterator( SERVER_INSTANCE_TAG ); i.hasNext(); )
+        for ( Iterator<?> i = rootElement.elementIterator( SERVER_TAG ); i.hasNext(); )
         {
-            serverInstances.add( readServerInstance( ( Element ) i.next() ) );
+            servers.add( readServer( ( Element ) i.next() ) );
         }
 
-        return serverInstances;
+        return servers;
     }
 
 
     /**
-     * Reads a server instance element.
+     * Reads a server element.
      *
      * @param element
      *      the element
      * @return
-     *      the corresponding {@link ServerInstance}
+     *      the corresponding {@link Server}
      */
-    private static ServerInstance readServerInstance( Element element )
+    private static Server readServer( Element element )
     {
-        ServerInstance serverInstance = new ServerInstance();
+        Server server = new Server();
 
         // ID
         Attribute idAttribute = element.attribute( SERVER_ID_ATTRIBUTE );
         if ( idAttribute != null )
         {
-            serverInstance.setId( idAttribute.getValue() );
+            server.setId( idAttribute.getValue() );
         }
 
         // Name
         Attribute nameAttribute = element.attribute( SERVER_NAME_ATTRIBUTE );
         if ( nameAttribute != null )
         {
-            serverInstance.setName( nameAttribute.getValue() );
+            server.setName( nameAttribute.getValue() );
         }
 
-        return serverInstance;
+        return server;
     }
 
 
     /**
-     * Writes the list of server instances to the given stream.
+     * Writes the list of servers to the given stream.
      *
-     * @param serverInstances
-     *      the server instances
+     * @param servers
+     *      the servers
      * @param outputStream
      *      the output stream
      * @throws IOException
      *      if an error occurs when writing to the stream
      */
-    public static void write( List<ServerInstance> serverInstances, OutputStream outputStream ) throws IOException
+    public static void write( List<Server> servers, OutputStream outputStream ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
 
         // Creating the root element
-        Element root = document.addElement( SERVER_INSTANCES_TAG );
+        Element root = document.addElement( SERVERS_TAG );
 
-        if ( serverInstances != null )
+        if ( servers != null )
         {
-            for ( ServerInstance serverInstance : serverInstances )
+            for ( Server server : servers )
             {
-                addServerInstance( serverInstance, root );
+                addServer( server, root );
             }
         }
 
@@ -158,22 +158,22 @@ public class ServersHandlerIO
 
 
     /**
-     * Adds the XML representation of the server instance to the given parent. 
+     * Adds the XML representation of the server to the given parent. 
      *
-     * @param serverInstance
-     *      the server instance
+     * @param server
+     *      the server
      * @param parent
      *      the parent element
      */
-    private static void addServerInstance( ServerInstance serverInstance, Element parent )
+    private static void addServer( Server server, Element parent )
     {
-        // Server instance element
-        Element serverInstanceElement = parent.addElement( SERVER_INSTANCE_TAG );
+        // Server element
+        Element serverElement = parent.addElement( SERVER_TAG );
 
         // ID
-        serverInstanceElement.addAttribute( SERVER_ID_ATTRIBUTE, serverInstance.getId() );
+        serverElement.addAttribute( SERVER_ID_ATTRIBUTE, server.getId() );
 
         // Name
-        serverInstanceElement.addAttribute( SERVER_NAME_ATTRIBUTE, serverInstance.getName() );
+        serverElement.addAttribute( SERVER_NAME_ATTRIBUTE, server.getName() );
     }
 }

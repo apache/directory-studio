@@ -20,7 +20,7 @@
 package org.apache.directory.studio.apacheds.dialogs;
 
 
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class DeleteServerDialog extends MessageDialog
 {
-    protected ServerInstance server;
+    protected Server server;
 
     protected Button checkDeleteRunning;
     protected Button checkDeleteRunningStop;
@@ -58,7 +58,7 @@ public class DeleteServerDialog extends MessageDialog
      * @param server
      *      the server
      */
-    public DeleteServerDialog( Shell parentShell, ServerInstance server )
+    public DeleteServerDialog( Shell parentShell, Server server )
     {
         super( parentShell, "Delete Server", null, null, QUESTION, new String[]
             { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, OK );

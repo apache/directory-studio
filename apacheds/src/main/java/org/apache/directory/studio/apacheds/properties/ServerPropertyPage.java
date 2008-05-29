@@ -21,7 +21,7 @@ package org.apache.directory.studio.apacheds.properties;
 
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -34,17 +34,20 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 
 /**
- * This class implements the 
+ * This class implements the Info property page for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerInstancePropertyPage extends PropertyPage implements IWorkbenchPropertyPage
+public class ServerPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
+    public static final String ID = "org.apache.directory.studio.apacheds.properties.serverProperties";
+
+
     /**
-     * Creates a new instance of ServerInstancePropertyPage.
+     * Creates a new instance of ServerPropertyPage.
      */
-    public ServerInstancePropertyPage()
+    public ServerPropertyPage()
     {
         super();
         super.noDefaultAndApplyButton();
@@ -79,12 +82,12 @@ public class ServerInstancePropertyPage extends PropertyPage implements IWorkben
         gd.widthHint = 300;
         locationText.setLayoutData( gd );
 
-        // Getting the server instance
-        ServerInstance serverInstance = ( ServerInstance ) getElement();
-        if ( serverInstance != null )
+        // Getting the server
+        Server server = ( Server ) getElement();
+        if ( server != null )
         {
-            nameText.setText( serverInstance.getName() );
-            locationText.setText( ApacheDsPluginUtils.getApacheDsInstancesFolder().append( serverInstance.getId() )
+            nameText.setText( server.getName() );
+            locationText.setText( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
                 .toOSString() );
         }
 

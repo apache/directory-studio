@@ -31,7 +31,7 @@ package org.apache.directory.studio.apacheds.actions;
 
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.jface.action.Action;
@@ -72,13 +72,13 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
     protected Text textEditor;
     private TextActionHandler textActionHandler;
     // The server being edited if this is being done inline
-    protected ServerInstance editedServer;
+    protected Server editedServer;
 
     protected boolean saving = false;
 
 
     /**
-     * Creates a new instance of OpenAction.
+     * Creates a new instance of RenameAction.
      * 
      * @param view
      *      the associated view
@@ -104,7 +104,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
         StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
 
         // Here's the real object
-        ServerInstance server = ( ServerInstance ) selection.getFirstElement();
+        Server server = ( Server ) selection.getFirstElement();
         if ( server != null )
         {
             queryNewServerNameInline( server );
@@ -120,7 +120,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      *
      * @param server the server to rename
      */
-    private void queryNewServerNameInline( final ServerInstance server )
+    private void queryNewServerNameInline( final Server server )
     {
         // Make sure text editor is created only once. Simply reset text
         // editor when action is executed more than once. Fixes bug 22269
@@ -148,7 +148,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      * 
      * @param server the server to rename
      */
-    private void createTextEditor( final ServerInstance server )
+    private void createTextEditor( final Server server )
     {
         // Create text editor parent. This draws a nice bounding rect
         textEditorParent = createParent();
@@ -255,7 +255,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      * 
      * @param server the server to rename
      */
-    protected void saveChangesAndDispose( ServerInstance server )
+    protected void saveChangesAndDispose( Server server )
     {
         if ( saving == true )
             return;

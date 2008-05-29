@@ -22,7 +22,7 @@ package org.apache.directory.studio.apacheds.views;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -48,16 +48,16 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
      */
     public String getColumnText( Object element, int columnIndex )
     {
-        if ( element instanceof ServerInstance )
+        if ( element instanceof Server )
         {
-            ServerInstance serverInstance = ( ServerInstance ) element;
+            Server server = ( Server ) element;
             if ( columnIndex == 0 )
             {
-                return serverInstance.getName();
+                return server.getName();
             }
             else if ( columnIndex == 1 )
             {
-                ServerStateEnum state = ( ( ServerInstance ) element ).getState();
+                ServerStateEnum state = ( ( Server ) element ).getState();
                 switch ( state )
                 {
                     case STARTED:
@@ -101,7 +101,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
      */
     public Image getColumnImage( Object element, int columnIndex )
     {
-        if ( element instanceof ServerInstance )
+        if ( element instanceof Server )
         {
             if ( columnIndex == 0 )
             {
@@ -109,7 +109,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
             }
             else if ( columnIndex == 1 )
             {
-                switch ( ( ( ServerInstance ) element ).getState() )
+                switch ( ( ( Server ) element ).getState() )
                 {
                     case STARTED:
                         return ApacheDsPlugin.getDefault().getImage( ApacheDsPluginConstants.IMG_SERVER_STARTED );
@@ -151,6 +151,9 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
     }
 
 
+    /**
+     * Increase the counter of the animation.
+     */
     public void animate()
     {
         count++;

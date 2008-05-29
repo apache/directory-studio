@@ -21,7 +21,8 @@ package org.apache.directory.studio.apacheds.actions;
 
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
+import org.apache.directory.studio.apacheds.properties.ServerPropertyPage;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -34,7 +35,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
- * This class implements the properties action for a server instance.
+ * This class implements the properties action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -46,7 +47,7 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
 
 
     /**
-     * Creates a new instance of NewServerInstanceAction.
+     * Creates a new instance of PropertiesAction.
      * 
      * @param view
      *      the associated view
@@ -69,10 +70,10 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
         StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
         if ( !selection.isEmpty() )
         {
-            ServerInstance serverInstance = ( ServerInstance ) selection.getFirstElement();
-            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(),
-                serverInstance, "org.apache.directory.studio.apacheds.properties.serverInstanceProperties", null, null );
-            dialog.getShell().setText( "Properties for '" + shorten( serverInstance.getName(), 30 ) + "'" );
+            Server server = ( Server ) selection.getFirstElement();
+            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(), server,
+                ServerPropertyPage.ID, null, null );
+            dialog.getShell().setText( "Properties for '" + shorten( server.getName(), 30 ) + "'" );
             dialog.open();
         }
     }

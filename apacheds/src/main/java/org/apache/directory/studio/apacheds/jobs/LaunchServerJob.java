@@ -35,7 +35,7 @@ import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.ConsolesHandler;
 import org.apache.directory.studio.apacheds.LogMessageConsole;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.log4j.net.SocketServer;
 import org.apache.mina.util.AvailablePortFinder;
@@ -64,15 +64,15 @@ import org.eclipse.swt.widgets.Display;
 
 
 /**
- * This class implements a {@link Job} that is used to launch a server instance.
+ * This class implements a {@link Job} that is used to launch a server.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class LaunchServerInstanceJob extends Job
+public class LaunchServerJob extends Job
 {
     /** The server */
-    private ServerInstance server;
+    private Server server;
 
     /** The configuration */
     private ServerConfigurationV152 configuration;
@@ -85,14 +85,14 @@ public class LaunchServerInstanceJob extends Job
 
 
     /**
-     * Creates a new instance of LaunchServerInstanceJob.
+     * Creates a new instance of LaunchServerJob.
      *
      * @param server
      *      the server
      * @param configuration
      *      the configuration
      */
-    public LaunchServerInstanceJob( ServerInstance server, ServerConfigurationV152 configuration )
+    public LaunchServerJob( Server server, ServerConfigurationV152 configuration )
     {
         super( "" );
         this.server = server;
@@ -135,10 +135,10 @@ public class LaunchServerInstanceJob extends Job
         // Launching the socket server
         launchSocketServer( port );
 
-        // Overwriting the server instance log4j.properties file
+        // Overwriting the server's log4j.properties file
         try
         {
-            overwriteServerInstanceLog4jPropertiesFile( port );
+            overwriteServersLog4jPropertiesFile( port );
         }
         catch ( IOException e1 )
         {
@@ -311,7 +311,7 @@ public class LaunchServerInstanceJob extends Job
     private void launchSocketServer( int port )
     {
         final int finalPort = port;
-        final IPath serverSocketFolderPath = ApacheDsPluginUtils.getApacheDsInstancesFolder().append( server.getId() )
+        final IPath serverSocketFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
             .append( "serverSocket" );
         final IPath log4jPropertiesFilePath = serverSocketFolderPath.append( "log4j.properties" );
 
@@ -331,19 +331,19 @@ public class LaunchServerInstanceJob extends Job
 
 
     /**
-     * Overwrites the log4j.properties file of the server instance with the
+     * Overwrites the log4j.properties file of the server with the
      * given port number.
      * 
      * @param port
      *            the port
      * @throws IOException 
      */
-    private void overwriteServerInstanceLog4jPropertiesFile( int port ) throws IOException
+    private void overwriteServersLog4jPropertiesFile( int port ) throws IOException
     {
-        IPath confFolderPath = ApacheDsPluginUtils.getApacheDsInstancesFolder().append( server.getId() )
+        IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
             .append( "conf" );
         File confFolder = new File( confFolderPath.toOSString() );
-        ApacheDsPluginUtils.createServerInstanceLog4jPropertiesFile( new FileOutputStream( new File( confFolder,
+        ApacheDsPluginUtils.createServersLog4jPropertiesFile( new FileOutputStream( new File( confFolder,
             "log4j.properties" ) ), port );
     }
 
@@ -406,23 +406,23 @@ public class LaunchServerInstanceJob extends Job
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
 
         // Useful paths
-        IPath instancesFolderPath = ApacheDsPluginUtils.getApacheDsInstancesFolder();
-        IPath instanceFolderPath = instancesFolderPath.append( server.getId() );
+        IPath serversFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder();
+        IPath serverFolderPath = serversFolderPath.append( server.getId() );
 
         // Setting the program arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, instanceFolderPath.append(
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverFolderPath.append(
             "conf" ).append( "server.xml" ).toOSString() );
 
         // Creating the VM arguments string
         StringBuffer vmArguments = new StringBuffer();
         vmArguments.append( "-Dlog4j.configuration=file:"
-            + instanceFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() );
+            + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() );
         vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.var.dir=\"" + instanceFolderPath.toOSString() + "\"" );
+        vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" );
         vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.log.dir=\"" + instanceFolderPath.append( "log" ).toOSString() + "\"" );
+        vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" );
         vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.run.dir=\"" + instanceFolderPath.append( "run" ).toOSString() + "\"" );
+        vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" );
         vmArguments.append( " " );
         vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" );
 

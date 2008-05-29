@@ -42,7 +42,7 @@ public class ApacheDsPluginUtils
 {
     private static final String RESOURCES = "resources";
     private static final String LIBS = "libs";
-    private static final String INSTANCES = "instances";
+    private static final String SERVERS = "servers";
     /** The name of the libraries folder */
     private static final String LIBRARIES_FOLDER_NAME = "libs";
     private static final String APACHEDS = "apacheds";
@@ -181,41 +181,41 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Get the path to the Apache DS instances folder.
+     * Get the path to the Apache DS servers folder.
      *
      * @return
-     *      the path to the Apache DS instances folder
+     *      the path to the Apache DS server folder
      */
-    public static IPath getApacheDsInstancesFolder()
+    public static IPath getApacheDsServersFolder()
     {
-        return ApacheDsPlugin.getDefault().getStateLocation().append( INSTANCES );
+        return ApacheDsPlugin.getDefault().getStateLocation().append( SERVERS );
     }
 
 
     /**
-     * Creates a new instance folder for the given id.
+     * Creates a new server folder for the given id.
      *
      * @param id
-     *      the id of the instance
+     *      the id of the server
      */
-    public static void createNewInstanceFolder( String id )
+    public static void createNewServerFolder( String id )
     {
-        // Checking if the Apache DS instance folder exists
-        checkApacheDsInstancesFolder();
+        // Checking if the Apache DS servers folder exists
+        checkApacheDsServersFolder();
 
-        // Creating the instance folder
-        IPath instanceFolderPath = getApacheDsInstancesFolder().append( id );
-        File instanceFolder = new File( instanceFolderPath.toOSString() );
-        instanceFolder.mkdir();
+        // Creating the server folder
+        IPath serverFolderPath = getApacheDsServersFolder().append( id );
+        File serverFolder = new File( serverFolderPath.toOSString() );
+        serverFolder.mkdir();
 
-        // Creating the instance sub folders
-        File confFolder = new File( instanceFolder, "conf" );
+        // Creating the server sub folders
+        File confFolder = new File( serverFolder, "conf" );
         confFolder.mkdir();
-        File serverSocketFolder = new File( instanceFolder, "serverSocket" );
+        File serverSocketFolder = new File( serverFolder, "serverSocket" );
         serverSocketFolder.mkdir();
-        new File( instanceFolder, "ldif" ).mkdir();
-        new File( instanceFolder, "log" ).mkdir();
-        new File( instanceFolder, "partitions" ).mkdir();
+        new File( serverFolder, "ldif" ).mkdir();
+        new File( serverFolder, "log" ).mkdir();
+        new File( serverFolder, "partitions" ).mkdir();
 
         // Copying default configuration files
         try
@@ -226,7 +226,7 @@ public class ApacheDsPluginUtils
 
             // Creating log4j.properties file
             File log4jPropertiesFile = new File( confFolder, "log4j.properties" );
-            createServerInstanceLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024 ); // Setting 1024 as default port
+            createServersLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024 ); // Setting 1024 as default port
 
             // Copying server.xml file
             File serverXmlFile = new File( confFolder, "server.xml" );
@@ -245,14 +245,16 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Create the log4j.properties file for the server socket logger.
+     * Create the log4j.properties file for the server.
      *
      * @param os
      *      the {@link OutputStream} to write to
+     * @param port
+     *      the port
      * @throws IOException
      *      if an error occurs when writing to the file
      */
-    public static void createServerInstanceLog4jPropertiesFile( OutputStream os, int port ) throws IOException
+    public static void createServersLog4jPropertiesFile( OutputStream os, int port ) throws IOException
     {
         // Creating the file content in a StringBuffer
         StringBuffer sb = new StringBuffer();
@@ -295,7 +297,7 @@ public class ApacheDsPluginUtils
      * @param os
      *      the {@link OutputStream} to write to
      * @param id
-     *      the id of the server instance
+     *      the id of the server
      * @throws IOException
      *      if an error occurs when writing to the file
      */
@@ -321,12 +323,12 @@ public class ApacheDsPluginUtils
         sb.append( "#############################################################################" ).append( "\n" );
         sb.append( "log4j.rootCategory=ALL, studioConsoleAppender" ).append( "\n" );
         sb.append( "" ).append( "\n" );
-        sb.append( "# Studio Console Appender (identified with the server instance id)" ).append( "\n" );
+        sb.append( "# Studio Console Appender (identified with the server id)" ).append( "\n" );
         sb
             .append(
                 "log4j.appender.studioConsoleAppender=org.apache.directory.studio.apacheds.StudioConsoleAppender" )
             .append( "\n" );
-        sb.append( "log4j.appender.studioConsoleAppender.ServerInstanceId=" ).append( id ).append( "\n" );
+        sb.append( "log4j.appender.studioConsoleAppender.ServerId=" ).append( id ).append( "\n" );
         sb.append( "log4j.appender.studioConsoleAppender.layout=org.apache.log4j.PatternLayout" ).append( "\n" );
         sb.append( "" ).append( "\n" );
         sb.append( "# Hiding logs from log4j" ).append( "\n" );
@@ -368,15 +370,15 @@ public class ApacheDsPluginUtils
 
 
     /**
-     * Verifies that the Apache DS instances folder exists.
+     * Verifies that the Apache DS server folder exists.
      * If it does not exists, it creates it.
      */
-    private static void checkApacheDsInstancesFolder()
+    private static void checkApacheDsServersFolder()
     {
-        File apacheDsInstancesFolder = new File( getApacheDsInstancesFolder().toOSString() );
-        if ( !apacheDsInstancesFolder.exists() )
+        File apacheDsserversFolder = new File( getApacheDsServersFolder().toOSString() );
+        if ( !apacheDsserversFolder.exists() )
         {
-            apacheDsInstancesFolder.mkdir();
+            apacheDsserversFolder.mkdir();
         }
     }
 }

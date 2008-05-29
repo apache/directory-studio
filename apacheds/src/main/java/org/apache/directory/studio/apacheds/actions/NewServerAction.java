@@ -22,7 +22,7 @@ package org.apache.directory.studio.apacheds.actions;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.wizards.NewServerInstanceWizard;
+import org.apache.directory.studio.apacheds.wizards.NewServerWizard;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -34,17 +34,17 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the new server instance action.
+ * This class implements the new server action.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewServerInstanceAction extends Action implements IWorkbenchWindowActionDelegate
+public class NewServerAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /**
-     * Creates a new instance of NewServerInstanceAction.
+     * Creates a new instance of NewServerAction.
      */
-    public NewServerInstanceAction()
+    public NewServerAction()
     {
         super( "New &Server" );
         setId( ApacheDsPluginConstants.CMD_NEW_SERVER );
@@ -60,7 +60,7 @@ public class NewServerInstanceAction extends Action implements IWorkbenchWindowA
     public void run()
     {
         // Instantiates and initializes the wizard
-        NewServerInstanceWizard wizard = new NewServerInstanceWizard();
+        NewServerWizard wizard = new NewServerWizard();
         wizard.init( PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
         // Instantiates the wizard container with the wizard and opens it
         WizardDialog dialog = new WizardDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard );

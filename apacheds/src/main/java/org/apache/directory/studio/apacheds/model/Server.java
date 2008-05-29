@@ -24,38 +24,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.directory.studio.apacheds.jobs.LaunchServerInstanceJob;
+import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.eclipse.core.runtime.IAdaptable;
 
 
 /**
- * This class represents an Apache DS instance.
+ * This class represents an Apache DS server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerInstance implements IAdaptable
+public class Server implements IAdaptable
 {
-    /** The name of the instance */
+    /** The name of the server */
     private String name;
 
-    /** The ID of the instance */
+    /** The ID of the server */
     private String id;
 
-    /** The state of the instance */
+    /** The state of the server */
     private ServerStateEnum state = ServerStateEnum.STOPPED;
 
     /** The listeners list*/
     private List<ServerListener> listeners = new ArrayList<ServerListener>();
 
     /** The launch job */
-    private LaunchServerInstanceJob launchJob;
+    private LaunchServerJob launchJob;
 
 
     /**
-     * Creates a new instance of ApacheDsInstance.
+     * Creates a new instance of Server.
      */
-    public ServerInstance()
+    public Server()
     {
     }
 
@@ -95,14 +95,14 @@ public class ServerInstance implements IAdaptable
 
 
     /**
-     * Creates a new instance of ApacheDsInstance.
+     * Creates a new instance of Server.
      * <p>
      * An ID is automatically created.
      *
      * @param name
-     *      the name of the instance
+     *      the name of the server
      */
-    public ServerInstance( String name )
+    public Server( String name )
     {
         this.name = name;
         id = createId();
@@ -110,14 +110,14 @@ public class ServerInstance implements IAdaptable
 
 
     /**
-     * Creates a new instance of ApacheDsInstance.
+     * Creates a new instance of Server.
      *
      * @param name
-     *      the name of the instance
+     *      the name of the server
      * @param id
-     *      the id of the instance
+     *      the id of the server
      */
-    public ServerInstance( String name, String id )
+    public Server( String name, String id )
     {
         this.name = name;
         this.id = id;
@@ -125,10 +125,10 @@ public class ServerInstance implements IAdaptable
 
 
     /**
-     * Gets the name of the instance
+     * Gets the name of the server
      *
      * @return
-     *      the name of the instance
+     *      the name of the server
      */
     public String getName()
     {
@@ -137,10 +137,10 @@ public class ServerInstance implements IAdaptable
 
 
     /**
-     * Sets the name of the instance
+     * Sets the name of the server
      *
      * @param name
-     *      the name of the instance
+     *      the name of the server
      */
     public void setName( String name )
     {
@@ -168,10 +168,10 @@ public class ServerInstance implements IAdaptable
 
 
     /**
-     * Gets the ID of the instance.
+     * Gets the ID of the server.
      *
      * @return
-     *      the ID of the instance
+     *      the ID of the server
      */
     public String getId()
     {
@@ -180,10 +180,10 @@ public class ServerInstance implements IAdaptable
 
 
     /**
-     * Sets the ID of the instance.
+     * Sets the ID of the server.
      *
      * @param id
-     *      the ID of the instance
+     *      the ID of the server
      */
     public void setId( String id )
     {
@@ -252,7 +252,7 @@ public class ServerInstance implements IAdaptable
      * @return
      *      the launch job
      */
-    public LaunchServerInstanceJob getLaunchJob()
+    public LaunchServerJob getLaunchJob()
     {
         return launchJob;
     }
@@ -264,7 +264,7 @@ public class ServerInstance implements IAdaptable
      * @param launchJob
      *      the launch job
      */
-    public void setLaunchJob( LaunchServerInstanceJob launchJob )
+    public void setLaunchJob( LaunchServerJob launchJob )
     {
         this.launchJob = launchJob;
     }

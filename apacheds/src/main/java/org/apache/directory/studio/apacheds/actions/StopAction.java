@@ -22,8 +22,8 @@ package org.apache.directory.studio.apacheds.actions;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
-import org.apache.directory.studio.apacheds.jobs.LaunchServerInstanceJob;
-import org.apache.directory.studio.apacheds.model.ServerInstance;
+import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
+import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.debug.core.DebugException;
@@ -37,7 +37,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 
 /**
- * This class implements the stop action for a server instance.
+ * This class implements the stop action for a server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -72,13 +72,13 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
         if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
         {
             // Getting the server
-            ServerInstance server = ( ServerInstance ) selection.getFirstElement();
+            Server server = ( Server ) selection.getFirstElement();
 
             // Setting the server of the server to 'stopping'
             server.setState( ServerStateEnum.STOPPING );
 
             // Getting the launch job
-            LaunchServerInstanceJob launchJob = server.getLaunchJob();
+            LaunchServerJob launchJob = server.getLaunchJob();
             if ( launchJob != null )
             {
                 // Getting the launch

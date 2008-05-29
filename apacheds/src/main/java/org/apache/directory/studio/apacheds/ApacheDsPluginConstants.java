@@ -31,7 +31,6 @@ public interface ApacheDsPluginConstants
     // -------
     // IMAGES
     // -------
-    public static final String IMG_SERVER_INSTANCE = "resources/icons/server-instance.png";
     public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif";
     public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png";
     public static final String IMG_SERVER = "resources/icons/server.gif";

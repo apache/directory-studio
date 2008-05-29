@@ -34,8 +34,8 @@ import org.apache.log4j.spi.LoggingEvent;
  */
 public class StudioConsoleAppender extends AppenderSkeleton
 {
-    /** The id of the server instance */
-    private String serverInstanceId;
+    /** The id of the server */
+    private String serverId;
 
 
     /**
@@ -51,7 +51,7 @@ public class StudioConsoleAppender extends AppenderSkeleton
      */
     protected void append( LoggingEvent event )
     {
-        LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( serverInstanceId );
+        LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( serverId );
 
         Level level = event.getLevel();
         Object message = event.getMessage();
@@ -100,25 +100,25 @@ public class StudioConsoleAppender extends AppenderSkeleton
 
 
     /**
-     * Gets the id of the server instance.
+     * Gets the id of the server.
      *
      * @return
-     *      the id of the server instance
+     *      the id of the server
      */
-    public String getServerInstanceId()
+    public String getServerId()
     {
-        return serverInstanceId;
+        return serverId;
     }
 
 
     /**
-     * Sets the id of the server instance.
+     * Sets the id of the server.
      *
-     * @param serverInstanceId
-     *      the id of the server instance
+     * @param serverId
+     *      the id of the server
      */
-    public void setServerInstanceId( String serverInstanceId )
+    public void setServerId( String serverId )
     {
-        this.serverInstanceId = serverInstanceId;
+        this.serverId = serverId;
     }
 }

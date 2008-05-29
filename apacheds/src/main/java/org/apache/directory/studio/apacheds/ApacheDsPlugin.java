@@ -39,7 +39,7 @@ public class ApacheDsPlugin extends AbstractUIPlugin
     /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.apacheds";
 
-    /** The shared instance*/
+    /** The shared instance */
     private static ApacheDsPlugin plugin;
 
     /** The servers handler */
@@ -77,8 +77,8 @@ public class ApacheDsPlugin extends AbstractUIPlugin
         // Creating the servers handler
         serversHandler = ServersHandler.getDefault();
 
-        // Initializing the server instances from the store
-        serversHandler.loadServerInstancesFromStore();
+        // Initializing the servers from the store
+        serversHandler.loadServersFromStore();
     }
 
 
