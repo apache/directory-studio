@@ -26,8 +26,8 @@ import org.apache.directory.studio.apacheds.actions.NewServerInstanceAction;
 import org.apache.directory.studio.apacheds.actions.OpenAction;
 import org.apache.directory.studio.apacheds.actions.PropertiesAction;
 import org.apache.directory.studio.apacheds.actions.RenameAction;
-import org.apache.directory.studio.apacheds.actions.ServerInstanceRunAction;
-import org.apache.directory.studio.apacheds.actions.ServerInstanceStopAction;
+import org.apache.directory.studio.apacheds.actions.RunAction;
+import org.apache.directory.studio.apacheds.actions.StopAction;
 import org.apache.directory.studio.apacheds.model.ServerInstance;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.apacheds.model.ServersHandlerListener;
@@ -93,8 +93,8 @@ public class ServersView extends ViewPart
 
     // Actions
     private NewServerInstanceAction newServer;
-    private ServerInstanceRunAction run;
-    private ServerInstanceStopAction stop;
+    private RunAction run;
+    private StopAction stop;
     private PropertiesAction properties;
     private DeleteAction delete;
     private OpenAction open;
@@ -251,10 +251,10 @@ public class ServersView extends ViewPart
     {
         newServer = new NewServerInstanceAction();
 
-        run = new ServerInstanceRunAction( this );
+        run = new RunAction( this );
         run.setEnabled( false );
 
-        stop = new ServerInstanceStopAction( this );
+        stop = new StopAction( this );
         stop.setEnabled( false );
 
         properties = new PropertiesAction( this );

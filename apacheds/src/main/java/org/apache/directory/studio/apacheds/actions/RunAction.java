@@ -52,19 +52,19 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerInstanceRunAction extends Action implements IWorkbenchWindowActionDelegate
+public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /** The associated view */
     private ServersView view;
 
 
     /**
-     * Creates a new instance of ServerInstanceRunAction.
+     * Creates a new instance of RunAction.
      *
      * @param view
      *      the associated view
      */
-    public ServerInstanceRunAction( ServersView view )
+    public RunAction( ServersView view )
     {
         super( "&Run" );
         this.view = view;

@@ -42,16 +42,16 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ServerInstanceStopAction extends Action implements IWorkbenchWindowActionDelegate
+public class StopAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /** The associated view */
     private ServersView view;
 
 
     /**
-     * Creates a new instance of NewServerInstanceAction.
+     * Creates a new instance of StopAction.
      */
-    public ServerInstanceStopAction( ServersView view )
+    public StopAction( ServersView view )
     {
         super( "S&top" );
         setId( ApacheDsPluginConstants.CMD_STOP );

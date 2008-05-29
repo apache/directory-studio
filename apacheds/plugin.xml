@@ -84,14 +84,14 @@
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.ServerInstanceRunAction"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.RunAction"
             description="Runs the server"
             id="org.apache.directory.studio.apacheds.commands.run"
             name="Run">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.ServerInstanceStopAction"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.StopAction"
             description="Stops the server"
             id="org.apache.directory.studio.apacheds.commands.stop"
             name="Stop">
