@@ -25,7 +25,7 @@
          point="org.eclipse.ui.views">
       <category
             id="org.apache.directory.studio.apacheds.category"
-            name="Apache Directory Server">
+            name="Apache DS">
       </category>
       <view
             category="org.apache.directory.studio.apacheds.category"
