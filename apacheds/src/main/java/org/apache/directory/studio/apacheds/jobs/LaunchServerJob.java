@@ -111,23 +111,7 @@ public class LaunchServerJob extends Job
 
         // Setting the server in a "starting" state
         server.setState( ServerStateEnum.STARTING );
-
-        Display.getDefault().asyncExec( new Runnable()
-        {
-            public void run()
-            {
-                LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( server.getId() );
-                try
-                {
-                    console.getInfoConsoleMessageStream().write( "Starting " + server.getName() + "...\n" );
-                }
-                catch ( IOException e )
-                {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        } );
+        writeToInfoConsoleMessageStream( "Server starting...\n" );
 
         // Getting the first available port for the Log4J socket server
         int port = AvailablePortFinder.getNextAvailable( MIN_PORT );
@@ -188,6 +172,7 @@ public class LaunchServerJob extends Job
 
                         // We set the state of the server to 'started'...
                         server.setState( ServerStateEnum.STARTED );
+                        writeToInfoConsoleMessageStream( "Server started.\n" );
 
                         /// ... and we exit the thread
                         return;
@@ -214,6 +199,7 @@ public class LaunchServerJob extends Job
                 if ( ServerStateEnum.STARTING == server.getState() )
                 {
                     server.setState( ServerStateEnum.STOPPED );
+                    writeToInfoConsoleMessageStream( "Server stopped.\n" );
                 }
             }
 
@@ -238,6 +224,33 @@ public class LaunchServerJob extends Job
 
         // Starting the thread
         thread.start();
+    }
+
+
+    /**
+     * Writes the given message to the Info console message stream.
+     *
+     * @param message
+     *      the message
+     */
+    private void writeToInfoConsoleMessageStream( final String message )
+    {
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( server.getId() );
+                try
+                {
+                    console.getInfoConsoleMessageStream().write( message );
+                }
+                catch ( IOException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        } );
     }
 
 
@@ -340,8 +353,7 @@ public class LaunchServerJob extends Job
      */
     private void overwriteServersLog4jPropertiesFile( int port ) throws IOException
     {
-        IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-            .append( "conf" );
+        IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" );
         File confFolder = new File( confFolderPath.toOSString() );
         ApacheDsPluginUtils.createServersLog4jPropertiesFile( new FileOutputStream( new File( confFolder,
             "log4j.properties" ) ), port );

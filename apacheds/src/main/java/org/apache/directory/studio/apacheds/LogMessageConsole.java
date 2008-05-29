@@ -32,7 +32,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 
 /**
- * TODO LogMessageConsole.
+ * A console that displays log messages.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -111,7 +111,8 @@ public class LogMessageConsole extends MessageConsole
 
         // Setting the Color and Font settings
         setColorAndFontSettingsToMessageConsoleStream( debugMessageConsoleStream,
-            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_COLOR, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_FONT );
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_COLOR,
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_FONT );
     }
 
 
@@ -142,7 +143,8 @@ public class LogMessageConsole extends MessageConsole
 
         // Setting the Color and Font settings
         setColorAndFontSettingsToMessageConsoleStream( infoMessageConsoleStream,
-            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_COLOR, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT );
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_COLOR,
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT );
     }
 
 
@@ -173,7 +175,8 @@ public class LogMessageConsole extends MessageConsole
 
         // Setting the Color and Font settings
         setColorAndFontSettingsToMessageConsoleStream( warnMessageConsoleStream,
-            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_COLOR, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT );
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_COLOR,
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT );
     }
 
 
@@ -204,7 +207,8 @@ public class LogMessageConsole extends MessageConsole
 
         // Setting the Color and Font settings
         setColorAndFontSettingsToMessageConsoleStream( errorMessageConsoleStream,
-            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_COLOR, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_FONT );
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_COLOR,
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_FONT );
     }
 
 
@@ -235,7 +239,8 @@ public class LogMessageConsole extends MessageConsole
 
         // Setting the Color and Font settings
         setColorAndFontSettingsToMessageConsoleStream( fatalMessageConsoleStream,
-            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_COLOR, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_FONT );
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_COLOR,
+            ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_FONT );
     }
 
 

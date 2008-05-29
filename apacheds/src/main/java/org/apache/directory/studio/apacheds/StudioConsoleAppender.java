@@ -23,6 +23,7 @@ package org.apache.directory.studio.apacheds;
 import org.apache.log4j.Appender;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
+import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
 
@@ -43,6 +44,8 @@ public class StudioConsoleAppender extends AppenderSkeleton
      */
     public StudioConsoleAppender()
     {
+        super();
+        setLayout( new PatternLayout( "[%d{HH:mm:ss}] %p [%c] - %m%n" ) );
     }
 
 
@@ -52,29 +55,33 @@ public class StudioConsoleAppender extends AppenderSkeleton
     protected void append( LoggingEvent event )
     {
         LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( serverId );
+        if ( console != null )
+        {
+            // Formatting the message with the layout
+            String message = layout.format( event );
 
-        Level level = event.getLevel();
-        Object message = event.getMessage();
-
-        if ( level == Level.INFO )
-        {
-            console.getInfoConsoleMessageStream().println( message.toString() );
-        }
-        else if ( level == Level.DEBUG )
-        {
-            console.getDebugConsoleMessageStream().println( message.toString() );
-        }
-        else if ( level == Level.WARN )
-        {
-            console.getWarnConsoleMessageStream().println( message.toString() );
-        }
-        else if ( level == Level.ERROR )
-        {
-            console.getErrorConsoleMessageStream().println( message.toString() );
-        }
-        else if ( level == Level.FATAL )
-        {
-            console.getFatalConsoleMessageStream().println( message.toString() );
+            // Switching dependening on the level
+            Level level = event.getLevel();
+            if ( level == Level.INFO )
+            {
+                console.getInfoConsoleMessageStream().print( message );
+            }
+            else if ( level == Level.DEBUG )
+            {
+                console.getDebugConsoleMessageStream().print( message );
+            }
+            else if ( level == Level.WARN )
+            {
+                console.getWarnConsoleMessageStream().print( message );
+            }
+            else if ( level == Level.ERROR )
+            {
+                console.getErrorConsoleMessageStream().print( message );
+            }
+            else if ( level == Level.FATAL )
+            {
+                console.getFatalConsoleMessageStream().print( message );
+            }
         }
     }
 

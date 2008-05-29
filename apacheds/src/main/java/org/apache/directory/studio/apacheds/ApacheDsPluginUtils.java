@@ -324,9 +324,7 @@ public class ApacheDsPluginUtils
         sb.append( "log4j.rootCategory=ALL, studioConsoleAppender" ).append( "\n" );
         sb.append( "" ).append( "\n" );
         sb.append( "# Studio Console Appender (identified with the server id)" ).append( "\n" );
-        sb
-            .append(
-                "log4j.appender.studioConsoleAppender=org.apache.directory.studio.apacheds.StudioConsoleAppender" )
+        sb.append( "log4j.appender.studioConsoleAppender=org.apache.directory.studio.apacheds.StudioConsoleAppender" )
             .append( "\n" );
         sb.append( "log4j.appender.studioConsoleAppender.ServerId=" ).append( id ).append( "\n" );
         sb.append( "log4j.appender.studioConsoleAppender.layout=org.apache.log4j.PatternLayout" ).append( "\n" );

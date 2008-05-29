@@ -20,8 +20,12 @@
 package org.apache.directory.studio.apacheds.actions;
 
 
+import java.io.IOException;
+
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
+import org.apache.directory.studio.apacheds.ConsolesHandler;
+import org.apache.directory.studio.apacheds.LogMessageConsole;
 import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
@@ -32,6 +36,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
@@ -46,6 +51,9 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /** The associated view */
     private ServersView view;
+
+    /** The server */
+    private Server server;
 
 
     /**
@@ -72,7 +80,7 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
         if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
         {
             // Getting the server
-            Server server = ( Server ) selection.getFirstElement();
+            server = ( Server ) selection.getFirstElement();
 
             // Setting the server of the server to 'stopping'
             server.setState( ServerStateEnum.STOPPING );
@@ -89,6 +97,7 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                     try
                     {
                         launch.terminate();
+                        writeToInfoConsoleMessageStream( "Server stopped.\n" );
                     }
                     catch ( DebugException e )
                     {
@@ -98,6 +107,33 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                 }
             }
         }
+    }
+
+
+    /**
+     * Writes the given message to the Info console message stream.
+     *
+     * @param message
+     *      the message
+     */
+    private void writeToInfoConsoleMessageStream( final String message )
+    {
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( server.getId() );
+                try
+                {
+                    console.getInfoConsoleMessageStream().write( message );
+                }
+                catch ( IOException e )
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        } );
     }
 
 
