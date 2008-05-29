@@ -23,7 +23,7 @@ package org.apache.directory.studio.apacheds.views;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.actions.DeleteAction;
 import org.apache.directory.studio.apacheds.actions.NewServerAction;
-import org.apache.directory.studio.apacheds.actions.OpenAction;
+import org.apache.directory.studio.apacheds.actions.OpenConfigurationAction;
 import org.apache.directory.studio.apacheds.actions.PropertiesAction;
 import org.apache.directory.studio.apacheds.actions.RenameAction;
 import org.apache.directory.studio.apacheds.actions.RunAction;
@@ -93,12 +93,12 @@ public class ServersView extends ViewPart
 
     // Actions
     private NewServerAction newServer;
+    private OpenConfigurationAction openConfiguration;
+    private DeleteAction delete;
+    private RenameAction rename;
     private RunAction run;
     private StopAction stop;
     private PropertiesAction properties;
-    private DeleteAction delete;
-    private OpenAction open;
-    private RenameAction rename;
 
     // Listeners
     private ServersHandlerListener serversHandlerListener = new ServersHandlerListener()
@@ -251,6 +251,15 @@ public class ServersView extends ViewPart
     {
         newServer = new NewServerAction();
 
+        openConfiguration = new OpenConfigurationAction( this );
+        openConfiguration.setEnabled( false );
+
+        delete = new DeleteAction( this );
+        delete.setEnabled( false );
+
+        rename = new RenameAction( this );
+        rename.setEnabled( false );
+
         run = new RunAction( this );
         run.setEnabled( false );
 
@@ -259,15 +268,6 @@ public class ServersView extends ViewPart
 
         properties = new PropertiesAction( this );
         properties.setEnabled( false );
-
-        open = new OpenAction( this );
-        open.setEnabled( false );
-
-        delete = new DeleteAction( this );
-        delete.setEnabled( false );
-
-        rename = new RenameAction( this );
-        rename.setEnabled( false );
     }
 
 
@@ -298,7 +298,7 @@ public class ServersView extends ViewPart
                 MenuManager newManager = new MenuManager( "&New" );
                 newManager.add( newServer );
                 manager.add( newManager );
-                manager.add( open );
+                manager.add( openConfiguration );
                 manager.add( new Separator() );
                 manager.add( delete );
                 manager.add( rename );
@@ -330,7 +330,7 @@ public class ServersView extends ViewPart
         {
             public void doubleClick( DoubleClickEvent event )
             {
-                open.run();
+                openConfiguration.run();
             }
         } );
 
@@ -357,7 +357,7 @@ public class ServersView extends ViewPart
                     if ( commandService != null )
                     {
                         commandService.getCommand( newServer.getActionDefinitionId() ).setHandler( null );
-                        commandService.getCommand( open.getActionDefinitionId() ).setHandler( null );
+                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( delete.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( rename.getActionDefinitionId() ).setHandler( null );
                         commandService.getCommand( run.getActionDefinitionId() ).setHandler( null );
@@ -390,8 +390,8 @@ public class ServersView extends ViewPart
                     {
                         commandService.getCommand( newServer.getActionDefinitionId() ).setHandler(
                             new ActionHandler( newServer ) );
-                        commandService.getCommand( open.getActionDefinitionId() )
-                            .setHandler( new ActionHandler( open ) );
+                        commandService.getCommand( openConfiguration.getActionDefinitionId() ).setHandler(
+                            new ActionHandler( openConfiguration ) );
                         commandService.getCommand( delete.getActionDefinitionId() ).setHandler(
                             new ActionHandler( delete ) );
                         commandService.getCommand( rename.getActionDefinitionId() ).setHandler(
@@ -476,19 +476,19 @@ public class ServersView extends ViewPart
                     break;
             }
 
-            open.setEnabled( true );
+            openConfiguration.setEnabled( true );
             delete.setEnabled( true );
-            properties.setEnabled( true );
             rename.setEnabled( true );
+            properties.setEnabled( true );
         }
         else
         {
+            openConfiguration.setEnabled( false );
+            delete.setEnabled( false );
+            rename.setEnabled( false );
             run.setEnabled( false );
             stop.setEnabled( false );
-            open.setEnabled( false );
-            delete.setEnabled( false );
             properties.setEnabled( false );
-            rename.setEnabled( false );
         }
     }
 

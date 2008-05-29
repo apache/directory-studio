@@ -47,25 +47,25 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenAction extends Action implements IWorkbenchWindowActionDelegate
+public class OpenConfigurationAction extends Action implements IWorkbenchWindowActionDelegate
 {
     /** The associated view */
     private ServersView view;
 
 
     /**
-     * Creates a new instance of OpenAction.
+     * Creates a new instance of OpenConfigurationAction.
      * 
      * @param view
      *      the associated view
      */
-    public OpenAction( ServersView view )
+    public OpenConfigurationAction( ServersView view )
     {
-        super( "&Open" );
+        super( "&Open Configuration" );
         this.view = view;
-        setId( ApacheDsPluginConstants.CMD_OPEN );
-        setActionDefinitionId( ApacheDsPluginConstants.CMD_OPEN );
-        setToolTipText( "Open" );
+        setId( ApacheDsPluginConstants.CMD_OPEN_CONFIGURATION );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_OPEN_CONFIGURATION );
+        setToolTipText( "Open Configuration" );
     }
 
 

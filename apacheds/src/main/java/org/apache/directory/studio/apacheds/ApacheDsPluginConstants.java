@@ -52,7 +52,7 @@ public interface ApacheDsPluginConstants
     public static final String CMD_RUN = "org.apache.directory.studio.apacheds.commands.run";
     public static final String CMD_STOP = "org.apache.directory.studio.apacheds.commands.stop";
     public static final String CMD_PROPERTIES = "org.apache.directory.studio.apacheds.commands.properties";
-    public static final String CMD_OPEN = "org.apache.directory.studio.apacheds.commands.open";
+    public static final String CMD_OPEN_CONFIGURATION = "org.apache.directory.studio.apacheds.commands.openConfiguration";
     public static final String CMD_DELETE = "org.apache.directory.studio.apacheds.commands.delete";
     public static final String CMD_RENAME = "org.apache.directory.studio.apacheds.commands.rename";
 

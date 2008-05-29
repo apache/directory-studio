@@ -70,10 +70,10 @@
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.OpenAction"
+            defaultHandler="org.apache.directory.studio.apacheds.actions.OpenConfigurationAction"
             description="Opens the server configuration"
-            id="org.apache.directory.studio.apacheds.commands.open"
-            name="Open">
+            id="org.apache.directory.studio.apacheds.commands.openConfiguration"
+            name="Open Configuration">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
@@ -121,7 +121,7 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+E"/>
       <key
-            commandId="org.apache.directory.studio.apacheds.commands.open"
+            commandId="org.apache.directory.studio.apacheds.commands.openConfiguration"
             contextId="org.apache.directory.studio.apacheds.contexts.serversView"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F3"/>
