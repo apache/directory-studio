@@ -63,7 +63,7 @@
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.2.0.SNAPSHOT</aciitemeditor.version>
     <apacheds.version>1.2.0.SNAPSHOT</apacheds.version>
-    <apacheds.launcher.version>1.2.0.SNAPSHOT</apacheds.launcher.version>
+    <apacheds.launcher.version>1.2.0</apacheds.launcher.version>
     <apacheds.configuration.version>1.2.0.SNAPSHOT</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.2.0.SNAPSHOT</apacheds.configuration.feature.version>
     <apacheds.configuration.help.version>1.2.0.SNAPSHOT</apacheds.configuration.help.version>
@@ -1513,6 +1513,11 @@
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds</artifactId>
         <version>${apacheds.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>apacheds-launcher</artifactId>
+        <version>${apacheds.launcher.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
