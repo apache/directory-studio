@@ -144,8 +144,8 @@
                   <artifactId>apacheds-kerberos-shared</artifactId>
                 </artifactItem>
                 <artifactItem>
-                  <groupId>org.apache.directory.installers</groupId>
-                  <artifactId>apacheds-noarch-installer</artifactId>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds-launcher</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.server</groupId>

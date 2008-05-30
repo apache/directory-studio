@@ -392,7 +392,7 @@ public class LaunchServerJob extends Job
 
         // Setting the main type attribute
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-            "org.apache.directory.server.UberjarMain" );
+            "org.apache.directory.studio.apacheds.Launcher" );
 
         // Creating the classpath list
         List classpath = new ArrayList();
@@ -425,8 +425,8 @@ public class LaunchServerJob extends Job
         IPath serverFolderPath = serversFolderPath.append( server.getId() );
 
         // Setting the program arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverFolderPath.append(
-            "conf" ).append( "server.xml" ).toOSString() );
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverFolderPath
+            .toOSString() );
 
         // Creating the VM arguments string
         StringBuffer vmArguments = new StringBuffer();

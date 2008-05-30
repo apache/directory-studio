@@ -57,7 +57,7 @@ public class ApacheDsPluginUtils
         { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.2.jar", "apacheds-bootstrap-partition-1.5.2.jar",
             "apacheds-btree-base-1.5.2.jar", "apacheds-core-1.5.2.jar", "apacheds-core-constants-1.5.2.jar",
             "apacheds-core-entry-1.5.2.jar", "apacheds-core-shared-1.5.2.jar", "apacheds-jdbm-store-1.5.2.jar",
-            "apacheds-kerberos-shared-1.5.2.jar", "apacheds-noarch-installer-1.5.2.jar",
+            "apacheds-kerberos-shared-1.5.2.jar", "apacheds-launcher-1.2.0.jar",
             "apacheds-protocol-changepw-1.5.2.jar", "apacheds-protocol-dns-1.5.2.jar",
             "apacheds-protocol-kerberos-1.5.2.jar", "apacheds-protocol-ldap-1.5.2.jar",
             "apacheds-protocol-ntp-1.5.2.jar", "apacheds-protocol-shared-1.5.2.jar",
