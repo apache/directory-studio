@@ -32,8 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 
 /**
@@ -52,7 +55,7 @@ public class ServersHandler
 
     /** The list of servers */
     private List<Server> serversList;
-    
+
     /** The map of servers identified by ID */
     private Map<String, Server> serversIdMap;
 
@@ -226,7 +229,11 @@ public class ServersHandler
     public void loadServersFromStore()
     {
         File store = getServersStorePath().toFile();
+        File tempStore = getServersStoreTempPath().toFile();
+        boolean loadFailed = false;
+        String exceptionMessage = "";
 
+        // We try to load the servers file
         if ( store.exists() )
         {
             try
@@ -237,17 +244,48 @@ public class ServersHandler
                 {
                     addServer( server, false );
                 }
+                return;
             }
             catch ( FileNotFoundException e )
             {
-                // Will never occur as the store file exists
+                loadFailed = true;
+                exceptionMessage = e.getMessage();
             }
             catch ( ServersHandlerIOException e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                loadFailed = true;
+                exceptionMessage = e.getMessage();
             }
 
+            if ( loadFailed )
+            {
+                if ( tempStore.exists() )
+                {
+                    // If something went wrong, we try to load the temp servers file
+                    try
+                    {
+                        InputStream inputStream = new FileInputStream( tempStore );
+                        List<Server> servers = ServersHandlerIO.read( inputStream );
+                        for ( Server server : servers )
+                        {
+                            addServer( server, false );
+                        }
+                        return;
+                    }
+                    catch ( FileNotFoundException e )
+                    {
+                        reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                    }
+                    catch ( ServersHandlerIOException e )
+                    {
+                        reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                    }
+                }
+                else
+                {
+                    reportError( "An error occured when loading the servers.\n\n" + exceptionMessage );
+                }
+            }
         }
     }
 
@@ -257,21 +295,65 @@ public class ServersHandler
      */
     public void saveServersToStore()
     {
+        File store = getServersStorePath().toFile();
+        File tempStore = getServersStoreTempPath().toFile();
+        boolean saveFailed = false;
+
         try
         {
-            OutputStream outputStream = new FileOutputStream( getServersStorePath().toFile() );
+            // Saving the servers to the temp servers file
+            OutputStream outputStream = new FileOutputStream( tempStore );
             ServersHandlerIO.write( serversList, outputStream );
+
+            // Copying the temp servers file to the final location
+            String content = FileUtils.readFileToString( tempStore, "UTF-8" );
+            FileUtils.writeStringToFile( store, content, "UTF-8" );
         }
         catch ( FileNotFoundException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            saveFailed = true;
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            saveFailed = true;
         }
+
+        if ( saveFailed )
+        {
+            // If an error occurs when saving to the temp servers file or
+            // when copying the temp servers file to the final location,
+            // we try to save the servers directly to the final location.
+            try
+            {
+                // Saving the servers to the temp servers file
+                OutputStream outputStream = new FileOutputStream( store );
+                ServersHandlerIO.write( serversList, outputStream );
+            }
+            catch ( FileNotFoundException e )
+            {
+                reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+            }
+            catch ( IOException e )
+            {
+                reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+            }
+        }
+    }
+
+
+    /**
+     * Reports an error.
+     *
+     * @param message
+     *      the message
+     */
+    private void reportError( String message )
+    {
+
+        MessageDialog dialog = new MessageDialog( ApacheDsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
+            .getShell(), "Error!", null, message, MessageDialog.ERROR, new String[]
+            { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+        dialog.open();
     }
 
 
@@ -284,6 +366,18 @@ public class ServersHandler
     private IPath getServersStorePath()
     {
         return ApacheDsPlugin.getDefault().getStateLocation().append( "servers.xml" );
+    }
+
+
+    /**
+     * Gets the path to the server temp file.
+     *
+     * @return
+     *      the path to the server temp file.
+     */
+    private IPath getServersStoreTempPath()
+    {
+        return ApacheDsPlugin.getDefault().getStateLocation().append( "servers-temp.xml" );
     }
 
 
