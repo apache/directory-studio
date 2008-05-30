@@ -407,13 +407,13 @@ public class ApacheDsPluginUtils
     {
         String level = ApacheDsPlugin.getDefault().getPreferenceStore().getString(
             ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL );
-        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
-        {
-            return "INFO";
-        }
-        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
+        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
         {
             return "DEBUG";
+        }
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
+        {
+            return "INFO";
         }
         else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_WARN.equalsIgnoreCase( level ) )
         {

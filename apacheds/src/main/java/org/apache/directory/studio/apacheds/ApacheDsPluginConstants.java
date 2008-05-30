@@ -91,10 +91,10 @@ public interface ApacheDsPluginConstants
 
     /** The Preference ID for the Servers Logs Level setting */
     public static final String PREFS_SERVER_LOGS_LEVEL = "org.apache.directory.studio.apacheds.prefs.serverLogs.level";
-    /** The Preference ID for the Servers Logs Level Info value */
-    public static final String PREFS_SERVER_LOGS_LEVEL_INFO = "info";
     /** The Preference ID for the Servers Logs Level Debug value */
     public static final String PREFS_SERVER_LOGS_LEVEL_DEBUG = "debug";
+    /** The Preference ID for the Servers Logs Level Info value */
+    public static final String PREFS_SERVER_LOGS_LEVEL_INFO = "info";
     /** The Preference ID for the Servers Logs Level Warn value */
     public static final String PREFS_SERVER_LOGS_LEVEL_WARN = "warning";
     /** The Preference ID for the Servers Logs Level Error value */

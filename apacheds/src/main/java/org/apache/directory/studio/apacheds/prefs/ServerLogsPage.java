@@ -110,8 +110,8 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
 
         //  Level Combo
         levelCombo = new Combo( logLevelGroup, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.SIMPLE );
-        levelCombo.add( "Info", 0 );
-        levelCombo.add( "Debug", 1 );
+        levelCombo.add( "Debug", 0 );
+        levelCombo.add( "Info", 1 );
         levelCombo.add( "Warning", 2 );
         levelCombo.add( "Error", 3 );
         levelCombo.add( "Fatal", 4 );
@@ -177,11 +177,11 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
 
         // Level
         String level = store.getString( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL );
-        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
+        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
         {
             levelCombo.select( 0 );
         }
-        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
         {
             levelCombo.select( 1 );
         }
@@ -212,11 +212,11 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
 
         // Level
         String level = store.getDefaultString( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL );
-        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
+        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
         {
             levelCombo.select( 0 );
         }
-        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
         {
             levelCombo.select( 1 );
         }
@@ -254,12 +254,12 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
         if ( level == 0 )
         {
             store.setValue( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL,
-                ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO );
+                ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG );
         }
         else if ( level == 1 )
         {
             store.setValue( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL,
-                ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG );
+                ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO );
         }
         else if ( level == 2 )
         {
