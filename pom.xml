@@ -63,6 +63,7 @@
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.2.0.SNAPSHOT</aciitemeditor.version>
     <apacheds.version>1.2.0.SNAPSHOT</apacheds.version>
+    <apacheds.launcher.version>1.2.0.SNAPSHOT</apacheds.launcher.version>
     <apacheds.configuration.version>1.2.0.SNAPSHOT</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.2.0.SNAPSHOT</apacheds.configuration.feature.version>
     <apacheds.configuration.help.version>1.2.0.SNAPSHOT</apacheds.configuration.help.version>
@@ -1903,6 +1904,7 @@
     <module>apacheds-configuration</module>
     <module>apacheds-configuration-feature</module>
     <module>apacheds-configuration-help</module>
+    <module>apacheds-launcher</module>
     <module>apacheds</module>
     <module>jars</module>
     <module>updatesite</module>
