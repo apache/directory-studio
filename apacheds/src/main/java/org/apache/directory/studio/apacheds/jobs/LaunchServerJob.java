@@ -83,8 +83,11 @@ public class LaunchServerJob extends Job
     /** The minimum port number for the socket server */
     private static final int MIN_PORT = 1024;
 
-    /** The log level */
+    /** The logs level */
     private String logsLevel = "WARN";
+
+    /** The logs pattern */
+    private String logsPattern = "[%d{HH:mm:ss}] %p [%c] - %m%n";
 
 
     /**
@@ -359,7 +362,7 @@ public class LaunchServerJob extends Job
         IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" );
         File confFolder = new File( confFolderPath.toOSString() );
         ApacheDsPluginUtils.createServersLog4jPropertiesFile( new FileOutputStream( new File( confFolder,
-            "log4j.properties" ) ), port, logsLevel );
+            "log4j.properties" ) ), port, logsLevel, logsPattern );
     }
 
 
@@ -492,5 +495,17 @@ public class LaunchServerJob extends Job
     public void setLogsLevel( String logsLevel )
     {
         this.logsLevel = logsLevel;
+    }
+
+
+    /**
+     * Sets the logs pattern.
+     *
+     * @param logsPattern
+     *      the logs pattern
+     */
+    public void setLogsPattern( String logsPattern )
+    {
+        this.logsPattern = logsPattern;
     }
 }

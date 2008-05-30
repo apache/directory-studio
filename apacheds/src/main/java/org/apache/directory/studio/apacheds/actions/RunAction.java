@@ -154,6 +154,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
             // Creating, setting and launching the launch job
             LaunchServerJob job = new LaunchServerJob( server, serverConfiguration );
             job.setLogsLevel( ApacheDsPluginUtils.getServerLogsLevel() );
+            job.setLogsPattern( ApacheDsPluginUtils.getServerLogsPattern() );
             server.setLaunchJob( job );
             job.schedule();
         }

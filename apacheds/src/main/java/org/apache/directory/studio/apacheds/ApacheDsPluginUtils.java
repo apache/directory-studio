@@ -226,7 +226,8 @@ public class ApacheDsPluginUtils
 
             // Creating log4j.properties file
             File log4jPropertiesFile = new File( confFolder, "log4j.properties" );
-            createServersLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024, getServerLogsLevel() ); // Setting 1024 as default port
+            createServersLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024, getServerLogsLevel(), // Setting 1024 as default port
+                getServerLogsPattern() );
 
             // Copying server.xml file
             File serverXmlFile = new File( confFolder, "server.xml" );
@@ -253,10 +254,12 @@ public class ApacheDsPluginUtils
      *      the port
      * @param logsLevel
      *      the logs level
+     * @param logsLevel
+     *      the logs pattern
      * @throws IOException
      *      if an error occurs when writing to the file
      */
-    public static void createServersLog4jPropertiesFile( OutputStream os, int port, String logsLevel )
+    public static void createServersLog4jPropertiesFile( OutputStream os, int port, String logsLevel, String logsPattern )
         throws IOException
     {
         // Creating the file content in a StringBuffer
@@ -277,11 +280,21 @@ public class ApacheDsPluginUtils
         sb.append( "#    See the License for the specific language governing permissions and" ).append( "\n" );
         sb.append( "#    limitations under the License." ).append( "\n" );
         sb.append( "#############################################################################" ).append( "\n" );
-        sb.append( "log4j.rootCategory=" + logsLevel + ", socketAppender" ).append( "\n" );
+        sb.append( "log4j.rootCategory=" + logsLevel + ", socketAppender, rollingFileAppender" ).append( "\n" );
         sb.append( "" ).append( "\n" );
+        sb.append( "# The Socket Appender (used to send the logs to Apache Directory Studio)" ).append( "\n" );
         sb.append( "log4j.appender.socketAppender=org.apache.log4j.net.SocketAppender" ).append( "\n" );
         sb.append( "log4j.appender.socketAppender.RemoteHost=localhost" ).append( "\n" );
         sb.append( "log4j.appender.socketAppender.Port=" ).append( port ).append( "\n" );
+        sb.append( "" ).append( "\n" );
+        sb.append( "# The Rolling File Appender" ).append( "\n" );
+        sb.append( "log4j.appender.rollingFileAppender=org.apache.log4j.RollingFileAppender" ).append( "\n" );
+        sb.append( "log4j.appender.rollingFileAppender.File=${apacheds.log.dir}/apacheds-rolling.log" ).append( "\n" );
+        sb.append( "log4j.appender.rollingFileAppender.MaxFileSize=1024KB" ).append( "\n" );
+        sb.append( "log4j.appender.rollingFileAppender.MaxBackupIndex=5" ).append( "\n" );
+        sb.append( "log4j.appender.rollingFileAppender.layout=org.apache.log4j.PatternLayout" ).append( "\n" );
+        sb.append( "log4j.appender.rollingFileAppender.layout.ConversionPattern=[%d{HH:mm:ss}] %p [%c] - %m%n" )
+            .append( "\n" );
         sb.append( "" ).append( "\n" );
         sb.append( "# with these we'll not get innundated when switching to DEBUG" ).append( "\n" );
         sb.append( "log4j.logger.org.apache.directory.shared.ldap.name=WARN" ).append( "\n" );
