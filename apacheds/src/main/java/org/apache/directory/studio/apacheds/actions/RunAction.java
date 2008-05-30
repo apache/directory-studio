@@ -93,8 +93,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
             try
             {
                 serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream( new File(
-                    ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" )
-                        .append( "server.xml" ).toOSString() ) ) );
+                    ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" ).append(
+                        "server.xml" ).toOSString() ) ) );
             }
             catch ( FileNotFoundException e )
             {
@@ -153,6 +153,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 
             // Creating, setting and launching the launch job
             LaunchServerJob job = new LaunchServerJob( server, serverConfiguration );
+            job.setLogsLevel( ApacheDsPluginUtils.getServerLogsLevel() );
             server.setLaunchJob( job );
             job.schedule();
         }

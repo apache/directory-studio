@@ -58,20 +58,28 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         RGB rgbRed = new RGB( 255, 0, 0 );
         RGB rgbDarkRed = new RGB( 127, 0, 0 );
 
-        // Debug
-        PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_FONT, fontDataItalic );
+        // Colors and Font Debug
+        PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_FONT,
+            fontDataItalic );
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_DEBUG_COLOR, rgbBlue );
-        // Info
-        PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT, fontDataItalic );
+        // Colors and Font Info
+        PreferenceConverter
+            .setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_FONT, fontDataItalic );
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_INFO_COLOR, rgbGreen );
-        // Warn
-        PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT, fontDataNormal );
+        // Colors and Font Warn
+        PreferenceConverter
+            .setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_FONT, fontDataNormal );
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_WARN_COLOR, rgbOrange );
-        // Error
+        // Colors and Font Error
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_FONT, fontDataBold );
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_ERROR_COLOR, rgbRed );
-        // Fatal
+        // Colors and Font Fatal
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_FONT, fontDataBold );
         PreferenceConverter.setDefault( store, ApacheDsPluginConstants.PREFS_COLORS_AND_FONTS_FATAL_COLOR, rgbDarkRed );
+
+        // Server Logs
+        store.setDefault( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL,
+            ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_WARN );
+        store.setDefault( ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN, "[%d{HH:mm:ss}] %p [%c] - %m%n" );
     }
 }

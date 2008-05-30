@@ -226,7 +226,7 @@ public class ApacheDsPluginUtils
 
             // Creating log4j.properties file
             File log4jPropertiesFile = new File( confFolder, "log4j.properties" );
-            createServersLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024 ); // Setting 1024 as default port
+            createServersLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024, getServerLogsLevel() ); // Setting 1024 as default port
 
             // Copying server.xml file
             File serverXmlFile = new File( confFolder, "server.xml" );
@@ -251,10 +251,13 @@ public class ApacheDsPluginUtils
      *      the {@link OutputStream} to write to
      * @param port
      *      the port
+     * @param logsLevel
+     *      the logs level
      * @throws IOException
      *      if an error occurs when writing to the file
      */
-    public static void createServersLog4jPropertiesFile( OutputStream os, int port ) throws IOException
+    public static void createServersLog4jPropertiesFile( OutputStream os, int port, String logsLevel )
+        throws IOException
     {
         // Creating the file content in a StringBuffer
         StringBuffer sb = new StringBuffer();
@@ -274,7 +277,7 @@ public class ApacheDsPluginUtils
         sb.append( "#    See the License for the specific language governing permissions and" ).append( "\n" );
         sb.append( "#    limitations under the License." ).append( "\n" );
         sb.append( "#############################################################################" ).append( "\n" );
-        sb.append( "log4j.rootCategory=WARN, socketAppender" ).append( "\n" );
+        sb.append( "log4j.rootCategory=" + logsLevel + ", socketAppender" ).append( "\n" );
         sb.append( "" ).append( "\n" );
         sb.append( "log4j.appender.socketAppender=org.apache.log4j.net.SocketAppender" ).append( "\n" );
         sb.append( "log4j.appender.socketAppender.RemoteHost=localhost" ).append( "\n" );
@@ -378,5 +381,53 @@ public class ApacheDsPluginUtils
         {
             apacheDsserversFolder.mkdir();
         }
+    }
+
+
+    /**
+     * Gets the server logs level.
+     *
+     * @return
+     *      the server logs level
+     */
+    public static String getServerLogsLevel()
+    {
+        String level = ApacheDsPlugin.getDefault().getPreferenceStore().getString(
+            ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL );
+        if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_INFO.equalsIgnoreCase( level ) )
+        {
+            return "INFO";
+        }
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_DEBUG.equalsIgnoreCase( level ) )
+        {
+            return "DEBUG";
+        }
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_WARN.equalsIgnoreCase( level ) )
+        {
+            return "WARN";
+        }
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_ERROR.equalsIgnoreCase( level ) )
+        {
+            return "ERROR";
+        }
+        else if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_LEVEL_FATAL.equalsIgnoreCase( level ) )
+        {
+            return "FATAL";
+        }
+
+        return "";
+    }
+
+
+    /**
+     * Gets the server logs pattern.
+     *
+     * @return
+     *      the server logs pattern
+     */
+    public static String getServerLogsPattern()
+    {
+        return ApacheDsPlugin.getDefault().getPreferenceStore().getString(
+            ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN );
     }
 }

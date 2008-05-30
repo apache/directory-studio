@@ -25,6 +25,9 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -45,7 +48,31 @@ public class StudioConsoleAppender extends AppenderSkeleton
     public StudioConsoleAppender()
     {
         super();
-        setLayout( new PatternLayout( "[%d{HH:mm:ss}] %p [%c] - %m%n" ) );
+        // We need to set the layout asynchronously to avoid UI thread exception
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                setLayout( new PatternLayout( ApacheDsPluginUtils.getServerLogsPattern() ) );
+            }
+        } );
+        ApacheDsPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( new IPropertyChangeListener()
+        {
+            public void propertyChange( PropertyChangeEvent event )
+            {
+                if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN.equalsIgnoreCase( event.getProperty() ) )
+                {
+                    // We need to set the layout asynchronously to avoid UI thread exception
+                    Display.getDefault().asyncExec( new Runnable()
+                    {
+                        public void run()
+                        {
+                            setLayout( new PatternLayout( ApacheDsPluginUtils.getServerLogsPattern() ) );
+                        }
+                    } );
+                }
+            }
+        } );
     }
 
 
@@ -91,8 +118,7 @@ public class StudioConsoleAppender extends AppenderSkeleton
      */
     public void close()
     {
-        // TODO Auto-generated method stub
-
+        // Nothing to do
     }
 
 
@@ -101,7 +127,6 @@ public class StudioConsoleAppender extends AppenderSkeleton
      */
     public boolean requiresLayout()
     {
-        // TODO Auto-generated method stub
         return false;
     }
 

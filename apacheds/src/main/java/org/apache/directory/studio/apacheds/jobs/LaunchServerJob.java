@@ -83,6 +83,9 @@ public class LaunchServerJob extends Job
     /** The minimum port number for the socket server */
     private static final int MIN_PORT = 1024;
 
+    /** The log level */
+    private String logsLevel = "WARN";
+
 
     /**
      * Creates a new instance of LaunchServerJob.
@@ -356,7 +359,7 @@ public class LaunchServerJob extends Job
         IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" );
         File confFolder = new File( confFolderPath.toOSString() );
         ApacheDsPluginUtils.createServersLog4jPropertiesFile( new FileOutputStream( new File( confFolder,
-            "log4j.properties" ) ), port );
+            "log4j.properties" ) ), port, logsLevel );
     }
 
 
@@ -477,5 +480,17 @@ public class LaunchServerJob extends Job
     public ILaunch getLaunch()
     {
         return launch;
+    }
+
+
+    /**
+     * Sets the logs level.
+     *
+     * @param logsLevel
+     *      the logs level
+     */
+    public void setLogsLevel( String logsLevel )
+    {
+        this.logsLevel = logsLevel;
     }
 }
