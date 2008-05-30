@@ -220,10 +220,6 @@ public class ApacheDsPluginUtils
         // Copying default configuration files
         try
         {
-            // Copying apacheds.conf file
-            File apachedsConfFile = new File( confFolder, "apacheds.conf" );
-            copyConfigurationFile( "apacheds.conf", apachedsConfFile );
-
             // Creating log4j.properties file
             File log4jPropertiesFile = new File( confFolder, "log4j.properties" );
             createServersLog4jPropertiesFile( new FileOutputStream( log4jPropertiesFile ), 1024, getServerLogsLevel(), // Setting 1024 as default port
