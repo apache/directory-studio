@@ -40,9 +40,9 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev: 596797 $
  */
-public class ServerInstance implements DaemonApplication
+public class Service implements DaemonApplication
 {
-    private static final Logger LOG = LoggerFactory.getLogger( ServerInstance.class );
+    private static final Logger LOG = LoggerFactory.getLogger( Service.class );
     private Thread workerThread;
     private SynchWorker worker = new SynchWorker();
     private ApacheDS apacheDS;
