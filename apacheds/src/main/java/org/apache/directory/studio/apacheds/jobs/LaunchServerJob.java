@@ -371,99 +371,75 @@ public class LaunchServerJob extends Job
      */
     private void launchApacheDS()
     {
-        // Getting the default VM installation
-        IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-
-        // Creating a new editable launch configuration
-        ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-        ILaunchConfigurationType type = manager
-            .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-        ILaunchConfigurationWorkingCopy workingCopy = null;
         try
         {
-            workingCopy = type.newInstance( null, "Starting " + server.getName() );
-        }
-        catch ( CoreException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            // Getting the default VM installation
+            IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
 
-        // Setting the JRE container path attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
-            .getInstallLocation().toString() );
+            // Creating a new editable launch configuration
+            ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType(
+                IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
+            ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, "Starting " + server.getName() );
 
-        // Setting the main type attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-            "org.apache.directory.studio.apacheds.Launcher" );
+            // Setting the JRE container path attribute
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
+                .getInstallLocation().toString() );
 
-        // Creating the classpath list
-        List classpath = new ArrayList();
-        IPath apacheDsLibrariesFolder = ApacheDsPluginUtils.getApacheDsLibrariesFolder();
-        for ( String library : ApacheDsPluginUtils.apachedsLibraries )
-        {
-            IPath libraryPath = apacheDsLibrariesFolder.append( library );
-            IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime.newArchiveRuntimeClasspathEntry( libraryPath );
-            libraryClasspathEntry.setClasspathProperty( IRuntimeClasspathEntry.USER_CLASSES );
-            try
+            // Setting the main type attribute
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
+                "org.apache.directory.studio.apacheds.Launcher" );
+
+            // Creating the classpath list
+            List<String> classpath = new ArrayList<String>();
+            IPath apacheDsLibrariesFolder = ApacheDsPluginUtils.getApacheDsLibrariesFolder();
+            for ( String library : ApacheDsPluginUtils.apachedsLibraries )
             {
+                IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime
+                    .newArchiveRuntimeClasspathEntry( apacheDsLibrariesFolder.append( library ) );
+                libraryClasspathEntry.setClasspathProperty( IRuntimeClasspathEntry.USER_CLASSES );
+
                 classpath.add( libraryClasspathEntry.getMemento() );
             }
-            catch ( CoreException e )
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
 
-        // Setting the classpath type attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath );
-        workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
+            // Setting the classpath type attribute
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath );
 
-        // Setting the default classpath type attribute to false
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
+            // Setting the default classpath type attribute to false
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
 
-        // Useful paths
-        IPath serversFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder();
-        IPath serverFolderPath = serversFolderPath.append( server.getId() );
+            // The server folder path
+            IPath serverFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() );
 
-        // Setting the program arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverFolderPath
-            .toOSString() );
+            // Setting the program arguments attribute
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverFolderPath
+                .toOSString() );
 
-        // Creating the VM arguments string
-        StringBuffer vmArguments = new StringBuffer();
-        vmArguments.append( "-Dlog4j.configuration=file:"
-            + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() );
-        vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" );
-        vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" );
-        vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" );
-        vmArguments.append( " " );
-        vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" );
+            // Creating the VM arguments string
+            StringBuffer vmArguments = new StringBuffer();
+            vmArguments.append( "-Dlog4j.configuration=file:"
+                + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() );
+            vmArguments.append( " " );
+            vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" );
+            vmArguments.append( " " );
+            vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" );
+            vmArguments.append( " " );
+            vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" );
+            vmArguments.append( " " );
+            vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" );
 
-        // Setting the VM arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
+            // Setting the VM arguments attribute
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
 
-        workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
+            // Setting the launch configuration as private
+            workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
 
-        // Saving to a launch configuration
-        ILaunchConfiguration configuration = null;
-        try
-        {
-            configuration = workingCopy.doSave();
-        }
-        catch ( CoreException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            // Indicating that we don't want any console to show up
+            workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
 
-        // Launching the launch configuration
-        try
-        {
+            // Saving the launch configuration
+            ILaunchConfiguration configuration = workingCopy.doSave();
+
+            // Launching the launch configuration
             launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
         }
         catch ( CoreException e )
