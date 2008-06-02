@@ -62,9 +62,10 @@
   <properties>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.2.0.SNAPSHOT</aciitemeditor.version>
+    <apacheds.launcher.version>1.2.0</apacheds.launcher.version>
     <apacheds.version>1.2.0.SNAPSHOT</apacheds.version>
     <apacheds.help.version>1.2.0.SNAPSHOT</apacheds.help.version>
-    <apacheds.launcher.version>1.2.0</apacheds.launcher.version>
+    <apacheds.feature.version>1.2.0.SNAPSHOT</apacheds.feature.version>
     <apacheds.configuration.version>1.2.0.SNAPSHOT</apacheds.configuration.version>
     <apacheds.configuration.feature.version>1.2.0.SNAPSHOT</apacheds.configuration.feature.version>
     <apacheds.configuration.help.version>1.2.0.SNAPSHOT</apacheds.configuration.help.version>
@@ -1562,6 +1563,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
+        <artifactId>apacheds.feature</artifactId>
+        <version>${apacheds.feature.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
         <artifactId>schemaeditor.help</artifactId>
         <version>${schemaeditor.help.version}</version>
       </dependency>
@@ -1918,6 +1924,7 @@
     <module>apacheds-launcher</module>
     <module>apacheds</module>
     <module>apacheds-help</module>
+    <module>apacheds-feature</module>
     <module>jars</module>
     <module>updatesite</module>
     <module>studio</module>

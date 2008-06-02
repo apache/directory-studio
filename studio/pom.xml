@@ -1276,6 +1276,10 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds.configuration.feature</artifactId>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.feature</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
