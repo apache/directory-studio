@@ -34,9 +34,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
+import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 
 
 /**
@@ -274,16 +273,19 @@ public class ServersHandler
                     }
                     catch ( FileNotFoundException e )
                     {
-                        reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                        ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n"
+                            + e.getMessage() );
                     }
                     catch ( ServersHandlerIOException e )
                     {
-                        reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                        ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n"
+                            + e.getMessage() );
                     }
                 }
                 else
                 {
-                    reportError( "An error occured when loading the servers.\n\n" + exceptionMessage );
+                    ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n"
+                        + exceptionMessage );
                 }
             }
         }
@@ -331,29 +333,13 @@ public class ServersHandler
             }
             catch ( FileNotFoundException e )
             {
-                reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
             }
             catch ( IOException e )
             {
-                reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
             }
         }
-    }
-
-
-    /**
-     * Reports an error.
-     *
-     * @param message
-     *      the message
-     */
-    private void reportError( String message )
-    {
-
-        MessageDialog dialog = new MessageDialog( ApacheDsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
-            .getShell(), "Error!", null, message, MessageDialog.ERROR, new String[]
-            { IDialogConstants.OK_LABEL }, MessageDialog.OK );
-        dialog.open();
     }
 
 

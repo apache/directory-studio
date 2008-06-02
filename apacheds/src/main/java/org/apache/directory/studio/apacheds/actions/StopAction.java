@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
+import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.ConsolesHandler;
 import org.apache.directory.studio.apacheds.LogMessageConsole;
 import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
@@ -101,8 +102,8 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                     }
                     catch ( DebugException e )
                     {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        ApacheDsPluginUtils.reportError( "An error occurred when stopping the server.\n\n"
+                            + e.getMessage() );
                     }
                 }
             }
@@ -129,8 +130,9 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                 }
                 catch ( IOException e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    ApacheDsPluginUtils
+                        .reportError( "An error occurred when writing to the Info console message stream.\n\n"
+                            + e.getMessage() );
                 }
             }
         } );

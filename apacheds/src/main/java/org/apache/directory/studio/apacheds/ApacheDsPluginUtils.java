@@ -30,6 +30,8 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 
 /**
@@ -109,8 +111,9 @@ public class ApacheDsPluginUtils
                 }
                 catch ( IOException e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    ApacheDsPluginUtils.reportError( "An error occurred when copying the library '"
+                        + apachedsLibraryFilename + "' to the location '" + apachedsLibrary.getAbsolutePath()
+                        + "'.\n\n" + e.getMessage() );
                 }
             }
         }
@@ -235,8 +238,9 @@ public class ApacheDsPluginUtils
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            ApacheDsPluginUtils
+                .reportError( "An error occurred when copying the default configuration files to the server's folder '"
+                    + serverFolder.getAbsolutePath() + "'.\n\n" + e.getMessage() );
         }
     }
 
@@ -438,5 +442,21 @@ public class ApacheDsPluginUtils
     {
         return ApacheDsPlugin.getDefault().getPreferenceStore().getString(
             ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN );
+    }
+
+
+    /**
+     * Reports an error.
+     *
+     * @param message
+     *      the message
+     */
+    public static void reportError( String message )
+    {
+
+        MessageDialog dialog = new MessageDialog( ApacheDsPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow()
+            .getShell(), "Error!", null, message, MessageDialog.ERROR, new String[]
+            { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+        dialog.open();
     }
 }

@@ -130,10 +130,11 @@ public class LaunchServerJob extends Job
         {
             overwriteServersLog4jPropertiesFile( port );
         }
-        catch ( IOException e1 )
+        catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            ApacheDsPluginUtils
+                .reportError( "An error occurred when overwriting the server's log4j.properties file.\n\n"
+                    + e.getMessage() );
         }
 
         // Launching Apache DS
@@ -252,8 +253,9 @@ public class LaunchServerJob extends Job
                 }
                 catch ( IOException e )
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    ApacheDsPluginUtils
+                        .reportError( "An error occurred when writing to the Info console message stream.\n\n"
+                            + e.getMessage() );
                 }
             }
         } );
@@ -444,8 +446,7 @@ public class LaunchServerJob extends Job
         }
         catch ( CoreException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            ApacheDsPluginUtils.reportError( "An error occurred when launching the server.\n\n" + e.getMessage() );
         }
     }
 

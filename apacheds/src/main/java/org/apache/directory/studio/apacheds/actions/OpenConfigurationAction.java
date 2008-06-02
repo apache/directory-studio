@@ -91,7 +91,9 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
             }
             catch ( PartInitException e )
             {
-                // TODO
+                ApacheDsPluginUtils
+                    .reportError( "An error occurred when opening the Apache DS Configuration Editor.\n\n"
+                        + e.getMessage() );
             }
         }
     }
