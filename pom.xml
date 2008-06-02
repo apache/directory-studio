@@ -1720,7 +1720,7 @@
       <dependency>
         <groupId>org.eclipse.debug</groupId>
         <artifactId>ui</artifactId>
-        <version>3.3.2.v20080117_r332</version>
+        <version>3.3.2.v20080117_r332-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
