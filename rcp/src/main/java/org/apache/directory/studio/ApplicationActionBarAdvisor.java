@@ -374,6 +374,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         // add main tool bar
         IToolBarManager toolbar = new ToolBarManager( SWT.FLAT | SWT.RIGHT );
         toolbar.add( newDropDownAction );
+        toolbar.add( saveAction );
+        toolbar.add( printAction );
         toolbar.add( preferencesAction );
         coolBar.add( new ToolBarContributionItem( toolbar, Application.PLUGIN_ID + ".toolbar" ) ); //$NON-NLS-1$
 
