@@ -18,6 +18,10 @@
 -->
 <chapter id="gettingstarted">
 	<title>Getting started</title>
+	<para>
+		This part of the guide provides you a sum up of the basic
+		concepts of the Apache DS plugin.
+	</para>
 
 	&gettingstarted_download_install;
 	&gettingstarted_views;

@@ -18,5 +18,136 @@
 -->
 <chapter id="gettingstarted_download_install">
 	<title>Download and installation</title>
-
+	<para>
+		Beside the integration in Apache Directory Studio the Apache
+		Directory Studio Apache DS plugin can also be installed as a
+		plug-in into a regular Eclipse installation. This section
+		describes this alternative.
+	</para>
+	<para>
+		Using the Eclipse Install/Update Manager is the easiest way to
+		install the Apache Directory Studio Apache DS plug-in. From
+		workbench menu choose
+		<emphasis role="strong">
+			<menuchoice>
+				<guimenu>Help</guimenu>
+				<guisubmenu>Software Updates</guisubmenu>
+				<guimenuitem>Find and Install...</guimenuitem>
+			</menuchoice>
+		</emphasis>
+		.
+	</para>
+	<para>
+		In the opened wizard choose
+		<emphasis role="strong">
+			Search for new features to install
+		</emphasis>
+		and click
+		<emphasis role="strong">Next</emphasis>
+		.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_1.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Next please specify the Apache Directory Studio update site.
+		Click the
+		<emphasis role="strong">New Remote Site...</emphasis>
+		button. In the dialog input the following and press
+		<emphasis role="strong">OK</emphasis>
+		:
+		<itemizedlist>
+			<listitem>
+				Name: Apache Directory Studio Update Site
+			</listitem>
+			<listitem>
+				URL: http://directory.apache.org/studio/update/1.x
+			</listitem>
+		</itemizedlist>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_2.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Make sure the new update site is checked an press
+		<emphasis role="strong">Finish</emphasis>
+		.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_3.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Now the install manager checks the update site and presents the
+		search results. Select the feature you want to install - of
+		course the Apache Directory Studio Apache DS - and click
+		<emphasis role="strong">Next</emphasis>
+		.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_4.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Accept the license agreement, the Apache Directory Studio Apache
+		DS plugin is distributed under the Apache License, Version 2.0.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_5.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		In the next dialog ensure that the Apache Directory Studio
+		Apache DS feature is selected and click to
+		<emphasis role="strong">Finish</emphasis>
+		.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_6.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Now the install manager loads the necessary files. When download
+		is finished you have to verify the installation, please click to
+		<emphasis role="strong">Install</emphasis>
+		.
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/install_7.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		After installation it is recommended to restart the Eclipse
+		workbench.
+	</para>
 </chapter>
