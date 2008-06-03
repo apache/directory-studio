@@ -19,7 +19,7 @@
 <chapter id="reference_preferences">
 	<title>Preferences</title>
 
-	&reference_preferences_colors_and_font;
+	&reference_preferences_colors_and_fonts;
 	&reference_preferences_server_logs;
 
 </chapter>

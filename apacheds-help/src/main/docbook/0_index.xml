@@ -15,7 +15,7 @@
   <!ENTITY tasks_deleting_server SYSTEM "2.5_deleting_server.xml">
   <!ENTITY reference SYSTEM "3_reference.xml">
   <!ENTITY reference_preferences SYSTEM "3.1_preferences.xml">
-  <!ENTITY reference_preferences_colors_and_font SYSTEM "3.1.1_preferences_colors_and_font.xml">
+  <!ENTITY reference_preferences_colors_and_fonts SYSTEM "3.1.1_preferences_colors_and_fonts.xml">
   <!ENTITY reference_preferences_server_logs SYSTEM "3.1.2_preferences_server_logs.xml">
   <!ENTITY releasenotes SYSTEM "4_releasenotes.xml">
 

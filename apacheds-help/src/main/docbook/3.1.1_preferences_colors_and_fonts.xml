@@ -16,7 +16,27 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="reference_preferences_colors_and_font">
-	<title>Colors and Font preferences</title>
-
+<chapter id="reference_preferences_colors_and_fonts">
+	<title>Colors and Fonts preferences</title>
+	<para>
+		In the Colors and Fonts preferences page you can configure
+		colors and fonts options in the Apache DS plugin.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/reference_preferences_colors_and_fonts.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		In the
+		<emphasis role="strong">Console</emphasis>
+		group you can define the style how the logs of the server logs
+		are displayed within the Console view.
+	</para>
 </chapter>
