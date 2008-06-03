@@ -16,12 +16,14 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="tasks">
-	<title>Tasks</title>
-
-	&tasks_creating_new_server;
-	&tasks_starting_server;
-	&tasks_stopping_server;
-	&tasks_editing_configuration;
-
+<chapter id="tasks_editing_configuration">
+	<title>Editing the configuration</title>
+	<para>
+		To edit the configuration of a server, in the Servers view,
+		select the server and double-click on it, click the
+		<emphasis role="strong">Open Configuration</emphasis>
+		action in the context menu, or use the
+		<emphasis role="strong">F3</emphasis>
+		shortcut.
+	</para>
 </chapter>

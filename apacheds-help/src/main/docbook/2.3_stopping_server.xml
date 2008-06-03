@@ -18,5 +18,16 @@
 -->
 <chapter id="tasks_stopping_server">
 	<title>Stopping a server</title>
-
+	<para>
+		To stop a server, in the Servers view, select the server you
+		want to stop and click the
+		<imageobject>
+			<imagedata contentdepth="1em"
+				fileref="images/icons_stop.gif" format="GIF" />
+		</imageobject>
+		<emphasis role="strong">Stop</emphasis>
+		button in the toolbar, or use the
+		<emphasis role="strong">Strg-T</emphasis>
+		shortcut.
+	</para>
 </chapter>

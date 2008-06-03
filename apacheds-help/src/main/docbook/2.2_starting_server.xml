@@ -18,5 +18,16 @@
 -->
 <chapter id="tasks_starting_server">
 	<title>Starting a server</title>
-
+	<para>
+		To start a server, in the Servers view, select the server you
+		want to start and click the
+		<imageobject>
+			<imagedata contentdepth="1em" fileref="images/icons_run.gif"
+				format="GIF" />
+		</imageobject>
+		<emphasis role="strong">Run</emphasis>
+		button in the toolbar, or use the
+		<emphasis role="strong">Strg-R</emphasis>
+		shortcut.
+	</para>
 </chapter>
