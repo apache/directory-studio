@@ -12,6 +12,7 @@
   <!ENTITY tasks_starting_server SYSTEM "2.2_starting_server.xml">
   <!ENTITY tasks_stopping_server SYSTEM "2.3_stopping_server.xml">
   <!ENTITY tasks_editing_configuration SYSTEM "2.4_editing_configuration.xml">
+  <!ENTITY tasks_deleting_server SYSTEM "2.5_deleting_server.xml">
   <!ENTITY reference SYSTEM "3_reference.xml">
   <!ENTITY reference_preferences SYSTEM "3.1_preferences.xml">
   <!ENTITY reference_preferences_colors_and_font SYSTEM "3.1.1_preferences_colors_and_font.xml">

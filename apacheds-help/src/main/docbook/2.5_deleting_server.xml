@@ -16,13 +16,18 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="tasks">
-	<title>Tasks</title>
-
-	&tasks_creating_new_server;
-	&tasks_starting_server;
-	&tasks_stopping_server;
-	&tasks_editing_configuration;
-	&tasks_deleting_server;
-
+<chapter id="tasks_deleting_server">
+	<title>Deleting a server</title>
+	<para>
+		To delete a server, in the Servers view, select the server you
+		want to delete and click the
+		<imageobject>
+			<imagedata contentdepth="1em"
+				fileref="images/icons_delete.gif" format="GIF" />
+		</imageobject>
+		<emphasis role="strong">Delete</emphasis>
+		action in the context menu, or use the
+		<emphasis role="strong">Delete</emphasis>
+		shortcut.
+	</para>
 </chapter>
