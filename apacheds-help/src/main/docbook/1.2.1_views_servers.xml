@@ -18,5 +18,184 @@
 -->
 <chapter id="gettingstarted_views_servers">
 	<title>Servers view</title>
+	<para>
+		The Servers view allows you to manage the servers. This view
+		displays a list of all your servers. You can use this view to
+		start or stop the servers.
+	</para>
+	<para>
+		Here is what the Servers view looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/views_servers-view.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		Use the Servers view to perform the following tasks:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>Create a server</listitem>
+			<listitem>Edit a server</listitem>
+			<listitem>Delete a server</listitem>
+			<listitem>Start a server</listitem>
+			<listitem>Stop a server</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		The Servers view displays the current status of all the servers.
+		The
+		<emphasis role="strong">Status</emphasis>
+		column indicates whether or not a server has been started. The
+		following lists the possible server status:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>Starting</listitem>
+			<listitem>Started</listitem>
+			<listitem>Stopping</listitem>
+			<listitem>Stopped</listitem>
+		</itemizedlist>
+	</para>
 
+
+
+	<para>
+		<emphasis role="strong">Toolbar</emphasis>
+	</para>
+	<para>
+		The toolbar of the Servers view contains the following actions:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/gettingstarted/icons_server_new.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Create a new server</emphasis>
+				: Creates a new server.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/gettingstarted/icons_run.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Run</emphasis>
+				: Starts the selected server.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata contentdepth="1em"
+						fileref="images/gettingstarted/icons_stop.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Stop</emphasis>
+				: Stops the selected server.
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		<emphasis role="strong">Icons</emphasis>
+	</para>
+	<para>The following icons can appear in the Hierarchy view:</para>
+	<para>
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colname="Icon" colwidth="1* " />
+				<colspec colname="Description" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Server</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_starting1.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_starting2.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_starting3.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Starting server</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_started.gif" format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Started server</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_stopping1.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_stopping2.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_stopping3.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Stopping server</entry>
+					</row>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/icons_server_stopped.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Stopped server</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
 </chapter>
