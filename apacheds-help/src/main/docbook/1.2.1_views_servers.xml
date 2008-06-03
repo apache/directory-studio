@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="gettingstarted_views_servers">
+<section id="gettingstarted_views_servers">
 	<title>Servers view</title>
 	<para>
 		The Servers view allows you to manage the servers. This view
@@ -200,4 +200,4 @@
 			</tgroup>
 		</informaltable>
 	</para>
-</chapter>
+</section>

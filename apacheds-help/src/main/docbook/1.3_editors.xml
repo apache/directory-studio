@@ -16,9 +16,9 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="gettingstarted_editors">
+<section id="gettingstarted_editors">
 	<title>Editors</title>
 
 	&gettingstarted_editors_apacheds_configuration;
 
-</chapter>
+</section>

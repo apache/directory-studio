@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="gettingstarted_download_install">
+<section id="gettingstarted_download_install">
 	<title>Download and installation</title>
 	<para>
 		Beside the integration in Apache Directory Studio the Apache
@@ -150,4 +150,4 @@
 		After installation it is recommended to restart the Eclipse
 		workbench.
 	</para>
-</chapter>
+</section>

@@ -16,10 +16,10 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="releasenotes">
+<section id="releasenotes">
 	<title>Release Notes</title>
 	<simplesect>
 		<title>Version 1.2.0 - (2007, XXXXXX XXxx)</title>
 		<para>Initial release.</para>
 	</simplesect>
-</chapter>
+</section>

@@ -16,9 +16,9 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="gettingstarted_views">
+<section id="gettingstarted_views">
 	<title>Views</title>
 
 	&gettingstarted_views_servers;
 
-</chapter>
+</section>

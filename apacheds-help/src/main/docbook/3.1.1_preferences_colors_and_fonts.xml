@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="reference_preferences_colors_and_fonts">
+<section id="reference_preferences_colors_and_fonts">
 	<title>Colors and Fonts preferences</title>
 	<para>
 		In the Colors and Fonts preferences page you can configure
@@ -39,4 +39,4 @@
 		group you can define the style how the logs of the server logs
 		are displayed within the Console view.
 	</para>
-</chapter>
+</section>

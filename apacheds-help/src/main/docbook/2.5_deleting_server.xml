@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="tasks_deleting_server">
+<section id="tasks_deleting_server">
 	<title>Deleting a server</title>
 	<para>
 		To delete a server, in the Servers view, select the server you
@@ -30,4 +30,4 @@
 		<emphasis role="strong">Delete</emphasis>
 		shortcut.
 	</para>
-</chapter>
+</section>

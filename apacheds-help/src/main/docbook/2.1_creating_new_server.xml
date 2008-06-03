@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="tasks_creating_new_server">
+<section id="tasks_creating_new_server">
 	<title>Creating a new server</title>
 	<para>
 		To create a new server, in the Servers view toolbar, click on
@@ -69,4 +69,4 @@
 			</tgroup>
 		</informaltable>
 	</para>
-</chapter>
+</section>

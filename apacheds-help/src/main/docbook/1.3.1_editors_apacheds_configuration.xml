@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="gettingstarted_editors_apacheds_configuration">
+<section id="gettingstarted_editors_apacheds_configuration">
 	<title>Apache DS Configuration editor</title>
 	<para>
 		The Apache DS Configuration editor is used to edit the
@@ -39,4 +39,4 @@
 		editor please refer you to the specific help contents of the
 		Apache DS Configuration feature.
 	</para>
-</chapter>
+</section>

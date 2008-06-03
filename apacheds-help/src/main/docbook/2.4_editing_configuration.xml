@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="tasks_editing_configuration">
+<section id="tasks_editing_configuration">
 	<title>Editing the configuration</title>
 	<para>
 		To edit the configuration of a server, in the Servers view,
@@ -26,4 +26,4 @@
 		<emphasis role="strong">F3</emphasis>
 		shortcut.
 	</para>
-</chapter>
+</section>

@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="reference_preferences_server_logs">
+<section id="reference_preferences_server_logs">
 	<title>Server Logs preferences</title>
 	<para>
 		In the Server Logs preferences page you can configure general
@@ -78,4 +78,4 @@
 			</tgroup>
 		</informaltable>
 	</para>
-</chapter>
+</section>

@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<chapter id="tasks_stopping_server">
+<section id="tasks_stopping_server">
 	<title>Stopping a server</title>
 	<para>
 		To stop a server, in the Servers view, select the server you
@@ -30,4 +30,4 @@
 		<emphasis role="strong">Strg-T</emphasis>
 		shortcut.
 	</para>
-</chapter>
+</section>
