@@ -29,7 +29,8 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/views_servers-view.png" format="PNG" />
+						fileref="images/gettingstarted/views_servers-view.png"
+						format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -57,9 +58,6 @@
 			<listitem>Stopped</listitem>
 		</itemizedlist>
 	</para>
-
-
-
 	<para>
 		<emphasis role="strong">Toolbar</emphasis>
 	</para>
@@ -127,19 +125,22 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_starting1.gif" format="GIF" />
+										fileref="images/gettingstarted/icons_server_starting1.gif"
+										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_starting2.gif" format="GIF" />
+										fileref="images/gettingstarted/icons_server_starting2.gif"
+										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_starting3.gif" format="GIF" />
+										fileref="images/gettingstarted/icons_server_starting3.gif"
+										format="GIF" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -150,7 +151,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_started.gif" format="GIF" />
+										fileref="images/gettingstarted/icons_server_started.gif"
+										format="GIF" />
 								</imageobject>
 							</mediaobject>
 						</entry>

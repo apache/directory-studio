@@ -18,5 +18,25 @@
 -->
 <chapter id="gettingstarted_editors_apacheds_configuration">
 	<title>Apache DS Configuration editor</title>
-
+	<para>
+		The Apache DS Configuration editor is used to edit the
+		configuration of a server.
+	</para>
+	<para>
+		Here is what the Apache DS Configuration editor looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editors_apacheds_configuration.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		For additional information about the Apache DS Configuration
+		editor please refer you to the specific help contents of the
+		Apache DS Configuration feature.
+	</para>
 </chapter>
