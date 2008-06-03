@@ -18,6 +18,10 @@
        id="org.apache.directory.studio.schemaeditor.feature" version="${schemaeditor.feature.version}">
       <category name="Apache Directory Studio Schema Editor"/>
    </feature>
+   <feature url="features/org.apache.directory.studio.apacheds.feature_${apacheds.feature.version}.jar"
+       id="org.apache.directory.studio.apacheds.feature" version="${apacheds.feature.version}">
+      <category name="Apache Directory Studio Apache DS"/>
+   </feature>
    <feature url="features/org.apache.directory.studio.apacheds.configuration.feature_${apacheds.configuration.feature.version}.jar"
        id="org.apache.directory.studio.apacheds.configuration.feature" version="${apacheds.configuration.feature.version}">
       <category name="Apache Directory Studio Apache DS"/>

@@ -166,6 +166,14 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>schemaeditor.help</artifactId>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds</artifactId>
+                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -197,6 +205,10 @@
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>schemaeditor.feature</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.feature</artifactId>
                 </artifactItem>
               </artifactItems>
             </configuration>
