@@ -29,7 +29,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/views_servers-view.png"
+						fileref="images/views_servers-view.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -67,7 +67,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata contentdepth="1em"
-						fileref="images/gettingstarted/icons_server_new.gif" format="GIF" />
+						fileref="images/icons_server_new.gif" format="GIF" />
 				</imageobject>
 				-
 				<emphasis>Create a new server</emphasis>
@@ -76,7 +76,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata contentdepth="1em"
-						fileref="images/gettingstarted/icons_run.gif" format="GIF" />
+						fileref="images/icons_run.gif" format="GIF" />
 				</imageobject>
 				-
 				<emphasis>Run</emphasis>
@@ -85,7 +85,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata contentdepth="1em"
-						fileref="images/gettingstarted/icons_stop.gif" format="GIF" />
+						fileref="images/icons_stop.gif" format="GIF" />
 				</imageobject>
 				-
 				<emphasis>Stop</emphasis>
@@ -114,7 +114,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server.gif" format="GIF" />
+										fileref="images/icons_server.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -125,21 +125,21 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_starting1.gif"
+										fileref="images/icons_server_starting1.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_starting2.gif"
+										fileref="images/icons_server_starting2.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_starting3.gif"
+										fileref="images/icons_server_starting3.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -151,7 +151,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_started.gif"
+										fileref="images/icons_server_started.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -163,21 +163,21 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_stopping1.gif"
+										fileref="images/icons_server_stopping1.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_stopping2.gif"
+										fileref="images/icons_server_stopping2.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_stopping3.gif"
+										fileref="images/icons_server_stopping3.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -189,7 +189,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata contentdepth="1em"
-										fileref="images/gettingstarted/icons_server_stopped.gif"
+										fileref="images/icons_server_stopped.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>

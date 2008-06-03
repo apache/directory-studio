@@ -49,7 +49,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_1.png" format="PNG" />
+						fileref="images/install_1.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -73,7 +73,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_2.png" format="PNG" />
+						fileref="images/install_2.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -86,7 +86,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_3.png" format="PNG" />
+						fileref="images/install_3.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -101,7 +101,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_4.png" format="PNG" />
+						fileref="images/install_4.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -113,7 +113,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_5.png" format="PNG" />
+						fileref="images/install_5.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -127,7 +127,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_6.png" format="PNG" />
+						fileref="images/install_6.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
@@ -141,7 +141,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/install_7.png" format="PNG" />
+						fileref="images/install_7.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
