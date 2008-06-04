@@ -576,7 +576,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         binaryAttributesTableViewer.setInput( binaryAttributes );
 
         // LDAP Protocol
-        enableLdapCheckbox.setSelection( true );
+        enableLdapCheckbox.setSelection( configuration.isEnableLdap() );
         ldapPortText.setEnabled( enableLdapCheckbox.getSelection() );
         ldapPortText.setText( "" + configuration.getLdapPort() );
 
@@ -871,7 +871,8 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         configuration.setPassword( passwordText.getText() );
 
         configuration.setBinaryAttributes( binaryAttributes );
-
+        
+        configuration.setEnableLdap( enableLdapCheckbox.getSelection() );
         configuration.setLdapPort( Integer.parseInt( ldapPortText.getText() ) );
         configuration.setEnableLdaps( enableLdapsCheckbox.getSelection() );
         configuration.setLdapsPort( Integer.parseInt( ldapsPortText.getText() ) );

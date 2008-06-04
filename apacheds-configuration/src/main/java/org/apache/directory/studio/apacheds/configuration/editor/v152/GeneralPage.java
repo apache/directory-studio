@@ -384,7 +384,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
             .getServerConfiguration();
 
         // LDAP Protocol
-        enableLdapCheckbox.setSelection( true );
+        enableLdapCheckbox.setSelection( configuration.isEnableLdap() );
         ldapPortText.setEnabled( enableLdapCheckbox.getSelection() );
         ldapPortText.setText( "" + configuration.getLdapPort() );
 
@@ -542,6 +542,7 @@ public class GeneralPage extends FormPage implements SaveableFormPage
         ServerConfigurationV152 configuration = ( ServerConfigurationV152 ) ( ( ServerConfigurationEditor ) getEditor() )
             .getServerConfiguration();
 
+        configuration.setEnableLdap( enableLdapCheckbox.getSelection() );
         configuration.setLdapPort( Integer.parseInt( ldapPortText.getText() ) );
         configuration.setEnableLdaps( enableLdapsCheckbox.getSelection() );
         configuration.setLdapsPort( Integer.parseInt( ldapsPortText.getText() ) );

@@ -38,6 +38,9 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 {
     // LDAP Configuration
 
+    /** The flag for Enable LDAP */
+    private boolean enableLdap;
+
     /** The port */
     private int ldapPort;
 
@@ -558,6 +561,18 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
 
 
     /**
+     * Gets the Enable LDAP flag.
+     *
+     * @return
+     *      true if LDAP is enabled
+     */
+    public boolean isEnableLdap()
+    {
+        return enableLdap;
+    }
+
+
+    /**
      * Gets the Enable LDAPS flag.
      *
      * @return
@@ -770,6 +785,18 @@ public class ServerConfigurationV152 extends AbstractServerConfiguration impleme
     public void setEnableLdaps( boolean enableLdaps )
     {
         this.enableLdaps = enableLdaps;
+    }
+
+
+    /**
+     * Sets the Enable LDAP flag.
+     *
+     * @param enableLdap
+     *      the new value
+     */
+    public void setEnableLdap( boolean enableLdap )
+    {
+        this.enableLdap = enableLdap;
     }
 
 
