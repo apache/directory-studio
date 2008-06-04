@@ -21,6 +21,7 @@ package org.apache.directory.studio.apacheds.views;
 
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
+import org.apache.directory.studio.apacheds.actions.CreateConnectionAction;
 import org.apache.directory.studio.apacheds.actions.DeleteAction;
 import org.apache.directory.studio.apacheds.actions.NewServerAction;
 import org.apache.directory.studio.apacheds.actions.OpenConfigurationAction;
@@ -98,6 +99,7 @@ public class ServersView extends ViewPart
     private RenameAction rename;
     private RunAction run;
     private StopAction stop;
+    private CreateConnectionAction createConnection;
     private PropertiesAction properties;
 
     // Listeners
@@ -266,6 +268,9 @@ public class ServersView extends ViewPart
         stop = new StopAction( this );
         stop.setEnabled( false );
 
+        createConnection = new CreateConnectionAction( this );
+        createConnection.setEnabled( false );
+
         properties = new PropertiesAction( this );
         properties.setEnabled( false );
     }
@@ -305,6 +310,10 @@ public class ServersView extends ViewPart
                 manager.add( new Separator() );
                 manager.add( run );
                 manager.add( stop );
+                manager.add( new Separator() );
+                MenuManager ldapBrowserManager = new MenuManager( "LDAP Browser" );
+                ldapBrowserManager.add( createConnection );
+                manager.add( ldapBrowserManager );
                 manager.add( new Separator() );
                 manager.add( properties );
             }
@@ -479,6 +488,7 @@ public class ServersView extends ViewPart
             openConfiguration.setEnabled( true );
             delete.setEnabled( true );
             rename.setEnabled( true );
+            createConnection.setEnabled( true );
             properties.setEnabled( true );
         }
         else
@@ -488,6 +498,7 @@ public class ServersView extends ViewPart
             rename.setEnabled( false );
             run.setEnabled( false );
             stop.setEnabled( false );
+            createConnection.setEnabled( false );
             properties.setEnabled( false );
         }
     }

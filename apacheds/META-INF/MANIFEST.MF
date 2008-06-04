@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.apache.directory.studio.jars,
- org.apache.directory.studio.apacheds.configuration
+ org.apache.directory.studio.apacheds.configuration,
+ org.apache.directory.studio.connection.core;resolution:=optional
 Eclipse-LazyStart: true
 Eclipse-RegisterBuddy: org.apache.directory.studio.jars
 Bundle-ClassPath: .,

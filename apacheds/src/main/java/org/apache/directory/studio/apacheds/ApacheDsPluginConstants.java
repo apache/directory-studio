@@ -44,6 +44,7 @@ public interface ApacheDsPluginConstants
     public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif";
     public static final String IMG_RUN = "resources/icons/run.gif";
     public static final String IMG_STOP = "resources/icons/stop.gif";
+    public static final String IMG_CREATE_CONNECTION = "resources/icons/connection_new.gif";
 
     // --------
     // COMMANDS
@@ -55,6 +56,7 @@ public interface ApacheDsPluginConstants
     public static final String CMD_OPEN_CONFIGURATION = "org.apache.directory.studio.apacheds.commands.openConfiguration";
     public static final String CMD_DELETE = "org.apache.directory.studio.apacheds.commands.delete";
     public static final String CMD_RENAME = "org.apache.directory.studio.apacheds.commands.rename";
+    public static final String CMD_CREATE_CONNECTION = "org.apache.directory.studio.apacheds.commands.createConnection";
 
     // --------
     // CONTEXTS
