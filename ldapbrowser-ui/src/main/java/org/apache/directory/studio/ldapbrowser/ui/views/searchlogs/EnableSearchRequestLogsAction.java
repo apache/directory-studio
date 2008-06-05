@@ -55,7 +55,6 @@ public class EnableSearchRequestLogsAction extends Action
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, super.isChecked() );
-        ConnectionCorePlugin.getDefault().savePluginPreferences();
     }
 
 }
