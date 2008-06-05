@@ -26,6 +26,7 @@ import org.apache.directory.studio.actions.OpenFileAction;
 import org.apache.directory.studio.actions.ReportABugAction;
 import org.apache.directory.studio.actions.UpdateAction;
 import org.apache.directory.studio.view.ImageKeys;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
@@ -57,6 +58,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {
+    private static final String OS_MACOSX = "macosx";
     private OpenFileAction openFileAction;
     private IWorkbenchAction closeAction;
     private IWorkbenchAction closeAllAction;
@@ -266,11 +268,17 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
      */
     protected void fillMenuBar( IMenuManager menuBar )
     {
+        // Getting the OS
+        String os = Platform.getOS();
+
+        // Creating menus
         MenuManager fileMenu = new MenuManager( "&File", IWorkbenchActionConstants.M_FILE ); //$NON-NLS-1$
         MenuManager editMenu = new MenuManager( "&Edit", IWorkbenchActionConstants.M_EDIT ); //$NON-NLS-1$
         MenuManager navigateMenu = new MenuManager( "&Navigate", IWorkbenchActionConstants.M_NAVIGATE ); //$NON-NLS-1$
         MenuManager windowMenu = new MenuManager( "&Window", IWorkbenchActionConstants.M_WINDOW ); //$NON-NLS-1$
         MenuManager helpMenu = new MenuManager( "&Help", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
+        MenuManager hiddenMenu = new MenuManager( "Hidden", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
+        hiddenMenu.setVisible( false );
 
         // Adding menus
         menuBar.add( fileMenu );
@@ -280,6 +288,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         menuBar.add( new GroupMarker( IWorkbenchActionConstants.MB_ADDITIONS ) );
         menuBar.add( windowMenu );
         menuBar.add( helpMenu );
+        menuBar.add( hiddenMenu );
 
         // Populating File Menu
         fileMenu.add( newAction );
@@ -346,14 +355,23 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         windowMenu.add( new Separator() );
         windowMenu.add( closePerspectiveAction );
         windowMenu.add( closeAllPerspectivesAction );
-        windowMenu.add( new Separator() );
-        windowMenu.add( preferencesAction );
+        if ( ApplicationActionBarAdvisor.OS_MACOSX.equalsIgnoreCase( os ) )
+        {
+            // We hide the preferences action, it will be added by the "Carbon" plugin
+            hiddenMenu.add( preferencesAction );
+        }
+        else
+        {
+            windowMenu.add( new Separator() );
+            windowMenu.add( preferencesAction );
+        }
 
         // Help
         helpMenu.add( introAction );
         helpMenu.add( new Separator() );
         helpMenu.add( helpAction );
         helpMenu.add( dynamicHelpAction );
+        helpMenu.add( new Separator() );
         helpMenu.add( reportABug );
         helpMenu.add( new Separator() );
         MenuManager softwareUpdates = new MenuManager( Messages
@@ -361,8 +379,16 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         softwareUpdates.add( updateAction );
         softwareUpdates.add( manageConfigurationAction );
         helpMenu.add( softwareUpdates );
-        helpMenu.add( new Separator() );
-        helpMenu.add( aboutAction );
+        if ( ApplicationActionBarAdvisor.OS_MACOSX.equalsIgnoreCase( os ) )
+        {
+            // We hide the about action, it will be added by the "Carbon" plugin
+            hiddenMenu.add( aboutAction );
+        }
+        else
+        {
+            helpMenu.add( new Separator() );
+            helpMenu.add( aboutAction );
+        }
     }
 
 
@@ -389,7 +415,5 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         navToolBar.add( backwardHistoryAction );
         navToolBar.add( forwardHistoryAction );
         coolBar.add( new ToolBarContributionItem( navToolBar, IWorkbenchActionConstants.TOOLBAR_NAVIGATE ) );
-
     }
-
 }

@@ -689,10 +689,15 @@
                       <outputDirectory>${studio-dir}-macosx</outputDirectory>
                     </artifactItem>
                     <artifactItem>
-                    <groupId>org.eclipse.equinox.launcher.carbon</groupId>
+                      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
                       <artifactId>macosx</artifactId>
                       <type>tar.gz</type>
                       <outputDirectory>${studio-dir}-macosx</outputDirectory>
+                    </artifactItem>
+                    <artifactItem>
+                      <groupId>org.eclipse.ui</groupId>
+                      <artifactId>carbon</artifactId>
+                      <outputDirectory>${studio-dir}-macosx/Apache Directory Studio.app/Contents/Resources/Java/plugins</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
