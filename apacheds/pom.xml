@@ -674,6 +674,11 @@
       <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
     <!-- Jar dependencies -->
     <dependency>
       <groupId>org.apache.mina</groupId>
