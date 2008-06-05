@@ -78,7 +78,7 @@ public class CreateConnectionActionHelper
             connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
 
             // Host
-            connectionParameter.setHost( "localhot" );
+            connectionParameter.setHost( "localhost" );
 
             // Name
             connectionParameter.setName( serverName );
@@ -126,7 +126,6 @@ public class CreateConnectionActionHelper
                 }
             }
         }
-
     }
 
 
