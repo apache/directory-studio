@@ -21,6 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.SearchResult;
+
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioProgressMonitor;
@@ -94,14 +98,9 @@ public class ReloadSchemasJob extends AbstractNotificationJob
             { browserConnection.getConnection().getName() } ) );
         monitor.worked( 1 );
 
-        // load root DSE
-        monitor.reportProgress( BrowserCoreMessages.model__loading_rootdse );
-        InitializeAttributesJob.initializeAttributes( browserConnection.getRootDSE(), true, monitor );
-        monitor.worked( 1 );
-        
         // load schema
         monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
-        reloadSchema( browserConnection, monitor );
+        reloadSchema( true, browserConnection, monitor );
         monitor.worked( 1 );
     }
 
@@ -124,25 +123,39 @@ public class ReloadSchemasJob extends AbstractNotificationJob
     {
         return BrowserCoreMessages.jobs__reload_schemas_error_1;
     }
-    
+
 
     /**
      * Reloads the schema.
      * 
+     * @param forceReload true to force the reload of the schema, otherwise it would only be reloaded
+     *                    if the server-side schema is newer than the cached schema.
      * @param browserConnection the browser connection
      * @param monitor the progress monitor
      */
-    public static void reloadSchema( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    public static void reloadSchema( boolean forceReload, IBrowserConnection browserConnection,
+        StudioProgressMonitor monitor )
     {
-        browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
-
-        try
+        LdapDN schemaLocation = getSchemaLocation( browserConnection, monitor );
+        if ( schemaLocation == null )
         {
-            if ( browserConnection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
+            monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
+            return;
+        }
+
+        Schema schema = browserConnection.getSchema();
+
+        boolean mustReload = forceReload || ( schema == Schema.DEFAULT_SCHEMA )
+            || mustReload( schemaLocation, browserConnection, monitor );
+
+        if ( mustReload )
+        {
+            browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
+
+            try
             {
                 SearchParameter sp = new SearchParameter();
-                sp.setSearchBase( new LdapDN( browserConnection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
-                    .getStringValue() ) );
+                sp.setSearchBase( schemaLocation );
                 sp.setFilter( Schema.SCHEMA_FILTER );
                 sp.setScope( SearchScope.OBJECT );
                 sp.setReturningAttributes( new String[]
@@ -150,26 +163,80 @@ public class ReloadSchemasJob extends AbstractNotificationJob
                         Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES, Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES,
                         Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
                         IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
-                
+
                 LdifEnumeration le = ExportLdifJob.search( browserConnection, sp, monitor );
                 if ( le.hasNext() )
                 {
                     LdifContentRecord schemaRecord = ( LdifContentRecord ) le.next();
-                    Schema schema = new Schema();
+                    schema = new Schema();
                     schema.loadFromRecord( schemaRecord );
                     browserConnection.setSchema( schema );
-                    // TODO: Schema update event
-//                    EventRegistry.fireConnectionUpdated( new ConnectionUpdateEvent( this,
-//                        ConnectionUpdateEvent.EventDetail.SCHEMA_LOADED ), this );
                 }
                 else
                 {
                     monitor.reportError( BrowserCoreMessages.model__no_schema_information );
                 }
             }
-            else
+            catch ( Exception e )
             {
-                monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
+                monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    /**
+     * Checks if the schema must be reloaded
+     * 
+     * @param browserConnection the browser connection
+     * @param monitor the progress monitor
+     */
+    private static boolean mustReload( LdapDN schemaLocation, IBrowserConnection browserConnection,
+        StudioProgressMonitor monitor )
+    {
+        Schema schema = browserConnection.getSchema();
+
+        try
+        {
+            SearchParameter sp = new SearchParameter();
+            sp.setSearchBase( schemaLocation );
+            sp.setFilter( Schema.SCHEMA_FILTER );
+            sp.setScope( SearchScope.OBJECT );
+            sp
+                .setReturningAttributes( new String[]
+                    { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
+                        IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP } );
+            NamingEnumeration<SearchResult> enumeration = SearchJob.search( browserConnection, sp, monitor );
+            while ( enumeration != null && enumeration.hasMore() )
+            {
+                String createTimestamp = null;
+                String modifyTimestamp = null;
+
+                SearchResult sr = enumeration.next();
+                NamingEnumeration<? extends Attribute> attributes = sr.getAttributes().getAll();
+                while ( attributes.hasMore() )
+                {
+                    Attribute attribute = attributes.next();
+                    if ( attribute.getID().equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) )
+                    {
+                        modifyTimestamp = ( String ) attribute.get();
+                    }
+                    if ( attribute.getID().equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) )
+                    {
+                        createTimestamp = ( String ) attribute.get();
+                    }
+                }
+
+                String schemaTimestamp = modifyTimestamp != null ? modifyTimestamp : createTimestamp;
+                String cacheTimestamp = schema.getModifyTimestamp() != null ? schema.getModifyTimestamp() : schema
+                    .getCreateTimestamp();
+                if ( cacheTimestamp == null
+                    || ( cacheTimestamp != null && schemaTimestamp != null && schemaTimestamp
+                        .compareTo( cacheTimestamp ) > 0 ) )
+                {
+                    return true;
+                }
             }
         }
         catch ( Exception e )
@@ -177,5 +244,47 @@ public class ReloadSchemasJob extends AbstractNotificationJob
             monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
             e.printStackTrace();
         }
+
+        return false;
     }
+
+
+    private static LdapDN getSchemaLocation( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    {
+        try
+        {
+            SearchParameter sp = new SearchParameter();
+            sp.setSearchBase( new LdapDN() );
+            sp.setScope( SearchScope.OBJECT );
+            sp.setReturningAttributes( new String[]
+                { IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY } );
+            NamingEnumeration<SearchResult> enumeration = SearchJob.search( browserConnection, sp, monitor );
+            while ( enumeration != null && enumeration.hasMore() )
+            {
+                SearchResult sr = enumeration.next();
+                NamingEnumeration<? extends Attribute> attributes = sr.getAttributes().getAll();
+                while ( attributes.hasMore() )
+                {
+                    Attribute attribute = attributes.next();
+                    if ( attribute.getID().equalsIgnoreCase( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) )
+                    {
+                        String value = ( String ) attribute.get();
+                        if ( LdapDN.isValid( value ) )
+                        {
+                            LdapDN dn = new LdapDN( value );
+                            return dn;
+                        }
+                    }
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
+            return null;
+        }
+
+        return null;
+    }
+
 }

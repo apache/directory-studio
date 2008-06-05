@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.IConnectionListener;
@@ -34,15 +33,8 @@ import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpda
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
@@ -79,6 +71,9 @@ public class BrowserConnectionListener implements IConnectionListener
                 BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
                     browserConnection, BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
                 EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
+                BrowserConnectionUpdateEvent schemaUpdateEvent = new BrowserConnectionUpdateEvent( browserConnection,
+                    BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED );
+                EventRegistry.fireBrowserConnectionUpdated( schemaUpdateEvent, this );
             }
         }
     }
@@ -117,78 +112,10 @@ public class BrowserConnectionListener implements IConnectionListener
      */
     private static void openBrowserConnection( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
+        ReloadSchemasJob.reloadSchema( false, browserConnection, monitor );
+
         IRootDSE rootDSE = browserConnection.getRootDSE();
         InitializeAttributesJob.initializeAttributes( rootDSE, true, monitor );
-
-        // check schema reload
-        if ( rootDSE != null )
-        {
-            try
-            {
-                monitor.reportProgress( BrowserCoreMessages.model__loading_schema );
-
-                // check if schema is cached
-                Schema schema = browserConnection.getSchema();
-                if ( schema == Schema.DEFAULT_SCHEMA )
-                {
-                    ReloadSchemasJob.reloadSchema( browserConnection, monitor );
-                }
-                else if ( rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) != null )
-                {
-                    // check if schema is up-to-date
-                    SearchParameter sp = new SearchParameter();
-                    sp.setSearchBase( new LdapDN( rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY )
-                        .getStringValue() ) );
-                    sp.setFilter( Schema.SCHEMA_FILTER );
-                    sp.setScope( SearchScope.OBJECT );
-                    sp.setReturningAttributes( new String[]
-                        { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                            IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
-                    ISearch search = new Search( browserConnection, sp );
-
-                    SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
-                    ISearchResult[] results = search.getSearchResults();
-
-                    if ( results != null && results.length == 1 )
-                    {
-                        String schemaTimestamp = results[0]
-                            .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) != null ? results[0]
-                            .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ).getStringValue() : null;
-                        if ( schemaTimestamp == null )
-                        {
-                            schemaTimestamp = results[0]
-                                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) != null ? results[0]
-                                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ).getStringValue()
-                                : null;
-                        }
-                        String cacheTimestamp = schema.getModifyTimestamp() != null ? schema.getModifyTimestamp()
-                            : schema.getCreateTimestamp();
-                        if ( cacheTimestamp == null
-                            || ( cacheTimestamp != null && schemaTimestamp != null && schemaTimestamp
-                                .compareTo( cacheTimestamp ) > 0 ) )
-                        {
-                            ReloadSchemasJob.reloadSchema( browserConnection, monitor );
-                        }
-                    }
-                    else
-                    {
-                        browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
-                        monitor.reportError( BrowserCoreMessages.model__no_schema_information );
-                    }
-                }
-                else
-                {
-                    browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
-                    monitor.reportError( BrowserCoreMessages.model__missing_schema_location );
-                }
-            }
-            catch ( Exception e )
-            {
-                browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
-                monitor.reportError( BrowserCoreMessages.model__error_loading_schema, e );
-                e.printStackTrace();
-            }
-        }
     }
 
 

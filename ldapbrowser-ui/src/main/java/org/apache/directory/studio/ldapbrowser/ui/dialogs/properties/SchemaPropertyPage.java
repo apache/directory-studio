@@ -33,8 +33,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -45,24 +45,41 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * Property page to shows some meta information of the schema an the 
+ * schema cache. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SchemaPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
+    /** Text field containing the DN of the schema entry. */
     private Text dnText;
 
+    /** Text field containing the create timestamp of the schema entry. */
     private Text ctText;
 
+    /** Text field containing the modify timestamp of the schema entry. */
     private Text mtText;
 
+    /** Button to reload the scheam. */
     private Button reloadSchemaButton;
 
+    /** Text field containing the path to the schema cache file. */
     private Text cachePathText;
 
+    /** Text field containing last modify date of the schema cache file. */
     private Text cacheDateText;
 
+    /** Text field containing the size of the schema cache file. */
     private Text cacheSizeText;
 
 
+    /**
+     * Instantiates a new schema property page.
+     */
     public SchemaPropertyPage()
     {
         super();
@@ -70,9 +87,11 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         Group infoGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
@@ -93,16 +112,11 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
         GridData gd = new GridData();
         gd.verticalAlignment = SWT.BOTTOM;
         reloadSchemaButton.setLayoutData( gd );
-        reloadSchemaButton.addSelectionListener( new SelectionListener()
+        reloadSchemaButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 reloadSchema();
-            }
-
-
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
             }
         } );
 
@@ -123,25 +137,32 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
         cacheSizeText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "", 1 );
 
         IBrowserConnection connection = RootDSEPropertyPage.getConnection( getElement() );
-        this.connectionUpdated( connection );
+        update( connection );
 
         return composite;
     }
 
 
+    /**
+     * Reloads schema.
+     */
     private void reloadSchema()
     {
         final IBrowserConnection browserConnection = RootDSEPropertyPage.getConnection( getElement() );
         ReloadSchemasJob job = new ReloadSchemasJob( browserConnection );
         RunnableContextJobAdapter.execute( job );
-        this.connectionUpdated( browserConnection );
+        update( browserConnection );
     }
 
 
-    private void connectionUpdated( IBrowserConnection connection )
+    /**
+     * Updates the text fields.
+     * 
+     * @param connection the connection
+     */
+    private void update( IBrowserConnection connection )
     {
-
-        if ( !this.dnText.isDisposed() )
+        if ( !dnText.isDisposed() )
         {
             Schema schema = null;
             if ( connection != null )
@@ -209,9 +230,14 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
     }
 
 
+    /**
+     * Checks if is disposed.
+     * 
+     * @return true, if is disposed
+     */
     public boolean isDisposed()
     {
-        return this.dnText.isDisposed();
+        return dnText.isDisposed();
     }
 
 }

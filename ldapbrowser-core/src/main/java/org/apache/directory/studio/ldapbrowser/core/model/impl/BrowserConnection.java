@@ -142,7 +142,6 @@ public class BrowserConnection implements IBrowserConnection, Serializable
         entryToChildrenInfoMap.clear();
         entryToChildrenFilterMap.clear();
 
-        schema = Schema.DEFAULT_SCHEMA;
         rootDSE = new RootDSE( this );
         cacheEntry( rootDSE );
 
