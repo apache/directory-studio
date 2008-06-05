@@ -55,6 +55,7 @@ public class EnableSearchResultEntryLogsAction extends Action
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, super.isChecked() );
+        ConnectionCorePlugin.getDefault().savePluginPreferences();
     }
 
 }

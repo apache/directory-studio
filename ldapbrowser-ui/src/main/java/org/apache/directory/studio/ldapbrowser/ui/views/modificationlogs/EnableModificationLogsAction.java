@@ -55,6 +55,7 @@ public class EnableModificationLogsAction extends Action
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, super.isChecked() );
+        ConnectionCorePlugin.getDefault().savePluginPreferences();
     }
 
 }
