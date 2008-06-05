@@ -643,23 +643,26 @@ public class SearchJob extends AbstractNotificationJob
                 Attribute attribute = attributeEnumeration.next();
                 String attributeDescription = attribute.getID();
 
-                IAttribute studioAttribute = null;
-                if ( entry.getAttribute( attributeDescription ) == null )
+                if( attribute.getAll().hasMore() )
                 {
-                    studioAttribute = new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
-                        attributeDescription );
-                    entry.addAttribute( studioAttribute );
-                }
-                else
-                {
-                    studioAttribute = entry.getAttribute( attributeDescription );
-                }
-
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
-                {
-                    Object value = valueEnumeration.next();
-                    studioAttribute.addValue( new Value( studioAttribute, value ) );
+                    IAttribute studioAttribute = null;
+                    if ( entry.getAttribute( attributeDescription ) == null )
+                    {
+                        studioAttribute = new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
+                            attributeDescription );
+                        entry.addAttribute( studioAttribute );
+                    }
+                    else
+                    {
+                        studioAttribute = entry.getAttribute( attributeDescription );
+                    }
+    
+                    NamingEnumeration<?> valueEnumeration = attribute.getAll();
+                    while ( valueEnumeration.hasMore() )
+                    {
+                        Object value = valueEnumeration.next();
+                        studioAttribute.addValue( new Value( studioAttribute, value ) );
+                    }
                 }
             }
         }
