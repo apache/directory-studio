@@ -247,36 +247,41 @@ public class Schema
             {
                 if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES ) )
                 {
-                    ObjectClassDescription ocd = new ObjectClassDescriptionSchemaParser()
-                        .parseObjectClassDescription( value );
+                    ObjectClassDescriptionSchemaParser parser = new ObjectClassDescriptionSchemaParser();
+                    parser.setQuirksMode( true );
+                    ObjectClassDescription ocd = parser.parseObjectClassDescription( value );
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addObjectClassDescription( ocd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES ) )
                 {
-                    AttributeTypeDescription atd = new AttributeTypeDescriptionSchemaParser()
-                        .parseAttributeTypeDescription( value );
+                    AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
+                    parser.setQuirksMode( true );
+                    AttributeTypeDescription atd = parser.parseAttributeTypeDescription( value );
                     atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addAttributeTypeDescription( atd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES ) )
                 {
-                    LdapSyntaxDescription lsd = new LdapSyntaxDescriptionSchemaParser()
-                        .parseLdapSyntaxDescription( value );
+                    LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
+                    parser.setQuirksMode( true );
+                    LdapSyntaxDescription lsd = parser.parseLdapSyntaxDescription( value );
                     lsd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addLdapSyntaxDescription( lsd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES ) )
                 {
-                    MatchingRuleDescription mrd = new MatchingRuleDescriptionSchemaParser()
-                        .parseMatchingRuleDescription( value );
+                    MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
+                    parser.setQuirksMode( true );
+                    MatchingRuleDescription mrd = parser.parseMatchingRuleDescription( value );
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleDescription( mrd );
                 }
                 else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE ) )
                 {
-                    MatchingRuleUseDescription mrud = new MatchingRuleUseDescriptionSchemaParser()
-                        .parseMatchingRuleUseDescription( value );
+                    MatchingRuleUseDescriptionSchemaParser parser = new MatchingRuleUseDescriptionSchemaParser();
+                    parser.setQuirksMode( true );
+                    MatchingRuleUseDescription mrud = parser.parseMatchingRuleUseDescription( value );
                     mrud.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleUseDescription( mrud );
                 }
