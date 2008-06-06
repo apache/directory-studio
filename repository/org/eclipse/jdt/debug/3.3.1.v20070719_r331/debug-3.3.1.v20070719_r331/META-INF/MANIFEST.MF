@@ -1,0 +1,57 @@
+Manifest-Version: 1.0
+Import-Package: com.ibm.icu.text
+Bundle-ManifestVersion: 2
+Created-By: 1.4.2 (IBM Corporation)
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Ant-Version: Apache Ant 1.7.0
+Bundle-ClassPath: jdi.jar,jdimodel.jar,tools.jar
+Export-Package: com.sun.jdi,com.sun.jdi.connect,com.sun.jdi.connect.sp
+ i,com.sun.jdi.event,com.sun.jdi.request,org.eclipse.jdi,org.eclipse.j
+ di.hcr,org.eclipse.jdi.internal;x-friends:="org.eclipse.jdt.debug.ui"
+ ,org.eclipse.jdi.internal.connect;x-friends:="org.eclipse.jdt.debug.u
+ i",org.eclipse.jdi.internal.event;x-friends:="org.eclipse.jdt.debug.u
+ i",org.eclipse.jdi.internal.jdwp;x-friends:="org.eclipse.jdt.debug.ui
+ ",org.eclipse.jdi.internal.request;x-friends:="org.eclipse.jdt.debug.
+ ui",org.eclipse.jdi.internal.spy;x-friends:="org.eclipse.jdt.debug.ui
+ ",org.eclipse.jdt.debug.core,org.eclipse.jdt.debug.eval,org.eclipse.j
+ dt.internal.debug.core;x-friends:="org.eclipse.jdt.debug.ui",org.ecli
+ pse.jdt.internal.debug.core.breakpoints;x-friends:="org.eclipse.jdt.d
+ ebug.ui",org.eclipse.jdt.internal.debug.core.hcr;x-friends:="org.ecli
+ pse.jdt.debug.ui",org.eclipse.jdt.internal.debug.core.logicalstructur
+ es;x-friends:="org.eclipse.jdt.debug.ui",org.eclipse.jdt.internal.deb
+ ug.core.model;x-friends:="org.eclipse.jdt.debug.ui",org.eclipse.jdt.i
+ nternal.debug.eval;x-friends:="org.eclipse.jdt.debug.ui",org.eclipse.
+ jdt.internal.debug.eval.ast.engine;x-friends:="org.eclipse.jdt.debug.
+ ui",org.eclipse.jdt.internal.debug.eval.ast.instructions;x-friends:="
+ org.eclipse.jdt.debug.ui"
+Bundle-Version: 3.3.1.v20070719_r331
+Require-Bundle: org.eclipse.core.resources;bundle-version="[3.3.0,4.0.
+ 0)",org.eclipse.debug.core;bundle-version="[3.3.0,4.0.0)",org.eclipse
+ .jdt.core;bundle-version="[3.3.0,4.0.0)",org.eclipse.core.runtime;bun
+ dle-version="[3.3.0,4.0.0)",org.eclipse.core.expressions;bundle-versi
+ on="[3.3.0,4.0.0)"
+Bundle-Activator: org.eclipse.jdt.internal.debug.core.JDIDebugPlugin
+Bundle-SymbolicName: org.eclipse.jdt.debug; singleton:=true
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-Localization: plugin
+
+Name: plugin.properties
+SHA1-Digest: Ttsz6cyn2s0ATJb+E6gDFwRTO2Y=
+
+Name: plugin.xml
+SHA1-Digest: RQ/WmhUyJTkPqzjM4Yrab1j8ls0=
+
+Name: jdi.jar
+SHA1-Digest: 7iGSbSV23Q9uryiHI2R4fWkaJ8k=
+
+Name: about.html
+SHA1-Digest: ejOZra0kypGLQQ2bJtGTX+LI8tU=
+
+Name: jdimodel.jar
+SHA1-Digest: LwXoz9HyRojGEv1A4nisyHCg1NY=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+
