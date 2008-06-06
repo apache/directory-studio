@@ -189,7 +189,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>compare</artifactId>
-        <version>3.3.1-r33x_20070906</version>
+        <version>3.3.2.r33x_20080128</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
@@ -291,7 +291,7 @@
       <dependency>
         <groupId>org.eclipse.core</groupId>
         <artifactId>resources</artifactId>
-        <version>3.3.0-v20070604</version>
+        <version>3.3.1.R33x_v20080205</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.ant</groupId>
@@ -314,7 +314,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>rcp</artifactId>
-        <version>3.2.0-v20070612</version>
+        <version>3.2.1.r33x_r20080131</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
@@ -339,12 +339,12 @@
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
         <artifactId>launcher</artifactId>
-        <version>1.0.1.R33x_v20070828</version>
+        <version>1.0.1.R33x_v20080118</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>osgi</artifactId>
-        <version>3.3.1-R33x_v20070828</version>
+        <version>3.3.2.R33x_v20080105</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.swt.gtk.linux</groupId>
@@ -369,7 +369,7 @@
       <dependency>
         <groupId>org.eclipse.swt.carbon</groupId>
         <artifactId>macosx</artifactId>
-        <version>3.3.2-v3347a</version>
+        <version>3.3.3.v3349</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
@@ -398,7 +398,7 @@
       <dependency>
         <groupId>org.eclipse.equinox.launcher.carbon</groupId>
         <artifactId>macosx</artifactId>
-        <version>1.0.2.R331_v20071019</version>
+        <version>1.0.3.R33x_v20080118</version>
         <type>tar.gz</type>
       </dependency>
       <dependency>
@@ -424,7 +424,7 @@
       <dependency>
         <groupId>org.eclipse.equinox.http</groupId>
         <artifactId>registry</artifactId>
-        <version>1.0.0-v20070608</version>
+        <version>1.0.1.R33x_v20071231</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.equinox</groupId>
@@ -550,7 +550,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>jface</artifactId>
-        <version>3.3.1-M20070910-0800b</version>
+        <version>3.3.2.M20080207-0800</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
@@ -569,7 +569,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>ui</artifactId>
-        <version>3.3.1-M20070910-0800b</version>
+        <version>3.3.1.M20071128-0800</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
@@ -646,7 +646,7 @@
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
         <artifactId>preferences</artifactId>
-        <version>3.2.100-v20070522</version>
+        <version>3.2.101.R33x_v20080117</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.equinox</groupId>
@@ -672,7 +672,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>workbench</artifactId>
-        <version>3.3.1-M20070921-1200</version>
+        <version>3.3.2.M20080207-0800</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
@@ -836,7 +836,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>help</artifactId>
-        <version>3.3.1-v20070726_33x</version>
+        <version>3.3.2.v20071126_33x</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
@@ -851,12 +851,12 @@
       <dependency>
         <groupId>org.eclipse.jface</groupId>
         <artifactId>databinding</artifactId>
-        <version>1.1.1-M20070910-0800b</version>
+        <version>1.1.1.M20080207-0800</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>swt</artifactId>
-        <version>3.3.2-v3347</version>
+        <version>3.3.2.v3349d</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.update</groupId>
@@ -1029,7 +1029,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>console</artifactId>
-        <version>3.2.1-v20070824_r331</version>
+        <version>3.2.2.v20071031_r332</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
@@ -1118,7 +1118,7 @@
       <dependency>
         <groupId>org.eclipse.jface</groupId>
         <artifactId>text</artifactId>
-        <version>3.3.1-r331_v20070629</version>
+        <version>3.3.2.r332_20071017-0800</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
@@ -1160,7 +1160,7 @@
       <dependency>
         <groupId>org.eclipse.ui.workbench</groupId>
         <artifactId>texteditor</artifactId>
-        <version>3.3.1-r331_v20070806</version>
+        <version>3.3.2.r332_20080109-0800</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
@@ -1359,7 +1359,7 @@
       <dependency>
         <groupId>org.eclipse.help</groupId>
         <artifactId>ui</artifactId>
-        <version>3.3.1-v20070726_33x</version>
+        <version>3.3.2.v20071126_33x</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.help</groupId>
@@ -1428,7 +1428,7 @@
       <dependency>
         <groupId>org.eclipse.help</groupId>
         <artifactId>webapp</artifactId>
-        <version>3.3.1-v20070823_33x</version>
+        <version>3.3.2.v20071102_33x</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.help</groupId>
@@ -1455,7 +1455,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>sdk</artifactId>
-        <version>3.3.2.R33x_v20071022</version>
+        <version>3.3.3-r33x_r20080129</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse</groupId>
