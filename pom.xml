@@ -349,7 +349,7 @@
       <dependency>
         <groupId>org.eclipse.swt.gtk.linux</groupId>
         <artifactId>x86</artifactId>
-        <version>3.3.2-v3347</version>
+        <version>3.3.2.v3349</version>
       </dependency>
       <dependency>
         <groupId>org.eclipse.swt.gtk.linux</groupId>
@@ -374,7 +374,7 @@
       <dependency>
         <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
         <artifactId>x86</artifactId>
-        <version>1.0.2.R331_v20071019</version>
+        <version>1.0.3.R33x_v20080118</version>
         <type>tar.gz</type>
       </dependency>
       <dependency>
