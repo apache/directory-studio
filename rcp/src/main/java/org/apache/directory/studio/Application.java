@@ -23,9 +23,11 @@ package org.apache.directory.studio;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.eclipse.core.runtime.IPlatformRunnable;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.equinox.app.IApplication;
+import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -35,38 +37,65 @@ import org.eclipse.ui.PlatformUI;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class Application implements IPlatformRunnable
+public class Application implements IApplication
 {
-
+    /** The plugin ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.rcp"; //$NON-NLS-1$
+
+    /** The logger*/
     private static Logger logger = Logger.getLogger( Application.class );
 
 
     /* (non-Javadoc)
-     * @see org.eclipse.core.runtime.IPlatformRunnable#run(java.lang.Object)
+     * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
      */
-    public Object run( Object args ) throws Exception
+    public Object start( IApplicationContext context ) throws Exception
     {
-        //Set up a simple configuration that logs on the console.
+        // Set up a simple configuration that logs on the console.
         PropertyConfigurator.configure( Platform.getBundle( Application.PLUGIN_ID ).getResource( "log4j.conf" ) ); //$NON-NLS-1$
         logger.info( "Entering Apache Directory Studio." ); //$NON-NLS-1$
         Display display = PlatformUI.createDisplay();
-        
+
         try
         {
             int returnCode = PlatformUI.createAndRunWorkbench( display, new ApplicationWorkbenchAdvisor() );
-        
             if ( returnCode == PlatformUI.RETURN_RESTART )
             {
-                return IPlatformRunnable.EXIT_RESTART;
+                return IApplication.EXIT_RESTART;
             }
-            
-            return IPlatformRunnable.EXIT_OK;
+            else
+            {
+                return IApplication.EXIT_OK;
+            }
         }
         finally
         {
             display.dispose();
             logger.info( "Exiting Apache Directory Studio." ); //$NON-NLS-1$
         }
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.equinox.app.IApplication#stop()
+     */
+    public void stop()
+    {
+        final IWorkbench workbench = PlatformUI.getWorkbench();
+        if ( workbench == null )
+        {
+            return;
+        }
+        final Display display = workbench.getDisplay();
+        display.syncExec( new Runnable()
+        {
+            public void run()
+            {
+                if ( !display.isDisposed() )
+                {
+                    workbench.close();
+                }
+            }
+        } );
     }
 }

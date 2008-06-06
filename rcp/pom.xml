@@ -180,6 +180,11 @@
       <artifactId>filesystem</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>app</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
 </project>
