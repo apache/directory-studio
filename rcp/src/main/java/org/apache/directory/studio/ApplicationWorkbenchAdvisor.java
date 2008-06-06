@@ -53,10 +53,6 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
 {
-    // The initial perspective that will be shwown in the workbench
-    private static final String PERSPECTIVE_ID = Application.PLUGIN_ID + ".perspective"; //$NON-NLS-1$
-
-
     /**
      * Performs arbitrary initialization before the workbench starts running.<br />
      * <br />
