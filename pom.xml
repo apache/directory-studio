@@ -87,6 +87,8 @@
     <studio.dsml.parser.version>0.4.2.SNAPSHOT</studio.dsml.parser.version>
     <updatesite.version>1.2.0.SNAPSHOT</updatesite.version>
     <valueeditors.version>1.2.0.SNAPSHOT</valueeditors.version>
+    <test.integration.core.version>1.2.0.SNAPSHOT</test.integration.core.version>
+    <test.integration.ui.version>1.2.0.SNAPSHOT</test.integration.ui.version>
   </properties>
 
   <profiles>
@@ -1608,6 +1610,16 @@
         <artifactId>apacheds.configuration.help</artifactId>
         <version>${apacheds.configuration.help.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>test.integration.core</artifactId>
+        <version>${test.integration.core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>test.integration.ui</artifactId>
+        <version>${test.integration.ui.version}</version>
+      </dependency>
 
       <!-- Apache Directory Shared -->
       <dependency>
@@ -1704,6 +1716,18 @@
         <artifactId>nlog4j</artifactId>
         <version>1.2.25</version>
       </dependency>
+
+      <dependency>
+        <groupId>net.sf.swtbot.eclipse</groupId>
+        <artifactId>finder</artifactId>
+        <version>1.0.0.574</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sf.swtbot</groupId>
+        <artifactId>finder</artifactId>
+        <version>1.0.0.574</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -1732,6 +1756,8 @@
     <module>apacheds-configuration</module>
     <module>apacheds-configuration-feature</module>
     <module>apacheds-configuration-help</module>
+    <module>test-integration-core</module>
+    <module>test-integration-ui</module>
     <module>jars</module>
     <module>updatesite</module>
     <module>studio</module>

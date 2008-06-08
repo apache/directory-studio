@@ -66,6 +66,16 @@
     </dependency>
 
     <!-- Eclipse RCP artifacts -->
+
+    <dependency>
+      <groupId>net.sf.swtbot.eclipse</groupId>
+      <artifactId>finder</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.swtbot</groupId>
+      <artifactId>finder</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>com.ibm</groupId>
       <artifactId>icu</artifactId>

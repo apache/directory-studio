@@ -168,7 +168,7 @@ public class UserClassWrapper
         {
             UserClass.Name name = ( UserClass.Name ) userClass;
             Set<LdapDN> jndiNames = name.getNames();
-            for ( Name jndiName : jndiNames )
+            for ( LdapDN jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );
             }
@@ -177,7 +177,7 @@ public class UserClassWrapper
         {
             UserClass.UserGroup userGrops = ( UserClass.UserGroup ) userClass;
             Set<LdapDN> jndiNames = userGrops.getNames();
-            for ( Name jndiName : jndiNames )
+            for ( LdapDN jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );
             }
