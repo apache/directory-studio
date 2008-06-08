@@ -921,7 +921,7 @@
                   <groupId>org.apache.directory.studio</groupId>
                   <artifactId>apacheds.configuration.help</artifactId>
                 </artifactItem>
-
+                 
                 <!-- The eclipse plugins -->
                 <artifactItem>
                   <groupId>org.eclipse.update</groupId>

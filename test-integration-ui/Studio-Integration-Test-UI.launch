@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="net.sf.swtbot.eclipse.ui.launcher.JunitLaunchConfig">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="askclear" value="false"/>
+<booleanAttribute key="automaticAdd" value="false"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="true"/>
+<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearwslog" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
+<booleanAttribute key="default" value="false"/>
+<stringAttribute key="deselected_workspace_plugins" value="null,org.eclipse.swt.examples,org.apache.log4j,org.apache.commons.logging"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/test.integration.ui/src/main/java/org/apache/directory/studio/test/integration/ui/AutomatedSuite.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
+<booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
+<stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit3"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="test.integration.ui"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="org.eclipse.sdk.ide"/>
+<stringAttribute key="selected_target_plugins" value="com.ibm.icu,com.ibm.icu,javax.servlet,javax.servlet.jsp,net.sf.swtbot.eclipse.finder,net.sf.swtbot.eclipse.ui,net.sf.swtbot.finder,org.apache.ant,org.apache.ant,org.apache.commons.collections,org.apache.commons.collections,org.apache.commons.logging,org.apache.commons.logging,org.apache.commons.logging,org.apache.lucene,org.apache.lucene.analysis,org.eclipse.ant.core,org.eclipse.ant.core,org.eclipse.ant.ui,org.eclipse.ant.ui,org.eclipse.compare,org.eclipse.compare,org.eclipse.core.commands,org.eclipse.core.contenttype,org.eclipse.core.databinding,org.eclipse.core.expressions,org.eclipse.core.filebuffers,org.eclipse.core.filesystem,org.eclipse.core.filesystem.linux.x86_64,org.eclipse.core.jobs,org.eclipse.core.net,org.eclipse.core.resources,org.eclipse.core.resources.compatibility,org.eclipse.core.runtime,org.eclipse.core.runtime.compatibility,org.eclipse.core.runtime.compatibility.registry,org.eclipse.core.variables,org.eclipse.core.variables,org.eclipse.debug.core,org.eclipse.debug.core,org.eclipse.debug.ui,org.eclipse.debug.ui,org.eclipse.equinox.app,org.eclipse.equinox.common,org.eclipse.equinox.http.jetty,org.eclipse.equinox.http.servlet,org.eclipse.equinox.preferences,org.eclipse.equinox.registry,org.eclipse.help,org.eclipse.help.base,org.eclipse.help.ui,org.eclipse.jdt.core,org.eclipse.jdt.core,org.eclipse.jdt.core.manipulation,org.eclipse.jdt.core.manipulation,org.eclipse.jdt.debug,org.eclipse.jdt.debug,org.eclipse.jdt.debug.ui,org.eclipse.jdt.debug.ui,org.eclipse.jdt.junit,org.eclipse.jdt.junit,org.eclipse.jdt.junit.runtime,org.eclipse.jdt.junit.runtime,org.eclipse.jdt.launching,org.eclipse.jdt.launching,org.eclipse.jdt.ui,org.eclipse.jdt.ui,org.eclipse.jface,org.eclipse.jface.databinding,org.eclipse.jface.text,org.eclipse.ltk.core.refactoring,org.eclipse.ltk.core.refactoring,org.eclipse.ltk.ui.refactoring,org.eclipse.ltk.ui.refactoring,org.eclipse.osgi,org.eclipse.osgi.services,org.eclipse.pde.build,org.eclipse.pde.build,org.eclipse.pde.core,org.eclipse.pde.core,org.eclipse.pde.junit.runtime,org.eclipse.pde.junit.runtime,org.eclipse.pde.runtime,org.eclipse.pde.runtime,org.eclipse.pde.ui,org.eclipse.pde.ui,org.eclipse.sdk,org.eclipse.search,org.eclipse.swt,org.eclipse.swt.examples,org.eclipse.swt.examples,org.eclipse.swt.gtk.linux.x86_64,org.eclipse.swt.gtk.linux.x86,org.eclipse.swt.gtk.linux.ppt,org.eclipse.swt.win32.win32.x86,org.eclipse.swt.carbon.macosx.x86,org.eclipse.team.core,org.eclipse.team.core,org.eclipse.team.ui,org.eclipse.team.ui,org.eclipse.text,org.eclipse.ui,org.eclipse.ui.cheatsheets,org.eclipse.ui.cheatsheets,org.eclipse.ui.console,org.eclipse.ui.console,org.eclipse.ui.editors,org.eclipse.ui.editors,org.eclipse.ui.externaltools,org.eclipse.ui.externaltools,org.eclipse.ui.forms,org.eclipse.ui.forms,org.eclipse.ui.ide,org.eclipse.ui.ide,org.eclipse.ui.ide.application,org.eclipse.ui.ide.application,org.eclipse.ui.intro,org.eclipse.ui.intro,org.eclipse.ui.navigator,org.eclipse.ui.navigator,org.eclipse.ui.navigator.resources,org.eclipse.ui.navigator.resources,org.eclipse.ui.views,org.eclipse.ui.views,org.eclipse.ui.views.properties.tabbed,org.eclipse.ui.views.properties.tabbed,org.eclipse.ui.workbench,org.eclipse.ui.workbench,org.eclipse.ui.workbench.texteditor,org.eclipse.ui.workbench.texteditor,org.eclipse.update.configurator,org.eclipse.update.core,org.eclipse.update.core.linux,org.eclipse.update.ui,org.junit,org.junit,org.mortbay.jetty"/>
+<stringAttribute key="selected_workspace_plugins" value="org.apache.directory.studio.apacheds.configuration.help,org.apache.directory.studio.test.integration.core,org.apache.directory.studio.test.integration.ui,org.apache.directory.studio.ldapbrowser.core,org.apache.directory.studio.jars,org.apache.directory.studio.ldapbrowser.ui,org.apache.directory.studio.connection.ui,org.apache.directory.studio.ldapbrowser.help,org.apache.directory.studio.rcp.help,net.sf.swtbot.finder,org.apache.directory.studio.apacheds.configuration,net.sf.swtbot.eclipse.finder,org.apache.directory.studio.ldapbrowser.common,org.apache.directory.studio.connection.core,org.apache.directory.studio.ldifeditor,org.apache.directory.studio.schemaeditor.help,org.apache.directory.studio.aciitemeditor,org.apache.directory.studio.rcp,org.apache.directory.studio.ldifeditor.help,org.apache.directory.studio.schemaeditor,org.apache.directory.studio.valueeditors,org.apache.directory.studio.ldifparser"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="true"/>
+<booleanAttribute key="useDefaultConfigArea" value="false"/>
+<booleanAttribute key="useProduct" value="false"/>
+</launchConfiguration>

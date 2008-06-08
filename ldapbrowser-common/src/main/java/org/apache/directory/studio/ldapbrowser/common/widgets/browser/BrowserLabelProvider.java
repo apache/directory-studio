@@ -85,10 +85,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             IEntry entry = ( IEntry ) obj;
 
             StringBuffer append = new StringBuffer();
-            if ( entry instanceof IRootDSE )
-            {
-                append.append( "Root DSE" );
-            }
+           
             if ( entry.isChildrenInitialized() && ( entry.getChildrenCount() > 0 ) || entry.getChildrenFilter() != null )
             {
                 append.append( " (" ).append( entry.getChildrenCount() );
@@ -103,21 +100,24 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                 append.append( ")" );
             }
 
-            if ( entry instanceof ReferralBaseEntry )
+            if ( entry instanceof IRootDSE )
             {
-                return entry.getUrl().toString() + " " + append.toString();
+                return "Root DSE" + append.toString();
+            }
+            else if ( entry instanceof ReferralBaseEntry )
+            {
+                return entry.getUrl().toString() + append.toString();
             }
             else if ( entry instanceof AliasBaseEntry )
             {
-                return entry.getDn().getUpName() + " " + append.toString();
+                return entry.getDn().getUpName() + append.toString();
             }
             else if ( entry instanceof BaseDNEntry )
             {
-                return entry.getDn().getUpName() + " " + append.toString();
+                return entry.getDn().getUpName() + append.toString();
             }
             else if ( entry.hasParententry() )
             {
-
                 String label = "";
                 if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_DN )
                 {
