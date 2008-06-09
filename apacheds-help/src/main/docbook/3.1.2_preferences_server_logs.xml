@@ -1,0 +1,81 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="reference_preferences_server_logs">
+	<title>Server Logs preferences</title>
+	<para>
+		In the Server Logs preferences page you can configure general
+		settings for the global Apache DS server logs.
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/reference_preferences_server_logs.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>
+		<informaltable frame="all">
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1*" />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Level</entry>
+						<entry>
+							Choose one of
+							<emphasis role="strong">Debug</emphasis>
+							,
+							<emphasis role="strong">Info</emphasis>
+							,
+							<emphasis role="strong">Warning</emphasis>
+							,
+							<emphasis role="strong">Error</emphasis>
+							or
+							<emphasis role="strong">Fatal</emphasis>
+							to be used as log level for defined Apache
+							DS servers.
+						</entry>
+						<entry>Warning</entry>
+					</row>
+					<row>
+						<entry>Pattern</entry>
+						<entry>
+							Specify the conversion pattern you want for
+							the server logs displayed in the Console
+							view.
+						</entry>
+						<entry>[%d{HH:mm:ss}] %p [%c] - %m%n</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio Apache DS Help
+Bundle-SymbolicName: org.apache.directory.studio.apacheds.help;singleton:=true
+Bundle-Version: 1.2.0.SNAPSHOT
+Bundle-Localization: plugin
+Eclipse-LazyStart: true
+Bundle-Vendor: Apache Software Foundation
