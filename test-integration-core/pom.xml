@@ -49,6 +49,7 @@
       <properties>
         <integration-regexp>^(ApacheDirectoryStudio-[^/]*)/(.*)$$</integration-regexp>
         <integration-cmdline-params>-os linux -ws gtk -arch x86</integration-cmdline-params>
+        <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
     </profile>
     
@@ -65,6 +66,7 @@
       <properties>
         <integration-regexp>^(ApacheDirectoryStudio-[^/]*)/(.*)$$</integration-regexp>
         <integration-cmdline-params>-os linux -ws gtk -arch x86_64</integration-cmdline-params>
+        <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
     </profile>  
     
@@ -81,6 +83,7 @@
       <properties>
         <integration-regexp>^(ApacheDirectoryStudio-[^/]*)/(.*)$$</integration-regexp>
         <integration-cmdline-params>-os linux -ws gtk -arch ppc</integration-cmdline-params>
+        <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
     </profile>  
     
@@ -96,6 +99,7 @@
       <properties>
         <integration-regexp>^(ApacheDirectoryStudio-[^\\]*)\\(.*)$$</integration-regexp>
         <integration-cmdline-params>-os win32 -ws win32 -arch x86</integration-cmdline-params>
+        <integration-plugins-folder>plugins</integration-plugins-folder>
       </properties>
     </profile>  
     
@@ -110,7 +114,8 @@
       </activation>
       <properties>
         <integration-regexp>^(ApacheDirectoryStudio-[^/]*)/(.*)$$</integration-regexp>
-        <integration-cmdline-params>-os macosx -ws carbon -arch x64</integration-cmdline-params>
+        <integration-cmdline-params>-os macosx -ws carbon -arch x86</integration-cmdline-params>
+        <integration-plugins-folder>Apache Directory Studio.app/Contents/Resources/Java/plugins</integration-plugins-folder>
       </properties>
     </profile>  
   
@@ -125,7 +130,7 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>integration-ui</id>
+                <id>integration-core</id>
                 <phase>test</phase>
                 <configuration>
                   <tasks>
@@ -144,21 +149,21 @@
                     </copy>
                     
                     <!-- copy SWTbot and eclipse testing plugins to test-sandbox -->
-                    <copy todir="target/test-sandbox/plugins">
+                    <copy todir="target/test-sandbox/${integration-plugins-folder}">
                       <fileset dir="../test-integration-ui/resources/test-plugins">
                         <include name="**/*" />
                       </fileset>
                     </copy>
                     
                     <!-- copy test-integration-core plugin to test-sandbox -->
-                    <copy todir="target/test-sandbox/plugins">
+                    <copy todir="target/test-sandbox/${integration-plugins-folder}">
                       <fileset dir="target">
                         <include name="test.integration.core-*.jar" />
                       </fileset>
                     </copy>
                     
                     <!-- copy additional eclipse dependencies to test-sandbox -->
-                    <copy todir="target/test-sandbox/plugins">
+                    <copy todir="target/test-sandbox/${integration-plugins-folder}">
                       <fileset dir="${eclipse-home}/plugins">
                         <include name="org.apache.commons.collections_*.jar" />
                         <include name="org.apache.log4j_*.jar" />
@@ -193,7 +198,7 @@
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
                       <arg line="${integration-cmdline-params} -application org.eclipse.test.coretestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.core -className org.apache.directory.studio.test.integration.core.AutomatedSuite"/>
                       <classpath>
-                        <pathelement location="target/test-sandbox/plugins/org.eclipse.equinox.launcher_1.0.1.R33x_v20080118.jar" />
+                        <pathelement location="target/test-sandbox/${integration-plugins-folder}/org.eclipse.equinox.launcher_1.0.1.R33x_v20080118.jar" />
                       </classpath>
                     </java>
                   </tasks>
