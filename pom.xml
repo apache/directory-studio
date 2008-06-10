@@ -248,7 +248,7 @@
         <groupId>org.eclipse.jdt.core</groupId>
         <artifactId>manipulation</artifactId>
         <version>1.1.0.v20070606-0010</version>
-         <exclusions>
+        <exclusions>
           <exclusion>
             <groupId>org.eclipse.core</groupId>
             <artifactId>runtime</artifactId>
@@ -268,7 +268,8 @@
           <exclusion>
             <groupId>org.eclipse.core</groupId>
             <artifactId>expressions</artifactId>
-          </exclusion>        
+          </exclusion>  
+        </exclusions>      
       </dependency>
        <dependency>
         <groupId>org.eclipse.jdt.launching</groupId>
@@ -318,7 +319,7 @@
         </exclusions>
       </dependency>
        <dependency>
-        <groupId>org.eclipse.ltk.internal.core</groupId>
+        <groupId>org.eclipse.ltk.core</groupId>
         <artifactId>refactoring</artifactId>
         <version>3.3.1.r332_20080128</version>
         <exclusions>
