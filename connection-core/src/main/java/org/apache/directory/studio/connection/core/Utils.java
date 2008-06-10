@@ -155,7 +155,10 @@ public class Utils
         catch ( InvalidNameException e )
         {
         }
-        url.setAttributes( Arrays.asList( attributes ) );
+        if ( attributes != null )
+        {
+            url.setAttributes( Arrays.asList( attributes ) );
+        }
         url.setScope( scope );
         url.setFilter( filter );
         return url;

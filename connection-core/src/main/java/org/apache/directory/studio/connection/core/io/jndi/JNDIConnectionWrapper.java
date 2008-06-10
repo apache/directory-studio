@@ -39,7 +39,6 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-import javax.naming.ldap.LdapName;
 import javax.naming.ldap.ManageReferralControl;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
@@ -302,7 +301,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapName( searchBase ), filter,
+                    NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapDN( searchBase ), filter,
                         searchControls );
                     namingEnumeration = new StudioNamingEnumeration( connection, ne, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
@@ -454,7 +453,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform modification
-                    modCtx.modifyAttributes( new LdapName( dn ), modificationItems );
+                    modCtx.modifyAttributes( new LdapDN( dn ), modificationItems );
                 }
                 catch ( ReferralException re )
                 {
@@ -555,7 +554,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
 
                     // rename entry
-                    modCtx.rename( new LdapName( oldDn ), new LdapName( newDn ) );
+                    modCtx.rename( new LdapDN( oldDn ), new LdapDN( newDn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -645,7 +644,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // create entry
-                    modCtx.createSubcontext( new LdapName( dn ), attributes );
+                    modCtx.createSubcontext( new LdapDN( dn ), attributes );
                 }
                 catch ( ReferralException re )
                 {
@@ -733,7 +732,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // delete entry
-                    modCtx.destroySubcontext( new LdapName( dn ) );
+                    modCtx.destroySubcontext( new LdapDN( dn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -915,14 +914,23 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
             if ( authHandler == null )
             {
-                monitor.reportError( Messages.model__no_auth_handler, new Exception() );
+                NamingException namingException = new NamingException(  Messages.model__no_auth_handler );
+                monitor.reportError( Messages.model__no_auth_handler, namingException );
+                throw namingException;
             }
             ICredentials credentials = authHandler.getCredentials( connection.getConnectionParameter() );
             if ( credentials == null )
             {
+                CancelException cancelException = new CancelException();
                 monitor.setCanceled( true );
-                monitor.reportError( Messages.model__no_credentials, new CancelException() );
-                throw new CancelException();
+                monitor.reportError( Messages.model__no_credentials, cancelException );
+                throw cancelException;
+            }
+            if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
+            {
+                NamingException namingException = new NamingException(  Messages.model__no_credentials );
+                monitor.reportError( Messages.model__no_credentials, namingException );
+                throw namingException;
             }
             bindPrincipal = credentials.getBindPrincipal();
             bindCredentials = credentials.getBindPassword();
