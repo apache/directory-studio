@@ -445,6 +445,14 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt.debug</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
@@ -454,6 +462,50 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>variables</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>compare</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>boot</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt.core</groupId>
+      <artifactId>manipulation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt.launching</groupId>
+      <artifactId>macosx</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ltk.core</groupId>
+      <artifactId>refactoring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ltk.ui</groupId>
+      <artifactId>refactoring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.team</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.team</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>navigator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui.navigator</groupId>
+      <artifactId>resources</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui.views.properties</groupId>
+      <artifactId>tabbed</artifactId>
     </dependency>
 
 
