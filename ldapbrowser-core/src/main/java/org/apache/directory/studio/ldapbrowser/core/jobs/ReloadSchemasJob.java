@@ -231,9 +231,8 @@ public class ReloadSchemasJob extends AbstractNotificationJob
                 String schemaTimestamp = modifyTimestamp != null ? modifyTimestamp : createTimestamp;
                 String cacheTimestamp = schema.getModifyTimestamp() != null ? schema.getModifyTimestamp() : schema
                     .getCreateTimestamp();
-                if ( cacheTimestamp == null
-                    || ( cacheTimestamp != null && schemaTimestamp != null && schemaTimestamp
-                        .compareTo( cacheTimestamp ) > 0 ) )
+                if ( cacheTimestamp != null && schemaTimestamp != null && schemaTimestamp
+                        .compareTo( cacheTimestamp ) > 0 )
                 {
                     return true;
                 }
