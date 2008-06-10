@@ -791,6 +791,10 @@
                       <groupId>org.eclipse.ui</groupId>
                       <artifactId>carbon</artifactId>
                     </artifactItem>
+                    <artifactItem>
+                      <groupId>org.eclipse.jdt.launching</groupId>
+                      <artifactId>macosx</artifactId>
+                    </artifactItem>
                   </artifactItems>
                 </configuration>
               </execution>
@@ -1194,11 +1198,59 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.jdt</groupId>
-                  <artifactId>debug</artifactId>
+                  <artifactId>ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt.debug</groupId>
+                  <artifactId>ui</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.core</groupId>
                   <artifactId>variables</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse</groupId>
+                  <artifactId>compare</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.core</groupId>
+                  <artifactId>boot</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt.core</groupId>
+                  <artifactId>manipulation</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt.launching</groupId>
+                  <artifactId>macosx</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.ltk.core</groupId>
+                  <artifactId>refactoring</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.ltk.ui</groupId>
+                  <artifactId>refactoring</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.team</groupId>
+                  <artifactId>core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.team</groupId>
+                  <artifactId>ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.ui</groupId>
+                  <artifactId>navigator</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.ui.navigator</groupId>
+                  <artifactId>resources</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.ui.views.properties</groupId>
+                  <artifactId>tabbed</artifactId>
                 </artifactItem>
 
               </artifactItems>
