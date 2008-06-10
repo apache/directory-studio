@@ -481,7 +481,7 @@
       <dependency>
         <groupId>org.eclipse.ui</groupId>
         <artifactId>navigator</artifactId>
-        <version>3.3.2.M20071022-1600a</version>
+        <version>3.3.2.M20080207-0800</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
