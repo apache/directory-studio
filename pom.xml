@@ -195,7 +195,7 @@
       <dependency>
         <groupId>org.eclipse</groupId>
         <artifactId>compare</artifactId>
-        <version>3.3.2.r33x_20080128</version>
+        <version>3.3.2.r33x_20080128-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
