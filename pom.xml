@@ -430,7 +430,7 @@
        <dependency>
         <groupId>org.eclipse.team</groupId>
         <artifactId>ui</artifactId>
-        <version>3.3.2.r33x_20080128</version>
+        <version>3.3.2.r33x_20080128-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.ui</groupId>
