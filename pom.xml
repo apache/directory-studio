@@ -2386,7 +2386,7 @@
       <dependency>
         <groupId>org.eclipse.jdt.debug</groupId>
         <artifactId>ui</artifactId>
-        <version>3.2.102.v20071002_r332</version>
+        <version>3.2.102.v20071002_r332-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.ui</groupId>
