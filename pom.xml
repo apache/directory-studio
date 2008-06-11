@@ -808,7 +808,7 @@
       <dependency>
         <groupId>org.eclipse.ui.ide</groupId>
         <artifactId>application</artifactId>
-        <version>1.0.0-I20070530-0100</version>
+        <version>1.0.0-I20070530-0100-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.ui</groupId>
