@@ -508,7 +508,7 @@
       <dependency>
         <groupId>org.eclipse.ui.navigator</groupId>
         <artifactId>resources</artifactId>
-        <version>3.3.1.M20070831-2000</version>
+        <version>3.3.1.M20070831-2000-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse.ui</groupId>
