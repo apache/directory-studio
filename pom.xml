@@ -2283,7 +2283,7 @@
       <dependency>
         <groupId>org.eclipse.jdt</groupId>
         <artifactId>ui</artifactId>
-        <version>3.3.2.r332_20080128</version>
+        <version>3.3.2.r332_20080128-studio</version>
         <exclusions>
           <exclusion>
             <groupId>org.eclipse</groupId>
