@@ -92,11 +92,11 @@ public class LaunchServerJob extends Job
 
     /**
      * Creates a new instance of LaunchServerJob.
-     *
+     * 
      * @param server
-     *      the server
+     *            the server
      * @param configuration
-     *      the configuration
+     *            the configuration
      */
     public LaunchServerJob( Server server, ServerConfigurationV152 configuration )
     {
@@ -108,6 +108,7 @@ public class LaunchServerJob extends Job
 
     /*
      * (non-Javadoc)
+     * 
      * @see org.eclipse.core.runtime.jobs.Job#run(org.eclipse.core.runtime.IProgressMonitor)
      */
     protected IStatus run( IProgressMonitor monitor )
@@ -181,15 +182,16 @@ public class LaunchServerJob extends Job
                         server.setState( ServerStateEnum.STARTED );
                         writeToInfoConsoleMessageStream( "Server started.\n" );
 
-                        /// ... and we exit the thread
+                        // / ... and we exit the thread
                         return;
                     }
                     catch ( NamingException e )
                     {
-                        // If we get an exception when trying to create the 
+                        // If we get an exception when trying to create the
                         // context, it means the server is not yest started
 
-                        // We just wait one second before starting the test once again
+                        // We just wait one second before starting the test once
+                        // again
                         try
                         {
                             Thread.sleep( 1000 );
@@ -213,9 +215,9 @@ public class LaunchServerJob extends Job
 
             /**
              * Creates a context on the server.
-             *
+             * 
              * @throws NamingException
-             *      if an error occurs when creating the context
+             *             if an error occurs when creating the context
              */
             private void createInitialDirContext() throws NamingException
             {
@@ -236,9 +238,9 @@ public class LaunchServerJob extends Job
 
     /**
      * Writes the given message to the Info console message stream.
-     *
+     * 
      * @param message
-     *      the message
+     *            the message
      */
     private void writeToInfoConsoleMessageStream( final String message )
     {
@@ -284,7 +286,8 @@ public class LaunchServerJob extends Job
                         // Looping on the debug events array
                         for ( DebugEvent debugEvent : events )
                         {
-                            // We only care of event with kind equals to 'terminate'
+                            // We only care of event with kind equals to
+                            // 'terminate'
                             if ( debugEvent.getKind() == DebugEvent.TERMINATE )
                             {
                                 // Getting the source of the debug event
@@ -297,7 +300,8 @@ public class LaunchServerJob extends Job
                                     ILaunch debugEventLaunch = runtimeProcess.getLaunch();
                                     if ( debugEventLaunch.equals( launch ) )
                                     {
-                                        // The launch we had created is now terminated
+                                        // The launch we had created is now
+                                        // terminated
                                         // The server is now stopped
                                         server.setState( ServerStateEnum.STOPPED );
 
@@ -352,12 +356,12 @@ public class LaunchServerJob extends Job
 
 
     /**
-     * Overwrites the log4j.properties file of the server with the
-     * given port number.
+     * Overwrites the log4j.properties file of the server with the given port
+     * number.
      * 
      * @param port
      *            the port
-     * @throws IOException 
+     * @throws IOException
      */
     private void overwriteServersLog4jPropertiesFile( int port ) throws IOException
     {
@@ -413,13 +417,13 @@ public class LaunchServerJob extends Job
             IPath serverFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() );
 
             // Setting the program arguments attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, serverFolderPath
-                .toOSString() );
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\""
+                + serverFolderPath.toOSString() + "\"" );
 
             // Creating the VM arguments string
             StringBuffer vmArguments = new StringBuffer();
-            vmArguments.append( "-Dlog4j.configuration=file:"
-                + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() );
+            vmArguments.append( "-Dlog4j.configuration=file:\""
+                + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" );
             vmArguments.append( " " );
             vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" );
             vmArguments.append( " " );
@@ -436,7 +440,7 @@ public class LaunchServerJob extends Job
             workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
 
             // Indicating that we don't want any console to show up
-            workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
+            workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, true );
 
             // Saving the launch configuration
             ILaunchConfiguration configuration = workingCopy.doSave();
@@ -453,9 +457,8 @@ public class LaunchServerJob extends Job
 
     /**
      * Gets the associated launch.
-     *
-     * @return
-     *      the associated launch
+     * 
+     * @return the associated launch
      */
     public ILaunch getLaunch()
     {
@@ -465,9 +468,9 @@ public class LaunchServerJob extends Job
 
     /**
      * Sets the logs level.
-     *
+     * 
      * @param logsLevel
-     *      the logs level
+     *            the logs level
      */
     public void setLogsLevel( String logsLevel )
     {
@@ -477,9 +480,9 @@ public class LaunchServerJob extends Job
 
     /**
      * Sets the logs pattern.
-     *
+     * 
      * @param logsPattern
-     *      the logs pattern
+     *            the logs pattern
      */
     public void setLogsPattern( String logsPattern )
     {
