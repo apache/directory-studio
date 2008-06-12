@@ -202,7 +202,7 @@ public class ServersView extends ViewPart
     {
         super.init( site, memento );
         columnWidths = new int[]
-            { 200, 60 };
+            { 150, 80 };
         for ( int i = 0; i < 2; i++ )
         {
             if ( memento != null )
