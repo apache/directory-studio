@@ -1,0 +1,157 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="installed_jres">
+	<title>Installed JREs</title>
+	<para>
+		The following preferences can be changed on the Installed JREs
+		page:
+	</para>
+	<para>
+		This page allows a new default JRE to be selected as well as
+		adding new JRE installations.
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1* " />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Installed JREs</entry>
+						<entry>
+							The current listing of installed JREs,
+							allowing you to select the one to act as the
+							workspace default
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Add...</entry>
+						<entry>
+							Adds a new JRE definition to the workbench.
+							In the resulting dialog, specify the
+							following:
+							<itemizedlist>
+								<listitem>
+									JRE type: (select a VM type from the
+									drop-down list)
+								</listitem>
+								<listitem>
+									JRE name: Type a name for this JRE
+									definition
+								</listitem>
+								<listitem>
+									JRE home directory: Type or browse
+									to select the root directory for
+									this JRE installation
+								</listitem>
+								<listitem>
+									Default VM arguments: Type the VM
+									arguments to be used on the command
+									line each time this JRE is used to
+									run or debug a program
+								</listitem>
+								<listitem>
+									Use the JRE system libraries list to
+									manage the libraries associated with
+									the JRE. These are the libraries
+									that appear on the build path and
+									default runtime boot path.
+									<itemizedlist>
+										<listitem>
+											You can add, remove, and
+											re-order the libraries
+										</listitem>
+										<listitem>
+											You can specify a source
+											attachment and javadoc
+											location for each library.
+											Multi-select to modify more
+											than one library at once.
+										</listitem>
+										<listitem>
+											Use the Restore Default
+											button to revert to the
+											JRE's default libraries
+										</listitem>
+									</itemizedlist>
+								</listitem>
+							</itemizedlist>
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Edit...</entry>
+						<entry>
+							Allows you to edit the selected JRE.
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Copy...</entry>
+						<entry>
+							Creates a copy of the selected JRE with the
+							same attributes and a new name.
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Remove</entry>
+						<entry>
+							Removes the selected JRE from the workbench.
+						</entry>
+						<entry></entry>
+					</row>
+					<row>
+						<entry>Search...</entry>
+						<entry>
+							Automatically searches for JREs installed in
+							the local file system and creates
+							corresponding JRE definitions in the
+							workspace.
+						</entry>
+						<entry></entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	<para>
+		Here is what the Installed JREs preferences page looks like:
+	</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/installed-jres_screen.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+
+</section>

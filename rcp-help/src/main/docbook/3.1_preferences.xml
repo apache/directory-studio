@@ -49,6 +49,7 @@
 
 	&help;
 	&install_update;
+	&installed_jres;
 	&network_connections;
 	&text_editors;
 
