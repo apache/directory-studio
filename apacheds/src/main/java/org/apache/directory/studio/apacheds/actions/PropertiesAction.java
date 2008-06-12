@@ -42,8 +42,20 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  */
 public class PropertiesAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "&Properties";
+
     /** The associated view */
     private ServersView view;
+
+
+    /**
+     * Creates a new instance of PropertiesAction.
+     */
+    public PropertiesAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
 
 
     /**
@@ -54,8 +66,17 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
      */
     public PropertiesAction( ServersView view )
     {
-        super( "&Properties" );
+        super( ACTION_TEXT );
         this.view = view;
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
         setId( ApacheDsPluginConstants.CMD_PROPERTIES );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_PROPERTIES );
         setToolTipText( "Properties" );
@@ -67,14 +88,17 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
      */
     public void run()
     {
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-        if ( !selection.isEmpty() )
+        if ( view != null )
         {
-            Server server = ( Server ) selection.getFirstElement();
-            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(), server,
-                ServerPropertyPage.ID, null, null );
-            dialog.getShell().setText( "Properties for '" + shorten( server.getName(), 30 ) + "'" );
-            dialog.open();
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            if ( !selection.isEmpty() )
+            {
+                Server server = ( Server ) selection.getFirstElement();
+                PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(),
+                    server, ServerPropertyPage.ID, null, null );
+                dialog.getShell().setText( "Properties for '" + shorten( server.getName(), 30 ) + "'" );
+                dialog.open();
+            }
         }
     }
 

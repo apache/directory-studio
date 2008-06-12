@@ -64,6 +64,8 @@ import org.eclipse.ui.actions.TextActionHandler;
  */
 public class RenameAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "R&ename...";
+
     /** The associated view */
     private ServersView view;
     private Tree tree;
@@ -79,19 +81,38 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
 
     /**
      * Creates a new instance of RenameAction.
+     */
+    public RenameAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
+
+
+    /**
+     * Creates a new instance of RenameAction.
      * 
      * @param view
      *      the associated view
      */
     public RenameAction( ServersView view )
     {
-        super( "R&ename..." );
-        setId( ApacheDsPluginConstants.CMD_RENAME );
-        setActionDefinitionId( ApacheDsPluginConstants.CMD_RENAME );
-        setToolTipText( "Rename..." );
+        super( ACTION_TEXT );
         this.view = view;
         this.tree = view.getViewer().getTree();
         this.treeEditor = new TreeEditor( tree );
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
+        setId( ApacheDsPluginConstants.CMD_RENAME );
+        setActionDefinitionId( ApacheDsPluginConstants.CMD_RENAME );
+        setToolTipText( "Rename..." );
     }
 
 
@@ -100,14 +121,17 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      */
     public void run()
     {
-        // What we get from the TableViewer is a StructuredSelection
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-
-        // Here's the real object
-        Server server = ( Server ) selection.getFirstElement();
-        if ( server != null )
+        if ( view != null )
         {
-            queryNewServerNameInline( server );
+            // What we get from the TableViewer is a StructuredSelection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+
+            // Here's the real object
+            Server server = ( Server ) selection.getFirstElement();
+            if ( server != null )
+            {
+                queryNewServerNameInline( server );
+            }
         }
     }
 

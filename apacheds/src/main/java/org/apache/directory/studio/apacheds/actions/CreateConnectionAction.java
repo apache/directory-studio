@@ -52,6 +52,8 @@ import org.osgi.framework.Bundle;
  */
 public class CreateConnectionAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "Create a Connection";
+
     /** The associated view */
     private ServersView view;
 
@@ -59,15 +61,37 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
     /**
      * Creates a new instance of CreateConnectionAction.
      */
+    public CreateConnectionAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
+
+
+    /**
+     * Creates a new instance of CreateConnectionAction.
+     * 
+     * @param view
+     *      the associated view
+     */
     public CreateConnectionAction( ServersView view )
     {
-        super( "Create a Connection" );
+        super( ACTION_TEXT );
+        this.view = view;
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
         setId( ApacheDsPluginConstants.CMD_CREATE_CONNECTION );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_CREATE_CONNECTION );
         setToolTipText( "Stop" );
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor(
             ApacheDsPluginConstants.IMG_CREATE_CONNECTION ) );
-        this.view = view;
     }
 
 
@@ -76,53 +100,57 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
      */
     public void run()
     {
-        // Getting the selection
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        if ( view != null )
         {
-            // Getting the server
-            Server server = ( Server ) selection.getFirstElement();
+            // Getting the selection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+            {
+                // Getting the server
+                Server server = ( Server ) selection.getFirstElement();
 
-            // Parsing the 'server.xml' file
-            ServerXmlIOV152 serverXmlIOV152 = new ServerXmlIOV152();
-            ServerConfigurationV152 serverConfiguration = null;
-            try
-            {
-                serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream( new File(
-                    ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" ).append(
-                        "server.xml" ).toOSString() ) ) );
-            }
-            catch ( FileNotFoundException e )
-            {
-                reportErrorReadingServerConfiguration( e.getMessage() );
-                return;
-            }
-            catch ( ServerXmlIOException e )
-            {
-                reportErrorReadingServerConfiguration( e.getMessage() );
-                return;
-            }
+                // Parsing the 'server.xml' file
+                ServerXmlIOV152 serverXmlIOV152 = new ServerXmlIOV152();
+                ServerConfigurationV152 serverConfiguration = null;
+                try
+                {
+                    serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream(
+                        new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append(
+                            "conf" ).append( "server.xml" ).toOSString() ) ) );
+                }
+                catch ( FileNotFoundException e )
+                {
+                    reportErrorReadingServerConfiguration( e.getMessage() );
+                    return;
+                }
+                catch ( ServerXmlIOException e )
+                {
+                    reportErrorReadingServerConfiguration( e.getMessage() );
+                    return;
+                }
 
-            // Checking if we could read the 'server.xml' file
-            if ( serverConfiguration == null )
-            {
-                reportErrorReadingServerConfiguration( null );
-                return;
-            }
+                // Checking if we could read the 'server.xml' file
+                if ( serverConfiguration == null )
+                {
+                    reportErrorReadingServerConfiguration( null );
+                    return;
+                }
 
-            if ( ( serverConfiguration.isEnableLdap() ) || ( serverConfiguration.isEnableLdaps() ) )
-            {
-                // Creating the connection using the helper class
-                CreateConnectionActionHelper.createLdapBrowserConnection( server.getName(), serverConfiguration );
-            }
-            else
-            {
-                // LDAP and LDAPS protocols are disabled, we report this error to the user
-                MessageDialog dialog = new MessageDialog( view.getSite().getShell(), "Unable to create a connection",
-                    null, "LDAP and LDAPS protocols are disabled. A connection cannot be created.",
-                    MessageDialog.ERROR, new String[]
-                        { IDialogConstants.OK_LABEL }, MessageDialog.OK );
-                dialog.open();
+                if ( ( serverConfiguration.isEnableLdap() ) || ( serverConfiguration.isEnableLdaps() ) )
+                {
+                    // Creating the connection using the helper class
+                    CreateConnectionActionHelper.createLdapBrowserConnection( server.getName(), serverConfiguration );
+                }
+                else
+                {
+                    // LDAP and LDAPS protocols are disabled, we report this error to the user
+                    MessageDialog dialog = new MessageDialog( view.getSite().getShell(),
+                        "Unable to create a connection", null,
+                        "LDAP and LDAPS protocols are disabled. A connection cannot be created.", MessageDialog.ERROR,
+                        new String[]
+                            { IDialogConstants.OK_LABEL }, MessageDialog.OK );
+                    dialog.open();
+                }
             }
         }
     }

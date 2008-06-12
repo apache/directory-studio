@@ -54,8 +54,20 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "&Run";
+
     /** The associated view */
     private ServersView view;
+
+
+    /**
+     * Creates a new instance of RunAction.
+     */
+    public RunAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
 
 
     /**
@@ -66,8 +78,17 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public RunAction( ServersView view )
     {
-        super( "&Run" );
+        super( ACTION_TEXT );
         this.view = view;
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
         setId( ApacheDsPluginConstants.CMD_RUN );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_RUN );
         setToolTipText( "Run" );
@@ -80,83 +101,87 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public void run()
     {
-        // Getting the selection
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        if ( view != null )
         {
-            // Getting the server
-            final Server server = ( Server ) selection.getFirstElement();
+            // Getting the selection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+            {
+                // Getting the server
+                final Server server = ( Server ) selection.getFirstElement();
 
-            // Parsing the 'server.xml' file
-            ServerXmlIOV152 serverXmlIOV152 = new ServerXmlIOV152();
-            ServerConfigurationV152 serverConfiguration = null;
-            try
-            {
-                serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream( new File(
-                    ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" ).append(
-                        "server.xml" ).toOSString() ) ) );
-            }
-            catch ( FileNotFoundException e )
-            {
-                reportErrorReadingServerConfiguration( e.getMessage() );
-                return;
-            }
-            catch ( ServerXmlIOException e )
-            {
-                reportErrorReadingServerConfiguration( e.getMessage() );
-                return;
-            }
-
-            // Checking if we could read the 'server.xml' file
-            if ( serverConfiguration == null )
-            {
-                reportErrorReadingServerConfiguration( null );
-                return;
-            }
-
-            // Verifying if the protocol ports are currently available
-            String[] alreadyInUseProtocolPortsList = getAlreadyInUseProtocolPorts( serverConfiguration );
-            if ( ( alreadyInUseProtocolPortsList != null ) && ( alreadyInUseProtocolPortsList.length > 0 ) )
-            {
-                String title = null;
-                String message = null;
-
-                if ( alreadyInUseProtocolPortsList.length == 1 )
+                // Parsing the 'server.xml' file
+                ServerXmlIOV152 serverXmlIOV152 = new ServerXmlIOV152();
+                ServerConfigurationV152 serverConfiguration = null;
+                try
                 {
-                    title = "Port already in use";
-                    message = "The port of the protocol " + alreadyInUseProtocolPortsList[0] + " is already in use.";
+                    serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream(
+                        new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append(
+                            "conf" ).append( "server.xml" ).toOSString() ) ) );
                 }
-                else
+                catch ( FileNotFoundException e )
                 {
-                    title = "Ports already in use";
-                    message = "The ports of the following protocols are already in use:";
-                    for ( String alreadyInUseProtocolPort : alreadyInUseProtocolPortsList )
+                    reportErrorReadingServerConfiguration( e.getMessage() );
+                    return;
+                }
+                catch ( ServerXmlIOException e )
+                {
+                    reportErrorReadingServerConfiguration( e.getMessage() );
+                    return;
+                }
+
+                // Checking if we could read the 'server.xml' file
+                if ( serverConfiguration == null )
+                {
+                    reportErrorReadingServerConfiguration( null );
+                    return;
+                }
+
+                // Verifying if the protocol ports are currently available
+                String[] alreadyInUseProtocolPortsList = getAlreadyInUseProtocolPorts( serverConfiguration );
+                if ( ( alreadyInUseProtocolPortsList != null ) && ( alreadyInUseProtocolPortsList.length > 0 ) )
+                {
+                    String title = null;
+                    String message = null;
+
+                    if ( alreadyInUseProtocolPortsList.length == 1 )
                     {
-                        message += ApacheDsPluginUtils.LINE_SEPARATOR + "    - " + alreadyInUseProtocolPort;
+                        title = "Port already in use";
+                        message = "The port of the protocol " + alreadyInUseProtocolPortsList[0]
+                            + " is already in use.";
+                    }
+                    else
+                    {
+                        title = "Ports already in use";
+                        message = "The ports of the following protocols are already in use:";
+                        for ( String alreadyInUseProtocolPort : alreadyInUseProtocolPortsList )
+                        {
+                            message += ApacheDsPluginUtils.LINE_SEPARATOR + "    - " + alreadyInUseProtocolPort;
+                        }
+                    }
+
+                    message += ApacheDsPluginUtils.LINE_SEPARATOR + ApacheDsPluginUtils.LINE_SEPARATOR
+                        + "Do you wish to continue?";
+
+                    MessageDialog dialog = new MessageDialog( view.getSite().getShell(), title, null, message,
+                        MessageDialog.WARNING, new String[]
+                            { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, MessageDialog.OK );
+                    if ( dialog.open() == MessageDialog.CANCEL )
+                    {
+                        return;
                     }
                 }
 
-                message += ApacheDsPluginUtils.LINE_SEPARATOR + ApacheDsPluginUtils.LINE_SEPARATOR
-                    + "Do you wish to continue?";
+                // Verifying the libraries in the plugin's folder
+                ApacheDsPluginUtils.verifyLibrariesFolder();
 
-                MessageDialog dialog = new MessageDialog( view.getSite().getShell(), title, null, message,
-                    MessageDialog.WARNING, new String[]
-                        { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, MessageDialog.OK );
-                if ( dialog.open() == MessageDialog.CANCEL )
-                {
-                    return;
-                }
+                // Creating, setting and launching the launch job
+                LaunchServerJob job = new LaunchServerJob( server, serverConfiguration );
+                job.setLogsLevel( ApacheDsPluginUtils.getServerLogsLevel() );
+                job.setLogsPattern( ApacheDsPluginUtils.getServerLogsPattern() );
+                server.setLaunchJob( job );
+                job.schedule();
             }
-
-            // Verifying the libraries in the plugin's folder
-            ApacheDsPluginUtils.verifyLibrariesFolder();
-
-            // Creating, setting and launching the launch job
-            LaunchServerJob job = new LaunchServerJob( server, serverConfiguration );
-            job.setLogsLevel( ApacheDsPluginUtils.getServerLogsLevel() );
-            job.setLogsPattern( ApacheDsPluginUtils.getServerLogsPattern() );
-            server.setLaunchJob( job );
-            job.schedule();
         }
     }
 

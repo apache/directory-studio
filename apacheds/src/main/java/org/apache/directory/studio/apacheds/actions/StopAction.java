@@ -50,6 +50,8 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class StopAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "S&top";
+
     /** The associated view */
     private ServersView view;
 
@@ -60,14 +62,36 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
     /**
      * Creates a new instance of StopAction.
      */
+    public StopAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
+
+
+    /**
+     * Creates a new instance of StopAction.
+     *
+     * @param view
+     *      the associated view
+     */
     public StopAction( ServersView view )
     {
-        super( "S&top" );
+        super( ACTION_TEXT );
+        this.view = view;
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
         setId( ApacheDsPluginConstants.CMD_STOP );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_STOP );
         setToolTipText( "Stop" );
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor( ApacheDsPluginConstants.IMG_STOP ) );
-        this.view = view;
     }
 
 
@@ -76,34 +100,37 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public void run()
     {
-        // Getting the selection
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-        if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+        if ( view != null )
         {
-            // Getting the server
-            server = ( Server ) selection.getFirstElement();
-
-            // Setting the server of the server to 'stopping'
-            server.setState( ServerStateEnum.STOPPING );
-
-            // Getting the launch job
-            LaunchServerJob launchJob = server.getLaunchJob();
-            if ( launchJob != null )
+            // Getting the selection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
             {
-                // Getting the launch
-                ILaunch launch = launchJob.getLaunch();
-                if ( ( launch != null ) && ( !launch.isTerminated() ) )
+                // Getting the server
+                server = ( Server ) selection.getFirstElement();
+
+                // Setting the server of the server to 'stopping'
+                server.setState( ServerStateEnum.STOPPING );
+
+                // Getting the launch job
+                LaunchServerJob launchJob = server.getLaunchJob();
+                if ( launchJob != null )
                 {
-                    // Terminating the launch
-                    try
+                    // Getting the launch
+                    ILaunch launch = launchJob.getLaunch();
+                    if ( ( launch != null ) && ( !launch.isTerminated() ) )
                     {
-                        launch.terminate();
-                        writeToInfoConsoleMessageStream( "Server stopped.\n" );
-                    }
-                    catch ( DebugException e )
-                    {
-                        ApacheDsPluginUtils.reportError( "An error occurred when stopping the server.\n\n"
-                            + e.getMessage() );
+                        // Terminating the launch
+                        try
+                        {
+                            launch.terminate();
+                            writeToInfoConsoleMessageStream( "Server stopped.\n" );
+                        }
+                        catch ( DebugException e )
+                        {
+                            ApacheDsPluginUtils.reportError( "An error occurred when stopping the server.\n\n"
+                                + e.getMessage() );
+                        }
                     }
                 }
             }

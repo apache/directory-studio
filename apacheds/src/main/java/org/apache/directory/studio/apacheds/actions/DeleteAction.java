@@ -46,8 +46,20 @@ import org.eclipse.ui.PlatformUI;
  */
 public class DeleteAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "&Delete";
+
     /** The associated view */
     private ServersView view;
+
+
+    /**
+     * Creates a new instance of DeleteAction.
+     */
+    public DeleteAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
 
 
     /**
@@ -58,8 +70,17 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
      */
     public DeleteAction( ServersView view )
     {
-        super( "&Delete" );
+        super( ACTION_TEXT );
         this.view = view;
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
         setId( ApacheDsPluginConstants.CMD_DELETE );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_DELETE );
         setToolTipText( "Delete" );
@@ -73,22 +94,25 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
      */
     public void run()
     {
-        // What we get from the TableViewer is a StructuredSelection
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-
-        // Here's the real object
-        Server server = ( Server ) selection.getFirstElement();
-
-        // Asking for confirmation
-        DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), server );
-        if ( dsd.open() == DeleteServerDialog.OK )
+        if ( view != null )
         {
-            // Removing the server
-            ServersHandler.getDefault().removeServer( server );
+            // What we get from the TableViewer is a StructuredSelection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
 
-            // Deleting the associated directory on disk
-            deleteDirectory( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-                .toOSString() ) );
+            // Here's the real object
+            Server server = ( Server ) selection.getFirstElement();
+
+            // Asking for confirmation
+            DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), server );
+            if ( dsd.open() == DeleteServerDialog.OK )
+            {
+                // Removing the server
+                ServersHandler.getDefault().removeServer( server );
+
+                // Deleting the associated directory on disk
+                deleteDirectory( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
+                    .toOSString() ) );
+            }
         }
     }
 

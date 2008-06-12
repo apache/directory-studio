@@ -49,8 +49,20 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenConfigurationAction extends Action implements IWorkbenchWindowActionDelegate
 {
+    private static final String ACTION_TEXT = "&Open Configuration";
+
     /** The associated view */
     private ServersView view;
+
+
+    /**
+     * Creates a new instance of OpenConfigurationAction.
+     */
+    public OpenConfigurationAction()
+    {
+        super( ACTION_TEXT );
+        init();
+    }
 
 
     /**
@@ -61,8 +73,17 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
      */
     public OpenConfigurationAction( ServersView view )
     {
-        super( "&Open Configuration" );
+        super( ACTION_TEXT );
         this.view = view;
+        init();
+    }
+
+
+    /**
+     * Initializes the action.
+     */
+    private void init()
+    {
         setId( ApacheDsPluginConstants.CMD_OPEN_CONFIGURATION );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_OPEN_CONFIGURATION );
         setToolTipText( "Open Configuration" );
@@ -74,26 +95,29 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
      */
     public void run()
     {
-        // What we get from the TableViewer is a StructuredSelection
-        StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-
-        // Here's the real object
-        Server server = ( Server ) selection.getFirstElement();
-        if ( server != null )
+        if ( view != null )
         {
-            // Opening the editor
-            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            PathEditorInput input = new PathEditorInput( ApacheDsPluginUtils.getApacheDsServersFolder().append(
-                server.getId() ).append( "conf" ).append( "server.xml" ) );
-            try
+            // What we get from the TableViewer is a StructuredSelection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+
+            // Here's the real object
+            Server server = ( Server ) selection.getFirstElement();
+            if ( server != null )
             {
-                page.openEditor( input, ServerConfigurationEditor.ID );
-            }
-            catch ( PartInitException e )
-            {
-                ApacheDsPluginUtils
-                    .reportError( "An error occurred when opening the Apache DS Configuration Editor.\n\n"
-                        + e.getMessage() );
+                // Opening the editor
+                IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+                PathEditorInput input = new PathEditorInput( ApacheDsPluginUtils.getApacheDsServersFolder().append(
+                    server.getId() ).append( "conf" ).append( "server.xml" ) );
+                try
+                {
+                    page.openEditor( input, ServerConfigurationEditor.ID );
+                }
+                catch ( PartInitException e )
+                {
+                    ApacheDsPluginUtils
+                        .reportError( "An error occurred when opening the Apache DS Configuration Editor.\n\n"
+                            + e.getMessage() );
+                }
             }
         }
     }
