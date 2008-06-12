@@ -24,12 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.naming.ldap.InitialLdapContext;
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.ConsolesHandler;
@@ -160,7 +155,7 @@ public class LaunchServerJob extends Job
         long startTime = System.currentTimeMillis();
 
         // Calculating the watch dog time
-        final long watchDog = startTime + ( 1000 * 60 * 1 ); // 3 minutes
+        final long watchDog = startTime + ( 1000 * 60 * 3 ); // 3 minutes
 
         // Creating the thread
         Thread thread = new Thread()
@@ -172,8 +167,50 @@ public class LaunchServerJob extends Job
                 {
                     try
                     {
-                        // Let's try to create a context on the server
-                        createInitialDirContext();
+                        // Getting the port to test
+                        int port = 0;
+                        // LDAP
+                        if ( configuration.isEnableLdap() )
+                        {
+                            port = configuration.getLdapPort();
+                        }
+                        // LDAPS
+                        else if ( configuration.isEnableLdaps() )
+                        {
+                            port = configuration.getLdapsPort();
+                        }
+                        // Kerberos
+                        else if ( configuration.isEnableKerberos() )
+                        {
+                            port = configuration.getKerberosPort();
+                        }
+                        // DNS
+                        else if ( configuration.isEnableDns() )
+                        {
+                            port = configuration.getDnsPort();
+                        }
+                        // NTP
+                        else if ( configuration.isEnableNtp() )
+                        {
+                            port = configuration.getNtpPort();
+                        }
+                        // ChangePassword
+                        else if ( configuration.isEnableChangePassword() )
+                        {
+                            port = configuration.getChangePasswordPort();
+                        }
+
+                        // If no protocol is enabled, we pass this and 
+                        // declare the server as started
+                        if ( port != 0 )
+                        {
+                            // Trying to see if the port is available
+                            if ( AvailablePortFinder.available( port ) )
+                            {
+                                // The port is still available
+                                throw new Exception();
+                            }
+                        }
 
                         // If we pass the creation of the context, it means
                         // the server is correctly started
@@ -182,13 +219,13 @@ public class LaunchServerJob extends Job
                         server.setState( ServerStateEnum.STARTED );
                         writeToInfoConsoleMessageStream( "Server started.\n" );
 
-                        // / ... and we exit the thread
+                        // ... and we exit the thread
                         return;
                     }
-                    catch ( NamingException e )
+                    catch ( Exception e )
                     {
-                        // If we get an exception when trying to create the
-                        // context, it means the server is not yest started
+                        // If we get an exception,it means the server is not 
+                        // yet started
 
                         // We just wait one second before starting the test once
                         // again
@@ -210,24 +247,6 @@ public class LaunchServerJob extends Job
                     server.setState( ServerStateEnum.STOPPED );
                     writeToInfoConsoleMessageStream( "Server stopped.\n" );
                 }
-            }
-
-
-            /**
-             * Creates a context on the server.
-             * 
-             * @throws NamingException
-             *             if an error occurs when creating the context
-             */
-            private void createInitialDirContext() throws NamingException
-            {
-                Hashtable<String, String> environment = new Hashtable<String, String>();
-                environment.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" ); //$NON-NLS-1$
-                environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
-                environment.put( Context.PROVIDER_URL, "ldap://" + "localhost" + ":" + configuration.getLdapPort() ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-                InitialLdapContext context = new InitialLdapContext( environment, null );
-                context.close();
             }
         };
 
