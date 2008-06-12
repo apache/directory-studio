@@ -440,7 +440,7 @@ public class LaunchServerJob extends Job
             workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
 
             // Indicating that we don't want any console to show up
-            workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, true );
+            workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
 
             // Saving the launch configuration
             ILaunchConfiguration configuration = workingCopy.doSave();
