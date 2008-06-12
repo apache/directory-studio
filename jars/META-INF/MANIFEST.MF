@@ -135,6 +135,7 @@ Export-Package: antlr,
  org.xmlpull.v1.util,
  org.xmlpull.v1.wrapper,
  org.xmlpull.v1.wrapper.classic
+Eclipse-BuddyPolicy: registered
 Bundle-ClassPath: .,
  lib/antlr-2.7.7.jar,
  lib/commons-collections-3.2.jar,
