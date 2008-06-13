@@ -101,12 +101,21 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
 
         BaseWidgetUtils.createLabel( infoGroupLeft, "Schema DN:", 1 );
         dnText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "", 1 );
+        GridData dnTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        dnTextGridData.widthHint = 300;
+        dnText.setLayoutData( dnTextGridData );
 
         BaseWidgetUtils.createLabel( infoGroupLeft, "Create Timestamp:", 1 );
         ctText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "", 1 );
+        GridData ctTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        ctTextGridData.widthHint = 300;
+        ctText.setLayoutData( ctTextGridData );
 
         BaseWidgetUtils.createLabel( infoGroupLeft, "Modify Timestamp:", 1 );
         mtText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "", 1 );
+        GridData mtTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        mtTextGridData.widthHint = 300;
+        mtText.setLayoutData( mtTextGridData );
 
         reloadSchemaButton = BaseWidgetUtils.createButton( infoComposite, "", 1 );
         GridData gd = new GridData();
@@ -129,12 +138,21 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
 
         BaseWidgetUtils.createLabel( cacheComposite, "Cache Location:", 1 );
         cachePathText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "", 1 );
+        GridData cachePathTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        cachePathTextGridData.widthHint = 300;
+        cachePathText.setLayoutData( cachePathTextGridData );
 
         BaseWidgetUtils.createLabel( cacheComposite, "Cache Date:", 1 );
         cacheDateText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "", 1 );
+        GridData cacheDateTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        cacheDateTextGridData.widthHint = 300;
+        cacheDateText.setLayoutData( cacheDateTextGridData );
 
         BaseWidgetUtils.createLabel( cacheComposite, "Cache Size:", 1 );
         cacheSizeText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "", 1 );
+        GridData cacheSizeTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        cacheSizeTextGridData.widthHint = 300;
+        cacheSizeText.setLayoutData( cacheSizeTextGridData );
 
         IBrowserConnection connection = RootDSEPropertyPage.getConnection( getElement() );
         update( connection );
