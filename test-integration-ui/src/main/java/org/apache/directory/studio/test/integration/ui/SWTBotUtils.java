@@ -27,10 +27,21 @@ import java.util.List;
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.eclipse.finder.widgets.SWTBotView;
+import net.sf.swtbot.wait.DefaultCondition;
+import net.sf.swtbot.widgets.SWTBotButton;
 import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotTable;
 import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
+
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionFolderManager;
+import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 
 
 /**
@@ -62,6 +73,56 @@ public class SWTBotUtils
         // select "LDAP" perspective
         SWTBotTable table = bot.table();
         table.select( "LDAP" );
+
+        // press "OK"
+        SWTBotButton okButton = bot.button( "OK" );
+        okButton.click();
+    }
+
+
+    /**
+     * Creates the test connection.
+     * 
+     * @throws Exception the exception
+     */
+    public static void createTestConnection( SWTEclipseBot bot, String name, int port ) throws Exception
+    {
+        SWTBotTree connectionsTree = getConnectionsTree( bot );
+
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        ConnectionParameter connectionParameter = new ConnectionParameter();
+        connectionParameter.setName( name );
+        connectionParameter.setHost( "localhost" );
+        connectionParameter.setPort( port );
+        connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
+        connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
+        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
+        connectionParameter.setBindPassword( "secret" );
+        Connection connection = new Connection( connectionParameter );
+        connectionManager.addConnection( connection );
+
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
+        ConnectionFolder rootConnectionFolder = connectionFolderManager.getRootConnectionFolder();
+        rootConnectionFolder.addConnectionId( connection.getId() );
+
+        connectionsTree.select( name );
+        //new OpenConnectionsJob( connection ).execute();
+
+        Thread.sleep( 1000 );
+    }
+
+
+    /**
+     * Deletes the test connection.
+     */
+    public static void deleteTestConnections()
+    {
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        for ( Connection connection : connectionManager.getConnections() )
+        {
+            connectionManager.removeConnection( connection );
+        }
     }
 
 
@@ -83,7 +144,8 @@ public class SWTBotUtils
     }
 
 
-    public static SWTBotTreeItem selectNode( SWTBotTree browserTree, String... path ) throws Exception
+    public static SWTBotTreeItem selectNode( SWTEclipseBot bot, SWTBotTree browserTree, String... path )
+        throws Exception
     {
         List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
         String currentPath = pathList.remove( 0 );
@@ -94,7 +156,7 @@ public class SWTBotUtils
 
         if ( !pathList.isEmpty() )
         {
-            return selectNode( child, pathList );
+            return selectNode( bot, child, pathList );
         }
         else
         {
@@ -103,25 +165,43 @@ public class SWTBotUtils
     }
 
 
-    public static SWTBotTreeItem selectNode( SWTBotTreeItem item, List<String> pathList ) throws Exception
+    public static SWTBotTreeItem selectNode( SWTEclipseBot bot, final SWTBotTreeItem item, List<String> pathList )
+        throws Exception
     {
-        String currentPath = pathList.remove( 0 );
+        final String[] currentPath = new String[]
+            { pathList.remove( 0 ) };
 
-        List<String> nodes = item.getNodes();
-        for ( String node : nodes )
+        // wait till node becomes visible
+        bot.waitUntil( new DefaultCondition()
         {
-            if ( node.toUpperCase().startsWith( currentPath.toUpperCase() ) )
+            public boolean test() throws Exception
             {
-                currentPath = node;
+                List<String> nodes = item.getNodes();
+                for ( String node : nodes )
+                {
+                    if ( node.toUpperCase().startsWith( currentPath[0].toUpperCase() ) )
+                    {
+                        currentPath[0] = node;
+                        return true;
+                    }
+                }
+                return false;
             }
-        }
-        SWTBotTreeItem child = item.expandNode( currentPath );
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
+
+        SWTBotTreeItem child = item.expandNode( currentPath[0] );
         child.select();
         child.expand();
 
         if ( !pathList.isEmpty() )
         {
-            return selectNode( child, pathList );
+            return selectNode( bot, child, pathList );
         }
         else
         {

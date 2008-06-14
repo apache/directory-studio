@@ -56,14 +56,8 @@ public class NewConnectionWizardTest extends AbstractServerTest
 
     protected void tearDown() throws Exception
     {
+        SWTBotUtils.deleteTestConnections();
         bot = null;
-        
-        // clear all created connections
-        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
-        for( Connection connection : connectionManager.getConnections() )
-        {
-            connectionManager.removeConnection( connection );
-        }
         super.tearDown();
     }
 

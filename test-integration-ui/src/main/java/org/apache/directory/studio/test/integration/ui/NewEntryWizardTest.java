@@ -29,14 +29,6 @@ import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
 
 import org.apache.directory.server.unit.AbstractServerTest;
-import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.ConnectionFolder;
-import org.apache.directory.studio.connection.core.ConnectionFolderManager;
-import org.apache.directory.studio.connection.core.ConnectionManager;
-import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 
 
 /**
@@ -55,14 +47,14 @@ public class NewEntryWizardTest extends AbstractServerTest
         super.setUp();
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        createConnection();
+        SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapServer.getIpPort() );
     }
 
 
     protected void tearDown() throws Exception
     {
+        SWTBotUtils.deleteTestConnections();
         bot = null;
-        deleteConnection();
         super.tearDown();
     }
 
@@ -75,7 +67,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateOrganizationEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectNode( browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -140,7 +132,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreatePersonEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectNode( browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -181,7 +173,8 @@ public class NewEntryWizardTest extends AbstractServerTest
         SWTBotTree tree = bot.tree( 0 );
         tree.select( "sn" );
         bot.text( "" ).setText( "test" );
-
+        tree.select( "cn" );
+        
         // TODO: with SWTBot 1.2 we could use the tree.click() method! 
         // workaround to apply the new value 
         bot.button( "< Back" ).click();
@@ -237,7 +230,7 @@ public class NewEntryWizardTest extends AbstractServerTest
 
     private void createEntry( final SWTBotTree browserTree, final String name ) throws Exception
     {
-        SWTBotUtils.selectNode( browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
 
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
         contextMenu.click();
@@ -285,52 +278,6 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
-    }
-
-
-    /**
-     * Creates the test connection.
-     * 
-     * @throws Exception the exception
-     */
-    private void createConnection() throws Exception
-    {
-        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
-
-        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
-        ConnectionParameter connectionParameter = new ConnectionParameter();
-        connectionParameter.setName( "NewEntryWizardTest" );
-        connectionParameter.setHost( "localhost" );
-        connectionParameter.setPort( ldapServer.getIpPort() );
-        connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
-        connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
-        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
-        connectionParameter.setBindPassword( "secret" );
-        Connection connection = new Connection( connectionParameter );
-        connectionManager.addConnection( connection );
-
-        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
-            .getConnectionFolderManager();
-        ConnectionFolder rootConnectionFolder = connectionFolderManager.getRootConnectionFolder();
-        rootConnectionFolder.addConnectionId( connection.getId() );
-        //new OpenConnectionsJob( connection ).execute();
-
-        connectionsTree.select( "NewEntryWizardTest" );
-
-        Thread.sleep( 1000 );
-    }
-
-
-    /**
-     * Deletes the test connection.
-     */
-    private void deleteConnection()
-    {
-        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
-        for ( Connection connection : connectionManager.getConnections() )
-        {
-            connectionManager.removeConnection( connection );
-        }
     }
 
 }

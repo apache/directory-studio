@@ -144,6 +144,12 @@
                     <copy todir="target/test-sandbox">
                       <fileset dir="../target/distributions">
                         <include name="ApacheDirectoryStudio-*/**" />
+                        <!-- 
+                          To run the tests we need the full org.eclipse.ui.ide plugins 
+                          including the Resouce perspective, so we can't use the 
+                          adapted studio plugin.
+                        -->
+                        <exclude name="**/*org.eclipse.ui.ide*"/>
                       </fileset>
                       <regexpmapper from="${integration-regexp}" to="\2"/>
                     </copy>
@@ -179,6 +185,8 @@
                         <include name="org.eclipse.ui.cheatsheets_*.jar" />
                         <include name="org.eclipse.ui.console_*.jar" />
                         <include name="org.eclipse.ui.externaltools_*.jar" />
+                        <include name="org.eclipse.ui.ide_*.jar" />
+                        <include name="org.eclipse.ui.ide.application_*.jar" />
                         <include name="org.eclipse.ui.navigator_*.jar" />
                         <include name="org.eclipse.ui.navigator.resources_*.jar" />
                         <include name="org.eclipse.ui.net_*.jar" />

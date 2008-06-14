@@ -1,0 +1,10 @@
+dn: cn=Barbara Jensen+uid=bjensen,ou=users,ou=system
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Barbara Jensen
+sn: Jensen
+givenName: Barbara
+uid: bjensen
+
