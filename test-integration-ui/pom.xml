@@ -317,6 +317,21 @@
       <artifactId>connection.ui</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>ldapbrowser.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>ldapbrowser.common</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>ldapbrowser.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
     
     <dependency>
       <groupId>net.sf.swtbot</groupId>
@@ -347,6 +362,21 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>workbench</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>jface</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

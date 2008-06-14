@@ -6,9 +6,13 @@ Bundle-Version: 1.2.0.SNAPSHOT
 Bundle-Vendor: Apache Software Foundation
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
  org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.common,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.ldapbrowser.ui,
  org.junit,
  net.sf.swtbot.finder,
  net.sf.swtbot.eclipse.finder

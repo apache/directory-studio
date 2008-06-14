@@ -29,6 +29,8 @@ import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
 
 import org.apache.directory.server.unit.AbstractServerTest;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 
 
 /**
@@ -221,6 +223,9 @@ public class NewEntryWizardTest extends AbstractServerTest
     {
         SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
 
+        BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
+            BrowserCommonConstants.PREFERENCE_BROWSER_ENABLE_FOLDING, false );
+        
         for ( int i = 0; i < 25; i++ )
         {
             createEntry( browserTree, "testCreateMultipleEntries" + i );
