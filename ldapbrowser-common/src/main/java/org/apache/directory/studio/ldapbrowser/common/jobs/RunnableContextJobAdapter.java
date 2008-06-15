@@ -23,13 +23,11 @@ package org.apache.directory.studio.ldapbrowser.common.jobs;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -74,39 +72,57 @@ public class RunnableContextJobAdapter
      */
     public static void execute( final AbstractEclipseJob job, IRunnableContext runnableContext, boolean handleError )
     {
-
-        if ( runnableContext == null )
-        {
-            runnableContext = new ProgressMonitorDialog( Display.getDefault().getActiveShell() );
-        }
-
-        IRunnableWithProgress runnable = new IRunnableWithProgress()
-        {
-            public void run( IProgressMonitor ipm ) throws InterruptedException
-            {
-                job.setExternalProgressMonitor( ipm );
-                job.execute();
-                job.join();
-            }
-        };
-
         try
         {
-            runnableContext.run( true, true, runnable );
+            job.setExternalProgressMonitor( new NullProgressMonitor() );
+            job.execute();
+            job.join();
         }
-        catch ( Exception ex )
+        catch ( InterruptedException ex )
         {
             BrowserCommonActivator.getDefault().getExceptionHandler().handleException(
                 new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR,
                     ex.getMessage() != null ? ex.getMessage() : "", ex ) );
         }
-
         if ( handleError && !job.getExternalResult().isOK() )
         {
             IStatus status = job.getExternalResult();
             BrowserCommonActivator.getDefault().getExceptionHandler().handleException( status );
         }
 
+        // TODO: There seems to be a bug in the runnableContext.run( true, true, runnable ) method
+        // that allocates an SWT cursor but doesn't dispose it.
+//        if ( runnableContext == null )
+//        {
+//            runnableContext = new ProgressMonitorDialog( Display.getDefault().getActiveShell() );
+//        }
+//
+//        IRunnableWithProgress runnable = new IRunnableWithProgress()
+//        {
+//            public void run( IProgressMonitor ipm ) throws InterruptedException
+//            {
+//                job.setExternalProgressMonitor( ipm );
+//                job.execute();
+//                job.join();
+//            }
+//        };
+//
+//        try
+//        {
+//            runnableContext.run( true, true, runnable );
+//        }
+//        catch ( Exception ex )
+//        {
+//            BrowserCommonActivator.getDefault().getExceptionHandler().handleException(
+//                new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR,
+//                    ex.getMessage() != null ? ex.getMessage() : "", ex ) );
+//        }
+//
+//        if ( handleError && !job.getExternalResult().isOK() )
+//        {
+//            IStatus status = job.getExternalResult();
+//            BrowserCommonActivator.getDefault().getExceptionHandler().handleException( status );
+//        }
     }
 
 }

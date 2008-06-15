@@ -29,8 +29,6 @@ import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
 
 import org.apache.directory.server.unit.AbstractServerTest;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 
 
 /**
@@ -176,7 +174,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         tree.select( "sn" );
         bot.text( "" ).setText( "test" );
         tree.select( "cn" );
-        
+
         // TODO: with SWTBot 1.2 we could use the tree.click() method! 
         // workaround to apply the new value 
         bot.button( "< Back" ).click();
@@ -203,78 +201,6 @@ public class NewEntryWizardTest extends AbstractServerTest
             public boolean test() throws Exception
             {
                 return browserTree.selection().get( 0 ).get( 0 ).equals( "cn=testCreatePersonEntry" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-    }
-
-
-    /**
-     * Test to create multiple entries.
-     * 
-     * @throws Exception the exception
-     */
-    public void testCreateMultipleEntries() throws Exception
-    {
-        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-
-        BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
-            BrowserCommonConstants.PREFERENCE_BROWSER_ENABLE_FOLDING, false );
-        
-        for ( int i = 0; i < 25; i++ )
-        {
-            createEntry( browserTree, "testCreateMultipleEntries" + i );
-        }
-    }
-
-
-    private void createEntry( final SWTBotTree browserTree, final String name ) throws Exception
-    {
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-
-        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
-
-        bot.radio( "Create entry from scratch" ).click();
-        bot.button( "Next >" ).click();
-
-        bot.table( 0 ).select( "organization" );
-        bot.button( "Add" ).click();
-        bot.button( "Next >" ).click();
-
-        SWTBotCombo typeCombo = bot.comboBox( "" );
-        typeCombo.setText( "o" );
-        SWTBotText valueText = bot.text( "" );
-        valueText.setText( name );
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.tree( 0 ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-        bot.button( "Finish" ).click();
-
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).equals( "o=" + name );
             }
 
 

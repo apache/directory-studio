@@ -1,0 +1,8 @@
+# Debugging options for the org.eclipse.ui plugin.
+
+# Turn on debugging for the org.eclipse.ui plugin.
+org.eclipse.ui/debug=true
+
+# Enable the trace of SWT graphics.
+org.eclipse.ui/trace/graphics=true
+

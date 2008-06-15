@@ -21,34 +21,33 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
+
+import org.apache.directory.server.unit.AbstractServerTest;
 
 
 /**
- * Test suite to run all tests.
+ * Test preparation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AutomatedSuite extends TestSuite
+public class PreparationTest extends AbstractServerTest
 {
 
-    public static Test suite()
+    /**
+     * Closes the welcome view.
+     */
+    public void testCloseWelcomeView()
     {
-        return new AutomatedSuite();
-    }
-
-
-    public AutomatedSuite()
-    {
-        addTest( new TestSuite( PreparationTest.class ) );
-        
-        addTest( new TestSuite( NewConnectionWizardTest.class ) );
-        addTest( new TestSuite( NewEntryWizardTest.class ) );
-        addTest( new TestSuite( RenameEntryDialogTest.class ) );
-
-        addTest( new TestSuite( SwtResourcesTest.class ) );
+        try
+        {
+            SWTEclipseBot bot = new SWTEclipseBot();
+            bot.view( "Welcome" ).close();
+        }
+        catch ( Exception e )
+        {
+        }
     }
 
 }

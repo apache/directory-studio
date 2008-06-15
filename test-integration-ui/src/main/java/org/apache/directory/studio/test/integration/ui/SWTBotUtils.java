@@ -60,10 +60,10 @@ public class SWTBotUtils
      * 
      * @throws Exception the exception
      */
-    public static void openLdapPerspective( SWTEclipseBot bot ) throws Exception
+    public static void openLdapPerspective( final SWTEclipseBot eBot ) throws Exception
     {
         // open "Open Perspective" dialog
-        SWTBotMenu windowMenu = bot.menu( "Window" );
+        SWTBotMenu windowMenu = eBot.menu( "Window" );
         windowMenu.click();
         SWTBotMenu perspectiveMenu = windowMenu.menu( "Open Perspective" );
         perspectiveMenu.click();
@@ -71,12 +71,69 @@ public class SWTBotUtils
         otherMenu.click();
 
         // select "LDAP" perspective
-        SWTBotTable table = bot.table();
+        SWTBotTable table = eBot.table();
         table.select( "LDAP" );
 
         // press "OK"
-        SWTBotButton okButton = bot.button( "OK" );
+        SWTBotButton okButton = eBot.button( "OK" );
         okButton.click();
+
+        // wait till Connections view become visible
+        eBot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return eBot.view( "Connections" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
+    }
+
+
+    /**
+     * Opens the Sleak (SWT leak) view.
+     * 
+     * @param bot the bot
+     * 
+     * @throws Exception the exception
+     */
+    public static void openSleakView( final SWTEclipseBot eBot ) throws Exception
+    {
+        // open "Show View" dialog
+        SWTBotMenu windowMenu = eBot.menu( "Window" );
+        windowMenu.click();
+        SWTBotMenu viewMenu = windowMenu.menu( "Show View" );
+        viewMenu.click();
+        SWTBotMenu otherMenu = viewMenu.menu( "Other..." );
+        otherMenu.click();
+
+        // select "Sleak"
+        SWTBotTree tree = eBot.tree();
+        SWTBotUtils.selectNode( eBot, tree, "SWT Tools", "Sleak" );
+
+        // press "OK"
+        SWTBotButton okButton = eBot.button( "OK" );
+        okButton.click();
+
+        // wait till Connections view become visible
+        eBot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return eBot.view( "Sleak" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
     }
 
 
