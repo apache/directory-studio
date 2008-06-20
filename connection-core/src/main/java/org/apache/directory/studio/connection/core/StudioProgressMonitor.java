@@ -43,15 +43,74 @@ import org.eclipse.core.runtime.jobs.Job;
 public class StudioProgressMonitor extends ProgressMonitorWrapper
 {
 
+    /** The job reports progress and checks for cancellation. */
+    private static Job reportProgressAndCheckCancellationJob = new Job(
+        Messages.jobs__progressmonitor_check_cancellation )
+    {
+        protected IStatus run( IProgressMonitor monitor )
+        {
+            while ( true )
+            {
+                for ( Iterator<StudioProgressMonitor> it = monitors.iterator(); it.hasNext(); )
+                {
+                    StudioProgressMonitor spm = it.next();
+
+                    do
+                    {
+                        // check report progress message
+                        if ( !spm.done && spm.reportProgressMessage != null )
+                        {
+                            spm.subTask( spm.reportProgressMessage );
+                            spm.reportProgressMessage = null;
+                        }
+
+                        // check if canceled
+                        if ( spm.isCanceled() )
+                        {
+                            spm.fireCancelRequested();
+                            it.remove();
+                        }
+                        if ( spm.isCanceled() || spm.done )
+                        {
+                            it.remove();
+                        }
+
+                        if ( spm.getWrappedProgressMonitor() != null
+                            && spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
+                        {
+                            spm = ( StudioProgressMonitor ) spm.getWrappedProgressMonitor();
+                        }
+                        else
+                        {
+                            spm = null;
+                        }
+                    }
+                    while ( spm != null );
+                }
+
+                try
+                {
+                    Thread.sleep( 1000 );
+                }
+                catch ( InterruptedException e )
+                {
+                }
+            }
+        }
+    };
+    static
+    {
+        reportProgressAndCheckCancellationJob.setSystem( true );
+        reportProgressAndCheckCancellationJob.schedule();
+    }
+
+    private static List<StudioProgressMonitor> monitors = new ArrayList<StudioProgressMonitor>();
+
     private boolean done;
 
     private List<Status> errorStatusList;
 
     private List<CancelListener> cancelListenerList;
-
-    private Job checkCanceledJob;
-
-    private Job reportProgressJob = null;
 
     private String reportProgressMessage = null;
 
@@ -65,34 +124,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     {
         super( monitor );
         this.done = false;
-
-        this.checkCanceledJob = new Job( Messages.jobs__progressmonitor_check_cancellation )
-        {
-            protected IStatus run( IProgressMonitor monitor )
-            {
-                while ( !done )
-                {
-                    if ( isCanceled() )
-                    {
-                        fireCancelRequested();
-                        break;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            Thread.sleep( 1000 );
-                        }
-                        catch ( InterruptedException e )
-                        {
-                        }
-                    }
-                }
-                return Status.OK_STATUS;
-            }
-        };
-        this.checkCanceledJob.setSystem( true );
-        this.checkCanceledJob.schedule();
+        monitors.add( this );
     }
 
 
@@ -175,33 +207,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public void reportProgress( String message )
     {
-        synchronized ( this )
-        {
-            if ( !done )
-            {
-                if ( reportProgressJob == null )
-                {
-                    reportProgressJob = new Job( Messages.jobs__progressmonitor_report_progress )
-                    {
-                        protected IStatus run( IProgressMonitor monitor )
-                        {
-                            synchronized ( StudioProgressMonitor.this )
-                            {
-                                if ( !done )
-                                {
-                                    subTask( reportProgressMessage );
-                                }
-                                return Status.OK_STATUS;
-                            }
-                        }
-                    };
-                    reportProgressJob.setSystem( true );
-                }
-
-                reportProgressMessage = message;
-                reportProgressJob.schedule( 1000 );
-            }
-        }
+        reportProgressMessage = message;
     }
 
 
@@ -330,8 +336,8 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         }
         return null;
     }
-    
-    
+
+
     /**
      * Resets this status.
      */

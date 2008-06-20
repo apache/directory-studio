@@ -21,9 +21,8 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import junit.framework.TestCase;
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
-
-import org.apache.directory.server.unit.AbstractServerTest;
 
 
 /**
@@ -32,7 +31,7 @@ import org.apache.directory.server.unit.AbstractServerTest;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PreparationTest extends AbstractServerTest
+public class PreparationTest extends TestCase
 {
 
     /**
