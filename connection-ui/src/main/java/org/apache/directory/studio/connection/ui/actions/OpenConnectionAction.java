@@ -21,7 +21,8 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
-import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -49,8 +50,7 @@ public class OpenConnectionAction extends StudioAction
      */
     public void run()
     {
-        OpenConnectionsJob ocj = new OpenConnectionsJob( getSelectedConnections() );
-        ocj.execute();
+        new StudioConnectionJob( new OpenConnectionsRunnable( getSelectedConnections() ) ).execute();
     }
 
 

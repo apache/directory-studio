@@ -18,13 +18,16 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core;
+package org.apache.directory.studio.connection.core.jobs;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.Messages;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -51,41 +54,44 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         {
             while ( true )
             {
-                for ( Iterator<StudioProgressMonitor> it = monitors.iterator(); it.hasNext(); )
+                synchronized ( monitors )
                 {
-                    StudioProgressMonitor spm = it.next();
-
-                    do
+                    for ( Iterator<StudioProgressMonitor> it = monitors.iterator(); it.hasNext(); )
                     {
-                        // check report progress message
-                        if ( !spm.done && spm.reportProgressMessage != null )
+                        StudioProgressMonitor next = it.next();
+                        StudioProgressMonitor spm = next;
+    
+                        do
                         {
-                            spm.subTask( spm.reportProgressMessage );
-                            spm.reportProgressMessage = null;
+                            // check report progress message
+                            if ( !spm.done && spm.reportProgressMessage != null )
+                            {
+                                spm.subTask( spm.reportProgressMessage );
+                                spm.reportProgressMessage = null;
+                            }
+    
+                            // check if canceled
+                            if ( spm.isCanceled() )
+                            {
+                                spm.fireCancelRequested();
+                            }
+                            if ( spm == next && ( spm.isCanceled() || spm.done ) )
+                            {
+                                it.remove();
+                            }
+    
+                            if ( spm.getWrappedProgressMonitor() != null
+                                && spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
+                            {
+                                spm = ( StudioProgressMonitor ) spm.getWrappedProgressMonitor();
+                            }
+                            else
+                            {
+                                spm = null;
+                            }
                         }
-
-                        // check if canceled
-                        if ( spm.isCanceled() )
-                        {
-                            spm.fireCancelRequested();
-                            it.remove();
-                        }
-                        if ( spm.isCanceled() || spm.done )
-                        {
-                            it.remove();
-                        }
-
-                        if ( spm.getWrappedProgressMonitor() != null
-                            && spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
-                        {
-                            spm = ( StudioProgressMonitor ) spm.getWrappedProgressMonitor();
-                        }
-                        else
-                        {
-                            spm = null;
-                        }
+                        while ( spm != null );
                     }
-                    while ( spm != null );
                 }
 
                 try
@@ -104,7 +110,8 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         reportProgressAndCheckCancellationJob.schedule();
     }
 
-    private static List<StudioProgressMonitor> monitors = new ArrayList<StudioProgressMonitor>();
+    private static List<StudioProgressMonitor> monitors = Collections
+        .synchronizedList( new ArrayList<StudioProgressMonitor>() );
 
     private boolean done;
 

@@ -36,7 +36,8 @@ import javax.naming.InvalidNameException;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -56,12 +57,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 
 /**
- * Job to initialize the attributes of an entry.
+ * Runnable to initialize the attributes of an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class InitializeAttributesJob extends AbstractNotificationJob
+public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The entries. */
@@ -80,23 +81,22 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of InitializeAttributesJob.
+     * Creates a new instance of InitializeAttributesRunnable.
      * 
      * @param entries the entries
      * @param initOperationalAttributes true if operational attributes should be initialized
      */
-    public InitializeAttributesJob( IEntry[] entries, boolean initOperationalAttributes )
+    public InitializeAttributesRunnable( IEntry[] entries, boolean initOperationalAttributes )
     {
         this.entries = entries;
         this.initOperationalAttributes = initOperationalAttributes;
-        setName( BrowserCoreMessages.jobs__init_entries_title_attonly );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         Connection[] connections = new Connection[entries.length];
         for ( int i = 0; i < connections.length; i++ )
@@ -108,9 +108,18 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__init_entries_title_attonly;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.addAll( Arrays.asList( entries ) );
@@ -119,9 +128,9 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
         return entries.length == 1 ? BrowserCoreMessages.jobs__init_entries_error_1
             : BrowserCoreMessages.jobs__init_entries_error_n;
@@ -129,9 +138,9 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -150,9 +159,9 @@ public class InitializeAttributesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
         for ( IEntry entry : entries )
         {
@@ -236,12 +245,12 @@ public class InitializeAttributesJob extends AbstractNotificationJob
             {
                 referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
             }
-            
+
             // search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
                 0, aliasesDereferencingMethod, referralsHandlingMethod, false, null );
-            SearchJob.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
+            SearchRunnable.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
             // set initialized state
             entry.setAttributesInitialized( true );
@@ -277,13 +286,13 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
             { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
-        SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // load well-known Root DSE attributes and operational attributes
         search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES,
             SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
-        SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // the list of entries under the Root DSE
         Map<LdapDN, IEntry> rootDseEntries = new HashMap<LdapDN, IEntry>();
@@ -349,7 +358,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
                     search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
                         ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
                         Connection.ReferralHandlingMethod.IGNORE, false, null );
-                    SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+                    SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
                     ISearchResult[] results = search.getSearchResults();
                     for ( ISearchResult searchResult : results )
                     {
@@ -412,7 +421,7 @@ public class InitializeAttributesJob extends AbstractNotificationJob
         ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
         search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
             SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
-        SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // add entry to Root DSE
         ISearchResult[] results = search.getSearchResults();

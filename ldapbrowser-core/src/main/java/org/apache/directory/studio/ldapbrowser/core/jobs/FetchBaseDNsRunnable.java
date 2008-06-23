@@ -21,18 +21,22 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 
 
-public class FetchBaseDNsJob extends AbstractNotificationJob
+/**
+ * Runnable to fetch the base DNs from a directory server.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
+public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
 {
 
     private IBrowserConnection connection;
@@ -40,58 +44,87 @@ public class FetchBaseDNsJob extends AbstractNotificationJob
     private String[] baseDNs;
 
 
-    public FetchBaseDNsJob( IBrowserConnection connection )
+    /**
+     * Creates a new instance of FetchBaseDNsRunnable.
+     * 
+     * @param connection the connection
+     */
+    public FetchBaseDNsRunnable( IBrowserConnection connection )
     {
         this.connection = connection;
-        setName( BrowserCoreMessages.jobs__fetch_basedns_name );
     }
 
 
-    protected Connection[] getConnections()
+    /**
+     * {@inheritDoc}
+     */
+    public Connection[] getConnections()
     {
-        return new Connection[0];
+        return null;
     }
 
 
-    protected Object[] getLockedObjects()
+    /**
+     * {@inheritDoc}
+     */
+    public String getName()
     {
-        List l = new ArrayList();
-        l.add( connection );
-        return l.toArray();
+        return BrowserCoreMessages.jobs__fetch_basedns_name;
     }
 
 
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
+    {
+        return new Connection[]
+            { connection.getConnection() };
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__fetch_basedns_task, 5 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
         IRootDSE rootDSE = connection.getRootDSE();
-        InitializeAttributesJob.initializeAttributes( rootDSE, true, monitor );
-//        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
-//        baseDNs = new String[baseDNEntries.length];
-//        for ( int i = 0; i < baseDNs.length; i++ )
-//        {
-//            baseDNs[i] = baseDNEntries[i].getDn().toString();
-//        }
-        
+        InitializeAttributesRunnable.initializeAttributes( rootDSE, true, monitor );
+        //        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
+        //        baseDNs = new String[baseDNEntries.length];
+        //        for ( int i = 0; i < baseDNs.length; i++ )
+        //        {
+        //            baseDNs[i] = baseDNEntries[i].getDn().toString();
+        //        }
+
         IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
         if ( attribute != null )
         {
             baseDNs = attribute.getStringValues();
         }
-        
+
         monitor.worked( 1 );
     }
 
 
-    protected String getErrorMessage()
+    /**
+     * {@inheritDoc}
+     */
+    public String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__fetch_basedns_error;
     }
 
 
+    /**
+     * Gets the base DNs.
+     * 
+     * @return the base DNs
+     */
     public String[] getBaseDNs()
     {
         if ( baseDNs == null )
@@ -102,9 +135,11 @@ public class FetchBaseDNsJob extends AbstractNotificationJob
     }
 
 
-    protected void runNotification()
+    /**
+     * {@inheritDoc}
+     */
+    public void runNotification()
     {
-
     }
 
 }

@@ -22,9 +22,9 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
@@ -56,9 +56,9 @@ public abstract class LocateInDitAction extends BrowserAction
             IEntry entry = connection.getEntryFromCache( dn );
             if ( entry == null )
             {
-                ReadEntryJob job = new ReadEntryJob( connection, dn );
-                RunnableContextJobAdapter.execute( job );
-                entry = job.getReadEntry();
+                ReadEntryRunnable runnable = new ReadEntryRunnable( connection, dn );
+                RunnableContextRunner.execute( runnable, null, true );
+                entry = runnable.getReadEntry();
             }
 
             if ( entry != null )

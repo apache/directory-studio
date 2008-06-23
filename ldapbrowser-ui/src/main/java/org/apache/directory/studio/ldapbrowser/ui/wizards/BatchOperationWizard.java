@@ -23,10 +23,10 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -301,10 +302,10 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                     ISearch search = applyOnPage.getApplyOnSearch();
                     if ( search.getBrowserConnection() != null )
                     {
-                        SearchJob job = new SearchJob( new ISearch[]
+                        SearchRunnable runnable = new SearchRunnable( new ISearch[]
                             { search } );
-                        RunnableContextJobAdapter.execute( job, getContainer() );
-                        if ( job.getExternalResult().isOK() )
+                        IStatus status = RunnableContextRunner.execute( runnable, getContainer(), true );
+                        if ( status.isOK() )
                         {
                             ISearchResult[] srs = search.getSearchResults();
                             dns = new LdapDN[srs.length];

@@ -21,15 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ILazyContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.widgets.Display;
 
 
 public class SearchResultEditorContentProvider implements ILazyContentProvider
@@ -84,12 +82,11 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
             if ( elements.length > 1000 && this.mainWidget.getViewer() != null
                 && !this.mainWidget.getViewer().getTable().isDisposed() )
             {
-                FilterAndSortJob job = new FilterAndSortJob( this.configuration, this.mainWidget, this.elements );
+                FilterAndSortRunnable runnable = new FilterAndSortRunnable( this.configuration, this.mainWidget, this.elements );
                 //RunnableContextJobAdapter.execute( job, new TimeTriggeredProgressMonitorDialog( Display.getCurrent()
                 //    .getActiveShell(), 5000 ) );
-                RunnableContextJobAdapter.execute( job, new ProgressMonitorDialog( Display.getCurrent()
-                    .getActiveShell() ) );
-                this.filteredAndSortedElements = job.getFilteredAndSortedElements();
+                RunnableContextRunner.execute( runnable, null, true );
+                this.filteredAndSortedElements = runnable.getFilteredAndSortedElements();
             }
             else if ( elements.length > 0 && this.mainWidget.getViewer() != null
                 && !this.mainWidget.getViewer().getTable().isDisposed() )

@@ -33,7 +33,8 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
-import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -807,8 +808,8 @@ public class SearchPageWrapper extends BrowserWidget
     {
         if ( search.getBrowserConnection() != null )
         {
-            new SearchJob( new ISearch[]
-                { search } ).execute();
+            new StudioBrowserJob( new SearchRunnable( new ISearch[]
+                { search } ) ).execute();
             return true;
         }
         else

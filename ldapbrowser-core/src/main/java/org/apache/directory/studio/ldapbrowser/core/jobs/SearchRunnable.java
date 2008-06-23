@@ -41,7 +41,8 @@ import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
@@ -67,12 +68,12 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 
 /**
- * Job to perform search operations. 
+ * Runnable to perform search operations. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SearchJob extends AbstractNotificationJob
+public class SearchRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The searches. */
@@ -80,21 +81,20 @@ public class SearchJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of SearchJob.
+     * Creates a new instance of SearchRunnable.
      * 
      * @param searches the searches
      */
-    public SearchJob( ISearch[] searches )
+    public SearchRunnable( ISearch[] searches )
     {
         this.searches = searches;
-        setName( BrowserCoreMessages.jobs__search_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         Connection[] connections = new Connection[searches.length];
         for ( int i = 0; i < connections.length; i++ )
@@ -106,9 +106,18 @@ public class SearchJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__search_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.addAll( Arrays.asList( searches ) );
@@ -117,9 +126,9 @@ public class SearchJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", searches.length + 1 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -141,9 +150,9 @@ public class SearchJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
         for ( int pi = 0; pi < searches.length; pi++ )
         {
@@ -154,9 +163,9 @@ public class SearchJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
         return searches.length == 1 ? BrowserCoreMessages.jobs__search_error_1
             : BrowserCoreMessages.jobs__search_error_n;
@@ -532,7 +541,7 @@ public class SearchJob extends AbstractNotificationJob
                             entry.setAlias( true );
                             entry.setHasChildrenHint( false );
                         }
-                        
+
                         if ( SchemaConstants.REFERRAL_OC.equalsIgnoreCase( value ) )
                         {
                             entry.setReferral( true );
@@ -643,7 +652,7 @@ public class SearchJob extends AbstractNotificationJob
                 Attribute attribute = attributeEnumeration.next();
                 String attributeDescription = attribute.getID();
 
-                if( attribute.getAll().hasMore() )
+                if ( attribute.getAll().hasMore() )
                 {
                     IAttribute studioAttribute = null;
                     if ( entry.getAttribute( attributeDescription ) == null )
@@ -656,7 +665,7 @@ public class SearchJob extends AbstractNotificationJob
                     {
                         studioAttribute = entry.getAttribute( attributeDescription );
                     }
-    
+
                     NamingEnumeration<?> valueEnumeration = attribute.getAll();
                     while ( valueEnumeration.hasMore() )
                     {

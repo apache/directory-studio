@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemaRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -65,7 +66,7 @@ public class ReloadSchemaAction extends Action
         final IBrowserConnection browserConnection = schemaPage.getConnection();
         if ( browserConnection != null )
         {
-            new ReloadSchemasJob( browserConnection ).execute();
+            new StudioBrowserJob( new ReloadSchemaRunnable( browserConnection ) ).execute();
             schemaPage.getSchemaBrowser().refresh();
         }
     }

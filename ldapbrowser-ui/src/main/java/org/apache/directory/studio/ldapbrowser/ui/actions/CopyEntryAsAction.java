@@ -24,12 +24,12 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.swt.dnd.Clipboard;
@@ -166,10 +166,10 @@ public abstract class CopyEntryAsAction extends BrowserAction
                 getSelectedBookmarks()[0].getDn() );
             if ( entry == null )
             {
-                ReadEntryJob job = new ReadEntryJob( getSelectedBookmarks()[0].getBrowserConnection(),
+                ReadEntryRunnable runnable = new ReadEntryRunnable( getSelectedBookmarks()[0].getBrowserConnection(),
                     getSelectedBookmarks()[0].getDn() );
-                RunnableContextJobAdapter.execute( job );
-                entry = job.getReadEntry();
+                RunnableContextRunner.execute( runnable, null, true );
+                entry = runnable.getReadEntry();
             }
             entryList.add( entry );
         }
@@ -198,8 +198,8 @@ public abstract class CopyEntryAsAction extends BrowserAction
             IEntry[] uninitializedEntries = ( IEntry[] ) uninitializedEntryList
                 .toArray( new IEntry[uninitializedEntryList.size()] );
 
-            InitializeAttributesJob job = new InitializeAttributesJob( uninitializedEntries, false );
-            RunnableContextJobAdapter.execute( job );
+            InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( uninitializedEntries, false );
+            RunnableContextRunner.execute( runnable, null, true );
 
             // SyncInitializeEntryJob job = new
             // SyncInitializeEntryJob(uninitializedEntries,

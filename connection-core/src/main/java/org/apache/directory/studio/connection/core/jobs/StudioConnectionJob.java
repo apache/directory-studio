@@ -22,23 +22,27 @@ package org.apache.directory.studio.connection.core.jobs;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 
 /**
- * Base class for all connections related jobs.
+ * Job to run a {@link StudioRunnableWithProgress}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class AbstractConnectionJob extends Job
+public class StudioConnectionJob extends Job
 {
+
+    /** The runnable. */
+    private StudioRunnableWithProgress runnable;
 
     /** The external progress monitor. */
     private IProgressMonitor externalProgressMonitor;
@@ -50,30 +54,10 @@ public abstract class AbstractConnectionJob extends Job
     /**
      * Creates a new instance of AbstractConnectionJob.
      */
-    protected AbstractConnectionJob()
+    public StudioConnectionJob( StudioRunnableWithProgress runnable )
     {
-        super( "" ); //$NON-NLS-1$
-    }
-
-
-    /**
-     * Executes the job asynchronously.
-     * 
-     * @param monitor the progress monitor
-     * 
-     * @throws Exception the exception
-     */
-    protected abstract void executeAsyncJob( StudioProgressMonitor monitor ) throws Exception;
-
-
-    /**
-     * Gets the error message.
-     * 
-     * @return the error message.
-     */
-    protected String getErrorMessage()
-    {
-        return Messages.jobs__error_occurred;
+        super( runnable.getName() ); //$NON-NLS-1$
+        this.runnable = runnable;
     }
 
 
@@ -85,12 +69,58 @@ public abstract class AbstractConnectionJob extends Job
         StudioProgressMonitor monitor = new StudioProgressMonitor( externalProgressMonitor == null ? ipm
             : externalProgressMonitor );
 
+        // ensure that connections are opened
+        Connection[] connections = runnable.getConnections();
+        if ( connections != null )
+        {
+            for ( Connection connection : connections )
+            {
+                if ( connection != null && !connection.getJNDIConnectionWrapper().isConnected() )
+                {
+                    monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
+                        { connection.getName() } ) );
+                    monitor.worked( 1 );
+
+                    connection.getJNDIConnectionWrapper().connect( monitor );
+                    connection.getJNDIConnectionWrapper().bind( monitor );
+
+                    if ( connection.getJNDIConnectionWrapper().isConnected() )
+                    {
+                        for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
+                        {
+                            listener.connectionOpened( connection, monitor );
+                        }
+                        ConnectionEventRegistry.fireConnectionOpened( connection, this );
+                    }
+                }
+            }
+        }
+
         // execute job
         if ( !monitor.errorsReported() )
         {
             try
             {
-                executeAsyncJob( monitor );
+                if ( runnable instanceof StudioBulkRunnableWithProgress )
+                {
+                    StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
+                    suspendEventFireingInCurrentThread();
+                    try
+                    {
+                        bulkRunnable.run( monitor );
+                    }
+                    finally
+                    {
+                        resumeEventFireingInCurrentThread();
+                    }
+                    bulkRunnable.runNotification();
+                }
+                else
+                {
+                    System.out.println( "NoBulk: " + runnable );
+                    runnable.run( monitor );
+                }
+
             }
             catch ( Exception e )
             {
@@ -112,7 +142,7 @@ public abstract class AbstractConnectionJob extends Job
         }
         else if ( monitor.errorsReported() )
         {
-            externalResult = monitor.getErrorStatus( getErrorMessage() );
+            externalResult = monitor.getErrorStatus( runnable.getErrorMessage() );
             if ( externalProgressMonitor == null )
             {
                 // System.out.println("Job: ERROR+ERROR");
@@ -134,26 +164,44 @@ public abstract class AbstractConnectionJob extends Job
 
 
     /**
-     * Sets the external progress monitor.
-     * 
-     * @param externalProgressMonitor the external progress monitor
+     * Suspends event fireing in current thread.
      */
-    public void setExternalProgressMonitor( IProgressMonitor externalProgressMonitor )
+    protected void suspendEventFireingInCurrentThread()
     {
-        this.externalProgressMonitor = externalProgressMonitor;
+        ConnectionEventRegistry.suspendEventFireingInCurrentThread();
     }
 
 
     /**
-     * Gets the result of the executed job. Either Status.OK_STATUS, 
-     * Status.CANCEL_STATUS or an error status.
-     * 
-     * @return the result of the executed job
+     * Resumes event fireing in current thread.
      */
-    public IStatus getExternalResult()
+    protected void resumeEventFireingInCurrentThread()
     {
-        return this.externalResult;
+        ConnectionEventRegistry.resumeEventFireingInCurrentThread();
     }
+
+
+//    /**
+//     * Sets the external progress monitor.
+//     * 
+//     * @param externalProgressMonitor the external progress monitor
+//     */
+//    public void setExternalProgressMonitor( IProgressMonitor externalProgressMonitor )
+//    {
+//        this.externalProgressMonitor = externalProgressMonitor;
+//    }
+//
+//
+//    /**
+//     * Gets the result of the executed job. Either Status.OK_STATUS, 
+//     * Status.CANCEL_STATUS or an error status.
+//     * 
+//     * @return the result of the executed job
+//     */
+//    public IStatus getExternalResult()
+//    {
+//        return this.externalResult;
+//    }
 
 
     /**
@@ -167,24 +215,16 @@ public abstract class AbstractConnectionJob extends Job
 
 
     /**
-     * Gets the locked objects.
-     * 
-     * @return the locked objects
-     */
-    protected abstract Object[] getLockedObjects();
-
-
-    /**
      * @see org.eclipse.core.runtime.jobs.Job#shouldSchedule()
      */
     public boolean shouldSchedule()
     {
-        Object[] myLockedObjects = getLockedObjects();
+        Object[] myLockedObjects = runnable.getLockedObjects();
         String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
 
         // TODO: read, write
 
-        Job[] jobs = Platform.getJobManager().find( null );
+        Job[] jobs = getJobManager().find( null );
         for ( int i = 0; i < jobs.length; i++ )
         {
             Job job = jobs[i];
@@ -192,8 +232,8 @@ public abstract class AbstractConnectionJob extends Job
             // if(job instanceof AbstractEclipseJob) {
             if ( job.getClass() == this.getClass() && job != this )
             {
-                AbstractConnectionJob otherJob = ( AbstractConnectionJob ) job;
-                Object[] otherLockedObjects = otherJob.getLockedObjects();
+                StudioConnectionJob otherJob = ( StudioConnectionJob ) job;
+                Object[] otherLockedObjects = otherJob.runnable.getLockedObjects();
                 String[] otherLockedObjectIdentifiers = getLockIdentifiers( otherLockedObjects );
 
                 for ( int j = 0; j < otherLockedObjectIdentifiers.length; j++ )

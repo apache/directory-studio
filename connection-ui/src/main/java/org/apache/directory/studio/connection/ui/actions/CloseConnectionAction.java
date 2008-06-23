@@ -21,7 +21,8 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
-import org.apache.directory.studio.connection.core.jobs.CloseConnectionsJob;
+import org.apache.directory.studio.connection.core.jobs.CloseConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -43,15 +44,14 @@ public class CloseConnectionAction extends StudioAction
     {
         super();
     }
-    
-    
+
+
     /**
      * @see org.apache.directory.studio.connection.ui.actions.StudioAction#run()
      */
     public void run()
     {
-        CloseConnectionsJob ccj = new CloseConnectionsJob( getSelectedConnections() );
-        ccj.execute();
+        new StudioConnectionJob( new CloseConnectionsRunnable( getSelectedConnections() ) ).execute();
     }
 
 

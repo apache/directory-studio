@@ -28,9 +28,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -272,8 +273,8 @@ public class BrowserContentProvider implements ITreeContentProvider
 
             if ( !rootDSE.isChildrenInitialized() && rootDSE.isDirectoryEntry() )
             {
-                new InitializeChildrenJob( new IEntry[]
-                    { rootDSE } ).execute();
+                new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
+                    { rootDSE } ) ).execute();
                 return new String[]
                     { "Fetching Entries..." };
             }
@@ -300,8 +301,8 @@ public class BrowserContentProvider implements ITreeContentProvider
 
             if ( !parentEntry.isChildrenInitialized() && parentEntry.isDirectoryEntry() )
             {
-                new InitializeChildrenJob( new IEntry[]
-                    { parentEntry } ).execute();
+                new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
+                    { parentEntry } ) ).execute();
                 return new String[]
                     { "Fetching Entries..." };
             }
@@ -369,8 +370,8 @@ public class BrowserContentProvider implements ITreeContentProvider
             ISearch search = ( ISearch ) parent;
             if ( search.getSearchResults() == null )
             {
-                new SearchJob( new ISearch[]
-                    { search } ).execute();
+                new StudioBrowserJob( new SearchRunnable( new ISearch[]
+                    { search } ) ).execute();
                 return new String[]
                     { "Performing Search..." };
             }
@@ -416,7 +417,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                     // open connection when expanding DIT
                     if ( !connection.getConnection().getJNDIConnectionWrapper().isConnected() )
                     {
-                        new OpenConnectionsJob( connection.getConnection() ).execute();
+                        new StudioBrowserJob( new OpenConnectionsRunnable( connection.getConnection() ) ).execute();
                         return new String[]
                             { "Opening Connection..." };
                     }

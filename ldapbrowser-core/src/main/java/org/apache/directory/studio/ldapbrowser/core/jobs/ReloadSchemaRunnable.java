@@ -27,7 +27,8 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -42,12 +43,12 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 
 
 /**
- * Job to reload the schema.
+ * Runnable to reload the schema.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ReloadSchemasJob extends AbstractNotificationJob
+public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The browser connection. */
@@ -55,21 +56,20 @@ public class ReloadSchemasJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of ReloadSchemasJob.
+     * Creates a new instance of ReloadSchemaRunnable.
      * 
      * @param browserConnection the browser connection
      */
-    public ReloadSchemasJob( IBrowserConnection browserConnection )
+    public ReloadSchemaRunnable( IBrowserConnection browserConnection )
     {
         this.browserConnection = browserConnection;
-        setName( BrowserCoreMessages.jobs__reload_schemas_name_1 );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -77,9 +77,18 @@ public class ReloadSchemasJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__reload_schemas_name_1;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return new IBrowserConnection[]
             { browserConnection };
@@ -87,9 +96,9 @@ public class ReloadSchemasJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", 3 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -106,9 +115,9 @@ public class ReloadSchemasJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
         BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
             browserConnection, BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED );
@@ -117,9 +126,9 @@ public class ReloadSchemasJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__reload_schemas_error_1;
     }
@@ -207,7 +216,7 @@ public class ReloadSchemasJob extends AbstractNotificationJob
                 .setReturningAttributes( new String[]
                     { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
                         IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP } );
-            NamingEnumeration<SearchResult> enumeration = SearchJob.search( browserConnection, sp, monitor );
+            NamingEnumeration<SearchResult> enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
                 String createTimestamp = null;
@@ -231,8 +240,8 @@ public class ReloadSchemasJob extends AbstractNotificationJob
                 String schemaTimestamp = modifyTimestamp != null ? modifyTimestamp : createTimestamp;
                 String cacheTimestamp = schema.getModifyTimestamp() != null ? schema.getModifyTimestamp() : schema
                     .getCreateTimestamp();
-                if ( cacheTimestamp != null && schemaTimestamp != null && schemaTimestamp
-                        .compareTo( cacheTimestamp ) > 0 )
+                if ( cacheTimestamp != null && schemaTimestamp != null
+                    && schemaTimestamp.compareTo( cacheTimestamp ) > 0 )
                 {
                     return true;
                 }
@@ -257,7 +266,7 @@ public class ReloadSchemasJob extends AbstractNotificationJob
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
                 { IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY } );
-            NamingEnumeration<SearchResult> enumeration = SearchJob.search( browserConnection, sp, monitor );
+            NamingEnumeration<SearchResult> enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
                 SearchResult sr = enumeration.next();

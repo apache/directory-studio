@@ -57,7 +57,7 @@ import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;

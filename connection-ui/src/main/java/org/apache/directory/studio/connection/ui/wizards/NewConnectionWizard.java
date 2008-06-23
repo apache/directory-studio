@@ -25,7 +25,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -111,6 +112,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
         {
             wizardPages[i] = new NewConnectionWizardPage( this, pages[i] );
             addPage( wizardPages[i] );
+            pages[i].setRunnableContext( getContainer() );
         }
     }
 
@@ -168,7 +170,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
         selectedConnectionFolder.addConnectionId( conn.getId() );
 
         // open connection
-        new OpenConnectionsJob( conn ).execute();
+        new StudioConnectionJob( new OpenConnectionsRunnable( conn ) ).execute();
 
         return true;
     }

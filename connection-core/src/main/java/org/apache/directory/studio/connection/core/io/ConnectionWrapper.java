@@ -20,7 +20,7 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 
 
 /**

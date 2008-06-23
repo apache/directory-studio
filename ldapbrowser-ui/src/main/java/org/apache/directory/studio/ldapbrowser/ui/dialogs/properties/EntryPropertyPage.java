@@ -21,11 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -185,9 +185,9 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     private void reloadOperationalAttributes()
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
-        InitializeAttributesJob job = new InitializeAttributesJob( new IEntry[]
+        InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
             { entry }, true );
-        RunnableContextJobAdapter.execute( job );
+        RunnableContextRunner.execute( runnable, null, true );
 
         this.entryUpdated( entry );
     }
@@ -196,12 +196,12 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     private void reloadEntry()
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
-        InitializeChildrenJob job1 = new InitializeChildrenJob( new IEntry[]
+        InitializeChildrenRunnable runnable1 = new InitializeChildrenRunnable( new IEntry[]
             { entry } );
-        InitializeAttributesJob job2 = new InitializeAttributesJob( new IEntry[]
+        InitializeAttributesRunnable runnable2 = new InitializeAttributesRunnable( new IEntry[]
             { entry }, true );
-        RunnableContextJobAdapter.execute( job1 );
-        RunnableContextJobAdapter.execute( job2 );
+        RunnableContextRunner.execute( runnable1, null, true );
+        RunnableContextRunner.execute( runnable2, null, true );
         this.entryUpdated( entry );
     }
 

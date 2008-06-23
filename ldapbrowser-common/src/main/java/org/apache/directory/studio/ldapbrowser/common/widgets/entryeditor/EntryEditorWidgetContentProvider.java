@@ -26,7 +26,8 @@ import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -136,8 +137,9 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             boolean ai = entry.isAttributesInitialized(); 
             if ( ( !ai || ( !oai && soa ) ) && entry.isDirectoryEntry() )
             {
-                InitializeAttributesJob job = new InitializeAttributesJob( new IEntry[]
+                InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
                     { entry }, soa );
+                StudioBrowserJob job = new StudioBrowserJob( runnable );
                 job.execute();
                 return new Object[0];
             }

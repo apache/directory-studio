@@ -29,7 +29,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
-import org.apache.directory.studio.connection.core.jobs.CloseConnectionsJob;
+import org.apache.directory.studio.connection.core.jobs.CloseConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
@@ -235,7 +236,7 @@ public class DeleteAction extends StudioAction
      */
     private void deleteConnections( List<Connection> connectionsToDelete )
     {
-        new CloseConnectionsJob( connectionsToDelete.toArray( new Connection[connectionsToDelete.size()] ) ).execute();
+        new StudioConnectionJob( new CloseConnectionsRunnable( connectionsToDelete ) ).execute();
         for ( Connection connection : connectionsToDelete )
         {
             ConnectionCorePlugin.getDefault().getConnectionManager().removeConnection( connection);

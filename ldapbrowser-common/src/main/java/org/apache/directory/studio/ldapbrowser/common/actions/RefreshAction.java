@@ -27,9 +27,10 @@ import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.SearchJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -133,23 +134,23 @@ public class RefreshAction extends BrowserAction
 
         if ( entries.length > 0 )
         {
-            new InitializeAttributesJob( entries, soa ).execute();
-            new InitializeChildrenJob( entries ).execute();
+            new StudioBrowserJob( new InitializeAttributesRunnable( entries, soa ) ).execute();
+            new StudioBrowserJob( new InitializeChildrenRunnable( entries ) ).execute();
         }
         if ( searches.length > 0 )
         {
-            new SearchJob( searches ).execute();
+            new StudioBrowserJob( new SearchRunnable( searches ) ).execute();
         }
 
         if ( entryInput != null )
         {
-            new InitializeAttributesJob( new IEntry[]
-                { entryInput }, soa ).execute();
+            new StudioBrowserJob( new InitializeAttributesRunnable( new IEntry[]
+                { entryInput }, soa ) ).execute();
         }
         if ( searchInput != null )
         {
-            new SearchJob( new ISearch[]
-                { searchInput } ).execute();
+            new StudioBrowserJob( new SearchRunnable( new ISearch[]
+                { searchInput } ) ).execute();
         }
     }
 

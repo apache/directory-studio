@@ -22,18 +22,18 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
-import org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
 
 
 /**
- * This job to filter and sort the search result editor asynchrously to avoid 
+ * Runnable to filter and sort the search result editor asynchronously to avoid 
  * freezing the GUI.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class FilterAndSortJob extends AbstractEclipseJob
+public class FilterAndSortRunnable implements StudioRunnableWithProgress
 {
 
     /** The configuration. */
@@ -50,13 +50,13 @@ public class FilterAndSortJob extends AbstractEclipseJob
 
 
     /**
-     * Creates a new instance of FilterAndSortJob.
+     * Creates a new instance of FilterAndSortRunnable.
      * 
      * @param configuration the configuration
      * @param mainWidget the main widget
      * @param elements the elements, unfiltered and unsorted
      */
-    public FilterAndSortJob( SearchResultEditorConfiguration configuration, SearchResultEditorWidget mainWidget,
+    public FilterAndSortRunnable( SearchResultEditorConfiguration configuration, SearchResultEditorWidget mainWidget,
         Object[] elements )
     {
         this.configuration = configuration;
@@ -68,7 +68,16 @@ public class FilterAndSortJob extends AbstractEclipseJob
     /**
      * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return "";
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return new Object[0];
     }
@@ -77,7 +86,7 @@ public class FilterAndSortJob extends AbstractEclipseJob
     /**
      * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor ) throws Exception
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( "Filter and Sort", 3 );
         monitor.worked( 1 );
@@ -98,9 +107,18 @@ public class FilterAndSortJob extends AbstractEclipseJob
     /**
      * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
-        return new Connection[0];
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getErrorMessage()
+    {
+        return "";
     }
 
 

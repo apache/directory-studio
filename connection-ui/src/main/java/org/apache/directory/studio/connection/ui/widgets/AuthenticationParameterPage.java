@@ -25,9 +25,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.jobs.CheckBindJob;
+import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -41,6 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+
 
 
 /**
@@ -332,9 +335,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             public void widgetSelected( SelectionEvent e )
             {
                 Connection connection = getTestConnection();
-                CheckBindJob job = new CheckBindJob( connection );
-                RunnableContextJobAdapter.execute( job, runnableContext );
-                if ( job.getExternalResult().isOK() )
+                CheckBindRunnable runnable = new CheckBindRunnable( connection );
+                IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
+                if ( status.isOK() )
                 {
                     MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Authentication",
                         "The authentication was successful." );

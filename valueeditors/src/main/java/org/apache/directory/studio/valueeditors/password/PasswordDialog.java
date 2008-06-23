@@ -25,14 +25,15 @@ import java.util.Arrays;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.jobs.CheckBindJob;
-import org.apache.directory.studio.connection.ui.widgets.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.Password;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -492,9 +493,9 @@ public class PasswordDialog extends Dialog
             connection.setBindPassword( testPasswordText.getText() );
             connection.setAuthMethod( AuthenticationMethod.SIMPLE );
 
-            CheckBindJob job = new CheckBindJob( connection );
-            RunnableContextJobAdapter.execute( job );
-            if ( job.getExternalResult().isOK() )
+            CheckBindRunnable runnable = new CheckBindRunnable( connection );
+            IStatus status = RunnableContextRunner.execute( runnable, null, true );
+            if ( status.isOK() )
             {
                 MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Authentication",
                     "The authentication was successful." );

@@ -22,9 +22,10 @@ package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.OpenConnectionsJob;
+import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalListener;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;
 import org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView;
@@ -165,8 +166,7 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
         }
         else
         {
-            OpenConnectionsJob ocj = new OpenConnectionsJob( connection );
-            ocj.execute();
+            new StudioBrowserJob( new OpenConnectionsRunnable( connection ) ).execute();
         }
     }
 

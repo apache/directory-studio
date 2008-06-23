@@ -24,12 +24,12 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 import java.util.LinkedHashSet;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.MoveEntriesDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.core.jobs.MoveEntriesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -206,9 +206,9 @@ public class MoveAction extends BrowserAction
                 IEntry newParentEntry = entries[0].getBrowserConnection().getEntryFromCache( newParentDn );
                 if( newParentEntry == null )
                 {
-                    ReadEntryJob job = new ReadEntryJob( entries[0].getBrowserConnection(), newParentDn );
-                    RunnableContextJobAdapter.execute( job );
-                    newParentEntry = job.getReadEntry();
+                    ReadEntryRunnable runnable = new ReadEntryRunnable( entries[0].getBrowserConnection(), newParentDn );
+                    RunnableContextRunner.execute( runnable, null, true );
+                    newParentEntry = runnable.getReadEntry();
                 }
                 if ( newParentEntry != null )
                 {

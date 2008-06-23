@@ -28,11 +28,11 @@ import java.util.List;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.IConnectionListener;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemaRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -112,10 +112,10 @@ public class BrowserConnectionListener implements IConnectionListener
      */
     private static void openBrowserConnection( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
-        ReloadSchemasJob.reloadSchema( false, browserConnection, monitor );
+        ReloadSchemaRunnable.reloadSchema( false, browserConnection, monitor );
 
         IRootDSE rootDSE = browserConnection.getRootDSE();
-        InitializeAttributesJob.initializeAttributes( rootDSE, true, monitor );
+        InitializeAttributesRunnable.initializeAttributes( rootDSE, true, monitor );
     }
 
 

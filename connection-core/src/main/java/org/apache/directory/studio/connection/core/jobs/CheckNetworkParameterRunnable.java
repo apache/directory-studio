@@ -22,38 +22,37 @@ package org.apache.directory.studio.connection.core.jobs;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Messages;
 
 
 /**
- * Job to check binding (authentication) to a directory server
+ * Runnable to check if a connection to a directory server could be established
+ * using the given connection parmeter.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class CheckBindJob extends AbstractConnectionJob
+public class CheckNetworkParameterRunnable implements StudioRunnableWithProgress
 {
 
     private Connection connection;
 
 
     /**
-     * Creates a new instance of CheckBindJob.
+     * Creates a new instance of CheckNetworkParameterJob.
      * 
      * @param connection the connection
      */
-    public CheckBindJob( Connection connection )
+    public CheckNetworkParameterRunnable( Connection connection )
     {
         this.connection = connection;
-        setName( Messages.jobs__check_bind_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractConnectionJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public Object[] getLockedObjects()
     {
         return new Object[]
             { connection };
@@ -61,26 +60,42 @@ public class CheckBindJob extends AbstractConnectionJob
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractConnectionJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    public String getName()
     {
-        monitor.beginTask( Messages.jobs__check_bind_task, 4 );
+        return Messages.jobs__check_network_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run( StudioProgressMonitor monitor )
+    {
+        monitor.beginTask( Messages.jobs__check_network_task, 3 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
         connection.getJNDIConnectionWrapper().connect( monitor );
-        connection.getJNDIConnectionWrapper().bind( monitor );
         connection.getJNDIConnectionWrapper().disconnect();
     }
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractConnectionJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
-        return Messages.jobs__check_bind_error;
+        return Messages.jobs__check_network_error;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public Connection[] getConnections()
+    {
+        return null;
+    }
 }

@@ -18,37 +18,25 @@
  *  
  */
 
-package org.apache.directory.studio.test.integration.ui;
+package org.apache.directory.studio.connection.core.jobs;
 
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 
 /**
- * Test suite to run all tests.
+ * A runnable with a progess monitor. When invoked by the {@link StudioConnectionJob} 
+ * during the run() method all event notifications are blocked and the runNotification()
+ * method is called afterwards to fire event notifications.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AutomatedSuite extends TestSuite
+public interface StudioBulkRunnableWithProgress extends StudioRunnableWithProgress
 {
 
-    public static Test suite()
-    {
-        return new AutomatedSuite();
-    }
-
-
-    public AutomatedSuite()
-    {
-        addTest( new TestSuite( PreparationTest.class ) );
-
-        addTest( new TestSuite( NewConnectionWizardTest.class ) );
-        addTest( new TestSuite( NewEntryWizardTest.class ) );
-        addTest( new TestSuite( RenameEntryDialogTest.class ) );
-
-        addTest( new TestSuite( SwtResourcesTest.class ) );
-    }
+    /**
+     * Runs notification, called by {@link StudioConnectionJob} after the run() method.
+     */
+    public void runNotification();
 
 }

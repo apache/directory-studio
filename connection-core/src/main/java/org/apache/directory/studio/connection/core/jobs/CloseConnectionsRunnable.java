@@ -21,32 +21,33 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
+import java.util.List;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 
 
 /**
- * Job to open a connection to a directory server.
+ * Runnable to close a connection to a directory server.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class OpenConnectionsJob extends AbstractAsyncBulkJob
+public class CloseConnectionsRunnable implements StudioBulkRunnableWithProgress
 {
 
     private Connection[] connections;
 
 
     /**
-     * Creates a new instance of OpenConnectionsJob.
+     * Creates a new instance of CloseConnectionsJob.
      * 
      * @param connection the connection
      */
-    public OpenConnectionsJob( Connection connection )
+    public CloseConnectionsRunnable( Connection connection )
     {
         this( new Connection[]
             { connection } );
@@ -54,65 +55,84 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
 
 
     /**
-     * Creates a new instance of OpenConnectionsJob.
+     * Creates a new instance of CloseConnectionsJob.
      * 
      * @param connections the connections
      */
-    public OpenConnectionsJob( Connection[] connections )
+    public CloseConnectionsRunnable( Connection[] connections )
     {
         this.connections = connections;
-        setName( connections.length == 1 ? Messages.jobs__open_connections_name_1
-            : Messages.jobs__open_connections_name_n );
     }
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractConnectionJob#getLockedObjects()
+     * Creates a new instance of CloseConnectionsJob.
+     * 
+     * @param connections the connections
      */
-    protected Object[] getLockedObjects()
+    public CloseConnectionsRunnable( List<Connection> connections )
+    {
+        this.connections = connections.toArray( new Connection[connections.size()] );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getName()
+    {
+        return connections.length == 1 ? Messages.jobs__close_connections_name_1
+            : Messages.jobs__close_connections_name_n;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return connections;
     }
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractConnectionJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
-        return connections.length == 1 ? Messages.jobs__open_connections_error_1
-            : Messages.jobs__open_connections_error_n;
+        return connections.length == 1 ? Messages.jobs__close_connections_error_1
+            : Messages.jobs__close_connections_error_n;
     }
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractAsyncBulkJob#executeBulkJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeBulkJob( StudioProgressMonitor monitor )
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", connections.length * 6 + 1 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
         for ( Connection connection : connections )
         {
-            if ( !connection.getJNDIConnectionWrapper().isConnected() )
+            if ( connection.getJNDIConnectionWrapper().isConnected() )
             {
-                monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
+                monitor.setTaskName( Messages.bind( Messages.jobs__close_connections_task, new String[]
                     { connection.getName() } ) );
                 monitor.worked( 1 );
 
-                connection.getJNDIConnectionWrapper().connect( monitor );
-                connection.getJNDIConnectionWrapper().bind( monitor );
+                connection.getJNDIConnectionWrapper().unbind();
+                connection.getJNDIConnectionWrapper().disconnect();
             }
         }
 
         for ( Connection connection : connections )
         {
-            if ( connection.getJNDIConnectionWrapper().isConnected() )
+            if ( !connection.getJNDIConnectionWrapper().isConnected() )
             {
                 for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
                 {
-                    listener.connectionOpened( connection, monitor );
+                    listener.connectionClosed( connection, monitor );
                 }
             }
         }
@@ -120,17 +140,25 @@ public class OpenConnectionsJob extends AbstractAsyncBulkJob
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.jobs.AbstractAsyncBulkJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
         for ( Connection connection : connections )
         {
-            if ( connection.getJNDIConnectionWrapper().isConnected() )
+            if ( !connection.getJNDIConnectionWrapper().isConnected() )
             {
-                ConnectionEventRegistry.fireConnectionOpened( connection, this );
+                ConnectionEventRegistry.fireConnectionClosed( connection, this );
             }
         }
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public Connection[] getConnections()
+    {
+        return null;
+    }
 }

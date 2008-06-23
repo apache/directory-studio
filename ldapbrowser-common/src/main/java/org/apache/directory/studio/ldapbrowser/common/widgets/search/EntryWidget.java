@@ -25,14 +25,14 @@ import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.DnUtils;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.swt.SWT;
@@ -189,9 +189,9 @@ public class EntryWidget extends BrowserWidget
                         rootEntry = browserConnection.getEntryFromCache( suffix );
                         if ( rootEntry == null )
                         {
-                            ReadEntryJob job = new ReadEntryJob( browserConnection, suffix );
-                            RunnableContextJobAdapter.execute( job );
-                            rootEntry = job.getReadEntry();
+                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, suffix );
+                            RunnableContextRunner.execute( runnable, null, true );
+                            rootEntry = runnable.getReadEntry();
                         }
                     }
 
@@ -212,12 +212,11 @@ public class EntryWidget extends BrowserWidget
                         entry = browserConnection.getEntryFromCache( initialDN );
                         if ( entry == null )
                         {
-                            ReadEntryJob job = new ReadEntryJob( browserConnection, initialDN );
-                            RunnableContextJobAdapter.execute( job );
-                            entry = job.getReadEntry();
+                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, suffix );
+                            RunnableContextRunner.execute( runnable, null, true );
+                            entry = runnable.getReadEntry();
                         }
                     }
-
 
                     // open dialog
                     SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), "Select DN", rootEntry, entry );

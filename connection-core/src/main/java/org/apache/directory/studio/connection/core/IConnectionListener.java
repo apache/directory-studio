@@ -19,6 +19,8 @@
  */
 package org.apache.directory.studio.connection.core;
 
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+
 
 /**
  * A Connection Listener is informed when a connection is opened or closed. 

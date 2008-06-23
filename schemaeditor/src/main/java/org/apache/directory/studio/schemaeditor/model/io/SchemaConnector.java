@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.model.io;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 

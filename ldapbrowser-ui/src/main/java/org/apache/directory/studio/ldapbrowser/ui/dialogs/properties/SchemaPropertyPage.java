@@ -25,10 +25,10 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemasJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemaRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -167,8 +167,8 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
     private void reloadSchema()
     {
         final IBrowserConnection browserConnection = RootDSEPropertyPage.getConnection( getElement() );
-        ReloadSchemasJob job = new ReloadSchemasJob( browserConnection );
-        RunnableContextJobAdapter.execute( job );
+        ReloadSchemaRunnable runnable = new ReloadSchemaRunnable( browserConnection );
+        RunnableContextRunner.execute( runnable, null, true );
         update( browserConnection );
     }
 

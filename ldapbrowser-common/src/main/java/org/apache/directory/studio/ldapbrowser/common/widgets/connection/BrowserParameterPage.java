@@ -27,13 +27,14 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.AliasesDereferencingWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.LimitWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.ReferralsHandlingWidget;
-import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.FetchBaseDNsRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -298,13 +299,13 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 Connection connection = getTestConnection();
                 IBrowserConnection browserConnection = new BrowserConnection( connection );
 
-                FetchBaseDNsJob job = new FetchBaseDNsJob( browserConnection );
-                RunnableContextJobAdapter.execute( job, runnableContext );
-                if ( job.getExternalResult().isOK() )
+                FetchBaseDNsRunnable runnable = new FetchBaseDNsRunnable( browserConnection );
+                IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
+                if ( status.isOK() )
                 {
-                    if ( job.getBaseDNs().length > 0 )
+                    if ( runnable.getBaseDNs().length > 0 )
                     {
-                        String[] baseDNs = job.getBaseDNs();
+                        String[] baseDNs = runnable.getBaseDNs();
                         baseDNCombo.setItems( baseDNs );
                         baseDNCombo.select( 0 );
 

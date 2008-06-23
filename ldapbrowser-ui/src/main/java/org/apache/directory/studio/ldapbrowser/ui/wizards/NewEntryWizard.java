@@ -22,11 +22,11 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserSearchResultPage;
-import org.apache.directory.studio.ldapbrowser.core.jobs.CreateEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.CreateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -293,10 +294,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
                 ocPage.saveDialogSettings();
                 dnPage.saveDialogSettings();
 
-                CreateEntryJob job = new CreateEntryJob( prototypeEntry, selectedConnection );
-                RunnableContextJobAdapter.execute( job, getContainer() );
-
-                if ( !job.getExternalResult().isOK() )
+                CreateEntryRunnable runnable = new CreateEntryRunnable( prototypeEntry, selectedConnection );
+                IStatus status = RunnableContextRunner.execute( runnable, getContainer(), true );
+                if ( !status.isOK() )
                 {
                     selectedConnection.getConnection().setReadOnly( true );
                     return false;

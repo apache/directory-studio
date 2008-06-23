@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -37,7 +37,7 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
 {
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
      */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
@@ -51,7 +51,7 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
             {
                 // reload affected attributes
                 String[] attributeDescriptions = getAffectedAttributeDescriptions();
-                InitializeAttributesJob.initializeAttributes( getModifiedEntry(), attributeDescriptions, monitor );
+                InitializeAttributesRunnable.initializeAttributes( getModifiedEntry(), attributeDescriptions, monitor );
             }
         }
     }

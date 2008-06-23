@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
@@ -119,7 +119,7 @@ public class RenameEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
      */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
@@ -189,7 +189,7 @@ public class RenameEntryJob extends AbstractNotificationJob
             IEntry parent = oldEntry.getParententry();
             boolean hasMoreChildren = parent.hasMoreChildren();
             parent.deleteChild( oldEntry );
-            newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
+            newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, monitor );
             parent.addChild( newEntry );
             parent.setHasMoreChildren( hasMoreChildren );
 

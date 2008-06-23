@@ -33,7 +33,7 @@ import javax.naming.directory.SearchControls;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -120,7 +120,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
      */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
@@ -206,7 +206,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
 
                 // add new entry to new parent
                 boolean hasMoreChildren = newParent.hasMoreChildren() || !newParent.isChildrenInitialized();
-                IEntry newEntry = ReadEntryJob.getEntry( browserConnection, newDn, monitor );
+                IEntry newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, monitor );
                 newEntries[i] = newEntry;
                 newParent.addChild( newEntry );
                 newParent.setHasMoreChildren( hasMoreChildren );

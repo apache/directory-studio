@@ -26,7 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -45,12 +46,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 
 
 /**
- * Job to initialize the child entries of an entry
+ * Runnable to initialize the child entries of an entry
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class InitializeChildrenJob extends AbstractNotificationJob
+public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The entries. */
@@ -58,21 +59,20 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of InitializeChildrenJob.
+     * Creates a new instance of InitializeChildrenRunnable.
      * 
      * @param entries the entries
      */
-    public InitializeChildrenJob( IEntry[] entries )
+    public InitializeChildrenRunnable( IEntry[] entries )
     {
         this.entries = entries;
-        setName( BrowserCoreMessages.jobs__init_entries_title_subonly );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         Connection[] connections = new Connection[entries.length];
         for ( int i = 0; i < connections.length; i++ )
@@ -84,9 +84,18 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__init_entries_title_subonly;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         List<Object> l = new ArrayList<Object>();
         l.addAll( Arrays.asList( entries ) );
@@ -95,9 +104,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
         return entries.length == 1 ? BrowserCoreMessages.jobs__init_entries_error_1
             : BrowserCoreMessages.jobs__init_entries_error_n;
@@ -105,9 +114,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -127,9 +136,9 @@ public class InitializeChildrenJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
         for ( int pi = 0; pi < entries.length; pi++ )
         {
@@ -171,10 +180,11 @@ public class InitializeChildrenJob extends AbstractNotificationJob
                 }
             }
             parent.setChildrenInitialized( false );
-            
+
             // determine alias and referral handling
             SearchScope scope = SearchScope.ONELEVEL;
-            AliasDereferencingMethod aliasesDereferencingMethod = parent.getBrowserConnection().getAliasesDereferencingMethod();
+            AliasDereferencingMethod aliasesDereferencingMethod = parent.getBrowserConnection()
+                .getAliasesDereferencingMethod();
             if ( parent.isAlias() )
             {
                 aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
@@ -185,18 +195,20 @@ public class InitializeChildrenJob extends AbstractNotificationJob
                 referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
             }
             Control[] controls = null;
-            
+
             // get children,
             ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
                 .getChildrenFilter(), ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
                 parent.getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
                 BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                     BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), controls );
-            SearchJob.searchAndUpdateModel( parent.getBrowserConnection(), search, monitor );
+            SearchRunnable.searchAndUpdateModel( parent.getBrowserConnection(), search, monitor );
             ISearchResult[] srs = search.getSearchResults();
-            monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
-                new String[]
-                    { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getUpName() } ) );
+            monitor.reportProgress( BrowserCoreMessages
+                .bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
+                    new String[]
+                        { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ),
+                            parent.getDn().getUpName() } ) );
 
             // fill children in search result
             if ( srs != null && srs.length > 0 )
@@ -217,8 +229,8 @@ public class InitializeChildrenJob extends AbstractNotificationJob
                 {
                     if ( parent.isAlias() && !( srs[i].getEntry() instanceof AliasBaseEntry ) )
                     {
-                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getBrowserConnection(), srs[i]
-                            .getEntry().getDn() );
+                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getBrowserConnection(),
+                            srs[i].getEntry().getDn() );
                         parent.addChild( aliasBaseEntry );
                     }
                     else
@@ -236,17 +248,17 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             ISearch subSearch = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
                 .getChildrenFilter() != null ? parent.getChildrenFilter() : ISearch.FILTER_SUBENTRY,
                 ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent
-                    .getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod, BrowserCorePlugin
-                    .getDefault().getPluginPreferences()
-                    .getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), new Control[]
+                    .getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
+                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), new Control[]
                     { Control.SUBENTRIES_CONTROL } );
             if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                 BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) )
             {
-                SearchJob.searchAndUpdateModel( parent.getBrowserConnection(), subSearch, monitor );
+                SearchRunnable.searchAndUpdateModel( parent.getBrowserConnection(), subSearch, monitor );
                 ISearchResult[] subSrs = subSearch.getSearchResults();
-                monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
-                    new String[]
+                monitor.reportProgress( BrowserCoreMessages.bind(
+                    BrowserCoreMessages.jobs__init_entries_progress_subcount, new String[]
                         { subSrs == null ? Integer.toString( 0 ) : Integer.toString( subSrs.length ),
                             parent.getDn().getUpName() } ) );
 
@@ -264,7 +276,7 @@ public class InitializeChildrenJob extends AbstractNotificationJob
             // check exceeded limits / canceled
             parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
                 || monitor.isCanceled() );
-            
+
             // set initialized state
             parent.setChildrenInitialized( true );
         }

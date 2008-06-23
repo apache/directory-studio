@@ -24,7 +24,8 @@ package org.apache.directory.studio.connection.ui.properties;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.core.jobs.CloseConnectionsJob;
+import org.apache.directory.studio.connection.core.jobs.CloseConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener;
@@ -244,7 +245,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
             if ( reconnectionRequired )
             {
                 // close connection
-                new CloseConnectionsJob( connection ).execute();
+                new StudioConnectionJob( new CloseConnectionsRunnable( connection ) ).execute();
             }
         }
 

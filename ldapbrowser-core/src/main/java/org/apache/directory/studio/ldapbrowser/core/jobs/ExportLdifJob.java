@@ -36,7 +36,7 @@ import javax.naming.directory.SearchResult;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -110,7 +110,7 @@ public class ExportLdifJob extends AbstractEclipseJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
      */
     protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
@@ -205,7 +205,7 @@ public class ExportLdifJob extends AbstractEclipseJob
     static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter, StudioProgressMonitor monitor )
         throws ConnectionException
     {
-        NamingEnumeration<SearchResult> result = SearchJob.search( browserConnection, parameter, monitor );
+        NamingEnumeration<SearchResult> result = SearchRunnable.search( browserConnection, parameter, monitor );
         
         if(monitor.errorsReported())
         {

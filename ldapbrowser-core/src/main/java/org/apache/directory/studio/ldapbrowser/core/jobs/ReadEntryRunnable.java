@@ -23,7 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -34,12 +35,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 
 
 /**
- * Job to read a single entry from directory.
+ * Runnable to read a single entry from directory.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ReadEntryJob extends AbstractNotificationJob
+public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The browser connection. */
@@ -53,25 +54,23 @@ public class ReadEntryJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of ReadEntryJob.
+     * Creates a new instance of ReadEntryRunnable.
      * 
      * @param browserConnection the browser connection
      * @param dn the DN of the entry
      */
-    public ReadEntryJob( IBrowserConnection browserConnection, LdapDN dn )
+    public ReadEntryRunnable( IBrowserConnection browserConnection, LdapDN dn )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
         this.readEntry = null;
-
-        setName( BrowserCoreMessages.jobs__read_entry_name );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -79,9 +78,18 @@ public class ReadEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__read_entry_name;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return new Object[]
             { browserConnection };
@@ -100,18 +108,18 @@ public class ReadEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__read_entry_error;
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor pm )
+    public void run( StudioProgressMonitor pm )
     {
         readEntry = browserConnection.getEntryFromCache( dn );
         if ( readEntry == null )
@@ -127,9 +135,9 @@ public class ReadEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
     }
 
@@ -158,7 +166,7 @@ public class ReadEntryJob extends AbstractNotificationJob
             ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT,
                 1, 0, browserConnection.getAliasesDereferencingMethod(),
                 browserConnection.getReferralsHandlingMethod(), true, null );
-            SearchJob.searchAndUpdateModel( browserConnection, search, monitor );
+            SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )
             {

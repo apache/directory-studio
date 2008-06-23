@@ -24,9 +24,9 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.FilterWidgetDialog;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -72,8 +72,8 @@ public class FilterChildrenAction extends BrowserAction
                 {
                     getSelectedEntries()[0].setChildrenFilter( newFilter.trim() );
                 }
-                new InitializeChildrenJob( new IEntry[]
-                    { getSelectedEntries()[0] } ).execute();
+                new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
+                    { getSelectedEntries()[0] } ) ).execute();
 
             }
         }

@@ -63,8 +63,6 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
             ConnectionUIConstants.IMG_CONNECTION_WIZARD ) );
         setPageComplete( false );
 
-        page.setRunnableContext( getContainer() );
-
         this.wizard = wizard;
         this.page = page;
     }

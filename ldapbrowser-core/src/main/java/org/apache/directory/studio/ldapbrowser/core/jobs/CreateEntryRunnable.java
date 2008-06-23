@@ -25,7 +25,8 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
@@ -37,12 +38,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 
 /**
- * Job to create an entry asynchronously.
+ * Runnable to create an entry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class CreateEntryJob extends AbstractNotificationJob
+public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The entry to create. */
@@ -56,25 +57,23 @@ public class CreateEntryJob extends AbstractNotificationJob
 
 
     /**
-     * Creates a new instance of CreateEntryJob.
+     * Creates a new instance of CreateEntryRunnable.
      * 
      * @param entryToCreate the entry to create
      * @param browserConnection the browser connection
      */
-    public CreateEntryJob( IEntry entryToCreate, IBrowserConnection browserConnection )
+    public CreateEntryRunnable( IEntry entryToCreate, IBrowserConnection browserConnection )
     {
         this.entryToCreate = entryToCreate;
         this.browserConnection = browserConnection;
         this.createdEntry = null;
-
-        setName( BrowserCoreMessages.jobs__create_entry_name_1 );
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
-    protected Connection[] getConnections()
+    public Connection[] getConnections()
     {
         return new Connection[]
             { browserConnection.getConnection() };
@@ -82,9 +81,18 @@ public class CreateEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
-    protected Object[] getLockedObjects()
+    public String getName()
+    {
+        return BrowserCoreMessages.jobs__create_entry_name_1;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object[] getLockedObjects()
     {
         return new Object[]
             { browserConnection };
@@ -92,9 +100,9 @@ public class CreateEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.StudioProgressMonitor)
+     * {@inheritDoc}
      */
-    protected void executeNotificationJob( StudioProgressMonitor monitor )
+    public void run( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__create_entry_task_1, new String[]
             { entryToCreate.getDn().getUpName() } ), 2 + 1 );
@@ -105,7 +113,7 @@ public class CreateEntryJob extends AbstractNotificationJob
 
         if ( !monitor.errorsReported() )
         {
-            createdEntry = ReadEntryJob.getEntry( browserConnection, entryToCreate.getDn(), monitor );
+            createdEntry = ReadEntryRunnable.getEntry( browserConnection, entryToCreate.getDn(), monitor );
             // createdEntries[i].getParententry().addChild(entry, this);
             createdEntry.setHasChildrenHint( false );
         }
@@ -116,9 +124,9 @@ public class CreateEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
-    protected void runNotification()
+    public void runNotification()
     {
         if ( createdEntry != null )
         {
@@ -128,9 +136,9 @@ public class CreateEntryJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
-    protected String getErrorMessage()
+    public String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__create_entry_error_1;
     }

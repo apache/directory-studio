@@ -28,12 +28,12 @@ import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -242,7 +242,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      * 
      * This implementation just checks if this page is complete. It 
      * doesn't call {@link #getNextPage()} to avoid unneeded 
-     * invokings of {@link ReadEntryJob}s.
+     * invokings of {@link ReadEntryRunnable}s.
      */
     public boolean canFlipToNextPage()
     {
@@ -253,7 +253,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     /**
      * {@inheritDoc}
      * 
-     * This implementation invokes a {@link ReadEntryJob} to check if an
+     * This implementation invokes a {@link ReadEntryRunnable} to check if an
      * entry with the composed DN already exists.
      */
     public IWizardPage getNextPage()
@@ -265,9 +265,9 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         final LdapDN dn = DnUtils.composeDn( rdn, parentDn );
 
         // check if parent exists or new entry already exists
-        ReadEntryJob readEntryJob1 = new ReadEntryJob( wizard.getSelectedConnection(), parentDn );
-        RunnableContextJobAdapter.execute( readEntryJob1, getContainer(), false );
-        IEntry parentEntry = readEntryJob1.getReadEntry();
+        ReadEntryRunnable readEntryRunnable1 = new ReadEntryRunnable( wizard.getSelectedConnection(), parentDn );
+        RunnableContextRunner.execute( readEntryRunnable1, getContainer(), false );
+        IEntry parentEntry = readEntryRunnable1.getReadEntry();
         if ( parentEntry == null )
         {
             getShell().getDisplay().syncExec( new Runnable()
@@ -280,9 +280,9 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             } );
             return null;
         }
-        ReadEntryJob readEntryJob2 = new ReadEntryJob( wizard.getSelectedConnection(), dn );
-        RunnableContextJobAdapter.execute( readEntryJob2, getContainer(), false );
-        IEntry entry = readEntryJob2.getReadEntry();
+        ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
+        RunnableContextRunner.execute( readEntryRunnable2, getContainer(), false );
+        IEntry entry = readEntryRunnable2.getReadEntry();
         if ( entry != null )
         {
             getShell().getDisplay().syncExec( new Runnable()

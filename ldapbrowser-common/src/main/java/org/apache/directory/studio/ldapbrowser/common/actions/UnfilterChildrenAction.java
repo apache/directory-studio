@@ -23,7 +23,8 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -53,8 +54,8 @@ public class UnfilterChildrenAction extends BrowserAction
         if ( getSelectedEntries().length == 1 )
         {
             getSelectedEntries()[0].setChildrenFilter( null );
-            new InitializeChildrenJob( new IEntry[]
-                { getSelectedEntries()[0] } ).execute();
+            new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
+                { getSelectedEntries()[0] } ) ).execute();
         }
     }
 

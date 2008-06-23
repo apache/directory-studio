@@ -22,18 +22,17 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.ldapbrowser.common.jobs.RunnableContextJobAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
@@ -168,9 +167,9 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             }
 
             // check if selected DN exists
-            ReadEntryJob readEntryJob = new ReadEntryJob( browserConnection, dn );
-            RunnableContextJobAdapter.execute( readEntryJob, getContainer(), false );
-            templateEntries[0] = readEntryJob.getReadEntry();
+            ReadEntryRunnable readEntryRunnable = new ReadEntryRunnable( browserConnection, dn );
+            RunnableContextRunner.execute( readEntryRunnable, getContainer(), false );
+            templateEntries[0] = readEntryRunnable.getReadEntry();
             if ( templateEntries[0] == null )
             {
                 getShell().getDisplay().syncExec( new Runnable()
@@ -186,8 +185,8 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             // init attributes
             if ( !templateEntries[0].isAttributesInitialized() )
             {
-                InitializeAttributesJob job = new InitializeAttributesJob( templateEntries, false );
-                RunnableContextJobAdapter.execute( job, getContainer() );
+                InitializeAttributesRunnable initializeAttributesRunnable = new InitializeAttributesRunnable( templateEntries, false );
+                RunnableContextRunner.execute( initializeAttributesRunnable, getContainer(), true );
             }
 
             // clone entry and remove non-modifyable attributes

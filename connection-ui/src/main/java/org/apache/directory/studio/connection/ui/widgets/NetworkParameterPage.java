@@ -26,9 +26,11 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.jobs.CheckNetworkParameterJob;
+import org.apache.directory.studio.connection.core.jobs.CheckNetworkParameterRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -299,9 +301,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             public void widgetSelected( SelectionEvent event )
             {
                 Connection connection = getTestConnection();
-                CheckNetworkParameterJob job = new CheckNetworkParameterJob( connection );
-                RunnableContextJobAdapter.execute( job, runnableContext );
-                if ( job.getExternalResult().isOK() )
+                CheckNetworkParameterRunnable runnable = new CheckNetworkParameterRunnable( connection );
+                IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
+                if ( status.isOK() )
                 {
                     MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Network Parameter",
                         "The connection was established successfully." );

@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
+import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.widgets.SWTBotButton;
 import net.sf.swtbot.widgets.SWTBotCombo;
 import net.sf.swtbot.widgets.SWTBotMenu;
@@ -62,6 +63,11 @@ public class NewConnectionWizardTest extends AbstractServerTest
     }
 
 
+    /**
+     * Creates a new connection using the new connection wizard.
+     * 
+     * @throws Exception the exception
+     */
     public void testCreateConnection() throws Exception
     {
         // Select "Connections" view, ensure no connections exists yet
@@ -141,8 +147,97 @@ public class NewConnectionWizardTest extends AbstractServerTest
         connectionsTree.select( "NewConnectionWizardTest" );
         SWTBotMenu contextMenu = connectionsTree.contextMenu( "Close Connection" );
         contextMenu.click();
-
-        Thread.sleep( 1000 );
     }
 
+
+    /**
+     * Tests the "Check Network Parameter" button.
+     * 
+     * @throws Exception the exception
+     */
+    public void testCheckNetworkParameterButtonOK() throws Exception
+    {
+        // Select "Connections" view, ensure no connections exists yet
+        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
+        assertEquals( 0, connectionsTree.rowCount() );
+
+        // open "New Connection" wizard
+        SWTBotMenu newConnectionMenu = connectionsTree.contextMenu( "New Connection..." );
+        newConnectionMenu.click();
+
+        // enter connection parameter
+        SWTBotText connText = bot.textWithLabel( "Connection name:" );
+        connText.setText( "NewConnectionWizardTest" );
+        SWTBotCombo hostnameCombo = bot.comboBox( "" );
+        hostnameCombo.setText( "localhost" );
+        SWTBotCombo portCombo = bot.comboBox( "" );
+        portCombo.setText( Integer.toString( ldapServer.getIpPort() ) );
+
+        // click "Check Network Parameter" button
+        SWTBotButton checkButton = bot.button( "Check Network Parameter" );
+        checkButton.click();
+
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.activeShell().getText().equals( "Check Network Parameter" ) && bot.button( "OK" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Expected an dialog box 'Check Network Parameter' with an 'OK' button.";
+            }
+        } );
+
+        bot.button( "OK" ).click();
+        bot.button( "Cancel" ).click();
+    }
+
+
+//    /**
+//     * Tests the "Check Network Parameter" button.
+//     * 
+//     * @throws Exception the exception
+//     */
+//    public void testCheckNetworkParameterButtonNOK() throws Exception
+//    {
+//        // Select "Connections" view, ensure no connections exists yet
+//        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
+//        assertEquals( 0, connectionsTree.rowCount() );
+//
+//        // open "New Connection" wizard
+//        SWTBotMenu newConnectionMenu = connectionsTree.contextMenu( "New Connection..." );
+//        newConnectionMenu.click();
+//
+//        // enter connection parameter
+//        SWTBotText connText = bot.textWithLabel( "Connection name:" );
+//        connText.setText( "NewConnectionWizardTest" );
+//        SWTBotCombo hostnameCombo = bot.comboBox( "" );
+//        hostnameCombo.setText( "localhost" );
+//        SWTBotCombo portCombo = bot.comboBox( "" );
+//        portCombo.setText( Integer.toString( ldapServer.getIpPort() + 1 ) );
+//
+//        // click "Check Network Parameter" button
+//        SWTBotButton checkButton = bot.button( "Check Network Parameter" );
+//        checkButton.click();
+//
+//        //TODO: error dialog does not pop up when using SWTBot???
+//        Thread.sleep( 2000 );
+//
+//        bot.waitUntil( new DefaultCondition()
+//        {
+//            public boolean test() throws Exception
+//            {
+//                return bot.activeShell().getText().equals( "Error" ) && bot.button( "OK" ) != null;
+//            }
+//
+//
+//            public String getFailureMessage()
+//            {
+//                return "Expected an dialog box 'Error' with an 'OK' button.";
+//            }
+//        } );
+//    }
 }
