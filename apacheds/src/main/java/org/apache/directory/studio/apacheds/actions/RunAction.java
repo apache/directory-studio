@@ -229,7 +229,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
 
         // LDAP
-        if ( true ) // Add a isEnableLdap() method to the server configuration
+        if ( serverConfiguration.isEnableLdap() )
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getLdapPort() ) )
             {
