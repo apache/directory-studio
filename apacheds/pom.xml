@@ -38,7 +38,9 @@
       <resource>
         <directory>.</directory>
         <includes>
+          <include>about.ini</include>
           <include>plugin.xml</include>
+          <include>studio.png</include>
         </includes>
       </resource>
       <resource>
