@@ -30,14 +30,6 @@
       </application>
    </extension>
    <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="org.eclipse.ui.file.exit"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+Q">
-      </key>
-   </extension>
-   <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
