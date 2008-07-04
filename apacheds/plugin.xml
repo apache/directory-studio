@@ -62,49 +62,42 @@
       </category>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.NewServerAction"
             description="Creates a new server"
             id="org.apache.directory.studio.apacheds.commands.newServer"
             name="New Server">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.DeleteAction"
-            description="Deletes a server"
-            id="org.apache.directory.studio.apacheds.commands.delete"
-            name="Delete">
-      </command>
-      <command
-            categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.OpenConfigurationAction"
             description="Opens the server configuration"
             id="org.apache.directory.studio.apacheds.commands.openConfiguration"
             name="Open Configuration">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.RenameAction"
+            description="Deletes a server"
+            id="org.apache.directory.studio.apacheds.commands.delete"
+            name="Delete">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
             description="Renames the server"
             id="org.apache.directory.studio.apacheds.commands.rename"
             name="Rename">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.RunAction"
             description="Runs the server"
             id="org.apache.directory.studio.apacheds.commands.run"
             name="Run">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.StopAction"
             description="Stops the server"
             id="org.apache.directory.studio.apacheds.commands.stop"
             name="Stop">
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
-            defaultHandler="org.apache.directory.studio.apacheds.actions.PropertiesAction"
             description="Shows the properties of the server"
             id="org.apache.directory.studio.apacheds.commands.properties"
             name="Properties">
