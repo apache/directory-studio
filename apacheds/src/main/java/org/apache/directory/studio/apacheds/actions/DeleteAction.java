@@ -25,9 +25,13 @@ import java.io.File;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.dialogs.DeleteServerDialog;
+import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.apache.directory.studio.apacheds.model.Server;
+import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.apacheds.views.ServersView;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -106,6 +110,35 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
             DeleteServerDialog dsd = new DeleteServerDialog( view.getSite().getShell(), server );
             if ( dsd.open() == DeleteServerDialog.OK )
             {
+                // Checking if the server is running
+                // If yes, we need to shut it down before removing its data
+                if ( server.getState() == ServerStateEnum.STARTED )
+                {
+                    // Setting the server of the server to 'stopping'
+                    server.setState( ServerStateEnum.STOPPING );
+
+                    // Getting the launch job
+                    LaunchServerJob launchJob = server.getLaunchJob();
+                    if ( launchJob != null )
+                    {
+                        // Getting the launch
+                        ILaunch launch = launchJob.getLaunch();
+                        if ( ( launch != null ) && ( !launch.isTerminated() ) )
+                        {
+                            // Terminating the launch
+                            try
+                            {
+                                launch.terminate();
+                            }
+                            catch ( DebugException e )
+                            {
+                                ApacheDsPluginUtils.reportError( "An error occurred when stopping the server.\n\n"
+                                    + e.getMessage() );
+                            }
+                        }
+                    }
+                }
+
                 // Removing the server
                 ServersHandler.getDefault().removeServer( server );
 
