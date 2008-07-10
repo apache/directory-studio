@@ -29,6 +29,7 @@ import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
 
 import org.apache.directory.server.unit.AbstractServerTest;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -209,6 +210,137 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
+    }
+
+    
+    /**
+     * Create entries with upper case attribute types and ensures that
+     * the retrieved entries still are in upper case.
+     * Test for DIRSTUDIO-350.
+     * 
+     * @throws Exception the exception
+     */
+    public void testCreateUpperCaseOrganizationEntries() throws Exception
+    {
+        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+
+        // open "New Entry" wizard
+        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
+        contextMenu.click();
+
+        // select entry creation method
+        bot.radio( "Create entry from scratch" ).click();
+        bot.button( "Next >" ).click();
+
+        // select object classes
+        bot.table( 0 ).select( "organization" );
+        bot.button( "Add" ).click();
+        bot.button( "Next >" ).click();
+
+        // specify DN
+        SWTBotCombo typeCombo = bot.comboBox( "" );
+        typeCombo.setText( "O" );
+        SWTBotText valueText = bot.text( "" );
+        valueText.setText( "testCreateOrganizationEntry" );
+        bot.button( "Next >" ).click();
+
+        // wait for check that entry doesn't exist yet
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.tree( 0 ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
+
+        // click finish to create the entry
+        bot.button( "Finish" ).click();
+
+        // wait till entry is created and selected in the tree
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return browserTree.selection().get( 0 ).get( 0 ).equals( "O=testCreateOrganizationEntry" );
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
+        
+        // Now create a second entry under the previously created entry 
+        // to ensure that the selected parent is also upper case.
+        
+        // open "New Entry" wizard
+        contextMenu = browserTree.contextMenu( "New Entry..." );
+        contextMenu.click();
+
+        // select entry creation method
+        bot.radio( "Create entry from scratch" ).click();
+        bot.button( "Next >" ).click();
+
+        // select object classes
+        bot.table( 0 ).select( "organization" );
+        bot.button( "Add" ).click();
+        bot.button( "Next >" ).click();
+        
+        // specify DN
+        typeCombo = bot.comboBox( "" );
+        typeCombo.setText( "O" );
+        valueText = bot.text( "" );
+        valueText.setText( "testCreateOrganizationEntry2" );
+        
+        // check preview text 
+        SWTBotText previewText = bot.text( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system" );
+        assertEquals( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system", previewText.getText() );
+        
+        bot.button( "Next >" ).click();
+
+        // wait for check that entry doesn't exist yet
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.tree( 0 ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
+
+        // click finish to create the entry
+        bot.button( "Finish" ).click();
+
+        // wait till entry is created and selected in the tree
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return browserTree.selection().get( 0 ).get( 0 ).equals( "O=testCreateOrganizationEntry2" );
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
+        
+        
+        Thread.sleep( 10000 );
     }
 
 }

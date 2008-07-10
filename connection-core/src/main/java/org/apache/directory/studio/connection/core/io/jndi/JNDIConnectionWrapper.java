@@ -301,7 +301,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapDN( searchBase ), filter,
+                    NamingEnumeration<SearchResult> ne = searchCtx.search( searchBase, filter,
                         searchControls );
                     namingEnumeration = new StudioNamingEnumeration( connection, ne, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
@@ -453,7 +453,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform modification
-                    modCtx.modifyAttributes( new LdapDN( dn ), modificationItems );
+                    modCtx.modifyAttributes( dn, modificationItems );
                 }
                 catch ( ReferralException re )
                 {
@@ -554,7 +554,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
 
                     // rename entry
-                    modCtx.rename( new LdapDN( oldDn ), new LdapDN( newDn ) );
+                    modCtx.rename( oldDn, newDn );
                 }
                 catch ( ReferralException re )
                 {
@@ -644,7 +644,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // create entry
-                    modCtx.createSubcontext( new LdapDN( dn ), attributes );
+                    modCtx.createSubcontext( dn, attributes );
                 }
                 catch ( ReferralException re )
                 {
@@ -732,7 +732,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // delete entry
-                    modCtx.destroySubcontext( new LdapDN( dn ) );
+                    modCtx.destroySubcontext( dn );
                 }
                 catch ( ReferralException re )
                 {

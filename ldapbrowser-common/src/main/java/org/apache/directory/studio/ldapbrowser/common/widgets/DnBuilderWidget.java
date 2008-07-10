@@ -342,7 +342,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             try
             {
                 // calculate DN
-                parentDn = new LdapDN( parentEntryWidget.getDn() );
+                parentDn = ( LdapDN ) parentEntryWidget.getDn().clone();
             }
             catch ( Exception e )
             {

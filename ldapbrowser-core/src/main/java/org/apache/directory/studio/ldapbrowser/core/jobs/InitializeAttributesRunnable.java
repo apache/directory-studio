@@ -302,21 +302,14 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
             && !"".equals( browserConnection.getBaseDN().toString() ) )
         {
             // only add the specified base DN
-            try
+            LdapDN dn = browserConnection.getBaseDN();
+            IEntry entry = browserConnection.getEntryFromCache( dn );
+            if ( entry == null )
             {
-                LdapDN dn = browserConnection.getBaseDN();
-                IEntry entry = browserConnection.getEntryFromCache( dn );
-                if ( entry == null )
-                {
-                    entry = new BaseDNEntry( new LdapDN( dn ), browserConnection );
-                    browserConnection.cacheEntry( entry );
-                }
-                rootDseEntries.put( dn, entry );
+                entry = new BaseDNEntry( ( LdapDN ) dn.clone(), browserConnection );
+                browserConnection.cacheEntry( entry );
             }
-            catch ( InvalidNameException e )
-            {
-                monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
-            }
+            rootDseEntries.put( dn, entry );
         }
         else
         {
@@ -341,7 +334,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                         IEntry entry = browserConnection.getEntryFromCache( dn );
                         if ( entry == null )
                         {
-                            entry = new BaseDNEntry( new LdapDN( dn ), browserConnection );
+                            entry = new BaseDNEntry( dn, browserConnection );
                             browserConnection.cacheEntry( entry );
                         }
                         rootDseEntries.put( dn, entry );

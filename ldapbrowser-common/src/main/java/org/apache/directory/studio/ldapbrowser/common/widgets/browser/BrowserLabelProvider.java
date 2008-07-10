@@ -340,19 +340,20 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             Rdn rdn = entry.getRdn();
             Iterator<AttributeTypeAndValue> atavIterator = rdn.iterator();
-            while(atavIterator.hasNext())
+            while ( atavIterator.hasNext() )
             {
                 AttributeTypeAndValue atav = atavIterator.next();
-                if ( "cn".equals( atav.getUpType() ) || "sn".equals( atav.getUpType() ) || "uid".equals( atav.getUpType() )
-                    || "userid".equals( atav.getUpType() ) )
+                if ( "cn".equalsIgnoreCase( atav.getUpType() ) || "sn".equalsIgnoreCase( atav.getUpType() )
+                    || "uid".equalsIgnoreCase( atav.getUpType() ) || "userid".equalsIgnoreCase( atav.getUpType() ) )
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_PERSON );
                 }
-                else if ( "ou".equals( atav.getUpType() ) || "o".equals( atav.getUpType() ) )
+                else if ( "ou".equalsIgnoreCase( atav.getUpType() ) || "o".equalsIgnoreCase( atav.getUpType() ) )
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ORG );
                 }
-                else if ( "dc".equals( atav.getUpType() ) || "c".equals( atav.getUpType() ) || "l".equals( atav.getUpType() ) )
+                else if ( "dc".equalsIgnoreCase( atav.getUpType() ) || "c".equalsIgnoreCase( atav.getUpType() )
+                    || "l".equalsIgnoreCase( atav.getUpType() ) )
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_DC );
                 }
