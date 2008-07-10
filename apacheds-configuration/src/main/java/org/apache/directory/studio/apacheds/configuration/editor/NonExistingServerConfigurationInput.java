@@ -67,17 +67,7 @@ public class NonExistingServerConfigurationInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        switch ( serverConfiguration.getVersion() )
-        {
-            case VERSION_1_5_2:
-                return "New Apache DS 1.5.2 Configuration File";
-            case VERSION_1_5_1:
-                return "New Apache DS 1.5.1 Configuration File";
-            case VERSION_1_5_0:
-                return "New Apache DS 1.5.0 Configuration File";
-            default:
-                return "New Apache DS Configuration File";
-        }
+        return getNameOrToolTipText();
     }
 
 
@@ -86,8 +76,22 @@ public class NonExistingServerConfigurationInput implements IEditorInput
      */
     public String getName()
     {
+        return getNameOrToolTipText();
+    }
+
+
+    /**
+     * Returns the name or tooltip text.
+     *
+     * @return
+     *      the name or tooltip text
+     */
+    private String getNameOrToolTipText()
+    {
         switch ( serverConfiguration.getVersion() )
         {
+            case VERSION_1_5_3:
+                return "New Apache DS 1.5.3 Configuration File";
             case VERSION_1_5_2:
                 return "New Apache DS 1.5.2 Configuration File";
             case VERSION_1_5_1:

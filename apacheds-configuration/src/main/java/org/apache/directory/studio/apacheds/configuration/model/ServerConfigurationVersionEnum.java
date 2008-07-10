@@ -29,6 +29,18 @@ package org.apache.directory.studio.apacheds.configuration.model;
 public enum ServerConfigurationVersionEnum
 {
     /** Version 1.5.2 */
+    VERSION_1_5_3
+    {
+        /* (non-Javadoc)
+         * @see java.lang.Enum#toString()
+         */
+        public String toString()
+        {
+            return "Version 1.5.3";
+        }
+    },
+    
+    /** Version 1.5.2 */
     VERSION_1_5_2
     {
         /* (non-Javadoc)

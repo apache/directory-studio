@@ -49,6 +49,8 @@ public class NewApacheDSConfigurationFileWizardPage extends WizardPage
     private static final String VERSION_1_5_1 = "1.5.1";
     /** Version 1.5.2 */
     private static final String VERSION_1_5_2 = "1.5.2";
+    /** Version 1.5.3 */
+    private static final String VERSION_1_5_3 = "1.5.3";
 
     // UI Fields
     private Combo versionCombo;
@@ -88,7 +90,7 @@ public class NewApacheDSConfigurationFileWizardPage extends WizardPage
         // Version Combo
         versionCombo = new Combo( targetVersionGroup, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
         versionCombo.setItems( new String[]
-            { VERSION_1_5_2, VERSION_1_5_1, VERSION_1_5_0 } );
+            { VERSION_1_5_3, VERSION_1_5_2, VERSION_1_5_1, VERSION_1_5_0 } );
         versionCombo.select( 0 );
 
         setControl( composite );
@@ -107,7 +109,11 @@ public class NewApacheDSConfigurationFileWizardPage extends WizardPage
         String selection = versionCombo.getItem( versionCombo.getSelectionIndex() );
 
         // Checking the version
-        if ( selection.equals( VERSION_1_5_2 ) )
+        if ( selection.equals( VERSION_1_5_3 ) )
+        {
+            return ServerConfigurationVersionEnum.VERSION_1_5_3;
+        }
+        else if ( selection.equals( VERSION_1_5_2 ) )
         {
             return ServerConfigurationVersionEnum.VERSION_1_5_2;
         }

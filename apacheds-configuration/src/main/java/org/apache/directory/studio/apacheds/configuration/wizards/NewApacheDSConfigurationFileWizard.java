@@ -29,6 +29,7 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOExcep
 import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
 import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
@@ -78,6 +79,11 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
             ServerXmlIO serverXmlIO = null;
             switch ( page.getTargetVersion() )
             {
+                case VERSION_1_5_3:
+                    serverXmlIO = new ServerXmlIOV153();
+                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
+                        .getResourceAsStream( "default-server-1.5.3.xml" ) );
+                    break;
                 case VERSION_1_5_2:
                     serverXmlIO = new ServerXmlIOV152();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
@@ -94,9 +100,9 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
                         .getResourceAsStream( "default-server-1.5.0.xml" ) );
                     break;
                 default:
-                    serverXmlIO = new ServerXmlIOV152();
+                    serverXmlIO = new ServerXmlIOV153();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.2.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.3.xml" ) );
                     break;
             }
 

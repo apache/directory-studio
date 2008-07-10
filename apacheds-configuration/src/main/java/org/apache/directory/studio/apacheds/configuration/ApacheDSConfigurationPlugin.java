@@ -39,6 +39,7 @@ import org.osgi.framework.BundleContext;
 import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
 import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 
 
 /**
@@ -56,7 +57,7 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     private static ApacheDSConfigurationPlugin plugin;
 
     private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
-        { new ServerXmlIOV152(), new ServerXmlIOV151(), new ServerXmlIOV150(), };
+        { new ServerXmlIOV153(), new ServerXmlIOV152(), new ServerXmlIOV151(), new ServerXmlIOV150(), };
 
 
     /**
