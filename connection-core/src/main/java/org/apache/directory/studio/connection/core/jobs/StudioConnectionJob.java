@@ -215,48 +215,41 @@ public class StudioConnectionJob extends Job
 
 
     /**
-     * @see org.eclipse.core.runtime.jobs.Job#shouldSchedule()
+     * {@inheritDoc}
      */
     public boolean shouldSchedule()
     {
+        // We don't schedule a job if the same type of runnable should run
+        // that works on the same entry as the current runnable.
+
         Object[] myLockedObjects = runnable.getLockedObjects();
         String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
-
-        // TODO: read, write
 
         Job[] jobs = getJobManager().find( null );
         for ( int i = 0; i < jobs.length; i++ )
         {
             Job job = jobs[i];
-
-            // if(job instanceof AbstractEclipseJob) {
-            if ( job.getClass() == this.getClass() && job != this )
+            if ( job instanceof StudioConnectionJob )
             {
                 StudioConnectionJob otherJob = ( StudioConnectionJob ) job;
-                Object[] otherLockedObjects = otherJob.runnable.getLockedObjects();
-                String[] otherLockedObjectIdentifiers = getLockIdentifiers( otherLockedObjects );
-
-                for ( int j = 0; j < otherLockedObjectIdentifiers.length; j++ )
+                if ( this.runnable.getClass() == otherJob.runnable.getClass() && this.runnable != otherJob.runnable )
                 {
-                    String other = otherLockedObjectIdentifiers[j];
-                    for ( int k = 0; k < myLockedObjectsIdentifiers.length; k++ )
+                    Object[] otherLockedObjects = otherJob.runnable.getLockedObjects();
+                    String[] otherLockedObjectIdentifiers = getLockIdentifiers( otherLockedObjects );
+
+                    for ( int j = 0; j < otherLockedObjectIdentifiers.length; j++ )
                     {
-                        String my = myLockedObjectsIdentifiers[k];
-
-                        //System.out.print( "other:" + other + ", my: " + my );
-                        if ( other.startsWith( my ) || my.startsWith( other ) )
+                        String other = otherLockedObjectIdentifiers[j];
+                        for ( int k = 0; k < myLockedObjectsIdentifiers.length; k++ )
                         {
-                            //System.out.println( ", shouldSchedule() = " + false );
-                            return false;
+                            String my = myLockedObjectsIdentifiers[k];
+                            if ( other.startsWith( my ) || my.startsWith( other ) )
+                            {
+                                return false;
+                            }
                         }
-                        else
-                        {
-                            //System.out.println();
-                        }
-
                     }
                 }
-
             }
         }
         return super.shouldSchedule();
