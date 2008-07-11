@@ -90,6 +90,15 @@ public class Schema
         DUMMY_LDAP_SYNTAX.setDescription( "" );
     }
 
+    public static final HashMap<String,List<String>> DUMMY_EXTENSIONS;
+    static
+    {
+        DUMMY_EXTENSIONS = new HashMap<String, List<String>>();
+        List<String> dummyValues = new ArrayList<String>();
+        dummyValues.add("DUMMY");
+        DUMMY_EXTENSIONS.put( "X-DUMMY", dummyValues );
+    }
+
     public static final Schema DEFAULT_SCHEMA;
     static
     {
@@ -476,6 +485,7 @@ public class Schema
             ObjectClassDescription ocd = new ObjectClassDescription();
             ocd.setNumericOid( nameOrOid );
             ocd.setNames( names );
+            ocd.setExtensions( DUMMY_EXTENSIONS );
             return ocd;
         }
     }
@@ -562,6 +572,7 @@ public class Schema
             atd.setNames( attributeTypes );
             atd.setUserModifiable( false );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );
+            atd.setExtensions( DUMMY_EXTENSIONS );
             return atd;
         }
     }
@@ -635,6 +646,7 @@ public class Schema
             // DUMMY
             LdapSyntaxDescription lsd = new LdapSyntaxDescription();
             lsd.setNumericOid( numericOid );
+            lsd.setExtensions( DUMMY_EXTENSIONS );
             return lsd;
         }
     }
@@ -713,6 +725,7 @@ public class Schema
             // DUMMY
             MatchingRuleDescription mrd = new MatchingRuleDescription();
             mrd.setNumericOid( nameOrOid );
+            mrd.setExtensions( DUMMY_EXTENSIONS );
             return mrd;
         }
     }
@@ -791,6 +804,7 @@ public class Schema
             // DUMMY
             MatchingRuleUseDescription mrud = new MatchingRuleUseDescription();
             mrud.setNumericOid( nameOrOid );
+            mrud.setExtensions( DUMMY_EXTENSIONS );
             return mrud;
         }
     }

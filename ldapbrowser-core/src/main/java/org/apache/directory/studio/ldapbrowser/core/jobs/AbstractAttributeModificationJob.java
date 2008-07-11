@@ -51,7 +51,8 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
             {
                 // reload affected attributes
                 String[] attributeDescriptions = getAffectedAttributeDescriptions();
-                InitializeAttributesRunnable.initializeAttributes( getModifiedEntry(), attributeDescriptions, monitor );
+                InitializeAttributesRunnable.initializeAttributes( getModifiedEntry(), attributeDescriptions, false,
+                    monitor );
             }
         }
     }

@@ -194,15 +194,23 @@ public class SchemaUtils
     }
 
 
+    /**
+     * An attribute type is marked as operational if either
+     * <li>the usage differs from USER_APPLICATIONS or
+     * <li>if is not declared in the schema and contains the dummy extension
+     * 
+     * @param atd the attribute type description
+     * 
+     * @return true, if is operational
+     */
     public static boolean isOperational( AttributeTypeDescription atd )
     {
-        return !atd.isUserModifiable() || atd.getUsage() != UsageEnum.USER_APPLICATIONS;
+        return atd.getUsage() != UsageEnum.USER_APPLICATIONS || atd.getExtensions() == Schema.DUMMY_EXTENSIONS;
     }
 
 
     public static boolean isModifyable( AttributeTypeDescription atd )
     {
-
         if ( atd == null )
         {
             return false;

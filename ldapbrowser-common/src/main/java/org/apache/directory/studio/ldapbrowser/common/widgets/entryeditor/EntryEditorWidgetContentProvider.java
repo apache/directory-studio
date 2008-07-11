@@ -126,19 +126,19 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
+        boolean showOperationalAttributes = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
 
         if ( inputElement != null && inputElement instanceof IEntry )
         {
             IEntry entry = ( IEntry ) inputElement;
 
-            boolean soa = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
             boolean oai = entry.isOperationalAttributesInitialized();
-            boolean ai = entry.isAttributesInitialized(); 
-            if ( ( !ai || ( !oai && soa ) ) && entry.isDirectoryEntry() )
+            boolean ai = entry.isAttributesInitialized();
+            if ( ( !ai || ( !oai && showOperationalAttributes ) ) && entry.isDirectoryEntry() )
             {
                 InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
-                    { entry }, soa );
+                    { entry }, showOperationalAttributes );
                 StudioBrowserJob job = new StudioBrowserJob( runnable );
                 job.execute();
                 return new Object[0];
@@ -146,7 +146,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             else
             {
                 IAttribute[] attributes = entry.getAttributes();
-                Object[] values = getValues( attributes );
+                Object[] values = getValues( attributes, showOperationalAttributes );
                 return values;
             }
         }
@@ -154,7 +154,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             AttributeHierarchy ah = ( AttributeHierarchy ) inputElement;
             IAttribute[] attributes = ah.getAttributes();
-            Object[] values = getValues( attributes );
+            Object[] values = getValues( attributes, showOperationalAttributes );
             return values;
         }
         else
@@ -168,27 +168,31 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      * Gets the values of the given attributes.
      * 
      * @param attributes the attributes
+     * @param showOperationalAttributes true if operational attributes are visible
      * 
      * @return the values
      */
-    private Object[] getValues( IAttribute[] attributes )
+    private Object[] getValues( IAttribute[] attributes, boolean showOperationalAttributes )
     {
         List<Object> valueList = new ArrayList<Object>();
-        for ( int i = 0; attributes != null && i < attributes.length; i++ )
+        for ( IAttribute attribute : attributes )
         {
-            IValue[] values = attributes[i].getValues();
-            if ( this.preferences == null || !this.preferences.isUseFolding()
-                || ( values.length <= this.preferences.getFoldingThreshold() ) )
+            if ( !attribute.isOperationalAttribute() || showOperationalAttributes )
             {
-                for ( int j = 0; j < values.length; j++ )
+                IValue[] values = attribute.getValues();
+                if ( this.preferences == null || !this.preferences.isUseFolding()
+                    || ( values.length <= this.preferences.getFoldingThreshold() ) )
                 {
-                    valueList.add( values[j] );
+                    for ( IValue value : values )
+                    {
+                        valueList.add( value );
+                    }
                 }
-            }
-            else
-            {
-                // if folding threshold is exceeded then return the attribute itself
-                valueList.add( attributes[i] );
+                else
+                {
+                    // if folding threshold is exceeded then return the attribute itself
+                    valueList.add( attribute );
+                }
             }
         }
         return valueList.toArray();

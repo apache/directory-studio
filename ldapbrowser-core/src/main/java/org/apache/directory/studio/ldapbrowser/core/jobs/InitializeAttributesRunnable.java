@@ -205,7 +205,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         }
         returningAttributes = ( String[] ) raSet.toArray( new String[raSet.size()] );
 
-        initializeAttributes( entry, returningAttributes, monitor );
+        initializeAttributes( entry, returningAttributes, true, monitor );
 
         entry.setOperationalAttributesInitialized( initOperationalAttributes );
     }
@@ -216,9 +216,10 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
      * 
      * @param entry the entry
      * @param attributes the returning attributes
+     * @param clearAllAttributes true to clear all old attributes before searching
      * @param monitor the progress monitor
      */
-    public static void initializeAttributes( IEntry entry, String[] attributes, StudioProgressMonitor monitor )
+    public static void initializeAttributes( IEntry entry, String[] attributes, boolean clearAllAttributes, StudioProgressMonitor monitor )
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_att,
             new String[]
@@ -246,6 +247,22 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                 referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
             }
 
+            if ( clearAllAttributes )
+            {
+                // Clear all attributes (user and operational)
+                // Must be done here because SearchRunnable.searchAndUpdateModel only clears
+                // requested attributes. If the user switches the "Show operational attributes"
+                // property then the operational attributes are not cleared.
+                IAttribute[] oldAttributes = entry.getAttributes();
+                if ( oldAttributes != null )
+                {
+                    for ( IAttribute oldAttribute : oldAttributes )
+                    {
+                        entry.deleteAttribute( oldAttribute );
+                    }
+                }
+            }
+            
             // search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
@@ -282,15 +299,25 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         }
         browserConnection.getRootDSE().setChildrenInitialized( false );
 
-        // load all user attributes
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
-            { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+        // delete old attributes
+        IAttribute[] oldAttributes = browserConnection.getRootDSE().getAttributes();
+        if ( oldAttributes != null )
+        {
+            for ( IAttribute oldAttribute : oldAttributes )
+            {
+                browserConnection.getRootDSE().deleteAttribute( oldAttribute );
+            }
+        }
+        
+        // load well-known Root DSE attributes and operational attributes
+        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES,
+            SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-
-        // load well-known Root DSE attributes and operational attributes
-        search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES,
-            SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+        
+        // load all user attributes
+        search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
+            { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
