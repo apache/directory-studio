@@ -21,13 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 
 
 /**
@@ -41,7 +45,7 @@ public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
 
     private IBrowserConnection connection;
 
-    private String[] baseDNs;
+    private List<String> baseDNs;
 
 
     /**
@@ -52,6 +56,7 @@ public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
     public FetchBaseDNsRunnable( IBrowserConnection connection )
     {
         this.connection = connection;
+        this.baseDNs = new ArrayList<String>();
     }
 
 
@@ -94,18 +99,21 @@ public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
 
         IRootDSE rootDSE = connection.getRootDSE();
         InitializeAttributesRunnable.initializeAttributes( rootDSE, true, monitor );
-        //        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
-        //        baseDNs = new String[baseDNEntries.length];
-        //        for ( int i = 0; i < baseDNs.length; i++ )
-        //        {
-        //            baseDNs[i] = baseDNEntries[i].getDn().toString();
-        //        }
 
-        IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
-        if ( attribute != null )
+        IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
+        for ( IEntry baseDNEntry : baseDNEntries )
         {
-            baseDNs = attribute.getStringValues();
+            if ( !( baseDNEntry instanceof DirectoryMetadataEntry ) )
+            {
+                baseDNs.add( baseDNEntry.getDn().getUpName() );
+            }
         }
+
+//        IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
+//        if ( attribute != null )
+//        {
+//            baseDNs = attribute.getStringValues();
+//        }
 
         monitor.worked( 1 );
     }
@@ -125,12 +133,8 @@ public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
      * 
      * @return the base DNs
      */
-    public String[] getBaseDNs()
+    public List<String> getBaseDNs()
     {
-        if ( baseDNs == null )
-        {
-            baseDNs = new String[0];
-        }
         return baseDNs;
     }
 

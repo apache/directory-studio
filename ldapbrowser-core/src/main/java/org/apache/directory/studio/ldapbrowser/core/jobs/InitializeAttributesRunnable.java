@@ -325,40 +325,41 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                     namingContextSet.add( values[i] );
                 }
             }
-            for ( String namingContext : namingContextSet )
+            
+            if ( !namingContextSet.isEmpty() )
             {
-                if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
-                    try
-                    {
-                        LdapDN dn = new LdapDN( namingContext );
-                        IEntry entry = browserConnection.getEntryFromCache( dn );
-                        if ( entry == null )
-                        {
-                            entry = new BaseDNEntry( dn, browserConnection );
-                            browserConnection.cacheEntry( entry );
-                        }
-                        rootDseEntries.put( dn, entry );
-                    }
-                    catch ( InvalidNameException e )
-                    {
-                        monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
-                    }
-                }
-                else
+                for ( String namingContext : namingContextSet )
                 {
-                    // special handling of empty namingContext (Novell eDirectory): 
-                    // perform a one-level search and add all result DNs to the set
-                    search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
-                        ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-                        Connection.ReferralHandlingMethod.IGNORE, false, null );
-                    SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-                    ISearchResult[] results = search.getSearchResults();
-                    for ( ISearchResult searchResult : results )
+                    if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
+                        try
+                        {
+                            LdapDN dn = new LdapDN( namingContext );
+                            IEntry entry = browserConnection.getEntryFromCache( dn );
+                            if ( entry == null )
+                            {
+                                entry = new BaseDNEntry( dn, browserConnection );
+                                browserConnection.cacheEntry( entry );
+                            }
+                            rootDseEntries.put( dn, entry );
+                        }
+                        catch ( InvalidNameException e )
+                        {
+                            monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
+                        }
+                    }
+                    else
                     {
-                        IEntry entry = searchResult.getEntry();
-                        rootDseEntries.put( entry.getDn(), entry );
+                        // special handling of empty namingContext (Novell eDirectory): 
+                        // perform a one-level search and add all result DNs to the set
+                        searchRootDseEntries( browserConnection, rootDseEntries, monitor );
                     }
                 }
+            }
+            else
+            {
+                // special handling of non-existing namingContexts attribute (Oracle Internet Directory)
+                // perform a one-level search and add all result DNs to the set
+                searchRootDseEntries( browserConnection, rootDseEntries, monitor );
             }
         }
 
@@ -465,4 +466,19 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         return metadataEntries;
     }
 
+
+    private static void searchRootDseEntries( IBrowserConnection browserConnection, Map<LdapDN, IEntry> rootDseEntries,
+        StudioProgressMonitor monitor )
+    {
+        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
+            ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+            Connection.ReferralHandlingMethod.IGNORE, false, null );
+        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
+        ISearchResult[] results = search.getSearchResults();
+        for ( ISearchResult searchResult : results )
+        {
+            IEntry entry = searchResult.getEntry();
+            rootDseEntries.put( entry.getDn(), entry );
+        }
+    }
 }

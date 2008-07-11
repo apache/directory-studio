@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.connection;
 
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
@@ -303,16 +305,16 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
                 if ( status.isOK() )
                 {
-                    if ( runnable.getBaseDNs().length > 0 )
+                    if ( !runnable.getBaseDNs().isEmpty() )
                     {
-                        String[] baseDNs = runnable.getBaseDNs();
-                        baseDNCombo.setItems( baseDNs );
+                        List<String> baseDNs = runnable.getBaseDNs();
+                        baseDNCombo.setItems( baseDNs.toArray( new String[baseDNs.size()] ) );
                         baseDNCombo.select( 0 );
 
                         String msg = "The server returned the following base DNs:";
-                        for ( int i = 0; i < baseDNs.length; i++ )
+                        for ( String baseDN : baseDNs )
                         {
-                            msg += "\n  - " + baseDNs[i];
+                            msg += "\n  - " + baseDN;
                         }
                         MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Fetch Base DNs", msg );
                     }
