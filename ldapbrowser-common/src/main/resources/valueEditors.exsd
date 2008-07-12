@@ -46,7 +46,7 @@
          </appInfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
+         <sequence minOccurs="0" maxOccurs="unbounded">
             <choice>
                <element ref="syntax"/>
                <element ref="attribute"/>
