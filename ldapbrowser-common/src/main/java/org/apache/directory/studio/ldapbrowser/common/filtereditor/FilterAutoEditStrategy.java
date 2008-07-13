@@ -87,6 +87,10 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
     {
         parser.parse( currentFilter );
         LdapFilter filter = parser.getModel().getFilter( aep.offset );
+        if ( filter == null )
+        {
+            return;
+        }
 
         // check balanced parenthesis
         int balanced = 0;
