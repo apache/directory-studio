@@ -27,7 +27,9 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
 
 
 /**
@@ -167,6 +169,19 @@ public interface IJndiLogger
      */
     public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
         NamingException namingException );
+
+
+    /**
+     * Logs a search result reference.
+     *
+     * @param connection the connection
+     * @param urlAndDn the first URL and DN
+     * @param referralsInfo the referrals info containing further URLs and DNs
+     * @param requestNum the request number
+     * @param the naming exception if an error occurred, null otherwise
+     */
+    public void logSearchResultReference( Connection connection, ReferralsInfo.UrlAndDn urlAndDn,
+        ReferralsInfo referralsInfo, long requestNum, NamingException namingException );
 
 
     /**

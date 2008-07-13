@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.core.runtime.IStatus;
@@ -114,13 +115,13 @@ public class HexDialog extends Dialog
                 }
                 catch ( FileNotFoundException e )
                 {
-                    BrowserCommonActivator.getDefault().getExceptionHandler().handleException(
+                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                         new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR,
                             "Can't write to file", e ) );
                 }
                 catch ( IOException e )
                 {
-                    BrowserCommonActivator.getDefault().getExceptionHandler().handleException(
+                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                         new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR,
                             "Can't write to file", e ) );
                 }
@@ -151,13 +152,13 @@ public class HexDialog extends Dialog
                 }
                 catch ( FileNotFoundException e )
                 {
-                    BrowserCommonActivator.getDefault().getExceptionHandler().handleException(
+                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                         new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR, "Can't read file",
                             e ) );
                 }
                 catch ( IOException e )
                 {
-                    BrowserCommonActivator.getDefault().getExceptionHandler().handleException(
+                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                         new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR, "Can't read file",
                             e ) );
                 }

@@ -29,7 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
@@ -316,14 +316,14 @@ public class ImageDialog extends Dialog
                         catch ( FileNotFoundException e )
                         {
 
-                            BrowserCommonActivator.getDefault()
+                            ConnectionUIPlugin.getDefault()
                                 .getExceptionHandler().handleException(
                                     new Status( IStatus.ERROR, ValueEditorsActivator.PLUGIN_ID, IStatus.ERROR,
                                         "Can't write to file", e ) );
                         }
                         catch ( IOException e )
                         {
-                            BrowserCommonActivator.getDefault()
+                            ConnectionUIPlugin.getDefault()
                                 .getExceptionHandler().handleException(
                                     new Status( IStatus.ERROR, ValueEditorsActivator.PLUGIN_ID, IStatus.ERROR,
                                         "Can't write to file", e ) );

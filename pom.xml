@@ -2073,12 +2073,12 @@
       <dependency>
         <groupId>net.sf.swtbot.eclipse</groupId>
         <artifactId>finder</artifactId>
-        <version>1.0.0.574</version>
+        <version>1.2.0.840</version>
       </dependency>
       <dependency>
         <groupId>net.sf.swtbot</groupId>
         <artifactId>finder</artifactId>
-        <version>1.0.0.574</version>
+        <version>1.2.0.840</version>
       </dependency>
 
       <!-- Dependencies for the Apache DS plugin -->

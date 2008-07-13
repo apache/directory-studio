@@ -27,9 +27,9 @@ import net.sf.swtbot.widgets.SWTBotCombo;
 import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
+import net.sf.swtbot.widgets.SWTBotTreeItem;
 
 import org.apache.directory.server.unit.AbstractServerTest;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -84,7 +84,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
+        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
         typeCombo.setText( "o" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry" );
@@ -113,7 +113,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         {
             public boolean test() throws Exception
             {
-                return browserTree.selection().get( 0 ).get( 0 ).equals( "o=testCreateOrganizationEntry" );
+                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "o=testCreateOrganizationEntry" );
             }
 
 
@@ -149,7 +149,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
+        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
         typeCombo.setText( "cn" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreatePersonEntry" );
@@ -170,30 +170,15 @@ public class NewEntryWizardTest extends AbstractServerTest
             }
         } );
 
-        // enter values
+        // enter sn value
         SWTBotTree tree = bot.tree( 0 );
         tree.select( "sn" );
         bot.text( "" ).setText( "test" );
-        tree.select( "cn" );
+        // click to finish editing of sn
+        SWTBotTreeItem cnNode = SWTBotUtils.selectNode( bot, tree, "sn" );
+        cnNode.click();
 
-        // TODO: with SWTBot 1.2 we could use the tree.click() method! 
-        // workaround to apply the new value 
-        bot.button( "< Back" ).click();
-        bot.button( "Next >" ).click();
-        bot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.button( "Finish" ).isEnabled();
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-
+        // click finish to create the entry
         bot.button( "Finish" ).click();
 
         // wait till entry is created and selected in the tree
@@ -201,7 +186,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         {
             public boolean test() throws Exception
             {
-                return browserTree.selection().get( 0 ).get( 0 ).equals( "cn=testCreatePersonEntry" );
+                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "cn=testCreatePersonEntry" );
             }
 
 
@@ -214,9 +199,10 @@ public class NewEntryWizardTest extends AbstractServerTest
 
     
     /**
+     * Test for DIRSTUDIO-350.
+     * 
      * Create entries with upper case attribute types and ensures that
      * the retrieved entries still are in upper case.
-     * Test for DIRSTUDIO-350.
      * 
      * @throws Exception the exception
      */
@@ -239,7 +225,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBox( "" );
+        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
         typeCombo.setText( "O" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry" );
@@ -268,7 +254,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         {
             public boolean test() throws Exception
             {
-                return browserTree.selection().get( 0 ).get( 0 ).equals( "O=testCreateOrganizationEntry" );
+                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "O=testCreateOrganizationEntry" );
             }
 
 
@@ -295,7 +281,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
         
         // specify DN
-        typeCombo = bot.comboBox( "" );
+        typeCombo = bot.comboBoxWithLabel( "RDN:" );
         typeCombo.setText( "O" );
         valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry2" );
@@ -329,7 +315,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         {
             public boolean test() throws Exception
             {
-                return browserTree.selection().get( 0 ).get( 0 ).equals( "O=testCreateOrganizationEntry2" );
+                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "O=testCreateOrganizationEntry2" );
             }
 
 
@@ -338,9 +324,6 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
-        
-        
-        Thread.sleep( 10000 );
     }
 
 }

@@ -74,7 +74,7 @@ public class ReferralsInfo
         }
         else
         {
-            throw new LinkLoopException( "Loop detected while following referral: " + urlAndDn.toString() );
+            throw new LinkLoopException( "Loop detected while following referral: " + url );
         }
     }
 
@@ -104,7 +104,7 @@ public class ReferralsInfo
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      * @version $Rev$, $Date$
      */
-    class UrlAndDn
+    public static class UrlAndDn
     {
         private LdapURL url;
         private LdapDN dn;

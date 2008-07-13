@@ -210,7 +210,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeAdd(org.apache.directory.studio.connection.core.Connection, java.lang.String, javax.naming.directory.Attributes, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * {@inheritDoc}
      */
     public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
         final Control[] controls, NamingException ex )
@@ -220,7 +220,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeDelete(org.apache.directory.studio.connection.core.Connection, java.lang.String, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * {@inheritDoc}
      */
     public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
         NamingException ex )
@@ -230,7 +230,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeModify(org.apache.directory.studio.connection.core.Connection, java.lang.String, javax.naming.directory.ModificationItem[], javax.naming.ldap.Control[], javax.naming.NamingException)
+     * {@inheritDoc}
      */
     public void logChangetypeModify( Connection connection, final String dn,
         final ModificationItem[] modificationItems, final Control[] controls, NamingException ex )
@@ -240,7 +240,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logChangetypeModDn(org.apache.directory.studio.connection.core.Connection, java.lang.String, java.lang.String, boolean, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * {@inheritDoc}
      */
     public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex )
@@ -250,7 +250,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logSearchRequest(org.apache.directory.studio.connection.core.Connection, java.lang.String, java.lang.String, javax.naming.directory.SearchControls, org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod, javax.naming.ldap.Control[], javax.naming.NamingException)
+     * {@inheritDoc}
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
@@ -312,7 +312,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logSearchResultEntry(org.apache.directory.studio.connection.core.Connection, org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult, javax.naming.NamingException)
+     * {@inheritDoc}
      */
     public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
         NamingException ex )
@@ -324,32 +324,40 @@ public class LdifSearchLogger implements IJndiLogger
 
         try
         {
-            String dn = studioSearchResult.getNameInNamespace();
-            Attributes attributes = studioSearchResult.getAttributes();
-
-            LdifContentRecord record = new LdifContentRecord( LdifDnLine.create( dn ) );
-            NamingEnumeration<? extends Attribute> attributeEnumeration = attributes.getAll();
-            while ( attributeEnumeration.hasMore() )
+            String formattedString;
+            if ( studioSearchResult != null )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeName = attribute.getID();
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                String dn = studioSearchResult.getNameInNamespace();
+                Attributes attributes = studioSearchResult.getAttributes();
+
+                LdifContentRecord record = new LdifContentRecord( LdifDnLine.create( dn ) );
+                NamingEnumeration<? extends Attribute> attributeEnumeration = attributes.getAll();
+                while ( attributeEnumeration.hasMore() )
                 {
-                    Object o = valueEnumeration.next();
-                    if ( o instanceof String )
+                    Attribute attribute = attributeEnumeration.next();
+                    String attributeName = attribute.getID();
+                    NamingEnumeration<?> valueEnumeration = attribute.getAll();
+                    while ( valueEnumeration.hasMore() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
-                    }
-                    if ( o instanceof byte[] )
-                    {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        Object o = valueEnumeration.next();
+                        if ( o instanceof String )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                        }
+                        if ( o instanceof byte[] )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        }
                     }
                 }
+                record.finish( LdifSepLine.create() );
+                formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
             }
-            record.finish( LdifSepLine.create() );
+            else
+            {
+                formattedString = LdifFormatParameters.DEFAULT.getLineSeparator();
+            }
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
             log( formattedString, "SEARCH RESULT ENTRY (" + requestNum + ")", ex, connection );
         }
         catch ( NamingException e )
@@ -359,7 +367,31 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.IJndiLogger#logSearchResultDone(org.apache.directory.studio.connection.core.Connection, long, javax.naming.NamingException)
+     * {@inheritDoc}
+     */
+    public void logSearchResultReference( Connection connection, ReferralsInfo.UrlAndDn urlAndDn,
+        ReferralsInfo referralsInfo, long requestNum, NamingException ex )
+    {
+        if ( !isSearchResultEntryLogEnabled() )
+        {
+            return;
+        }
+
+        Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
+        lines.add( LdifCommentLine.create( "# reference : " + ( urlAndDn != null ? urlAndDn.getUrl() : "null" ) ) );
+        lines.add( LdifSepLine.create() );
+
+        String formattedString = "";
+        for ( LdifLineBase line : lines )
+        {
+            formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
+        }
+        log( formattedString, "SEARCH RESULT REFERENCE (" + requestNum + ")", ex, connection );
+    }
+
+
+    /**
+     * {@inheritDoc}
      */
     public void logSearchResultDone( Connection connection, long count, long requestNum, NamingException ex )
     {

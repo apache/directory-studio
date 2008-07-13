@@ -65,9 +65,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     /** The color registry */
     private ColorRegistry colorRegistry;
 
-    /** The event dispatcher */
-    private ExceptionHandler exceptionHandler;
-
     /** The value editor preferences */
     private ValueEditorsPreferences valueEditorPreferences;
 
@@ -110,11 +107,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         if ( colorRegistry == null )
         {
             colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
-        }
-
-        if ( exceptionHandler == null )
-        {
-            exceptionHandler = new ExceptionHandler();
         }
 
         valueEditorPreferences = new ValueEditorsPreferences();
@@ -164,11 +156,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         if ( colorRegistry != null )
         {
             colorRegistry = null;
-        }
-
-        if ( exceptionHandler != null )
-        {
-            exceptionHandler = null;
         }
 
         if ( filterTemplateContextTypeRegistry != null )
@@ -298,16 +285,6 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         }
 
         return colorRegistry.get( rgb.toString() );
-    }
-
-
-    /**
-     *
-     * @return The exception handler
-     */
-    public ExceptionHandler getExceptionHandler()
-    {
-        return exceptionHandler;
     }
 
 

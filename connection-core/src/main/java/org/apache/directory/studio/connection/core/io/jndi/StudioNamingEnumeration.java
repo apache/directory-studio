@@ -142,19 +142,24 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
             {
                 logResultDone = true;
                 logResultDoneException = re;
-
-                // ignore exception if referrals handling method is IGNORE
-                // report exception if referrals handling method is MANGAGE
-                // follow referral if referrals handling method is FOLLOW
-                if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE )
+                referralsInfo = JNDIConnectionWrapper.handleReferralException( re, referralsInfo );
+                UrlAndDn urlAndDn = referralsInfo.getNext();
+                for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
                 {
+                    logger.logSearchResultReference( connection, urlAndDn, referralsInfo, requestNum, null );
+                }
+
+                // ignore exception if referrals handling method is IGNORE OR MANAGE
+                // follow referral if referrals handling method is FOLLOW
+                if ( referralsHandlingMethod == ReferralHandlingMethod.IGNORE
+                    || referralsHandlingMethod == ReferralHandlingMethod.MANAGE )
+                {
+                    logResultDone = true;
+                    logResultDoneException = null;
                     return false;
                 }
                 else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
                 {
-                    referralsInfo = JNDIConnectionWrapper.handleReferralException( re, referralsInfo );
-                    logResultDone = false;
-                    UrlAndDn urlAndDn = referralsInfo.getNext();
                     if ( urlAndDn != null )
                     {
                         LdapURL url = urlAndDn.getUrl();
@@ -162,6 +167,9 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                             .getReferralConnection( url, monitor, this );
                         if ( referralConnection != null )
                         {
+                            logResultDone = false;
+                            logResultDoneException = null;
+                            
                             String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
                                 .getUpName() : searchBase;
                             String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
@@ -181,11 +189,13 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
                                 referralFilter, referralSearchControls, aliasesDereferencingMethod,
                                 referralsHandlingMethod, controls, monitor, referralsInfo );
                         }
+                        else
+                        {
+                            logResultDone = true;
+                            logResultDoneException = null;
+                            return false;
+                        }
                     }
-                }
-                else
-                {
-                    throw re;
                 }
             }
             catch ( NamingException ne )

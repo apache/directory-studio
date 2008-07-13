@@ -57,14 +57,22 @@ public class ExceptionHandler
      */
     private void display( final String message, final IStatus status )
     {
-        Runnable runnable = new Runnable()
+        if ( Thread.currentThread() == Display.getDefault().getThread() )
         {
-            public void run()
+            ErrorDialog.openError( Display.getDefault().getActiveShell(), "Error", message, status );
+        }
+        else
+        {
+            Runnable runnable = new Runnable()
             {
-                ErrorDialog.openError( Display.getDefault().getActiveShell(), "Error", message, status );
-            }
-        };
-        Display.getDefault().asyncExec( runnable );
+                public void run()
+                {
+                    ErrorDialog.openError( Display.getDefault().getActiveShell(), "Error", message, status );
+                }
+            };
+            Display.getDefault().asyncExec( runnable );
+        }
+
         ConnectionCorePlugin.getDefault().getLog().log( status );
     }
 }

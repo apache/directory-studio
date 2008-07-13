@@ -29,10 +29,9 @@ import net.sf.swtbot.widgets.SWTBotCombo;
 import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
+import net.sf.swtbot.widgets.SWTBotTreeItem;
 
 import org.apache.directory.server.unit.AbstractServerTest;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.swt.graphics.DeviceData;
 
 
@@ -77,9 +76,6 @@ public class SwtResourcesTest extends AbstractServerTest
     {
         SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
 
-        BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
-            BrowserCommonConstants.PREFERENCE_BROWSER_ENABLE_FOLDING, false );
-
         // run the new entry wizard once to ensure all SWT resources are created
         createAndDeleteEntry( browserTree, "testSwtResourcesDelta" + 0 );
 
@@ -90,11 +86,6 @@ public class SwtResourcesTest extends AbstractServerTest
         for ( int i = 1; i < 25; i++ )
         {
             createAndDeleteEntry( browserTree, "testSwtResourcesDelta" + i );
-
-            // update the status of SWT objects in the Sleak view
-            bot.view( "Sleak" ).show();
-            bot.button( "Snap" ).click();
-            browserTree = SWTBotUtils.getLdapBrowserTree( bot );
         }
 
         // get the SWT objects after the run
@@ -140,8 +131,11 @@ public class SwtResourcesTest extends AbstractServerTest
 
     private void createAndDeleteEntry( final SWTBotTree browserTree, final String name ) throws Exception
     {
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        systemNode.expand();
+        systemNode.expand();
 
+        //        bot.sleep( 1000 );
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
         contextMenu.click();
 
@@ -152,7 +146,7 @@ public class SwtResourcesTest extends AbstractServerTest
         bot.button( "Add" ).click();
         bot.button( "Next >" ).click();
 
-        SWTBotCombo typeCombo = bot.comboBox( "" );
+        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
         typeCombo.setText( "o" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( name );
@@ -163,13 +157,13 @@ public class SwtResourcesTest extends AbstractServerTest
         {
             public boolean test() throws Exception
             {
-                return bot.tree( 0 ) != null;
+                return bot.button( "Finish" ).isEnabled();
             }
 
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Finish button is not enabled";
             }
         } );
         bot.button( "Finish" ).click();
@@ -179,17 +173,18 @@ public class SwtResourcesTest extends AbstractServerTest
         {
             public boolean test() throws Exception
             {
-                return browserTree.selection().get( 0 ).get( 0 ).equals( "o=" + name );
+                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "o=" + name );
             }
 
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not select 'o=" + name + "'";
             }
         } );
 
         // delete the entry
+        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system", "o=" + name );
         contextMenu = browserTree.contextMenu( "Delete Entry" );
         contextMenu.click();
         bot.button( "OK" ).click();
@@ -205,7 +200,7 @@ public class SwtResourcesTest extends AbstractServerTest
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not select 'ou=system'";
             }
         } );
     }

@@ -47,6 +47,7 @@ public class AutomatedSuite extends TestSuite
         addTest( new TestSuite( NewConnectionWizardTest.class ) );
         addTest( new TestSuite( NewEntryWizardTest.class ) );
         addTest( new TestSuite( RenameEntryDialogTest.class ) );
+        addTest( new TestSuite( ReferralDialogTest.class ) );
 
         addTest( new TestSuite( SwtResourcesTest.class ) );
     }

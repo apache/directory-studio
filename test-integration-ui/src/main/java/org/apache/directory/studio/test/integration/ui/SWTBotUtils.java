@@ -142,7 +142,7 @@ public class SWTBotUtils
      * 
      * @throws Exception the exception
      */
-    public static void createTestConnection( SWTEclipseBot bot, String name, int port ) throws Exception
+    public static Connection createTestConnection( SWTEclipseBot bot, String name, int port ) throws Exception
     {
         SWTBotTree connectionsTree = getConnectionsTree( bot );
 
@@ -167,6 +167,7 @@ public class SWTBotUtils
         //new OpenConnectionsJob( connection ).execute();
 
         Thread.sleep( 1000 );
+        return connection;
     }
 
 
@@ -209,10 +210,10 @@ public class SWTBotUtils
 
         SWTBotTreeItem child = browserTree.getTreeItem( currentPath );
         child.select();
-        child.expand();
 
         if ( !pathList.isEmpty() )
         {
+            child.expand();
             return selectNode( bot, child, pathList );
         }
         else
@@ -252,12 +253,13 @@ public class SWTBotUtils
             }
         } );
 
-        SWTBotTreeItem child = item.expandNode( currentPath[0] );
+        SWTBotTreeItem child = item.getNode( currentPath[0] );
         child.select();
-        child.expand();
 
         if ( !pathList.isEmpty() )
         {
+            child.expand();
+            child.expand();
             return selectNode( bot, child, pathList );
         }
         else
