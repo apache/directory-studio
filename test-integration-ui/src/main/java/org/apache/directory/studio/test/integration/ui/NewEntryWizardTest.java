@@ -68,7 +68,9 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateOrganizationEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        systemNode.expand();
+        systemNode.expand();
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -133,7 +135,9 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreatePersonEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        systemNode.expand();
+        systemNode.expand();
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -209,7 +213,9 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateUpperCaseOrganizationEntries() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        systemNode.expand();
+        systemNode.expand();
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
