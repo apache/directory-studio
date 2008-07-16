@@ -53,12 +53,6 @@ import org.dom4j.io.SAXReader;
  */
 public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
 {
-    private static final String ATTRIBUTE_MECH_NAME = "mech-name";
-    private static final String ELEMENT_NTLM_MECHANISM_HANDLER = "ntlmMechanismHandler";
-    private static final String ELEMENT_GSSAPI_MECHANISM_HANDLER = "gssapiMechanismHandler";
-    private static final String ELEMENT_DIGEST_MD5_MECHANISM_HANDLER = "digestMd5MechanismHandler";
-    private static final String ELEMENT_CRAM_MD5_MECHANISM_HANDLER = "cramMd5MechanismHandler";
-    private static final String ELEMENT_SIMPLE_MECHANISM_HANDLER = "simpleMechanismHandler";
     private static final String ATTRIBUTE_ACCESS_CONTROL_ENABLED = "accessControlEnabled";
     private static final String ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS = "allowAnonymousAccess";
     private static final String ATTRIBUTE_ATTRIBUTE_ID = "attributeId";
@@ -75,7 +69,9 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ATTRIBUTE_MAX_SIZE_LIMIT = "maxSizeLimit";
     private static final String ATTRIBUTE_MAX_THREADS = "maxThreads";
     private static final String ATTRIBUTE_MAX_TIME_LIMIT = "maxTimeLimit";
+    private static final String ATTRIBUTE_MECH_NAME = "mech-name";
     private static final String ATTRIBUTE_NAME = "name";
+    private static final String ATTRIBUTE_NTLM_PROVIDER_FQCN = "ntlmProviderFqcn";
     private static final String ATTRIBUTE_OPTIMIZER_ENABLED = "optimizerEnabled";
     private static final String ATTRIBUTE_SASL_HOST = "saslHost";
     private static final String ATTRIBUTE_SASL_PRINCIPAL = "saslPrincipal";
@@ -92,15 +88,18 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_CHANGE_PASSWORD_SERVER = "changePasswordServer";
     private static final String ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR = "collectiveAttributeInterceptor";
     private static final String ELEMENT_CONTEXT_ENTRY = "contextEntry";
+    private static final String ELEMENT_CRAM_MD5_MECHANISM_HANDLER = "cramMd5MechanismHandler";
     private static final String ELEMENT_DATAGRAM_ACCEPTOR = "datagramAcceptor";
     private static final String ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR = "defaultAuthorizationInterceptor";
     private static final String ELEMENT_DEFAULT_DIRECTORY_SERVICE = "defaultDirectoryService";
+    private static final String ELEMENT_DIGEST_MD5_MECHANISM_HANDLER = "digestMd5MechanismHandler";
     private static final String ELEMENT_DNS_SERVER = "dnsServer";
     private static final String ELEMENT_ENTRY = "entry";
     private static final String ELEMENT_EVENT_INTERCEPTOR = "eventInterceptor";
     private static final String ELEMENT_EXCEPTION_INTERCEPTOR = "exceptionInterceptor";
     private static final String ELEMENT_EXTENDED_OPERATION_HANDLERS = "extendedOperationHandlers";
     private static final String ELEMENT_GRACEFUL_SHUTDOWN_HANDLER = "gracefulShutdownHandler";
+    private static final String ELEMENT_GSSAPI_MECHANISM_HANDLER = "gssapiMechanismHandler";
     private static final String ELEMENT_INDEXED_ATTRIBUTES = "indexedAttributes";
     private static final String ELEMENT_INTERCEPTORS = "interceptors";
     private static final String ELEMENT_JDBM_INDEX = "jdbmIndex";
@@ -113,6 +112,7 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_LOGIC_EXECUTOR = "logicExecutor";
     private static final String ELEMENT_MAP = "map";
     private static final String ELEMENT_NORMALIZATION_INTERCEPTOR = "normalizationInterceptor";
+    private static final String ELEMENT_NTLM_MECHANISM_HANDLER = "ntlmMechanismHandler";
     private static final String ELEMENT_NTP_SERVER = "ntpServer";
     private static final String ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR = "operationalAttributeInterceptor";
     private static final String ELEMENT_PARTITIONS = "partitions";
@@ -120,14 +120,15 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_REF = "ref";
     private static final String ELEMENT_REFERRAL_INTERCEPTOR = "referralInterceptor";
     private static final String ELEMENT_REPLICATION_INTERCEPTOR = "replicationInterceptor";
+    private static final String ELEMENT_SASL_MECHANISM_HANDLERS = "saslMechanismHandlers";
     private static final String ELEMENT_SASL_QOP = "saslQop";
     private static final String ELEMENT_SASL_REALMS = "saslRealms";
     private static final String ELEMENT_SCHEMA_INTERCEPTOR = "schemaInterceptor";
+    private static final String ELEMENT_SIMPLE_MECHANISM_HANDLER = "simpleMechanismHandler";
     private static final String ELEMENT_SOCKET_ACCEPTOR = "socketAcceptor";
     private static final String ELEMENT_STANDARD_THREAD_POOL = "standardThreadPool";
     private static final String ELEMENT_START_TLS_HANDLER = "startTlsHandler";
     private static final String ELEMENT_SUBENTRY_INTERCEPTOR = "subentryInterceptor";
-    private static final String ELEMENT_SASL_MECHANISM_HANDLERS = "saslMechanismHandlers";
     private static final String ELEMENT_SYSTEM_PARTITION = "systemPartition";
     private static final String ELEMENT_TRIGGER_INTERCEPTOR = "triggerInterceptor";
     private static final String ELEMENT_VALUE = "value";
@@ -136,14 +137,14 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
         "http://www.springframework.org/schema/beans" );
     private static final Namespace NAMESPACE_XBEAN_SPRING = new Namespace( "spring",
         "http://xbean.apache.org/schemas/spring/1.0" );
+    private static final String SASL_QOP_AUTH = "auth";
     private static final String SASL_QOP_AUTH_CONF = "auth-conf";
     private static final String SASL_QOP_AUTH_INT = "auth-int";
-    private static final String SASL_QOP_AUTH = "auth";
+    private static final String SUPPORTED_MECHANISM_CRAM_MD5 = "CRAM-MD5";
     private static final String SUPPORTED_MECHANISM_DIGEST_MD5 = "DIGEST-MD5";
+    private static final String SUPPORTED_MECHANISM_GSS_SPNEGO = "GSS-SPNEGO";
     private static final String SUPPORTED_MECHANISM_GSSAPI = "GSSAPI";
     private static final String SUPPORTED_MECHANISM_NTLM = "NTLM";
-    private static final String SUPPORTED_MECHANISM_GSS_SPNEGO = "GSS-SPNEGO";
-    private static final String SUPPORTED_MECHANISM_CRAM_MD5 = "CRAM-MD5";
     private static final String SUPPORTED_MECHANISM_SIMPLE = "SIMPLE";
     private static final String VALUE_ARGUMENTS = "arguments";
     private static final String VALUE_CUSTOM_EDITORS = "customEditors";
@@ -1279,13 +1280,36 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
                                 .equalsIgnoreCase( supportedMechanismValue )
                                 && ServerXmlIOV153.SUPPORTED_MECHANISM_NTLM.equalsIgnoreCase( mechNameValue ) )
                             {
-                                serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.NTLM );
+                                org.dom4j.Attribute ntlmProviderFcqnAttribute = supportedMechanismValueElement
+                                    .attribute( ServerXmlIOV153.ATTRIBUTE_NTLM_PROVIDER_FQCN );
+                                if ( ntlmProviderFcqnAttribute != null )
+                                {
+                                    SupportedMechanismEnum ntlmSupportedMechanism = SupportedMechanismEnum.NTLM;
+                                    ntlmSupportedMechanism.setNtlmProviderFqcn( ntlmProviderFcqnAttribute.getValue() );
+                                    serverConfiguration.addSupportedMechanism( ntlmSupportedMechanism );
+                                }
+                                else
+                                {
+                                    serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.NTLM );
+                                }
                             }
                             else if ( ServerXmlIOV153.ELEMENT_NTLM_MECHANISM_HANDLER
                                 .equalsIgnoreCase( supportedMechanismValue )
                                 && ServerXmlIOV153.SUPPORTED_MECHANISM_GSS_SPNEGO.equalsIgnoreCase( mechNameValue ) )
                             {
-                                serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.GSS_SPNEGO );
+                                org.dom4j.Attribute ntlmProviderFcqnAttribute = supportedMechanismValueElement
+                                    .attribute( ServerXmlIOV153.ATTRIBUTE_NTLM_PROVIDER_FQCN );
+                                if ( ntlmProviderFcqnAttribute != null )
+                                {
+                                    SupportedMechanismEnum gssSpnegoSupportedMechanism = SupportedMechanismEnum.GSS_SPNEGO;
+                                    gssSpnegoSupportedMechanism.setNtlmProviderFqcn( ntlmProviderFcqnAttribute
+                                        .getValue() );
+                                    serverConfiguration.addSupportedMechanism( gssSpnegoSupportedMechanism );
+                                }
+                                else
+                                {
+                                    serverConfiguration.addSupportedMechanism( SupportedMechanismEnum.GSS_SPNEGO );
+                                }
                             }
                         }
                     }
@@ -2067,7 +2091,7 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
                     break;
                 case DIGEST_MD5:
                     Element digestMd5MechanismHandlerElement = saslMechanismHandlersElement
-                        .addElement( ServerXmlIOV153.ELEMENT_DIGEST_MD5_MECHANISM_HANDLER);
+                        .addElement( ServerXmlIOV153.ELEMENT_DIGEST_MD5_MECHANISM_HANDLER );
                     digestMd5MechanismHandlerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_MECH_NAME,
                         ServerXmlIOV153.SUPPORTED_MECHANISM_DIGEST_MD5 );
                     digestMd5MechanismHandlerElement.addAttribute( ServerXmlIOV153.VALUE_DIRECTORY_SERVICE,
@@ -2077,7 +2101,7 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
                     Element gssapiMechanismHandlerElement = saslMechanismHandlersElement
                         .addElement( ServerXmlIOV153.ELEMENT_GSSAPI_MECHANISM_HANDLER );
                     gssapiMechanismHandlerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_MECH_NAME,
-                        ServerXmlIOV153.SUPPORTED_MECHANISM_GSSAPI);
+                        ServerXmlIOV153.SUPPORTED_MECHANISM_GSSAPI );
                     gssapiMechanismHandlerElement.addAttribute( ServerXmlIOV153.VALUE_DIRECTORY_SERVICE,
                         "#directoryService" );
                     break;
@@ -2086,14 +2110,16 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
                         .addElement( ServerXmlIOV153.ELEMENT_NTLM_MECHANISM_HANDLER );
                     ntlmMechanismHandlerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_MECH_NAME,
                         ServerXmlIOV153.SUPPORTED_MECHANISM_NTLM );
-                  // TODO
+                    ntlmMechanismHandlerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_NTLM_PROVIDER_FQCN,
+                        supportedMechanism.getNtlmProviderFqcn() );
                     break;
                 case GSS_SPNEGO:
                     Element gssSpnegoMechanismHandlerElement = saslMechanismHandlersElement
                         .addElement( ServerXmlIOV153.ELEMENT_NTLM_MECHANISM_HANDLER );
                     gssSpnegoMechanismHandlerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_MECH_NAME,
                         ServerXmlIOV153.SUPPORTED_MECHANISM_GSS_SPNEGO );
-                    //TODO
+                    gssSpnegoMechanismHandlerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_NTLM_PROVIDER_FQCN,
+                        supportedMechanism.getNtlmProviderFqcn() );
                     break;
             }
         }
