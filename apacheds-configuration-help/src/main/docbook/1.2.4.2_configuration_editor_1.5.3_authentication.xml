@@ -16,7 +16,7 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="configuration_editor_1.5.2_authentication">
+<section id="configuration_editor_1.5.3_authentication">
 	<title>Authentication Page</title>
 	<para>
 		The
@@ -45,7 +45,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.2_authentication.png"
+						fileref="images/gettingstarted/editor_1.5.3_authentication.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -53,13 +53,13 @@
 	</para>
 
 	<simplesect
-		id="configuration_editor_1.5.2_authentication_supported_authentication_mechanisms">
+		id="configuration_editor_1.5.3_authentication_supported_authentication_mechanisms">
 		<title>Supported Authentication Mechanisms</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.2_authentication_supported_authentication_mechanisms.png"
+						fileref="images/gettingstarted/editor_1.5.3_authentication_supported_authentication_mechanisms.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -73,12 +73,14 @@
 				<listitem>CRAM-MD5 (SASL)</listitem>
 				<listitem>DIGEST-MD5 (SASL)</listitem>
 				<listitem>GSSAPI (SASL)</listitem>
+				<listitem>NTML (SASL)</listitem>
+				<listitem>GSS-SPNEGO (SASL)</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
 
 	<simplesect
-		id="configuration_editor_1.5.2_authentication_sasl_settings">
+		id="configuration_editor_1.5.3_authentication_sasl_settings">
 		<title>SASL Settings</title>
 		<para>
 			This section allows you to specify to the SASL setting.
@@ -87,7 +89,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.2_authentication_sasl_settings.png"
+						fileref="images/gettingstarted/editor_1.5.3_authentication_sasl_settings.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -117,13 +119,13 @@
 	</simplesect>
 
 	<simplesect
-		id="configuration_editor_1.5.2_authentication_sasl_qop">
+		id="configuration_editor_1.5.3_authentication_sasl_qop">
 		<title>SASL Quality Of Protection</title>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.2_authentication_sasl_qop.png"
+						fileref="images/gettingstarted/editor_1.5.3_authentication_sasl_qop.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -145,7 +147,7 @@
 	</simplesect>
 
 	<simplesect
-		id="configuration_editor_1.5.2_authentication_sasl_realms">
+		id="configuration_editor_1.5.3_authentication_sasl_realms">
 		<title>SASL Realms</title>
 		<para>
 			This section allows you to specify to the SASL realms.
@@ -154,7 +156,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.2_authentication_sasl_realms.png"
+						fileref="images/gettingstarted/editor_1.5.3_authentication_sasl_realms.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
