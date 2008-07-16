@@ -19,7 +19,7 @@
 <section id="configuration_editor">
 	<title>Configuration Editor</title>
 	<para>
-		The Configuration Editor currently supports 3 version of Apache
+		The Configuration Editor currently supports 4 versions of Apache
 		DS. Each version having a specific associated editor.
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
@@ -52,11 +52,22 @@
 				allows you to edit the 'server.xml' file of an Apache DS
 				version 1.5.2 installation.
 			</listitem>
+			<listitem>
+				The
+				<emphasis>
+					<link linkend="configuration_editor_1.5.3">
+						Editor for Apache DS 1.5.3
+					</link>
+				</emphasis>
+				allows you to edit the 'server.xml' file of an Apache DS
+				version 1.5.3 installation.
+			</listitem>
 		</itemizedlist>
 	</para>
 
 	&configuration_editor_1.5.0;
 	&configuration_editor_1.5.1;
 	&configuration_editor_1.5.2;
+	&configuration_editor_1.5.3;
 
 </section>
