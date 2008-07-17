@@ -19,6 +19,85 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
+		<title>Apache Directory Studio 1.2.0 - (2008, XXXXX XX)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-349] - Unable to enter large values for uid</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-341] - Paste error</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-336] - Errors when parsing schema of some LDAP servers</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-326] - Non-Operational attributes are marked as operational when bind to Siemens DirX 7.0</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-318] - Rename of multi-values RDN does not work when changing the second RDN</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-315] - Choosing new value, in entry editor shows new entry when server error occures</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-273] - Unable to get Base DNs on OID (Oracle Internet Directory)</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-209] - Cannot expand attribute list</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-157] - Studio looses STRG-V over some time of use</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-121] - Some property pages make the dialog very tall</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-89] - Entry painted even though not created in server</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-329] - Replace internal URL class by shared-ldap LdapURL class</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-126] - Triple click to edit attribute</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-46] - Add connections import/export</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-328] - Search Logs View</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-128] - Replace internal schema parser with the schema parser in shared-ldap.</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
 		<title>
 			Apache Directory Studio 1.1.0 - (2008, march 31st)
 		</title>
