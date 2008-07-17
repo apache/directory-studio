@@ -22,9 +22,12 @@ Export-Package: org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.apacheds.configuration.editor.v151.dialogs,
  org.apache.directory.studio.apacheds.configuration.editor.v152,
  org.apache.directory.studio.apacheds.configuration.editor.v152.dialogs,
+ org.apache.directory.studio.apacheds.configuration.editor.v153,
+ org.apache.directory.studio.apacheds.configuration.editor.v153.dialogs,
  org.apache.directory.studio.apacheds.configuration.model,
  org.apache.directory.studio.apacheds.configuration.model.v150,
  org.apache.directory.studio.apacheds.configuration.model.v151,
  org.apache.directory.studio.apacheds.configuration.model.v152,
+ org.apache.directory.studio.apacheds.configuration.model.v153,
  org.apache.directory.studio.apacheds.configuration.wizards
 Bundle-ClassPath: .
