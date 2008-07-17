@@ -86,6 +86,12 @@
       </command>
       <command
             categoryId="org.apache.directory.studio.apacheds.commands"
+            description="Creates a connection"
+            id="org.apache.directory.studio.apacheds.commands.createConnection"
+            name="Create a Connection">
+      </command>
+      <command
+            categoryId="org.apache.directory.studio.apacheds.commands"
             description="Runs the server"
             id="org.apache.directory.studio.apacheds.commands.run"
             name="Run">

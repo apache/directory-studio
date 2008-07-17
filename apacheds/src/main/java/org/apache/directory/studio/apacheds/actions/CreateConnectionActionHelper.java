@@ -20,7 +20,7 @@
 package org.apache.directory.studio.apacheds.actions;
 
 
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -49,7 +49,7 @@ public class CreateConnectionActionHelper
      * @param serverConfiguration
      *      the server configuration
      */
-    public static void createLdapBrowserConnection( String serverName, ServerConfigurationV152 serverConfiguration )
+    public static void createLdapBrowserConnection( String serverName, ServerConfigurationV153 serverConfiguration )
     {
         if ( ( serverConfiguration.isEnableLdap() ) || ( serverConfiguration.isEnableLdaps() ) )
         {

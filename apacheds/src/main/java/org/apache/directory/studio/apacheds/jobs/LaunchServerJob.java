@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.ConsolesHandler;
 import org.apache.directory.studio.apacheds.LogMessageConsole;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.log4j.net.SocketServer;
@@ -70,7 +70,7 @@ public class LaunchServerJob extends Job
     private Server server;
 
     /** The configuration */
-    private ServerConfigurationV152 configuration;
+    private ServerConfigurationV153 configuration;
 
     /** The launch that will be created when running the server */
     private ILaunch launch;
@@ -93,7 +93,7 @@ public class LaunchServerJob extends Job
      * @param configuration
      *            the configuration
      */
-    public LaunchServerJob( Server server, ServerConfigurationV152 configuration )
+    public LaunchServerJob( Server server, ServerConfigurationV153 configuration )
     {
         super( "" );
         this.server = server;
@@ -319,8 +319,7 @@ public class LaunchServerJob extends Job
                                     ILaunch debugEventLaunch = runtimeProcess.getLaunch();
                                     if ( debugEventLaunch.equals( launch ) )
                                     {
-                                        // The launch we had created is now
-                                        // terminated
+                                        // The launch we had created is now terminated
                                         // The server is now stopped
                                         server.setState( ServerStateEnum.STOPPED );
 

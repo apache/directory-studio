@@ -30,8 +30,8 @@ import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerConfigurationV152;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
@@ -111,11 +111,11 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 final Server server = ( Server ) selection.getFirstElement();
 
                 // Parsing the 'server.xml' file
-                ServerXmlIOV152 serverXmlIOV152 = new ServerXmlIOV152();
-                ServerConfigurationV152 serverConfiguration = null;
+                ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
+                ServerConfigurationV153 serverConfiguration = null;
                 try
                 {
-                    serverConfiguration = ( ServerConfigurationV152 ) serverXmlIOV152.parse( new FileInputStream(
+                    serverConfiguration = ( ServerConfigurationV153 ) serverXmlIOV153.parse( new FileInputStream(
                         new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append(
                             "conf" ).append( "server.xml" ).toOSString() ) ) );
                 }
@@ -224,7 +224,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      *      an array of String containing the ports and their associated 
      * protocols which are already in use.
      */
-    private String[] getAlreadyInUseProtocolPorts( ServerConfigurationV152 serverConfiguration )
+    private String[] getAlreadyInUseProtocolPorts( ServerConfigurationV153 serverConfiguration )
     {
         List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
 
