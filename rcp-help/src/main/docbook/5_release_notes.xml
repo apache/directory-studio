@@ -26,34 +26,19 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>
-						[DIRSTUDIO-347] - Keybinding conflict for CTRL+Q
-					</para>
+					<para>[DIRSTUDIO-347] - Keybinding conflict for CTRL+Q</para>
 				</listitem>
 				<listitem>
-					<para>
-						[DIRSTUDIO-330] - CoreException raised in editor
-						when opening a *.txt file
-					</para>
+					<para>[DIRSTUDIO-330] - CoreException raised in editor when opening a *.txt file</para>
 				</listitem>
 				<listitem>
-					<para>
-						[DIRSTUDIO-325] - Keybinding conflicts occurred.
-						They may interfere with normal accelerator
-						operation.
-					</para>
+					<para>[DIRSTUDIO-325] - Keybinding conflicts occurred. They may interfere with normal accelerator operation.</para>
 				</listitem>
 				<listitem>
-					<para>
-						[DIRSTUDIO-342] - Relax the parser for the
-						*.schema files
-					</para>
+					<para>[DIRSTUDIO-342] - Relax the parser for the *.schema files</para>
 				</listitem>
 				<listitem>
-					<para>
-						[DIRSTUDIO-266] - OpenLDAP schema files parser
-						fails when DESC contains an empty string ''
-					</para>
+					<para>[DIRSTUDIO-266] - OpenLDAP schema files parser fails when DESC contains an empty string ''</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -63,15 +48,10 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>
-						[DIRSTUDIO-337] - Add Save and Print actions in
-						the toolbar of the RCP application
-					</para>
+					<para>[DIRSTUDIO-337] - Add Save and Print actions in the toolbar of the RCP application</para>
 				</listitem>
 				<listitem>
-					<para>
-						[DIRSTUDIO-295] - Add a console for errors
-					</para>
+					<para>[DIRSTUDIO-295] - Add a console for errors</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -81,10 +61,7 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>
-						[DIRSTUDIO-321] - Need to be able to set SOCKS
-						proxy in the RCP version
-					</para>
+					<para>[DIRSTUDIO-321] - Need to be able to set SOCKS proxy in the RCP version</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -94,17 +71,10 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>
-						[DIRSTUDIO-339] - Add the
-						'org.eclipse.ui.carbon' Eclipse plugin to the
-						Mac OS X distribution
-					</para>
+					<para>[DIRSTUDIO-339] - Add the 'org.eclipse.ui.carbon' Eclipse plugin to the Mac OS X distribution</para>
 				</listitem>
 				<listitem>
-					<para>
-						[DIRSTUDIO-338] - Update Eclipse dependencies to
-						the latest Eclipse version (3.3.2)
-					</para>
+					<para>[DIRSTUDIO-338] - Update Eclipse dependencies to the latest Eclipse version (3.3.2)</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -119,10 +89,7 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>
-						[DIRSTUDIO-280] - Remove remaining unwanted
-						contributions from Eclipse
-					</para>
+					<para>[DIRSTUDIO-280] - Remove remaining unwanted contributions from Eclipse</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -136,28 +103,19 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-					<para>
-						Apache Directory Studio Apache DS Configuration
-						1.0.0
-					</para>
+					<para>Apache Directory Studio Apache DS Configuration 1.0.0</para>
 				</listitem>
 				<listitem>
-					<para>
-						Apache Directory Studio LDAP Browser 1.0.0
-					</para>
+					<para>Apache Directory Studio LDAP Browser 1.0.0</para>
 				</listitem>
 				<listitem>
-					<para>
-						Apache Directory Studio LDIF Editor 1.0.0
-					</para>
+					<para>Apache Directory Studio LDIF Editor 1.0.0</para>
 				</listitem>
 				<listitem>
 					<para>Apache Directory Studio RCP 1.0.0</para>
 				</listitem>
 				<listitem>
-					<para>
-						Apache Directory Studio Schema Editor 1.0.0
-					</para>
+					<para>Apache Directory Studio Schema Editor 1.0.0</para>
 				</listitem>
 			</itemizedlist>
 		</para>
