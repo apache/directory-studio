@@ -53,12 +53,12 @@
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-xbean-spring</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>  
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-server-xml</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.daemon</groupId>
@@ -68,52 +68,52 @@
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-server-jndi</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-protocol-ntp</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-protocol-kerberos</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-protocol-changepw</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-protocol-dns</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-schema-extras</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.server</groupId>
         <artifactId>apacheds-bootstrap-partition</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-asn1-codec</artifactId>
-        <version>0.9.10</version>
+        <version>0.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap</artifactId>
-        <version>0.9.10</version>
+        <version>0.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap-constants</artifactId>
-        <version>0.9.10</version>
+        <version>0.9.11</version>
       </dependency>
       <dependency>
         <groupId>org.apache.mina</groupId>
