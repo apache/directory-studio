@@ -1990,29 +1990,27 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createLdapsServerBean( Element root, ServerConfigurationV153 serverConfiguration )
     {
-        if ( serverConfiguration.isEnableLdaps() )
-        {
-            // Adding the 'ldapServer' element
-            Element ldapServerElement = root.addElement( ServerXmlIOV153.ELEMENT_LDAP_SERVER );
+        // Adding the 'ldapServer' element
+        Element ldapServerElement = root.addElement( ServerXmlIOV153.ELEMENT_LDAP_SERVER );
 
-            // Id
-            ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_ID, ServerXmlIOV153.ELEMENT_LDAPS_SERVER );
+        // Id
+        ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_ID, ServerXmlIOV153.ELEMENT_LDAPS_SERVER );
 
-            // IpPort
-            ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getLdapsPort() );
+        // IpPort
+        ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getLdapsPort() );
 
-            // Enabled
-            ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_ENABLED, "" + "true" );
+        // Enabled
+        ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_ENABLED, "" + serverConfiguration.isEnableLdaps() );
 
-            // EnableLdaps
-            ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_ENABLE_LDAPS, "" + "true" );
+        // EnableLdaps
+        ldapServerElement.addAttribute( ServerXmlIOV153.ATTRIBUTE_ENABLE_LDAPS, ""
+            + serverConfiguration.isEnableLdaps() );
 
-            // Adding 'directoryService' element
-            ldapServerElement.addElement( ServerXmlIOV153.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
+        // Adding 'directoryService' element
+        ldapServerElement.addElement( ServerXmlIOV153.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
-            // Adding 'socketAcceptor' element
-            ldapServerElement.addElement( ServerXmlIOV153.ELEMENT_SOCKET_ACCEPTOR ).setText( "#socketAcceptor" );
-        }
+        // Adding 'socketAcceptor' element
+        ldapServerElement.addElement( ServerXmlIOV153.ELEMENT_SOCKET_ACCEPTOR ).setText( "#socketAcceptor" );
     }
 
 
@@ -2208,19 +2206,8 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
         // Adding 'ldapServer' element
         apacheDSElement.addElement( ServerXmlIOV153.ELEMENT_LDAP_SERVER ).setText( "#ldapServer" );
 
-        // LDAP Protocol
-        if ( serverConfiguration.isEnableLdaps() )
-        {
-            // Adding 'ldapsServer' element
-            apacheDSElement.addElement( ServerXmlIOV153.ELEMENT_LDAPS_SERVER ).setText( "#ldapsServer" );
-        }
-
-        // LDAPS Protocol
-        if ( serverConfiguration.isEnableLdaps() )
-        {
-            // Adding 'ldapsServer' element
-            apacheDSElement.addElement( ServerXmlIOV153.ELEMENT_LDAPS_SERVER ).setText( "#ldapsServer" );
-        }
+        // Adding 'ldapsServer' element
+        apacheDSElement.addElement( ServerXmlIOV153.ELEMENT_LDAPS_SERVER ).setText( "#ldapsServer" );
     }
 
 
