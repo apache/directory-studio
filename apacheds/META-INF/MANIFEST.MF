@@ -19,5 +19,5 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-LazyStart: true
 Eclipse-RegisterBuddy: org.apache.directory.studio.jars
 Bundle-ClassPath: .,
- lib/mina-core-1.1.2.jar,
+ lib/mina-core-1.1.6.jar,
  lib/slf4j-api-1.4.3.jar
