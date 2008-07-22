@@ -44,6 +44,9 @@
 					<para>[DIRSTUDIO-315] - Choosing new value, in entry editor shows new entry when server error occures</para>
 				</listitem>
 				<listitem>
+					<para>[DIRSTUDIO-298] - NullPointerException raised when drag'n'dropping a connection to a folder (on Mac OS X only)</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-273] - Unable to get Base DNs on OID (Oracle Internet Directory)</para>
 				</listitem>
 				<listitem>
