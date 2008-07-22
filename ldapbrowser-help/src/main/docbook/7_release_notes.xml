@@ -38,6 +38,9 @@
 					<para>[DIRSTUDIO-326] - Non-Operational attributes are marked as operational when bind to Siemens DirX 7.0</para>
 				</listitem>
 				<listitem>
+					<para>[DIRSTUDIO-319] - LDAP Browser creating new entry becomes empty and unusable in Windows Vista after certain actions</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-318] - Rename of multi-values RDN does not work when changing the second RDN</para>
 				</listitem>
 				<listitem>
