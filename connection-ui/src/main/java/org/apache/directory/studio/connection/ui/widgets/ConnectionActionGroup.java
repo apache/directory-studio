@@ -68,7 +68,7 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
 
     /** The Constant newConnectionFolderAction. */
     protected static final String newConnectionFolderAction = "newConnectionFolderAction";
-    
+
     /** The Constant openConnectionAction. */
     protected static final String openConnectionAction = "openConnectionAction";
 
@@ -139,7 +139,7 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
 
         // DND support
         dropConnectionListener = new DropConnectionListener();
-        dragConnectionListener = new DragConnectionListener();
+        dragConnectionListener = new DragConnectionListener( viewer );
         int ops = DND.DROP_COPY | DND.DROP_MOVE;
         Transfer[] transfers = new Transfer[]
             { ConnectionTransfer.getInstance() };
@@ -168,7 +168,7 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
 
             actionBars = null;
             mainWidget = null;
-            
+
             dragConnectionListener = null;
             dropConnectionListener = null;
         }

@@ -22,15 +22,17 @@ package org.apache.directory.studio.connection.ui.dnd;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 
 /**
@@ -42,22 +44,31 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class DragConnectionListener implements DragSourceListener
 {
+    /** The associated viewer */
+    private TreeViewer treeViewer;
+
+    /** The selection (used for drag and drop) */
+    private StructuredSelection selection = null;
+
 
     /**
      * Creates a new instance of DragConnectionListener.
      */
-    public DragConnectionListener()
+    public DragConnectionListener( TreeViewer viewer )
     {
+        treeViewer = viewer;
     }
 
 
     /**
      * {@inheritDoc}
      * 
-     * This implementation does nothing.
+     * This implementation saves the selection.
      */
     public void dragStart( DragSourceEvent event )
     {
+        selection = ( StructuredSelection ) treeViewer.getSelection();
+        event.doit = !selection.isEmpty();
     }
 
 
@@ -76,14 +87,16 @@ public class DragConnectionListener implements DragSourceListener
                 DragSource dragSource = ( DragSource ) event.widget;
                 if ( dragSource.getControl() instanceof Tree )
                 {
-                    Tree tree = ( Tree ) dragSource.getControl();
-                    TreeItem[] items = tree.getSelection();
                     List<Object> objectList = new ArrayList<Object>();
-                    for ( int i = 0; i < items.length; i++ )
+                    if ( selection != null )
                     {
-                        if ( items[i].getData() instanceof Connection || items[i].getData() instanceof ConnectionFolder )
+                        for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                         {
-                            objectList.add( items[i].getData() );
+                            Object item = iterator.next();
+                            if ( item instanceof Connection || item instanceof ConnectionFolder )
+                            {
+                                objectList.add( item );
+                            }
                         }
                     }
                     event.data = objectList.toArray();
@@ -101,5 +114,4 @@ public class DragConnectionListener implements DragSourceListener
     public void dragFinished( DragSourceEvent event )
     {
     }
-
 }
