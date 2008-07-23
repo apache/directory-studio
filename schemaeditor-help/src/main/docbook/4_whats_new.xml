@@ -17,10 +17,29 @@
 	under the License.
 -->
 <chapter id="whats_new">
-	<title>What's New in 1.1</title>
+	<title>What's new</title>
 
 	<simplesect>
-		<title>New Hierarchical presentation in Schema view</title>
+		<title>What's new in 1.2.0</title>
+		<para>
+			<emphasis role="strong">
+				Improvements in reading schema files
+			</emphasis>
+		</para>
+		<para>
+			Apache Directory Studio 1.2.0 brings a better support for
+			schema files. The schema file parser has been relaxed to
+			allow non compliant schema files to be read correctly.
+		</para>
+	</simplesect>
+
+	<simplesect>
+		<title>What's new in 1.1.0</title>
+		<para>
+			<emphasis role="strong">
+				New Hierarchical presentation in Schema view
+			</emphasis>
+		</para>
 		<para>
 			The
 			<link linkend="gettingstarted_views_schema">
@@ -41,10 +60,9 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>Key bindings</title>
+		<para>
+			<emphasis role="strong">Key bindings</emphasis>
+		</para>
 		<para>
 			The Schema Editor plugin now supports key bindings to launch
 			several actions (e.g. "Open in Type Hierarchy").
@@ -59,17 +77,22 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>Bundled OpenLDAP 'core' schemas</title>
+		<para>
+			<emphasis role="strong">
+				Bundled OpenLDAP 'core' schemas
+			</emphasis>
+		</para>
 		<para>
 			The Schema Editor plugin now bundles the 'core' schemas of
 			Open LDAP. When
 			<link linkend="tasks_creating_new_project">
 				creating a new project
-			</link>, or
-			<link linkend="tasks_importing_core_schemas_files">importing 'core' schemas</link>, the schemas from Open LDAP can be selected.
+			</link>
+			, or
+			<link linkend="tasks_importing_core_schemas_files">
+				importing 'core' schemas
+			</link>
+			, the schemas from Open LDAP can be selected.
 		</para>
 		<para>
 			<screenshot>
@@ -82,10 +105,9 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>Improved Hierarchy view</title>
+		<para>
+			<emphasis role="strong">Improved Hierarchy view</emphasis>
+		</para>
 		<para>
 			The
 			<link linkend="gettingstarted_views_hierarchy">
@@ -105,10 +127,9 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>A number of bug fixes</title>
+		<para>
+			<emphasis role="strong">A number of bug fixes</emphasis>
+		</para>
 		<para>
 			Besides these key new features, the Schema Editor plugin has
 			received a number of bug fixes. A detailed report is
