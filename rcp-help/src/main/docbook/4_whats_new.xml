@@ -17,6 +17,51 @@
 	under the License.
 -->
 <chapter id="whats_new">
-	<title>What's New</title>
+	<title>What's new</title>
+
+	<simplesect>
+		<title>What's new in 1.2.0</title>
+		<para>
+			<emphasis role="strong">
+				New Save and Print actions
+			</emphasis>
+		</para>
+		<para>
+			Two new actions have been added to the main toolbar of
+			Apache Directory Studio: Save and Print actions.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_save_print_actions.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<emphasis role="strong">
+				Network Connections preference page
+			</emphasis>
+		</para>
+		<para>
+			The Network Connections preference page from Eclipse has
+			been added to Apache Directory Studio. This page allows the
+			user to set up its network connection settings, such as
+			direct connection or proxy configuration (HTTP, SSL, SOCKS
+			Proxy).
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_network_connections_pref.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
 
 </chapter>
