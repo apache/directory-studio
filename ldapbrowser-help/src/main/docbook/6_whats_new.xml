@@ -17,16 +17,75 @@
 	under the License.
 -->
 <chapter id="whats_new">
-	<title>What's New in 1.1</title>
+	<title>What's new</title>
 
 	<simplesect>
-		<title>Folders in the Connections View</title>
+		<title>What's new in 1.2.0</title>
+		<para>
+			<emphasis role="strong">New Search Logs View</emphasis>
+		</para>
+		<para>
+			A new Search Logs view has been added to the LDAP Browser
+			plugin. This view lets the user review all the searches he
+			has been running on a server and makes it very handy and
+			easy to copy/paste LDAP URLs or command line from the
+			searches run in the UI.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_search_logs_view.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<emphasis role="strong">Connections Import/Export</emphasis>
+		</para>
+		<para>
+			It is now possible to import/export the connections from/to
+			a single file. This is very interesting to share connections
+			between computers or people.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/whats_new_export_connections.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<emphasis role="strong">A number of bug fixes</emphasis>
+		</para>
+		<para>
+			Besides these key new features, the LDAP Browser plugin has
+			received a number of bug fixes. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
+
+
+	<simplesect>
+		<title>What's new in 1.1.0</title>
+		<para>
+			<emphasis role="strong">
+				Folders in the Connections View
+			</emphasis>
+		</para>
 		<para>
 			The LDAP Browser plugin now supports reoganizing connections
 			inside folders in the
 			<link linkend="tools_connections_view">
 				Connections View
-			</link>. This is a great improvement for grouping related
+			</link>
+			. This is a great improvement for grouping related
 			connections together and keep the view clean.
 		</para>
 		<para>
@@ -40,24 +99,37 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>
-			Object Classes selection improved when creating a new entry
-		</title>
 		<para>
-			The Object Classes page of the <link linkend="tools_newentry_wizard">New Entry Wizard</link> has been
-			quite improved with:
+			<emphasis role="strong">
+				Object Classes selection improved when creating a new
+				entry
+			</emphasis>
+		</para>
+		<para>
+			The Object Classes page of the
+			<link linkend="tools_newentry_wizard">
+				New Entry Wizard
+			</link>
+			has been quite improved with:
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
-				    <para>an icon aside each object class indicating whether it is an 'Abstract', 'Auxiliary' or 'Structural' object class</para>
+					<para>
+						an icon aside each object class indicating
+						whether it is an 'Abstract', 'Auxiliary' or
+						'Structural' object class
+					</para>
 				</listitem>
 				<listitem>
-				    <para>a new warning panel, showing up when the current selection does not contain any structural</para>
+					<para>
+						a new warning panel, showing up when the current
+						selection does not contain any structural
+					</para>
 				</listitem>
 				<listitem>
-                    <para>new key bindings for a better selection of object classes using the keyboard</para>
+					<para>
+						new key bindings for a better selection of
+						object classes using the keyboard
+					</para>
 				</listitem>
 			</itemizedlist>
 		</para>
@@ -72,24 +144,39 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>
-			Support for lowercased Hash Methods in the Password Editor
-		</title>
 		<para>
-			The <link linkend="tools_value_editors_passwordeditor">Password Editor</link> has been updated to support lowercased
-			Hash Methods (e.g. "{crypt}"). The Password Editor now
-			supports the following Hash Methods in both uppercase and
-			lowercase:
+			<emphasis role="strong">
+				Support for lowercased Hash Methods in the Password
+				Editor
+			</emphasis>
+		</para>
+		<para>
+			The
+			<link linkend="tools_value_editors_passwordeditor">
+				Password Editor
+			</link>
+			has been updated to support lowercased Hash Methods (e.g.
+			"{crypt}"). The Password Editor now supports the following
+			Hash Methods in both uppercase and lowercase:
 			<itemizedlist spacing="normal" mark="bullet">
-				<listitem><para>CRYPT</para></listitem>
-				<listitem><para>SHA</para></listitem>
-				<listitem><para>SSHA</para></listitem>
-				<listitem><para>SSHA</para></listitem>
-				<listitem><para>MD5</para></listitem>
-				<listitem><para>SMD5</para></listitem>
+				<listitem>
+					<para>CRYPT</para>
+				</listitem>
+				<listitem>
+					<para>SHA</para>
+				</listitem>
+				<listitem>
+					<para>SSHA</para>
+				</listitem>
+				<listitem>
+					<para>SSHA</para>
+				</listitem>
+				<listitem>
+					<para>MD5</para>
+				</listitem>
+				<listitem>
+					<para>SMD5</para>
+				</listitem>
 			</itemizedlist>
 		</para>
 		<para>
@@ -103,10 +190,9 @@
 				</mediaobject>
 			</screenshot>
 		</para>
-	</simplesect>
-
-	<simplesect>
-		<title>A number of bug fixes</title>
+		<para>
+			<emphasis role="strong">A number of bug fixes</emphasis>
+		</para>
 		<para>
 			Besides these key new features, the LDAP Browser plugin has
 			received a number of bug fixes. A detailed report is
