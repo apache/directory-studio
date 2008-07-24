@@ -22,6 +22,10 @@
        id="org.apache.directory.studio.apacheds.configuration.feature" version="${apacheds.configuration.feature.version}">
       <category name="Apache Directory Studio Apache DS"/>
    </feature>
+   <feature url="features/org.apache.directory.studio.apacheds.feature_${apacheds.feature.version}.jar"
+       id="org.apache.directory.studio.apacheds.feature" version="${apacheds.feature.version}">
+      <category name="Apache Directory Studio Apache DS"/>
+   </feature>
    <feature url="features/org.apache.directory.studio.ldifeditor.feature_${ldifeditor.feature.version}.jar"
        id="org.apache.directory.studio.ldifeditor.feature" version="${ldifeditor.feature.version}">
       <category name="Apache Directory Studio LDIF Editor"/>
