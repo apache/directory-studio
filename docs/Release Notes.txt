@@ -1,5 +1,51 @@
 Release Notes
 
+Apache Directory Studio 1.2.0 RC1
+
+Bug
+  * [DIRSTUDIO-89] - Entry painted even though not created in server
+  * [DIRSTUDIO-121] - Some property pages make the dialog very tall
+  * [DIRSTUDIO-157] - Studio looses STRG-V over some time of use
+  * [DIRSTUDIO-209] - Cannot expand attribute list
+  * [DIRSTUDIO-266] - OpenLDAP schema files parser fails when DESC contains an empty string ''
+  * [DIRSTUDIO-273] - Unable to get Base DNs on OID (Oracle Internet Directory)
+  * [DIRSTUDIO-298] - NullPointerException raised when drag'n'dropping a connection to a folder (on Mac OS X only)
+  * [DIRSTUDIO-315] - Choosing new value, in entry editor shows new entry when server error occures
+  * [DIRSTUDIO-318] - Rename of multi-values RDN does not work when changing the second RDN
+  * [DIRSTUDIO-319] - LDAP Browser creating new entry becomes empty and unusable in Windows Vista after certain actions
+  * [DIRSTUDIO-323] - Studio fails to read ApacheDS server.xml
+  * [DIRSTUDIO-325] - Keybinding conflicts occurred. They may interfere with normal accelerator operation.
+  * [DIRSTUDIO-326] - Non-Operational attributes are marked as operational when bind to Siemens DirX 7.0
+  * [DIRSTUDIO-330] - CoreException raised in editor when opening a *.txt file
+  * [DIRSTUDIO-336] - Errors when parsing schema of some LDAP servers
+  * [DIRSTUDIO-341] - Paste error
+  * [DIRSTUDIO-342] - Relax the parser for the *.schema files
+  * [DIRSTUDIO-343] - Referrals not handled.
+  * [DIRSTUDIO-347] - Keybinding conflict for CTRL+Q
+  * [DIRSTUDIO-349] - Unable to enter large values for uid
+  * [DIRSTUDIO-350] - DS is not properly displaying case of group DN
+
+Improvement
+  * [DIRSTUDIO-46] - Add connections import/export
+  * [DIRSTUDIO-126] - Triple click to edit attribute
+  * [DIRSTUDIO-295] - Add a console for errors
+  * [DIRSTUDIO-329] - Replace internal URL class by shared-ldap LdapURL class
+  * [DIRSTUDIO-337] - Add Save and Print actions in the toolbar of the RCP application
+
+New Feature
+  * [DIRSTUDIO-321] - Need to be able to set SOCKS proxy in the RCP version
+  * [DIRSTUDIO-328] - Search Logs View
+
+Task
+  * [DIRSTUDIO-128] - Replace internal schema parser with the schema parser in shared-ldap.
+  * [DIRSTUDIO-317] - Update legal files after moving to Apache Directory Shared LDAP version 0.9.9
+  * [DIRSTUDIO-332] - Add support for 1.5.3, 1.5.2 and 1.5.0 server.xml configuration files
+  * [DIRSTUDIO-338] - Update Eclipse dependencies to the latest Eclipse version (3.3.2)
+  * [DIRSTUDIO-339] - Add the 'org.eclipse.ui.carbon' Eclipse plugin to the Mac OS X distribution
+
+
+---------------------------------------------------------------------------------
+
 Apache Directory Studio 1.1.0
 
 Sub-task
