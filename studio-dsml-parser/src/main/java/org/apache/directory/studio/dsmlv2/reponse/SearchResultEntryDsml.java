@@ -26,8 +26,8 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
@@ -45,11 +45,20 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
 {
     /**
      * Creates a new instance of SearchResultEntryDsml.
+     */
+    public SearchResultEntryDsml()
+    {
+        super( new SearchResultEntry() );
+    }
+
+
+    /**
+     * Creates a new instance of SearchResultEntryDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultEntryDsml( LdapMessage ldapMessage )
+    public SearchResultEntryDsml( SearchResultEntry ldapMessage )
     {
         super( ldapMessage );
     }
@@ -102,8 +111,8 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
 
                         Element valueElement = attributeElement.addElement( "value" ).addText(
                             ParserUtils.base64Encode( value ) );
-                        valueElement
-                            .addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":" + ParserUtils.BASE64BINARY );
+                        valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                            + ParserUtils.BASE64BINARY );
                     }
                     else
                     {
@@ -117,5 +126,78 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
         }
 
         return element;
+    }
+
+
+    /**
+     * Get the entry DN
+     * 
+     * @return Returns the objectName.
+     */
+    public LdapDN getObjectName()
+    {
+        return ( ( SearchResultEntry ) instance ).getObjectName();
+    }
+
+
+    /**
+     * Set the entry DN
+     * 
+     * @param objectName The objectName to set.
+     */
+    public void setObjectName( LdapDN objectName )
+    {
+        ( ( SearchResultEntry ) instance ).setObjectName( objectName );
+    }
+
+
+    /**
+     * Get the entry's attributes
+     * 
+     * @return Returns the partialAttributeList.
+     */
+    public Attributes getPartialAttributeList()
+    {
+        return ( ( SearchResultEntry ) instance ).getPartialAttributeList();
+    }
+
+
+    /**
+     * Initialize the partial Attribute list.
+     */
+    public void setPartialAttributeList( Attributes partialAttributeList )
+    {
+        ( ( SearchResultEntry ) instance ).setPartialAttributeList( partialAttributeList );
+    }
+
+
+    /**
+     * Create a new attributeValue
+     * 
+     * @param type The attribute's name
+     */
+    public void addAttributeValues( String type )
+    {
+        ( ( SearchResultEntry ) instance ).addAttributeValues( type );
+    }
+
+
+    /**
+     * Add a new value to the current attribute
+     * 
+     * @param value
+     */
+    public void addAttributeValue( Object value )
+    {
+        ( ( SearchResultEntry ) instance ).addAttributeValue( value );
+    }
+
+
+    /**
+     * @return Returns the currentAttributeValue.
+     */
+    public String getCurrentAttributeValueType()
+    {
+        return ( ( SearchResultEntry ) instance ).getCurrentAttributeValueType();
     }
 }

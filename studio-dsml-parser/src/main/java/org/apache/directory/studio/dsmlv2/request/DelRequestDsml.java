@@ -19,9 +19,11 @@
  */
 package org.apache.directory.studio.dsmlv2.request;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+
 import org.apache.directory.shared.ldap.codec.del.DelRequest;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.dom4j.Element;
+
 
 /**
  * DSML Decorator for DelRequest
@@ -33,16 +35,25 @@ public class DelRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of DelRequestDsml.
+     */
+    public DelRequestDsml()
+    {
+        super( new DelRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of DelRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public DelRequestDsml( LdapMessage ldapMessage )
+    public DelRequestDsml( DelRequest ldapMessage )
     {
         super( ldapMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -51,22 +62,44 @@ public class DelRequestDsml extends AbstractRequestDsml
         return instance.getMessageType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
-        
+
         DelRequest request = ( DelRequest ) instance;
-        
+
         // DN
         if ( request.getEntry() != null )
         {
             element.addAttribute( "dn", request.getEntry().toString() );
         }
-        
+
         return element;
+    }
+
+
+    /**
+     * Get the entry to be deleted
+     * 
+     * @return Returns the entry.
+     */
+    public LdapDN getEntry()
+    {
+        return ( ( DelRequest ) instance ).getEntry();
+    }
+
+
+    /**
+     * Set the entry to be deleted
+     * 
+     * @param entry The entry to set.
+     */
+    public void setEntry( LdapDN entry )
+    {
+        ( ( DelRequest ) instance ).setEntry( entry );
     }
 }

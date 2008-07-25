@@ -19,19 +19,20 @@
  */
 package org.apache.directory.studio.dsmlv2.request;
 
+
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+
 
 /**
  * DSML Decorator for ModifyRequest
@@ -43,16 +44,25 @@ public class ModifyRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of ModifyRequestDsml.
+     */
+    public ModifyRequestDsml()
+    {
+        super( new ModifyRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of ModifyRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public ModifyRequestDsml( LdapMessage ldapMessage )
+    public ModifyRequestDsml( ModifyRequest ldapMessage )
     {
         super( ldapMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -61,41 +71,41 @@ public class ModifyRequestDsml extends AbstractRequestDsml
         return instance.getMessageType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
-        
+
         ModifyRequest request = ( ModifyRequest ) instance;
-        
+
         // DN
         if ( request.getObject() != null )
         {
             element.addAttribute( "dn", request.getObject().toString() );
         }
-        
+
         // Modifications
         List<ModificationItemImpl> modifications = request.getModifications();
-        
+
         for ( int i = 0; i < modifications.size(); i++ )
         {
             ModificationItemImpl modificationItem = modifications.get( i );
-            
+
             Element modElement = element.addElement( "modification" );
             if ( modificationItem.getAttribute() != null )
             {
                 modElement.addAttribute( "name", modificationItem.getAttribute().getID() );
-                
+
                 try
                 {
                     NamingEnumeration ne = modificationItem.getAttribute().getAll();
                     while ( ne.hasMoreElements() )
                     {
                         Object value = ( Object ) ne.nextElement();
-                        
+
                         if ( value != null )
                         {
                             if ( ParserUtils.needsBase64Encoding( value ) )
@@ -105,13 +115,14 @@ public class ModifyRequestDsml extends AbstractRequestDsml
                                 element.getDocument().getRootElement().add( xsdNamespace );
                                 element.getDocument().getRootElement().add( xsiNamespace );
 
-                                Element valueElement = modElement.addElement( "value" ).addText( ParserUtils.base64Encode( value ) );
-                                valueElement
-                                    .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                                Element valueElement = modElement.addElement( "value" ).addText(
+                                    ParserUtils.base64Encode( value ) );
+                                valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
+                                    + ParserUtils.BASE64BINARY );
                             }
                             else
                             {
-                                modElement.addElement( "value" ).setText( (String)  value );
+                                modElement.addElement( "value" ).setText( ( String ) value );
                             }
                         }
                     }
@@ -120,7 +131,7 @@ public class ModifyRequestDsml extends AbstractRequestDsml
                 {
                 }
             }
-            
+
             int operation = modificationItem.getModificationOp();
             if ( operation == DirContext.ADD_ATTRIBUTE )
             {
@@ -135,7 +146,7 @@ public class ModifyRequestDsml extends AbstractRequestDsml
                 modElement.addAttribute( "operation", "delete" );
             }
         }
-        
+
         return element;
     }
 }

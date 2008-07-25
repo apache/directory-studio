@@ -19,9 +19,10 @@
  */
 package org.apache.directory.studio.dsmlv2.request;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+
 import org.apache.directory.shared.ldap.codec.abandon.AbandonRequest;
 import org.dom4j.Element;
+
 
 /**
  * DSML Decorator for AbandonRequest
@@ -33,16 +34,25 @@ public class AbandonRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of AbandonRequestDsml.
+     */
+    public AbandonRequestDsml()
+    {
+        super( new AbandonRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of AbandonRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public AbandonRequestDsml( LdapMessage ldapMessage )
+    public AbandonRequestDsml( AbandonRequest ldapMessage )
     {
         super( ldapMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -51,22 +61,44 @@ public class AbandonRequestDsml extends AbstractRequestDsml
         return instance.getMessageType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
-        
+
         AbandonRequest request = ( AbandonRequest ) instance;
-        
+
         // AbandonID
         if ( request.getAbandonedMessageId() != 0 )
         {
             element.addAttribute( "abandonID", "" + request.getAbandonedMessageId() );
         }
-        
+
         return element;
+    }
+
+
+    /**
+     * Get the abandoned message ID
+     * 
+     * @return Returns the abandoned MessageId.
+     */
+    public int getAbandonedMessageId()
+    {
+        return ( ( AbandonRequest ) instance ).getAbandonedMessageId();
+    }
+
+
+    /**
+     * Set the abandoned message ID
+     * 
+     * @param abandonedMessageId The abandoned messageID to set.
+     */
+    public void setAbandonedMessageId( int abandonedMessageId )
+    {
+        ( ( AbandonRequest ) instance ).setAbandonedMessageId( abandonedMessageId );
     }
 }

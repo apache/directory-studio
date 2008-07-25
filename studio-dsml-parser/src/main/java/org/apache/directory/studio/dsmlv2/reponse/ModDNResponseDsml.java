@@ -21,7 +21,6 @@
 package org.apache.directory.studio.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNResponse;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.dom4j.Element;
@@ -37,11 +36,20 @@ public class ModDNResponseDsml extends LdapResponseDecorator implements DsmlDeco
 {
     /**
      * Creates a new instance of ModDNResponseDsml.
+     */
+    public ModDNResponseDsml()
+    {
+        super( new ModifyDNResponse() );
+    }
+
+
+    /**
+     * Creates a new instance of ModDNResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public ModDNResponseDsml( LdapMessage ldapMessage )
+    public ModDNResponseDsml( ModifyDNResponse ldapMessage )
     {
         super( ldapMessage );
     }

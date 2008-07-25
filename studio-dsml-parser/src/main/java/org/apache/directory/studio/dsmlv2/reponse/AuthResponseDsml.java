@@ -21,7 +21,6 @@
 package org.apache.directory.studio.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.bind.BindResponse;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.dom4j.Element;
@@ -37,11 +36,20 @@ public class AuthResponseDsml extends LdapResponseDecorator implements DsmlDecor
 {
     /**
      * Creates a new instance of AuthResponseDsml.
+     */
+    public AuthResponseDsml()
+    {
+        super( new BindResponse() );
+    }
+
+
+    /**
+     * Creates a new instance of AuthResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public AuthResponseDsml( LdapMessage ldapMessage )
+    public AuthResponseDsml( BindResponse ldapMessage )
     {
         super( ldapMessage );
     }

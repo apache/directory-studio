@@ -21,12 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.InvalidNameException;
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.asn1.codec.DecoderException;
@@ -39,7 +44,8 @@ import org.apache.directory.shared.ldap.codec.search.Filter;
 import org.apache.directory.shared.ldap.codec.search.NotFilter;
 import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
-import org.apache.directory.shared.ldap.codec.search.SearchRequest;
+import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
+import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.filter.AndNode;
 import org.apache.directory.shared.ldap.filter.ApproximateNode;
@@ -55,19 +61,18 @@ import org.apache.directory.shared.ldap.filter.OrNode;
 import org.apache.directory.shared.ldap.filter.PresenceNode;
 import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
-import org.apache.directory.shared.ldap.message.ScopeEnum;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
+import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.SearchResultDoneDsml;
+import org.apache.directory.studio.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 
 /**
@@ -140,93 +145,27 @@ public class ExportDsmlJob extends AbstractEclipseJob
 
         try
         {
-            SearchRequest searchRequest = new SearchRequest();
-            searchRequest.setProtocolOP( searchRequest );
+            BatchResponseDsml batchResponse = new BatchResponseDsml();
 
-            // DN
-            searchRequest.setBaseObject( searchParameter.getSearchBase( ) );
+            NamingEnumeration<SearchResult> result = SearchRunnable
+                .search( browserConnection, searchParameter, monitor );
 
-            // Scope
-            SearchScope scope = searchParameter.getScope();
-            if ( scope == SearchScope.OBJECT )
+            while ( result.hasMoreElements() )
             {
-                searchRequest.setScope( ScopeEnum.BASE_OBJECT );
-            }
-            else if ( scope == SearchScope.ONELEVEL )
-            {
-                searchRequest.setScope( ScopeEnum.SINGLE_LEVEL );
-            }
-            else if ( scope == SearchScope.SUBTREE )
-            {
-                searchRequest.setScope( ScopeEnum.WHOLE_SUBTREE );
+                SearchResult searchResult = ( SearchResult ) result.nextElement();
+                SearchResultEntryDsml sreDsml = convertToDsmlSearchResult( searchResult );
+                batchResponse.addResponse( sreDsml );
             }
 
-            // DerefAliases
-            Connection.AliasDereferencingMethod derefAliases = searchParameter.getAliasesDereferencingMethod();
-            switch ( derefAliases )
-            {
-                case ALWAYS:
-                    searchRequest.setDerefAliases( LdapConstants.DEREF_ALWAYS );
-                    break;
-                case FINDING:
-                    searchRequest.setDerefAliases( LdapConstants.DEREF_FINDING_BASE_OBJ );
-                    break;
-                case NEVER:
-                    searchRequest.setDerefAliases( LdapConstants.NEVER_DEREF_ALIASES );
-                    break;
-                case SEARCH:
-                    searchRequest.setDerefAliases( LdapConstants.DEREF_IN_SEARCHING );
-                    break;
-                default:
-                    break;
-            }
+            batchResponse.addResponse( new SearchResultDoneDsml( new SearchResultDone() ) );
 
-            // Time Limit
-            int timeLimit = searchParameter.getTimeLimit();
-            if ( timeLimit != 0 )
-            {
-                searchRequest.setTimeLimit( timeLimit );
-            }
-
-            // Size Limit
-            int countLimit = searchParameter.getCountLimit();
-            if ( countLimit != 0 )
-            {
-                searchRequest.setSizeLimit( countLimit );
-            }
-
-            // Filter
-            searchRequest.setFilter( convertToSharedLdapFilter( searchParameter.getFilter() ) );
-
-            // Attributes
-            String[] returningAttributes = searchParameter.getReturningAttributes();
-            for ( int i = 0; i < returningAttributes.length; i++ )
-            {
-                searchRequest.addAttribute( returningAttributes[i] );
-            }
-
-            // Controls
-            List<org.apache.directory.shared.ldap.codec.Control> sharedLdapControls = convertToSharedLdapControls( searchParameter
-                .getControls() );
-            for ( int i = 0; i < sharedLdapControls.size(); i++ )
-            {
-                searchRequest.addControl( sharedLdapControls.get( i ) );
-            }
-
-            // Executing the request
-            Document xmlRequest = DocumentHelper.createDocument();
-            Element rootElement = xmlRequest.addElement( "batchRequest" );
-            SearchRequestDsml searchRequestDsml = new SearchRequestDsml( searchRequest );
-            searchRequestDsml.toDsml( rootElement );
-            Dsmlv2Engine engine = new Dsmlv2Engine( browserConnection.getConnection().getHost(), browserConnection
-                .getConnection().getPort(), browserConnection.getConnection().getBindPrincipal(), browserConnection
-                .getConnection().getBindPassword() );
-            String response = engine.processDSML( xmlRequest.asXML() );
-
-            // Saving the response
-            FileOutputStream fout = new FileOutputStream( exportDsmlFilename );
-            new PrintStream( fout ).println( response );
-            fout.close();
+            FileOutputStream fos = new FileOutputStream( exportDsmlFilename );
+            OutputStreamWriter osw = new OutputStreamWriter( fos );
+            BufferedWriter bufferedWriter = new BufferedWriter( osw );
+            bufferedWriter.write( batchResponse.toDsml() );
+            bufferedWriter.close();
+            osw.close();
+            fos.close();
         }
         catch ( Exception e )
         {
@@ -241,6 +180,26 @@ public class ExportDsmlJob extends AbstractEclipseJob
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__export_dsml_error;
+    }
+
+
+    private SearchResultEntryDsml convertToDsmlSearchResult( SearchResult searchResult )
+    {
+        try
+        {
+            SearchResultEntry sre = new SearchResultEntry();
+            sre.setObjectName( new LdapDN( searchResult.getNameInNamespace() ) );
+            sre.setPartialAttributeList( searchResult.getAttributes() );
+
+            return new SearchResultEntryDsml( sre );
+        }
+        catch ( InvalidNameException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 
@@ -280,33 +239,33 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             BranchNode branchNode = ( BranchNode ) exprNode;
 
-            if( branchNode instanceof AndNode )
+            if ( branchNode instanceof AndNode )
             {
                 AndFilter andFilter = new AndFilter();
                 sharedLdapFilter = andFilter;
-                
+
                 List<Filter> andFilters = iterateOnFilters( branchNode.getChildren() );
                 for ( int i = 0; i < andFilters.size(); i++ )
                 {
                     andFilter.addFilter( andFilters.get( i ) );
                 }
             }
-            else if( branchNode instanceof OrNode )
+            else if ( branchNode instanceof OrNode )
             {
                 OrFilter orFilter = new OrFilter();
                 sharedLdapFilter = orFilter;
-                
+
                 List<Filter> orFilters = iterateOnFilters( branchNode.getChildren() );
                 for ( int i = 0; i < orFilters.size(); i++ )
                 {
                     orFilter.addFilter( orFilters.get( i ) );
                 }
             }
-            else if( branchNode instanceof NotNode )
+            else if ( branchNode instanceof NotNode )
             {
                 NotFilter notFilter = new NotFilter();
                 sharedLdapFilter = notFilter;
-                
+
                 List<Filter> notFilters = iterateOnFilters( branchNode.getChildren() );
                 notFilter.setNotFilter( notFilters.get( 0 ) );
             }
@@ -332,14 +291,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
             }
             else if ( simpleNode instanceof EqualityNode )
             {
-                AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter(
-                    simpleNode, LdapConstants.EQUALITY_MATCH_FILTER );
+                AttributeValueAssertionFilter equalityMatchFilter = createAttributeValueAssertionFilter( simpleNode,
+                    LdapConstants.EQUALITY_MATCH_FILTER );
                 sharedLdapFilter = equalityMatchFilter;
             }
             else if ( simpleNode instanceof GreaterEqNode )
             {
-                AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter(
-                    simpleNode, LdapConstants.GREATER_OR_EQUAL_FILTER );
+                AttributeValueAssertionFilter greaterOrEqualFilter = createAttributeValueAssertionFilter( simpleNode,
+                    LdapConstants.GREATER_OR_EQUAL_FILTER );
                 sharedLdapFilter = greaterOrEqualFilter;
             }
             else if ( simpleNode instanceof LessEqNode )

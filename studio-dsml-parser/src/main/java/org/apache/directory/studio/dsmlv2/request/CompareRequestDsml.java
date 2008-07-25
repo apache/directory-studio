@@ -19,9 +19,11 @@
  */
 package org.apache.directory.studio.dsmlv2.request;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+
 import org.apache.directory.shared.ldap.codec.compare.CompareRequest;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.dom4j.Element;
+
 
 /**
  * DSML Decorator for CompareRequest
@@ -33,16 +35,25 @@ public class CompareRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of CompareRequestDsml.
+     */
+    public CompareRequestDsml()
+    {
+        super( new CompareRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of CompareRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public CompareRequestDsml( LdapMessage ldapMessage )
+    public CompareRequestDsml( CompareRequest ldapMessage )
     {
         super( ldapMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -51,33 +62,99 @@ public class CompareRequestDsml extends AbstractRequestDsml
         return instance.getMessageType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
-        
+
         CompareRequest request = ( CompareRequest ) instance;
-        
+
         // DN
         if ( request.getEntry() != null )
         {
             element.addAttribute( "dn", request.getEntry().toString() );
         }
-        
+
         // Assertion
-        Element assertionElement = element.addElement( "assertion");
+        Element assertionElement = element.addElement( "assertion" );
         if ( request.getAttributeDesc() != null )
         {
             assertionElement.addAttribute( "name", request.getAttributeDesc() );
         }
         if ( request.getAssertionValue() != null )
         {
-            assertionElement.addElement( "value").setText( (String) request.getAssertionValue() );
+            assertionElement.addElement( "value" ).setText( ( String ) request.getAssertionValue() );
         }
-        
+
         return element;
+    }
+
+
+    /**
+     * Get the entry to be compared
+     * 
+     * @return Returns the entry.
+     */
+    public LdapDN getEntry()
+    {
+        return ( ( CompareRequest ) instance ).getEntry();
+    }
+
+
+    /**
+     * Set the entry to be compared
+     * 
+     * @param entry The entry to set.
+     */
+    public void setEntry( LdapDN entry )
+    {
+        ( ( CompareRequest ) instance ).setEntry( entry );
+    }
+
+
+    /**
+     * Get the assertion value
+     * 
+     * @return Returns the assertionValue.
+     */
+    public Object getAssertionValue()
+    {
+        return ( ( CompareRequest ) instance ).getAssertionValue();
+    }
+
+
+    /**
+     * Set the assertion value
+     * 
+     * @param assertionValue The assertionValue to set.
+     */
+    public void setAssertionValue( Object assertionValue )
+    {
+        ( ( CompareRequest ) instance ).setAssertionValue( assertionValue );
+    }
+
+
+    /**
+     * Get the attribute description
+     * 
+     * @return Returns the attributeDesc.
+     */
+    public String getAttributeDesc()
+    {
+        return ( ( CompareRequest ) instance ).getAttributeDesc();
+    }
+
+
+    /**
+     * Set the attribute description
+     * 
+     * @param attributeDesc The attributeDesc to set.
+     */
+    public void setAttributeDesc( String attributeDesc )
+    {
+        ( ( CompareRequest ) instance ).setAttributeDesc( attributeDesc );
     }
 }

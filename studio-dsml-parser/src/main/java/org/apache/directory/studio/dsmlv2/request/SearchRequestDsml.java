@@ -27,7 +27,6 @@ import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.search.AndFilter;
 import org.apache.directory.shared.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.shared.ldap.codec.search.ExtensibleMatchFilter;
@@ -58,7 +57,19 @@ public class SearchRequestDsml extends AbstractRequestDsml
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchRequestDsml( LdapMessage ldapMessage )
+    public SearchRequestDsml()
+    {
+        super( new SearchRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of SearchRequestDsml.
+     *
+     * @param ldapMessage
+     *      the message to decorate
+     */
+    public SearchRequestDsml( SearchRequest ldapMessage )
     {
         super( ldapMessage );
     }
@@ -144,7 +155,7 @@ public class SearchRequestDsml extends AbstractRequestDsml
         }
 
         // Filter
-        Element filterElement =  element.addElement( "filter" );
+        Element filterElement = element.addElement( "filter" );
         toDsml( filterElement, request.getFilter() );
 
         // Attributes
@@ -186,7 +197,7 @@ public class SearchRequestDsml extends AbstractRequestDsml
                 toDsml( newElement, filterList.get( i ) );
             }
         }
-        
+
         // OR FILTER
         else if ( filter instanceof OrFilter )
         {
@@ -198,7 +209,7 @@ public class SearchRequestDsml extends AbstractRequestDsml
                 toDsml( newElement, filterList.get( i ) );
             }
         }
-        
+
         // NOT FILTER
         else if ( filter instanceof NotFilter )
         {
@@ -206,40 +217,40 @@ public class SearchRequestDsml extends AbstractRequestDsml
 
             toDsml( newElement, ( ( NotFilter ) filter ).getNotFilter() );
         }
-        
+
         // SUBSTRING FILTER
         else if ( filter instanceof SubstringFilter )
         {
             Element newElement = element.addElement( "substrings" );
-            
+
             SubstringFilter substringFilter = ( SubstringFilter ) filter;
-            
-            newElement.addAttribute("name", substringFilter.getType() );
-            
+
+            newElement.addAttribute( "name", substringFilter.getType() );
+
             String initial = substringFilter.getInitialSubstrings();
             if ( ( initial != null ) && ( !"".equals( initial ) ) )
             {
                 newElement.addElement( "initial" ).setText( initial );
             }
-            
+
             List<String> anyList = substringFilter.getAnySubstrings();
             for ( int i = 0; i < anyList.size(); i++ )
             {
                 newElement.addElement( "any" ).setText( anyList.get( i ) );
             }
-            
+
             String finalString = substringFilter.getFinalSubstrings();
             if ( ( finalString != null ) && ( !"".equals( finalString ) ) )
             {
                 newElement.addElement( "final" ).setText( finalString );
             }
         }
-        
+
         // APPROXMATCH, EQUALITYMATCH, GREATEROREQUALS & LESSOREQUAL FILTERS
         else if ( filter instanceof AttributeValueAssertionFilter )
-        {  
+        {
             AttributeValueAssertionFilter avaFilter = ( AttributeValueAssertionFilter ) filter;
-            
+
             Element newElement = null;
             int filterType = avaFilter.getFilterType();
             if ( filterType == LdapConstants.APPROX_MATCH_FILTER )
@@ -258,12 +269,12 @@ public class SearchRequestDsml extends AbstractRequestDsml
             {
                 newElement = element.addElement( "lessOrEqual" );
             }
-            
+
             AttributeValueAssertion assertion = avaFilter.getAssertion();
             if ( assertion != null )
             {
                 newElement.addAttribute( "name", assertion.getAttributeDesc() );
-                
+
                 Object value = assertion.getAssertionValue();
                 if ( value != null )
                 {
@@ -274,34 +285,34 @@ public class SearchRequestDsml extends AbstractRequestDsml
                         element.getDocument().getRootElement().add( xsdNamespace );
                         element.getDocument().getRootElement().add( xsiNamespace );
 
-                        Element valueElement = 
-                            newElement.addElement( "value" ).addText(  ParserUtils.base64Encode( value ) );
+                        Element valueElement = newElement.addElement( "value" ).addText(
+                            ParserUtils.base64Encode( value ) );
                         valueElement
                             .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                     }
                     else
                     {
-                        newElement.addElement( "value" ).setText( (String)  value );
+                        newElement.addElement( "value" ).setText( ( String ) value );
                     }
                 }
             }
         }
-        
+
         // PRESENT FILTER
         else if ( filter instanceof PresentFilter )
         {
             Element newElement = element.addElement( "present" );
-            
+
             newElement.addAttribute( "name", ( ( PresentFilter ) filter ).getAttributeDescription() );
         }
-        
+
         // EXTENSIBLEMATCH
         else if ( filter instanceof ExtensibleMatchFilter )
         {
             Element newElement = element.addElement( "extensibleMatch" );
-            
+
             ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-            
+
             Object value = extensibleMatchFilter.getMatchValue();
             if ( value != null )
             {
@@ -312,22 +323,20 @@ public class SearchRequestDsml extends AbstractRequestDsml
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
 
-                    Element valueElement = 
-                        newElement.addElement( "value" ).addText(  ParserUtils.base64Encode( value ) );
-                    valueElement
-                        .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                    Element valueElement = newElement.addElement( "value" ).addText( ParserUtils.base64Encode( value ) );
+                    valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( "value" ).setText( (String)  value );
+                    newElement.addElement( "value" ).setText( ( String ) value );
                 }
             }
-            
+
             if ( extensibleMatchFilter.isDnAttributes() )
             {
                 newElement.addAttribute( "dnAttributes", "true" );
             }
-            
+
             String matchingRule = extensibleMatchFilter.getMatchingRule();
             if ( ( matchingRule != null ) && ( "".equals( matchingRule ) ) )
             {

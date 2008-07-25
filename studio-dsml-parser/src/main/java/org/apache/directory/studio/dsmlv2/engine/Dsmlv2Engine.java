@@ -441,7 +441,7 @@ public class Dsmlv2Engine
             SearchResultDone srd = response.getSearchResultDone();
             copyMessageIdAndControls( response, srd );
 
-            SearchResultDoneDsml searchResultDoneDsml = new SearchResultDoneDsml( response );
+            SearchResultDoneDsml searchResultDoneDsml = new SearchResultDoneDsml( srd );
             searchResponseDsml.addResponse( searchResultDoneDsml );
         }
 

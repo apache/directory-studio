@@ -21,7 +21,6 @@
 package org.apache.directory.studio.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.dom4j.Element;
@@ -37,11 +36,20 @@ public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlD
 {
     /**
      * Creates a new instance of SearchResultDoneDsml.
+     */
+    public SearchResultDoneDsml()
+    {
+        super( new SearchResultDone() );
+    }
+
+
+    /**
+     * Creates a new instance of SearchResultDoneDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultDoneDsml( LdapMessage ldapMessage )
+    public SearchResultDoneDsml( SearchResultDone ldapMessage )
     {
         super( ldapMessage );
     }

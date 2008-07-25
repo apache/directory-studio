@@ -19,12 +19,14 @@
  */
 package org.apache.directory.studio.dsmlv2.request;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+
+import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+
 
 /**
  * DSML Decorator for ExtendedRequest
@@ -36,16 +38,25 @@ public class ExtendedRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of ExtendedRequestDsml.
+     */
+    public ExtendedRequestDsml()
+    {
+        super( new ExtendedRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of ExtendedRequestDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public ExtendedRequestDsml( LdapMessage ldapMessage )
+    public ExtendedRequestDsml( ExtendedRequest ldapMessage )
     {
         super( ldapMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -54,22 +65,22 @@ public class ExtendedRequestDsml extends AbstractRequestDsml
         return instance.getMessageType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
-        
+
         ExtendedRequest request = ( ExtendedRequest ) instance;
-        
+
         // Request Name
         if ( request.getRequestName() != null )
         {
             element.addElement( "requestName" ).setText( request.getRequestName() );
         }
-        
+
         // Request Value        
         Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
         Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -78,9 +89,52 @@ public class ExtendedRequestDsml extends AbstractRequestDsml
 
         Element valueElement = element.addElement( "requestValue" ).addText(
             ParserUtils.base64Encode( request.getRequestValue() ) );
-        valueElement
-            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
-        
+        valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+
         return element;
+    }
+
+
+    /**
+     * Get the extended request name
+     * 
+     * @return Returns the request name.
+     */
+    public String getRequestName()
+    {
+        return ( ( ExtendedRequest ) instance ).getRequestName();
+    }
+
+
+    /**
+     * Set the extended request name
+     * 
+     * @param requestName The request name to set.
+     */
+    public void setRequestName( OID requestName )
+    {
+        ( ( ExtendedRequest ) instance ).setRequestName( requestName );
+    }
+
+
+    /**
+     * Get the extended request value
+     * 
+     * @return Returns the request value.
+     */
+    public byte[] getRequestValue()
+    {
+        return ( ( ExtendedRequest ) instance ).getRequestValue();
+    }
+
+
+    /**
+     * Set the extended request value
+     * 
+     * @param requestValue The request value to set.
+     */
+    public void setRequestValue( byte[] requestValue )
+    {
+        ( ( ExtendedRequest ) instance ).getRequestValue();
     }
 }

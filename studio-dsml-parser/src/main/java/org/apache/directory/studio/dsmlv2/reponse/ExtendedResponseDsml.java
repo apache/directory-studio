@@ -20,7 +20,8 @@
 
 package org.apache.directory.studio.dsmlv2.reponse;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+
+import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedResponse;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
@@ -39,16 +40,25 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
 {
     /**
      * Creates a new instance of ExtendedResponseDsml.
+     */
+    public ExtendedResponseDsml()
+    {
+        super( new ExtendedResponse() );
+    }
+
+
+    /**
+     * Creates a new instance of ExtendedResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public ExtendedResponseDsml( LdapMessage ldapMessage )
+    public ExtendedResponseDsml( ExtendedResponse ldapMessage )
     {
         super( ldapMessage );
     }
 
-    
+
     /* (non-Javadoc)
      * @see org.apache.directory.studio.dsmlv2.reponse.LdapMessageDecorator#getMessageType()
      */
@@ -57,7 +67,7 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
         return instance.getMessageType();
     }
 
-    
+
     /* (non-Javadoc)
      * @see org.apache.directory.studio.dsmlv2.reponse.DsmlDecorator#toDsml(org.dom4j.Element)
      */
@@ -69,14 +79,14 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
         // LDAP Result
         LdapResultDsml ldapResultDsml = new LdapResultDsml( extendedResponse.getLdapResult(), instance );
         ldapResultDsml.toDsml( element );
-        
+
         // ResponseName
         String responseName = extendedResponse.getResponseName();
         if ( responseName != null )
         {
-            element.addElement( "responseName").addText( responseName );
+            element.addElement( "responseName" ).addText( responseName );
         }
-        
+
         // Response
         Object response = extendedResponse.getResponse();
         if ( response != null )
@@ -87,16 +97,62 @@ public class ExtendedResponseDsml extends LdapResponseDecorator implements DsmlD
                 Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
                 element.getDocument().getRootElement().add( xsdNamespace );
                 element.getDocument().getRootElement().add( xsiNamespace );
-                
-                Element responseElement = element.addElement( "response").addText( ParserUtils.base64Encode( response ) );
-                responseElement.addAttribute( new QName("type", xsiNamespace), ParserUtils.XSD + ":" + ParserUtils.BASE64BINARY );
+
+                Element responseElement = element.addElement( "response" )
+                    .addText( ParserUtils.base64Encode( response ) );
+                responseElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                    + ParserUtils.BASE64BINARY );
             }
             else
             {
-                element.addElement( "response").addText( response.toString() );
+                element.addElement( "response" ).addText( response.toString() );
             }
         }
-        
+
         return element;
+    }
+
+
+    /**
+     * Get the extended response name
+     * 
+     * @return Returns the name.
+     */
+    public String getResponseName()
+    {
+        return ( ( ExtendedResponse ) instance ).getResponseName();
+    }
+
+
+    /**
+     * Set the extended response name
+     * 
+     * @param responseName The name to set.
+     */
+    public void setResponseName( OID responseName )
+    {
+        ( ( ExtendedResponse ) instance ).setResponseName( responseName );
+    }
+
+
+    /**
+     * Get the extended response
+     * 
+     * @return Returns the response.
+     */
+    public Object getResponse()
+    {
+        return ( ( ExtendedResponse ) instance ).getResponse();
+    }
+
+
+    /**
+     * Set the extended response
+     * 
+     * @param response The response to set.
+     */
+    public void setResponse( Object response )
+    {
+        ( ( ExtendedResponse ) instance ).setResponse( response );
     }
 }

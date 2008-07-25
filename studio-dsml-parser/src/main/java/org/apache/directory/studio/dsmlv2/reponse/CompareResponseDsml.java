@@ -21,7 +21,6 @@
 package org.apache.directory.studio.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.compare.CompareResponse;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.dom4j.Element;
@@ -37,11 +36,20 @@ public class CompareResponseDsml extends LdapResponseDecorator implements DsmlDe
 {
     /**
      * Creates a new instance of CompareResponseDsml.
+     */
+    public CompareResponseDsml()
+    {
+        super( new CompareResponse() );
+    }
+
+
+    /**
+     * Creates a new instance of CompareResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public CompareResponseDsml( LdapMessage ldapMessage )
+    public CompareResponseDsml( CompareResponse ldapMessage )
     {
         super( ldapMessage );
     }

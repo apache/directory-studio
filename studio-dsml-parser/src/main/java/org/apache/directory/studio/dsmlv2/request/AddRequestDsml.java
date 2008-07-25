@@ -25,8 +25,8 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.add.AddRequest;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -43,11 +43,20 @@ public class AddRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of AddRequestDsml.
-     *
-     * @param ldapMessage
-     *      the message to decorate
      */
-    public AddRequestDsml( LdapMessage ldapMessage )
+    public AddRequestDsml()
+    {
+        super( new AddRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of AddRequestDsml.
+    *
+    * @param ldapMessage
+    *      the message to decorate
+    */
+    public AddRequestDsml( AddRequest ldapMessage )
     {
         super( ldapMessage );
     }
@@ -87,27 +96,27 @@ public class AddRequestDsml extends AbstractRequestDsml
                 Attribute attribute = ( Attribute ) ne.nextElement();
                 Element attributeElement = element.addElement( "attr" );
                 attributeElement.addAttribute( "name", attribute.getID() );
-    
+
                 // Looping on Values Enumeration
                 try
                 {
                     NamingEnumeration ne2 = attribute.getAll();
-    
+
                     while ( ne2.hasMoreElements() )
                     {
                         Object value = ne2.nextElement();
-    
+
                         if ( ParserUtils.needsBase64Encoding( value ) )
                         {
                             Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
                             Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
                             attributeElement.getDocument().getRootElement().add( xsdNamespace );
                             attributeElement.getDocument().getRootElement().add( xsiNamespace );
-    
+
                             Element valueElement = attributeElement.addElement( "value" ).addText(
                                 ParserUtils.base64Encode( value ) );
-                            valueElement
-                                .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                            valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
+                                + ParserUtils.BASE64BINARY );
                         }
                         else
                         {
@@ -122,5 +131,78 @@ public class AddRequestDsml extends AbstractRequestDsml
         }
 
         return element;
+    }
+
+
+    /**
+     * Initialize the ArrayList for attributes.
+     */
+    public void initAttributes()
+    {
+        ( ( AddRequest ) instance ).initAttributes();
+    }
+
+
+    /**
+     * Get the entry's attributes to be added
+     * 
+     * @return Returns the attributes.
+     */
+    public Attributes getAttributes()
+    {
+        return ( ( AddRequest ) instance ).getAttributes();
+    }
+
+
+    /**
+     * Create a new attributeValue
+     * 
+     * @param type The attribute's name (called 'type' in the grammar)
+     */
+    public void addAttributeType( String type )
+    {
+        ( ( AddRequest ) instance ).addAttributeType( type );
+    }
+
+
+    /**
+     * Add a new value to the current attribute
+     * 
+     * @param value The value to be added
+     */
+    public void addAttributeValue( Object value )
+    {
+        ( ( AddRequest ) instance ).addAttributeValue( value );
+    }
+
+
+    /**
+     * Get the added DN
+     * 
+     * @return Returns the entry.
+     */
+    public LdapDN getEntry()
+    {
+        return ( ( AddRequest ) instance ).getEntry();
+    }
+
+
+    /**
+     * Set the added DN.
+     * 
+     * @param entry The entry to set.
+     */
+    public void setEntry( LdapDN entry )
+    {
+        ( ( AddRequest ) instance ).setEntry( entry );
+    }
+
+
+    /**
+     * @return Returns the currentAttribute type.
+     */
+    public String getCurrentAttributeType()
+    {
+        return ( ( AddRequest ) instance ).getCurrentAttributeType();
     }
 }

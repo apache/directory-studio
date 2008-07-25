@@ -19,9 +19,10 @@
  */
 package org.apache.directory.studio.dsmlv2.request;
 
-import org.apache.directory.shared.ldap.codec.LdapMessage;
+
 import org.apache.directory.shared.ldap.codec.bind.BindRequest;
 import org.dom4j.Element;
+
 
 /**
  * DSML Decorator for BindRequest
@@ -37,12 +38,24 @@ public class AuthRequestDsml extends AbstractRequestDsml
      * @param ldapMessage
      *      the message to decorate
      */
-    public AuthRequestDsml( LdapMessage ldapMessage )
+    public AuthRequestDsml()
+    {
+        super( new BindRequest() );
+    }
+
+
+    /**
+     * Creates a new instance of AuthRequestDsml.
+     *
+     * @param ldapMessage
+     *      the message to decorate
+     */
+    public AuthRequestDsml( BindRequest ldapMessage )
     {
         super( ldapMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -51,23 +64,23 @@ public class AuthRequestDsml extends AbstractRequestDsml
         return instance.getMessageType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Element toDsml( Element root )
     {
         Element element = super.toDsml( root );
-        
+
         BindRequest request = ( BindRequest ) instance;
-        
+
         // AbandonID
         String name = request.getName().toString();
-        if ( ( name != null )  && ( !"".equals( name ) ) )
+        if ( ( name != null ) && ( !"".equals( name ) ) )
         {
             element.addAttribute( "principal", name );
         }
-        
+
         return element;
     }
 }

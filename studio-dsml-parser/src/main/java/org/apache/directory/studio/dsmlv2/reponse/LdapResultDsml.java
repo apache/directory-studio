@@ -26,6 +26,8 @@ import java.util.List;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
@@ -66,14 +68,14 @@ public class LdapResultDsml implements DsmlDecorator
      */
     public Element toDsml( Element root )
     {
-        
+
         // RequestID
         int requestID = message.getMessageId();
         if ( requestID != 0 )
         {
             root.addAttribute( "requestID", "" + requestID );
         }
-        
+
         // Matched DN
         String matchedDN = result.getMatchedDN();
         if ( !matchedDN.equals( "" ) )
@@ -109,5 +111,102 @@ public class LdapResultDsml implements DsmlDecorator
         }
 
         return root;
+    }
+
+
+    /**
+     * Initialize the referrals list
+     */
+    public void initReferrals()
+    {
+        result.initReferrals();
+    }
+
+
+    /**
+     * Get the error message
+     * 
+     * @return Returns the errorMessage.
+     */
+    public String getErrorMessage()
+    {
+        return result.getErrorMessage();
+    }
+
+
+    /**
+     * Set the error message
+     * 
+     * @param errorMessage The errorMessage to set.
+     */
+    public void setErrorMessage( String errorMessage )
+    {
+        result.setErrorMessage( errorMessage );
+    }
+
+
+    /**
+     * Get the matched DN
+     * 
+     * @return Returns the matchedDN.
+     */
+    public String getMatchedDN()
+    {
+        return result.getMatchedDN();
+    }
+
+
+    /**
+     * Set the Matched DN
+     * 
+     * @param matchedDN The matchedDN to set.
+     */
+    public void setMatchedDN( LdapDN matchedDN )
+    {
+        result.setMatchedDN( matchedDN );
+    }
+
+
+    /**
+     * Get the referrals
+     * 
+     * @return Returns the referrals.
+     */
+    public List<LdapURL> getReferrals()
+    {
+        return result.getReferrals();
+    }
+
+
+    /**
+     * Add a referral
+     * 
+     * @param referral The referral to add.
+     */
+    public void addReferral( LdapURL referral )
+    {
+        result.addReferral( referral );
+    }
+
+
+    /**
+     * Get the result code
+     * 
+     * @return Returns the resultCode.
+     */
+    public ResultCodeEnum getResultCode()
+    {
+        return result.getResultCode();
+    }
+
+
+    /**
+     * Set the result code
+     * 
+     * @param resultCode The resultCode to set.
+     */
+    public void setResultCode( ResultCodeEnum resultCode )
+    {
+        result.setResultCode( resultCode );
     }
 }
