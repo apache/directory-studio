@@ -167,7 +167,7 @@ public class StudioEclipseMojo extends AbstractStudioMojo
             if ( !artifact.getScope().equalsIgnoreCase( "test" ) )
             {
                 bundleClasspath.append( "," ).append( NEWLINE ).append( " " ).append( libraryPath ).append(
-                    File.separator ).append( artifact.getFile().getName() );
+                    '/' ).append( artifact.getFile().getName() );
             }
         }
 
@@ -252,7 +252,7 @@ public class StudioEclipseMojo extends AbstractStudioMojo
             {
                 entry = new Xpp3Dom( "classpathentry" );
                 entry.setAttribute( "kind", "lib" );
-                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( File.separator )
+                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( '/' )
                     .append( artifact.getFile().getName() ).toString() );
             }
             else
@@ -260,7 +260,7 @@ public class StudioEclipseMojo extends AbstractStudioMojo
                 entry = new Xpp3Dom( "classpathentry" );
                 entry.setAttribute( "exported", "true" );
                 entry.setAttribute( "kind", "lib" );
-                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( File.separator )
+                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( '/' )
                     .append( artifact.getFile().getName() ).toString() );
             }
             dom.addChild( entry );
