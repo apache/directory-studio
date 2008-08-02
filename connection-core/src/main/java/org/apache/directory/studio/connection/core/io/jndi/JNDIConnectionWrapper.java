@@ -39,6 +39,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import javax.naming.ldap.LdapName;
 import javax.naming.ldap.ManageReferralControl;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
@@ -301,7 +302,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    NamingEnumeration<SearchResult> ne = searchCtx.search( searchBase, filter,
+                    // we use LdapName here for the following reason:
+                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
+                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
+                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
+                    //   user provided ATAV.
+                    NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapName( searchBase ), filter,
                         searchControls );
                     namingEnumeration = new StudioNamingEnumeration( connection, ne, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
@@ -453,7 +459,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform modification
-                    modCtx.modifyAttributes( dn, modificationItems );
+                    // we use LdapName here for the following reason:
+                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
+                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
+                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
+                    //   user provided ATAV.
+                    modCtx.modifyAttributes( new LdapName( dn ), modificationItems );
                 }
                 catch ( ReferralException re )
                 {
@@ -554,7 +565,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
 
                     // rename entry
-                    modCtx.rename( oldDn, newDn );
+                    // we use LdapName here for the following reason:
+                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
+                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
+                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
+                    //   user provided ATAV.
+                    modCtx.rename( new LdapName( oldDn ), new LdapName( newDn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -644,7 +660,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // create entry
-                    modCtx.createSubcontext( dn, attributes );
+                    // we use LdapName here for the following reason:
+                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
+                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
+                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
+                    //   user provided ATAV.
+                    modCtx.createSubcontext( new LdapName( dn ), attributes );
                 }
                 catch ( ReferralException re )
                 {
@@ -732,7 +753,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // delete entry
-                    modCtx.destroySubcontext( dn );
+                    // we use LdapName here for the following reason:
+                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
+                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
+                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
+                    //   user provided ATAV.
+                    modCtx.destroySubcontext( new LdapName( dn ) );
                 }
                 catch ( ReferralException re )
                 {
