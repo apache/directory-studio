@@ -39,6 +39,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -229,8 +230,11 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         tableBinaryEncodingWidget.addWidgetModifyListener( this );
 
         Composite copyTableHintComposite = BaseWidgetUtils.createColumnContainer( tableInnerComposite, 3, 3 );
-        BaseWidgetUtils.createWrappedLabeledText( copyTableHintComposite,
+        Text hintText = BaseWidgetUtils.createWrappedLabeledText( copyTableHintComposite,
             "Hint: The default settings are suitable to paste the copied data into Excel or OpenOffice.", 1 );
+        GridData hintTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        hintTextGridData.widthHint = 300;
+        hintText.setLayoutData( hintTextGridData );
 
         tableTab.setControl( tableComposite );
     }
@@ -297,7 +301,7 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         xlsComposite.setLayout( new GridLayout( 1, false ) );
         Composite xlsInnerComposite = BaseWidgetUtils.createColumnContainer( xlsComposite, 3, 1 );
 
-        BaseWidgetUtils.createWrappedLabeledText( xlsInnerComposite, "Select Excel export file format options:", 3 );
+        BaseWidgetUtils.createLabel( xlsInnerComposite, "Select Excel export file format options:", 3 );
         BaseWidgetUtils.createSpacer( xlsInnerComposite, 3 );
 
         xlsValueDelimiterWidget = new OptionsInput( "Value Delimiter", "Pipe (|)", "|", new String[]
