@@ -28,7 +28,6 @@ import javax.naming.directory.DirContext;
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.widgets.SWTBotCombo;
-import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
@@ -94,8 +93,19 @@ public class NewEntryWizardTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "New Entry" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -111,10 +121,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         typeCombo.setText( "o" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry" );
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -129,10 +136,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         } );
 
         // click finish to create the entry
-        bot.button( "Finish" ).click();
-
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -142,10 +146,9 @@ public class NewEntryWizardTest extends AbstractServerTest
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not find 'o=testCreateOrganizationEntry'";
             }
         } );
-        bot.sleep( 1000 );
     }
 
 
@@ -160,8 +163,19 @@ public class NewEntryWizardTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "New Entry" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -177,10 +191,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         typeCombo.setText( "cn" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreatePersonEntry" );
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -203,10 +214,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         snNode.click();
 
         // click finish to create the entry
-        bot.button( "Finish" ).click();
-
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -216,10 +224,9 @@ public class NewEntryWizardTest extends AbstractServerTest
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not find 'cn=testCreatePersonEntry'";
             }
         } );
-        bot.sleep( 1000 );
     }
 
 
@@ -237,8 +244,19 @@ public class NewEntryWizardTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "New Entry" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -254,10 +272,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         typeCombo.setText( "O" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry" );
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -272,10 +287,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         } );
 
         // click finish to create the entry
-        bot.button( "Finish" ).click();
-
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -285,17 +297,27 @@ public class NewEntryWizardTest extends AbstractServerTest
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not find 'O=testCreateOrganizationEntry'";
             }
         } );
-        bot.sleep( 1000 );
 
         // Now create a second entry under the previously created entry 
         // to ensure that the selected parent is also upper case.
 
         // open "New Entry" wizard
-        contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "New Entry" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -316,10 +338,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         SWTBotText previewText = bot.text( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system" );
         assertEquals( "O=testCreateOrganizationEntry2,O=testCreateOrganizationEntry,ou=system", previewText.getText() );
 
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -334,10 +353,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         } );
 
         // click finish to create the entry
-        bot.button( "Finish" ).click();
-
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -347,10 +363,9 @@ public class NewEntryWizardTest extends AbstractServerTest
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not find 'O=testCreateOrganizationEntry2'";
             }
         } );
-        bot.sleep( 1000 );
     }
 
 
@@ -369,8 +384,19 @@ public class NewEntryWizardTest extends AbstractServerTest
         systemNode.expand();
 
         // open "New Entry" wizard
-        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "New Entry" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -388,10 +414,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         typeCombo.setText( "krb5PrincipalName" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "kadmin/changepw@DOMAIN" );
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -421,10 +444,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         krbNode.click();
 
         // click finish to create the entry
-        bot.button( "Finish" ).click();
-
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -438,7 +458,6 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find entry 'krb5Principal=kadmin/changepw@DOMAIN'";
             }
         } );
-        bot.sleep( 1000 );
     }
 
 }

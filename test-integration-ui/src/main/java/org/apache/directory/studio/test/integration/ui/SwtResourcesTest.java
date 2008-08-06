@@ -26,7 +26,6 @@ import net.sf.swtbot.finder.UIThreadRunnable;
 import net.sf.swtbot.finder.UIThreadRunnable.IntResult;
 import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.widgets.SWTBotCombo;
-import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
 
@@ -130,8 +129,19 @@ public class SwtResourcesTest extends AbstractServerTest
     private void createAndDeleteEntry( final SWTBotTree browserTree, final String name ) throws Exception
     {
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
-        SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
-        contextMenu.click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "New Entry" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
 
         bot.radio( "Create entry from scratch" ).click();
         bot.button( "Next >" ).click();
@@ -144,10 +154,7 @@ public class SwtResourcesTest extends AbstractServerTest
         typeCombo.setText( "o" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( name );
-        bot.button( "Next >" ).click();
-
-        // wait for check that entry doesn't exist yet
-        bot.waitUntil( new DefaultCondition()
+        SWTBotUtils.asyncClick( bot, bot.button( "Next >" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -160,10 +167,9 @@ public class SwtResourcesTest extends AbstractServerTest
                 return "Finish button is not enabled";
             }
         } );
-        bot.button( "Finish" ).click();
 
-        // wait till entry is created and selected in the tree
-        bot.waitUntil( new DefaultCondition()
+        // click finish to create the entry
+        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {
@@ -176,16 +182,23 @@ public class SwtResourcesTest extends AbstractServerTest
                 return "Could not select 'o=" + name + "'";
             }
         } );
-        bot.sleep( 1000 );
 
         // delete the entry
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "o=" + name );
-        contextMenu = browserTree.contextMenu( "Delete Entry" );
-        contextMenu.click();
-        bot.button( "OK" ).click();
+        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "Delete Entry" ), new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.shell( "Delete Entry" ) != null;
+            }
 
-        // wait till the parent ou=system is selected in the tree
-        bot.waitUntil( new DefaultCondition()
+
+            public String getFailureMessage()
+            {
+                return "Could not find dialog 'New Entry'";
+            }
+        } );
+        SWTBotUtils.asyncClick( bot, bot.button( "OK" ), new DefaultCondition()
         {
             public boolean test() throws Exception
             {

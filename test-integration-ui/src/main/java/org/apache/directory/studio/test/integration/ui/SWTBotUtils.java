@@ -31,11 +31,13 @@ import net.sf.swtbot.finder.ControlFinder;
 import net.sf.swtbot.finder.UIThreadRunnable;
 import net.sf.swtbot.matcher.ClassMatcher;
 import net.sf.swtbot.wait.DefaultCondition;
+import net.sf.swtbot.wait.ICondition;
 import net.sf.swtbot.widgets.SWTBotButton;
 import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotTable;
 import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
+import net.sf.swtbot.widgets.TimeoutException;
 import net.sf.swtbot.widgets.WidgetNotFoundException;
 
 import org.apache.directory.studio.connection.core.Connection;
@@ -200,6 +202,76 @@ public class SWTBotUtils
 
 
     /**
+     * Clicks a button asynchronously and waits till the given condition
+     * is fulfilled.
+     * 
+     * @param bot the SWT bot
+     * @param button the button to click
+     * @param waitCondition the condition to wait for, may be null
+     * 
+     * @throws TimeoutException 
+     */
+    public static void asyncClick( final SWTEclipseBot bot, final SWTBotButton button, final ICondition waitCondition )
+        throws TimeoutException
+    {
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return button.isEnabled();
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Button isn't enabled.";
+            }
+        } );
+
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        {
+            public void run()
+            {
+                button.click();
+            }
+        } );
+
+        if ( waitCondition != null )
+        {
+            bot.waitUntil( waitCondition );
+        }
+    }
+
+
+    /**
+     * Clicks a menu item asynchronously and waits till the given condition
+     * is fulfilled.
+     * 
+     * @param bot the SWT bot
+     * @param button the button to click
+     * @param waitCondition the condition to wait for, may be null
+     * 
+     * @throws TimeoutException 
+     */
+    public static void asyncClick( final SWTEclipseBot bot, final SWTBotMenu menu, final ICondition waitCondition )
+        throws TimeoutException
+    {
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        {
+            public void run()
+            {
+                menu.click();
+            }
+        } );
+
+        if ( waitCondition != null )
+        {
+            bot.waitUntil( waitCondition );
+        }
+    }
+
+
+    /**
      * Selects an entry in the browser tree and optionally expands the selected entry.
      * Takes care that all attributes and child entries are initialized so 
      * that there are no pending background actions and event notifications. 
@@ -235,7 +307,14 @@ public class SWTBotUtils
                 entry = entry.getNode( currentPath );
             }
 
-            entry.select();
+            final SWTBotTreeItem tempEntry = entry;
+            UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+            {
+                public void run()
+                {
+                    tempEntry.select();
+                }
+            } );
 
             if ( !pathList.isEmpty() || expandChild )
             {
