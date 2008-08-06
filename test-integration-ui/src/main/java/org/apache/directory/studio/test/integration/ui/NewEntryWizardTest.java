@@ -379,9 +379,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateEntryWithSlash() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
         SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
