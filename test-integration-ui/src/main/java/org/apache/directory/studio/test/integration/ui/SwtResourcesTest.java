@@ -29,7 +29,6 @@ import net.sf.swtbot.widgets.SWTBotCombo;
 import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotText;
 import net.sf.swtbot.widgets.SWTBotTree;
-import net.sf.swtbot.widgets.SWTBotTreeItem;
 
 import org.apache.directory.server.unit.AbstractServerTest;
 import org.eclipse.swt.graphics.DeviceData;
@@ -51,7 +50,6 @@ public class SwtResourcesTest extends AbstractServerTest
         super.setUp();
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.openSleakView( bot );
         SWTBotUtils.createTestConnection( bot, "SwtResourcesTest", ldapServer.getIpPort() );
     }
 
@@ -131,11 +129,7 @@ public class SwtResourcesTest extends AbstractServerTest
 
     private void createAndDeleteEntry( final SWTBotTree browserTree, final String name ) throws Exception
     {
-        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
-
-        //        bot.sleep( 1000 );
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
         contextMenu.click();
 
@@ -182,9 +176,10 @@ public class SwtResourcesTest extends AbstractServerTest
                 return "Could not select 'o=" + name + "'";
             }
         } );
+        bot.sleep( 1000 );
 
         // delete the entry
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system", "o=" + name );
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "o=" + name );
         contextMenu = browserTree.contextMenu( "Delete Entry" );
         contextMenu.click();
         bot.button( "OK" ).click();

@@ -86,8 +86,11 @@ public class ReferralDialogTest extends AbstractServerTest
 
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
 
+        // select ou=system, don't expand yet
+        final SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE",
+            "ou=system" );
+
         // expand ou=system, that reads the referral and opens the referral dialog
-        final SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
         UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
         {
             public void run()
@@ -99,14 +102,13 @@ public class ReferralDialogTest extends AbstractServerTest
 
         // click OK in the referral dialog
         bot.button( "OK" ).click();
-        systemNode.expand();
-        bot.sleep( 1000 );
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is visible
         SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
             + "/ou=users,ou=system" );
         assertNotNull( referralNode );
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system", "ldap://localhost:"
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ldap://localhost:"
             + ldapServer.getIpPort() + "/ou=users,ou=system" );
 
     }
@@ -132,8 +134,11 @@ public class ReferralDialogTest extends AbstractServerTest
 
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
 
+        // select ou=system, don't expand yet
+        final SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE",
+            "ou=system" );
+
         // expand ou=system, that reads the referral and opens the referral dialog
-        final SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
         UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
         {
             public void run()
@@ -145,8 +150,7 @@ public class ReferralDialogTest extends AbstractServerTest
 
         // click Cancel in the referral dialog
         bot.button( "Cancel" ).click();
-        systemNode.expand();
-        bot.sleep( 1000 );
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is not visible
         SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
@@ -172,18 +176,16 @@ public class ReferralDialogTest extends AbstractServerTest
         // create the referral entry
         createReferralEntry();
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-
-        // expand ou=system, that reads the referral and opens the referral dialog
-        final SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
-        bot.sleep( 1000 );
+        // expand ou=system, the referral must be ignored, no referral dialog expected
+        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral entry is not visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
+        SWTBotTreeItem referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
             + "/ou=users,ou=system" );
-        assertNull( referralNode );
+        assertNull( referralNode1 );
+        SWTBotTreeItem referralNode2 = systemNode.getNode( "cn=referralDialogTest" );
+        assertNull( referralNode2 );
     }
 
 
@@ -204,18 +206,14 @@ public class ReferralDialogTest extends AbstractServerTest
         // create the referral entry
         createReferralEntry();
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-
-        // expand ou=system, that reads the referral and opens the referral dialog
-        final SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
-        bot.sleep( 1000 );
+        // expand ou=system, the referral is managed, no referral dialog expected
+        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral entry is visible
         SWTBotTreeItem referralNode = systemNode.getNode( "cn=referralDialogTest" );
         assertNotNull( referralNode );
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" );
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" );
     }
 
 

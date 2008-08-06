@@ -27,12 +27,16 @@ import java.util.List;
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.eclipse.finder.widgets.SWTBotView;
+import net.sf.swtbot.finder.ControlFinder;
+import net.sf.swtbot.finder.UIThreadRunnable;
+import net.sf.swtbot.matcher.ClassMatcher;
 import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.widgets.SWTBotButton;
 import net.sf.swtbot.widgets.SWTBotMenu;
 import net.sf.swtbot.widgets.SWTBotTable;
 import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
+import net.sf.swtbot.widgets.WidgetNotFoundException;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -42,6 +46,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.eclipse.swt.widgets.Tree;
 
 
 /**
@@ -96,49 +101,13 @@ public class SWTBotUtils
 
 
     /**
-     * Opens the Sleak (SWT leak) view.
+     * Creates the test connection.
      * 
      * @param bot the bot
+     * @param name the name of the connection
+     * @param port the port to use
      * 
-     * @throws Exception the exception
-     */
-    public static void openSleakView( final SWTEclipseBot eBot ) throws Exception
-    {
-        // open "Show View" dialog
-        SWTBotMenu windowMenu = eBot.menu( "Window" );
-        windowMenu.click();
-        SWTBotMenu viewMenu = windowMenu.menu( "Show View" );
-        viewMenu.click();
-        SWTBotMenu otherMenu = viewMenu.menu( "Other..." );
-        otherMenu.click();
-
-        // select "Sleak"
-        SWTBotTree tree = eBot.tree();
-        SWTBotUtils.selectNode( eBot, tree, "SWT Tools", "Sleak" );
-
-        // press "OK"
-        SWTBotButton okButton = eBot.button( "OK" );
-        okButton.click();
-
-        // wait till Connections view become visible
-        eBot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return eBot.view( "Sleak" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find widget";
-            }
-        } );
-    }
-
-
-    /**
-     * Creates the test connection.
+     * @return the connection
      * 
      * @throws Exception the exception
      */
@@ -184,88 +153,194 @@ public class SWTBotUtils
     }
 
 
+    /**
+     * Gets the connections tree.
+     * 
+     * @param bot the bot
+     * 
+     * @return the connections tree
+     * 
+     * @throws Exception the exception
+     */
     public static SWTBotTree getConnectionsTree( SWTEclipseBot bot ) throws Exception
     {
         SWTBotView view = bot.view( "Connections" );
         view.show();
-        SWTBotTree connectionsTree = bot.tree( 0 );
-        return connectionsTree;
+
+        List<Tree> findControls = new ControlFinder().findControls( view.widget, new ClassMatcher( Tree.class ), true );
+        if ( findControls.isEmpty() )
+        {
+            throw new WidgetNotFoundException( "Could not find Connections tree" );
+        }
+        return new SWTBotTree( findControls.get( 0 ) );
     }
 
 
+    /**
+     * Gets the ldap browser tree.
+     * 
+     * @param bot the bot
+     * 
+     * @return the ldap browser tree
+     * 
+     * @throws Exception the exception
+     */
     public static SWTBotTree getLdapBrowserTree( SWTEclipseBot bot ) throws Exception
     {
         SWTBotView view = bot.view( "LDAP Browser" );
         view.show();
-        SWTBotTree browserTree = bot.tree( 1 );
-        return browserTree;
+
+        List<Tree> findControls = new ControlFinder().findControls( view.widget, new ClassMatcher( Tree.class ), true );
+        if ( findControls.isEmpty() )
+        {
+            throw new WidgetNotFoundException( "Could not find LDAP Browser tree" );
+        }
+        return new SWTBotTree( findControls.get( 0 ) );
     }
 
 
-    public static SWTBotTreeItem selectNode( SWTEclipseBot bot, SWTBotTree browserTree, String... path )
-        throws Exception
+    /**
+     * Selects an entry in the browser tree and optionally expands the selected entry.
+     * Takes care that all attributes and child entries are initialized so 
+     * that there are no pending background actions and event notifications. 
+     * This is necessary to avoid race conditions.
+     * 
+     * @param bot the SWT bot
+     * @param tree the browser tree
+     * @param expandChild true to expand the child entry
+     * @param path the path to the entry
+     * 
+     * @return the selected entry as SWTBotTreeItem
+     * 
+     * @throws Exception the exception
+     */
+    public static SWTBotTreeItem selectEntry( final SWTEclipseBot bot, final SWTBotTree tree,
+        final boolean expandChild, final String... path ) throws Exception
     {
         List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
-        String currentPath = pathList.remove( 0 );
+        SWTBotTreeItem entry = null;
 
-        SWTBotTreeItem child = browserTree.getTreeItem( currentPath );
-        child.select();
+        while ( !pathList.isEmpty() )
+        {
+            String currentPath = pathList.remove( 0 );
 
-        if ( !pathList.isEmpty() )
-        {
-            child.expand();
-            return selectNode( bot, child, pathList );
+            if ( entry == null )
+            {
+                entry = tree.getTreeItem( currentPath );
+            }
+            else
+            {
+                // adjust current path, because the label is decorated with the number of children
+                currentPath = adjustNodeName( entry, currentPath );
+                entry = entry.getNode( currentPath );
+            }
+
+            entry.select();
+
+            if ( !pathList.isEmpty() || expandChild )
+            {
+                // expand entry and wait till 
+                // - children are displayed
+                // - next child is visible
+
+                final String nextName = !pathList.isEmpty() ? pathList.get( 0 ) : null;
+                expandEntry( bot, entry, nextName );
+                
+//                final SWTBotTreeItem child = entry;
+//
+//                UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+//                {
+//                    public void run()
+//                    {
+//                        child.expand();
+//                    }
+//                } );
+//
+//                bot.waitUntil( new DefaultCondition()
+//                {
+//                    public boolean test() throws Exception
+//                    {
+//                        if ( nextName != null )
+//                        {
+//                            String adjustedNodeName = nextName != null ? adjustNodeName( child, nextName ) : null;
+//                            SWTBotTreeItem node = child.getNode( adjustedNodeName );
+//                            if ( node == null )
+//                            {
+//                                return false;
+//                            }
+//                        }
+//                        return !child.getNodes().contains( "Fetching Entries..." );
+//                    }
+//
+//
+//                    public String getFailureMessage()
+//                    {
+//                        return "Could not find entry " + child.getText() + " -> " + nextName;
+//                    }
+//                } );
+            }
+
         }
-        else
-        {
-            return child;
-        }
+        return entry;
     }
 
-
-    public static SWTBotTreeItem selectNode( SWTEclipseBot bot, final SWTBotTreeItem item, List<String> pathList )
-        throws Exception
+    /**
+     * Expands the entry.
+     * Takes care that all attributes and child entries are initialized so 
+     * that there are no pending background actions and event notifications. 
+     * This is necessary to avoid race conditions.
+     * 
+     * @param bot the bot
+     * @param entry the entry to expand
+     * @param nextName the name of the entry that must become visible, may be null
+     * 
+     * @throws Exception the exception
+     */
+    public static void expandEntry( final SWTEclipseBot bot, final SWTBotTreeItem entry, final String nextName ) throws Exception
     {
-        final String[] currentPath = new String[]
-            { pathList.remove( 0 ) };
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        {
+            public void run()
+            {
+                entry.expand();
+            }
+        } );
 
-        // wait till node becomes visible
         bot.waitUntil( new DefaultCondition()
         {
             public boolean test() throws Exception
             {
-                List<String> nodes = item.getNodes();
-                for ( String node : nodes )
+                if ( nextName != null )
                 {
-                    if ( node.toUpperCase().startsWith( currentPath[0].toUpperCase() ) )
+                    String adjustedNodeName = nextName != null ? adjustNodeName( entry, nextName ) : null;
+                    SWTBotTreeItem node = entry.getNode( adjustedNodeName );
+                    if ( node == null )
                     {
-                        currentPath[0] = node;
-                        return true;
+                        return false;
                     }
                 }
-                return false;
+                return !entry.getNodes().contains( "Fetching Entries..." );
             }
 
 
             public String getFailureMessage()
             {
-                return "Could not find widget";
+                return "Could not find entry " + entry.getText() + " -> " + nextName;
             }
         } );
+    }
 
-        SWTBotTreeItem child = item.getNode( currentPath[0] );
-        child.select();
-
-        if ( !pathList.isEmpty() )
+    private static String adjustNodeName( SWTBotTreeItem child, String nodeName )
+    {
+        List<String> nodes = child.getNodes();
+        for ( String node : nodes )
         {
-            child.expand();
-            child.expand();
-            return selectNode( bot, child, pathList );
+            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
+            {
+                return node;
+            }
         }
-        else
-        {
-            return child;
-        }
+        return null;
     }
 
 }

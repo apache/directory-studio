@@ -91,9 +91,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateOrganizationEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -147,6 +145,7 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
+        bot.sleep( 1000 );
     }
 
 
@@ -158,9 +157,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreatePersonEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -202,8 +199,8 @@ public class NewEntryWizardTest extends AbstractServerTest
         tree.select( "sn" );
         bot.text( "" ).setText( "test" );
         // click to finish editing of sn
-        SWTBotTreeItem cnNode = SWTBotUtils.selectNode( bot, tree, "sn" );
-        cnNode.click();
+        SWTBotTreeItem snNode = tree.getTreeItem( "sn" );
+        snNode.click();
 
         // click finish to create the entry
         bot.button( "Finish" ).click();
@@ -222,6 +219,7 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
+        bot.sleep( 1000 );
     }
 
 
@@ -236,9 +234,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateUpperCaseOrganizationEntries() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
-        systemNode.expand();
-        systemNode.expand();
+        SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
         SWTBotMenu contextMenu = browserTree.contextMenu( "New Entry..." );
@@ -292,6 +288,7 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
+        bot.sleep( 1000 );
 
         // Now create a second entry under the previously created entry 
         // to ensure that the selected parent is also upper case.
@@ -353,6 +350,7 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find widget";
             }
         } );
+        bot.sleep( 1000 );
     }
 
 
@@ -366,7 +364,7 @@ public class NewEntryWizardTest extends AbstractServerTest
     public void testCreateEntryWithSlash() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
-        SWTBotTreeItem systemNode = SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system" );
+        SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
         systemNode.expand();
         systemNode.expand();
 
@@ -407,21 +405,19 @@ public class NewEntryWizardTest extends AbstractServerTest
             }
         } );
 
-        // click to finish editing of sn
         SWTBotTree tree = bot.tree( 0 );
-        SWTBotTreeItem krbNode = SWTBotUtils.selectNode( bot, tree, "krb5PrincipalName" );
+        SWTBotTreeItem krbNode = tree.getTreeItem( "krb5PrincipalName" );
+
+        // enter cn value
+        tree.select( "cn" );
+        bot.text( "" ).setText( "test" );
+        // click to finish editing of cn
         krbNode.click();
 
         // enter sn value
         tree.select( "sn" );
         bot.text( "" ).setText( "test" );
         // click to finish editing of sn
-        krbNode.click();
-
-        // enter cn value
-        tree.select( "cn" );
-        bot.text( "" ).setText( "test" );
-        // click to finish editing of cn
         krbNode.click();
 
         // click finish to create the entry
@@ -442,6 +438,7 @@ public class NewEntryWizardTest extends AbstractServerTest
                 return "Could not find entry 'krb5Principal=kadmin/changepw@DOMAIN'";
             }
         } );
+        bot.sleep( 1000 );
     }
 
 }

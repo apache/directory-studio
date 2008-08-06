@@ -227,21 +227,20 @@ public class NewConnectionWizardTest extends AbstractServerTest
         // click "Check Network Parameter" button
         SWTBotButton checkButton = bot.button( "Check Network Parameter" );
         checkButton.click();
-        bot.sleep( 2000 );
-//SWTBotTestCase.assertEnabled( widget );
-//        bot.waitUntil( new DefaultCondition()
-//        {
-//            public boolean test() throws Exception
-//            {
-//                return bot.activeShell().getText().equals( "Error" ) && bot.button( "OK" ) != null;
-//            }
-//
-//
-//            public String getFailureMessage()
-//            {
-//                return "Expected an dialog box 'Error' with an 'OK' button.";
-//            }
-//        } );
+        bot.sleep( 1000 );
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return bot.activeShell().getText().equals( "Error" ) && bot.button( "OK" ) != null;
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Expected an dialog box 'Error' with an 'OK' button.";
+            }
+        } );
         
         bot.button( "OK" ).click();
         bot.button( "Cancel" ).click();

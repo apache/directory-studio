@@ -68,9 +68,10 @@ public class RenameEntryDialogTest extends AbstractServerTest
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
 
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system", "ou=users",
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=Barbara Jensen+uid=bjensen" );
 
+        bot.sleep( 2000 );
         SWTBotMenu contextMenu = browserTree.contextMenu( "Rename Entry..." );
         contextMenu.click();
 
@@ -78,7 +79,8 @@ public class RenameEntryDialogTest extends AbstractServerTest
         bot.text( "bjensen" ).setText( "babsjens" );
         bot.button( "OK" ).click();
 
-        SWTBotUtils.selectNode( bot, browserTree, "DIT", "Root DSE", "ou=system", "ou=users",
+        // ensure that the entry with the new name exists
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=Babs Jensen+uid=babsjens" );
     }
 
