@@ -242,47 +242,14 @@ public class SWTBotUtils
                 // expand entry and wait till 
                 // - children are displayed
                 // - next child is visible
-
                 final String nextName = !pathList.isEmpty() ? pathList.get( 0 ) : null;
                 expandEntry( bot, entry, nextName );
-                
-//                final SWTBotTreeItem child = entry;
-//
-//                UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
-//                {
-//                    public void run()
-//                    {
-//                        child.expand();
-//                    }
-//                } );
-//
-//                bot.waitUntil( new DefaultCondition()
-//                {
-//                    public boolean test() throws Exception
-//                    {
-//                        if ( nextName != null )
-//                        {
-//                            String adjustedNodeName = nextName != null ? adjustNodeName( child, nextName ) : null;
-//                            SWTBotTreeItem node = child.getNode( adjustedNodeName );
-//                            if ( node == null )
-//                            {
-//                                return false;
-//                            }
-//                        }
-//                        return !child.getNodes().contains( "Fetching Entries..." );
-//                    }
-//
-//
-//                    public String getFailureMessage()
-//                    {
-//                        return "Could not find entry " + child.getText() + " -> " + nextName;
-//                    }
-//                } );
             }
 
         }
         return entry;
     }
+
 
     /**
      * Expands the entry.
@@ -296,7 +263,8 @@ public class SWTBotUtils
      * 
      * @throws Exception the exception
      */
-    public static void expandEntry( final SWTEclipseBot bot, final SWTBotTreeItem entry, final String nextName ) throws Exception
+    public static void expandEntry( final SWTEclipseBot bot, final SWTBotTreeItem entry, final String nextName )
+        throws Exception
     {
         UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
         {
@@ -329,6 +297,7 @@ public class SWTBotUtils
             }
         } );
     }
+
 
     private static String adjustNodeName( SWTBotTreeItem child, String nodeName )
     {
