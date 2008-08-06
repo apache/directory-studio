@@ -744,6 +744,14 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
      */
     public void entryUpdated( EntryModificationEvent event )
     {
+        IBrowserConnection conn = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
+            connectionId );
+        if ( conn == null )
+        {
+            EventRegistry.removeEntryUpdateListener( this );
+            return;
+        }
+        
         if ( event.getModifiedEntry() == getDelegate() )
         {
             if ( event instanceof AttributeAddedEvent )
