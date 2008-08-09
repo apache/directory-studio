@@ -37,9 +37,9 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
@@ -73,7 +73,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     /** The entries to delete. */
     private IEntry[] entriesToDelete;
-    
+
     /** The deleted entries. */
     private Set<IEntry> deletedEntriesSet;
 
@@ -83,15 +83,19 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     /** The searches to update. */
     private Set<ISearch> searchesToUpdateSet;
 
+    /** The use tree delete control flag. */
+    private boolean useTreeDeleteControl;
+
 
     /**
      * Creates a new instance of DeleteEntriesJob. 
      * 
      * @param entriesToDelete the entries to delete
      */
-    public DeleteEntriesJob( final IEntry[] entriesToDelete )
+    public DeleteEntriesJob( final IEntry[] entriesToDelete, boolean useTreeDeleteControl )
     {
         this.entriesToDelete = entriesToDelete;
+        this.useTreeDeleteControl = useTreeDeleteControl;
 
         this.deletedEntriesSet = new HashSet<IEntry>();
         this.entriesToUpdateSet = new HashSet<IEntry>();
@@ -140,7 +144,8 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
             // delete from directory
             int errorStatusSize1 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
-            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn(), num, dummyMonitor, monitor );
+            num = optimisticDeleteEntryRecursive( browserConnection, entryToDelete.getDn(), useTreeDeleteControl, num,
+                dummyMonitor, monitor );
             int errorStatusSize2 = monitor.getErrorStatus( "" ).getChildren().length; //$NON-NLS-1$
 
             if ( !monitor.isCanceled() )
@@ -207,6 +212,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * 
      * @param browserConnection the browser connection
      * @param dn the DN to delete
+     * @param useTreeDeleteControl true to use the tree delete control
      * @param numberOfDeletedEntries the number of deleted entries
      * @param dummyMonitor the dummy monitor
      * @param monitor the progress monitor
@@ -214,11 +220,12 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * @return the cumulative number of deleted entries
      */
     static int optimisticDeleteEntryRecursive( IBrowserConnection browserConnection, LdapDN dn,
-        int numberOfDeletedEntries, StudioProgressMonitor dummyMonitor, StudioProgressMonitor monitor )
+        boolean useTreeDeleteControl, int numberOfDeletedEntries, StudioProgressMonitor dummyMonitor,
+        StudioProgressMonitor monitor )
     {
         // try to delete entry
         dummyMonitor.reset();
-        deleteEntry( browserConnection, dn, dummyMonitor );
+        deleteEntry( browserConnection, dn, useTreeDeleteControl, dummyMonitor );
 
         if ( !dummyMonitor.errorsReported() )
         {
@@ -263,7 +270,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                         SearchResult sr = result.next();
                         LdapDN childDn = JNDIUtils.getDn( sr );
 
-                        numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn,
+                        numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn, false,
                             numberOfDeletedEntries, dummyMonitor, monitor );
                         numberInBatch++;
                     }
@@ -288,7 +295,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             // try to delete the entry again 
             if ( !dummyMonitor.errorsReported() )
             {
-                deleteEntry( browserConnection, dn, dummyMonitor );
+                deleteEntry( browserConnection, dn, false, dummyMonitor );
             }
             if ( !dummyMonitor.errorsReported() )
             {
@@ -337,12 +344,14 @@ public class DeleteEntriesJob extends AbstractNotificationJob
     }
 
 
-    static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, StudioProgressMonitor monitor )
+    static void deleteEntry( IBrowserConnection browserConnection, LdapDN dn, boolean useTreeDeleteControl,
+        StudioProgressMonitor monitor )
     {
         // controls
         List<Control> controlList = new ArrayList<Control>();
-        if ( browserConnection.getRootDSE().isControlSupported(
-            org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid() ) )
+        if ( useTreeDeleteControl
+            && browserConnection.getRootDSE().isControlSupported(
+                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid() ) )
         {
             Control treeDeleteControl = new BasicControl(
                 org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid(),
