@@ -174,8 +174,8 @@ public class MoveEntriesJob extends AbstractNotificationJob
                         if ( !dummyMonitor.errorsReported() )
                         {
                             dummyMonitor.reset();
-                            numDel = DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, numDel,
-                                dummyMonitor, monitor );
+                            numDel = DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, false,
+                                numDel, dummyMonitor, monitor );
                         }
                     }
                     else

@@ -158,8 +158,8 @@ public class RenameEntryJob extends AbstractNotificationJob
                     if ( !dummyMonitor.errorsReported() )
                     {
                         dummyMonitor.reset();
-                        DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, 0, dummyMonitor,
-                            monitor );
+                        DeleteEntriesJob.optimisticDeleteEntryRecursive( browserConnection, oldDn, false, 0,
+                            dummyMonitor, monitor );
                     }
                 }
                 else

@@ -35,6 +35,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
@@ -47,7 +48,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -75,28 +75,28 @@ public class DeleteAction extends BrowserAction
             IAttribute[] attributes = getAttributes();
             IValue[] values = getValues();
 
-            if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0
-                && attributes.length == 0 && values.length == 0 )
+            if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0 && attributes.length == 0
+                && values.length == 0 )
             {
                 return entries.length > 1 ? "Delete Entries" : "Delete Entry";
             }
-            if ( searches.length > 0 && entries.length == 0 && bookmarks.length == 0
-                && attributes.length == 0 && values.length == 0 )
+            if ( searches.length > 0 && entries.length == 0 && bookmarks.length == 0 && attributes.length == 0
+                && values.length == 0 )
             {
                 return searches.length > 1 ? "Delete Searches" : "Delete Search";
             }
-            if ( bookmarks.length > 0 && entries.length == 0 && searches.length == 0
-                && attributes.length == 0 && values.length == 0 )
+            if ( bookmarks.length > 0 && entries.length == 0 && searches.length == 0 && attributes.length == 0
+                && values.length == 0 )
             {
                 return bookmarks.length > 1 ? "Delete Bookmarks" : "Delete Bookmark";
             }
-            if ( attributes.length > 0 && entries.length == 0 && searches.length == 0
-                && bookmarks.length == 0 && values.length == 0 )
+            if ( attributes.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
+                && values.length == 0 )
             {
                 return attributes.length > 1 ? "Delete Attributes" : "Delete Attribute";
             }
-            if ( values.length > 0 && entries.length == 0 && searches.length == 0
-                && bookmarks.length == 0 && attributes.length == 0 )
+            if ( values.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
+                && attributes.length == 0 )
             {
                 return values.length > 1 ? "Delete Values" : "Delete Value";
             }
@@ -141,6 +141,7 @@ public class DeleteAction extends BrowserAction
             IValue[] values = getValues();
 
             StringBuffer message = new StringBuffer();
+            boolean askForTreeDeleteControl = false;
 
             if ( entries.length > 0 )
             {
@@ -162,6 +163,12 @@ public class DeleteAction extends BrowserAction
                 }
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
+
+                if ( entries[0].getBrowserConnection().getRootDSE().isControlSupported(
+                    org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid() ) )
+                {
+                    askForTreeDeleteControl = true;
+                }
             }
 
             if ( searches.length > 0 )
@@ -259,11 +266,12 @@ public class DeleteAction extends BrowserAction
                 }
             }
 
-            if ( message.length() == 0 || MessageDialog.openConfirm( getShell(), getText(), message.toString() ) )
+            DeleteDialog dialog = new DeleteDialog( getShell(), getText(), message.toString(), askForTreeDeleteControl );
+            if ( message.length() == 0 || dialog.open() == DeleteDialog.OK )
             {
                 if ( entries.length > 0 )
                 {
-                    deleteEntries( entries );
+                    deleteEntries( entries, dialog.isUseTreeDeleteControl() );
                 }
                 if ( searches.length > 0 )
                 {
@@ -333,8 +341,7 @@ public class DeleteAction extends BrowserAction
             IAttribute[] attributes = getAttributes();
             IValue[] values = getValues();
 
-            return entries.length + searches.length + bookmarks.length + attributes.length
-                + values.length > 0;
+            return entries.length + searches.length + bookmarks.length + attributes.length + values.length > 0;
 
         }
         catch ( Exception e )
@@ -387,14 +394,14 @@ public class DeleteAction extends BrowserAction
 
 
     /**
-     * Deletes Entries
-     *
-     * @param entries
-     *      the Entries to delete
+     * Deletes Entries.
+     * 
+     * @param entries the Entries to delete
+     * @param useTreeDeleteControl true to use the tree delete control
      */
-    protected void deleteEntries( IEntry[] entries )
+    protected void deleteEntries( IEntry[] entries, boolean useTreeDeleteControl )
     {
-        new DeleteEntriesJob( entries ).execute();
+        new DeleteEntriesJob( entries, useTreeDeleteControl ).execute();
     }
 
 
