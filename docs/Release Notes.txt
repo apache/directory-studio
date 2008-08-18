@@ -1,5 +1,19 @@
 Release Notes
 
+Apache Directory Studio 1.2.0
+
+Bug
+  * [DIRSTUDIO-121] - Some property pages make the dialog very tall
+  * [DIRSTUDIO-360] - cannot read attribute from items with a / in the dn
+  * [DIRSTUDIO-364] - Installing in Eclipse fails
+  * [DIRSTUDIO-365] - Can't delete entry with studio 1.1.0. works with 1.0.1
+
+Improvement
+  * [DIRSTUDIO-361] - Auto-activate 'show operational attributes' when adding an operational attribute
+
+
+---------------------------------------------------------------------------------
+
 Apache Directory Studio 1.2.0 RC1
 
 Bug
