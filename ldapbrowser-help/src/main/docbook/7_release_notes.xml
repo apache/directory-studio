@@ -19,13 +19,19 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
-		<title>Apache Directory Studio 1.2.0 - (2008, july 24th)</title>
+        <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
 		</para>
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
+                    <para>[DIRSTUDIO-365] - Can't delete entry with studio 1.1.0. works with 1.0.1</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-360] - cannot read attribute from items with a / in the dn</para>
+                </listitem>
+                <listitem>
 					<para>[DIRSTUDIO-349] - Unable to enter large values for uid</para>
 				</listitem>
 				<listitem>
@@ -72,6 +78,9 @@
 		<para>
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
+				    <para>[DIRSTUDIO-361] - Auto-activate 'show operational attributes' when adding an operational attribute</para>
+                </listitem>
+                <listitem>
 					<para>[DIRSTUDIO-329] - Replace internal URL class by shared-ldap LdapURL class</para>
 				</listitem>
 				<listitem>
