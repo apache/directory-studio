@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Directory Studio Apache DS
 Bundle-SymbolicName: org.apache.directory.studio.apacheds;singleton:=true
-Bundle-Version: 1.2.0.v20080724
+Bundle-Version: 1.2.0.v20080818
 Bundle-Activator: org.apache.directory.studio.apacheds.ApacheDsPlugin
 Bundle-Vendor: Apache Software Foundation
 Require-Bundle: org.eclipse.ui,
