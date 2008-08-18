@@ -23,9 +23,9 @@ package org.apache.directory.studio.valueeditors.time;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.directory.shared.ldap.util.GeneralizedTime;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor;
 
@@ -61,31 +61,17 @@ public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValu
 
         if ( !showRawValues() )
         {
-            DateFormat ldapFormat = new SimpleDateFormat( "yyyyMMddHHmmssZ" );
-            DateFormat activeDirectoryFormat = new SimpleDateFormat( "yyyyMMddHHmmss'.'SSSZ" );
             DateFormat targetFormat = DateFormat.getDateTimeInstance( DateFormat.MEDIUM, DateFormat.LONG );
-
-            String s = displayValue;
-            if ( s.matches( "[\\.0-9]+Z" ) )
-            {
-                s = s.replaceAll( "Z", "GMT" );
-            }
 
             try
             {
-                Date date = ldapFormat.parse( s );
+                GeneralizedTime generalizedTime = new GeneralizedTime( displayValue );
+                Date date = generalizedTime.getCalendar().getTime();
                 displayValue = targetFormat.format( date ) + " (" + displayValue + ")";
             }
-            catch ( ParseException e1 )
+            catch ( ParseException pe )
             {
-                try
-                {
-                    Date date = activeDirectoryFormat.parse( s );
-                    displayValue = targetFormat.format( date ) + " (" + displayValue + ")";
-                }
-                catch ( ParseException e2 )
-                {
-                }
+                // show the raw value in that case
             }
         }
 
