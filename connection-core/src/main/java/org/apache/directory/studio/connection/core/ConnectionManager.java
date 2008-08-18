@@ -34,7 +34,13 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.core.io.ConnectionIO;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 
 
 /**
@@ -56,8 +62,58 @@ public class ConnectionManager implements ConnectionUpdateListener
     public ConnectionManager()
     {
         this.connectionList = new HashSet<Connection>();
+        loadInitializers();
         loadConnections();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
+    }
+
+
+    /**
+     * Loads the Connection Initializers. This happens only for the first time, 
+     * which is determined by whether or not the connectionStore file is present.
+     */
+    private void loadInitializers()
+    {
+        File connectionStore = new File( getConnectionStoreFileName() );
+        if ( connectionStore.exists() )
+        {
+            return; // connections are stored from a previous sessions - don't call initializers
+        }
+
+        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
+            "org.apache.directory.studio.connectionInitializer" );
+
+        IConfigurationElement[] configurationElements = extensionPoint.getConfigurationElements();
+        for ( IConfigurationElement configurationElement : configurationElements )
+        {
+            if ( "connection".equals( configurationElement.getName() ) )
+            {
+                addInitialConnection( configurationElement );
+            }
+        }
+    }
+
+
+    /**
+     * Creates the ConnectionParameter from the configElement and creates the connection.
+     * 
+     * @param configurationElement The configuration element
+     */
+    private void addInitialConnection( IConfigurationElement configurationElement )
+    {
+        try
+        {
+            ConnectionParameter connectionParameter = ( ConnectionParameter ) configurationElement
+                .createExecutableExtension( "class" );
+            Connection conn = new Connection( connectionParameter );
+            connectionList.add( conn );
+        }
+        catch ( CoreException e )
+        {
+            Status status = new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID,
+                "Exception occured while executing connection initializer: " + e.getMessage(), e );
+            ConnectionCorePlugin.getDefault().getLog().log( status );
+        }
     }
 
 
@@ -98,8 +154,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         {
             file.mkdir();
         }
-        return p
-            .append( "search-" + Utils.getFilenameString( connection.getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+        return p.append( "search-" + Utils.getFilenameString( connection.getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -151,7 +206,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection getConnectionById( String id )
     {
-        for ( Connection conn:connectionList )
+        for ( Connection conn : connectionList )
         {
             if ( conn.getConnectionParameter().getId().equals( id ) )
             {
@@ -172,7 +227,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection getConnectionByName( String name )
     {
-        for ( Connection conn:connectionList )
+        for ( Connection conn : connectionList )
         {
             if ( conn.getConnectionParameter().getName().equals( name ) )
             {
