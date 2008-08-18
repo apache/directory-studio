@@ -55,7 +55,6 @@ import org.apache.directory.shared.ldap.filter.OrNode;
 import org.apache.directory.shared.ldap.filter.PresenceNode;
 import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
-import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
@@ -150,15 +149,15 @@ public class ExportDsmlJob extends AbstractEclipseJob
             SearchScope scope = searchParameter.getScope();
             if ( scope == SearchScope.OBJECT )
             {
-                searchRequest.setScope( ScopeEnum.BASE_OBJECT );
+                searchRequest.setScope( org.apache.directory.shared.ldap.filter.SearchScope.OBJECT );
             }
             else if ( scope == SearchScope.ONELEVEL )
             {
-                searchRequest.setScope( ScopeEnum.SINGLE_LEVEL );
+                searchRequest.setScope( org.apache.directory.shared.ldap.filter.SearchScope.ONELEVEL );
             }
             else if ( scope == SearchScope.SUBTREE )
             {
-                searchRequest.setScope( ScopeEnum.WHOLE_SUBTREE );
+                searchRequest.setScope( org.apache.directory.shared.ldap.filter.SearchScope.SUBTREE );
             }
 
             // DerefAliases

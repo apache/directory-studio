@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
-import org.apache.directory.shared.ldap.message.ScopeEnum;
+import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.AbstractTest;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
@@ -314,7 +314,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( ScopeEnum.BASE_OBJECT, searchRequest.getScope() );
+        assertEquals( SearchScope.OBJECT, searchRequest.getScope() );
     }
 
 
@@ -341,7 +341,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( ScopeEnum.SINGLE_LEVEL, searchRequest.getScope() );
+        assertEquals( SearchScope.ONELEVEL, searchRequest.getScope() );
     }
 
 
@@ -368,7 +368,7 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( ScopeEnum.WHOLE_SUBTREE, searchRequest.getScope() );
+        assertEquals( SearchScope.SUBTREE, searchRequest.getScope() );
     }
 
 

@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
-import org.apache.directory.shared.ldap.message.ScopeEnum;
+import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -100,18 +100,18 @@ public class SearchRequestDsml extends AbstractRequestDsml
         }
 
         // Scope
-        ScopeEnum scope = request.getScope();
+        SearchScope scope = request.getScope();
         if ( scope != null )
         {
-            if ( scope == ScopeEnum.BASE_OBJECT )
+            if ( scope == SearchScope.OBJECT )
             {
                 element.addAttribute( "scope", "baseObject" );
             }
-            else if ( scope == ScopeEnum.SINGLE_LEVEL )
+            else if ( scope == SearchScope.ONELEVEL )
             {
                 element.addAttribute( "scope", "singleLevel" );
             }
-            else if ( scope == ScopeEnum.WHOLE_SUBTREE )
+            else if ( scope == SearchScope.SUBTREE )
             {
                 element.addAttribute( "scope", "wholeSubtree" );
             }

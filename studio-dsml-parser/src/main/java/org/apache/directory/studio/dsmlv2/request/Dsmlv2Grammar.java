@@ -54,7 +54,7 @@ import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.entry.client.ClientBinaryValue;
 import org.apache.directory.shared.ldap.entry.client.ClientStringValue;
-import org.apache.directory.shared.ldap.message.ScopeEnum;
+import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.util.Base64;
@@ -1874,15 +1874,15 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 if ( "baseObject".equals( attributeValue ) )
                 {
-                    searchRequest.setScope( ScopeEnum.BASE_OBJECT );
+                    searchRequest.setScope( SearchScope.OBJECT );
                 }
                 else if ( "singleLevel".equals( attributeValue ) )
                 {
-                    searchRequest.setScope( ScopeEnum.SINGLE_LEVEL );
+                    searchRequest.setScope( SearchScope.ONELEVEL );
                 }
                 else if ( "wholeSubtree".equals( attributeValue ) )
                 {
-                    searchRequest.setScope( ScopeEnum.WHOLE_SUBTREE );
+                    searchRequest.setScope( SearchScope.SUBTREE );
                 }
                 else
                 {
