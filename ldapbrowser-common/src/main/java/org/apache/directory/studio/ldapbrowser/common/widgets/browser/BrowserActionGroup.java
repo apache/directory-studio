@@ -42,6 +42,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionFactory;
 
 
@@ -147,7 +148,6 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-//        activateGlobalActionHandlers();
     }
 
 
@@ -214,6 +214,10 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         menuManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
         menuManager.add( new Separator() );
 
+        // additions
+        menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        menuManager.add( new Separator() );
+
         // properties
         menuManager.add( ( IAction ) browserActionMap.get( propertyDialogAction ) );
     }
@@ -262,7 +266,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         {
             IAction ra = ( IAction ) browserActionMap.get( refreshAction );
             ActionUtils.deactivateActionHandler( ra );
-            
+
             IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
             ActionUtils.deactivateActionHandler( pda );
         }

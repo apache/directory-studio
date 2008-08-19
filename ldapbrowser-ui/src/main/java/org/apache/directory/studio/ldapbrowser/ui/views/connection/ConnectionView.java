@@ -26,6 +26,8 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -138,20 +140,13 @@ public class ConnectionView extends ViewPart
         actionGroup.fillToolBar( mainWidget.getToolBarManager() );
         actionGroup.fillMenu( mainWidget.getMenuManager() );
         actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
-        actionGroup.fillContextMenu( configuration.getContextMenuManager( mainWidget.getViewer() ) );
-        
+        IMenuManager contextMenuManager = configuration.getContextMenuManager( mainWidget.getViewer() );
+        actionGroup.fillContextMenu( contextMenuManager );
+        getSite().registerContextMenu( ( MenuManager ) contextMenuManager, mainWidget.getViewer() );
+
         // create the listener
         getSite().setSelectionProvider( mainWidget.getViewer() );
         universalListener = new ConnectionViewUniversalListener( this );
-        
-        // default selection
-//        Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
-//        if ( connections.length > 0 )
-//        {
-//            ISelection selection = new StructuredSelection( connections[0] );
-//            mainWidget.getViewer().setSelection( selection );
-//            //this.universalListener.selectionChanged( this, selection );
-//        }
     }
 
 

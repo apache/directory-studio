@@ -182,6 +182,7 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        menuManager.add( new Separator() );
 
         // properties
         menuManager.add( ( IAction ) connectionActionMap.get( propertyDialogAction ) );

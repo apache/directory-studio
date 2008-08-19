@@ -355,6 +355,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        menuManager.add( new Separator() );
 
         // properties
         menuManager.add( ( IAction ) browserActionMap.get( propertyDialogAction ) );

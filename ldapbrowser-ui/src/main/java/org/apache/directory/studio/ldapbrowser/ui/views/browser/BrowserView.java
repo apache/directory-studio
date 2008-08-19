@@ -33,6 +33,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -126,7 +128,6 @@ public class BrowserView extends ViewPart
      */
     public void createPartControl( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout();
@@ -150,7 +151,9 @@ public class BrowserView extends ViewPart
         actionGroup.fillToolBar( mainWidget.getToolBarManager() );
         actionGroup.fillMenu( mainWidget.getMenuManager() );
         actionGroup.enableGlobalActionHandlers( getViewSite().getActionBars() );
-        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
+        IMenuManager contextMenuManager = mainWidget.getContextMenuManager();
+        actionGroup.fillContextMenu( contextMenuManager );
+        getSite().registerContextMenu( ( MenuManager ) contextMenuManager, mainWidget.getViewer() );
 
         // create the listener
         getSite().setSelectionProvider( mainWidget.getViewer() );
@@ -228,7 +231,7 @@ public class BrowserView extends ViewPart
                     parentEntry.setChildrenInitialized( true );
                     parentEntry.setHasMoreChildren( true );
                 }
-                
+
                 // force refresh of each parent, beginning from the root
                 // if the entry to select was lazy initialized then the 
                 // JFace model has no knowledge about it so we must
