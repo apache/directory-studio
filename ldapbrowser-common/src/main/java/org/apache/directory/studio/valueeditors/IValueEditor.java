@@ -73,7 +73,7 @@ public interface IValueEditor
      * If this value editor can't handle the given attribute hierarchy
      * it must return null. 
      * <p>
-     * Note: It is also possilbe that the attribute hierarchy doesn't contain
+     * Note: It is also possible that the attribute hierarchy doesn't contain
      * a value. This means the value is up to be created.
      * <p>
      * This method is called from the search result editor. It is common

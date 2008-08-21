@@ -64,7 +64,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                         do
                         {
                             // check report progress message
-                            if ( !spm.done && spm.reportProgressMessage != null )
+                            if ( !spm.isCanceled() && !spm.done && spm.reportProgressMessage != null )
                             {
                                 spm.subTask( spm.reportProgressMessage );
                                 spm.reportProgressMessage = null;

@@ -129,8 +129,6 @@ public interface BrowserUIConstants
 
     public static final String IMG_ENTRY_ADD = "resources/icons/entry_add.gif";
 
-    public static final String IMG_ENTRY_WIZARD = "resources/icons/entry_wizard.gif";
-
     public static final String IMG_LOCATE_DN_IN_DIT = "resources/icons/locate_dn_in_dit.gif";
 
     public static final String IMG_LOCATE_SEARCHRESULT_IN_DIT = "resources/icons/locate_searchresult_in_dit.gif";
@@ -214,12 +212,6 @@ public interface BrowserUIConstants
     public static final String IMG_ATD = "resources/icons/atd.png";
 
     public static final String IMG_OCD = "resources/icons/ocd.png";
-
-    public static final String IMG_OCD_ABSTRACT = "resources/icons/ocd_abstract.gif";
-
-    public static final String IMG_OCD_AUXILIARY = "resources/icons/ocd_auxiliary.gif";
-
-    public static final String IMG_OCD_STRUCTURAL = "resources/icons/ocd_structural.gif";
 
     public static final String IMG_MRD = "resources/icons/mrd.png";
 

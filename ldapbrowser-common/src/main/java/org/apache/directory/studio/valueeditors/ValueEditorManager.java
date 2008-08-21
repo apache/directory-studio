@@ -87,6 +87,9 @@ public class ValueEditorManager
     /** The special value editor for multi-valued attributes */
     private MultivaluedValueEditor multiValuedValueEditor;
 
+    /** The special value editor to edit the entry in an wizard */
+    private EntryValueEditor entryValueEditor;
+
     /** The default string editor for single-line values */
     private IValueEditor defaultStringSingleLineValueEditor;
 
@@ -124,6 +127,12 @@ public class ValueEditorManager
         multiValuedValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_MULTIVALUEDEDITOR ) );
 
+        // special case: entry editor
+        entryValueEditor = new EntryValueEditor( this.parent, this );
+        entryValueEditor.setValueEditorName( "Entry Editor" );
+        entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_ENTRY ) );
+
         // get default editors from value editor map
         defaultStringSingleLineValueEditor = class2ValueEditors.get( InPlaceTextValueEditor.class.getName() );
         defaultStringMultiLineValueEditor = class2ValueEditors.get( TextValueEditor.class.getName() );
@@ -136,20 +145,21 @@ public class ValueEditorManager
      */
     public void dispose()
     {
-        if ( this.parent != null )
+        if ( parent != null )
         {
-            this.userSelectedValueEditor = null;
-            this.multiValuedValueEditor.dispose();
-            this.defaultStringSingleLineValueEditor.dispose();
-            this.defaultStringMultiLineValueEditor.dispose();
-            this.defaultBinaryValueEditor.dispose();
+            userSelectedValueEditor = null;
+            multiValuedValueEditor.dispose();
+            entryValueEditor.dispose();
+            defaultStringSingleLineValueEditor.dispose();
+            defaultStringMultiLineValueEditor.dispose();
+            defaultBinaryValueEditor.dispose();
 
             for ( IValueEditor ve : class2ValueEditors.values() )
             {
                 ve.dispose();
             }
 
-            this.parent = null;
+            parent = null;
         }
     }
 
@@ -163,6 +173,17 @@ public class ValueEditorManager
     public void setUserSelectedValueEditor( IValueEditor userSelectedValueEditor )
     {
         this.userSelectedValueEditor = userSelectedValueEditor;
+    }
+
+
+    /**
+     * Gets the value editor explicitly selected by the user.
+     * 
+     * @return the user selected value editor, null if non is set
+     */
+    public IValueEditor getUserSelectedValueEditor()
+    {
+        return userSelectedValueEditor;
     }
 
 
@@ -192,8 +213,8 @@ public class ValueEditorManager
             return userSelectedValueEditor;
         }
 
-        // check attribute preferences
         AttributeTypeDescription atd = schema.getAttributeTypeDescription( attributeType );
+        // check attribute preferences
         Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
         if ( atd.getNumericOid() != null && attributeValueEditorMap.containsKey( atd.getNumericOid().toLowerCase() ) )
@@ -229,7 +250,6 @@ public class ValueEditorManager
         {
             return defaultStringSingleLineValueEditor;
         }
-
     }
 
 
@@ -256,9 +276,15 @@ public class ValueEditorManager
      */
     public IValueEditor getCurrentValueEditor( IValue value )
     {
-
         IValueEditor ve = this.getCurrentValueEditor( value.getAttribute().getEntry(), value.getAttribute()
             .getDescription() );
+
+        // special case objectClass: always return entry editor
+        if ( userSelectedValueEditor == null && value.getAttribute().isObjectClassAttribute()
+            && value.getAttribute().getEntry().isDirectoryEntry() )
+        {
+            return entryValueEditor;
+        }
 
         // here the value is known, we can check for single-line or multi-line
         if ( ve == defaultStringSingleLineValueEditor )
@@ -290,6 +316,17 @@ public class ValueEditorManager
         {
             return null;
         }
+        else if ( userSelectedValueEditor == null && attributeHierarchy.getAttribute().isObjectClassAttribute()
+            && attributeHierarchy.getEntry().isDirectoryEntry() )
+        {
+            // special case objectClass: always return entry editor
+            return entryValueEditor;
+        }
+        else if ( userSelectedValueEditor == entryValueEditor )
+        {
+            // special case objectClass: always return entry editor
+            return entryValueEditor;
+        }
         else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
         {
             return getCurrentValueEditor( attributeHierarchy.getAttribute().getEntry(), attributeHierarchy
@@ -300,12 +337,7 @@ public class ValueEditorManager
             && attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
                 attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
-            // special case objectClass and RDN: always return MV-editor
-            // perhaps this should be moved somewhere else
-            if ( attributeHierarchy.getAttribute().isObjectClassAttribute() )
-            {
-                return multiValuedValueEditor;
-            }
+            // special case RDN: always return MV-editor
             if ( attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
             {
                 return multiValuedValueEditor;
@@ -341,7 +373,7 @@ public class ValueEditorManager
      * 
      * @param schema the schema
      * @param attributeName the attribute
-     * @return alternative value editors
+     * @return the alternative value editors
      */
     public IValueEditor[] getAlternativeValueEditors( Schema schema, String attributeName )
     {
@@ -366,8 +398,7 @@ public class ValueEditorManager
 
         alternativeList.remove( getCurrentValueEditor( schema, attributeName ) );
 
-        return ( org.apache.directory.studio.valueeditors.IValueEditor[] ) alternativeList
-            .toArray( new IValueEditor[alternativeList.size()] );
+        return alternativeList.toArray( new IValueEditor[alternativeList.size()] );
     }
 
 
@@ -376,7 +407,7 @@ public class ValueEditorManager
      * are the three default editors.
      *
      * @param value the value
-     * @return lternative value editors
+     * @return the alternative value editors
      */
     public IValueEditor[] getAlternativeValueEditors( IValue value )
     {
@@ -399,8 +430,7 @@ public class ValueEditorManager
 
         alternativeList.remove( getCurrentValueEditor( value ) );
 
-        return ( org.apache.directory.studio.valueeditors.IValueEditor[] ) alternativeList
-            .toArray( new IValueEditor[alternativeList.size()] );
+        return alternativeList.toArray( new IValueEditor[alternativeList.size()] );
     }
 
 
@@ -417,7 +447,32 @@ public class ValueEditorManager
         {
             return new IValueEditor[0];
         }
-        else if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
+
+        // special case RDN: no alternative to the MV editor, except the entry editor
+        // perhaps this should be moved somewhere else
+        for ( IAttribute attribute : ah )
+        {
+            for ( IValue value : attribute.getValues() )
+            {
+                if ( value.isRdnPart() )
+                {
+                    return new IValueEditor[]
+                        { entryValueEditor };
+                }
+            }
+        }
+
+        // special case objectClass: no alternative to the entry editor
+        // perhaps this should be moved somewhere else
+        for ( IAttribute attribute : ah )
+        {
+            if ( attribute.isObjectClassAttribute() )
+            {
+                return new IValueEditor[0];
+            }
+        }
+
+        if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
         {
             return getAlternativeValueEditors( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
         }
@@ -426,22 +481,10 @@ public class ValueEditorManager
             && ah.getAttributeDescription().equalsIgnoreCase(
                 ah.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
-
-            // special case objectClass and RDN: no alternative to the MV-Editor
-            // perhaps this should be moved somewhere else
-            if ( ah.getAttribute().isObjectClassAttribute() )
-            {
-                return new IValueEditor[0];
-            }
-            if ( ah.getAttribute().getValues()[0].isRdnPart() )
-            {
-                return new IValueEditor[0];
-            }
-
             return getAlternativeValueEditors( ah.getAttribute().getValues()[0] );
         }
         else
-        /* if(attribute.getValueSize() > 1) */{
+        {
             return new IValueEditor[0];
         }
     }
@@ -464,6 +507,7 @@ public class ValueEditorManager
         list.addAll( class2ValueEditors.values() );
 
         list.add( multiValuedValueEditor );
+        list.add( entryValueEditor );
 
         return list.toArray( new IValueEditor[list.size()] );
     }
@@ -499,6 +543,17 @@ public class ValueEditorManager
     public MultivaluedValueEditor getMultiValuedValueEditor()
     {
         return multiValuedValueEditor;
+    }
+
+
+    /**
+     * Returns the entry value editor.
+     *
+     * @return the entry value editor
+     */
+    public EntryValueEditor getEntryValueEditor()
+    {
+        return entryValueEditor;
     }
 
 

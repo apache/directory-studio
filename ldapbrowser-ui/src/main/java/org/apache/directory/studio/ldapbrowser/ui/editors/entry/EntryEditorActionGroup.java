@@ -68,6 +68,9 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     /** The show operational attributes action. */
     private ShowOperationalAttributesAction showOperationalAttributesAction;
 
+    /** The open entry value editor action. */
+    private EntryEditorActionProxy openEntryValueEditorActionProxy;
+    
     /** The open entry editor preference page. */
     private OpenEntryEditorPreferencePageAction openEntryEditorPreferencePage;
 
@@ -165,6 +168,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
             openBestValueEditorActionProxy, true ) );
 
+        openEntryValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenEntryEditorAction( viewer,
+            entryEditor.getConfiguration().getValueEditorManager( viewer ), entryEditor.getConfiguration()
+                .getValueEditorManager( viewer ).getEntryValueEditor(), this ) );
+
         showOperationalAttributesAction = new ShowOperationalAttributesAction();
         openEntryEditorPreferencePage = new OpenEntryEditorPreferencePageAction();
         collapseAllAction = new CollapseAllAction( viewer );
@@ -230,6 +237,8 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         {
             deactivateGlobalActionHandlers();
 
+            openEntryValueEditorActionProxy.dispose();
+            openEntryValueEditorActionProxy = null;
             openEntryEditorPreferencePage = null;
             showOperationalAttributesAction = null;
             expandAllAction.dispose();
@@ -347,6 +356,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         // edit
         menuManager.add( entryEditorActionMap.get( editAttributeDescriptionAction ) );
         super.addEditMenu( menuManager );
+        menuManager.add( openEntryValueEditorActionProxy );
         menuManager.add( new Separator() );
 
         // refresh
@@ -380,6 +390,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         ActionUtils.activateActionHandler( lid );
         IAction eada = entryEditorActionMap.get( editAttributeDescriptionAction );
         ActionUtils.activateActionHandler( eada );
+        ActionUtils.activateActionHandler( openEntryValueEditorActionProxy );
     }
 
 
@@ -401,6 +412,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         ActionUtils.deactivateActionHandler( lid );
         IAction eada = entryEditorActionMap.get( editAttributeDescriptionAction );
         ActionUtils.deactivateActionHandler( eada );
+        ActionUtils.deactivateActionHandler( openEntryValueEditorActionProxy );
     }
 
 

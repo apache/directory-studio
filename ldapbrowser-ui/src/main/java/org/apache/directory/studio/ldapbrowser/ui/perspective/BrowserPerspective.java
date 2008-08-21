@@ -23,13 +23,13 @@ package org.apache.directory.studio.ldapbrowser.ui.perspective;
 
 import org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
 import org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView;
 import org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard;
-import org.apache.directory.studio.ldapbrowser.ui.wizards.NewEntryWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard;
 import org.apache.directory.studio.ldifeditor.wizards.NewLdifFileWizard;
 import org.eclipse.ui.IFolderLayout;

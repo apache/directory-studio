@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+
 
 /**
  * The EventRegistry is a central point to register for Apache Directory Studio specific
@@ -52,7 +54,8 @@ public class EventRegistry
      */
     public static boolean isEventFireingSuspendedInCurrentThread()
     {
-        return suspendedEventFireringThreads.contains( Thread.currentThread() );
+        return suspendedEventFireringThreads.contains( Thread.currentThread() )
+            || ConnectionEventRegistry.isEventFireingSuspendedInCurrentThread();
     }
 
 

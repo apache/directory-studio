@@ -573,7 +573,8 @@ public abstract class AbstractEntry implements IEntry
             ai = new AttributeInfo();
             getBrowserConnectionImpl().setAttributeInfo( this, ai );
         }
-        if ( ai.subschema == null )
+        if ( ai.subschema == null || ai.subschema.getObjectClassNames() == null
+            || ai.subschema.getObjectClassNames().length == 0 )
         {
             ai.subschema = new Subschema( this );
         }

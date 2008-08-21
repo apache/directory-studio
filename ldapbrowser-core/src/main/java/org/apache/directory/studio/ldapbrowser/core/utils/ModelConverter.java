@@ -129,12 +129,6 @@ public class ModelConverter
                 IAttribute attribute = new Attribute( entry, name );
                 attribute.addValue( new Value( attribute, parts[i] ) );
                 entry.addAttribute( attribute );
-                // IAttribute attribute = entry.getAttribute("");
-                // if(attribute == null) {
-                // attribute = new Attribute(entry, "");
-                // entry.addAttribute(attribute, null);
-                // }
-                // attribute.addValue(new Value(attribute, parts[i]), null);
             }
         }
 
@@ -146,15 +140,11 @@ public class ModelConverter
 
     public static LdifChangeAddRecord entryToLdifChangeAddRecord( IEntry entry )
     {
-
         boolean mustCreateChangeTypeLine = true;
-        IAttribute[] attributes = entry.getAttributes();
-        for ( int i = 0; i < attributes.length; i++ )
+        for ( IAttribute attribute : entry.getAttributes() )
         {
-            IValue[] values = attributes[i].getValues();
-            for ( int ii = 0; ii < values.length; ii++ )
+            for ( IValue value : attribute.getValues() )
             {
-                IValue value = values[ii];
                 if ( value.getRawValue() instanceof LdifPart )
                 {
                     mustCreateChangeTypeLine = false;
@@ -162,8 +152,6 @@ public class ModelConverter
             }
         }
 
-        // LdifChangeAddRecord record =
-        // LdifChangeAddRecord.create(entry.getDn().toString());
         LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getUpName() ) );
         if ( mustCreateChangeTypeLine )
         {
@@ -171,36 +159,37 @@ public class ModelConverter
             record.setChangeType( LdifChangeTypeLine.createAdd() );
         }
 
-        for ( int i = 0; i < attributes.length; i++ )
+        for ( IAttribute attribute : entry.getAttributes() )
         {
-            String name = attributes[i].getDescription();
-            IValue[] values = attributes[i].getValues();
-            for ( int ii = 0; ii < values.length; ii++ )
+            String name = attribute.getDescription();
+            for ( IValue value : attribute.getValues() )
             {
-                IValue value = values[ii];
-                if ( value.getRawValue() instanceof LdifPart )
+                if ( !value.isEmpty() )
                 {
-                    LdifPart part = ( LdifPart ) value.getRawValue();
-                    if ( part instanceof LdifChangeTypeLine )
+                    if ( value.getRawValue() instanceof LdifPart )
                     {
-                        record.setChangeType( ( LdifChangeTypeLine ) part );
+                        LdifPart part = ( LdifPart ) value.getRawValue();
+                        if ( part instanceof LdifChangeTypeLine )
+                        {
+                            record.setChangeType( ( LdifChangeTypeLine ) part );
+                        }
+                        else if ( part instanceof LdifCommentLine )
+                        {
+                            record.addComment( ( LdifCommentLine ) part );
+                        }
+                        else if ( part instanceof LdifControlLine )
+                        {
+                            record.addControl( ( LdifControlLine ) part );
+                        }
                     }
-                    else if ( part instanceof LdifCommentLine )
+                    else if ( value.isString() )
                     {
-                        record.addComment( ( LdifCommentLine ) part );
+                        record.addAttrVal( LdifAttrValLine.create( name, value.getStringValue() ) );
                     }
-                    else if ( part instanceof LdifControlLine )
+                    else
                     {
-                        record.addControl( ( LdifControlLine ) part );
+                        record.addAttrVal( LdifAttrValLine.create( name, value.getBinaryValue() ) );
                     }
-                }
-                else if ( value.isString() )
-                {
-                    record.addAttrVal( LdifAttrValLine.create( name, value.getStringValue() ) );
-                }
-                else
-                {
-                    record.addAttrVal( LdifAttrValLine.create( name, value.getBinaryValue() ) );
                 }
             }
         }
@@ -213,32 +202,31 @@ public class ModelConverter
 
     public static LdifContentRecord entryToLdifContentRecord( IEntry entry )
     {
-
         LdifContentRecord record = LdifContentRecord.create( entry.getDn().getUpName() );
 
-        IAttribute[] attributes = entry.getAttributes();
-        for ( int i = 0; i < attributes.length; i++ )
+        for ( IAttribute attribute : entry.getAttributes() )
         {
-            String name = attributes[i].getDescription();
-            IValue[] values = attributes[i].getValues();
-            for ( int ii = 0; ii < values.length; ii++ )
+            String name = attribute.getDescription();
+            for ( IValue value : attribute.getValues() )
             {
-                IValue value = values[ii];
-                if ( value.getRawValue() instanceof LdifPart )
+                if ( !value.isEmpty() )
                 {
-                    LdifPart part = ( LdifPart ) value.getRawValue();
-                    if ( part instanceof LdifCommentLine )
+                    if ( value.getRawValue() instanceof LdifPart )
                     {
-                        record.addComment( ( LdifCommentLine ) part );
+                        LdifPart part = ( LdifPart ) value.getRawValue();
+                        if ( part instanceof LdifCommentLine )
+                        {
+                            record.addComment( ( LdifCommentLine ) part );
+                        }
                     }
-                }
-                else if ( value.isString() )
-                {
-                    record.addAttrVal( LdifAttrValLine.create( name, value.getStringValue() ) );
-                }
-                else
-                {
-                    record.addAttrVal( LdifAttrValLine.create( name, value.getBinaryValue() ) );
+                    else if ( value.isString() )
+                    {
+                        record.addAttrVal( LdifAttrValLine.create( name, value.getStringValue() ) );
+                    }
+                    else
+                    {
+                        record.addAttrVal( LdifAttrValLine.create( name, value.getBinaryValue() ) );
+                    }
                 }
             }
         }

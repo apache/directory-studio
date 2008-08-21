@@ -70,7 +70,7 @@ public class AttributeWizard extends Wizard implements INewWizard
 
     /**
      * Creates a new instance of AttributeWizard with an empty
-     * attriute description.
+     * attribute description.
      */
     public AttributeWizard()
     {
@@ -84,7 +84,7 @@ public class AttributeWizard extends Wizard implements INewWizard
 
 
     /**
-     * Creates a new instance of AttributeWizard with the given initial attribute desription
+     * Creates a new instance of AttributeWizard with the given initial attribute description.
      * 
      * @param title the title
      * @param entry the entry

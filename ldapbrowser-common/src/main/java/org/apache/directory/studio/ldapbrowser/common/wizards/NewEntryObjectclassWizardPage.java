@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.wizards;
+package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
 import java.util.ArrayList;
@@ -28,6 +28,8 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -37,8 +39,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.fieldassist.DecoratedField;
 import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -113,8 +113,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
     private LabelProvider labelProvider = new LabelProvider()
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public String getText( Object element )
         {
@@ -123,14 +123,14 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 ObjectClassDescription ocd = ( ObjectClassDescription ) element;
                 return SchemaUtils.toString( ocd );
             }
-            
+
             // Default
             return super.getText( element );
         }
-        
-        
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+
+
+        /**
+         * {@inheritDoc}
          */
         public Image getImage( Object element )
         {
@@ -140,13 +140,13 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 switch ( ocd.getKind() )
                 {
                     case STRUCTURAL:
-                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_STRUCTURAL );
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_OCD_STRUCTURAL );
                     case ABSTRACT:
-                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_ABSTRACT );
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_OCD_ABSTRACT );
                     case AUXILIARY:
-                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD_AUXILIARY );
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_OCD_AUXILIARY );
                     default:
-                        return BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD );
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_OCD );
                 }
             }
 
@@ -166,8 +166,9 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     {
         super( pageName );
         setTitle( "Object Classes" );
-        setDescription( "Please select object classes of the new entry. Select at least one structural object class." );
-        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
+        setDescription( "Please select object classes of the entry. Select at least one structural object class." );
+        setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
 
         this.wizard = wizard;
@@ -223,27 +224,21 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         if ( wizard.getSelectedConnection() != null )
         {
-            //            if ( !wizard.getSelectedConnection().isOpened() )
-            //            {
-            //                OpenConnectionsJob job = new OpenConnectionsJob( wizard.getSelectedConnection().getConnection() );
-            //                RunnableContextJobAdapter.execute( job, getContainer() );
-            //            }
-
-            availableObjectClasses.addAll( wizard.getSelectedConnection().getSchema()
-                .getObjectClassDescriptions() );
+            availableObjectClasses.addAll( wizard.getSelectedConnection().getSchema().getObjectClassDescriptions() );
 
             DummyEntry newEntry = wizard.getPrototypeEntry();
             IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
             if ( ocAttribute != null )
             {
-                String[] ocValues = ocAttribute.getStringValues();
-                for ( int i = 0; i < ocValues.length; i++ )
+                for ( IValue ocValue : ocAttribute.getValues() )
                 {
-                    String ocValue = ocValues[i];
-                    ObjectClassDescription ocd = wizard.getSelectedConnection().getSchema().getObjectClassDescription(
-                        ocValue );
-                    availableObjectClasses.remove( ocd );
-                    selectedObjectClasses.add( ocd );
+                    if(!ocValue.isEmpty())
+                    {
+                        ObjectClassDescription ocd = wizard.getSelectedConnection().getSchema()
+                        .getObjectClassDescription( ocValue.getStringValue() );
+                        availableObjectClasses.remove( ocd );
+                        selectedObjectClasses.add( ocd );
+                    }
                 }
             }
         }
@@ -461,8 +456,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
 
     /**
-     * Adds the selected object classes to the list of selected 
-     * object classes.
+     * Adds the selected object classes and all superiors
+     * to the list of selected object classes.
      * 
      * @param iselection the selection
      */
@@ -480,7 +475,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 selectedObjectClasses.add( ocd );
 
                 // recursively add superior object classes
-                List<ObjectClassDescription> superiorObjectClassDescriptions = SchemaUtils.getSuperiorObjectClassDescriptions( ocd, schema );
+                List<ObjectClassDescription> superiorObjectClassDescriptions = SchemaUtils
+                    .getSuperiorObjectClassDescriptions( ocd, schema );
                 if ( !superiorObjectClassDescriptions.isEmpty() )
                 {
                     add( new StructuredSelection( superiorObjectClassDescriptions ) );
@@ -501,8 +497,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
 
     /**
-     * Removes the selected object classes from the list of selected
-     * object classes.
+     * Removes the selected object classes and all sub classes
+     * from the list of selected object classes.
      * 
      * @param iselection the iselection
      */
@@ -520,7 +516,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 availableObjectClasses.add( ocd );
 
                 // recursively remove sub object classes
-                List<ObjectClassDescription> subObjectClassDescriptions = SchemaUtils.getSuperiorObjectClassDescriptions( ocd, schema );
+                List<ObjectClassDescription> subObjectClassDescriptions = SchemaUtils
+                    .getSuperiorObjectClassDescriptions( ocd, schema );
                 if ( !subObjectClassDescriptions.isEmpty() )
                 {
                     remove( new StructuredSelection( subObjectClassDescriptions ) );
@@ -528,18 +525,21 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             }
         }
 
+        // re-add superior object classes of remaining object classes
+        List<ObjectClassDescription> copy = new ArrayList<ObjectClassDescription>( selectedObjectClasses );
+        for ( ObjectClassDescription ocd : copy )
+        {
+            List<ObjectClassDescription> superiorObjectClassDescriptions = SchemaUtils
+                .getSuperiorObjectClassDescriptions( ocd, schema );
+            if ( !superiorObjectClassDescriptions.isEmpty() )
+            {
+                add( new StructuredSelection( superiorObjectClassDescriptions ) );
+            }
+        }
+
         availableObjectClassesViewer.refresh();
         selectedObjectClassesViewer.refresh();
         validate();
-    }
-
-
-    /**
-     * Saves dialog settings.
-     */
-    public void saveDialogSettings()
-    {
-
     }
 
     /**

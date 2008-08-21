@@ -18,11 +18,13 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.wizards;
+package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -36,8 +38,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -89,7 +89,8 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         super( pageName );
         setTitle( "Entry Creation Method" );
         setDescription( "Please select the entry creation method." );
-        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
+        setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
 
         this.wizard = wizard;
@@ -115,7 +116,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      * 
@@ -127,7 +128,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
     {
         return isPageComplete();
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -185,7 +186,8 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             // init attributes
             if ( !templateEntries[0].isAttributesInitialized() )
             {
-                InitializeAttributesRunnable initializeAttributesRunnable = new InitializeAttributesRunnable( templateEntries, false );
+                InitializeAttributesRunnable initializeAttributesRunnable = new InitializeAttributesRunnable(
+                    templateEntries, false );
                 RunnableContextRunner.execute( initializeAttributesRunnable, getContainer(), true );
             }
 
@@ -246,12 +248,15 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         entryWidget.createWidget( entryComposite );
         entryWidget.addWidgetModifyListener( this );
 
-        if ( BrowserUIPlugin.getDefault().getDialogSettings().get( PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY ) == null )
-            BrowserUIPlugin.getDefault().getDialogSettings().put( PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY,
-                true );
-        schemaButton.setSelection( BrowserUIPlugin.getDefault().getDialogSettings().getBoolean(
+        if ( BrowserCommonActivator.getDefault().getDialogSettings().get(
+            PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY ) == null )
+        {
+            BrowserCommonActivator.getDefault().getDialogSettings().put(
+                PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY, true );
+        }
+        schemaButton.setSelection( BrowserCommonActivator.getDefault().getDialogSettings().getBoolean(
             PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY ) );
-        templateButton.setSelection( !BrowserUIPlugin.getDefault().getDialogSettings().getBoolean(
+        templateButton.setSelection( !BrowserCommonActivator.getDefault().getDialogSettings().getBoolean(
             PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY ) );
         widgetSelected( null );
 
@@ -291,7 +296,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
      */
     public void saveDialogSettings()
     {
-        BrowserUIPlugin.getDefault().getDialogSettings().put( PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY,
+        BrowserCommonActivator.getDefault().getDialogSettings().put( PREFERRED_ENTRY_CREATION_METHOD_DIALOGSETTING_KEY,
             schemaButton.getSelection() );
     }
 

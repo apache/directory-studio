@@ -28,8 +28,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
@@ -38,12 +40,19 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.Preferences;
 
 
@@ -52,7 +61,7 @@ public class Utils
 
     /**
      * Transforms the given DN into a normalized String, usable by the schema cache.
-     * The following transformations are permformed:
+     * The following transformations are performed:
      * <ul>
      *   <li>The attribute type is replaced by the OID
      *   <li>The attribute value is trimmed and lowercased
@@ -369,6 +378,146 @@ public class Utils
         url.setScope( search.getScope().getOrdinal() );
         url.setFilter( search.getFilter() );
         return url;
+    }
+
+
+    /**
+     * Computes the difference between the old and the new entry
+     * and returns an LDIF that could be applied to the old entry
+     * to get new entry.
+     *
+     * @param t0 the old entry
+     * @param t1 the new entry
+     * @return the change modify record or null if there is no difference
+     *         between the two entries
+     */
+    public static LdifChangeModifyRecord computeDiff( IEntry t0, IEntry t1 )
+    {
+        // TODO: binary
+        LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t0.getDn().getUpName() );
+
+        // check which attributes/values must be deleted
+        for ( IAttribute oldAttr : t0.getAttributes() )
+        {
+            String oldAttrDesc = oldAttr.getDescription();
+            IAttribute newAttr = t1.getAttribute( oldAttrDesc );
+            if ( newAttr == null )
+            {
+                // delete whole attribute
+                LdifModSpec modSpec = LdifModSpec.createDelete( oldAttrDesc );
+                modSpec.finish( LdifModSpecSepLine.create() );
+                record.addModSpec( modSpec );
+            }
+            else if ( oldAttr.getValueSize() == 1 && newAttr.getValueSize() == 1 )
+            {
+                // check later: replace
+            }
+            else
+            {
+                Set<String> newValues = new HashSet<String>( Arrays.asList( newAttr.getStringValues() ) );
+                for ( IValue oldValue : oldAttr.getValues() )
+                {
+                    if ( !newValues.contains( oldValue.getStringValue() ) && !oldValue.isEmpty() )
+                    {
+                        LdifModSpec modSpec = LdifModSpec.createDelete( oldAttrDesc );
+                        if ( oldAttr.isBinary() )
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( oldAttrDesc, oldValue.getBinaryValue() ) );
+                        }
+                        else
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( oldAttrDesc, oldValue.getStringValue() ) );
+                        }
+                        modSpec.finish( LdifModSpecSepLine.create() );
+                        record.addModSpec( modSpec );
+                    }
+                }
+            }
+        }
+
+        // check which attributes/values must be added
+        for ( IAttribute newAttr : t1.getAttributes() )
+        {
+            String newAttrDesc = newAttr.getDescription();
+            IAttribute oldAttr = t0.getAttribute( newAttrDesc );
+            if ( oldAttr == null )
+            {
+                // add whole attribute
+                LdifModSpec modSpec = LdifModSpec.createAdd( newAttrDesc );
+                for ( IValue newValue : newAttr.getValues() )
+                {
+                    if ( !newValue.isEmpty() )
+                    {
+                        if ( newAttr.isBinary() )
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getBinaryValue() ) );
+                        }
+                        else
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getStringValue() ) );
+                        }
+                    }
+                }
+                modSpec.finish( LdifModSpecSepLine.create() );
+                if ( modSpec.isValid() )
+                {
+                    record.addModSpec( modSpec );
+                }
+            }
+            else if ( oldAttr.getValueSize() == 1 && newAttr.getValueSize() == 1 )
+            {
+                // check later: replace
+            }
+            else
+            {
+                Set<String> oldValues = new HashSet<String>( Arrays.asList( oldAttr.getStringValues() ) );
+                for ( IValue newValue : newAttr.getValues() )
+                {
+                    if ( !oldValues.contains( newValue.getStringValue() ) && !newValue.isEmpty() )
+                    {
+                        LdifModSpec modSpec = LdifModSpec.createAdd( newAttrDesc );
+                        if ( newAttr.isBinary() )
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getBinaryValue() ) );
+                        }
+                        else
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getStringValue() ) );
+                        }
+                        modSpec.finish( LdifModSpecSepLine.create() );
+                        record.addModSpec( modSpec );
+                    }
+                }
+            }
+        }
+
+        // check which attributes/values must be replaced
+        for ( IAttribute newAttr : t1.getAttributes() )
+        {
+            String newAttrDesc = newAttr.getDescription();
+            IAttribute oldAttr = t0.getAttribute( newAttrDesc );
+            if ( oldAttr != null && oldAttr.getValueSize() == 1 && newAttr.getValueSize() == 1
+                && !oldAttr.getValues()[0].getStringValue().equals( newAttr.getValues()[0].getStringValue() ) )
+            {
+                LdifModSpec modSpec = LdifModSpec.createReplace( newAttrDesc );
+                if ( newAttr.isBinary() )
+                {
+                    modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newAttr.getValues()[0].getBinaryValue() ) );
+                }
+                else
+                {
+                    modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newAttr.getValues()[0].getStringValue() ) );
+                }
+                modSpec.finish( LdifModSpecSepLine.create() );
+                record.addModSpec( modSpec );
+            }
+        }
+
+        record.finish( LdifSepLine.create() );
+
+        // check for changes: if there are no changes the record does not include
+        // any modifications and so it is not valid.
+        return record.isValid() ? record : null;
     }
 
 }

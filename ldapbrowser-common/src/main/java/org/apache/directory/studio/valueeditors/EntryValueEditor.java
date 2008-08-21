@@ -26,23 +26,25 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.MultivaluedDialog;
+import org.apache.directory.studio.ldapbrowser.common.wizards.EditEntryWizard;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
 /**
- * Special ValueEditor to handle attributes with multiple values in a dialog.
+ * Special ValueEditor to edit an entry off-line in the {@link EditEntryWizard}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class MultivaluedValueEditor extends CellEditor implements IValueEditor
+public class EntryValueEditor extends CellEditor implements IValueEditor
 {
 
     /** The value to handle */
@@ -62,13 +64,13 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
 
 
     /**
-     * Creates a new instance of MultivaluedValueEditor.
+     * Creates a new instance of EntryValueEditor.
      *
      * @param parent the parent composite
      * @param valueEditorManager the value editor manager, used to get
      *                           proper value editors
      */
-    public MultivaluedValueEditor( Composite parent, ValueEditorManager valueEditorManager )
+    public EntryValueEditor( Composite parent, ValueEditorManager valueEditorManager )
     {
         super( parent );
         this.parent = parent;
@@ -127,12 +129,15 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
      */
     public void activate()
     {
-        if ( getValue() != null && getValue() instanceof AttributeHierarchy )
+        if ( getValue() != null && getValue() instanceof IEntry )
         {
-            AttributeHierarchy ah = ( AttributeHierarchy ) getValue();
-            if ( ah != null )
+            IEntry entry = ( IEntry ) getValue();
+            if ( entry != null )
             {
-                MultivaluedDialog dialog = new MultivaluedDialog( parent.getShell(), ah );
+                EditEntryWizard wizard = new EditEntryWizard( entry );
+                WizardDialog dialog = new WizardDialog( parent.getShell(), wizard );
+                dialog.setBlockOnOpen( true );
+                dialog.create();
                 dialog.open();
             }
         }
@@ -174,13 +179,10 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
         for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
         {
             IValue value = it.next();
-            IValueEditor vp = valueEditorManager.getCurrentValueEditor( value.getAttribute().getEntry(), value
-                .getAttribute().getDescription() );
+            IValueEditor vp = getValueEditor( value );
             sb.append( vp.getDisplayValue( value ) );
             if ( it.hasNext() )
-            {
                 sb.append( ", " );
-            }
         }
         return sb.toString();
     }
@@ -189,43 +191,60 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
     /**
      * {@inheritDoc}
      * 
-     * It doesn't make sense to use the MultivaluedValueEditor with a single value.
-     * Returns an empty string.
+     * This implementation gets the display value of the real value editor. 
      */
     public String getDisplayValue( IValue value )
     {
-        return "";
+        IValueEditor vp = getValueEditor( value );
+        return vp.getDisplayValue( value );
+    }
+
+
+    private IValueEditor getValueEditor( IValue value )
+    {
+        IValueEditor vp = valueEditorManager.getCurrentValueEditor( value.getAttribute().getEntry(), value
+            .getAttribute().getDescription() );
+
+        // avoid recursion: unset the user selected value editor
+        if ( vp instanceof EntryValueEditor )
+        {
+            IValueEditor userSelectedValueEditor = valueEditorManager.getUserSelectedValueEditor();
+            valueEditorManager.setUserSelectedValueEditor( null );
+            vp = valueEditorManager.getCurrentValueEditor( value.getAttribute().getEntry(), value.getAttribute()
+                .getDescription() );
+            valueEditorManager.setUserSelectedValueEditor( userSelectedValueEditor );
+        }
+
+        return vp;
     }
 
 
     /**
      * {@inheritDoc}
      * 
-     * Returns the attributeHierarchy.
+     * Returns the entry.
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        return attributeHierarchy;
+        return attributeHierarchy.getEntry().isDirectoryEntry() ? attributeHierarchy.getEntry() : null;
     }
 
 
     /**
      * {@inheritDoc}
      * 
-     * It doesn't make sense to use the MultivaluedValueEditor with a single value.
-     * Returns null.
+     * Returns the entry.
      */
     public Object getRawValue( IValue value )
     {
-        return null;
+        return value.getAttribute().getEntry().isDirectoryEntry() ? value.getAttribute().getEntry() : null;
     }
 
 
     /**
      * {@inheritDoc}
      * 
-     * Modification is performed in the concrete single-ValueEditors. No need 
-     * to return a value.
+     * Modification is performed by the wizard. No need to return a value.
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {

@@ -25,9 +25,10 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
-import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -68,7 +69,7 @@ public class RunnableContextRunner
             public void run( IProgressMonitor monitor ) throws InterruptedException
             {
                 spm[0] = new StudioProgressMonitor( monitor );
-                
+
                 // ensure that connections are opened
                 Connection[] connections = runnable.getConnections();
                 if ( connections != null )
@@ -80,13 +81,14 @@ public class RunnableContextRunner
                             spm[0].setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
                                 { connection.getName() } ) );
                             spm[0].worked( 1 );
-            
+
                             connection.getJNDIConnectionWrapper().connect( spm[0] );
                             connection.getJNDIConnectionWrapper().bind( spm[0] );
 
                             if ( connection.getJNDIConnectionWrapper().isConnected() )
                             {
-                                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
+                                for ( IConnectionListener listener : ConnectionCorePlugin.getDefault()
+                                    .getConnectionListeners() )
                                 {
                                     listener.connectionOpened( connection, spm[0] );
                                 }
@@ -95,8 +97,29 @@ public class RunnableContextRunner
                         }
                     }
                 }
-                
-                runnable.run( spm[0] );
+
+                //runnable.run( spm[0] );
+                if ( runnable instanceof StudioBulkRunnableWithProgress )
+                {
+                    StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
+                    ConnectionEventRegistry.suspendEventFireingInCurrentThread();
+                    try
+                    {
+                        bulkRunnable.run( spm[0] );
+                    }
+                    finally
+                    {
+                        ConnectionEventRegistry.resumeEventFireingInCurrentThread();
+                    }
+                    bulkRunnable.runNotification();
+                }
+                else
+                {
+                    System.out.println( "NoBulk: " + runnable );
+                    runnable.run( spm[0] );
+                }
+
+                spm[0].done();
             }
         };
 

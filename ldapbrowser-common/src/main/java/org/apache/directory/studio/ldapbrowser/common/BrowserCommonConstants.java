@@ -33,6 +33,8 @@ public interface BrowserCommonConstants
 
     public static final String ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION = "org.apache.directory.studio.ldapbrowser.action.editAttributeDescription";
 
+    public static final String ACTION_ID_EDIT_RECORD = "org.apache.directory.studio.ldapbrowser.action.editRecord";
+    
 
     
     public static final String DIALOGSETTING_KEY_RECENT_FILE_PATH = "recentFilePath";
@@ -254,7 +256,15 @@ public interface BrowserCommonConstants
 
     public static final String IMG_OCD = "resources/icons/ocd.png";
 
+    public static final String IMG_OCD_ABSTRACT = "resources/icons/ocd_abstract.gif";
+
+    public static final String IMG_OCD_AUXILIARY = "resources/icons/ocd_auxiliary.gif";
+
+    public static final String IMG_OCD_STRUCTURAL = "resources/icons/ocd_structural.gif";
+
     public static final String IMG_MRD = "resources/icons/mrd.png";
+
+    public static final String IMG_ENTRY_WIZARD = "resources/icons/entry_wizard.gif";
 
 
 

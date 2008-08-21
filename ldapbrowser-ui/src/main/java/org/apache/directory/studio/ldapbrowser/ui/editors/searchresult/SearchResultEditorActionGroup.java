@@ -87,6 +87,9 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     /** The open editor actions. */
     private SearchResultEditorActionProxy[] openValueEditorActionProxies;
 
+    /** The open entry value editor action. */
+    private SearchResultEditorActionProxy openEntryValueEditorActionProxy;
+    
     private ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
     private static final String copyTableAction = "copyTableAction";
@@ -180,6 +183,8 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             openValueEditorActionProxies[i] = new SearchResultEditorActionProxy( cursor, new OpenEditorAction( viewer,
                 cursor, valueEditorManager, valueEditors[i], this ) );
         }
+        openEntryValueEditorActionProxy = new SearchResultEditorActionProxy( cursor, new OpenEntryEditorAction( viewer,
+            cursor, valueEditorManager, valueEditorManager.getEntryValueEditor(), this ) );
         this.openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
         this.searchResultEditorActionMap.put( copyTableAction, new SearchResultEditorActionProxy( cursor,
@@ -271,7 +276,9 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
                 openValueEditorActionProxies[i].dispose();
                 openValueEditorActionProxies[i] = null;
             }
-            this.openValueEditorPreferencesAction = null;
+            openEntryValueEditorActionProxy.dispose();
+            openEntryValueEditorActionProxy = null;
+            openValueEditorPreferencesAction = null;
 
             for ( Iterator it = this.searchResultEditorActionMap.keySet().iterator(); it.hasNext(); )
             {
@@ -408,6 +415,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         editorMenuManager.add( new Separator() );
         editorMenuManager.add( this.openValueEditorPreferencesAction );
         menuManager.add( editorMenuManager );
+        menuManager.add( openEntryValueEditorActionProxy );
         menuManager.add( new Separator() );
 
         // refresh
@@ -447,6 +455,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
         ActionUtils.activateActionHandler( osr );
         ActionUtils.activateActionHandler( openDefaultValueEditorActionProxy );
+        ActionUtils.activateActionHandler( openEntryValueEditorActionProxy );
     }
 
 
@@ -470,6 +479,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
         ActionUtils.deactivateActionHandler( osr );
         ActionUtils.deactivateActionHandler( openDefaultValueEditorActionProxy );
+        ActionUtils.deactivateActionHandler( openEntryValueEditorActionProxy );
     }
 
 
@@ -496,6 +506,10 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             return true;
         }
         if ( ( ( AbstractOpenEditorAction ) openBestValueEditorActionProxy.getAction() ).isActive() )
+        {
+            return true;
+        }
+        if ( ( ( AbstractOpenEditorAction ) openEntryValueEditorActionProxy.getAction() ).isActive() )
         {
             return true;
         }

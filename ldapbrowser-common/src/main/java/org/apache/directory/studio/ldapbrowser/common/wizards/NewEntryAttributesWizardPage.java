@@ -18,7 +18,7 @@
  *
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.wizards;
+package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -36,8 +36,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -89,7 +87,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         super( pageName );
         setTitle( "Attributes" );
         setDescription( "Please enter the attributes for the entry. Enter at least the MUST attributes." );
-        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_WIZARD ) );
+        setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
 
         this.wizard = wizard;

@@ -21,7 +21,8 @@
 package org.apache.directory.studio.ldifeditor.editor;
 
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
@@ -52,18 +53,20 @@ public class ExecuteLdifAction extends Action
         this.editor = editor;
     }
 
+
     /**
      * {@inheritDoc}
      */
     public void run()
     {
-
         IBrowserConnection connection = editor.getConnection();
         String ldif = editor.getLdifModel().toRawString();
 
-        new ExecuteLdifJob( connection, ldif, true ).execute();
-
+        ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( connection, ldif, true );
+        StudioBrowserJob job = new StudioBrowserJob( runnable );
+        job.execute();
     }
+
 
     /**
      * {@inheritDoc}
