@@ -263,7 +263,7 @@ public abstract class AbstractEclipseJob extends Job
 
     protected static String getLockIdentifier( IBrowserConnection browserConnection )
     {
-        if ( browserConnection instanceof BrowserConnection )
+        if ( browserConnection instanceof BrowserConnection && browserConnection.getConnection() != null )
         {
             return browserConnection.getConnection().getHost() + ":" + browserConnection.getConnection().getPort();
         }

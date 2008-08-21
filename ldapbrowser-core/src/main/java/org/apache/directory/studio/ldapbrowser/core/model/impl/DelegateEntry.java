@@ -82,12 +82,13 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * Creates a new instance of DelegateEntry.
      * 
-     * @param connection the connection of the delegate
+     * @param browserConnection the browser connection of the delegate
      * @param dn the DN of the delegate
      */
-    public DelegateEntry( IBrowserConnection connection, LdapDN dn )
+    public DelegateEntry( IBrowserConnection browserConnection, LdapDN dn )
     {
-        this.connectionId = connection.getConnection().getId();
+        this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId()
+            : null;
         this.dn = dn;
         this.entryDoesNotExist = false;
         this.delegate = null;
@@ -102,9 +103,15 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
      */
     protected IEntry getDelegate()
     {
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnectionById( connectionId );
+        if ( browserConnection == null )
+        {
+            throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
+        }
+        
         // always get the fresh entry from cache
-        IBrowserConnection conn = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( connectionId );
-        delegate = conn.getEntryFromCache( dn );
+        delegate = browserConnection.getEntryFromCache( dn );
         
         if ( delegate != null
             && !delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
@@ -139,7 +146,13 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         }
         else
         {
-            return BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById( connectionId );
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnectionById( connectionId );
+            if ( browserConnection == null )
+            {
+                throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
+            }
+            return browserConnection;
         }
     }
 

@@ -61,8 +61,11 @@ public class EditEntryWizard extends NewEntryWizard
 
         selectedEntry = entry;
         selectedConnection = entry.getBrowserConnection();
-        originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
-        selectedConnection.getConnection().setReadOnly( true );
+        if ( selectedConnection.getConnection() != null )
+        {
+            originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
+            selectedConnection.getConnection().setReadOnly( true );
+        }
 
         // ensure the attributes of the entry are initialized
         if ( !selectedEntry.isAttributesInitialized() )
@@ -115,7 +118,7 @@ public class EditEntryWizard extends NewEntryWizard
      */
     public boolean performCancel()
     {
-        if ( selectedConnection != null && selectedConnection.getConnection() != null )
+        if ( selectedConnection.getConnection() != null )
         {
             selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
         }
@@ -131,7 +134,7 @@ public class EditEntryWizard extends NewEntryWizard
     {
         try
         {
-            if ( selectedConnection != null && selectedConnection.getConnection() != null )
+            if ( selectedConnection.getConnection() != null )
             {
                 selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
 

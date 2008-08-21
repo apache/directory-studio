@@ -262,8 +262,11 @@ public class RenameEntryJob extends AbstractNotificationJob
         ReferralHandlingMethod referralsHandlingMethod = entry.isReferral() ? ReferralHandlingMethod.MANAGE
             : ReferralHandlingMethod.FOLLOW;
 
-        browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( oldDnString, newDnString, true,
-            referralsHandlingMethod, null, monitor, null );
+        if ( browserConnection.getConnection() != null )
+        {
+            browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( oldDnString, newDnString, true,
+                referralsHandlingMethod, null, monitor, null );
+        }
     }
 
 }

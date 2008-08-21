@@ -367,8 +367,11 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             : ReferralHandlingMethod.IGNORE;
 
         // delete entry
-        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(),
-            referralsHandlingMethod, controls, monitor, null );
+        if ( browserConnection.getConnection() != null )
+        {
+            browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( dn.getUpName(),
+                referralsHandlingMethod, controls, monitor, null );
+        }
     }
 
 }

@@ -141,7 +141,10 @@ public class BrowserConnectionListener implements IConnectionListener
             }
         }
 
-        browserConnection.getConnection().getJNDIConnectionWrapper().setBinaryAttributes( binaryAttributeNames );
+        if ( browserConnection.getConnection() != null )
+        {
+            browserConnection.getConnection().getJNDIConnectionWrapper().setBinaryAttributes( binaryAttributeNames );
+        }
     }
 
 }

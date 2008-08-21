@@ -296,8 +296,8 @@ public class BrowserContentProvider implements ITreeContentProvider
             return entryList.toArray();
         }
         else if ( parent instanceof IEntry )
-            {
-                final IEntry parentEntry = ( IEntry ) parent;
+        {
+            final IEntry parentEntry = ( IEntry ) parent;
 
             if ( !parentEntry.isChildrenInitialized() && parentEntry.isDirectoryEntry() )
             {
@@ -408,32 +408,34 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof BrowserCategory )
         {
             BrowserCategory category = ( BrowserCategory ) parent;
-            IBrowserConnection connection = category.getParent();
+            IBrowserConnection browserConnection = category.getParent();
 
             switch ( category.getType() )
             {
                 case BrowserCategory.TYPE_DIT:
                 {
                     // open connection when expanding DIT
-                    if ( !connection.getConnection().getJNDIConnectionWrapper().isConnected() )
+                    if ( browserConnection.getConnection() != null
+                        && !browserConnection.getConnection().getJNDIConnectionWrapper().isConnected() )
                     {
-                        new StudioBrowserJob( new OpenConnectionsRunnable( connection.getConnection() ) ).execute();
+                        new StudioBrowserJob( new OpenConnectionsRunnable( browserConnection.getConnection() ) )
+                            .execute();
                         return new String[]
                             { "Opening Connection..." };
                     }
 
                     return new Object[]
-                        { connection.getRootDSE() };
+                        { browserConnection.getRootDSE() };
                 }
 
                 case BrowserCategory.TYPE_SEARCHES:
                 {
-                    return connection.getSearchManager().getSearches();
+                    return browserConnection.getSearchManager().getSearches();
                 }
 
                 case BrowserCategory.TYPE_BOOKMARKS:
                 {
-                    return connection.getBookmarkManager().getBookmarks();
+                    return browserConnection.getBookmarkManager().getBookmarks();
                 }
             }
 

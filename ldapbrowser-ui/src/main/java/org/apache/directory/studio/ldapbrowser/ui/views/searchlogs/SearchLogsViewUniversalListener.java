@@ -151,14 +151,14 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
     void setInput( SearchLogsViewInput input )
     {
         // only if another connection is selected
-        if ( this.input != input )
+        if ( this.input != input && input.getBrowserConnection().getConnection() != null )
         {
             this.input = input;
 
             // load file %u %g
             StringBuffer sb = new StringBuffer();
             LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
-            File[] files = searchLogger.getFiles( input.getConnection().getConnection() );
+            File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
             int i = input.getIndex();
             if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
             {
@@ -270,34 +270,36 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
 
 
     /**
-     * Clears the input and deletes the logfiles for it
-     * 
+     * Clears the input and deletes the logfiles for it.
      */
     public void clearInput()
     {
-        StringBuffer sb = new StringBuffer( "" );
-        FileWriter fw = null;
-        LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
-        File[] files = searchLogger.getFiles( input.getConnection().getConnection() );
-        searchLogger.dispose( input.getConnection().getConnection() );
-        for ( int i = 0; i < files.length; i++ )
+        if ( input.getBrowserConnection().getConnection() != null )
         {
-            try
+            StringBuffer sb = new StringBuffer( "" );
+            FileWriter fw = null;
+            LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
+            File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
+            searchLogger.dispose( input.getBrowserConnection().getConnection() );
+            for ( int i = 0; i < files.length; i++ )
             {
-                if ( files[i] != null && files[i].exists() && !files[i].delete() )
+                try
                 {
-                    fw = new FileWriter( files[i] );
-                    fw.write( "" );
+                    if ( files[i] != null && files[i].exists() && !files[i].delete() )
+                    {
+                        fw = new FileWriter( files[i] );
+                        fw.write( "" );
+                    }
+    
                 }
-
+                catch ( Exception e )
+                {
+                    sb.append( e.getMessage() );
+                }
             }
-            catch ( Exception e )
-            {
-                sb.append( e.getMessage() );
-            }
+            view.getMainWidget().getSourceViewer().setTopIndex( 0 );
+            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
         }
-        view.getMainWidget().getSourceViewer().setTopIndex( 0 );
-        view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
     }
 
 }

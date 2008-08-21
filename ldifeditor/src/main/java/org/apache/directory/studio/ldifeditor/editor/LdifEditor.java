@@ -569,7 +569,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         this.browserConnection = browserConnection;
         getEditorSite().getActionBars().getStatusLineManager().setMessage(
-            "Used Connection: " + ( this.browserConnection == null ? "-" : this.browserConnection.getConnection().getName() ) );
+            "Used Connection: "
+                + ( browserConnection == null || browserConnection.getConnection() == null ? "-" : browserConnection
+                    .getConnection().getName() ) );
         // getStatusField("ldapconnection").setText();
         
         IAction action = getAction( ExecuteLdifAction.class.getName() );

@@ -34,8 +34,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 public class ModificationLogsViewInput
 {
 
-    /** The connection. */
-    private IBrowserConnection connection;
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
 
     /** The index of the displayed log file */
     private int index;
@@ -44,24 +44,24 @@ public class ModificationLogsViewInput
     /**
      * Creates a new instance of ModificationLogsViewInput.
      * 
-     * @param connection the connection
+     * @param browserConnection the browser connection
      * @param index the index of the displayed log file
      */
-    public ModificationLogsViewInput( IBrowserConnection connection, int index )
+    public ModificationLogsViewInput( IBrowserConnection browserConnection, int index )
     {
-        this.connection = connection;
+        this.browserConnection = browserConnection;
         this.index = index;
     }
 
 
     /**
-     * Gets the connection.
+     * Gets the browser connection.
      * 
-     * @return the connection
+     * @return the browser connection
      */
-    public IBrowserConnection getConnection()
+    public IBrowserConnection getBrowserConnection()
     {
-        return connection;
+        return browserConnection;
     }
 
 

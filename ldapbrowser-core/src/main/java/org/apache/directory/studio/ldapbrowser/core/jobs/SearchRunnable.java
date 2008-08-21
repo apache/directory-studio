@@ -291,6 +291,11 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
     static NamingEnumeration<SearchResult> search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
+        if ( browserConnection == null )
+        {
+            return null;
+        }
+
         String searchBase = parameter.getSearchBase().getUpName();
         SearchControls controls = new SearchControls();
         switch ( parameter.getScope() )

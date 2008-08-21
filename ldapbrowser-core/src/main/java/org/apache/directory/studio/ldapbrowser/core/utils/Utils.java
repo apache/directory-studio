@@ -316,16 +316,19 @@ public class Utils
     public static LdapURL getLdapURL( IBrowserConnection browserConnection )
     {
         LdapURL url = new LdapURL();
-        if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
+        if ( browserConnection.getConnection() != null )
         {
-            url.setScheme( LdapURL.LDAPS_SCHEME );
+            if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
+            {
+                url.setScheme( LdapURL.LDAPS_SCHEME );
+            }
+            else
+            {
+                url.setScheme( LdapURL.LDAP_SCHEME );
+            }
+            url.setHost( browserConnection.getConnection().getHost() );
+            url.setPort( browserConnection.getConnection().getPort() );
         }
-        else
-        {
-            url.setScheme( LdapURL.LDAP_SCHEME );
-        }
-        url.setHost( browserConnection.getConnection().getHost() );
-        url.setPort( browserConnection.getConnection().getPort() );
         return url;
     }
 

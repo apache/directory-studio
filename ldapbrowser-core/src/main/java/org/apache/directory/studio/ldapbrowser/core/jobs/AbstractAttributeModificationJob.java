@@ -47,7 +47,8 @@ public abstract class AbstractAttributeModificationJob extends AbstractNotificat
         }
         finally
         {
-            if( !getModifiedEntry().getBrowserConnection().getConnection().isReadOnly() )
+            if ( getModifiedEntry().getBrowserConnection().getConnection() != null
+                && !getModifiedEntry().getBrowserConnection().getConnection().isReadOnly() )
             {
                 // reload affected attributes
                 String[] attributeDescriptions = getAffectedAttributeDescriptions();

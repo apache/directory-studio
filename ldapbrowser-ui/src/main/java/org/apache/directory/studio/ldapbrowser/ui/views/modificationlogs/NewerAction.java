@@ -66,7 +66,7 @@ public class NewerAction extends BrowserAction
     public void run()
     {
         ModificationLogsViewInput oldInput = ( ModificationLogsViewInput ) getInput();
-        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.getConnection(), oldInput.getIndex() - 1 );
+        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.getBrowserConnection(), oldInput.getIndex() - 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToOldest();
 

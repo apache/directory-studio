@@ -156,7 +156,7 @@ public class ModifyValueJob extends AbstractAttributeModificationJob
     private void modifyValue( IBrowserConnection browserConnection, IEntry entry, IValue oldValue, IValue newValue,
         StudioProgressMonitor monitor )
     {
-        if ( !browserConnection.getConnection().isReadOnly() )
+        if ( browserConnection.getConnection() != null && !browserConnection.getConnection().isReadOnly() )
         {
             // dn
             String dn = entry.getDn().getUpName();

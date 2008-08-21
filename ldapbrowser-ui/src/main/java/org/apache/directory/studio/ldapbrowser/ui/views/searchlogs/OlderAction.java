@@ -70,7 +70,7 @@ public class OlderAction extends BrowserAction
     public void run()
     {
         SearchLogsViewInput oldInput = ( SearchLogsViewInput ) getInput();
-        SearchLogsViewInput newInput = new SearchLogsViewInput( oldInput.getConnection(), oldInput
+        SearchLogsViewInput newInput = new SearchLogsViewInput( oldInput.getBrowserConnection(), oldInput
             .getIndex() + 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToNewest();
@@ -112,12 +112,15 @@ public class OlderAction extends BrowserAction
         if ( getInput() != null && ( getInput() instanceof SearchLogsViewInput ) )
         {
             SearchLogsViewInput input = ( SearchLogsViewInput ) getInput();
-            LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
-            File[] files = searchLogger.getFiles( input.getConnection().getConnection() );
-            int i = input.getIndex() + 1;
-            if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
+            if ( input.getBrowserConnection().getConnection() != null )
             {
-                return true;
+                LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
+                File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
+                int i = input.getIndex() + 1;
+                if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
+                {
+                    return true;
+                }
             }
         }
 

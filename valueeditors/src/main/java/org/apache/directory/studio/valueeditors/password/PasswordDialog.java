@@ -440,7 +440,7 @@ public class PasswordDialog extends Dialog
             && currentPassword.toBytes().length > 0 );
         verifyPasswordButton.setEnabled( testPasswordText.isEnabled() && !"".equals( testPasswordText.getText() ) );
         bindPasswordButton.setEnabled( testPasswordText.isEnabled() && !"".equals( testPasswordText.getText() )
-            && entry != null );
+            && entry != null && entry.getBrowserConnection().getConnection() != null );
 
         // default dialog button
         if ( verifyPasswordButton.isEnabled() )
@@ -485,7 +485,8 @@ public class PasswordDialog extends Dialog
      */
     private void bindCurrentPassword()
     {
-        if ( !"".equals( testPasswordText.getText() ) && entry != null )
+        if ( !"".equals( testPasswordText.getText() ) && entry != null
+            && entry.getBrowserConnection().getConnection() != null )
         {
             Connection connection = ( Connection ) entry.getBrowserConnection().getConnection().clone();
             connection.setName( null );

@@ -226,8 +226,11 @@ public class SelectBrowserConnectionDialog extends Dialog
         if ( initialBrowserConnection != null )
         {
             Connection connection = initialBrowserConnection.getConnection();
-            connectionMainWidget.getViewer().reveal( connection );
-            connectionMainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+            if ( connection != null )
+            {
+                connectionMainWidget.getViewer().reveal( connection );
+                connectionMainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
+            }
         }
 
         applyDialogFont( composite );

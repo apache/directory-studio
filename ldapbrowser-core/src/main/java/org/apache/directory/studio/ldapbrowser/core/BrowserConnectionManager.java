@@ -101,8 +101,9 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     public static final String getSchemaCacheFileName( IBrowserConnection browserConnection )
     {
+        String id = browserConnection.getConnection() != null ? browserConnection.getConnection().getId() : "null";
         return BrowserCorePlugin.getDefault().getStateLocation().append(
-            "schema-" + Utils.getFilenameString( browserConnection.getConnection().getId() ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+            "schema-" + Utils.getFilenameString( id ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

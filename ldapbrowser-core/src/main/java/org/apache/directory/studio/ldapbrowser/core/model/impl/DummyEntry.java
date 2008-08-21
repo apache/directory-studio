@@ -96,7 +96,7 @@ public class DummyEntry implements IEntry
         }
         else
         {
-            this.connectionId = browserConnection.getConnection().getId();
+            this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId() : null;
         }
 
         this.dn = dn;
@@ -207,8 +207,13 @@ public class DummyEntry implements IEntry
      */
     public IBrowserConnection getBrowserConnection()
     {
-        return dummyConnection != null ? dummyConnection : BrowserCorePlugin.getDefault().getConnectionManager()
-            .getBrowserConnectionById( this.connectionId );
+        IBrowserConnection browserConnection = dummyConnection != null ? dummyConnection : BrowserCorePlugin
+            .getDefault().getConnectionManager().getBrowserConnectionById( this.connectionId );
+        if ( browserConnection == null )
+        {
+            throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
+        }
+        return browserConnection;
     }
 
 

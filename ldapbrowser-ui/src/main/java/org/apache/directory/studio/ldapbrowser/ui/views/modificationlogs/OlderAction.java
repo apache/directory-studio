@@ -70,7 +70,7 @@ public class OlderAction extends BrowserAction
     public void run()
     {
         ModificationLogsViewInput oldInput = ( ModificationLogsViewInput ) getInput();
-        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.getConnection(), oldInput
+        ModificationLogsViewInput newInput = new ModificationLogsViewInput( oldInput.getBrowserConnection(), oldInput
             .getIndex() + 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToNewest();
@@ -112,12 +112,16 @@ public class OlderAction extends BrowserAction
         if ( getInput() != null && ( getInput() instanceof ModificationLogsViewInput ) )
         {
             ModificationLogsViewInput input = ( ModificationLogsViewInput ) getInput();
-            LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
-            File[] files = modificationLogger.getFiles( input.getConnection().getConnection() );
-            int i = input.getIndex() + 1;
-            if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
+            if ( input.getBrowserConnection().getConnection() != null )
             {
-                return true;
+                LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault()
+                    .getLdifModificationLogger();
+                File[] files = modificationLogger.getFiles( input.getBrowserConnection().getConnection() );
+                int i = input.getIndex() + 1;
+                if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
+                {
+                    return true;
+                }
             }
         }
 

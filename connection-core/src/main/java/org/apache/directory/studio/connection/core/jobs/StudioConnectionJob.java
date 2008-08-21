@@ -283,7 +283,7 @@ public class StudioConnectionJob extends Job
 
     private static String getLockIdentifier( Object object )
     {
-        return object.toString();
+        return object != null ? object.toString() : "null";
     }
 
 }

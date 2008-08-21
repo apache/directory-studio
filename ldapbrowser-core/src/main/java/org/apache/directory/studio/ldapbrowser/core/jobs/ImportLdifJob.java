@@ -234,6 +234,11 @@ public class ImportLdifJob extends AbstractNotificationJob
     static void importLdif( IBrowserConnection browserConnection, LdifEnumeration enumeration, Writer logWriter,
         boolean continueOnError, StudioProgressMonitor monitor )
     {
+        if ( browserConnection == null )
+        {
+            return;
+        }
+
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         int importedCount = 0;
         int errorCount = 0;

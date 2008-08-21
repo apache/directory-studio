@@ -172,8 +172,11 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
         if ( selectedConnection != null )
         {
-            originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
-            selectedConnection.getConnection().setReadOnly( true );
+            if ( selectedConnection.getConnection() != null )
+            {
+                originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
+                selectedConnection.getConnection().setReadOnly( true );
+            }
             prototypeEntry = new DummyEntry( new LdapDN(), selectedConnection );
         }
     }

@@ -326,7 +326,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
      */
     public String toString()
     {
-        return getConnection().getName();
+        return getConnection() != null ? getConnection().getName() : "null";
     }
 
 

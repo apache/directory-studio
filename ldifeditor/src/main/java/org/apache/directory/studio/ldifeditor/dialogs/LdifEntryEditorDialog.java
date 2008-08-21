@@ -61,7 +61,9 @@ public class LdifEntryEditorDialog extends Dialog
 
     public static final int MAX_HEIGHT = 250;
 
-    private IBrowserConnection connection;
+    private IBrowserConnection browserConnection;
+
+    private boolean originalReadOnlyFlag;
 
     private LdifRecord ldifRecord;
 
@@ -79,25 +81,28 @@ public class LdifEntryEditorDialog extends Dialog
     private IContextActivation contextActivation;
 
 
-    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifContentRecord ldifRecord )
+    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection browserConnection, LdifContentRecord ldifRecord )
     {
-        this( parentShell, connection, ldifRecord, null );
+        this( parentShell, browserConnection, ldifRecord, null );
     }
 
 
-    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifChangeAddRecord ldifRecord )
+    public LdifEntryEditorDialog( Shell parentShell, IBrowserConnection browserConnection,
+        LdifChangeAddRecord ldifRecord )
     {
-        this( parentShell, connection, ldifRecord, null );
+        this( parentShell, browserConnection, ldifRecord, null );
     }
 
 
-    private LdifEntryEditorDialog( Shell parentShell, IBrowserConnection connection, LdifRecord ldifRecord, String s )
+    private LdifEntryEditorDialog( Shell parentShell, IBrowserConnection browserConnection, LdifRecord ldifRecord,
+        String s )
     {
         super( parentShell );
         setShellStyle( getShellStyle() | SWT.RESIZE );
         this.ldifRecord = ldifRecord;
 
-        this.connection = connection != null ? connection : new DummyConnection( Schema.DEFAULT_SCHEMA );
+        this.browserConnection = browserConnection != null ? browserConnection : new DummyConnection(
+            Schema.DEFAULT_SCHEMA );
     }
 
 
@@ -141,7 +146,12 @@ public class LdifEntryEditorDialog extends Dialog
     public void create()
     {
         super.create();
-        //this.actionGroup.activateGlobalActionHandlers();
+
+        if ( browserConnection.getConnection() != null )
+        {
+            originalReadOnlyFlag = browserConnection.getConnection().isReadOnly();
+            browserConnection.getConnection().setReadOnly( true );
+        }
     }
 
 
@@ -151,6 +161,11 @@ public class LdifEntryEditorDialog extends Dialog
         if ( returnValue )
         {
             this.dispose();
+
+            if ( browserConnection.getConnection() != null )
+            {
+                browserConnection.getConnection().setReadOnly( originalReadOnlyFlag );
+            }
         }
         return returnValue;
     }
@@ -221,11 +236,12 @@ public class LdifEntryEditorDialog extends Dialog
         {
             if ( ldifRecord instanceof LdifContentRecord )
             {
-                entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) ldifRecord, connection );
+                entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) ldifRecord, browserConnection );
             }
             else if ( ldifRecord instanceof LdifChangeAddRecord )
             {
-                entry = ModelConverter.ldifChangeAddRecordToEntry( ( LdifChangeAddRecord ) ldifRecord, connection );
+                entry = ModelConverter.ldifChangeAddRecordToEntry( ( LdifChangeAddRecord ) ldifRecord,
+                    browserConnection );
             }
 
             if ( entry != null )
