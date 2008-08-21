@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.naming.LinkLoopException;
 
-import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 
 

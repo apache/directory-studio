@@ -26,7 +26,7 @@ import java.util.Arrays;
 import javax.naming.InvalidNameException;
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.shared.ldap.codec.util.LdapURL;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
