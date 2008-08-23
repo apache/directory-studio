@@ -287,8 +287,8 @@ public class LdifSearchLogger implements IJndiLogger
         lines.add( LdifCommentLine.create( "# baseObject   : " + searchBase ) );
         lines.add( LdifCommentLine.create( "# scope        : " + scopeAsString ) );
         lines.add( LdifCommentLine.create( "# derefAliases : " + aliasAsString ) );
-        lines.add( LdifCommentLine.create( "# sizeLimit    : " + searchControls.getTimeLimit() ) );
-        lines.add( LdifCommentLine.create( "# timeLimit    : " + searchControls.getCountLimit() ) );
+        lines.add( LdifCommentLine.create( "# sizeLimit    : " + searchControls.getCountLimit() ) );
+        lines.add( LdifCommentLine.create( "# timeLimit    : " + searchControls.getTimeLimit() ) );
         lines.add( LdifCommentLine.create( "# typesOnly    : " + "False" ) );
         lines.add( LdifCommentLine.create( "# filter       : " + filter ) );
         lines.add( LdifCommentLine.create( "# attributes   : " + attributesAsString ) );
