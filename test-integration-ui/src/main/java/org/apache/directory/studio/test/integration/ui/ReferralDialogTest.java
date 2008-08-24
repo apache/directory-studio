@@ -21,18 +21,15 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
-
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.finder.UIThreadRunnable;
 import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
 
+import org.apache.directory.server.core.entry.DefaultServerEntry;
+import org.apache.directory.server.core.entry.ServerEntry;
 import org.apache.directory.server.unit.AbstractServerTest;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -217,16 +214,13 @@ public class ReferralDialogTest extends AbstractServerTest
     }
 
 
-    private void createReferralEntry() throws NamingException
+    private void createReferralEntry() throws Exception
     {
-        Attributes attrs = new BasicAttributes();
-        Attribute ocAttr = new BasicAttribute( "objectClass" );
-        ocAttr.add( "top" );
-        ocAttr.add( "referral" );
-        ocAttr.add( "extensibleObject" );
-        attrs.put( ocAttr );
-        attrs.put( "cn", "referralDialogTest" );
-        attrs.put( "ref", "ldap://localhost:" + ldapServer.getIpPort() + "/ou=users,ou=system" );
-        rootDSE.createSubcontext( "cn=referralDialogTest,ou=system", attrs );
+        ServerEntry entry = new DefaultServerEntry(rootDSE.getDirectoryService().getRegistries());
+        entry.setDn( new LdapDN("cn=referralDialogTest,ou=system"  ) );
+        entry.add( "objectClass", "top", "referral", "extensibleObject" );
+        entry.add( "cn", "referralDialogTest" );
+        entry.add( "ref", "ldap://localhost:" + ldapServer.getIpPort() + "/ou=users,ou=system" );
+        rootDSE.add( entry );
     }
 }
