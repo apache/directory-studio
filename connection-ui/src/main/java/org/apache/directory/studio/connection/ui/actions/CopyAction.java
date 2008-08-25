@@ -25,11 +25,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
+import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
@@ -111,13 +118,14 @@ public class CopyAction extends StudioAction
         List<Object> objects = new ArrayList<Object>();
         objects.addAll( Arrays.asList( connections ) );
         objects.addAll( Arrays.asList( connectionFolders ) );
+        String urls = getSelectedConnectionUrls();
 
-        // connection
+        // copy to clipboard
         if ( objects != null )
         {
             copyToClipboard( new Object[]
-                { objects.toArray() }, new Transfer[]
-                { ConnectionTransfer.getInstance() } );
+                { objects.toArray(), urls }, new Transfer[]
+                { ConnectionTransfer.getInstance(), TextTransfer.getInstance() } );
         }
 
         // update paste action
@@ -159,6 +167,35 @@ public class CopyAction extends StudioAction
     public boolean isEnabled()
     {
         return getSelectedConnections().length + getSelectedConnectionFolders().length > 0;
+    }
+
+
+    /**
+     * Gets the selected connections as URLs, multiple URLs
+     * are separated by a line break. 
+     *
+     * @return the selected connections as URLs
+     */
+    private String getSelectedConnectionUrls()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        Connection[] connections = getSelectedConnections();
+        ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
+            .getConnectionParameterPages();
+        for ( Connection connection : connections )
+        {
+            ConnectionParameter parameter = connection.getConnectionParameter();
+            LdapURL ldapUrl = new LdapURL();
+            ldapUrl.setDn( LdapDN.EMPTY_LDAPDN );
+            for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
+            {
+                connectionParameterPage.mergeParametersToLdapURL( parameter, ldapUrl );
+            }
+            sb.append( ldapUrl.toString() );
+            sb.append( ConnectionCoreConstants.LINE_SEPARATOR );
+        }
+        return sb.toString();
     }
 
 }

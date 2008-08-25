@@ -21,7 +21,11 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -57,6 +61,14 @@ import org.eclipse.swt.widgets.Text;
  */
 public class NetworkParameterPage extends AbstractConnectionParameterPage
 {
+
+    private static final String X_CONNECTION_NAME = "X-CONNECTION-NAME";
+
+    private static final String X_ENCRYPTION = "X-ENCRYPTION";
+
+    private static final String X_ENCRYPTION_LDAPS = "ldaps";
+
+    private static final String X_ENCRYPTION_START_TLS = "StartTLS";
 
     /** The connection name text widget */
     private Text nameText;
@@ -150,7 +162,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#createComposite(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
     protected void createComposite( Composite parent )
     {
@@ -198,7 +210,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#validate()
+     * {@inheritDoc}
      */
     protected void validate()
     {
@@ -230,7 +242,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#loadParameters(org.apache.directory.studio.connection.core.ConnectionParameter)
+     * {@inheritDoc}
      */
     protected void loadParameters( ConnectionParameter parameter )
     {
@@ -246,7 +258,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage#initListeners()
+     * {@inheritDoc}
      */
     protected void initListeners()
     {
@@ -314,7 +326,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#saveParameters(org.apache.directory.studio.connection.core.ConnectionParameter)
+     * {@inheritDoc}
      */
     public void saveParameters( ConnectionParameter parameter )
     {
@@ -326,7 +338,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#saveDialogSettings()
+     * {@inheritDoc}
      */
     public void saveDialogSettings()
     {
@@ -336,7 +348,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#setFocus()
+     * {@inheritDoc}
      */
     public void setFocus()
     {
@@ -345,7 +357,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#areParametersModifed()
+     * {@inheritDoc}
      */
     public boolean areParametersModifed()
     {
@@ -354,14 +366,74 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * @see org.apache.directory.studio.connection.ui.ConnectionParameterPage#isReconnectionRequired()
+     * {@inheritDoc}
      */
     public boolean isReconnectionRequired()
     {
-        return connectionParameter == null 
-            || !StringUtils.equals(  connectionParameter.getHost(), getHostName() ) 
+        return connectionParameter == null || !StringUtils.equals( connectionParameter.getHost(), getHostName() )
             || connectionParameter.getPort() != getPort()
             || connectionParameter.getEncryptionMethod() != getEncyrptionMethod();
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
+    {
+        ldapUrl.getExtensions().put( X_CONNECTION_NAME, parameter.getName() );
+
+        ldapUrl.setHost( parameter.getHost() );
+
+        ldapUrl.setPort( parameter.getPort() );
+
+        switch ( parameter.getEncryptionMethod() )
+        {
+            case NONE:
+                // default
+                break;
+            case LDAPS:
+                ldapUrl.getExtensions().put( X_ENCRYPTION, X_ENCRYPTION_LDAPS );
+                break;
+            case START_TLS:
+                ldapUrl.getExtensions().put( X_ENCRYPTION, X_ENCRYPTION_START_TLS );
+                break;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
+    {
+        // connection name, current date if absent
+        String name = ldapUrl.getExtensions().get( X_CONNECTION_NAME );
+        if ( StringUtils.isEmpty( name ) )
+        {
+            name = new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss" ).format( new Date() ); //$NON-NLS-1$
+        }
+        parameter.setName( name );
+
+        // host
+        parameter.setHost( ldapUrl.getHost() );
+
+        // port
+        parameter.setPort( ldapUrl.getPort() );
+
+        // encryption method, none if unknown or absent 
+        String encryption = ldapUrl.getExtensions().get( X_ENCRYPTION );
+        if ( StringUtils.isNotEmpty( encryption ) && X_ENCRYPTION_LDAPS.equalsIgnoreCase( encryption ) )
+        {
+            parameter.setEncryptionMethod( ConnectionParameter.EncryptionMethod.LDAPS );
+        }
+        else if ( StringUtils.isNotEmpty( encryption ) && X_ENCRYPTION_START_TLS.equalsIgnoreCase( encryption ) )
+        {
+            parameter.setEncryptionMethod( ConnectionParameter.EncryptionMethod.START_TLS );
+        }
+        else
+        {
+            parameter.setEncryptionMethod( ConnectionParameter.EncryptionMethod.NONE );
+        }
+    }
 }

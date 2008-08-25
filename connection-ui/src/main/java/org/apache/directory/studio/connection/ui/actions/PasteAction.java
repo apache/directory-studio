@@ -24,14 +24,22 @@ package org.apache.directory.studio.connection.ui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
+import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
@@ -101,7 +109,8 @@ public class PasteAction extends StudioAction
      */
     public boolean isEnabled()
     {
-        return this.getFromClipboard( ConnectionTransfer.getInstance() ) != null;
+        return this.getFromClipboard( ConnectionTransfer.getInstance() ) != null
+            || !getConnectionsByLdapUrl().isEmpty();
     }
 
 
@@ -159,7 +168,8 @@ public class PasteAction extends StudioAction
     {
         List<Connection> connections = new ArrayList<Connection>();
 
-        Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
+        // first check for Connection objects in the clipboard
+        Object content = getFromClipboard( ConnectionTransfer.getInstance() );
         if ( content != null && content instanceof Object[] )
         {
             Object[] objects = ( Object[] ) content;
@@ -168,6 +178,53 @@ public class PasteAction extends StudioAction
                 if ( object instanceof Connection )
                 {
                     connections.add( ( Connection ) object );
+                }
+            }
+        }
+
+        // if there are no Connection objects in the clipboard
+        // then check for LDAP URLs
+        if ( connections.isEmpty() )
+        {
+            List<Connection> connectionByLdapUrl = getConnectionsByLdapUrl();
+            connections.addAll( connectionByLdapUrl );
+        }
+
+        return connections;
+    }
+
+
+    private List<Connection> getConnectionsByLdapUrl()
+    {
+        List<Connection> connections = new ArrayList<Connection>();
+
+        Object content = getFromClipboard( TextTransfer.getInstance() );
+        if ( content != null && content instanceof String )
+        {
+            ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
+                .getConnectionParameterPages();
+
+            String[] lines = ( ( String ) content ).split( ConnectionCoreConstants.LINE_SEPARATOR );
+            for ( String line : lines )
+            {
+                line = line.trim();
+                if ( StringUtils.isNotEmpty( line ) )
+                {
+                    try
+                    {
+                        LdapURL ldapUrl = new LdapURL( line );
+                        ConnectionParameter parameter = new ConnectionParameter();
+                        for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
+                        {
+                            connectionParameterPage.mergeLdapUrlToParameters( ldapUrl, parameter );
+                        }
+                        Connection connection = new Connection( parameter );
+                        connections.add( connection );
+                    }
+                    catch ( LdapURLEncodingException e )
+                    {
+                        // this was a string that doesn't represent an LDAP URL, ignore
+                    }
                 }
             }
         }

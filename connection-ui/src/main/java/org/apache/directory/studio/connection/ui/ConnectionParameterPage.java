@@ -20,6 +20,7 @@
 package org.apache.directory.studio.connection.ui;
 
 
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
@@ -36,9 +37,9 @@ public interface ConnectionParameterPage
 {
 
     /**
-     * Save the fields to the parameters.
+     * Save the fields to the connection parameters.
      * 
-     * @param parameter the parameter
+     * @param parameter the connection parameter
      */
     public void saveParameters( ConnectionParameter parameter );
 
@@ -189,8 +190,25 @@ public interface ConnectionParameterPage
      * The implementing class must return true if any
      * parameter was modified.
      * 
-     * @return true, if parameters were modifed
+     * @return true, if parameters were modified
      */
     public boolean areParametersModifed();
 
+
+    /**
+     * Merges the connection parameters into the LDAP URL.
+     *
+     * @param parameter the source connection parameter
+     * @param ldapUrl the target LDAP URL
+     */
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl );
+
+
+    /**
+     * Merges the LDAP URL into the connection parameters.
+     *
+     * @param ldapUrl the source LDAP URL
+     * @param parameter the target connection parameter
+     */
+    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter );
 }

@@ -25,11 +25,12 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.AliasesDereferencingWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.LimitWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.ReferralsHandlingWidget;
@@ -60,6 +61,26 @@ import org.eclipse.swt.widgets.Group;
  */
 public class BrowserParameterPage extends AbstractConnectionParameterPage
 {
+
+    private static final String X_BASE_DN = "X-BASE-DN";
+
+    private static final String X_COUNT_LIMIT = "X-COUNT-LIMIT";
+
+    private static final String X_TIME_LIMIT = "X-TIME-LIMIT";
+
+    private static final String X_ALIAS_HANDLING = "X-ALIAS-HANDLING";
+
+    private static final String X_ALIAS_HANDLING_FINDING = "FINDING";
+
+    private static final String X_ALIAS_HANDLING_SEARCHING = "SEARCHING";
+
+    private static final String X_ALIAS_HANDLING_NEVER = "NEVER";
+
+    private static final String X_REFERRAL_HANDLING = "X-REFERRAL-HANDLING";
+
+    private static final String X_REFERRAL_HANDLING_IGNORE = "IGNORE";
+
+    private static final String X_REFERRAL_HANDLING_MANAGE = "MANAGE";
 
     /** The checkbox to fetch the base DN's from namingContexts whenever opening the connection */
     private Button autoFetchBaseDnsButton;
@@ -407,10 +428,160 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
 
-        return fetchBaseDns != isAutoFetchBaseDns()
-            || !StringUtils.equals( baseDn, getBaseDN() )
+        return fetchBaseDns != isAutoFetchBaseDns() || !StringUtils.equals( baseDn, getBaseDN() )
             || referralsHandlingMethod != getReferralsHandlingMethod()
             || aliasesDereferencingMethod != getAliasesDereferencingMethod();
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
+    {
+        boolean fetchBaseDns = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS );
+        String baseDn = parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN );
+        if ( !fetchBaseDns && StringUtils.isNotEmpty( baseDn ) )
+        {
+            ldapUrl.getExtensions().put( X_BASE_DN, baseDn );
+        }
+
+        int countLimit = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT );
+        if ( countLimit != 0 )
+        {
+            ldapUrl.getExtensions().put( X_COUNT_LIMIT,
+                parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT ) );
+        }
+
+        int timeLimit = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT );
+        if ( timeLimit != 0 )
+        {
+            ldapUrl.getExtensions().put( X_TIME_LIMIT,
+                parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT ) );
+        }
+
+        int aliasesDereferencingMethodOrdinal = parameter
+            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
+        Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
+            .getByOrdinal( aliasesDereferencingMethodOrdinal );
+        switch ( aliasesDereferencingMethod )
+        {
+            case ALWAYS:
+                // default
+                break;
+            case FINDING:
+                ldapUrl.getExtensions().put( X_ALIAS_HANDLING, X_ALIAS_HANDLING_FINDING );
+                break;
+            case SEARCH:
+                ldapUrl.getExtensions().put( X_ALIAS_HANDLING, X_ALIAS_HANDLING_SEARCHING );
+                break;
+            case NEVER:
+                ldapUrl.getExtensions().put( X_ALIAS_HANDLING, X_ALIAS_HANDLING_NEVER );
+                break;
+        }
+
+        int referralsHandlingMethodOrdinal = parameter
+            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
+        Connection.ReferralHandlingMethod referralsHandlingMethod = Connection.ReferralHandlingMethod
+            .getByOrdinal( referralsHandlingMethodOrdinal );
+        switch ( referralsHandlingMethod )
+        {
+            case FOLLOW:
+                // default
+                break;
+            case IGNORE:
+                ldapUrl.getExtensions().put( X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_IGNORE );
+                break;
+            case MANAGE:
+                ldapUrl.getExtensions().put( X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_MANAGE );
+                break;
+        }
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
+    {
+        // base DN, get from Root DSE if absent, may be empty 
+        String baseDn = ldapUrl.getExtensions().get( X_BASE_DN );
+        if ( baseDn == null )
+        {
+            parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
+            parameter.setExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN, null );
+        }
+        else
+        {
+            parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS, false );
+            parameter.setExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN, baseDn );
+        }
+
+        // count limit, 1000 if non-numeric or absent 
+        String countLimit = ldapUrl.getExtensions().get( X_COUNT_LIMIT );
+        try
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT, new Integer(
+                countLimit ).intValue() );
+        }
+        catch ( NumberFormatException e )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT, 0 );
+        }
+
+        // time limit, 0 if non-numeric or absent 
+        String timeLimit = ldapUrl.getExtensions().get( X_TIME_LIMIT );
+        try
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT, new Integer(
+                timeLimit ).intValue() );
+        }
+        catch ( NumberFormatException e )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT, 0 );
+        }
+
+        // alias handling, ALWAYS if unknown or absent
+        String alias = ldapUrl.getExtensions().get( X_ALIAS_HANDLING );
+        if ( StringUtils.isNotEmpty( alias ) && X_ALIAS_HANDLING_FINDING.equalsIgnoreCase( alias ) )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+                Connection.AliasDereferencingMethod.FINDING.getOrdinal() );
+        }
+        else if ( StringUtils.isNotEmpty( alias ) && X_ALIAS_HANDLING_SEARCHING.equalsIgnoreCase( alias ) )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+                Connection.AliasDereferencingMethod.SEARCH.getOrdinal() );
+        }
+        else if ( StringUtils.isNotEmpty( alias ) && X_ALIAS_HANDLING_NEVER.equalsIgnoreCase( alias ) )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+                Connection.AliasDereferencingMethod.NEVER.getOrdinal() );
+        }
+        else
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+                Connection.AliasDereferencingMethod.ALWAYS.getOrdinal() );
+        }
+
+        // referral handling, FOLLOW if unknown or absent
+        String referral = ldapUrl.getExtensions().get( X_REFERRAL_HANDLING );
+        if ( StringUtils.isNotEmpty( referral ) && X_REFERRAL_HANDLING_IGNORE.equalsIgnoreCase( referral ) )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+                Connection.ReferralHandlingMethod.IGNORE.getOrdinal() );
+        }
+        else if ( StringUtils.isNotEmpty( referral ) && X_REFERRAL_HANDLING_MANAGE.equalsIgnoreCase( referral ) )
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+                Connection.ReferralHandlingMethod.MANAGE.getOrdinal() );
+        }
+        else
+        {
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+                Connection.ReferralHandlingMethod.FOLLOW.getOrdinal() );
+        }
+    }
 }
