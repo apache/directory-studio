@@ -88,14 +88,18 @@
   </build>
 
   <dependencies>
+  	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+  	<!-- JUnit for test only -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
     </dependency>
   </dependencies>
 

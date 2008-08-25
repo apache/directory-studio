@@ -92,6 +92,7 @@
         </configuration>
       </plugin>
       
+      <!-- Copying Apache Directory Server bundled dependencies -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -297,9 +298,10 @@
     </plugins>
   </build>
   
+  <!-- Special dependecyManagement tag used for bundled
+       Apache Directory Server dependencies only -->
    <dependencyManagement>
     <dependencies>
-        <!-- Apache Directory Server dependencies -->
         <dependency>
           <groupId>antlr</groupId>
           <artifactId>antlr</artifactId>
@@ -578,7 +580,30 @@
   </dependencyManagement>
 
   <dependencies>
-    <!-- Eclipse dependencies -->
+  	<!-- Libraries dependencies -->
+    <dependency>
+      <groupId>org.apache.mina</groupId>
+      <artifactId>mina-core</artifactId>
+    </dependency>
+    
+  	<!-- Apache Directory Studio plugins dependencies -->
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>apacheds.configuration</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+	<!-- Eclipse plugins dependencies -->
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86</artifactId>
@@ -664,27 +689,6 @@
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
       <scope>provided</scope>
-    </dependency>
-    <!-- Apache Directory Studio dependencies -->
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>apacheds.configuration</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>jars</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!-- Jar dependencies -->
-    <dependency>
-      <groupId>org.apache.mina</groupId>
-      <artifactId>mina-core</artifactId>
     </dependency>
   </dependencies>
 </project>

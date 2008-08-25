@@ -91,17 +91,26 @@
   </build>
 
   <dependencies>
+  	<!-- Libraries dependencies -->
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
+  
+  	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -109,7 +118,13 @@
       <artifactId>ldifparser</artifactId>
       <scope>provided</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+	<!-- Eclipse plugins dependencies -->
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>osgi</artifactId>
@@ -145,45 +160,12 @@
       <artifactId>preferences</artifactId>
       <scope>provided</scope>
     </dependency>
-
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>studio-dsml-parser</artifactId>
-      <scope>provided</scope>
-    </dependency>
+    
+  	<!-- JUnit for test only -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-logging</groupId>
-          <artifactId>commons-logging</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

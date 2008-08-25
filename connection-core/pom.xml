@@ -98,9 +98,10 @@
   </build>
 
   <dependencies>
+  	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -108,6 +109,8 @@
       <artifactId>ldifparser</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+	<!-- Eclipse plugins dependencies -->
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>osgi</artifactId>
@@ -129,10 +132,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
       <scope>provided</scope>
@@ -142,11 +141,7 @@
       <artifactId>preferences</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <scope>provided</scope>
-    </dependency>
+    
   </dependencies>
 
 </project>

@@ -87,9 +87,14 @@
   </build>
 
   <dependencies>
+  	<!-- Libraries dependencies -->
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlr</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>

@@ -109,19 +109,15 @@
   </build>
 
   <dependencies>
-    <dependency>
+  	<!-- Apache Directory Studio plugins dependencies -->
+  	<dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>jars</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  	<dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>ldifparser</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -131,7 +127,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldapbrowser.common</artifactId>
+      <artifactId>connection.ui</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -141,9 +137,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>valueeditors</artifactId>
+      <artifactId>ldapbrowser.common</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+	<!-- Eclipse plugins dependencies -->
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86</artifactId>
