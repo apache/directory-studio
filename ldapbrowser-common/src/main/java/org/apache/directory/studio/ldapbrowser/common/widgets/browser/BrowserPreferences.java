@@ -84,7 +84,8 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
      */
     public int getSortBy()
     {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getInt( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BY );
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
+            BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BY );
     }
 
 
@@ -122,6 +123,18 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
     {
         return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST );
+    }
+
+
+    /**
+     * Returns true if container entries should be shown before leaf entries.
+     * 
+     * @return true, if container entries should be shown first
+     */
+    public boolean isContainerEntriesFirst()
+    {
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST );
     }
 
 

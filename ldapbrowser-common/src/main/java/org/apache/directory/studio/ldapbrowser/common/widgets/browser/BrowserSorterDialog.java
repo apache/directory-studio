@@ -79,6 +79,12 @@ public class BrowserSorterDialog extends Dialog
     /** The leaf entries first button. */
     private Button leafEntriesFirstButton;
 
+    /** The container entries first button. */
+    private Button containerEntriesFirstButton;
+
+    /** The mixed button. */
+    private Button mixedButton;
+
     /** The meta entries last button. */
     private Button metaEntriesLastButton;
 
@@ -132,6 +138,8 @@ public class BrowserSorterDialog extends Dialog
             IPreferenceStore store = BrowserCommonActivator.getDefault().getPreferenceStore();
             store.setValue( BrowserCommonConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST, leafEntriesFirstButton
                 .getSelection() );
+            store.setValue( BrowserCommonConstants.PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST,
+                containerEntriesFirstButton.getSelection() );
             store.setValue( BrowserCommonConstants.PREFERENCE_BROWSER_META_ENTRIES_LAST, metaEntriesLastButton
                 .getSelection() );
             store.setValue( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_LIMIT, sortLimit );
@@ -163,11 +171,21 @@ public class BrowserSorterDialog extends Dialog
         composite.setLayoutData( gd );
 
         Group groupingGroup = BaseWidgetUtils.createGroup( composite, "Group entries", 1 );
+        Composite columGroup = BaseWidgetUtils.createColumnContainer( groupingGroup, 3, 1 );
 
-        leafEntriesFirstButton = BaseWidgetUtils.createCheckbox( groupingGroup, "Leaf enties first", 1 );
+        leafEntriesFirstButton = BaseWidgetUtils.createRadiobutton( columGroup, "Leaf entries first", 1 );
         leafEntriesFirstButton
             .setToolTipText( "This option displays entries without children before entries with children." );
         leafEntriesFirstButton.setSelection( preferences.isLeafEntriesFirst() );
+
+        containerEntriesFirstButton = BaseWidgetUtils.createRadiobutton( columGroup, "Container entries first", 1 );
+        containerEntriesFirstButton
+        .setToolTipText( "This option displays entries with children before entries without children." );
+        containerEntriesFirstButton.setSelection( preferences.isContainerEntriesFirst() );
+        
+        mixedButton = BaseWidgetUtils.createRadiobutton( columGroup, "Mixed", 1 );
+        mixedButton.setToolTipText( "This option displays entries with and without children mixed." );
+        mixedButton.setSelection( !preferences.isLeafEntriesFirst() && !preferences.isContainerEntriesFirst() );
 
         metaEntriesLastButton = BaseWidgetUtils.createCheckbox( groupingGroup, "Meta entries last", 1 );
         metaEntriesLastButton

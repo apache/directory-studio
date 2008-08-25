@@ -84,6 +84,8 @@ public interface BrowserCommonConstants
 
     public static final String PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST = "browserLeafEntriesFirst";
 
+    public static final String PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST = "browserContainerEntriesFirst";
+
     public static final String PREFERENCE_BROWSER_META_ENTRIES_LAST = "browserMetaEntriesLast";
 
     public static final String PREFERENCE_BROWSER_SHOW_DIT = "browserShowDIT";

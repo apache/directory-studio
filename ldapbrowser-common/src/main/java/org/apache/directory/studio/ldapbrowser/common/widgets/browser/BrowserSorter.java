@@ -100,38 +100,35 @@ public class BrowserSorter extends ViewerSorter
      */
     public int category( Object element )
     {
-        if ( preferences.isLeafEntriesFirst() || preferences.isMetaEntriesLast() )
+        if ( element instanceof IEntry )
         {
-            if ( element instanceof IEntry )
+            IEntry entry = ( IEntry ) element;
+            if ( ( entry instanceof DirectoryMetadataEntry || entry instanceof RootDSE || entry.isAlias() || entry
+                .isReferral() )
+                && preferences.isMetaEntriesLast() )
             {
-                IEntry entry = ( IEntry ) element;
-                if ( ( entry instanceof DirectoryMetadataEntry || entry instanceof RootDSE || entry.isAlias() || entry
-                    .isReferral() )
-                    && preferences.isMetaEntriesLast() )
-                {
-                    return 3;
-                }
-                else if ( entry.isSubentry() && preferences.isLeafEntriesFirst() )
-                {
-                    return 0;
-                }
-                else if ( !entry.hasChildren() && preferences.isLeafEntriesFirst() )
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 2;
-                }
+                return 3;
+            }
+            else if ( entry.isSubentry() )
+            {
+                return 0;
+            }
+            else if ( !entry.hasChildren() && preferences.isLeafEntriesFirst() )
+            {
+                return 1;
+            }
+            else if ( entry.hasChildren() && preferences.isContainerEntriesFirst() )
+            {
+                return 1;
             }
             else
             {
-                return 4;
+                return 2;
             }
         }
         else
         {
-            return 0;
+            return 4;
         }
     }
 
