@@ -72,6 +72,20 @@ public class SWTBotUtils
      */
     public static void openLdapPerspective( final SWTEclipseBot eBot ) throws Exception
     {
+        // optimization: only open LDAP perspective if not yet opened
+        try
+        {
+            if ( eBot.view( "Connections" ) != null )
+            {
+                // LDAP perspective already opened
+                return;
+            }
+        }
+        catch ( Exception e )
+        {
+            // no 'Connections' view, continue to open the LDAP perspective
+        }
+        
         // open "Open Perspective" dialog
         SWTBotMenu windowMenu = eBot.menu( "Window" );
         windowMenu.click();
@@ -102,6 +116,15 @@ public class SWTBotUtils
                 return "Could not find widget";
             }
         } );
+        
+        // close welcome view, if it is there
+        try
+        {
+            eBot.view( "Welcome" ).close();
+        }
+        catch ( Exception e )
+        {
+        }
     }
 
 
