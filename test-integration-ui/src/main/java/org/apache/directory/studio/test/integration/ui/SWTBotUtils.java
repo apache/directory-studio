@@ -29,6 +29,7 @@ import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.eclipse.finder.widgets.SWTBotView;
 import net.sf.swtbot.finder.ControlFinder;
 import net.sf.swtbot.finder.UIThreadRunnable;
+import net.sf.swtbot.finder.UIThreadRunnable.VoidResult;
 import net.sf.swtbot.matcher.ClassMatcher;
 import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.wait.ICondition;
@@ -49,6 +50,8 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 
 
 /**
@@ -202,6 +205,46 @@ public class SWTBotUtils
 
 
     /**
+     * Gets the entry editor tree.
+     * 
+     * @param bot the bot
+     * 
+     * @return the entry editor tree
+     * 
+     * @throws Exception the exception
+     */
+    public static SWTBotTree getEntryEditorTree( SWTEclipseBot bot ) throws Exception
+    {
+        List findEditors = SWTBotView.findEditors();
+        for ( Object object : findEditors )
+        {
+            final IEditorReference editorReference = ( IEditorReference ) object;
+            if ( editorReference.getName().equals( "Entry Editor" ) )
+            {
+                UIThreadRunnable.syncExec( new VoidResult()
+                {
+                    public void run()
+                    {
+                        IEditorPart editor = editorReference.getEditor( true );
+                        editorReference.getPage().activate( editor );
+                    }
+                } );
+
+                final SWTBotView editor = new SWTBotView( editorReference );
+                List<Tree> findControls = new ControlFinder().findControls( editor.widget,
+                    new ClassMatcher( Tree.class ), true );
+                if ( findControls.isEmpty() )
+                {
+                    throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
+                }
+                return new SWTBotTree( findControls.get( 0 ) );
+            }
+        }
+        throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
+    }
+
+
+    /**
      * Clicks a button asynchronously and waits till the given condition
      * is fulfilled.
      * 
@@ -261,6 +304,34 @@ public class SWTBotUtils
             public void run()
             {
                 menu.click();
+            }
+        } );
+
+        if ( waitCondition != null )
+        {
+            bot.waitUntil( waitCondition );
+        }
+    }
+
+
+    /**
+     * Clicks a tree item asynchronously and waits till the given condition
+     * is fulfilled.
+     * 
+     * @param bot the SWT bot
+     * @param item the tree item to click
+     * @param waitCondition the condition to wait for, may be null
+     * 
+     * @throws TimeoutException the timeout exception
+     */
+    public static void asyncClick( final SWTEclipseBot bot, final SWTBotTreeItem item, final ICondition waitCondition )
+        throws TimeoutException
+    {
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        {
+            public void run()
+            {
+                item.click();
             }
         } );
 

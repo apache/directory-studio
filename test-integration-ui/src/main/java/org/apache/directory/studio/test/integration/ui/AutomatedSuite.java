@@ -23,6 +23,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 
 
 /**
@@ -42,13 +43,28 @@ public class AutomatedSuite extends TestSuite
 
     public AutomatedSuite()
     {
-        addTest( new TestSuite( PreparationTest.class ) );
+        // Test Preparation: close welcome view
+        try
+        {
+            SWTEclipseBot bot = new SWTEclipseBot();
+            bot.view( "Welcome" ).close();
+        }
+        catch ( Exception e )
+        {
+        }
 
+        // Test Connections view
         addTest( new TestSuite( NewConnectionWizardTest.class ) );
+
+        // Test Browser view
         addTest( new TestSuite( NewEntryWizardTest.class ) );
         addTest( new TestSuite( RenameEntryDialogTest.class ) );
         addTest( new TestSuite( ReferralDialogTest.class ) );
 
+        // Test Entry editor
+        addTest( new TestSuite( EntryEditorTest.class ) );
+
+        // Test allocated resources
         addTest( new TestSuite( SwtResourcesTest.class ) );
     }
 
