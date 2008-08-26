@@ -20,17 +20,21 @@
 package org.apache.directory.studio.connection.core;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
 import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
@@ -42,7 +46,6 @@ import org.osgi.framework.BundleContext;
  */
 public class ConnectionCorePlugin extends Plugin
 {
-
     /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.connection.core";
 
@@ -66,9 +69,13 @@ public class ConnectionCorePlugin extends Plugin
 
     /** The JNDI loggers. */
     private List<IJndiLogger> jndiLoggers;
-    
+
     /** The connection listeners. */
     private List<IConnectionListener> connectionListeners;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
+
 
     /**
      * The constructor
@@ -236,7 +243,7 @@ public class ConnectionCorePlugin extends Plugin
         List<IJndiLogger> jndiLoggers = getJndiLoggers();
         for ( IJndiLogger jndiLogger : jndiLoggers )
         {
-            if(jndiLogger instanceof LdifModificationLogger)
+            if ( jndiLogger instanceof LdifModificationLogger )
             {
                 return ( LdifModificationLogger ) jndiLogger;
             }
@@ -255,15 +262,15 @@ public class ConnectionCorePlugin extends Plugin
         List<IJndiLogger> jndiLoggers = getJndiLoggers();
         for ( IJndiLogger jndiLogger : jndiLoggers )
         {
-            if(jndiLogger instanceof LdifSearchLogger)
+            if ( jndiLogger instanceof LdifSearchLogger )
             {
                 return ( LdifSearchLogger ) jndiLogger;
             }
         }
         return null;
     }
-    
-    
+
+
     /**
      * Gets the jndi loggers.
      * 
@@ -271,13 +278,13 @@ public class ConnectionCorePlugin extends Plugin
      */
     public List<IJndiLogger> getJndiLoggers()
     {
-        if(jndiLoggers == null)
+        if ( jndiLoggers == null )
         {
             jndiLoggers = new ArrayList<IJndiLogger>();
-            
+
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry
-                .getExtensionPoint( "org.apache.directory.studio.jndilogger" );
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
+                "ExtensionPoint_JndiLogger_id" ) );
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
@@ -291,17 +298,17 @@ public class ConnectionCorePlugin extends Plugin
                 }
                 catch ( Exception e )
                 {
-                   getLog().log(
-                        new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, 1,
-                            "Unable to create JNDI logger " + member.getAttribute( "class" ), e ) );
+                    getLog().log(
+                        new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, 1, "Unable to create JNDI logger "
+                            + member.getAttribute( "class" ), e ) );
                 }
             }
         }
-        
+
         return jndiLoggers;
     }
-    
-    
+
+
     /**
      * Gets the connection listeners.
      * 
@@ -309,22 +316,22 @@ public class ConnectionCorePlugin extends Plugin
      */
     public List<IConnectionListener> getConnectionListeners()
     {
-        if(connectionListeners == null)
+        if ( connectionListeners == null )
         {
             connectionListeners = new ArrayList<IConnectionListener>();
-            
+
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry
-                .getExtensionPoint( "org.apache.directory.studio.connectionlistener" );
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
+                "ExtensionPoint_ConnectionListener_id" ) );
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
                 try
                 {
                     IConnectionListener listener = ( IConnectionListener ) member.createExecutableExtension( "class" );
-//                    listener.setId( member.getAttribute( "id" ) );
-//                    listener.setName( member.getAttribute( "name" ) );
-//                    listener.setDescription( member.getAttribute( "description" ) );
+                    //                    listener.setId( member.getAttribute( "id" ) );
+                    //                    listener.setName( member.getAttribute( "name" ) );
+                    //                    listener.setDescription( member.getAttribute( "description" ) );
                     connectionListeners.add( listener );
                 }
                 catch ( Exception e )
@@ -335,8 +342,34 @@ public class ConnectionCorePlugin extends Plugin
                 }
             }
         }
-        
+
         return connectionListeners;
     }
 
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                getLog().log(
+                    new Status( Status.ERROR, ConnectionCorePlugin.PLUGIN_ID, Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
+    }
 }

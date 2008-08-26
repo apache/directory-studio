@@ -19,22 +19,22 @@
   under the License.
 -->
 <plugin>
-   <extension-point id="org.apache.directory.studio.jndilogger" name="JNDI Logger" schema="src/main/resources/jndiLogger.exsd"/>
-   <extension-point id="org.apache.directory.studio.connectionlistener" name="Connection Listener" schema="src/main/resources/connectionListener.exsd"/>
-   <extension-point id="org.apache.directory.studio.connectionInitializer" name="Connection Initializer" schema="src/main/resources/connectionInitializer.exsd"/>
+   <extension-point id="org.apache.directory.studio.jndilogger" name="%ExtensionPoint_JndiLogger_name" schema="src/main/resources/jndiLogger.exsd"/>
+   <extension-point id="org.apache.directory.studio.connectionlistener" name="%ExtensionPoint_ConnectionListener_name" schema="src/main/resources/connectionListener.exsd"/>
+   <extension-point id="org.apache.directory.studio.connectionInitializer" name="%ExtensionPoint_ConnectionInitialiazer_name" schema="src/main/resources/connectionInitializer.exsd"/>
    <extension
          point="org.apache.directory.studio.jndilogger">
       <jndiLogger
             class="org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger"
-            description="Logs modifications in LDIF format to a file."
-            id="org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger"
-            name="LDIF Modification Logger">
+            description="%JndiLogger_LdifModificationLogger_description"
+            id="%JndiLogger_LdifModificationLogger_id"
+            name="%JndiLogger_LdifModificationLogger_name">
       </jndiLogger>
       <jndiLogger
             class="org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger"
-            description="Logs searches in LDIF format to a file."
-            id="org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger"
-            name="LDIF Search Logger">
+            description="%JndiLogger_LdifSearchLogger_description"
+            id="%JndiLogger_LdifSearchLogger_id"
+            name="%JndiLogger_LdifSearchLogger_name">
       </jndiLogger>
    </extension>
    <extension

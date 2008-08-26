@@ -81,7 +81,8 @@ public class ConnectionManager implements ConnectionUpdateListener
         }
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            "org.apache.directory.studio.connectionInitializer" );
+            ConnectionCorePlugin.getDefault().getPluginProperties().getString(
+                "ExtensionPoint_ConnectionInitialiazer_id" ) );
 
         IConfigurationElement[] configurationElements = extensionPoint.getConfigurationElements();
         for ( IConfigurationElement configurationElement : configurationElements )

@@ -3,7 +3,7 @@
 <schema targetNamespace="org.apache.directory.studio.connection.core">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.apache.directory.studio.connection.core" id="connectionListener" name="Connection Listener"/>
+         <meta.schema plugin="org.apache.directory.studio.connection.core" id="connectionlistener" name="Connection Listener"/>
       </appInfo>
       <documentation>
          A Connection Listener is informed about opening and closing connections.
@@ -103,7 +103,7 @@
          &lt;p&gt;
 &lt;pre&gt;
    &lt;extension
-       point=&quot;org.apache.directory.studio.connectionListener&quot;&gt;
+       point=&quot;org.apache.directory.studio.connectionlistener&quot;&gt;
 
     &lt;valueEditor
           name=&quot;Browser Listener&quot;
