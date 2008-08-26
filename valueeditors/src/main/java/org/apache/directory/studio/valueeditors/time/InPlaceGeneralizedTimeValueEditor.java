@@ -46,14 +46,8 @@ public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValu
     /**
      * {@inheritDoc}
      * 
-     * Returns the proper formatted date and time, Timezone is 
-     * convertet to the default locale. 
-     * 
-     * Can handle 
-     * <ul>
-     * <li>default LDAP format: yyyyMMddHHmmssZ
-     * <li>Active Directory format: yyyyMMddHHmmss.SSSZ
-     * </ul>  
+     * Returns the proper formatted date and time, timezone is 
+     * converted to the default locale. 
      */
     public String getDisplayValue( IValue value )
     {
