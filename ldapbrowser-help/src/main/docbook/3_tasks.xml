@@ -431,6 +431,14 @@
 				or press <shortcut><keycap>Delete</keycap></shortcut> key.
 			</para>
 		</section>		
+		
+		<section id="tasks_manage_entries_modifyobjectclass">
+			<title>Modifying the object class</title>
+			<para>
+				To modify the object class please use the 
+				<link linkend="tools_editentry_wizard">Edit Entry wizard</link>.
+			</para>
+		</section>		
 	</section>
 
 </chapter>

@@ -408,6 +408,22 @@
 						<entry>on</entry>
 					</row>
 					<row>
+						<entry>Container entries first</entry>
+						<entry>
+							If enabled, entries with children are
+							grouped before the entries without children.
+						</entry>
+						<entry>on</entry>
+					</row>
+					<row>
+						<entry>Mixed</entry>
+						<entry>
+							If enabled, entries with and without children
+							are not group before each other.
+						</entry>
+						<entry>on</entry>
+					</row>
+					<row>
 						<entry>Meta entries last</entry>
 						<entry>
 							If enabled, meta entries (e.g. root DSE or

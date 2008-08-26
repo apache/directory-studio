@@ -504,13 +504,42 @@
 					<mediaobject>
 						<imageobject>
 							<imagedata contentdepth="1em"
-								fileref="images/tools_value_editors_9a.png" format="PNG" />
+								fileref="images/tools_value_editors_10a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
 			</para>
 		</simplesect>
 		<simplesect id="tools_value_editors_timestampeditor_edit">
+			<title>Edit value</title>
+			<para>
+				The In-Place Text Editor is used to edit values.
+			</para>
+		</simplesect>		
+	</section>		
+
+	<section id="tools_value_editors_oideditor">
+		<title>OID Editor</title>
+		<para>
+			The OID Editor is the default editor for attributes with OID syntax.
+		</para>
+		<simplesect id="tools_value_editors_oideditor_display">
+			<title>Display value</title>
+			<para>
+				The values are suffixed with the textual description of the OID.
+			</para>		
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="images/tools_value_editors_9a.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+		</simplesect>
+		<simplesect id="tools_value_editors_oideditor_edit">
 			<title>Edit value</title>
 			<para>
 				The In-Place Text Editor is used to edit values.

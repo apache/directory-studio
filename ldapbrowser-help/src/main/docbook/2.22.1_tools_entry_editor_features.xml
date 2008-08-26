@@ -268,9 +268,8 @@
 		</para>
 	</simplesect>
 	
-	<simplesect id="tools_entry_editor_editing">
-		<title>Editing</title>
-	
+	<simplesect id="tools_entry_editor_edit_attributes">
+		<title>Edit Attributes and Values</title>
 		<para>
 			It is possible to add, edit or delete attributes and values of
 			an entry in the Entry editor.
@@ -290,9 +289,30 @@
 			</emphasis>.
 		</para>
 		<para>
-			To finish editing press Enter or click to another value or click
-			the OK button in a value editor dialog. To cancel editing press
-			ESC or click the Cancel button in a value editor dialog.
+			To finish editing press <emphasis role="strong">Enter</emphasis>
+			or click to another value or click the OK button in a 
+			value editor dialog. To cancel editing press 
+			<emphasis role="strong">ESC</emphasis> or click the Cancel button 
+			in a value editor dialog.
+		</para>
+		<para>
+			Using this method each modification will be immediately sent to
+			the directory. 
+		</para>
+	</simplesect>	
+	
+	<simplesect id="tools_entry_editor_edit_offline">
+		<title>Edit Entry Offline</title>
+		<para>
+			You could edit an entry offline to make multiple modifications on 
+			an entry and to send these modifications as one request to the server.
+			This is necessary e.g. when adding an additional object class
+			which requires addional attributes.
+		</para>
+		<para>
+			To start the offlien entry editor press <emphasis role="strong">F8</emphasis>
+			or choose <emphasis role="strong">Edit Entry...</emphasis> from the
+			context menu.
 		</para>
 	</simplesect>	
 

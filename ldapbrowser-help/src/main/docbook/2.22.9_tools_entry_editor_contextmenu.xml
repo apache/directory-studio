@@ -28,6 +28,17 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Opens the
+						<link linkend="tools_attribute_wizard">
+							New Attribute wizard
+						</link>
+						. When finishing the wizard a new attribute is
+						created and the edit mode is started to enter a
+						value.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -37,17 +48,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
-						<link linkend="tools_attribute_wizard">
-							New Attribute wizard
-						</link>
-						. When finishing the wizard a new attribute is
-						created and the edit mode is started to enter a
-						value.
 					</para>
 				</listitem>
 				<listitem>
@@ -77,6 +77,12 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Adds a new value to the selected
+						attribute and starts the edit mode.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -86,12 +92,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Adds a new value to the selected
-						attribute and starts the edit mode.
 					</para>
 				</listitem>
 				<listitem>
@@ -121,6 +121,16 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Opens the
+						<link linkend="tools_search_dialog">
+							Search dialog
+						</link>
+						. The selected attributes and values are used to
+						build the search filter (Query by example).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -130,16 +140,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
-						<link linkend="tools_search_dialog">
-							Search dialog
-						</link>
-						. The selected attributes and values are used to
-						build the search filter (Query by example).
 					</para>
 				</listitem>
 				<listitem>
@@ -168,20 +168,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Icon:
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em" fileref="icons/batch.gif"
-										format="GIF" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
+						Opens the
 						<link
 							linkend="tools_batchoperation_wizard">
 							Batch Operation wizard
@@ -191,6 +178,19 @@
 						Otherwise the selected attributes and values are
 						used to build the search filter (Query by
 						example).
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em" fileref="icons/batch.gif"
+										format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
 					</para>
 				</listitem>
 				<listitem>
@@ -208,6 +208,12 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Locates the entry of the selected
+						DN in DIT.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -217,12 +223,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Locates the entry of the selected
-						DN in DIT.
 					</para>
 				</listitem>
 				<listitem>
@@ -250,20 +250,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Icon:
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em" fileref="icons/ocd.png"
-										format="PNG" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
+						Opens the
 						<link linkend="tools_schema_browser_ocd">
 							Object Class page
 						</link>
@@ -273,6 +260,19 @@
 						</link>
 						and selects the object class definition of the
 						currently selected objectClass value.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em" fileref="icons/ocd.png"
+										format="PNG" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
 					</para>
 				</listitem>
 				<listitem>
@@ -291,20 +291,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Icon:
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em" fileref="icons/atd.png"
-										format="PNG" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
+						Opens the
 						<link linkend="tools_schema_browser_atd">
 							Attribute Type page
 						</link>
@@ -314,6 +301,19 @@
 						</link>
 						and selects the attribute type definiton of the
 						currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em" fileref="icons/atd.png"
+										format="PNG" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
 					</para>
 				</listitem>
 				<listitem>
@@ -335,6 +335,20 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Opens the
+						<link linkend="tools_schema_browser_mrd">
+							Matching Rule page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the equality matching rule definiton
+						of the currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -345,20 +359,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
-						<link linkend="tools_schema_browser_mrd">
-							Matching Rule page
-						</link>
-						in
-						<link linkend="tools_schema_browser">
-							Schema Browser
-						</link>
-						and selects the equality matching rule definiton
-						of the currently selected attribute.
 					</para>
 				</listitem>
 				<listitem>
@@ -381,6 +381,20 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Opens the
+						<link linkend="tools_schema_browser_mrd">
+							Matching Rule page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the substring matching rule
+						definiton of the currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -391,20 +405,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
-						<link linkend="tools_schema_browser_mrd">
-							Matching Rule page
-						</link>
-						in
-						<link linkend="tools_schema_browser">
-							Schema Browser
-						</link>
-						and selects the substring matching rule
-						definiton of the currently selected attribute.
 					</para>
 				</listitem>
 				<listitem>
@@ -427,6 +427,20 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						 Opens the
+						<link linkend="tools_schema_browser_mrd">
+							Matching Rule page
+						</link>
+						in
+						<link linkend="tools_schema_browser">
+							Schema Browser
+						</link>
+						and selects the ordering matching rule definiton
+						of the currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -437,20 +451,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
-						<link linkend="tools_schema_browser_mrd">
-							Matching Rule page
-						</link>
-						in
-						<link linkend="tools_schema_browser">
-							Schema Browser
-						</link>
-						and selects the ordering matching rule definiton
-						of the currently selected attribute.
 					</para>
 				</listitem>
 				<listitem>
@@ -470,20 +470,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Icon:
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em" fileref="icons/lsd.png"
-										format="PNG" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Opens the
+						 Opens the
 						<link linkend="tools_schema_browser_lsd">
 							Syntax page
 						</link>
@@ -493,6 +480,19 @@
 						</link>
 						and selects the syntax definiton of the
 						currently selected attribute.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em" fileref="icons/lsd.png"
+										format="PNG" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
 					</para>
 				</listitem>
 				<listitem>
@@ -512,6 +512,19 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						 Copies the selected values. The
+						values are copied to clipboard in an internal
+						format so they could be pasted to another entry
+						even in the search result editor. Additional
+						they are copied to the system clipboard as
+						string so they could be pasted in other
+						applications. New-line is used as value
+						separator. Binary values are copied BASE-64
+						encoded.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -521,19 +534,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Copies the selected values. The
-						values are copied to clipboard in an internal
-						format so they could be pasted to another entry
-						even in the search result editor. Additional
-						they are copied to the system clipboard as
-						string so they could be pasted in other
-						applications. New-line is used as value
-						separator. Binary values are copied BASE-64
-						encoded.
 					</para>
 				</listitem>
 				<listitem>
@@ -564,6 +564,15 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						 Pasted the previously copied values
+						to the current entry. Each value is copied
+						separately, when an error occurs while adding
+						the value the paste operation will continue with
+						the next value.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -573,15 +582,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Pasted the previously copied values
-						to the current entry. Each value is copied
-						separately, when an error occurs while adding
-						the value the paste operation will continue with
-						the next value.
 					</para>
 				</listitem>
 				<listitem>
@@ -618,20 +618,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Icon:
-						<guiicon>
-							<inlinemediaobject>
-								<imageobject>
-									<imagedata contentdepth="1em"
-										fileref="icons/delete.gif" format="GIF" />
-								</imageobject>
-							</inlinemediaobject>
-						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Deletes the selected attributes and
+						Deletes the selected attributes and
 						values. Note that the following attributes
 						aren't deleteable:
 						<itemizedlist>
@@ -645,6 +632,19 @@
 							</listitem>
 							<listitem>Operational attributes</listitem>
 						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Icon:
+						<guiicon>
+							<inlinemediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="icons/delete.gif" format="GIF" />
+								</imageobject>
+							</inlinemediaobject>
+						</guiicon>
 					</para>
 				</listitem>
 				<listitem>
@@ -671,7 +671,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Selects all attributes and values.
+						Selects all attributes and values.
 					</para>
 				</listitem>
 				<listitem>
@@ -695,6 +695,13 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Copies the distinguished name of
+						the current entry (e.g. cn=John
+						Fowler,ou=People,o=JNDITutorial)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -706,13 +713,6 @@
 						</guiicon>
 					</para>
 				</listitem>
-				<listitem>
-					<para>
-						Description: Copies the distinguished name of
-						the current entry (e.g. cn=John
-						Fowler,ou=People,o=JNDITutorial)
-					</para>
-				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -720,6 +720,13 @@
 		<title>Advanced -> Copy URL</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the URL of the current entry
+						(e.g. ldap://localhost:389/cn=John
+						Fowler,ou=People,o=JNDITutorial)
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -733,13 +740,6 @@
 						</guiicon>
 					</para>
 				</listitem>
-				<listitem>
-					<para>
-						Description: Copies the URL of the current entry
-						(e.g. ldap://localhost:389/cn=John
-						Fowler,ou=People,o=JNDITutorial)
-					</para>
-				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -749,6 +749,13 @@
 		<title>Advanced -> Copy Attribute Descriptions</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the attribute descriptions of the
+						selected attributes and values as string to the
+						system clipboard.
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -762,13 +769,6 @@
 						</guiicon>
 					</para>
 				</listitem>
-				<listitem>
-					<para>
-						Copies the attribute descriptions of the
-						selected attributes and values as string to the
-						system clipboard.
-					</para>
-				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -777,6 +777,12 @@
 		<title>Advanced -> Copy Values (UTF-8)</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the selected values UTF-8 encoded to the
+						system clipboard.
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -790,12 +796,6 @@
 						</guiicon>
 					</para>
 				</listitem>
-				<listitem>
-					<para>
-						Copies the selected values UTF-8 encoded to the
-						system clipboard.
-					</para>
-				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -805,6 +805,12 @@
 		<title>Advanced -> Copy Values (BASE-64)</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the selected values BASE-64 encoded to
+						the system clipboard.
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -818,12 +824,6 @@
 						</guiicon>
 					</para>
 				</listitem>
-				<listitem>
-					<para>
-						Copies the selected values BASE-64 encoded to
-						the system clipboard.
-					</para>
-				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -832,6 +832,12 @@
 		<title>Advanced -> Copy Values (HEX)</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the selected values HEX encoded to the
+						system clipboard.
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -845,12 +851,6 @@
 						</guiicon>
 					</para>
 				</listitem>
-				<listitem>
-					<para>
-						Copies the selected values HEX encoded to the
-						system clipboard.
-					</para>
-				</listitem>
 			</itemizedlist>
 		</para>
 	</simplesect>
@@ -859,6 +859,12 @@
 		<title>Advanced -> Copy Name-Value-Pairs as LDIF</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Copies the selected attribute and values in LDIF
+						format to the system clipboard.
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -870,12 +876,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Copies the selected attribute and values in LDIF
-						format to the system clipboard.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -895,6 +895,13 @@
 						<itemizedlist>
 							<listitem>
 								<para>
+									Copies the selected
+									attribute and value as LDAP search
+									filter (attribute=value).
+								</para>
+							</listitem>
+							<listitem>
+								<para>
 									Icon:
 									<guiicon>
 										<inlinemediaobject>
@@ -904,13 +911,6 @@
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
-								</para>
-							</listitem>
-							<listitem>
-								<para>
-									Description: Copies the selected
-									attribute and value as LDAP search
-									filter (attribute=value).
 								</para>
 							</listitem>
 							<listitem>
@@ -927,6 +927,13 @@
 						<itemizedlist>
 							<listitem>
 								<para>
+									Copies the selected
+									attribute and value as LDAP NOT
+									search filter (!(attribute=value)).
+								</para>
+							</listitem>
+							<listitem>
+								<para>
 									Icon:
 									<guiicon>
 										<inlinemediaobject>
@@ -936,13 +943,6 @@
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
-								</para>
-							</listitem>
-							<listitem>
-								<para>
-									Description: Copies the selected
-									attribute and value as LDAP NOT
-									search filter (!(attribute=value)).
 								</para>
 							</listitem>
 							<listitem>
@@ -959,6 +959,14 @@
 						<itemizedlist>
 							<listitem>
 								<para>
+									Copies the selected
+									attributes and values as LDAP AND
+									search filter
+									(&amp;(attribute1=value1)...(attributeN=valueN)).
+								</para>
+							</listitem>
+							<listitem>
+								<para>
 									Icon:
 									<guiicon>
 										<inlinemediaobject>
@@ -970,14 +978,6 @@
 									</guiicon>
 								</para>
 							</listitem>
-							<listitem>
-								<para>
-									Description: Copies the selected
-									attributes and values as LDAP AND
-									search filter
-									(&amp;(attribute1=value1)...(attributeN=valueN)).
-								</para>
-							</listitem>
 						</itemizedlist>
 					</para>
 				</listitem>
@@ -985,6 +985,14 @@
 					<para>
 						OR
 						<itemizedlist>
+							<listitem>
+								<para>
+									Copies the selected
+									attributes and values as LDAP OR
+									search filter
+									(|(attribute1=value1)...(attributeN=valueN)).
+								</para>
+							</listitem>
 							<listitem>
 								<para>
 									Icon:
@@ -996,14 +1004,6 @@
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
-								</para>
-							</listitem>
-							<listitem>
-								<para>
-									Description: Copies the selected
-									attributes and values as LDAP OR
-									search filter
-									(|(attribute1=value1)...(attributeN=valueN)).
 								</para>
 							</listitem>
 						</itemizedlist>
@@ -1019,6 +1019,14 @@
 			<itemizedlist>
 				<listitem>
 					<para>
+						Deletes all values of the selected
+						attributes. Applicable to multi-valued
+						attributes, if you want to delete the complete
+						attribute just select one value use this action.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
 						Icon:
 						<guiicon>
 							<inlinemediaobject>
@@ -1028,14 +1036,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Description: Deletes all values of the selected
-						attributes. Applicable to multi-valued
-						attributes, if you want to delete the complete
-						attribute just select one value use this action.
 					</para>
 				</listitem>
 				<listitem>
@@ -1055,7 +1055,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Opens the
+						Opens the
 						<link linkend="tools_attribute_wizard">
 							Edit Attribute wizard
 						</link>
@@ -1153,10 +1153,38 @@
 		</para>
 	</simplesect>
 
+	<simplesect id="tools_entry_editor_contextmenu_editentry">
+		<title>Edit Entry...</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Opens the 
+						<link linkend="tools_editentry_wizard">
+						Editor Entry Wizard</link>, used to edit the entry offline.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Shortcut:
+						<shortcut>
+							<keycap>F8</keycap>
+						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
 	<simplesect id="tools_entry_editor_contextmenu_reload">
 		<title>Reload Attribute</title>
 		<para>
 			<itemizedlist>
+				<listitem>
+					<para>
+						Reloads the attributes of the current entry.
+					</para>
+				</listitem>
 				<listitem>
 					<para>
 						Icon:
@@ -1168,11 +1196,6 @@
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Reloads the attributes of the current entry.
 					</para>
 				</listitem>
 				<listitem>
@@ -1193,8 +1216,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Description: Opens the Properties dialog with
-						the
+						Opens the Properties dialog with the
 						<link linkend="tools_attribute_properties">
 							Attribute properties page
 						</link>

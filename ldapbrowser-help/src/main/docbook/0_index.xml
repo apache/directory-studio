@@ -29,11 +29,13 @@
   <!ENTITY tools_schema_browser SYSTEM "2.24_tools_schema_browser.xml">
 
   <!ENTITY tools_modification_logs_view SYSTEM "2.25_tools_modification_logs_view.xml">
+  <!ENTITY tools_search_logs_view SYSTEM "2.25.1_tools_search_logs_view.xml">
 
   <!ENTITY tools_progress_view SYSTEM "2.26_tools_progress_view.xml">
 
   <!ENTITY tools_newconnection_wizard SYSTEM "2.40_tools_newconnection_wizard.xml">
   <!ENTITY tools_newentry_wizard SYSTEM "2.41_tools_newentry_wizard.xml">
+  <!ENTITY tools_editentry_wizard SYSTEM "2.41.1_tools_editentry_wizard.xml">
   <!ENTITY tools_attribute_wizard SYSTEM "2.42_tools_attribute_wizard.xml">
   <!ENTITY tools_search_dialog SYSTEM "2.43_tools_search_dialog.xml">
   <!ENTITY tools_batchoperation_wizard SYSTEM "2.44_tools_batchoperation_wizard.xml">

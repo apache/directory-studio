@@ -32,10 +32,19 @@
 			</mediaobject>
 		</screenshot>
 	</para>
-	<para>
-	    It is possible to organize connections in folders.   
-	 	Use drag-and-drop to re-organize connections and folders.
-	</para>
+	
+	<simplesect id="tools_connections_view_organize">
+		<title>Organize Connections</title>
+		<para>
+		    It is possible to organize connections in folders and sub-folders.   
+		 	Use drag-and-drop to re-organize connections and folders.
+		</para>
+		<para>
+		    You could copy and paste the connection parameters as LDAP URL 
+		    to/from the clipboard. This makes it very easy to share connection parameters
+		    with other users.
+		</para>
+	</simplesect>
 	
 	<simplesect id="tools_connections_view_icons">
 		<title>Icons</title>
@@ -174,7 +183,7 @@
 					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Copy Connection</entry>
-					  <entry>Copies the selected connections(s) to the clipboard. To duplicate an existing connection please combine copy and paste.</entry>
+					  <entry>Copies the selected connection(s) as LDAP URL(s) to the clipboard. To duplicate an existing connection please combine copy and paste.</entry>
 					  <entry>
 					  	<shortcut><keycombo><keycap>Ctrl</keycap><keycap>C</keycap></keycombo></shortcut>
 					  	or
@@ -184,7 +193,7 @@
 					<row>
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Paste Connection</entry>
-					  <entry>Pastes the copied connections(s) from clipboard. Only enabled if there are connections in clipboard.</entry>
+					  <entry>Pastes the copied connection(s) or LDAP URL(s) from clipboard. Only enabled if there are connections or LDAP URLs in clipboard.</entry>
 					  <entry>
 					  	<shortcut><keycombo><keycap>Ctrl</keycap><keycap>V</keycap></keycombo></shortcut>
 					  	or

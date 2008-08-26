@@ -32,6 +32,7 @@
 		&tools_schema_browser;
 	
 		&tools_modification_logs_view;
+		&tools_search_logs_view;
 		&tools_progress_view;
 
 	</section>
@@ -41,6 +42,7 @@
 		
 		&tools_newconnection_wizard;
 		&tools_newentry_wizard;
+		&tools_editentry_wizard;
 		
 		&tools_attribute_wizard;
 		&tools_search_dialog;

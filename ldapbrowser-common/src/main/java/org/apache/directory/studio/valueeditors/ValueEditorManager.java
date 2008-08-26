@@ -123,13 +123,13 @@ public class ValueEditorManager
 
         // special case: multivalued editor
         multiValuedValueEditor = new MultivaluedValueEditor( this.parent, this );
-        multiValuedValueEditor.setValueEditorName( "Mulitvalued Editor" );
+        multiValuedValueEditor.setValueEditorName( "Mulitvalued Editor..." );
         multiValuedValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_MULTIVALUEDEDITOR ) );
 
         // special case: entry editor
         entryValueEditor = new EntryValueEditor( this.parent, this );
-        entryValueEditor.setValueEditorName( "Entry Editor" );
+        entryValueEditor.setValueEditorName( "Entry Editor..." );
         entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY ) );
 

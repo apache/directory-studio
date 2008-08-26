@@ -1,0 +1,218 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_search_logs_view">
+	<title>Search Logs view</title>
+	<para>
+		The Search Logs view shows all search requests and optionally
+		all received search result entries.
+	</para>
+	
+	<simplesect id="tools_search_logs_view_concept">
+		<title>Concept</title>
+		<para>
+			All search requests are logged in LDIF to a logfile, it consists of
+			three parts: 
+			<itemizedlist>
+				<listitem>
+					<para>
+						The initial SEARCH REQUEST record. It contains all search request
+						parameters like search filter, scope and requested attributes.
+						It also contains the command line argument that could be used
+						to send the same request using the ldapsearch command line tool.
+					</para>
+				</listitem>		
+				<listitem>
+					<para>
+						Optional multiple SEARCH RESULT ENTRY records, one for each 
+						received entry.
+					</para>
+				</listitem>		
+				<listitem>
+					<para>
+						The final SEARCH RESULT DONE record. It contains the number
+						of received entries.
+					</para>
+				</listitem>		
+			</itemizedlist>
+			Each part contains a unique number that helps to put together all parts
+			for a specific request in case that there are multiple requests in parallel.
+		</para>
+		<para>
+			Example log of a SEARCH REQUEST record:
+			<code language="LDIF">
+				<sbr />
+				#!SEARCH REQUEST (112) OK
+				<sbr />
+				#!CONNECTION ldap://localhost:10389
+				<sbr />
+				#!DATE 2008-08-26T16:31:59.271
+				<sbr />
+				# LDAP URL     : ldap://localhost:10389/dc=example,dc=com?objectClass,cn,description?one?(objectClass=*)
+				<sbr />
+				# command line : ldapsearch -H ldap://localhost:10389 -x -D "uid=admin,ou=system" -W -b "dc=example,dc=com" -s one -a always -z 1000 "(objectClass=*)" "objectClass" "cn" "description"
+				<sbr />
+				# baseObject   : dc=example,dc=com
+				<sbr />
+				# scope        : singleLevel (1)
+				<sbr />
+				# derefAliases : derefAlways (3)
+				<sbr />
+				# sizeLimit    : 1000
+				<sbr />
+				# timeLimit    : 0
+				<sbr />
+				# typesOnly    : False
+				<sbr />
+				# filter       : (objectClass=*)
+				<sbr />
+				# attributes   : objectClass cn description
+				<sbr />
+			</code>
+		</para>
+		<para>
+			Example log of a SEARCH RESULT ENTRY record:
+			<code language="LDIF">
+				<sbr />
+				#!SEARCH RESULT ENTRY (112) OK
+				<sbr />
+				#!CONNECTION ldap://localhost:10389
+				<sbr />
+				#!DATE 2008-08-26T16:31:59.272
+				<sbr />
+				dn: cn=test,dc=example,dc=com
+				<sbr />
+				objectClass: person
+				<sbr />
+				objectClass: top
+				<sbr />
+				cn: test
+				<sbr />
+			</code>
+		</para>
+		<para>
+			Example log of a SEARCH RESULT DONE record:
+			<code language="LDIF">
+				<sbr />
+				#!SEARCH RESULT DONE (112) OK
+				<sbr />
+				#!CONNECTION ldap://localhost:10389
+				<sbr />
+				#!DATE 2008-08-26T16:31:59.273
+				<sbr />
+				# numEntries : 1
+				<sbr />
+			</code>
+		</para>
+		<para>
+			The search logging mechanism works with logfile rotation. 
+			It uses 10 logfiles each with 100KB per connection. 
+		</para>
+	</simplesect>
+			
+	<simplesect id="tools_search_logs_view_screenshot">
+		<title>Example screenshot</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata width="15cm"
+							fileref="images/tools_search_logs_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_logs_view_toolbar">
+		<title>Toolbar</title>
+		<informaltable frame='all' >
+			<tgroup cols='3'>
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Action" colwidth="2*" />
+				<colspec colname="Description" colwidth="4*" />
+				<thead>
+					<row>
+					  <entry>Icon</entry>
+					  <entry>Action</entry>
+					  <entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/clear.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Clear</entry>
+					  <entry>Clears the current search logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/refresh.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Refresh</entry>
+					  <entry>Reloads the current search logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/previous.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Older</entry>
+					  <entry>Loads an older search logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/next.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Newer</entry>
+					  <entry>Loads a newer search logfile.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>						
+	</simplesect>
+	
+	<simplesect id="tools_search_logs_view_drop_down_menu">
+		<title>Drop Down Menu</title>
+		<para>
+			The drop down menu contains the following items:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Enable Search Request Logs: Enables/Disables the search request and search result done logs.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Enable Search Result Entry Logs: Enables/Disables the search result entry logs. 
+						Note: You should only activate this options for debug reasons, otherwise your
+						logfile will overfill very fast.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Preferences...: Opens the
+						<link linkend="preferences_search_logs_view">
+							Search Logs preferences
+						</link>
+						dialog.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	
+	<simplesect id="tools_search_logs_view_rotation">
+	</simplesect>	
+	
+<!-- 
+	Comment format, rotation
+ -->	
+</section>

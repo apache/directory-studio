@@ -1,0 +1,123 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_editentry_wizard">
+	<title>Edit Entry wizard</title>
+	<para>
+		This wizard helps you to edit an entry offline. You could make
+		multiple modifications, when finishing the wizard all your 
+		modifications are sent to the directory in one request. This
+		wizard is especially helpful when adding additional object
+		classes which require additional attributes.
+	</para>
+
+	<para>
+		To start the wizard choose <emphasis role="strong">Edit Entry...</emphasis>
+		from the Entry editor's context menu or use the 
+		<shortcut><keycap>F6</keycap></shortcut> shortcut.
+	</para>
+
+	<para>
+		The wizard is also the default value editor for the objectClass attribute,
+		so you could also start the wizard by editing the objectClass attribute. 
+	</para>
+
+	<para>
+		Editing the LDAP entry is a two-step process:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					<link linkend="tools_editentry_wizard_1">
+						Specify object classes of the entry.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_editentry_wizard_2">
+						Edit attributes and values of the entry.
+					</link>
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+
+	<simplesect id="tools_editentry_wizard_1">
+		<title>Page 1</title>
+		<para>
+			On the first page you could change the object classes of
+			the entry.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_newentry_wizard_2.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The list
+			<emphasis role="strong">Available object classes</emphasis>
+			on the left side lists the object classes provided from
+			schema of the current connection. The list
+			<emphasis role="strong">Selected object classes</emphasis>
+			lists the object classes of the entry. To add object
+			classed to the "selected" list select some in the
+			"available" list and click the
+			<emphasis role="strong">Add</emphasis>
+			button. You could also double-click an object class in the
+			"available" list. To remove object classed from the
+			"selected" list select some in the "selected" list and click
+			the
+			<emphasis role="strong">Remove</emphasis>
+			button. You could also double-click an object class in the
+			"selected" list.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_editentry_wizard_2">
+		<title>Page 2</title>
+		<para>
+			On the second page you could change the attributes of the entry.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_newentry_wizard_4.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			The layout and features are similar to the Entry editor. You
+			could add, edit or delete attributes and values.
+		</para>
+		<para>
+			As soon as all MUST attributes are filled the
+			<emphasis role="strong">Finish</emphasis>
+			button is activated. When clicking the button all modifications
+			will be sent to to the direcrory.
+		</para>
+	</simplesect>
+
+</section>

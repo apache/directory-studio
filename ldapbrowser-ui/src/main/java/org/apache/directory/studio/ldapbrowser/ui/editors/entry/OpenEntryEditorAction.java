@@ -113,7 +113,7 @@ public class OpenEntryEditorAction extends AbstractOpenEditorAction
      */
     public String getText()
     {
-        return "Edit Entry";
+        return "Edit Entry...";
     }
 
 

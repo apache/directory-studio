@@ -83,7 +83,9 @@
 	</para>
 	<para>
 		The bottom centered view displays all <emphasis role="strong">Modifications</emphasis>
-		made on the currently selected connections as LIDF change records.
+		made on the currently selected connections as LDIF change records and all
+		<emphasis role="strong">Searches</emphasis> performed on the on the currently 
+		selected connections as LDIF records.
 	</para>
 	<para>
 		The bottom right <emphasis role="strong">Progress view</emphasis> displays 
