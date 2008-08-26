@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
@@ -76,7 +77,7 @@ import org.eclipse.ui.part.FileEditorInput;
 public class ServerConfigurationEditor extends FormEditor
 {
     /** The Editor ID */
-    public static final String ID = "org.apache.directory.studio.apacheds.configuration.editor";
+    public static final String ID = ApacheDSConfigurationPluginConstants.EDITOR_SERVER_CONFIGURATION_EDITOR;
 
     /** The Server Configuration */
     private ServerConfiguration serverConfiguration;

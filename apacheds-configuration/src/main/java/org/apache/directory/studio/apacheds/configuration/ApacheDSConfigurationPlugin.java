@@ -20,11 +20,14 @@
 package org.apache.directory.studio.apacheds.configuration;
 
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -55,6 +58,9 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
 
     /** The shared instance */
     private static ApacheDSConfigurationPlugin plugin;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
     private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
         { new ServerXmlIOV153(), new ServerXmlIOV152(), new ServerXmlIOV151(), new ServerXmlIOV150(), };
@@ -182,5 +188,31 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
             }
         }
         return image;
+    }
+
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                getLog().log(
+                    new Status( Status.ERROR, PLUGIN_ID, Status.OK, "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
     }
 }

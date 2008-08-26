@@ -25,8 +25,8 @@
             class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
             default="true"
             icon="resources/icons/editor.gif"
-            id="org.apache.directory.studio.apacheds.configuration.editor"
-            name="Apache DS Configuration File Editor">
+            id="%Editor_ServerConfigurationEditor_id"
+            name="%Editor_ServerConfigurationEditor_name">
          <contentTypeBinding
                contentTypeId="org.apache.directory.studio.apacheds.configuration.contenttype">
          </contentTypeBinding>
@@ -39,25 +39,24 @@
             describer="org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationContentDescriber"
             file-extensions="xml"
             file-names="server.xml"
-            id="org.apache.directory.studio.apacheds.configuration.contenttype"
-            name="Apache DS Configuration File"
+            id="%ContentType_ServerConfiguration_id"
+            name="%ContentType_ServerConfiguration_name"
             priority="normal">
       </content-type>
    </extension>
-      <extension
+   <extension
          point="org.eclipse.ui.newWizards">
+      <category
+            id="%NewWizards_Category_id"
+            name="%NewWizards_Category_name" />
       <wizard
             canFinishEarly="false"
-            category="org.apache.directory.studio.apacheds.configuration.newWizards"
+            category="%NewWizards_Category_id"
             class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
             hasPages="true"
             icon="resources/icons/editor_new.gif"
-            id="org.apache.directory.studio.apacheds.configuration.NewApacheDSConfigurationFileWizard"
-            name="Apache DS Configuration File"
+            id="%NewWizards_NewApacheDSConfigurationFileWizard_id"
+            name="%NewWizards_NewApacheDSConfigurationFileWizard_name"
             project="false"/>
-      <category
-            id="org.apache.directory.studio.apacheds.configuration.newWizards"
-            name="Apache DS">
-      </category>
    </extension>
 </plugin>

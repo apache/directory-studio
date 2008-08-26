@@ -28,7 +28,9 @@ package org.apache.directory.studio.apacheds.configuration;
  */
 public interface ApacheDSConfigurationPluginConstants
 {
-    // Images
+    // ------
+    // IMAGES
+    // ------
     public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif";
     public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif";
     public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif";
@@ -36,4 +38,10 @@ public interface ApacheDSConfigurationPluginConstants
     public static final String IMG_PARTITION = "resources/icons/partition.gif";
     public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif";
     public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";
+
+    // -------
+    // EDITORS
+    // -------
+    public static final String EDITOR_SERVER_CONFIGURATION_EDITOR = ApacheDSConfigurationPlugin.getDefault()
+        .getPluginProperties().getString( "Editor_ServerConfigurationEditor_id" );
 }
