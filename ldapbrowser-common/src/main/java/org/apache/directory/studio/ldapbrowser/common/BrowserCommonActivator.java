@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
 import org.eclipse.core.runtime.FileLocator;
@@ -30,6 +31,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -52,7 +54,6 @@ import org.osgi.framework.BundleContext;
  */
 public class BrowserCommonActivator extends AbstractUIPlugin
 {
-
     /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.ldapbrowser.common";
 
@@ -76,6 +77,9 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
     /** The event runner. */
     private EventRunner eventRunner;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -367,4 +371,30 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         return eventRunner;
     }
 
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                getLog().log(
+                    new Status( Status.ERROR, BrowserCommonActivator.PLUGIN_ID, Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
+    }
 }
