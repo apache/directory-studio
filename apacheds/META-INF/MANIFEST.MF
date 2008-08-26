@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.apache.directory.studio.apacheds;singleton:=true
 Bundle-Version: 1.3.0.SNAPSHOT
 Bundle-Activator: org.apache.directory.studio.apacheds.ApacheDsPlugin
 Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console,
