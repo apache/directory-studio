@@ -95,7 +95,7 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
             {
                 Server server = ( Server ) selection.getFirstElement();
                 PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(),
-                    server, ServerPropertyPage.ID, null, null );
+                    server, ApacheDsPluginConstants.PROP_SERVER_PROPERTY_PAGE, null, null );
                 dialog.getShell().setText( "Properties for '" + shorten( server.getName(), 30 ) + "'" );
                 dialog.open();
             }

@@ -28,9 +28,9 @@ package org.apache.directory.studio.apacheds;
  */
 public interface ApacheDsPluginConstants
 {
-    // -------
+    // ------
     // IMAGES
-    // -------
+    // ------
     public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif";
     public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png";
     public static final String IMG_SERVER = "resources/icons/server.gif";
@@ -49,19 +49,38 @@ public interface ApacheDsPluginConstants
     // --------
     // COMMANDS
     // --------
-    public static final String CMD_NEW_SERVER = "org.apache.directory.studio.apacheds.commands.newServer";
-    public static final String CMD_RUN = "org.apache.directory.studio.apacheds.commands.run";
-    public static final String CMD_STOP = "org.apache.directory.studio.apacheds.commands.stop";
-    public static final String CMD_PROPERTIES = "org.apache.directory.studio.apacheds.commands.properties";
-    public static final String CMD_OPEN_CONFIGURATION = "org.apache.directory.studio.apacheds.commands.openConfiguration";
-    public static final String CMD_DELETE = "org.apache.directory.studio.apacheds.commands.delete";
-    public static final String CMD_RENAME = "org.apache.directory.studio.apacheds.commands.rename";
-    public static final String CMD_CREATE_CONNECTION = "org.apache.directory.studio.apacheds.commands.createConnection";
+    public static final String CMD_NEW_SERVER = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_NewServer_id" );
+    public static final String CMD_RUN = ApacheDsPlugin.getDefault().getPluginProperties().getString( "Cmd_Run_id" );
+    public static final String CMD_STOP = ApacheDsPlugin.getDefault().getPluginProperties().getString( "Cmd_Stop_id" );
+    public static final String CMD_PROPERTIES = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Properties_id" );
+    public static final String CMD_OPEN_CONFIGURATION = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_OpenConfiguration_id" );
+    public static final String CMD_DELETE = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Delete_id" );;
+    public static final String CMD_RENAME = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Rename_id" );;
+    public static final String CMD_CREATE_CONNECTION = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_CreateConnection_id" );
+
+    // --------------
+    // PROPERTY PAGES
+    // --------------
+    public static final String PROP_SERVER_PROPERTY_PAGE = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Prop_ServerPropertyPage_id" );
+
+    // -----
+    // VIEWS
+    // -----
+    public static final String VIEW_SERVERS_VIEW = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "View_ServersView_id" );
 
     // --------
     // CONTEXTS
     // --------
-    public static final String CONTEXTS_SERVERS_VIEW = "org.apache.directory.studio.apacheds.contexts.serversView";
+    public static final String CONTEXTS_SERVERS_VIEW = ApacheDsPlugin.getDefault().getPluginProperties().getString(
+        "Ctx_ServersView_id" );
 
     // -----------
     // PREFERENCES

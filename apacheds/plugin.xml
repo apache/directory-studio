@@ -5,20 +5,20 @@
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.apache.directory.studio.apacheds.prefs.MainPage"
-            id="%ID_PrefPage_MainPage.id"
-            name="%ID_PrefPage_MainPage.name">
+            id="%Pref_MainPage_id"
+            name="%Pref_MainPage_name">
       </page>
       <page
             class="org.apache.directory.studio.apacheds.prefs.ColorsAndFontsPage"
-            id="%ID_PrefPage_ColorsAndFontsPage.id"
-            name="%ID_PrefPage_ColorsAndFontsPage.name"
-            category="%ID_PrefPage_MainPage.id">
+            id="%Pref_ColorsAndFontsPage_id"
+            name="%Pref_ColorsAndFontsPage_name"
+            category="%Pref_MainPage_id">
       </page>
       <page
             class="org.apache.directory.studio.apacheds.prefs.ServerLogsPage"
-            id="%ID_PrefPage_ServerLogsPage.id"
-            name="%ID_PrefPage_ServerLogsPage.name"
-            category="%ID_PrefPage_MainPage.id">
+            id="%Pref_ServerLogsPage_id"
+            name="%Pref_ServerLogsPage_name"
+            category="%Pref_MainPage_id">
       </page>
    </extension>
    <extension
@@ -30,23 +30,23 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="%ID_View_Category.id"
-            name="%ID_View_Category.name">
+            id="%View_Category_id"
+            name="%View_Category_name">
       </category>
       <view
-            category="%ID_View_Category.id"
+            category="%View_Category_id"
             class="org.apache.directory.studio.apacheds.views.ServersView"
             icon="resources/icons/serverView.png"
-            id="%ID_View_ServersView.id"
-            name="%ID_View_ServersView.name">
+            id="%View_ServersView_id"
+            name="%View_ServersView_name">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
             class="org.apache.directory.studio.apacheds.properties.ServerPropertyPage"
-            id="%ID_PropPage_ServerPropertyPage.id"
-            name="%ID_PropPage_ServerPropertyPage.name">
+            id="%Prop_ServerPropertyPage_id"
+            name="%Prop_ServerPropertyPage_name">
          <enabledWhen>
             <instanceof
                   value="org.apache.directory.studio.apacheds.model.Server">
@@ -57,102 +57,102 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="%ID_Cmd_Category.id"
-            name="%ID_Cmd_Category.name">
+            id="%Cmd_Category_id"
+            name="%Cmd_Category_name">
       </category>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_NewServer.description"
-            id="%ID_Cmd_NewServer.id"
-            name="%ID_Cmd_NewServer.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_NewServer_description"
+            id="%Cmd_NewServer_id"
+            name="%Cmd_NewServer_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_OpenConfiguration.description"
-            id="%ID_Cmd_OpenConfiguration.id"
-            name="%ID_Cmd_OpenConfiguration.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_OpenConfiguration_description"
+            id="%Cmd_OpenConfiguration_id"
+            name="%Cmd_OpenConfiguration_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_Delete.description"
-            id="%ID_Cmd_Delete.id"
-            name="%ID_Cmd_Delete.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_Delete_description"
+            id="%Cmd_Delete_id"
+            name="%Cmd_Delete_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_Rename.description"
-            id="%ID_Cmd_Rename.id"
-            name="%ID_Cmd_Rename.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_Rename_description"
+            id="%Cmd_Rename_id"
+            name="%Cmd_Rename_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_CreateConnection.description"
-            id="%ID_Cmd_CreateConnection.id"
-            name="%ID_Cmd_CreateConnection.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_CreateConnection_description"
+            id="%Cmd_CreateConnection_id"
+            name="%Cmd_CreateConnection_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_Run.description"
-            id="%ID_Cmd_Run.id"
-            name="%ID_Cmd_Run.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_Run_description"
+            id="%Cmd_Run_id"
+            name="%Cmd_Run_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_Stop.description"
-            id="%ID_Cmd_Stop.id"
-            name="%ID_Cmd_Stop.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_Stop_description"
+            id="%Cmd_Stop_id"
+            name="%Cmd_Stop_name">
       </command>
       <command
-            categoryId="%ID_Cmd_Category.id"
-            description="%ID_Cmd_Properties.description"
-            id="%ID_Cmd_Properties.id"
-            name="%ID_Cmd_Properties.name">
+            categoryId="%Cmd_Category_id"
+            description="%Cmd_Properties_description"
+            id="%Cmd_Properties_id"
+            name="%Cmd_Properties_name">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
       <context
-            description="%ID_Context_ServersView.description"
-            id="%ID_Context_ServersView.id"
-            name="%ID_Context_ServersView.name"
+            description="%Ctx_ServersView_description"
+            id="%Ctx_ServersView_id"
+            name="%Ctx_ServersView_name"
             parentId="org.eclipse.ui.contexts.window">
       </context>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="%ID_Cmd_NewServer.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_NewServer_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+E"/>
       <key
-            commandId="%ID_Cmd_OpenConfiguration.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_OpenConfiguration_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F3"/>
       <key
-            commandId="%ID_Cmd_Delete.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_Delete_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="DEL"/>
       <key
-            commandId="%ID_Cmd_Rename.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_Rename_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="F2"/>
       <key
-            commandId="%ID_Cmd_Run.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_Run_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+R"/>
       <key
-            commandId="%ID_Cmd_Stop.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_Stop_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+T"/>
       <key
-            commandId="%ID_Cmd_Properties.id"
-            contextId="%ID_Context_ServersView.id"
+            commandId="%Cmd_Properties_id"
+            contextId="%Ctx_ServersView_id"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ALT+RETURN"/>
    </extension>

@@ -20,11 +20,14 @@
 package org.apache.directory.studio.apacheds;
 
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -44,6 +47,9 @@ public class ApacheDsPlugin extends AbstractUIPlugin
 
     /** The servers handler */
     private ServersHandler serversHandler;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -143,5 +149,31 @@ public class ApacheDsPlugin extends AbstractUIPlugin
             }
         }
         return image;
+    }
+
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                getLog().log(
+                    new Status( Status.ERROR, PLUGIN_ID, Status.OK, "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
     }
 }

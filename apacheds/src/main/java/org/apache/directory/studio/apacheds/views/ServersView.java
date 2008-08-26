@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.views;
 
 
+import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.actions.CreateConnectionAction;
 import org.apache.directory.studio.apacheds.actions.DeleteAction;
@@ -75,7 +76,7 @@ import org.eclipse.ui.part.ViewPart;
 public class ServersView extends ViewPart
 {
     /** The ID of the view */
-    public static final String ID = "org.apache.directory.studio.apacheds.serversView";
+    public static final String ID = ApacheDsPluginConstants.VIEW_SERVERS_VIEW;
 
     /** The tree*/
     private Tree tree;

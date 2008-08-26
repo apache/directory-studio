@@ -41,15 +41,13 @@ import org.eclipse.ui.dialogs.PropertyPage;
  */
 public class ServerPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
-    public static final String ID = "org.apache.directory.studio.apacheds.properties.serverProperties";
-
-
     /**
      * Creates a new instance of ServerPropertyPage.
      */
     public ServerPropertyPage()
     {
         super();
+
         super.noDefaultAndApplyButton();
     }
 
@@ -87,8 +85,7 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
         if ( server != null )
         {
             nameText.setText( server.getName() );
-            locationText.setText( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-                .toOSString() );
+            locationText.setText( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).toOSString() );
         }
 
         return parent;
