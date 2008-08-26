@@ -63,6 +63,9 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     /** The log filename. */
     private String logFilename;
 
+    /** The update if entry exists flag. */
+    private boolean updateIfEntryExists;
+
     /** The continue on error flag. */
     private boolean continueOnError;
 
@@ -164,7 +167,6 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      */
     public boolean performFinish()
     {
-
         mainPage.saveDialogSettings();
 
         if ( ldifFilename != null && !"".equals( ldifFilename ) )
@@ -174,11 +176,12 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
             if ( enableLogging )
             {
                 File logFile = new File( logFilename );
-                new ImportLdifJob( importConnection, ldifFile, logFile, continueOnError ).execute();
+                new ImportLdifJob( importConnection, ldifFile, logFile, updateIfEntryExists, continueOnError )
+                    .execute();
             }
             else
             {
-                new ImportLdifJob( importConnection, ldifFile, continueOnError ).execute();
+                new ImportLdifJob( importConnection, ldifFile, updateIfEntryExists, continueOnError ).execute();
             }
 
             return true;
@@ -217,6 +220,17 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     public void setLdifFilename( String ldifFilename )
     {
         this.ldifFilename = ldifFilename;
+    }
+
+
+    /**
+     * Sets the update if entry exists flag.
+     * 
+     * @param updateIfEntryExists the update if entry exists flag
+     */
+    public void setUpdateIfEntryExists( boolean updateIfEntryExists )
+    {
+        this.updateIfEntryExists = updateIfEntryExists;
     }
 
 

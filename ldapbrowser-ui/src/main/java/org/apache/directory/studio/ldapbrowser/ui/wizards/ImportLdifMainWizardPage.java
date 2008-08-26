@@ -51,6 +51,10 @@ public class ImportLdifMainWizardPage extends WizardPage
     public static final String CONTINUE_ON_ERROR_DIALOGSETTING_KEY = ImportLdifMainWizardPage.class.getName()
         + ".continueOnError";
 
+    /** The update if entry exists flag key */
+    public static final String UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY = ImportLdifMainWizardPage.class.getName()
+        + ".updateIfEntryExists";
+
     /** The valid extension. */
     private static final String[] EXTENSIONS = new String[]
         { "*.ldif", "*.*" };
@@ -81,6 +85,9 @@ public class ImportLdifMainWizardPage extends WizardPage
 
     /** The overwrite logfile button. */
     private Button overwriteLogfileButton;
+
+    /** The update if entry exists button. */
+    private Button updateIfEntryExistsButton;
 
     /** The continue on error button. */
     private Button continueOnErrorButton;
@@ -290,8 +297,33 @@ public class ImportLdifMainWizardPage extends WizardPage
             }
         } );
 
-        // Continue
-        continueOnErrorButton = BaseWidgetUtils.createCheckbox( composite, "Continue on error", 3 );
+        // Options
+        Composite optionsOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
+        Group optionsGroup = BaseWidgetUtils.createGroup( optionsOuterComposite, "Options", 1 );
+        Composite optionsContainer = BaseWidgetUtils.createColumnContainer( optionsGroup, 3, 1 );
+
+        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsContainer, "Update if entry already exists",
+            3 );
+        updateIfEntryExistsButton
+            .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
+                + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF." );
+        if ( BrowserUIPlugin.getDefault().getDialogSettings().get( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY ) == null )
+        {
+            BrowserUIPlugin.getDefault().getDialogSettings().put( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY, false );
+        }
+        updateIfEntryExistsButton.setSelection( BrowserUIPlugin.getDefault().getDialogSettings().getBoolean(
+            UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY ) );
+        wizard.setUpdateIfEntryExists( updateIfEntryExistsButton.getSelection() );
+        updateIfEntryExistsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent event )
+            {
+                wizard.setUpdateIfEntryExists( updateIfEntryExistsButton.getSelection() );
+                validate();
+            }
+        } );
+
+        continueOnErrorButton = BaseWidgetUtils.createCheckbox( optionsContainer, "Continue on error", 3 );
         if ( BrowserUIPlugin.getDefault().getDialogSettings().get( CONTINUE_ON_ERROR_DIALOGSETTING_KEY ) == null )
         {
             BrowserUIPlugin.getDefault().getDialogSettings().put( CONTINUE_ON_ERROR_DIALOGSETTING_KEY, false );
@@ -309,7 +341,6 @@ public class ImportLdifMainWizardPage extends WizardPage
         } );
 
         setControl( composite );
-        // nameText.setFocus();
     }
 
 
@@ -319,6 +350,8 @@ public class ImportLdifMainWizardPage extends WizardPage
     public void saveDialogSettings()
     {
         ldifFileBrowserWidget.saveDialogSettings();
+        BrowserUIPlugin.getDefault().getDialogSettings().put( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY,
+            updateIfEntryExistsButton.getSelection() );
         BrowserUIPlugin.getDefault().getDialogSettings().put( CONTINUE_ON_ERROR_DIALOGSETTING_KEY,
             continueOnErrorButton.getSelection() );
     }

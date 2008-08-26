@@ -135,7 +135,7 @@ public class ExecuteLdifRunnable implements StudioBulkRunnableWithProgress
                 }
             };
 
-            ImportLdifJob.importLdif( browserConnection, enumeration, logWriter, continueOnError, monitor );
+            ImportLdifJob.importLdif( browserConnection, enumeration, logWriter, false, continueOnError, monitor );
 
             logWriter.close();
             ldifReader.close();

@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.naming.InvalidNameException;
+import javax.naming.NameAlreadyBoundException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
@@ -50,17 +51,21 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
@@ -95,6 +100,9 @@ public class ImportLdifJob extends AbstractNotificationJob
     /** The log file. */
     private File logFile;
 
+    /** The update if entry exists flag. */
+    private boolean updateIfEntryExists;
+
     /** The continue on error flag. */
     private boolean continueOnError;
 
@@ -105,14 +113,17 @@ public class ImportLdifJob extends AbstractNotificationJob
      * @param browserConnection the browser connection
      * @param ldifFile the LDIF file
      * @param logFile the log file
+     * @param updateIfEntryExists the update if entry exists flag
      * @param continueOnError the continue on error flag
      */
-    public ImportLdifJob( IBrowserConnection browserConnection, File ldifFile, File logFile, boolean continueOnError )
+    public ImportLdifJob( IBrowserConnection browserConnection, File ldifFile, File logFile,
+        boolean updateIfEntryExists, boolean continueOnError )
     {
         this.browserConnection = browserConnection;
         this.ldifFile = ldifFile;
         this.logFile = logFile;
         this.continueOnError = continueOnError;
+        this.updateIfEntryExists = updateIfEntryExists;
 
         setName( BrowserCoreMessages.jobs__import_ldif_name );
     }
@@ -123,11 +134,13 @@ public class ImportLdifJob extends AbstractNotificationJob
      * 
      * @param connection the connection
      * @param ldifFile the LDIF file
-     * @param continueOnError the continue on error
+     * @param updateIfEntryExists the update if entry exists flag
+     * @param continueOnError the continue on error flag
      */
-    public ImportLdifJob( IBrowserConnection connection, File ldifFile, boolean continueOnError )
+    public ImportLdifJob( IBrowserConnection connection, File ldifFile, boolean updateIfEntryExists,
+        boolean continueOnError )
     {
-        this( connection, ldifFile, null, continueOnError );
+        this( connection, ldifFile, null, updateIfEntryExists, continueOnError );
     }
 
 
@@ -192,7 +205,7 @@ public class ImportLdifJob extends AbstractNotificationJob
                 };
             }
 
-            importLdif( browserConnection, enumeration, logWriter, continueOnError, monitor );
+            importLdif( browserConnection, enumeration, logWriter, updateIfEntryExists, continueOnError, monitor );
 
             logWriter.close();
             ldifReader.close();
@@ -228,11 +241,12 @@ public class ImportLdifJob extends AbstractNotificationJob
      * @param browserConnection the browser connection
      * @param enumeration the LDIF enumeration
      * @param logWriter the log writer
+     * @param updateIfEntryExists the update if entry exists flag
      * @param continueOnError the continue on error flag
      * @param monitor the progress monitor
      */
     static void importLdif( IBrowserConnection browserConnection, LdifEnumeration enumeration, Writer logWriter,
-        boolean continueOnError, StudioProgressMonitor monitor )
+        boolean updateIfEntryExists, boolean continueOnError, StudioProgressMonitor monitor )
     {
         if ( browserConnection == null )
         {
@@ -254,7 +268,7 @@ public class ImportLdifJob extends AbstractNotificationJob
                     try
                     {
                         dummyMonitor.reset();
-                        importLdifRecord( browserConnection, record, dummyMonitor );
+                        importLdifRecord( browserConnection, record, updateIfEntryExists, dummyMonitor );
                         if ( dummyMonitor.errorsReported() )
                         {
                             errorCount++;
@@ -316,6 +330,10 @@ public class ImportLdifJob extends AbstractNotificationJob
                             }
                             else if ( record instanceof LdifChangeAddRecord || record instanceof LdifContentRecord )
                             {
+                                if ( entry != null )
+                                {
+                                    entry.setAttributesInitialized( false );
+                                }
                                 if ( parentEntry != null )
                                 {
                                     parentEntry.setChildrenInitialized( false );
@@ -371,12 +389,13 @@ public class ImportLdifJob extends AbstractNotificationJob
      * 
      * @param browserConnection the browser connection
      * @param record the LDIF record
+     * @param updateIfEntryExists the update if entry exists flag
      * @param monitor the progress monitor
      * 
      * @throws ConnectionException the connection exception
      */
-    static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, StudioProgressMonitor monitor )
-        throws ConnectionException
+    static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, boolean updateIfEntryExists,
+        StudioProgressMonitor monitor ) throws ConnectionException
     {
         if ( !record.isValid() )
         {
@@ -385,15 +404,44 @@ public class ImportLdifJob extends AbstractNotificationJob
 
         String dn = record.getDnLine().getValueAsString();
 
-        if ( record instanceof LdifContentRecord )
+        if ( record instanceof LdifContentRecord || record instanceof LdifChangeAddRecord )
         {
-            LdifContentRecord attrValRecord = ( LdifContentRecord ) record;
-            LdifAttrValLine[] attrVals = attrValRecord.getAttrVals();
-            Attributes jndiAttributes = new BasicAttributes();
-            for ( int ii = 0; ii < attrVals.length; ii++ )
+            LdifAttrValLine[] attrVals;
+            IEntry dummyEntry;
+            if ( record instanceof LdifContentRecord )
             {
-                String attributeName = attrVals[ii].getUnfoldedAttributeDescription();
-                Object realValue = attrVals[ii].getValueAsObject();
+                LdifContentRecord attrValRecord = ( LdifContentRecord ) record;
+                attrVals = attrValRecord.getAttrVals();
+                try
+                {
+                    dummyEntry = ModelConverter.ldifContentRecordToEntry( attrValRecord, browserConnection );
+                }
+                catch ( InvalidNameException e )
+                {
+                    monitor.reportError( e );
+                    return;
+                }
+            }
+            else
+            {
+                LdifChangeAddRecord changeAddRecord = ( LdifChangeAddRecord ) record;
+                attrVals = changeAddRecord.getAttrVals();
+                try
+                {
+                    dummyEntry = ModelConverter.ldifChangeAddRecordToEntry( changeAddRecord, browserConnection );
+                }
+                catch ( InvalidNameException e )
+                {
+                    monitor.reportError( e );
+                    return;
+                }
+            }
+
+            Attributes jndiAttributes = new BasicAttributes();
+            for ( LdifAttrValLine attrVal : attrVals )
+            {
+                String attributeName = attrVal.getUnfoldedAttributeDescription();
+                Object realValue = attrVal.getValueAsObject();
 
                 if ( jndiAttributes.get( attributeName ) != null )
                 {
@@ -406,30 +454,39 @@ public class ImportLdifJob extends AbstractNotificationJob
             }
 
             browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-                ReferralHandlingMethod.IGNORE, getControls( attrValRecord ), monitor, null );
-        }
-        else if ( record instanceof LdifChangeAddRecord )
-        {
-            LdifChangeAddRecord changeAddRecord = ( LdifChangeAddRecord ) record;
-            LdifAttrValLine[] attrVals = changeAddRecord.getAttrVals();
-            Attributes jndiAttributes = new BasicAttributes();
-            for ( int ii = 0; ii < attrVals.length; ii++ )
+                ReferralHandlingMethod.IGNORE, getControls( record ), monitor, null );
+
+            if ( monitor.errorsReported() && updateIfEntryExists
+                && monitor.getException() instanceof NameAlreadyBoundException )
             {
-                String attributeName = attrVals[ii].getUnfoldedAttributeDescription();
-                Object realValue = attrVals[ii].getValueAsObject();
+                // creation failed with Error 68, now try to update the existing entry
+                monitor.reset();
 
-                if ( jndiAttributes.get( attributeName ) != null )
+                List<ModificationItem> mis = new ArrayList<ModificationItem>();
+                for ( IAttribute attribute : dummyEntry.getAttributes() )
                 {
-                    jndiAttributes.get( attributeName ).add( realValue );
+                    Attribute jndiAttribute = new BasicAttribute( attribute.getDescription() );
+                    boolean isLdifPart = false;
+                    for ( IValue value : attribute.getValues() )
+                    {
+                        if ( value.getRawValue() instanceof LdifPart )
+                        {
+                            isLdifPart = true;
+                            break;
+                        }
+                        jndiAttribute.add( value.getRawValue() );
+                    }
+                    if ( !isLdifPart )
+                    {
+                        ModificationItem mi = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, jndiAttribute );
+                        mis.add( mi );
+                    }
                 }
-                else
-                {
-                    jndiAttributes.put( attributeName, realValue );
-                }
+
+                browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn,
+                    mis.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, getControls( record ),
+                    monitor, null );
             }
-
-            browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( dn, jndiAttributes,
-                ReferralHandlingMethod.IGNORE, getControls( changeAddRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
@@ -520,7 +577,8 @@ public class ImportLdifJob extends AbstractNotificationJob
             for ( int i = 0; i < controlLines.length; i++ )
             {
                 LdifControlLine line = controlLines[i];
-                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(), line.getControlValueAsBinary() );
+                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(), line
+                    .getControlValueAsBinary() );
             }
         }
         return controls;
