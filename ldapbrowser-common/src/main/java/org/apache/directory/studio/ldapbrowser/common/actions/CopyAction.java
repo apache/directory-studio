@@ -28,8 +28,11 @@ import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActio
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
@@ -116,6 +119,7 @@ public class CopyAction extends BrowserAction
     {
         IEntry[] entries = getEntries();
         IValue[] values = getValues();
+        String[] stringProperties = getSelectedProperties();
 
         // entry/searchresult/bookmark
         if ( entries != null )
@@ -137,15 +141,10 @@ public class CopyAction extends BrowserAction
         // values
         else if ( values != null )
         {
-
-            // LdifAttrValLine[] lines = new LdifAttrValLine[values.length];
             StringBuffer text = new StringBuffer();
 
             for ( int i = 0; i < values.length; i++ )
             {
-
-                // lines[i] = ModelConverter.valueToLdifAttrValLine(values[i]);
-
                 if ( values[i].isString() )
                 {
                     text.append( values[i].getStringValue() );
@@ -163,6 +162,25 @@ public class CopyAction extends BrowserAction
             copyToClipboard( new Object[]
                 { values, text.toString() }, new Transfer[]
                 { ValuesTransfer.getInstance(), TextTransfer.getInstance() } );
+        }
+
+        // string properties
+        else if ( stringProperties != null && stringProperties.length > 0 )
+        {
+            StringBuffer text = new StringBuffer();
+            
+            for ( int i = 0; i < stringProperties.length; i++ )
+            {
+                text.append( stringProperties[i] );
+                if ( i + 1 < stringProperties.length )
+                {
+                    text.append( BrowserCoreConstants.LINE_SEPARATOR );
+                }
+            }
+            
+            copyToClipboard( new Object[]
+                { text.toString() }, new Transfer[]
+                { TextTransfer.getInstance() } );
         }
 
         // update paste action
@@ -216,6 +234,12 @@ public class CopyAction extends BrowserAction
             return true;
         }
 
+        // string properties
+        else if ( getSelectedProperties() != null && getSelectedProperties().length > 0 )
+        {
+            return true;
+        }
+
         else
         {
             return false;
@@ -236,20 +260,20 @@ public class CopyAction extends BrowserAction
             && getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length > 0 )
         {
 
-            LinkedHashSet entriesSet = new LinkedHashSet();
-            for ( int i = 0; i < getSelectedEntries().length; i++ )
+            LinkedHashSet<IEntry> entriesSet = new LinkedHashSet<IEntry>();
+            for ( IEntry entry : getSelectedEntries() )
             {
-                entriesSet.add( getSelectedEntries()[i] );
+                entriesSet.add( entry );
             }
-            for ( int i = 0; i < this.getSelectedSearchResults().length; i++ )
+            for ( ISearchResult searchResult : getSelectedSearchResults() )
             {
-                entriesSet.add( this.getSelectedSearchResults()[i].getEntry() );
+                entriesSet.add( searchResult.getEntry() );
             }
-            for ( int i = 0; i < this.getSelectedBookmarks().length; i++ )
+            for ( IBookmark bookmark : getSelectedBookmarks() )
             {
-                entriesSet.add( this.getSelectedBookmarks()[i].getEntry() );
+                entriesSet.add( bookmark.getEntry() );
             }
-            return ( IEntry[] ) entriesSet.toArray( new IEntry[entriesSet.size()] );
+            return entriesSet.toArray( new IEntry[entriesSet.size()] );
         }
         else
         {
@@ -271,24 +295,23 @@ public class CopyAction extends BrowserAction
             && getSelectedAttributeHierarchies().length + getSelectedAttributes().length + getSelectedValues().length > 0 )
         {
 
-            LinkedHashSet valuesSet = new LinkedHashSet();
-            for ( int i = 0; i < this.getSelectedAttributeHierarchies().length; i++ )
+            LinkedHashSet<IValue> valuesSet = new LinkedHashSet<IValue>();
+            for ( AttributeHierarchy ah : getSelectedAttributeHierarchies() )
             {
-                IAttribute[] attributes = getSelectedAttributeHierarchies()[i].getAttributes();
-                for ( int k = 0; k < attributes.length; k++ )
+                for ( IAttribute attribute : ah.getAttributes() )
                 {
-                    valuesSet.addAll( Arrays.asList( attributes[k].getValues() ) );
+                    valuesSet.addAll( Arrays.asList( attribute.getValues() ) );
                 }
             }
-            for ( int i = 0; i < this.getSelectedAttributes().length; i++ )
+            for ( IAttribute attribute : getSelectedAttributes() )
             {
-                valuesSet.addAll( Arrays.asList( this.getSelectedAttributes()[i].getValues() ) );
+                valuesSet.addAll( Arrays.asList( attribute.getValues() ) );
             }
-            for ( int i = 0; i < this.getSelectedValues().length; i++ )
+            for ( IValue value : getSelectedValues() )
             {
-                valuesSet.add( this.getSelectedValues()[i] );
+                valuesSet.add( value );
             }
-            return ( IValue[] ) valuesSet.toArray( new IValue[valuesSet.size()] );
+            return valuesSet.toArray( new IValue[valuesSet.size()] );
         }
         else
         {

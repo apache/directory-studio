@@ -24,13 +24,12 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
-import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -38,7 +37,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -56,6 +60,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
@@ -79,22 +84,6 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
     private TabItem featuresTab;
 
     private TabItem rawTab;
-
-    public static ResourceBundle oidDescriptions = null;
-    // Load RessourceBundle with OID descriptions
-    static
-    {
-        try
-        {
-            oidDescriptions = ResourceBundle
-                .getBundle( "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.OIDDescriptions" );
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
-    }
-
 
     public RootDSEPropertyPage()
     {
@@ -191,7 +180,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         this.controlsTab = new TabItem( this.tabFolder, SWT.NONE );
         this.controlsTab.setText( "Controls" );
         this.controlsTab.setControl( controlsComposite );
-
+        
         Composite extensionComposite = new Composite( this.tabFolder, SWT.NONE );
         extensionComposite.setLayoutData( new RowData( 10, 10 ) );
         GridLayout extensionLayout = new GridLayout();
@@ -461,18 +450,12 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
      */
     private void addDescritionsToOIDs( String[] oids )
     {
-        if ( oidDescriptions != null )
+        for ( int i = 0; i < oids.length; ++i )
         {
-            for ( int i = 0; i < oids.length; ++i )
+            String description = Utils.getOidDescription( oids[i] );
+            if ( description != null )
             {
-                try
-                {
-                    String description = oidDescriptions.getString( oids[i] );
-                    oids[i] = oids[i] + " (" + description + ")";
-                }
-                catch ( MissingResourceException ignored )
-                {
-                }
+                oids[i] = oids[i] + " (" + description + ")";
             }
         }
     }

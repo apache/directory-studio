@@ -31,12 +31,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -58,6 +60,45 @@ import org.eclipse.core.runtime.Preferences;
 
 public class Utils
 {
+
+    public static ResourceBundle oidDescriptions = null;
+    // Load RessourceBundle with OID descriptions
+    static
+    {
+        try
+        {
+            oidDescriptions = ResourceBundle.getBundle( "org.apache.directory.studio.ldapbrowser.core.OIDDescriptions" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Gets the textual OID description for the given numeric OID.
+     * 
+     * @param oid the numeric OID
+     * 
+     * @return the OID description, null if the numeric OID is unknown
+     */
+    public static String getOidDescription( String oid )
+    {
+        if ( oidDescriptions != null )
+        {
+            try
+            {
+                String description = oidDescriptions.getString( oid );
+                return description;
+            }
+            catch ( MissingResourceException ignored )
+            {
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Transforms the given DN into a normalized String, usable by the schema cache.
@@ -396,7 +437,6 @@ public class Utils
      */
     public static LdifChangeModifyRecord computeDiff( IEntry t0, IEntry t1 )
     {
-        // TODO: binary
         LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t0.getDn().getUpName() );
 
         // check which attributes/values must be deleted

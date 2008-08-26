@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -110,19 +111,19 @@ public class EntryEditorWidgetFilter extends ViewerFilter
             // filter attribute types
             if ( value.getAttribute().isObjectClassAttribute() )
             {
-                return isShowObjectClassAttribute();
+                return isShowObjectClassAttribute() || ( value.getAttribute().getEntry() instanceof IRootDSE );
             }
             else if ( value.getAttribute().isMustAttribute() )
             {
-                return isShowMustAttributes();
+                return isShowMustAttributes() || ( value.getAttribute().getEntry() instanceof IRootDSE );
             }
             else if ( value.getAttribute().isMayAttribute() )
             {
-                return isShowMayAttributes();
+                return isShowMayAttributes() || ( value.getAttribute().getEntry() instanceof IRootDSE );
             }
             else if ( value.getAttribute().isOperationalAttribute() )
             {
-                return isShowOperationalAttributes();
+                return isShowOperationalAttributes() || ( value.getAttribute().getEntry() instanceof IRootDSE );
             }
             else
             {

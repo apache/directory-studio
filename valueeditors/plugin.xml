@@ -51,6 +51,17 @@
           name="Administrative Role Editor">
        <attribute attributeType="administrativeRole"/>
     </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.oid.InPlaceOidValueEditor"
+          icon="resources/icons/oideditor.gif"
+          name="OID Editor">
+       <syntax
+             syntaxOID="1.3.6.1.4.1.1466.115.121.1.38">
+       </syntax>
+       <syntax
+             syntaxOID="1.3.6.1.4.1.18060.0.4.0.0.2">
+       </syntax>
+    </valueEditor>
    </extension>
 
 </plugin>

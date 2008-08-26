@@ -31,6 +31,7 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -177,7 +178,8 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         List<Object> valueList = new ArrayList<Object>();
         for ( IAttribute attribute : attributes )
         {
-            if ( !attribute.isOperationalAttribute() || showOperationalAttributes )
+            if ( !attribute.isOperationalAttribute() || showOperationalAttributes
+                || ( attribute.getEntry() instanceof IRootDSE ) )
             {
                 IValue[] values = attribute.getValues();
                 if ( this.preferences == null || !this.preferences.isUseFolding()
