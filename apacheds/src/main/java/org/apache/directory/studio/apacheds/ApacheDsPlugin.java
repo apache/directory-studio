@@ -170,7 +170,8 @@ public class ApacheDsPlugin extends AbstractUIPlugin
             catch ( IOException e )
             {
                 getLog().log(
-                    new Status( Status.ERROR, PLUGIN_ID, Status.OK, "Unable to get the plugin properties.", e ) );
+                    new Status( Status.ERROR, ApacheDsPlugin.PLUGIN_ID, Status.OK,
+                        "Unable to get the plugin properties.", e ) );
             }
         }
 
