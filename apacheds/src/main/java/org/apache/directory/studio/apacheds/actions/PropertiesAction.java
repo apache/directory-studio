@@ -22,7 +22,6 @@ package org.apache.directory.studio.apacheds.actions;
 
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.model.Server;
-import org.apache.directory.studio.apacheds.properties.ServerPropertyPage;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;

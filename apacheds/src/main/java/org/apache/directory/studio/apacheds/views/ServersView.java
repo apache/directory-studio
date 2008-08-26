@@ -20,7 +20,6 @@
 package org.apache.directory.studio.apacheds.views;
 
 
-import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.actions.CreateConnectionAction;
 import org.apache.directory.studio.apacheds.actions.DeleteAction;
