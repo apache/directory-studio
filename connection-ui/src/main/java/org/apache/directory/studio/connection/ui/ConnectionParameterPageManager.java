@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Status;
  */
 public class ConnectionParameterPageManager
 {
-    
+
     /**
      * Gets the connection parameter pages by searching for connection parameter page
      * extensions.
@@ -52,8 +52,8 @@ public class ConnectionParameterPageManager
     public static ConnectionParameterPage[] getConnectionParameterPages()
     {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
-        IExtensionPoint extensionPoint = registry
-            .getExtensionPoint( "org.apache.directory.studio.connectionparameterpages" );
+        IExtensionPoint extensionPoint = registry.getExtensionPoint( ConnectionUIPlugin.getDefault()
+            .getPluginProperties().getString( "ExtensionPoint_ConnectionParameterPages_id" ) );
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
         final Map<String, ConnectionParameterPage> pageMap = new HashMap<String, ConnectionParameterPage>();
 
@@ -87,25 +87,25 @@ public class ConnectionParameterPageManager
                 String dependsOnId2 = p2.getPageDependsOnId();
                 do
                 {
-                    if(dependsOnId1 == null && dependsOnId2 != null )
+                    if ( dependsOnId1 == null && dependsOnId2 != null )
                     {
                         return -1;
                     }
-                    else if(dependsOnId2 == null && dependsOnId1 != null )
+                    else if ( dependsOnId2 == null && dependsOnId1 != null )
                     {
                         return 1;
                     }
-                    else if(dependsOnId1 != null && dependsOnId1.equals( p2.getPageId() ))
+                    else if ( dependsOnId1 != null && dependsOnId1.equals( p2.getPageId() ) )
                     {
                         return 1;
                     }
-                    else if(dependsOnId2 != null && dependsOnId2.equals( p1.getPageId() ))
+                    else if ( dependsOnId2 != null && dependsOnId2.equals( p1.getPageId() ) )
                     {
                         return -1;
                     }
-                    
+
                     ConnectionParameterPage page = pageMap.get( dependsOnId1 );
-                    if(page != null)
+                    if ( page != null )
                     {
                         dependsOnId1 = page.getPageDependsOnId();
                     }
@@ -114,31 +114,31 @@ public class ConnectionParameterPageManager
                         dependsOnId1 = null;
                     }
                 }
-                while(dependsOnId1 != null && !dependsOnId1.equals( p1.getPageId() ));
-                
+                while ( dependsOnId1 != null && !dependsOnId1.equals( p1.getPageId() ) );
+
                 dependsOnId1 = p1.getPageDependsOnId();
                 dependsOnId2 = p2.getPageDependsOnId();
                 do
                 {
-                    if(dependsOnId1 == null && dependsOnId2 != null )
+                    if ( dependsOnId1 == null && dependsOnId2 != null )
                     {
                         return -1;
                     }
-                    else if(dependsOnId2 == null && dependsOnId1 != null )
+                    else if ( dependsOnId2 == null && dependsOnId1 != null )
                     {
                         return 1;
                     }
-                    else if(dependsOnId1 != null && dependsOnId1.equals( p2.getPageId() ))
+                    else if ( dependsOnId1 != null && dependsOnId1.equals( p2.getPageId() ) )
                     {
                         return 1;
                     }
-                    else if(dependsOnId2 != null && dependsOnId2.equals( p1.getPageId() ))
+                    else if ( dependsOnId2 != null && dependsOnId2.equals( p1.getPageId() ) )
                     {
                         return -1;
                     }
-                    
+
                     ConnectionParameterPage page = pageMap.get( dependsOnId2 );
-                    if(page != null)
+                    if ( page != null )
                     {
                         dependsOnId2 = page.getPageDependsOnId();
                     }
@@ -147,13 +147,13 @@ public class ConnectionParameterPageManager
                         dependsOnId2 = null;
                     }
                 }
-                while(dependsOnId2 != null && !dependsOnId2.equals( p2.getPageId() ));
-                
+                while ( dependsOnId2 != null && !dependsOnId2.equals( p2.getPageId() ) );
+
                 return 0;
             }
         };
         Arrays.sort( pages, pageComparator );
-        
+
         return pages;
     }
 }

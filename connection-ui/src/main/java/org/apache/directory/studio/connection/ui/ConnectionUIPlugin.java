@@ -21,12 +21,15 @@
 package org.apache.directory.studio.connection.ui;
 
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -38,7 +41,6 @@ import org.osgi.framework.BundleContext;
  */
 public class ConnectionUIPlugin extends AbstractUIPlugin
 {
-
     /** The Constant PLUGIN_ID. */
     public static final String PLUGIN_ID = "org.apache.directory.studio.connection.ui";
 
@@ -50,6 +52,9 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
 
     /** The event runner. */
     private EventRunner eventRunner;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -188,4 +193,30 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
         return eventRunner;
     }
 
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                getLog().log(
+                    new Status( Status.ERROR, ConnectionUIPlugin.PLUGIN_ID, Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
+    }
 }

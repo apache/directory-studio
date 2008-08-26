@@ -19,14 +19,14 @@
   under the License.
 -->
 <plugin>
-    <extension-point id="org.apache.directory.studio.connectionparameterpages" name="Connection Parameter Pages" schema="src/main/resources/connectionParameterPages.exsd"/>
+    <extension-point id="org.apache.directory.studio.connectionparameterpages" name="%ExtensionPoint_ConnectionParameterPages_name" schema="src/main/resources/connectionParameterPages.exsd"/>
 
    	<extension
 		point="org.eclipse.ui.propertyPages">
 		<page
         class="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
-        id="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
-        name="Connection"
+        id="%Prop_ConnectionPropertyPage_id"
+        name="%Prop_ConnectionPropertyPage_name"
         objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>            
 
    </extension>
@@ -34,27 +34,27 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            category="org.apache.directory.studio.ldapbrowser.newWizards"
+            category="%NewWizards_Category_id"
             class="org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard"
             hasPages="true"
             icon="resources/icons/connection_add.gif"
-            id="org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard"
-            name="LDAP Connection"
+            id="%NewWizards_NewConnectionWizard_id"
+            name="%NewWizards_NewConnectionWizard_name"
             project="false"/>
    </extension>
    <extension
          point="org.apache.directory.studio.connectionparameterpages">
       <connectionParameterPage
             class="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
-            dependsOnId="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
-            description="Please enter connection name and network parameters."
-            id="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
-            name="Network Parameter"/>
+            dependsOnId="%ConnectionParameterPage_NetworkParameterPage_id"
+            description="%ConnectionParameterPage_NetworkParameterPage_description"
+            id="%ConnectionParameterPage_NetworkParameterPage_id"
+            name="%ConnectionParameterPage_NetworkParameterPage_name"/>
       <connectionParameterPage
             class="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
-            dependsOnId="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
-            description="Please select an authentification method and input authentification data."
-            id="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
-            name="Authentication"/>
+            dependsOnId="%ConnectionParameterPage_NetworkParameterPage_id"
+            description="%ConnectionParameterPage_AuthenticationParameterPage_description"
+            id="%ConnectionParameterPage_AuthenticationParameterPage_id"
+            name="%ConnectionParameterPage_AuthenticationParameterPage_name"/>
    </extension>  
 </plugin>

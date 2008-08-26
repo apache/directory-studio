@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.ui.actions;
 
 
 import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -96,7 +97,7 @@ public class PropertiesAction extends StudioAction
         if ( getSelectedConnections().length == 1 )
         {
             element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = "org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage";
+            pageId = ConnectionUIPlugin.getDefault().getPluginProperties().getString( "Prop_ConnectionPropertyPage_id" );
             title = getSelectedConnections()[0].getName();
         }
 
@@ -110,5 +111,4 @@ public class PropertiesAction extends StudioAction
 
         }
     }
-    
 }
