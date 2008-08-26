@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.aciitemeditor;
 
+
 /**
  * This interface is used to store all constants related to the ACI Item Editor Plugin
  *
@@ -27,6 +28,7 @@ package org.apache.directory.studio.aciitemeditor;
  */
 public interface ACIITemConstants
 {
-        /** The ID for ACI Item Template*/
-        public static final String ACI_ITEM_TEMPLATE_ID = "org.apache.directory.studio.aciitemeditor.templates"; //$NON-NLS-1$
+    /** The ID for ACI Item Template */
+    public static final String ACI_ITEM_TEMPLATE_ID = Activator.getDefault().getPluginProperties().getString(
+        "CtxType_AciItem_Template_id" );; //$NON-NLS-1$
 }

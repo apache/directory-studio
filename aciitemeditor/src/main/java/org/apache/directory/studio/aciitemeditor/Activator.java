@@ -21,10 +21,14 @@ package org.apache.directory.studio.aciitemeditor;
 
 
 import java.io.IOException;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.studio.aciitemeditor.sourceeditor.ACICodeScanner;
 import org.apache.directory.studio.aciitemeditor.sourceeditor.ACITextAttributeProvider;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -48,7 +52,6 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin
 {
-
     /** The plug-in ID */
     public static final String PLUGIN_ID = "org.apache.directory.studio.aciitemeditor"; //$NON-NLS-1$
 
@@ -69,6 +72,9 @@ public class Activator extends AbstractUIPlugin
 
     /** The context type registry */
     private ContributionContextTypeRegistry aciTemplateContextTypeRegistry;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -263,4 +269,32 @@ public class Activator extends AbstractUIPlugin
         return aciTemplateStore;
     }
 
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
+                getLog().log(
+                    new Status( Status.ERROR, PLUGIN_ID, Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
+    }
 }

@@ -25,13 +25,13 @@
       <valueEditor
             class="org.apache.directory.studio.aciitemeditor.ACIItemValueEditor"
             icon="resources/icons/aciitemeditor.gif"
-            name="ACI Item Editor">
+            name="%ValueEditor_AciItemValueEditor_name">
          <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.1"/>
       </valueEditor>
       <valueEditor
             class="org.apache.directory.studio.aciitemeditor.valueeditors.SubtreeValueEditor"
             icon="resources/icons/subtreeeditor.png"
-            name="Subtree Specification Editor">
+            name="%ValueEditor_SubtreeValueEditor_name">
          <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.45"/>
       </valueEditor>
    </extension>
@@ -40,8 +40,8 @@
       <include file="resources/templates/templates.xml"/>
       <contextType
             class="org.eclipse.jface.text.templates.TemplateContextType"
-            id="org.apache.directory.studio.aciitemeditor.templates"
-            name="ACI Item"/>
+            id="%CtxType_AciItem_Template_id"
+            name="%CtxType_AciItem_Template_name"/>
    </extension>
 
 </plugin>
