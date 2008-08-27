@@ -249,6 +249,7 @@ public class BaseWidgetUtils
      * @param parent the parent
      * @param text the initial text
      * @param span the horizontal span
+     * @param widthHint the width hint
      * @return the created text
      */
     public static Text createLabeledText( Composite parent, String text, int span, int widthHint )
@@ -292,6 +293,33 @@ public class BaseWidgetUtils
         return t;
     }
 
+    /**
+     * Creates a SWT {@link Text} under the given parent.
+     * The created text control behaves like a label: it has no border, 
+     * a grayed background and is not modifyable. 
+     * But the text is selectable and could be copied.
+     * The label is created with the SWT.WRAP style to enable line wrapping.
+     *
+     * @param parent the parent
+     * @param text the initial text
+     * @param span the horizontal span
+     * @param widthHint the width hint
+     * @return the created text
+     */
+    public static Text createWrappedLabeledText( Composite parent, String text, int span, int widthHint  )
+    {
+        Text t = new Text( parent, SWT.WRAP );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.horizontalSpan = span;
+        gd.widthHint = widthHint;
+        gd.grabExcessHorizontalSpace = true;
+        gd.horizontalAlignment = GridData.FILL;
+        t.setLayoutData( gd );
+        t.setEditable( false );
+        t.setBackground( parent.getBackground() );
+        t.setText( text );
+        return t;
+    }
 
     /**
      * Creates a SWT {@link Text} under the given parent.

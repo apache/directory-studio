@@ -122,7 +122,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         GridLayout gl = new GridLayout( 2, false );
         infoComposite.setLayout( gl );
         BaseWidgetUtils.createLabel( infoComposite, "Directory Type:", 1 );
-        Text typeText = BaseWidgetUtils.createLabeledText( infoComposite, "-", 1, 10 );
+        Text typeText = BaseWidgetUtils.createWrappedLabeledText( infoComposite, "-", 1, 150);
         if ( connection != null && connection.getRootDSE() != null )
         {
             // Try to detect LDAP server from RootDSE
@@ -392,8 +392,8 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                 {
                     description = StringUtils.EMPTY;
                 }
-                BaseWidgetUtils.createLabeledText( composite, value, 1, 10 );
-                BaseWidgetUtils.createLabeledText( composite, description, 1, 10 );
+                BaseWidgetUtils.createLabeledText( composite, value, 1, 15 );
+                BaseWidgetUtils.createLabeledText( composite, description, 1, 15 );
             }
         }
         catch ( Exception e )
@@ -435,7 +435,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         }
 
         BaseWidgetUtils.createLabel( composite, labelName, 1 );
-        BaseWidgetUtils.createWrappedLabeledText( composite, sb.toString(), 1 );
+        BaseWidgetUtils.createWrappedLabeledText( composite, sb.toString(), 1, 150);
     }
 
 }
