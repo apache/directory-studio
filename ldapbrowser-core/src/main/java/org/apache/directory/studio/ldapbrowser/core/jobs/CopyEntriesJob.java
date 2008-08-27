@@ -32,6 +32,8 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
@@ -41,8 +43,8 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -256,13 +258,13 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 SearchResult sr = entries.next();
                 LdapDN oldLdapDn = JNDIUtils.getDn( sr );
                 Rdn oldRdn = oldLdapDn.getRdn();
-                
+
                 // reuse attributes of the entry to copy
                 Attributes newAttributes = sr.getAttributes();
 
                 // compose new DN
                 Rdn newRdn = oldLdapDn.getRdn();
-                if( forceNewRdn != null )
+                if ( forceNewRdn != null )
                 {
                     newRdn = forceNewRdn;
                 }
@@ -287,7 +289,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         dialog.setExistingEntry( targetBrowserConnection, newLdapDn );
                         dialog.open();
                         EntryExistsCopyStrategy strategy = dialog.getStrategy();
-//                        boolean rememberSelection = dialog.isRememberSelection();
+                        //                        boolean rememberSelection = dialog.isRememberSelection();
                         if ( strategy != null )
                         {
                             dummyMonitor.reset();
@@ -297,22 +299,49 @@ public class CopyEntriesJob extends AbstractNotificationJob
                                 case BREAK:
                                     monitor.setCanceled( true );
                                     break;
+
                                 case IGNORE_AND_CONTINUE:
                                     break;
-//                                case OVERWRITE_AND_CONTINUE:
-//                                    break;
+
+                                case OVERWRITE_AND_CONTINUE:
+                                    // create modification items
+                                    List<ModificationItem> mis = new ArrayList<ModificationItem>();
+                                    NamingEnumeration<? extends Attribute> all = newAttributes.getAll();
+                                    while ( all.hasMore() )
+                                    {
+                                        Attribute attribute = all.next();
+                                        ModificationItem mi = new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
+                                            attribute );
+                                        mis.add( mi );
+                                    }
+
+                                    // modify entry
+                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry(
+                                        newLdapDn.getUpName(), mis.toArray( new ModificationItem[mis.size()] ),
+                                        referralsHandlingMethod, null, dummyMonitor, null );
+
+                                    // forece reloading of attributes
+                                    IEntry newEntry = targetBrowserConnection.getEntryFromCache( newLdapDn );
+                                    if ( newEntry != null )
+                                    {
+                                        newEntry.setAttributesInitialized( false );
+                                    }
+                                    
+                                    break;
+
                                 case RENAME_AND_CONTINUE:
                                     Rdn renamedRdn = dialog.getRdn();
-                                    
+
                                     // apply renamed RDN to the attributes
                                     applyNewRdn( newAttributes, newRdn, renamedRdn );
-                                    
+
                                     // compose new DN
                                     newLdapDn = DnUtils.composeDn( renamedRdn, parentDn );
 
                                     // create entry
-                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry( newLdapDn.getUpName(),
-                                        newAttributes, referralsHandlingMethod, null, dummyMonitor, null );
+                                    targetBrowserConnection.getConnection().getJNDIConnectionWrapper().createEntry(
+                                        newLdapDn.getUpName(), newAttributes, referralsHandlingMethod, null,
+                                        dummyMonitor, null );
 
                                     break;
                             }
@@ -333,7 +362,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 if ( !monitor.isCanceled() && !monitor.errorsReported() )
                 {
                     numberOfCopiedEntries++;
-                    
+
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__copied_n_entries,
                         new String[]
                             { "" + numberOfCopiedEntries } ) ); //$NON-NLS-1$
@@ -371,7 +400,8 @@ public class CopyEntriesJob extends AbstractNotificationJob
         return numberOfCopiedEntries;
     }
 
-    private static void applyNewRdn(Attributes attributes, Rdn oldRdn, Rdn newRdn)
+
+    private static void applyNewRdn( Attributes attributes, Rdn oldRdn, Rdn newRdn )
     {
         // remove old RDN attributes and values
         for ( Iterator<AttributeTypeAndValue> it = oldRdn.iterator(); it.hasNext(); )
@@ -387,7 +417,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 }
             }
         }
-        
+
         // add new RDN attributes and values
         for ( Iterator<AttributeTypeAndValue> it = newRdn.iterator(); it.hasNext(); )
         {

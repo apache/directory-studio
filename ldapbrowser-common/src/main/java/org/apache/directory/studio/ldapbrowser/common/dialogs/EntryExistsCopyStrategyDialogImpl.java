@@ -61,9 +61,9 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
     /** The ignore button. */
     private Button ignoreButton;
-//
-//    /** The overwrite button. */
-//    private Button overwriteButton;
+
+    /** The overwrite button. */
+    private Button overwriteButton;
 
     /** The rename button. */
     private Button renameButton;
@@ -128,10 +128,10 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         {
             strategy = EntryExistsCopyStrategy.IGNORE_AND_CONTINUE;
         }
-//        else if ( overwriteButton.getSelection() )
-//        {
-//            strategy = EntryExistsCopyStrategy.OVERWRITE_AND_CONTINUE;
-//        }
+        else if ( overwriteButton.getSelection() )
+        {
+            strategy = EntryExistsCopyStrategy.OVERWRITE_AND_CONTINUE;
+        }
         else if ( renameButton.getSelection() )
         {
             strategy = EntryExistsCopyStrategy.RENAME_AND_CONTINUE;
@@ -181,10 +181,9 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 
         ignoreButton = BaseWidgetUtils.createRadiobutton( group, "Ignore entry and continue", 2 );
         ignoreButton.addSelectionListener( listener );
-//
-//        overwriteButton = BaseWidgetUtils.createRadiobutton( group, "Overwrite entry and continue", 2 );
-//        overwriteButton.setEnabled( false );
-//        overwriteButton.addSelectionListener( listener );
+
+        overwriteButton = BaseWidgetUtils.createRadiobutton( group, "Overwrite entry and continue", 2 );
+        overwriteButton.addSelectionListener( listener );
 
         renameButton = BaseWidgetUtils.createRadiobutton( group, "Rename entry and continue", 2 );
         renameButton.addSelectionListener( listener );
@@ -216,7 +215,6 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         if ( renameButton.getSelection() )
         {
             dnBuilderWidget.setEnabled( true );
-//            dnBuilderWidget.get
             getButton( IDialogConstants.OK_ID ).setEnabled( dnBuilderWidget.getRdn() != null );
         }
         else

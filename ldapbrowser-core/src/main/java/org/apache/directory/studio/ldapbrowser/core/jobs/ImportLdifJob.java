@@ -57,15 +57,12 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
-import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
@@ -462,30 +459,9 @@ public class ImportLdifJob extends AbstractNotificationJob
                 // creation failed with Error 68, now try to update the existing entry
                 monitor.reset();
 
-                List<ModificationItem> mis = new ArrayList<ModificationItem>();
-                for ( IAttribute attribute : dummyEntry.getAttributes() )
-                {
-                    Attribute jndiAttribute = new BasicAttribute( attribute.getDescription() );
-                    boolean isLdifPart = false;
-                    for ( IValue value : attribute.getValues() )
-                    {
-                        if ( value.getRawValue() instanceof LdifPart )
-                        {
-                            isLdifPart = true;
-                            break;
-                        }
-                        jndiAttribute.add( value.getRawValue() );
-                    }
-                    if ( !isLdifPart )
-                    {
-                        ModificationItem mi = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, jndiAttribute );
-                        mis.add( mi );
-                    }
-                }
-
-                browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn,
-                    mis.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, getControls( record ),
-                    monitor, null );
+                ModificationItem[] mis = ModelConverter.entryToReplaceModificationItems( dummyEntry );
+                browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( dn, mis,
+                    ReferralHandlingMethod.IGNORE, getControls( record ), monitor, null );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )

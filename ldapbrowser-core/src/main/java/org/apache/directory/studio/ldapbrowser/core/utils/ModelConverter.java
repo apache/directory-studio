@@ -24,7 +24,13 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 /**
  * Utilities to convert between models
  */
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.naming.InvalidNameException;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -53,7 +59,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 public class ModelConverter
 {
 
-
     /**
      * Converts the given {@link LdifContentRecord} to an {@link DummyEntry}.
      *
@@ -64,8 +69,8 @@ public class ModelConverter
      *
      * @throws InvalidNameException
      */
-    public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord, IBrowserConnection connection )
-        throws InvalidNameException
+    public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord,
+        IBrowserConnection connection ) throws InvalidNameException
     {
         return createIntern( ldifContentRecord, connection );
     }
@@ -81,8 +86,8 @@ public class ModelConverter
      *
      * @throws InvalidNameException
      */
-    public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord, IBrowserConnection connection )
-        throws InvalidNameException
+    public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord,
+        IBrowserConnection connection ) throws InvalidNameException
     {
         return createIntern( ldifChangeAddRecord, connection );
     }
@@ -98,7 +103,8 @@ public class ModelConverter
      *
      * @throws InvalidNameException
      */
-    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection ) throws InvalidNameException
+    private static DummyEntry createIntern( LdifRecord ldifRecord, IBrowserConnection connection )
+        throws InvalidNameException
     {
         LdifPart[] parts = ldifRecord.getParts();
 
@@ -283,6 +289,7 @@ public class ModelConverter
         }
     }
 
+
     /**
      * Gets the string value from the given {@link IValue}. If the given
      * {@link IValue} is binary is is encoded according to the regquested
@@ -313,5 +320,41 @@ public class ModelConverter
             }
         }
         return s;
+    }
+
+
+    /**
+     * Converts the entry to JNDI replace modification items. Each attribute
+     * of the entry will become a replace modification item. 
+     * 
+     * @param entry the entry to convert
+     * 
+     * @return the modification items
+     */
+    public static ModificationItem[] entryToReplaceModificationItems( IEntry entry )
+    {
+        List<ModificationItem> mis = new ArrayList<ModificationItem>();
+
+        for ( IAttribute attribute : entry.getAttributes() )
+        {
+            BasicAttribute jndiAttribute = new BasicAttribute( attribute.getDescription() );
+            boolean isLdifPart = false;
+            for ( IValue value : attribute.getValues() )
+            {
+                if ( value.getRawValue() instanceof LdifPart )
+                {
+                    isLdifPart = true;
+                    break;
+                }
+                jndiAttribute.add( value.getRawValue() );
+            }
+            if ( !isLdifPart )
+            {
+                ModificationItem mi = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, jndiAttribute );
+                mis.add( mi );
+            }
+        }
+
+        return mis.toArray( new ModificationItem[mis.size()] );
     }
 }
