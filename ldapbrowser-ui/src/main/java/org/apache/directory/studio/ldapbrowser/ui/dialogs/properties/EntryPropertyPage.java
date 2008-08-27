@@ -90,8 +90,15 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
             1, 1 ), 2, 1 );
         BaseWidgetUtils.createLabel( mainGroup, "DN:", 1 );
         dnText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 );
+        GridData dnTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        dnTextGridData.widthHint = 300;
+        dnText.setLayoutData( dnTextGridData );
+
         BaseWidgetUtils.createLabel( mainGroup, "URL:", 1 );
         urlText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 );
+        GridData urlTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        urlTextGridData.widthHint = 300;
+        urlText.setLayoutData( urlTextGridData );
 
         Group cmiGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
             "Create and Modify Information", 1 );
@@ -99,15 +106,27 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
         BaseWidgetUtils.createLabel( cmiComposite, "Create Timestamp:", 1 );
         ctText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 );
+        GridData ctTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        ctTextGridData.widthHint = 300;
+        ctText.setLayoutData( ctTextGridData );
 
         BaseWidgetUtils.createLabel( cmiComposite, "Creators Name:", 1 );
         cnText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 );
+        GridData cnTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        cnTextGridData.widthHint = 300;
+        cnText.setLayoutData( cnTextGridData );
 
         BaseWidgetUtils.createLabel( cmiComposite, "Modify Timestamp:", 1 );
         mtText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 );
+        GridData mtTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        mtTextGridData.widthHint = 300;
+        mtText.setLayoutData( mtTextGridData );
 
         BaseWidgetUtils.createLabel( cmiComposite, "Modifiers Name:", 1 );
         mnText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 1 );
+        GridData mnTextGridData = new GridData( GridData.FILL_HORIZONTAL );
+        mnTextGridData.widthHint = 300;
+        mnText.setLayoutData( mnTextGridData );
 
         reloadCmiButton = BaseWidgetUtils.createButton( cmiComposite, "", 1 );
         GridData gd = new GridData();
@@ -133,15 +152,27 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
         BaseWidgetUtils.createLabel( sizingComposite, "Entry Size:", 1 );
         sizeText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        GridData sizeTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        sizeTextGridData.widthHint = 300;
+        sizeText.setLayoutData( sizeTextGridData );
 
         BaseWidgetUtils.createLabel( sizingComposite, "Number of Children:", 1 );
         childrenText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        GridData childrenTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        childrenTextGridData.widthHint = 300;
+        childrenText.setLayoutData( childrenTextGridData );
 
         BaseWidgetUtils.createLabel( sizingComposite, "Number of Attributes:", 1 );
         attributesText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        GridData attributesTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        attributesTextGridData.widthHint = 300;
+        attributesText.setLayoutData( attributesTextGridData );
 
         BaseWidgetUtils.createLabel( sizingComposite, "Number of Values:", 1 );
         valuesText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        GridData valuesTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        valuesTextGridData.widthHint = 300;
+        valuesText.setLayoutData( valuesTextGridData );
 
         includeOperationalAttributesButton = BaseWidgetUtils.createCheckbox( sizingComposite,
             "Include operational attributes", 2 );
