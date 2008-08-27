@@ -876,6 +876,30 @@
 								</entry>
 								<entry>on</entry>
 							</row>
+							<row>
+								<entry>Update if entry already exists</entry>
+								<entry>
+									This options applies for LDIF content records 
+									and LDIF add records. If enabled and the entry 
+									to add already exists it will be updated with 
+									the attributes defined in the LDIF record. In
+									detail a replace operation for each attribute
+									is performed. Attributes of the existing entry
+									that are not defined in the LDIF record remain
+									without modification.
+								</entry>
+								<entry>off</entry>
+							</row>
+							<row>
+								<entry>Continue on error</entry>
+								<entry>
+									If checked the import process continues
+									if an error occurs while importing a
+									record. If not checked the import
+									process interrupts.
+								</entry>
+								<entry>on</entry>
+							</row>							
 						</tbody>
 					</tgroup>
 				</informaltable>

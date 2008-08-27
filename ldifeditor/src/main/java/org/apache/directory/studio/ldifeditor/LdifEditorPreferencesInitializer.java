@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.RGB;
 
 
 /**
- * This class is used to set default preference values.
+ * This class is used to set default preference values for the LDIF editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -55,6 +55,9 @@ public class LdifEditorPreferencesInitializer extends AbstractPreferenceInitiali
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_ENABLEAUTOACTIVATION, true );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_AUTOACTIVATIONDELAY, 200 );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC, true );
+        store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS, false );
+        store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR, true );
+
         PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX, new RGB( 63, 127, 95 ) );// green
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT

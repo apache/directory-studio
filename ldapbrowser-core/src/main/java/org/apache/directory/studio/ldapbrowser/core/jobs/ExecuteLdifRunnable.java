@@ -54,6 +54,9 @@ public class ExecuteLdifRunnable implements StudioBulkRunnableWithProgress
     /** The LDIF to execute. */
     private String ldif;
 
+    /** The update if entry exists flag. */
+    private boolean updateIfEntryExists;
+
     /** The continue on error flag. */
     private boolean continueOnError;
 
@@ -65,11 +68,13 @@ public class ExecuteLdifRunnable implements StudioBulkRunnableWithProgress
      * @param ldif the LDIF to execute
      * @param continueOnError the continue on error flag
      */
-    public ExecuteLdifRunnable( IBrowserConnection browserConnection, String ldif, boolean continueOnError )
+    public ExecuteLdifRunnable( IBrowserConnection browserConnection, String ldif, boolean updateIfEntryExists,
+        boolean continueOnError )
     {
         this.browserConnection = browserConnection;
         this.ldif = ldif;
         this.continueOnError = continueOnError;
+        this.updateIfEntryExists = updateIfEntryExists;
     }
 
 
@@ -135,7 +140,8 @@ public class ExecuteLdifRunnable implements StudioBulkRunnableWithProgress
                 }
             };
 
-            ImportLdifJob.importLdif( browserConnection, enumeration, logWriter, false, continueOnError, monitor );
+            ImportLdifJob.importLdif( browserConnection, enumeration, logWriter, updateIfEntryExists, continueOnError,
+                monitor );
 
             logWriter.close();
             ldifReader.close();

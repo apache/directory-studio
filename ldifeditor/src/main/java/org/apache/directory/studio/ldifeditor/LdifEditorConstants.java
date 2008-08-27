@@ -19,6 +19,13 @@
  */
 package org.apache.directory.studio.ldifeditor;
 
+
+/**
+ * Constants for the LDIF editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public interface LdifEditorConstants
 {
 
@@ -43,6 +50,10 @@ public interface LdifEditorConstants
     public static final String PREFERENCE_LDIFEDITOR_CONTENTASSIST_AUTOACTIVATIONDELAY = "ldifEditorCodeAssistAutoActivationDelay";
 
     public static final String PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC = "ldifEditorCodeAssistInsertAttributeInModSpec";
+
+    public static final String PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS = "ldifEditorOptionsUpdateIfEntryExists";
+
+    public static final String PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR = "ldifEditorOptionsContinueOnError";
 
     public static final String PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX = "_RGB";
 
@@ -111,13 +122,11 @@ public interface LdifEditorConstants
     public static final String IMG_ENTRY = "resources/icons/entry.gif";
 
     public static final String IMG_TEMPLATE = "resources/icons/template.gif";
-    
+
     public static final String IMG_BROWSER_LDIFEDITOR = "resources/icons/browser_ldifeditor.gif";
 
     public static final String IMG_LDIFEDITOR_NEW = "resources/icons/ldifeditor_new.gif";
-    
+
     public static final String IMG_EXECUTE = "resources/icons/execute.gif";
-
-
 
 }

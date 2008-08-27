@@ -306,7 +306,7 @@ public class ImportLdifMainWizardPage extends WizardPage
             3 );
         updateIfEntryExistsButton
             .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
-                + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF." );
+                + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF record." );
         if ( BrowserUIPlugin.getDefault().getDialogSettings().get( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY ) == null )
         {
             BrowserUIPlugin.getDefault().getDialogSettings().put( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY, false );

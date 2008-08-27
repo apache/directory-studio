@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 
 /**
@@ -62,7 +63,14 @@ public class ExecuteLdifAction extends Action
         IBrowserConnection connection = editor.getConnection();
         String ldif = editor.getLdifModel().toRawString();
 
-        ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( connection, ldif, true );
+        IPreferenceStore preferenceStore = LdifEditorActivator.getDefault().getPreferenceStore();
+        boolean updateIfEntryExistsButton = preferenceStore
+            .getBoolean( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS );
+        boolean continueOnErrorButton = preferenceStore
+            .getBoolean( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR );
+
+        ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( connection, ldif, updateIfEntryExistsButton,
+            continueOnErrorButton );
         StudioBrowserJob job = new StudioBrowserJob( runnable );
         job.execute();
     }

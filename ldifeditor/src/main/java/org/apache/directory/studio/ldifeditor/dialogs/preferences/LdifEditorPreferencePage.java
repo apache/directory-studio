@@ -43,24 +43,45 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * The main preference page of the LDIF editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class LdifEditorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
     // private Button autoWrapButton;
 
+    /** The enable folding button. */
     private Button enableFoldingButton;
 
+    /** The initially fold label. */
     private Label initiallyFoldLabel;
 
+    /** The initially fold comments button. */
     private Button initiallyFoldCommentsButton;
 
+    /** The initially fold records button. */
     private Button initiallyFoldRecordsButton;
 
+    /** The initially fold wrapped lines button. */
     private Button initiallyFoldWrappedLinesButton;
 
+    /** The use ldif double click button. */
     private Button useLdifDoubleClickButton;
 
+    /** The update if entry exists button. */
+    private Button updateIfEntryExistsButton;
 
+    /** The continue on error button. */
+    private Button continueOnErrorButton;
+
+
+    /**
+     * Creates a new instance of LdifEditorPreferencePage.
+     */
     public LdifEditorPreferencePage()
     {
         super( "LDIF Editor" );
@@ -68,11 +89,17 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IWorkbench workbench )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
@@ -145,12 +172,32 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
         useLdifDoubleClickButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_DOUBLECLICK_USELDIFDOUBLECLICK ) );
 
+        BaseWidgetUtils.createSpacer( composite, 1 );
+
+        // Options
+        Group optionsGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            "Options", 1 );
+
+        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsGroup, "Update if entry already exists", 1 );
+        updateIfEntryExistsButton
+            .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
+                + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF record." );
+        updateIfEntryExistsButton.setSelection( getPreferenceStore().getBoolean(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS ) );
+
+        continueOnErrorButton = BaseWidgetUtils.createCheckbox( optionsGroup, "Continue on error", 1 );
+        continueOnErrorButton.setSelection( getPreferenceStore().getBoolean(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR ) );
+
         checkEnabled();
 
         return composite;
     }
 
 
+    /**
+     * Enables/disables widgets dependent if options are selected.
+     */
     private void checkEnabled()
     {
         initiallyFoldLabel.setEnabled( enableFoldingButton.getSelection() );
@@ -160,19 +207,27 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_ENABLE,
-            this.enableFoldingButton.getSelection() );
+            enableFoldingButton.getSelection() );
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_INITIALLYFOLDCOMMENTS,
-            this.initiallyFoldCommentsButton.getSelection() );
+            initiallyFoldCommentsButton.getSelection() );
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_INITIALLYFOLDRECORDS,
-            this.initiallyFoldRecordsButton.getSelection() );
+            initiallyFoldRecordsButton.getSelection() );
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_INITIALLYFOLDWRAPPEDLINES,
-            this.initiallyFoldWrappedLinesButton.getSelection() );
+            initiallyFoldWrappedLinesButton.getSelection() );
 
         getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_DOUBLECLICK_USELDIFDOUBLECLICK,
-            this.useLdifDoubleClickButton.getSelection() );
+            useLdifDoubleClickButton.getSelection() );
+
+        getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS,
+            updateIfEntryExistsButton.getSelection() );
+        getPreferenceStore().setValue( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR,
+            continueOnErrorButton.getSelection() );
 
         BrowserCorePlugin.getDefault().savePluginPreferences();
 
@@ -180,6 +235,9 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
         enableFoldingButton.setSelection( getPreferenceStore().getDefaultBoolean(
@@ -193,6 +251,11 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
 
         useLdifDoubleClickButton.setSelection( getPreferenceStore().getDefaultBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_DOUBLECLICK_USELDIFDOUBLECLICK ) );
+
+        updateIfEntryExistsButton.setSelection( getPreferenceStore().getDefaultBoolean(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS ) );
+        continueOnErrorButton.setSelection( getPreferenceStore().getDefaultBoolean(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR ) );
 
         super.performDefaults();
 

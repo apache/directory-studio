@@ -142,7 +142,7 @@ public class EditEntryWizard extends NewEntryWizard
                 if ( record != null )
                 {
                     ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( selectedConnection, record
-                        .toFormattedString( LdifFormatParameters.DEFAULT ), false );
+                        .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
                     IStatus status = RunnableContextRunner.execute( runnable, getContainer(), true );
                     if ( !status.isOK() )
                     {
