@@ -39,6 +39,7 @@
       <resource>
         <directory>.</directory>
         <includes>
+          <include>plugin.properties</include>
           <include>plugin.xml</include>
         </includes>
       </resource>
