@@ -176,9 +176,9 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
 
         // Options
         Group optionsGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Options", 1 );
+            "Execute Options", 1 );
 
-        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsGroup, "Update if entry already exists", 1 );
+        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsGroup, "Update existing entries", 1 );
         updateIfEntryExistsButton
             .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
                 + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF record." );

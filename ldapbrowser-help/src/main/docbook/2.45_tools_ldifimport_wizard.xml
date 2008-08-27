@@ -212,7 +212,7 @@
 							<entry>off</entry>
 						</row>
 						<row>
-							<entry>Update if entry already exists</entry>
+							<entry>Update existing entries</entry>
 							<entry>
 								This options applies for LDIF content records 
 								and LDIF add records. If enabled and the entry 

@@ -302,7 +302,7 @@ public class ImportLdifMainWizardPage extends WizardPage
         Group optionsGroup = BaseWidgetUtils.createGroup( optionsOuterComposite, "Options", 1 );
         Composite optionsContainer = BaseWidgetUtils.createColumnContainer( optionsGroup, 3, 1 );
 
-        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsContainer, "Update if entry already exists",
+        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsContainer, "Update existing entries",
             3 );
         updateIfEntryExistsButton
             .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
