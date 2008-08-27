@@ -94,7 +94,7 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewEntryWizard"
+            class="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
             hasPages="true"
             icon="resources/icons/entry_add.gif"
             id="%NewWizard_NewEntryWizard_id"
