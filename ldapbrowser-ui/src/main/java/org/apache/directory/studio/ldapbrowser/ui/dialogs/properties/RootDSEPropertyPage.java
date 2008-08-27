@@ -21,114 +21,111 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetTableMetadata;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * This page shows some info of the Root DSE.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
+    /** The tab folder. */
     private TabFolder tabFolder;
 
-    private TabItem commonsTab;
+    /** The info tab. */
+    private TabItem infoTab;
 
+    /** The controls tab. */
     private TabItem controlsTab;
 
+    /** The extensions tab. */
     private TabItem extensionsTab;
 
+    /** The features tab. */
     private TabItem featuresTab;
 
-    private TabItem rawTab;
 
+    /**
+     * Creates a new instance of RootDSEPropertyPage.
+     */
     public RootDSEPropertyPage()
     {
         super();
         super.noDefaultAndApplyButton();
     }
 
-    
+
+    /**
+     * Gets the browser connection, or null if the given element
+     * isn't adaptable to a browser connection.
+     * 
+     * @param element the element
+     * 
+     * @return the browser connection
+     */
     static IBrowserConnection getConnection( Object element )
     {
         IBrowserConnection browserConnection = null;
         if ( element instanceof IAdaptable )
         {
             browserConnection = ( IBrowserConnection ) ( ( IAdaptable ) element ).getAdapter( IBrowserConnection.class );
-            if(browserConnection == null)
+            if ( browserConnection == null )
             {
                 Connection connection = ( Connection ) ( ( IAdaptable ) element ).getAdapter( Connection.class );
-                browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection( connection );
+                browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
+                    connection );
             }
         }
         return browserConnection;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         final IBrowserConnection connection = getConnection( getElement() );
 
-        this.tabFolder = new TabFolder( parent, SWT.TOP );
+        tabFolder = new TabFolder( parent, SWT.TOP );
         RowLayout mainLayout = new RowLayout();
         mainLayout.fill = true;
         mainLayout.marginWidth = 0;
         mainLayout.marginHeight = 0;
-        this.tabFolder.setLayout( mainLayout );
+        tabFolder.setLayout( mainLayout );
 
-        Composite composite = new Composite( this.tabFolder, SWT.NONE );
+        // Info tab
+        Composite infoComposite = new Composite( tabFolder, SWT.NONE );
         GridLayout gl = new GridLayout( 2, false );
-        composite.setLayout( gl );
-        BaseWidgetUtils.createLabel( composite, "Directory Type:", 1 );
-        Text typeText = BaseWidgetUtils.createLabeledText( composite, "-", 1 );
+        infoComposite.setLayout( gl );
+        BaseWidgetUtils.createLabel( infoComposite, "Directory Type:", 1 );
+        Text typeText = BaseWidgetUtils.createLabeledText( infoComposite, "-", 1, 10 );
         if ( connection != null && connection.getRootDSE() != null )
         {
             // Try to detect LDAP server from RootDSE
-            //   
             IRootDSE rootDSE = connection.getRootDSE();
             String type = detectOpenLDAP( rootDSE );
             if ( type == null )
@@ -149,117 +146,52 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                 typeText.setText( type );
             }
         }
-        addInfo( connection, composite, "vendorName", "Vendor Name:" );
-        addInfo( connection, composite, "vendorVersion", "Vendor Version:" );
-        addInfo( connection, composite, "supportedLDAPVersion", "Supported LDAP Versions:" );
-        addInfo( connection, composite, "supportedSASLMechanisms", "Supported SASL Mechanisms:" );
+        addInfo( connection, infoComposite, "vendorName", "Vendor Name:" );
+        addInfo( connection, infoComposite, "vendorVersion", "Vendor Version:" );
+        addInfo( connection, infoComposite, "supportedLDAPVersion", "Supported LDAP Versions:" );
+        addInfo( connection, infoComposite, "supportedSASLMechanisms", "Supported SASL Mechanisms:" );
+        infoTab = new TabItem( tabFolder, SWT.NONE );
+        infoTab.setText( "Info" );
+        infoTab.setControl( infoComposite );
 
-        this.commonsTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.commonsTab.setText( "Info" );
-        this.commonsTab.setControl( composite );
+        // Controls tab 
+        Composite controlsComposite = new Composite( tabFolder, SWT.NONE );
+        controlsComposite.setLayout( new GridLayout() );
+        Composite controlsComposite2 = BaseWidgetUtils.createColumnContainer( controlsComposite, 2, 1 );
+        addOidInfo( connection, controlsComposite2, "supportedControl" );
+        controlsTab = new TabItem( tabFolder, SWT.NONE );
+        controlsTab.setText( "Controls" );
+        controlsTab.setControl( controlsComposite );
 
-        // naming contexts
-        // alt servers
-        // schema DN
-        // ldap version
+        // Extensions tab
+        Composite extensionComposite = new Composite( tabFolder, SWT.NONE );
+        extensionComposite.setLayout( new GridLayout() );
+        Composite extensionComposite2 = BaseWidgetUtils.createColumnContainer( extensionComposite, 2, 1 );
+        addOidInfo( connection, extensionComposite2, "supportedExtension" );
+        extensionsTab = new TabItem( tabFolder, SWT.NONE );
+        extensionsTab.setText( "Extensions" );
+        extensionsTab.setControl( extensionComposite );
 
-        Composite controlsComposite = new Composite( this.tabFolder, SWT.NONE );
-        controlsComposite.setLayoutData( new RowData( 10, 10 ) );
-        GridLayout controlsLayout = new GridLayout();
-        controlsComposite.setLayout( controlsLayout );
-        ListViewer controlsViewer = new ListViewer( controlsComposite );
-        controlsViewer.getList().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        controlsViewer.setContentProvider( new ArrayContentProvider() );
-        controlsViewer.setLabelProvider( new LabelProvider() );
-        if ( connection != null && connection.getRootDSE() != null )
-        {
-            String[] supportedControls = ( ( RootDSE ) connection.getRootDSE() ).getSupportedControls();
-            addDescritionsToOIDs( supportedControls );
-            controlsViewer.setInput( supportedControls );
-        }
-        this.controlsTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.controlsTab.setText( "Controls" );
-        this.controlsTab.setControl( controlsComposite );
-        
-        Composite extensionComposite = new Composite( this.tabFolder, SWT.NONE );
-        extensionComposite.setLayoutData( new RowData( 10, 10 ) );
-        GridLayout extensionLayout = new GridLayout();
-        extensionComposite.setLayout( extensionLayout );
-        ListViewer extensionViewer = new ListViewer( extensionComposite );
-        extensionViewer.getList().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        extensionViewer.setContentProvider( new ArrayContentProvider() );
-        extensionViewer.setLabelProvider( new LabelProvider() );
-        if ( connection != null && connection.getRootDSE() != null )
-        {
-            String[] supportedExtensions = ( ( RootDSE ) connection.getRootDSE() ).getSupportedExtensions();
-            addDescritionsToOIDs( supportedExtensions );
-            extensionViewer.setInput( supportedExtensions );
-        }
-        this.extensionsTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.extensionsTab.setText( "Extensions" );
-        this.extensionsTab.setControl( extensionComposite );
+        // Features tab
+        Composite featureComposite = new Composite( tabFolder, SWT.NONE );
+        featureComposite.setLayout( new GridLayout() );
+        Composite featureComposite2 = BaseWidgetUtils.createColumnContainer( featureComposite, 2, 1 );
+        addOidInfo( connection, featureComposite2, "supportedFeatures" );
+        featuresTab = new TabItem( tabFolder, SWT.NONE );
+        featuresTab.setText( "Features" );
+        featuresTab.setControl( featureComposite );
 
-        Composite featureComposite = new Composite( this.tabFolder, SWT.NONE );
-        featureComposite.setLayoutData( new RowData( 10, 10 ) );
-        GridLayout featureLayout = new GridLayout();
-        featureComposite.setLayout( featureLayout );
-        ListViewer featureViewer = new ListViewer( featureComposite );
-        featureViewer.getList().setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        featureViewer.setContentProvider( new ArrayContentProvider() );
-        featureViewer.setLabelProvider( new LabelProvider() );
-        if ( connection != null && connection.getRootDSE() != null )
-        {
-            String[] supportedFeatures = ( ( RootDSE ) connection.getRootDSE() ).getSupportedFeatures();
-            addDescritionsToOIDs( supportedFeatures );
-            featureViewer.setInput( supportedFeatures );
-        }
-        this.featuresTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.featuresTab.setText( "Features" );
-        this.featuresTab.setControl( featureComposite );
-
-        Composite rawComposite = new Composite( this.tabFolder, SWT.NONE );
-        rawComposite.setLayoutData( new RowData( 10, 10 ) );
-        GridLayout rawLayout = new GridLayout();
-        rawComposite.setLayout( rawLayout );
-        Table table = new Table( rawComposite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
-            | SWT.FULL_SELECTION | SWT.HIDE_SELECTION );
-        GridData gridData = new GridData( GridData.FILL_BOTH );
-        table.setLayoutData( gridData );
-        table.setHeaderVisible( true );
-        table.setLinesVisible( true );
-        TableViewer viewer = new TableViewer( table );
-        for ( int i = 0; i < EntryEditorWidgetTableMetadata.COLUM_NAMES.length; i++ )
-        {
-            TableColumn column = new TableColumn( table, SWT.LEFT, i );
-            column.setText( EntryEditorWidgetTableMetadata.COLUM_NAMES[i] );
-            column.setWidth( 150 );
-            column.setResizable( true );
-        }
-        viewer.setColumnProperties( EntryEditorWidgetTableMetadata.COLUM_NAMES );
-        viewer.setSorter( new InnerViewerSorter() );
-        viewer.setContentProvider( new InnerContentProvider() );
-        viewer.setLabelProvider( new InnerLabelProvider() );
-        if ( connection != null )
-        {
-            IEntry entry = connection.getRootDSE();
-            viewer.setInput( entry );
-        }
-        this.rawTab = new TabItem( this.tabFolder, SWT.NONE );
-        this.rawTab.setText( "Raw" );
-        this.rawTab.setControl( rawComposite );
-
-        // setControl(composite);
-        return this.tabFolder;
+        return tabFolder;
     }
 
 
-    /** Check various LDAP servers via vendorName attribute.
+    /** 
+     * Check various LDAP servers via vendorName attribute.
      * 
      * @param rootDSE
      */
     private String detectByVendorName( IRootDSE rootDSE )
     {
-
         String result = null;
 
         IAttribute vnAttribute = rootDSE.getAttribute( "vendorName" );
@@ -307,7 +239,6 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
      */
     private String detectActiveDirectory( IRootDSE rootDSE )
     {
-
         String result = null;
 
         // check active directory
@@ -337,7 +268,6 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
      */
     private String detectSiemensDirX( IRootDSE rootDSE )
     {
-
         String result = null;
 
         IAttribute ssseAttribute = rootDSE.getAttribute( "subSchemaSubentry" );
@@ -364,7 +294,6 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
      */
     private String detectOpenLDAP( IRootDSE rootDSE )
     {
-
         String result = null;
         boolean typeDetected = false;
 
@@ -444,113 +373,69 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
 
 
     /**
-     * Add descriptions to OIDs, if known. uses the form "OID (description)". The array content is modified by this method.  
+     * Adds text fields to the composite. The text fields contain
+     * the OID values of the given attribute and the OID description.
      * 
-     * @param oids 
+     * @param browserConnection the browser connection
+     * @param composite the composite
+     * @param attributeType the attribute type
      */
-    private void addDescritionsToOIDs( String[] oids )
+    private void addOidInfo( final IBrowserConnection browserConnection, Composite composite, String attributeType )
     {
-        for ( int i = 0; i < oids.length; ++i )
-        {
-            String description = Utils.getOidDescription( oids[i] );
-            if ( description != null )
-            {
-                oids[i] = oids[i] + " (" + description + ")";
-            }
-        }
-    }
-
-
-    private void addInfo( final IBrowserConnection connection, Composite composite, String attributeName, String labelName )
-    {
-        Label label = new Label( composite, SWT.NONE );
-        label.setText( labelName );
-        Text text = new Text( composite, SWT.NONE );
-        text.setEditable( false );
-        text.setBackground( composite.getBackground() );
         try
         {
-            String[] versions = connection.getRootDSE().getAttribute( attributeName ).getStringValues();
-            String version = Arrays.asList( versions ).toString();
-            text.setText( version.substring( 1, version.length() - 1 ) );
+            String[] values = browserConnection.getRootDSE().getAttribute( attributeType ).getStringValues();
+            for ( String value : values )
+            {
+                String description = Utils.getOidDescription( value );
+                if ( description == null )
+                {
+                    description = StringUtils.EMPTY;
+                }
+                BaseWidgetUtils.createLabeledText( composite, value, 1, 10 );
+                BaseWidgetUtils.createLabeledText( composite, description, 1, 10 );
+            }
         }
         catch ( Exception e )
         {
-            text.setText( "-" );
         }
     }
 
-    class InnerContentProvider implements IStructuredContentProvider
+
+    /**
+     * Adds an text field to the composite. It contains the given label and
+     * the values of the given attribute.
+     * 
+     * @param browserConnection the browser connection
+     * @param composite the composite
+     * @param attributeType the attribute type
+     * @param labelName the label name
+     */
+    private void addInfo( final IBrowserConnection browserConnection, Composite composite, String attributeType,
+        String labelName )
     {
-        public Object[] getElements( Object inputElement )
+        StringBuffer sb = new StringBuffer();
+        try
         {
-            if ( inputElement instanceof IEntry )
+            String[] values = browserConnection.getRootDSE().getAttribute( attributeType ).getStringValues();
+            boolean isFirst = true;
+            for ( String value : values )
             {
-                IEntry entry = ( IEntry ) inputElement;
-                if ( !entry.isAttributesInitialized() && entry.isDirectoryEntry() )
+                if ( !isFirst )
                 {
-                    return new Object[]
-                        {};
+                    sb.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
-                else
-                {
-                    IAttribute[] attributes = entry.getAttributes();
-                    List valueList = new ArrayList();
-                    for ( int i = 0; attributes != null && i < attributes.length; i++ )
-                    {
-                        IValue[] values = attributes[i].getValues();
-                        for ( int j = 0; j < values.length; j++ )
-                        {
-                            valueList.add( values[j] );
-                        }
-                    }
-                    return valueList.toArray();
-                }
+                sb.append( value );
+                isFirst = false;
             }
-            return new Object[0];
         }
-
-
-        public void dispose()
+        catch ( Exception e )
         {
+            sb.append( "-" );
         }
 
-
-        public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
-        {
-        }
-    }
-
-    class InnerLabelProvider extends LabelProvider implements ITableLabelProvider
-    {
-        public String getColumnText( Object obj, int index )
-        {
-            if ( obj != null && obj instanceof IValue )
-            {
-                IValue attributeValue = ( IValue ) obj;
-                switch ( index )
-                {
-                    case EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX:
-                        return attributeValue.getAttribute().getDescription();
-                    case EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX:
-                        return attributeValue.getStringValue();
-                    default:
-                        return "";
-                }
-            }
-            return "";
-        }
-
-
-        public Image getColumnImage( Object obj, int index )
-        {
-            return super.getImage( obj );
-        }
-    }
-
-    class InnerViewerSorter extends ViewerSorter
-    {
-
+        BaseWidgetUtils.createLabel( composite, labelName, 1 );
+        BaseWidgetUtils.createWrappedLabeledText( composite, sb.toString(), 1 );
     }
 
 }
