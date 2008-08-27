@@ -26,13 +26,13 @@
             icon="resources/icons/browser_browserview.gif"
             class="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"
             fixed="false"
-            name="LDAP"
-            id="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"/>
+            name="%Perspective_LdapPerspective_name"
+            id="%Perspective_LdapPerspective_id"/>
    </extension>
     <extension
        point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension targetID="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective">
-       <actionSet id="org.apache.directory.studio.ldapbrowser.ldapMenuActionSet"/>
+    <perspectiveExtension targetID="%Perspective_LdapPerspective_id">
+       <actionSet id="%ActionSet_LdapMenuActionSet_id"/>
     </perspectiveExtension>
  </extension>
  <extension
@@ -41,116 +41,116 @@
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
           default="true"
           icon="resources/icons/browser_entryeditor.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
-          name="Entry Editor"/>
+          id="%Editor_EntryEditor_id"
+          name="%Editor_EntryEditor_name"/>
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
        default="true"
        icon="resources/icons/browser_searchresulteditor.gif"
-       id="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
-       name="Search Result Editor"/>
+       id="%Editor_SearchResultEditor_id"
+       name="%Editor_SearchResultEditor_name"/>
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowser"
        default="true"
        icon="resources/icons/browser_schemabrowsereditor.gif"
-       id="org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowser"
-       name="Schema Browser"/>
+       id="%Editor_SchemaBrowser_id"
+       name="%Editor_SchemaBrowser_name"/>
  </extension>
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="LDAP Browser"
-            id="org.apache.directory.studio.ldapbrowser.ui.category"/>
+            name="%View_Category_name"
+            id="%View_Category_id"/>
       <view
             allowMultiple="false"
             class="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
             icon="resources/icons/browser_connectionview.gif"
-            category="org.apache.directory.studio.ldapbrowser.ui.category"
-            name="Connections"
-            id="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"/>            
+            category="%View_Category_id"
+            name="%View_ConnectionView_name"
+            id="%View_ConnectionView_id"/>            
 	  <view
          allowMultiple="false"
-         category="org.apache.directory.studio.ldapbrowser.ui.category"
+         category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView"
          icon="resources/icons/browser_browserview.gif"
-         id="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView"
-         name="LDAP Browser"/>
+         id="%View_BrowserView_id"
+         name="%View_BrowserView_name"/>
    <view
          allowMultiple="false"
-         category="org.apache.directory.studio.ldapbrowser.ui.category"
+         category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView"
          icon="resources/icons/browser_modificationlogview.gif"
-         id="org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView"
-         name="Modification Logs"/>            
+         id="%View_ModificationLogsView_id"
+         name="%View_ModificationLogsView_name"/>            
    <view
          allowMultiple="false"
-         category="org.apache.directory.studio.ldapbrowser.ui.category"
+         category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView"
          icon="resources/icons/browser_modificationlogview.gif"
-         id="org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView"
-         name="Search Logs"/>            
+         id="%View_SearchLogsView_id"
+         name="%View_SearchLogsView_name"/>            
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
-            category="org.apache.directory.studio.ldapbrowser.newWizards"
+            category="%NewWizards_Category_id"
             class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewEntryWizard"
             hasPages="true"
             icon="resources/icons/entry_add.gif"
-            id="org.apache.directory.studio.ldapbrowser.ui.wizards.NewEntryWizard"
-            name="LDAP Entry"
+            id="%NewWizard_NewEntryWizard_id"
+            name="%NewWizard_NewEntryWizard_name"
             project="false"/>
       <wizard
             canFinishEarly="true"
-            category="org.apache.directory.studio.ldapbrowser.newWizards"
+            category="%NewWizards_Category_id"
             class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard"
             hasPages="false"
             icon="resources/icons/search_new.gif"
-            id="org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard"
-            name="LDAP Search"
+            id="%NewWizard_NewSearchWizard_id"
+            name="%NewWizard_NewSearchWizard_name"
             project="false"/>
       <wizard
-            category="org.apache.directory.studio.ldapbrowser.newWizards"
+            category="%NewWizards_Category_id"
             class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
             hasPages="true"
             icon="resources/icons/bookmark_add.gif"
-            id="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
-            name="LDAP Bookmark"
+            id="%NewWizard_NewBookmarkWizard_id"
+            name="%NewWizard_NewBookmarkWizard_name"
             project="false"/>
       <wizard
-            category="org.apache.directory.studio.ldapbrowser.newWizards"
+            category="%NewWizards_Category_id"
             class="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
             hasPages="true"
             icon="resources/icons/batch.gif"
-            id="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
-            name="LDAP Batch Operation"
+            id="%NewWizard_BatchOperationWizard_id"
+            name="%NewWizard_BatchOperationWizard_name"
             project="false"/>
    </extension>
  <extension
        point="org.eclipse.ui.importWizards">
     <category
-          id="org.apache.directory.studio.ldapbrowser.importWizards"
-          name="LDAP Browser"/>
+          id="%ImportWizards_Category_id"
+          name="%ImportWizards_Category_name"/>
     <wizard
-          category="org.apache.directory.studio.ldapbrowser.importWizards"
+          category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportLdifWizard"
           icon="resources/icons/import_ldif.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportLdifWizard"
-          name="LDIF into LDAP">
+          id="%ImportWizard_ImportLdifWizard_id"
+          name="%ImportWizard_ImportLdifWizard_name">
        <description>
-          Imports a LDIF file into a LDAP directory
+          %ImportWizard_ImportLdifWizard_description
        </description>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
-          category="org.apache.directory.studio.ldapbrowser.importWizards"
+          category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportDsmlWizard"
           icon="resources/icons/import_dsml.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportDsmlWizard"
-          name="DSML into LDAP">
+          id="%ImportWizard_ImportDsmlWizard_id"
+          name="%ImportWizard_ImportDsmlWizard_name">
        <description>
-          Imports a DSML file into a LDAP directory
+          %ImportWizard_ImportDsmlWizard_description
        </description>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
@@ -159,52 +159,52 @@
  <extension
        point="org.eclipse.ui.exportWizards">
     <category
-          id="org.apache.directory.studio.ldapbrowser.exportWizards"
-          name="LDAP Browser"/>
+          id="%ExportWizards_Category_id"
+          name="%ExportWizards_Category_name"/>
     <wizard
-          category="org.apache.directory.studio.ldapbrowser.exportWizards"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportLdifWizard"
           icon="resources/icons/export_ldif.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportLdifWizard"
-          name="LDAP to LDIF">
+          id="%ExportWizard_ExportLdifWizard_id"
+          name="%ExportWizard_ExportLdifWizard_name">
        <description>
-          Exports a LDIF file from a LDAP directory
+          %ExportWizard_ExportLdifWizard_description
        </description>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
-          category="org.apache.directory.studio.ldapbrowser.exportWizards"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDsmlWizard"
           icon="resources/icons/export_dsml.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDdsmlWizard"
-          name="LDAP to DSML">
+          id="%ExportWizard_ExportDdsmlWizard_id"
+          name="%ExportWizard_ExportDdsmlWizard_name">
        <description>
-          Exports a DSML file from a LDAP directory
+          %ExportWizard_ExportDdsmlWizard_description
        </description>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
-          category="org.apache.directory.studio.ldapbrowser.exportWizards"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportCsvWizard"
           icon="resources/icons/export_csv.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportCsvWizard"
-          name="LDAP to CSV">
+          id="%ExportWizard_ExportCsvWizard_id"
+          name="%ExportWizard_ExportCsvWizard_name">
        <description>
-          Exports a CSV file from a LDAP directory
+          %ExportWizard_ExportCsvWizard_description
        </description>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
     <wizard
-          category="org.apache.directory.studio.ldapbrowser.exportWizards"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportExcelWizard"
           icon="resources/icons/export_xls.gif"
-          id="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportExcelWizard"
-          name="LDAP to Excel">
+          id="%ExportWizard_ExportExcelWizard_id"
+          name="%ExportWizard_ExportExcelWizard_name">
        <description>
-          Exports an Excel file from a LDAP directory
+          %ExportWizard_ExportExcelWizard_description
        </description>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
@@ -214,12 +214,12 @@
    <extension point="org.eclipse.search.searchPages">
 	   <page
           enabled="true"
-          label="LDAP Search"
+          label="%SearchPage_LdapSearch_label"
           class="org.apache.directory.studio.ldapbrowser.ui.search.SearchPage"
           icon="resources/icons/browser_searchresulteditor.gif"
           showScopeSection="false"
           sizeHint="450,450"
-          id="org.apache.directory.studio.ldapbrowser.ui.search.SearchPage">
+          id="%SearchPage_LdapSearch_id">
 		</page>
 	</extension>
    
@@ -231,166 +231,167 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
+            category="%PrefPage_MainPreferencePage_id"
             class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchResultEditorPreferencePage"
-            id="org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage"
-            name="Search Result Editor">
-         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+            id="%PrefPage_SearchResultEditorPreferencePage_id"
+            name="%PrefPage_SearchResultEditorPreferencePage_name">
+         <keywordReference id="%Keyword_LDAP_id"/>
       </page>
       <page
-            category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
+            category="%PrefPage_MainPreferencePage_id"
             class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.ModificationLogsPreferencePage"
-            id="org.apache.directory.studio.ldapbrowser.preferences.ModificationLogsPreferencePage"
-            name="Modification Logs">
-         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+            id="%PrefPage_ModificationLogsPreferencePage_id"
+            name="%PrefPage_ModificationLogsPreferencePage_name">
+         <keywordReference id="%Keyword_LDAP_id"/>
       </page>
       <page
-            category="org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage"
+            category="%PrefPage_MainPreferencePage_id"
             class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchLogsPreferencePage"
-            id="org.apache.directory.studio.ldapbrowser.preferences.SearchLogsPreferencePage"
-            name="Search Logs">
-         <keywordReference id="org.apache.directory.studio.ldapbrowser.keyword.ldap"/>
+            id="%PrefPage_SearchLogsPreferencePage_id"
+            name="%PrefPage_SearchLogsPreferencePage_name">
+         <keywordReference id="%Keyword_LDAP_id"/>
       </page>
    </extension>
 
 	<extension
 		point="org.eclipse.ui.propertyPages">
 		<page
-        category="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
+        category="%Prop_ConnectionPropertyPage_id"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SchemaPropertyPage"
-        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SchemaPropertyPage"
-        name="Schema"
+        id="%PropPage_Schema_id"
+        name="%PropPage_Schema_name"
         objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>            
 		<page
-        category="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
+        category="%Prop_ConnectionPropertyPage_id"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.RootDSEPropertyPage"
-        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.RootDSEPropertyPage"
-        name="Root DSE"
+        id="%PropPage_RootDSE_id"
+        name="%PropPage_RootDSE_name"
         objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>                        
 		<page
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"
-        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"
-        name="Search"
+        id="%PropPage_Search_id"
+        name="%PropPage_Search_name"
         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider"/>            
 		<page
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage"
-        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage"
-        name="Entry"
+        id="%PropPage_Entry_id"
+        name="%PropPage_Entry_name"
         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider">
   </page>            
 		<page
-        category="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage"
+        category="%PropPage_Entry_id"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SubSchemaPropertyPage"
-        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SubSchemaPropertyPage"
-        name="Subschema"
+        id="%PropPage_Subschema_id"
+        name="%PropPage_Subschema_name"
         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider"/>
 	  <page
          class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"
-         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"
-         name="Attribute"
+         id="%PropPage_Attribute_id"
+         name="%PropPage_Attribute_name"
          objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.AttributePropertyPageProvider"/>
 	  <page
          class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage"
-         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage"
-         name="Value"
+         id="%PropPage_Value_id"
+         name="%PropPage_Value_name"
          objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ValuePropertyPageProvider"/>
    <page
          class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage"
-         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage"
-         name="Bookmark"
+         id="%PropPage_Bookmark_id"
+         name="%PropPage_Bookmark_name"
          objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider"/>
       </extension>
+      
  <extension
        point="org.eclipse.ui.actionSets">
     <actionSet
-          id="org.apache.directory.studio.ldapbrowser.ldapMenuActionSet"
-          label="LDAP Menu"
+          id="%ActionSet_LdapMenuActionSet_id"
+          label="%ActionSet_LdapMenuActionSet_label"
           visible="false">
        <menu
-             id="org.apache.directory.studio.ldapbrowser.ldapMenu"
-             label="LDAP">
-          <groupMarker name="newConnection"/>
-          <groupMarker name="newEntry"/>
-          <groupMarker name="newAttribute"/>
-          <groupMarker name="newValue"/>
-          <groupMarker name="newSearch"/>
-          <groupMarker name="newBookmark"/>
-          <groupMarker name="newBatchOperation"/>
-          <groupMarker name="newLdifFile"/>
-          <separator name="new"/>
-          <separator name="open"/>
-          <separator name="edit"/>
-          <separator name="importexport"/>
+             id="%Menu_LdapMenu_id"
+             label="%Menu_LdapMenu_label">
+          <groupMarker name="%GroupMarker_NewConnection_name"/>
+          <groupMarker name="%GroupMarker_NewEntry_name"/>
+          <groupMarker name="%GroupMarker_NewAttribute_name"/>
+          <groupMarker name="%GroupMarker_NewValue_name"/>
+          <groupMarker name="%GroupMarker_NewSearch_name"/>
+          <groupMarker name="%GroupMarker_NewBookmark_name"/>
+          <groupMarker name="%GroupMarker_NewBatchOperation_name"/>
+          <groupMarker name="%GroupMarker_NewLdifFile_name"/>
+          <separator name="%Separator_New_name"/>
+          <separator name="%Separator_Open_name"/>
+          <separator name="%Separator_Edit_name"/>
+          <separator name="%Separator_ImportExport_name"/>
        </menu>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
              icon="resources/icons/browser_schemabrowsereditor.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
-             label="Open Schema Browser"
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/open"
+             id="%Action_OpenSchemaBrowserAction_id"
+             label="%Action_OpenSchemaBrowserAction_label"
+             menubarPath="%Action_OpenSchemaBrowserAction_menubarpath"
              style="push">
        </action>
        <action
              class="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
              icon="resources/icons/connection_add.gif"
-             id="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
-             label="New Connection..."
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newConnection"
+             id="%Action_NewConnectionAction_id"
+             label="%Action_NewConnectionAction_label"
+             menubarPath="%Action_NewConnectionAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
              icon="resources/icons/entry_add.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
-             label="New Entry..."
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newEntry"
+             id="%Action_NewEntryAction_id"
+             label="%Action_NewEntryAction_label"
+             menubarPath="%Action_NewEntryAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction"
              icon="resources/icons/attribute_add.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewAttributeAction"
-             label="New Attribute..."
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newAttribute"
+             id="%Action_NewAttributeAction_id"
+             label="%Action_NewAttributeAction_label"
+             menubarPath="%Action_NewAttributeAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction"
              icon="resources/icons/value_add.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewValueAction"
-             label="New Value"
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newValue"
+             id="%Action_NewValueAction_id"
+             label="%Action_NewValueAction_label"
+             menubarPath="%Action_NewValueAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
              icon="resources/icons/search_new.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
-             label="New Search..."
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newSearch"
+             id="%Action_NewSearchAction_id"
+             label="%Action_NewSearchAction_label"
+             menubarPath="%Action_NewSearchAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
              icon="resources/icons/bookmark_add.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
-             label="New Bookmark..."
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newBookmark"
+             id="%Action_NewBookmarkAction_id"
+             label="%Action_NewBookmarkAction_label"
+             menubarPath="%Action_NewBookmarkAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
              icon="resources/icons/batch.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
-             label="New Batch Operation..."
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newBatchOperation"
+             id="%Action_NewBatchOperationAction_id"
+             label="%Action_NewBatchOperationAction_label"
+             menubarPath="%Action_NewBatchOperationAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
-             label="Open Encoder/Decoder"
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/open"
+             id="%Action_OpenEncoderDecoderDialogAction_id"
+             label="%Action_OpenEncoderDecoderDialogAction_label"
+             menubarPath="%Action_OpenEncoderDecoderDialogAction_menubarpath"
              style="push"/>
        <action
              class="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
              icon="resources/icons/ldifeditor_new.gif"
-             id="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
-             label="New LDIF File"
-             menubarPath="org.apache.directory.studio.ldapbrowser.ldapMenu/newLdifFile"
+             id="%Action_NewLdifFileAction_id"
+             label="%Action_NewLdifFileAction_label"
+             menubarPath="%Action_NewLdifFileAction_menubarpath"
              style="push"/>
     </actionSet>
  </extension>
@@ -402,8 +403,8 @@
     <decorator
           adaptable="false"
           class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserViewLabelDecorator"
-          id="org.apache.directory.studio.ldapbrowser.decorator"
-          label="LDAP Decorator"
+          id="%Decorator_BrowserViewLabelDecorator_id"
+          label="%Decorator_BrowserViewLabelDecorator_label"
           lightweight="true"
           location="BOTTOM_RIGHT"
           state="true">
@@ -414,7 +415,7 @@
           </or>
        </enablement>
        <description>
-          Decorates LDAP icons
+          %Decorator_BrowserViewLabelDecorator_description
        </description>
     </decorator>
  </extension>
