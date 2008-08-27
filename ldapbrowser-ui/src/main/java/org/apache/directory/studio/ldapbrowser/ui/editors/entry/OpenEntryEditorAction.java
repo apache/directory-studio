@@ -24,10 +24,13 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
+import org.apache.directory.studio.ldapbrowser.common.wizards.EditEntryWizard;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.wizard.WizardDialog;
 
 
 /**
@@ -75,8 +78,23 @@ public class OpenEntryEditorAction extends AbstractOpenEditorAction
      */
     public void run()
     {
-        valueEditorManager.setUserSelectedValueEditor( valueEditor );
-        super.run();
+        IEntry entry = getSelectedValues().length > 0 ? getSelectedValues()[0].getAttribute().getEntry()
+            : getSelectedAttributes().length > 0 ? getSelectedAttributes()[0].getEntry()
+                : ( getInput() instanceof IEntry ) ? ( IEntry ) getInput() : null;
+        if ( entry != null )
+        {
+            // disable action handlers
+            actionGroup.deactivateGlobalActionHandlers();
+
+            EditEntryWizard wizard = new EditEntryWizard( entry );
+            WizardDialog dialog = new WizardDialog( getShell(), wizard );
+            dialog.setBlockOnOpen( true );
+            dialog.create();
+            dialog.open();
+
+            // enable action handlers
+            actionGroup.activateGlobalActionHandlers();
+        }
     }
 
 
