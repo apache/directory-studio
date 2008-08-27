@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
@@ -113,7 +116,7 @@ public class ReturningAttributesWidget extends BrowserWidget
         String[] history = HistoryUtils.load( BrowserCommonConstants.DIALOGSETTING_KEY_RETURNING_ATTRIBUTES_HISTORY );
         for ( int i = 0; i < history.length; i++ )
         {
-            history[i] = Utils.arrayToString( Utils.stringToArray( history[i] ) );
+            history[i] = Utils.arrayToString( stringToArray( history[i] ) );
         }
         returningAttributesCombo.setItems( history );
         returningAttributesCombo.setText( Utils.arrayToString( this.initialReturningAttributes ) );
@@ -174,7 +177,7 @@ public class ReturningAttributesWidget extends BrowserWidget
     public String[] getReturningAttributes()
     {
         String s = this.returningAttributesCombo.getText();
-        return Utils.stringToArray( s );
+        return stringToArray( s );
     }
 
 
@@ -196,5 +199,65 @@ public class ReturningAttributesWidget extends BrowserWidget
         returningAttributesCombo.setFocus();
 
     }
+
+    
+    /**
+     * Splits the given string into an array. Only the following
+     * characters are kept, all other are used to split the string
+     * and are truncated:
+     * <li>a-z
+     * <li>A-Z
+     * <li>0-9
+     * <li>-
+     * <li>.
+     * <li>;
+     * <li>_
+     * <li>*
+     * <li>+
+     * <li>@
+     * 
+     * @param s the string to split
+     * 
+     * @return the array with the splitted string, or null
+     */
+    public static String[] stringToArray( String s )
+    {
+        if ( s == null )
+        {
+            return null;
+        }
+        else
+        {
+            List<String> attributeList = new ArrayList<String>();
+
+            StringBuffer temp = new StringBuffer();
+            for ( int i = 0; i < s.length(); i++ )
+            {
+                char c = s.charAt( i );
+
+                if ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' ) || c == '-'
+                    || c == '.' || c == ';' || c == '_' || c == '*' || c == '+' || c == '@' )
+                {
+                    temp.append( c );
+                }
+                else
+                {
+                    if ( temp.length() > 0 )
+                    {
+                        attributeList.add( temp.toString() );
+                        temp = new StringBuffer();
+                    }
+                }
+            }
+            if ( temp.length() > 0 )
+            {
+                attributeList.add( temp.toString() );
+            }
+
+            return ( String[] ) attributeList.toArray( new String[attributeList.size()] );
+        }
+    }
+
+
 
 }

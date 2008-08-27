@@ -162,59 +162,6 @@ public class Utils
     }
 
 
-    public static String[] stringToArray( String s )
-    {
-        if ( s == null )
-        {
-            return null;
-        }
-        else
-        {
-            List attributeList = new ArrayList();
-
-            StringBuffer temp = new StringBuffer();
-            for ( int i = 0; i < s.length(); i++ )
-            {
-                char c = s.charAt( i );
-
-                if ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' ) || c == '-'
-                    || c == '.' || c == ';' )
-                {
-                    temp.append( c );
-                }
-                else
-                {
-                    if ( temp.length() > 0 )
-                    {
-                        attributeList.add( temp.toString() );
-                        temp = new StringBuffer();
-                    }
-                }
-            }
-            if ( temp.length() > 0 )
-            {
-                attributeList.add( temp.toString() );
-            }
-
-            return ( String[] ) attributeList.toArray( new String[attributeList.size()] );
-        }
-
-        // else {
-        // s = s.trim();
-        // s = s.replaceAll(" ", "");
-        // s = s.replaceAll(",,", ",");
-        // String[] a;
-        // if(s.length() > 0) {
-        // a = s.split(",", 0);
-        // }
-        // else {
-        // a = new String[0];
-        // }
-        // return a;
-        // }
-    }
-
-
     public static String arrayToString( String[] array )
     {
         if ( array == null || array.length == 0 )
