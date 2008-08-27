@@ -73,7 +73,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class ValueEditorManager
 {
     /** The extension point ID for value editors */
-    private static final String EXTENSION_POINT = "org.apache.directory.studio.valueeditors";
+    private static final String EXTENSION_POINT = BrowserCommonConstants.EXTENSION_POINT_VALUE_EDITORS;
 
     /** The composite used to create the value editors **/
     private Composite parent;

@@ -46,6 +46,9 @@ public interface BrowserCommonConstants
 
     public static final String FILTER_TEMPLATE_ID = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "CtxType_LdapFilter_Template_id" );
+    
+    public static final String EXTENSION_POINT_VALUE_EDITORS = BrowserCommonActivator.getDefault().getPluginProperties()
+    .getString( "ExtensionPoint_ValueEditors_id" );
 
     public static final String PREFERENCE_TIME_LIMIT = "timeLimit";
     public static final String PREFERENCE_COUNT_LIMIT = "countLimit";
