@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.shared.ldap.util.LdapURL.Extension;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
@@ -444,21 +445,23 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         String baseDn = parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN );
         if ( !fetchBaseDns && StringUtils.isNotEmpty( baseDn ) )
         {
-            ldapUrl.getExtensions().put( X_BASE_DN, baseDn );
+            ldapUrl.getExtensions().add( new Extension( false, X_BASE_DN, baseDn ) );
         }
 
         int countLimit = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT );
         if ( countLimit != 0 )
         {
-            ldapUrl.getExtensions().put( X_COUNT_LIMIT,
-                parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT ) );
+            ldapUrl.getExtensions().add(
+                new Extension( false, X_COUNT_LIMIT, parameter
+                    .getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT ) ) );
         }
 
         int timeLimit = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT );
         if ( timeLimit != 0 )
         {
-            ldapUrl.getExtensions().put( X_TIME_LIMIT,
-                parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT ) );
+            ldapUrl.getExtensions().add(
+                new Extension( false, X_TIME_LIMIT, parameter
+                    .getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT ) ) );
         }
 
         int aliasesDereferencingMethodOrdinal = parameter
@@ -471,13 +474,13 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 // default
                 break;
             case FINDING:
-                ldapUrl.getExtensions().put( X_ALIAS_HANDLING, X_ALIAS_HANDLING_FINDING );
+                ldapUrl.getExtensions().add( new Extension( false, X_ALIAS_HANDLING, X_ALIAS_HANDLING_FINDING ) );
                 break;
             case SEARCH:
-                ldapUrl.getExtensions().put( X_ALIAS_HANDLING, X_ALIAS_HANDLING_SEARCHING );
+                ldapUrl.getExtensions().add( new Extension( false, X_ALIAS_HANDLING, X_ALIAS_HANDLING_SEARCHING ) );
                 break;
             case NEVER:
-                ldapUrl.getExtensions().put( X_ALIAS_HANDLING, X_ALIAS_HANDLING_NEVER );
+                ldapUrl.getExtensions().add( new Extension( false, X_ALIAS_HANDLING, X_ALIAS_HANDLING_NEVER ) );
                 break;
         }
 
@@ -491,10 +494,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 // default
                 break;
             case IGNORE:
-                ldapUrl.getExtensions().put( X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_IGNORE );
+                ldapUrl.getExtensions().add( new Extension( false, X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_IGNORE ) );
                 break;
             case MANAGE:
-                ldapUrl.getExtensions().put( X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_MANAGE );
+                ldapUrl.getExtensions().add( new Extension( false, X_REFERRAL_HANDLING, X_REFERRAL_HANDLING_MANAGE ) );
                 break;
         }
 
@@ -507,7 +510,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
     {
         // base DN, get from Root DSE if absent, may be empty 
-        String baseDn = ldapUrl.getExtensions().get( X_BASE_DN );
+        String baseDn = ldapUrl.getExtensionValue( X_BASE_DN );
         if ( baseDn == null )
         {
             parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
@@ -520,7 +523,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         }
 
         // count limit, 1000 if non-numeric or absent 
-        String countLimit = ldapUrl.getExtensions().get( X_COUNT_LIMIT );
+        String countLimit = ldapUrl.getExtensionValue( X_COUNT_LIMIT );
         try
         {
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT, new Integer(
@@ -532,7 +535,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         }
 
         // time limit, 0 if non-numeric or absent 
-        String timeLimit = ldapUrl.getExtensions().get( X_TIME_LIMIT );
+        String timeLimit = ldapUrl.getExtensionValue( X_TIME_LIMIT );
         try
         {
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT, new Integer(
@@ -544,7 +547,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         }
 
         // alias handling, ALWAYS if unknown or absent
-        String alias = ldapUrl.getExtensions().get( X_ALIAS_HANDLING );
+        String alias = ldapUrl.getExtensionValue( X_ALIAS_HANDLING );
         if ( StringUtils.isNotEmpty( alias ) && X_ALIAS_HANDLING_FINDING.equalsIgnoreCase( alias ) )
         {
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
@@ -567,7 +570,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         }
 
         // referral handling, FOLLOW if unknown or absent
-        String referral = ldapUrl.getExtensions().get( X_REFERRAL_HANDLING );
+        String referral = ldapUrl.getExtensionValue( X_REFERRAL_HANDLING );
         if ( StringUtils.isNotEmpty( referral ) && X_REFERRAL_HANDLING_IGNORE.equalsIgnoreCase( referral ) )
         {
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,

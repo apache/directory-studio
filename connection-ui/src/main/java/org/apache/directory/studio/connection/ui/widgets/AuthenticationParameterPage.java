@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.shared.ldap.util.LdapURL.Extension;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
@@ -55,19 +56,19 @@ import org.eclipse.swt.widgets.Text;
  */
 public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 {
-    
+
     private static final String X_AUTH_METHOD = "X-AUTH-METHOD";
-    
+
     private static final String X_AUTH_METHOD_ANONYMOUS = "Anonymous";
 
     private static final String X_AUTH_METHOD_SIMPLE = "Simple";
-    
+
     private static final String X_AUTH_METHOD_DIGEST_MD5 = "DIGEST-MD5";
-    
+
     private static final String X_AUTH_METHOD_CRAM_MD5 = "CRAM-MD5";
-    
+
     private static final String X_BIND_USER = "X-BIND-USER";
-    
+
     private static final String X_BIND_PASSWORD = "X-BIND-PASSWORD";
 
     private static final String X_SASL_REALM = "X-SASL-REALM";
@@ -426,40 +427,40 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         switch ( parameter.getAuthMethod() )
         {
             case SASL_CRAM_MD5:
-                ldapUrl.getExtensions().put( X_AUTH_METHOD, X_AUTH_METHOD_CRAM_MD5 );
+                ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_CRAM_MD5 ) );
                 break;
             case SASL_DIGEST_MD5:
-                ldapUrl.getExtensions().put( X_AUTH_METHOD, X_AUTH_METHOD_DIGEST_MD5 );
+                ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_DIGEST_MD5 ) );
                 break;
             case SIMPLE:
                 if ( StringUtils.isEmpty( parameter.getBindPrincipal() ) )
                 {
                     // default if bind user is present
-                    ldapUrl.getExtensions().put( X_AUTH_METHOD, X_AUTH_METHOD_SIMPLE );
+                    ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_SIMPLE ) );
                 }
                 break;
             case NONE:
                 if ( StringUtils.isNotEmpty( parameter.getBindPrincipal() ) )
                 {
                     // default if bind user is absent
-                    ldapUrl.getExtensions().put( X_AUTH_METHOD, X_AUTH_METHOD_ANONYMOUS );
+                    ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_ANONYMOUS ) );
                 }
                 break;
         }
 
         if ( StringUtils.isNotEmpty( parameter.getBindPrincipal() ) )
         {
-            ldapUrl.getExtensions().put( X_BIND_USER, parameter.getBindPrincipal() );
+            ldapUrl.getExtensions().add( new Extension( false, X_BIND_USER, parameter.getBindPrincipal() ) );
         }
 
         if ( StringUtils.isNotEmpty( parameter.getBindPassword() ) )
         {
-            ldapUrl.getExtensions().put( X_BIND_PASSWORD, parameter.getBindPassword() );
+            ldapUrl.getExtensions().add( new Extension( false, X_BIND_PASSWORD, parameter.getBindPassword() ) );
         }
 
         if ( StringUtils.isNotEmpty( parameter.getSaslRealm() ) )
         {
-            ldapUrl.getExtensions().put( X_SASL_REALM, parameter.getSaslRealm() );
+            ldapUrl.getExtensions().add( new Extension( false, X_SASL_REALM, parameter.getSaslRealm() ) );
         }
     }
 
@@ -470,18 +471,18 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
     {
         // bind user and password, none if empty or absent
-        String principal = ldapUrl.getExtensions().get( X_BIND_USER );
+        String principal = ldapUrl.getExtensionValue( X_BIND_USER );
         if ( principal == null )
         {
             principal = StringUtils.EMPTY;
         }
         parameter.setBindPrincipal( principal );
 
-        String password = ldapUrl.getExtensions().get( X_BIND_PASSWORD );
+        String password = ldapUrl.getExtensionValue( X_BIND_PASSWORD );
         parameter.setBindPassword( password );
 
         // auth method, simple if unknown or absent and X-BIND-USER is present, else anonymous 
-        String authMethod = ldapUrl.getExtensions().get( X_AUTH_METHOD );
+        String authMethod = ldapUrl.getExtensionValue( X_AUTH_METHOD );
         if ( StringUtils.isNotEmpty( authMethod ) && X_AUTH_METHOD_ANONYMOUS.equalsIgnoreCase( authMethod ) )
         {
             parameter.setAuthMethod( ConnectionParameter.AuthenticationMethod.NONE );
@@ -508,7 +509,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         }
 
         // SASL realm, none if empty or absent 
-        String saslRealm = ldapUrl.getExtensions().get( X_SASL_REALM );
+        String saslRealm = ldapUrl.getExtensionValue( X_SASL_REALM );
         if ( StringUtils.isNotEmpty( saslRealm ) )
         {
             parameter.setSaslRealm( saslRealm );

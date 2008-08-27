@@ -26,6 +26,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.shared.ldap.util.LdapURL.Extension;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -381,7 +382,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
      */
     public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapURL ldapUrl )
     {
-        ldapUrl.getExtensions().put( X_CONNECTION_NAME, parameter.getName() );
+        ldapUrl.getExtensions().add( new Extension( false, X_CONNECTION_NAME, parameter.getName() ) );
 
         ldapUrl.setHost( parameter.getHost() );
 
@@ -393,10 +394,10 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 // default
                 break;
             case LDAPS:
-                ldapUrl.getExtensions().put( X_ENCRYPTION, X_ENCRYPTION_LDAPS );
+                ldapUrl.getExtensions().add( new Extension( false, X_ENCRYPTION, X_ENCRYPTION_LDAPS ) );
                 break;
             case START_TLS:
-                ldapUrl.getExtensions().put( X_ENCRYPTION, X_ENCRYPTION_START_TLS );
+                ldapUrl.getExtensions().add( new Extension( false, X_ENCRYPTION, X_ENCRYPTION_START_TLS ) );
                 break;
         }
     }
@@ -408,7 +409,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     public void mergeLdapUrlToParameters( LdapURL ldapUrl, ConnectionParameter parameter )
     {
         // connection name, current date if absent
-        String name = ldapUrl.getExtensions().get( X_CONNECTION_NAME );
+        String name = ldapUrl.getExtensionValue( X_CONNECTION_NAME );
         if ( StringUtils.isEmpty( name ) )
         {
             name = new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss" ).format( new Date() ); //$NON-NLS-1$
@@ -422,7 +423,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         parameter.setPort( ldapUrl.getPort() );
 
         // encryption method, none if unknown or absent 
-        String encryption = ldapUrl.getExtensions().get( X_ENCRYPTION );
+        String encryption = ldapUrl.getExtensionValue( X_ENCRYPTION );
         if ( StringUtils.isNotEmpty( encryption ) && X_ENCRYPTION_LDAPS.equalsIgnoreCase( encryption ) )
         {
             parameter.setEncryptionMethod( ConnectionParameter.EncryptionMethod.LDAPS );
