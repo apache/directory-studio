@@ -59,7 +59,6 @@ public class ExportSchemasForADSAction extends Action implements IWorkbenchWindo
     {
         super( "Schemas for Apache DS" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_SCHEMAS_FOR_ADS );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT_FOR_ADS ) );
         setEnabled( true );
         this.viewer = viewer;

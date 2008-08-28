@@ -44,7 +44,6 @@ public class SwitchSchemaPresentationToHierarchicalAction extends Action impleme
     {
         super( "&Hierarchical", AS_RADIO_BUTTON );
         setToolTipText( "Hierarchical" );
-        setId( PluginConstants.CMD_SWITCH_SCHEMA_PRESENTATION_TO_HIERARCHICAL );
         setEnabled( false );
 
         // Setting up the state of the action

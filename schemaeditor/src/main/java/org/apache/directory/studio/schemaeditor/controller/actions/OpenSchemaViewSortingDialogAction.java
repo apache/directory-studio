@@ -46,7 +46,6 @@ public class OpenSchemaViewSortingDialogAction extends Action implements IWorkbe
     {
         super( "&Sorting..." );
         setToolTipText( "Sorting..." );
-        setId( PluginConstants.CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SORTING ) );
         setEnabled( false );
     }

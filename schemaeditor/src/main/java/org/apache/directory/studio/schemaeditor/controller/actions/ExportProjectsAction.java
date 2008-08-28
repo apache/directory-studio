@@ -59,7 +59,6 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
     {
         super( "Schema Projects" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_PROJECTS );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_EXPORT ) );
         setEnabled( true );
         this.viewer = viewer;

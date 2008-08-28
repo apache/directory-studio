@@ -21,7 +21,6 @@ package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
-import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -63,7 +62,6 @@ public class CloseProjectAction extends Action implements IWorkbenchWindowAction
     {
         super( "Clo&se Project" );
         setToolTipText( "Close Project" );
-        setId( PluginConstants.CMD_CLOSE_PROJECT );
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

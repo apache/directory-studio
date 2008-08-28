@@ -49,7 +49,6 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
     {
         super( "Run the Current Search Again" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_RUN_CURRENT_SEARCH_AGAIN );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_RUN_CURRENT_SEARCH_AGAIN ) );
         setEnabled( true );
         this.view = view;

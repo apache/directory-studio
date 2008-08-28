@@ -48,7 +48,6 @@ public class ImportSchemasFromOpenLdapAction extends Action implements IWorkbenc
     {
         super( "Schemas from OpenLDAP files" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_IMPORT_SCHEMAS_FROM_OPENLDAP );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT ) );
         setEnabled( true );
     }

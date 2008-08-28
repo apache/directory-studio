@@ -59,7 +59,6 @@ public class ExportSchemasAsOpenLdapAction extends Action implements IWorkbenchW
     {
         super( "Schemas as OpenLDAP files" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_SCHEMAS_AS_OPENLDAP );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT ) );
         setEnabled( true );
         this.viewer = viewer;

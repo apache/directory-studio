@@ -140,7 +140,6 @@ public class LinkWithEditorHierarchyViewAction extends Action
     {
         super( "Lin&k with Editor", AS_CHECK_BOX );
         setToolTipText( "Link with Editor" );
-        setId( PluginConstants.CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         this.view = view;

@@ -45,7 +45,6 @@ public class ShowTypeHierarchyAction extends Action
     {
         super( "&Type Hierarchy", AS_RADIO_BUTTON );
         setToolTipText( "Show the Type Hierarchy" );
-        setId( PluginConstants.CMD_SHOW_TYPE_HIERARCHY );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_TYPE_HIERARCHY ) );
         setEnabled( true );
         this.view = view;

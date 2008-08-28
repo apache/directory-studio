@@ -48,7 +48,6 @@ public class ImportSchemasFromXmlAction extends Action implements IWorkbenchWind
     {
         super( "Schemas from XML file(s)" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_IMPORT_SCHEMAS_FROM_XML );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT ) );
         setEnabled( true );
     }

@@ -46,7 +46,6 @@ public class OpenSearchViewSortingDialogAction extends Action implements IWorkbe
     {
         super( "&Sorting..." );
         setToolTipText( "Sorting..." );
-        setId( PluginConstants.CMD_OPEN_SEARCH_VIEW_SORTING_DIALOG );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SORTING ) );
         setEnabled( true );
     }

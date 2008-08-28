@@ -44,7 +44,6 @@ public class SwitchSchemaPresentationToFlatAction extends Action implements IWor
     {
         super( "&Flat", AS_RADIO_BUTTON );
         setToolTipText( "Flat" );
-        setId( PluginConstants.CMD_SWITCH_SCHEMA_PRESENTATION_TO_FLAT );
         setEnabled( false );
 
         // Setting up the state of the action

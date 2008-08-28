@@ -21,7 +21,6 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.preferences.HierarchyViewPreferencePage;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Display;
@@ -44,7 +43,6 @@ public class OpenHierarchyViewPreferencesAction extends Action
     {
         super( "&Preferences..." );
         setToolTipText( "Preferences..." );
-        setId( PluginConstants.CMD_OPEN_HIERARCHY_VIEW_PREFERENCES );
         setEnabled( true );
     }
 

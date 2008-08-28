@@ -20,9 +20,11 @@
 package org.apache.directory.studio.schemaeditor;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerListener;
@@ -36,6 +38,7 @@ import org.apache.directory.studio.schemaeditor.view.widget.SchemaCodeScanner;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaTextAttributeProvider;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.swt.graphics.Image;
@@ -72,6 +75,9 @@ public class Activator extends AbstractUIPlugin
 
     /** The ProjectsHandler */
     private ProjectsHandler projectsHandler;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -306,5 +312,32 @@ public class Activator extends AbstractUIPlugin
             }
         }
         return image;
+    }
+
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                getLog().log(
+                    new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
     }
 }

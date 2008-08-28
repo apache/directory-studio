@@ -20,7 +20,6 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPreferencePage;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -47,7 +46,6 @@ public class OpenSearchViewPreferenceAction extends Action implements IWorkbench
     {
         super( "&Preferences..." );
         setToolTipText( "Preferences..." );
-        setId( PluginConstants.CMD_OPEN_SEARCH_VIEW_PREFERENCE );
         setEnabled( true );
     }
 

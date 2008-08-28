@@ -52,7 +52,6 @@ public class CollapseAllAction extends Action implements IWorkbenchWindowActionD
     {
         super( "Collapse All" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_COLLAPSE_ALL );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COLLAPSE_ALL ) );
         setEnabled( false );
         this.viewer = viewer;

@@ -21,7 +21,6 @@ package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
-import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -63,7 +62,6 @@ public class OpenProjectAction extends Action implements IWorkbenchWindowActionD
     {
         super( "Op&en Project" );
         setToolTipText( "Open Project" );
-        setId( PluginConstants.CMD_OPEN_PROJECT );
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

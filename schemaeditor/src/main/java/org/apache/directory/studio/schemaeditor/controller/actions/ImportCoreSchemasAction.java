@@ -48,7 +48,6 @@ public class ImportCoreSchemasAction extends Action implements IWorkbenchWindowA
     {
         super( "Core schemas files" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_IMPORT_CORE_SCHEMAS );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT ) );
         setEnabled( true );
     }

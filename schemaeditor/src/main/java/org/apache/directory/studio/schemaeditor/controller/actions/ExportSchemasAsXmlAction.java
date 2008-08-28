@@ -59,7 +59,6 @@ public class ExportSchemasAsXmlAction extends Action implements IWorkbenchWindow
     {
         super( "Schemas as XML file(s)" );
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_EXPORT_SCHEMAS_AS_XML );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT ) );
         setEnabled( true );
         this.viewer = viewer;

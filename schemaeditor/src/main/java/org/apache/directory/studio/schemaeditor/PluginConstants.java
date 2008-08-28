@@ -110,54 +110,24 @@ public interface PluginConstants
     public static final String IMG_WARNING_32X32 = "resources/icons/warning_32x32.png";
 
     // Commands
-    public static final String CMD_COMMIT_CHANGES = Activator.PLUGIN_ID + ".commands.commitChanges";
-    public static final String CMD_CONNECT = Activator.PLUGIN_ID + ".commands.connect";
-    public static final String CMD_CLOSE_PROJECT = Activator.PLUGIN_ID + ".commands.closeProject";
-    public static final String CMD_COLLAPSE_ALL = Activator.PLUGIN_ID + ".commands.collapseAll";
-    public static final String CMD_DELETE_PROJECT = Activator.PLUGIN_ID + ".commands.deleteProject";
-    public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.PLUGIN_ID + ".commands.deleteSchemaElement";
-    public static final String CMD_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.exportProjects";
-    public static final String CMD_EXPORT_SCHEMAS_AS_OPENLDAP = Activator.PLUGIN_ID
-        + ".commands.exportSchemasAsOpenLDAP";
-    public static final String CMD_EXPORT_SCHEMAS_AS_XML = Activator.PLUGIN_ID + ".commands.exportSchemasAsXML";
-    public static final String CMD_EXPORT_SCHEMAS_FOR_ADS = Activator.PLUGIN_ID + ".commands.exportSchemasForADS";
-    public static final String CMD_IMPORT_CORE_SCHEMAS = Activator.PLUGIN_ID + ".commands.importCoreSchemas";
-    public static final String CMD_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".commands.importProjects";
-    public static final String CMD_IMPORT_SCHEMAS_FROM_OPENLDAP = Activator.PLUGIN_ID
-        + ".commands.importSchemasFromOpenLDAP";
-    public static final String CMD_IMPORT_SCHEMAS_FROM_XML = Activator.PLUGIN_ID + ".commands.importSchemasFromXML";
-    public static final String CMD_LINK_WITH_EDITOR_SCHEMA_VIEW = Activator.PLUGIN_ID
-        + ".commands.linkWithEditorSchemaView";
-    public static final String CMD_LINK_WITH_EDITOR_HIERARCHY_VIEW = Activator.PLUGIN_ID
-        + ".commands.linkWithEditorHierarchyView";
-    public static final String CMD_OPEN_ELEMENT = Activator.PLUGIN_ID + ".commands.openElement";
-    public static final String CMD_OPEN_HIERARCHY_VIEW_PREFERENCES = Activator.PLUGIN_ID
-        + ".commands.openHierarchyViewPreference";
-    public static final String CMD_OPEN_PROJECT = Activator.PLUGIN_ID + ".commands.openProject";
-    public static final String CMD_OPEN_SCHEMA_VIEW_PREFERENCE = Activator.PLUGIN_ID
-        + ".commands.openSchemaViewPreference";
-    public static final String CMD_OPEN_SCHEMA_VIEW_SORTING_DIALOG = Activator.PLUGIN_ID
-        + ".commands.openSchemaViewSortingDialog";
-    public static final String CMD_OPEN_SEARCH_VIEW_PREFERENCE = Activator.PLUGIN_ID
-        + ".commands.openSearchViewPreference";
-    public static final String CMD_OPEN_SEARCH_VIEW_SORTING_DIALOG = Activator.PLUGIN_ID
-        + ".commands.openSearchViewSortingDialog";
-    public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.openTypeHierarchy";
-    public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.PLUGIN_ID + ".commands.newAttributeType";
-    public static final String CMD_NEW_OBJECT_CLASS = Activator.PLUGIN_ID + ".commands.newObjectClass";
-    public static final String CMD_NEW_PROJECT = Activator.PLUGIN_ID + ".commands.newProject";
-    public static final String CMD_NEW_SCHEMA = Activator.PLUGIN_ID + ".commands.newSchema";
-    public static final String CMD_RENAME_PROJECT = Activator.PLUGIN_ID + ".commands.renameProject";
-    public static final String CMD_RUN_CURRENT_SEARCH_AGAIN = Activator.PLUGIN_ID + ".commands.runCurrentSearchAgain";
-    public static final String CMD_SHOW_SEARCH_FIELD = Activator.PLUGIN_ID + ".commands.showSearchField";
-    public static final String CMD_SHOW_SEARCH_HISTORY = Activator.PLUGIN_ID + ".commands.showSearchHistory";
-    public static final String CMD_SHOW_SUBTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
-    public static final String CMD_SHOW_SUPERTYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSuperTypeHierarchy";
-    public static final String CMD_SHOW_TYPE_HIERARCHY = Activator.PLUGIN_ID + ".commands.showSubTypeHierarchy";
-    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_FLAT = Activator.PLUGIN_ID
-        + ".commands.switchSchemaPresentationToFlat";
-    public static final String CMD_SWITCH_SCHEMA_PRESENTATION_TO_HIERARCHICAL = Activator.PLUGIN_ID
-        + ".commands.switchSchemaPresentationToHierarchical";
+    public static final String CMD_DELETE_PROJECT = Activator.getDefault().getPluginProperties().getString(
+        "Cmd_DeleteProject_id" );
+    public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_DeleteSchemaElement_id" );
+    public static final String CMD_OPEN_ELEMENT = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_OpenElement_id" );
+    public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_OpenTypeHierarchy_id" );
+    public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_NewAttributeType_id" );
+    public static final String CMD_NEW_OBJECT_CLASS = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_NewObjectClass_id" );
+    public static final String CMD_NEW_PROJECT = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_NewProject_id" );
+    public static final String CMD_NEW_SCHEMA = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_NewSchema_id" );
+    public static final String CMD_RENAME_PROJECT = Activator.getDefault().getPluginProperties().getString(
+    "Cmd_RenameProject_id" );
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */

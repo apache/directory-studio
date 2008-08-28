@@ -60,7 +60,6 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
         super( "Search History", AS_DROP_DOWN_MENU );
         this.view = view;
         setToolTipText( getText() );
-        setId( PluginConstants.CMD_SHOW_SEARCH_HISTORY );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_SEARCH_HISTORY ) );
         setEnabled( true );
         setMenuCreator( new MenuCreator( view ) );
