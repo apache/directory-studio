@@ -24,49 +24,49 @@
       <perspective
             class="org.apache.directory.studio.schemaeditor.view.Perspective"
             icon="resources/icons/schemaeditor_perspective.gif"
-            id="org.apache.directory.studio.schemaeditor.perspective"
-            name="Schema Editor"/>
+            id="%Perspective_SchemaEditor_id"
+            name="%Perspective_SchemaEditor_name"/>
    </extension>
 	<extension
          point="org.eclipse.ui.views">
       <category
-            id="org.apache.directory.studio.schemaeditor.view.category"
-            name="Schema Editor"/>
+            id="%Views_Category_id"
+            name="%Views_Category_name"/>
       <view
             allowMultiple="false"
-            category="org.apache.directory.studio.schemaeditor.view.category"
+            category="%Views_Category_id"
             class="org.apache.directory.studio.schemaeditor.view.views.SchemaView"
             icon="resources/icons/schemas_view.png"
-            id="org.apache.directory.studio.schemaeditor.view.SchemaView"
-            name="Schema"/>
+            id="%View_SchemaView_id"
+            name="%View_SchemaView_name"/>
 	  <view
             allowMultiple="false"
-            category="org.apache.directory.studio.schemaeditor.view.category"
+            category="%Views_Category_id"
             class="org.apache.directory.studio.schemaeditor.view.views.HierarchyView"
             icon="resources/icons/hierarchy_view.gif"
-            id="org.apache.directory.studio.schemaeditor.view.HierarchyView"
-            name="Hierarchy"/>
+            id="%View_HierarchyView_id"
+            name="%View_HierarchyView_name"/>
 	  <view
             allowMultiple="false"
-            category="org.apache.directory.studio.schemaeditor.view.category"
+            category="%Views_Category_id"
             class="org.apache.directory.studio.schemaeditor.view.views.ProblemsView"
             icon="resources/icons/problems_view.gif"
-            id="org.apache.directory.studio.schemaeditor.view.ProblemsView"
-            name="Problems"/>
+            id="%View_ProblemsView_id"
+            name="%View_ProblemsView_name"/>
 	  <view
             allowMultiple="false"
-            category="org.apache.directory.studio.schemaeditor.view.category"
+            category="%Views_Category_id"
             class="org.apache.directory.studio.schemaeditor.view.views.ProjectsView"
             icon="resources/icons/projects_view.gif"
-            id="org.apache.directory.studio.schemaeditor.view.ProjectsView"
-            name="Projects"/>
+            id="%View_ProjectsView_id"
+            name="%View_ProjectsView_name"/>
 	<view
             allowMultiple="false"
-            category="org.apache.directory.studio.schemaeditor.view.category"
+            category="%Views_Category_id"
             class="org.apache.directory.studio.schemaeditor.view.views.SearchView"
             icon="resources/icons/search_view.gif"
-            id="org.apache.directory.studio.schemaeditor.view.SearchView"
-            name="Search"/>
+            id="%View_SearchView_id"
+            name="%View_SearchView_name"/>
    </extension>
  <extension
        point="org.eclipse.core.runtime.preferences">
@@ -75,39 +75,39 @@
  <extension
        point="org.eclipse.ui.newWizards">
     <category
-          id="org.apache.directory.studio.schemaeditor.newWizardCategory"
-          name="Schema Editor"/>
+          id="%NewWizards_Category_id"
+          name="%NewWizards_Category_name"/>
 	<wizard
-          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          category="%NewWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizard"
           hasPages="true"
           icon="resources/icons/project_new.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.NewProjectWizard"
-          name="New Schema Project"
+          id="%NewWizard_NewProjectWizard_id"
+          name="%NewWizard_NewProjectWizard_name"
           project="true"/>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          category="%NewWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.NewSchemaWizard"
           hasPages="true"
           icon="resources/icons/schema_new.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.NewSchemaWizard"
-          name="New Schema"
+          id="%NewWizard_NewSchemaWizard_id"
+          name="%NewWizard_NewSchemaWizard_name"
           project="false"/>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          category="%NewWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.NewAttributeTypeWizard"
           hasPages="true"
           icon="resources/icons/attribute_type_new.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.NewAttributeTypeWizard"
-          name="New Attribute Type"
+          id="%NewWizard_NewAttributeTypeWizard_id"
+          name="%NewWizard_NewAttributeTypeWizard_name"
           project="false"/>
 	<wizard
-          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          category="%NewWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.NewObjectClassWizard"
           hasPages="true"
           icon="resources/icons/object_class_new.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.NewObjectClassWizard"
-          name="New Object Class"
+          id="%NewWizard_NewObjectClassWizard_id"
+          name="%NewWizard_NewObjectClassWizard_name"
           project="false"/>
  </extension>
  <extension
@@ -116,120 +116,120 @@
 		class="org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor"
 		default="false"
 		icon="resources/icons/object_class.gif"
-		id="org.apache.directory.studio.schemaeditor.view.objectClassEditor"
-		name="Object Class Editor"/>
+		id="%Editor_ObjectClassEditor_id"
+		name="%Editor_ObjectClassEditor_name"/>
       <editor
  		class="org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor"
 		default="false"
 		icon="resources/icons/attribute_type.gif"
-		id="org.apache.directory.studio.schemaeditor.view.attributeTypeEditor"
-		name="Attribute Type Editor"/>
+		id="%Editor_AttributeTypeEditor_id"
+		name="%Editor_AttributeTypeEditor_name"/>
       <editor
 		class="org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor"
 		default="false"
 		icon="resources/icons/schema.gif"
-		id="org.apache.directory.studio.schemaeditor.view.schemaEditor"
-		name="Schema Editor"/>
+		id="%Editor_SchemaEditor_id"
+		name="%Editor_SchemaEditor_name"/>
 </extension>
  <extension
        point="org.eclipse.ui.exportWizards">
     <category
-          id="org.apache.directory.studio.schemaeditor.exportWizardCategory"
-          name="Schema Editor">
+          id="%ExportWizards_Category_id"
+          name="%ExportWizards_Category_name">
     </category>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
           icon="resources/icons/schemas_export.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsXmlWizard"
-          name="Schemas as XML file(s)">
+          id="%ExportWizard_ExportSchemasAsXmlWizard_id"
+          name="%ExportWizard_ExportSchemasAsXmlWizard_name">
     </wizard>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
           icon="resources/icons/schemas_export.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsOpenLdapWizard"
-          name="Schemas as OpenLDAP files">
+          id="%ExportWizard_ExportSchemasAsOpenLdapWizard_id"
+          name="%ExportWizard_ExportSchemasAsOpenLdapWizard_name">
     </wizard>
 	<wizard
-          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasForADSWizard"
           icon="resources/icons/schemas_export_for_ads.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasForADSWizard"
-          name="Schemas for Apache DS">
+          id="%ExportWizard_ExportSchemasForADSWizard_id"
+          name="%ExportWizard_ExportSchemasForADSWizard_name">
     </wizard>
 	<wizard
-          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          category="%ExportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ExportProjectsWizard"
           icon="resources/icons/project_export.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ExportProjectsWizard"
-          name="Schema Projects">
+          id="%ExportWizard_ExportProjectsWizard_id"
+          name="%ExportWizard_ExportProjectsWizard_name">
     </wizard>
  </extension>
  <extension
        point="org.eclipse.ui.importWizards">
     <category
-          id="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          id="%ImportWizards_Category_id"
           name="Schema Editor">
     </category>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ImportCoreSchemasWizard"
           icon="resources/icons/schemas_import.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ImportCoreSchemasWizard"
-          name="Core schemas files">
+          id="%ImportWizard_ImportCoreSchemasWizard_id"
+          name="%ImportWizard_ImportCoreSchemasWizard_name">
     </wizard>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromXmlWizard"
           icon="resources/icons/schemas_import.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromXmlWizard"
-          name="Schemas from XML file(s)">
+          id="%ImportWizard_ImportSchemasFromXmlWizard_id"
+          name="%ImportWizard_ImportSchemasFromXmlWizard_name">
     </wizard>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
           icon="resources/icons/schemas_import.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromOpenLdapWizard"
-          name="Schemas from OpenLDAP files">
+          id="%ImportWizard_ImportSchemasFromOpenLdapWizard_id"
+          name="%ImportWizard_ImportSchemasFromOpenLdapWizard_name">
     </wizard>
     <wizard
-          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.schemaeditor.view.wizards.ImportProjectsWizard"
           icon="resources/icons/project_import.gif"
-          id="org.apache.directory.studio.schemaeditor.wizards.ImportProjectsWizard"
-          name="Schema Projects">
+          id="%ImportWizard_ImportProjectsWizard_id"
+          name="%ImportWizard_ImportProjectsWizard_name">
     </wizard>
  </extension>
     <extension
          point="org.eclipse.ui.preferencePages">
-	  <page
-      		category="org.apache.directory.studio.schemaeditor.preferences.plugin"
-            class="org.apache.directory.studio.schemaeditor.view.preferences.HierarchyViewPreferencePage"
-            id="org.apache.directory.studio.schemaeditor.preferences.hierarchyView"
-            name="Hierarchy View"/>
       <page
             class="org.apache.directory.studio.schemaeditor.view.preferences.PluginPreferencePage"
-            id="org.apache.directory.studio.schemaeditor.preferences.plugin"
-            name="Schema Editor"/>
+            id="%PrefPage_SchemaEditor_id"
+            name="%PrefPage_SchemaEditor_name"/>
+	  <page
+      		category="%PrefPage_SchemaEditor_id"
+            class="org.apache.directory.studio.schemaeditor.view.preferences.HierarchyViewPreferencePage"
+            id="%PrefPage_HierarchyView_id"
+            name="%PrefPage_HierarchyView_name"/>
       <page
-      		category="org.apache.directory.studio.schemaeditor.preferences.plugin"
+      		category="%PrefPage_SchemaEditor_id"
             class="org.apache.directory.studio.schemaeditor.view.preferences.SchemaViewPreferencePage"
-            id="org.apache.directory.studio.schemaeditor.preferences.schemaView"
-            name="Schema View"/>
+            id="%PrefPage_SchemaView_id"
+            name="%PrefPage_SchemaView_name"/>
       <page
-      		category="org.apache.directory.studio.schemaeditor.preferences.plugin"
+      		category="%PrefPage_SchemaEditor_id"
             class="org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPreferencePage"
-            id="org.apache.directory.studio.schemaeditor.preferences.searchView"
-            name="Search View"/>
+            id="%PrefPage_SearchView_id"
+            name="%PrefPage_SearchView_name"/>
    </extension>
     <extension
           point="org.eclipse.ui.decorators">
        <decorator
              adaptable="false"
              class="org.apache.directory.studio.schemaeditor.view.SchemaEditorTypeLabelDecorator"
-             id="org.apache.directory.studio.schemas.typeDecorator"
-             label="Schema Editor Type Decorator"
+             id="%Decorator_SchemaEditorTypeDecorator_id"
+             label="%Decorator_SchemaEditorTypeDecorator_label"
              lightweight="true"
              location="BOTTOM_RIGHT"
              state="true">
@@ -250,14 +250,14 @@
              </or>
           </enablement>
           <description>
-             Decorates Schema Editor icons with type information
+             %Decorator_SchemaEditorTypeDecorator_description
           </description>
        </decorator>
 	   <decorator
              adaptable="false"
              class="org.apache.directory.studio.schemaeditor.view.SchemaEditorSchemaCheckerLabelDecorator"
-             id="org.apache.directory.studio.schemas.schemaCheckerDecorator"
-             label="Schema Editor Schema Checker Decorator"
+             id="%Decorator_SchemaEditorSchemaCheckerDecorator_id"
+             label="%Decorator_SchemaEditorSchemaCheckerDecorator_label"
              lightweight="true"
              location="BOTTOM_LEFT"
              state="true">
@@ -278,7 +278,7 @@
              </or>
           </enablement>
           <description>
-             Decorates Schema Editor icons with schema checker information
+             %Decorator_SchemaEditorTypeDecorator_description
           </description>
        </decorator>
     </extension>
@@ -288,140 +288,140 @@
 			class="org.apache.directory.studio.schemaeditor.view.search.SearchPage"
             enabled="true"
             icon="resources/icons/search.gif"
-            id="org.apache.directory.studio.schemaeditor.search"
-            label="Schema Editor Search"
+            id="%SearchPage_SchemaEditorSearch_id"
+            label="%SearchPage_SchemaEditorSearch_label"
             showScopeSection="false"
             sizeHint="450,300"/>
 	</extension>
  <extension
        point="org.eclipse.ui.contexts">
     <context
-          description="In Projects View of Schema Editor"
-          id="org.apache.directory.studio.schemaeditor.contexts.projectsView"
-          name="In Projects View of Schema Editor"
+          description="%Ctx_ProjectsView_description"
+          id="%Ctx_ProjectsView_id"
+          name="%Ctx_ProjectsView_name"
           parentId="org.eclipse.ui.contexts.window">
     </context>
     <context
-          description="In Schema View of Schema Editor"
-          id="org.apache.directory.studio.schemaeditor.contexts.schemaView"
-          name="In Schema View of Schema Editor"
+          description="%Ctx_SchemaView_description"
+          id="%Ctx_SchemaView_id"
+          name="%Ctx_SchemaView_name"
           parentId="org.eclipse.ui.contexts.window">
     </context>
  </extension>
  <extension
        point="org.eclipse.ui.commands">
     <category
-          id="org.apache.directory.studio.schemaeditor.commands"
-          name="Schema Editor">
+          id="%Cmd_Category_id"
+          name="%Cmd_Category_name">
     </category>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Creates a new project"
-          id="org.apache.directory.studio.schemaeditor.commands.newProject"
-          name="New Project">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_NewProject_description"
+          id="%Cmd_NewProject_id"
+          name="%Cmd_NewProject_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Renames the selected project"
-          id="org.apache.directory.studio.schemaeditor.commands.renameProject"
-          name="Rename Project">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_RenameProject_description"
+          id="%Cmd_RenameProject_id"
+          name="%Cmd_RenameProject_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Deletes the selected project(s)"
-          id="org.apache.directory.studio.schemaeditor.commands.deleteProject"
-          name="Delete Project">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_DeleteProject_description"
+          id="%Cmd_DeleteProject_id"
+          name="%Cmd_DeleteProject_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Creates a new schema"
-          id="org.apache.directory.studio.schemaeditor.commands.newSchema"
-          name="New Schema">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_NewSchema_description"
+          id="%Cmd_NewSchema_id"
+          name="%Cmd_NewSchema_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Creates a new attribute type"
-          id="org.apache.directory.studio.schemaeditor.commands.newAttributeType"
-          name="New Attribute Type">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_NewAttributeType_description"
+          id="%Cmd_NewAttributeType_id"
+          name="%Cmd_NewAttributeType_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Creates a new object class"
-          id="org.apache.directory.studio.schemaeditor.commands.newObjectClass"
-          name="New Object Class">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_NewObjectClass_description"
+          id="%Cmd_NewObjectClass_id"
+          name="%Cmd_NewObjectClass_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Opens the selected element"
-          id="org.apache.directory.studio.schemaeditor.commands.openElement"
-          name="Open Element">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_OpenElement_description"
+          id="%Cmd_OpenElement_id"
+          name="%Cmd_OpenElement_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Opens the selected element in Type Hierarchy"
-          id="org.apache.directory.studio.schemaeditor.commands.openTypeHierarchy"
-          name="Open Type Hierarchy">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_OpenTypeHierarchy_description"
+          id="%Cmd_OpenTypeHierarchy_id"
+          name="%Cmd_OpenTypeHierarchy_name">
     </command>
     <command
-          categoryId="org.apache.directory.studio.schemaeditor.commands"
-          description="Delete the selected schema elements"
-          id="org.apache.directory.studio.schemaeditor.commands.deleteSchemaElement"
-          name="Delete Schema Element">
+          categoryId="%Cmd_Category_id"
+          description="%Cmd_DeleteSchemaElement_description"
+          id="%Cmd_DeleteSchemaElement_id"
+          name="%Cmd_DeleteSchemaElement_name">
     </command>
  </extension>
  <extension
        point="org.eclipse.ui.bindings">
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.newProject"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          commandId="%Cmd_NewProject_id"
+          contextId="%Ctx_ProjectsView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1+R">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.renameProject"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          commandId="%Cmd_RenameProject_id"
+          contextId="%Ctx_ProjectsView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F2">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.deleteProject"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.projectsView"
+          commandId="%Cmd_DeleteProject_id"
+          contextId="%Ctx_ProjectsView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="DEL">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.newSchema"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          commandId="%Cmd_NewSchema_id"
+          contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1+E">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.newAttributeType"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          commandId="%Cmd_NewAttributeType_id"
+          contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1+T">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.newObjectClass"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          commandId="%Cmd_NewObjectClass_id"
+          contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="M1+B">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.openElement"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          commandId="%Cmd_OpenElement_id"
+          contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F3">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.openTypeHierarchy"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          commandId="%Cmd_OpenTypeHierarchy_id"
+          contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="F4">
     </key>
     <key
-          commandId="org.apache.directory.studio.schemaeditor.commands.deleteSchemaElement"
-          contextId="org.apache.directory.studio.schemaeditor.contexts.schemaView"
+          commandId="%Cmd_DeleteSchemaElement_id"
+          contextId="%Ctx_SchemaView_id"
           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
           sequence="DEL">
     </key>
