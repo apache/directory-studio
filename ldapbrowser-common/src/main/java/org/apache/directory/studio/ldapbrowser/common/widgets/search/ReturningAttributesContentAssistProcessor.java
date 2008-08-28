@@ -22,7 +22,8 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -53,18 +54,18 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
     private char[] autoActivationCharacters;
 
     /** The possible attribute types */
-    private String[] possibleAttributeTypes;
+    private List<String> proposals;
 
 
     /**
      * Creates a new instance of ReturningAttributesContentAssistProcessor.
      *
-     * @param possibleAttributeNames
+     * @param proposals the proposals
      */
-    public ReturningAttributesContentAssistProcessor( String[] possibleAttributeNames )
+    public ReturningAttributesContentAssistProcessor( List<String> proposals )
     {
         super();
-        setPossibleAttributeTypes( possibleAttributeTypes );
+        setProposals( proposals );
     }
 
 
@@ -80,24 +81,57 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
     /**
      * Sets the possible attribute types.
      * 
-     * @param possibleAttributeTypes the possible strings
+     * @param proposals the possible strings
      */
-    public void setPossibleAttributeTypes( String[] possibleAttributeTypes )
+    public void setProposals( List<String> proposals )
     {
-        if ( possibleAttributeTypes == null )
+        if ( proposals == null )
         {
-            possibleAttributeTypes = new String[0];
+            proposals = new ArrayList<String>();
         }
 
-        // set possible strings
-        Arrays.sort( possibleAttributeTypes );
-        this.possibleAttributeTypes = possibleAttributeTypes;
+        // sort proposals, attributes first
+        Comparator<? super String> comparator = new Comparator<String>()
+        {
+            public int compare( String o1, String o2 )
+            {
+                if ( "+".equals( o1 ) && !"+".equals( o2 ) )
+                {
+                    return 4;
+                }
+                if ( "+".equals( o2 ) && !"+".equals( o1 ) )
+                {
+                    return -4;
+                }
+
+                if ( "*".equals( o1 ) && !"*".equals( o2 ) )
+                {
+                    return 3;
+                }
+                if ( "*".equals( o2 ) && !"*".equals( o1 ) )
+                {
+                    return -3;
+                }
+
+                if ( o1.startsWith( "@" ) && !o2.startsWith( "@" ) )
+                {
+                    return 2;
+                }
+                if ( o2.startsWith( "@" ) && !o1.startsWith( "@" ) )
+                {
+                    return -2;
+                }
+
+                return o1.compareToIgnoreCase( o2 );
+            }
+        };
+        Collections.sort( proposals, comparator );
+        this.proposals = proposals;
 
         // set auto activation characters
         Set<Character> characterSet = new HashSet<Character>();
-        for ( int i = 0; i < possibleAttributeTypes.length; i++ )
+        for ( String string : proposals )
         {
-            String string = possibleAttributeTypes[i];
             for ( int k = 0; k < string.length(); k++ )
             {
                 char ch = string.charAt( k );
@@ -151,12 +185,12 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
 
         // create proposal list
         List<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>();
-        for ( int k = 0; k < possibleAttributeTypes.length; k++ )
+        for ( String string : proposals )
         {
-            if ( possibleAttributeTypes[k].toUpperCase().startsWith( attribute.toUpperCase() ) )
+            if ( string.toUpperCase().startsWith( attribute.toUpperCase() ) )
             {
-                ICompletionProposal proposal = new CompletionProposal( possibleAttributeTypes[k] + ", ", start,
-                    documentOffset - start, possibleAttributeTypes[k].length() + 2, null, possibleAttributeTypes[k],
+                ICompletionProposal proposal = new CompletionProposal( string + ", ", start,
+                    documentOffset - start, string.length() + 2, null, string,
                     null, null );
                 proposalList.add( proposal );
             }

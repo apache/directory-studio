@@ -23,11 +23,15 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
 
 /**
@@ -198,7 +202,7 @@ public class AttributeDescription implements Serializable
 
     /**
      * Checks if the given attribute description is subtype of 
-     * this attriubte description.
+     * this attribute description.
      * 
      * @param other the other attribute description
      * @param schema the schema
@@ -222,9 +226,43 @@ public class AttributeDescription implements Serializable
             return false;
         }
 
-        // check type
         AttributeTypeDescription myAtd = schema.getAttributeTypeDescription( this.getParsedAttributeType() );
         AttributeTypeDescription otherAtd = schema.getAttributeTypeDescription( other.getParsedAttributeType() );
+
+        // special case *: all user attributes (RFC4511)
+        if ( ISearch.ALL_USER_ATTRIBUTES.equals( other.description ) && !SchemaUtils.isOperational( myAtd ) )
+        {
+            return true;
+        }
+
+        // special case +: all operational attributes (RFC3673)
+        if ( ISearch.ALL_OPERATIONAL_ATTRIBUTES.equals( other.description ) && SchemaUtils.isOperational( myAtd ) )
+        {
+            return true;
+        }
+        
+        // special case @: attributes by object class (RFC4529)
+        if ( other.description.length() > 1 &&  other.description.startsWith( "@" ) )
+        {
+            String objectClass = other.description.substring( 1 );
+            ObjectClassDescription ocd = schema.getObjectClassDescription( objectClass );
+            ocd.getMayAttributeTypes();
+            ocd.getMustAttributeTypes();
+            
+            Collection<String> names = new HashSet<String>();
+            names.addAll( SchemaUtils.getMayAttributeTypeDescriptionNamesTransitive( ocd, schema ) );
+            names.addAll( SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd, schema ) );
+            for ( String name : names )
+            {
+                AttributeTypeDescription atd = schema.getAttributeTypeDescription( name );
+                if ( myAtd == atd )
+                {
+                    return true;
+                }
+            }
+        }
+
+        // check type
         if ( myAtd != otherAtd )
         {
             AttributeTypeDescription superiorAtd = null;

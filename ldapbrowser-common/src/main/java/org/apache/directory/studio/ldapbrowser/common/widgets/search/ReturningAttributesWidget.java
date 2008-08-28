@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -104,7 +105,7 @@ public class ReturningAttributesWidget extends BrowserWidget
         returningAttributesCombo.setLayoutData( gd );
 
         // Content assist
-        contentAssistProcessor = new ReturningAttributesContentAssistProcessor( new String[0] );
+        contentAssistProcessor = new ReturningAttributesContentAssistProcessor( null );
         DialogContentAssistant raca = new DialogContentAssistant();
         raca.enableAutoInsert( true );
         raca.enableAutoActivation( true );
@@ -141,8 +142,26 @@ public class ReturningAttributesWidget extends BrowserWidget
     public void setBrowserConnection( IBrowserConnection browserConnection )
     {
         this.browserConnection = browserConnection;
-        contentAssistProcessor.setPossibleAttributeTypes( browserConnection == null ? new String[0] : SchemaUtils
-            .getNamesAsArray( browserConnection.getSchema().getAttributeTypeDescriptions() ) );
+
+        List<String> proposals = new ArrayList<String>();
+        if ( browserConnection != null )
+        {
+            // add attribute types
+            proposals.addAll( SchemaUtils.getNames( browserConnection.getSchema().getAttributeTypeDescriptions() ) );
+
+            // add @<object class names>
+            Collection<String> ocNames = SchemaUtils.getNames( browserConnection.getSchema()
+                .getObjectClassDescriptions() );
+            for ( String ocName : ocNames )
+            {
+                proposals.add( "@" + ocName );
+            }
+
+            proposals.add( "+" );
+            proposals.add( "*" );
+        }
+
+        contentAssistProcessor.setProposals( proposals );
     }
 
 
