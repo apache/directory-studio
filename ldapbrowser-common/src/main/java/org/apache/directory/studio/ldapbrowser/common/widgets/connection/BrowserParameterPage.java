@@ -83,6 +83,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     private static final String X_REFERRAL_HANDLING_MANAGE = "MANAGE";
 
+    private static final String X_FETCH_SUBENTRIES = "X-FETCH-SUBENTRIES";
+
     /** The checkbox to fetch the base DN's from namingContexts whenever opening the connection */
     private Button autoFetchBaseDnsButton;
 
@@ -100,6 +102,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     /** The widget to select the referrals handling method */
     private ReferralsHandlingWidget referralsHandlingWidget;
+
+    /** The fetch subentries button. */
+    private Button fetchSubentriesButton;
 
 
     /**
@@ -178,6 +183,18 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
+     * Returns true if subentries should be fetched
+     * while browsing.
+     * 
+     * @return true, if subentries should be fetched
+     */
+    private boolean isFetchSubentries()
+    {
+        return fetchSubentriesButton.getSelection();
+    }
+
+
+    /**
      * Gets a temporary connection with all conection parameter 
      * entered in this page. 
      *
@@ -198,6 +215,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         addBaseDNInput( parent );
         addLimitInput( parent );
+        addOptionsInput( parent );
     }
 
 
@@ -226,6 +244,24 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
         BaseWidgetUtils.createLabel( groupComposite, "Base DN:", 1 );
         baseDNCombo = BaseWidgetUtils.createCombo( groupComposite, new String[0], 0, 2 );
+    }
+
+
+    /**
+     * Adds the options input.
+     * 
+     * @param parent the parent
+     */
+    private void addOptionsInput( Composite parent )
+    {
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
+
+        Group group = BaseWidgetUtils.createGroup( composite, "Options", 1 );
+        Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
+
+        fetchSubentriesButton = BaseWidgetUtils.createCheckbox( groupComposite,
+            "Fetch subentries while browsing (requires additional search request)", 1 );
+        fetchSubentriesButton.setSelection( false );
     }
 
 
@@ -300,6 +336,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
         aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
+
+        boolean fetchSubentries = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
+        fetchSubentriesButton.setSelection( fetchSubentries );
     }
 
 
@@ -357,6 +397,14 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 connectionPageModified();
             }
         } );
+
+        fetchSubentriesButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                connectionPageModified();
+            }
+        } );
     }
 
 
@@ -374,6 +422,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             getReferralsHandlingMethod().getOrdinal() );
         parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
             getAliasesDereferencingMethod().getOrdinal() );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES,
+            isFetchSubentries() );
     }
 
 
@@ -428,10 +478,12 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD );
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
+        boolean fetchSubentries = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
 
         return fetchBaseDns != isAutoFetchBaseDns() || !StringUtils.equals( baseDn, getBaseDN() )
             || referralsHandlingMethod != getReferralsHandlingMethod()
-            || aliasesDereferencingMethod != getAliasesDereferencingMethod();
+            || aliasesDereferencingMethod != getAliasesDereferencingMethod() || fetchSubentries != isFetchSubentries();
     }
 
 
@@ -501,6 +553,12 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 break;
         }
 
+        boolean fetchSubentries = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
+        if ( fetchSubentries )
+        {
+            ldapUrl.getExtensions().add( new Extension( false, X_FETCH_SUBENTRIES, null ) );
+        }
     }
 
 
@@ -586,5 +644,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
                 Connection.ReferralHandlingMethod.FOLLOW.getOrdinal() );
         }
+
+        // fetch subentries
+        Extension fetchSubentries = ldapUrl.getExtension( X_FETCH_SUBENTRIES );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES,
+            fetchSubentries != null );
     }
 }

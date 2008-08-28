@@ -27,8 +27,8 @@ import java.util.Map;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
@@ -102,6 +102,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
                 ReferralHandlingMethod.FOLLOW.getOrdinal() );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
             connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
+            connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES, false );
         }
 
         this.searchManager = new SearchManager( this );
@@ -290,6 +291,26 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     public void setTimeLimit( int timeLimit )
     {
         connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_TIME_LIMIT, timeLimit );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchSubentries()
+    {
+        return connection.getConnectionParameter().getExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchSubentries( boolean fetchSubentries )
+    {
+        connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES,
+            fetchSubentries );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 

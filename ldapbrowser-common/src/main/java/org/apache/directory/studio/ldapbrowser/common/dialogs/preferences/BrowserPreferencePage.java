@@ -81,8 +81,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
 
     private Button checkForChildrenButton;
 
-    private Button fetchSubentriesButton;
-
 
     /**
      * Creates a new instance of BrowserPreferencePage.
@@ -250,9 +248,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         checkForChildrenButton = BaseWidgetUtils.createCheckbox( composite, "Check for children", 1 );
         checkForChildrenButton
             .setSelection( coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ) );
-        fetchSubentriesButton = BaseWidgetUtils.createCheckbox( composite,
-            "Fetch subentries (requires additional search request)", 1 );
-        fetchSubentriesButton.setSelection( coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) );
 
         updateEnabled();
 
@@ -278,7 +273,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
     {
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
         coreStore.setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, checkForChildrenButton.getSelection() );
-        coreStore.setValue( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES, fetchSubentriesButton.getSelection() );
         BrowserCorePlugin.getDefault().savePluginPreferences();
 
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_BROWSER_EXPAND_BASE_ENTRIES,
@@ -345,8 +339,6 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
         checkForChildrenButton.setSelection( coreStore
             .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ) );
-        fetchSubentriesButton.setSelection( coreStore
-            .getDefaultBoolean( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) );
 
         updateEnabled();
 

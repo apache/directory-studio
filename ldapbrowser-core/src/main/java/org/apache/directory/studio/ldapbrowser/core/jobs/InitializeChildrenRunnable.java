@@ -36,6 +36,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.Control;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -252,8 +253,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
                 BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
                     BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), new Control[]
                     { Control.SUBENTRIES_CONTROL } );
-            if ( BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES ) )
+            if ( parent.getBrowserConnection().isFetchSubentries() )
             {
                 SearchRunnable.searchAndUpdateModel( parent.getBrowserConnection(), subSearch, monitor );
                 ISearchResult[] subSrs = subSearch.getSearchResults();

@@ -323,19 +323,6 @@ public class BrowserPreferences implements IPropertyChangeListener, Preferences.
 
 
     /**
-     * Returns true if subentries should be fetched while browsing.
-     * 
-     *
-     * @return true if subentries should be fetched while browsing
-     */
-    public boolean isFetchSubentries()
-    {
-        Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
-        return coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void propertyChange( PropertyChangeEvent event )

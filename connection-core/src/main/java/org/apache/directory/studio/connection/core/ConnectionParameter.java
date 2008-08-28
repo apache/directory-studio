@@ -86,7 +86,7 @@ public class ConnectionParameter
 
     /** The symbolic name. */
     private String name;
-    
+
     /** The host name or IP address of the LDAP server. */
     private String host;
 
@@ -110,7 +110,7 @@ public class ConnectionParameter
 
     /** The read only flag. */
     private boolean isReadOnly;
-    
+
     /** The extended properties. */
     private Map<String, String> extendedProperties;
 

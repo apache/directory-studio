@@ -43,7 +43,6 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
         Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
 
         store.setDefault( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, true );
-        store.setDefault( BrowserCoreConstants.PREFERENCE_FETCH_SUBENTRIES, false );
 
         store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER, "," );
         store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_VALUEDELIMITER, "|" );

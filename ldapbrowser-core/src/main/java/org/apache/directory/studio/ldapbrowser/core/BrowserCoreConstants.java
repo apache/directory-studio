@@ -45,8 +45,6 @@ public interface BrowserCoreConstants
 
     public static final String PREFERENCE_CHECK_FOR_CHILDREN = "checkForChildren"; //$NON-NLS-1$
 
-    public static final String PREFERENCE_FETCH_SUBENTRIES = "fetchSubentries"; //$NON-NLS-1$
-
     public static final String PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER = "formatCsvAttributeDelimiter"; //$NON-NLS-1$
 
     public static final String PREFERENCE_FORMAT_CSV_VALUEDELIMITER = "formatCsvValueDelimiter"; //$NON-NLS-1$

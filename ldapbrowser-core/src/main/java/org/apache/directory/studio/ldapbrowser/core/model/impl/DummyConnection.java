@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
@@ -230,6 +230,23 @@ public class DummyConnection implements IBrowserConnection
      * {@inheritDoc}
      */
     public void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isFetchSubentries()
+    {
+        return false;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setFetchSubentries( boolean fetchSubentries )
     {
     }
 

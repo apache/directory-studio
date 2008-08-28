@@ -23,8 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -64,6 +64,9 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
     /** The key for the connection parameter "Referrals Handling". */
     public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod";
+
+    /** The key for the connection parameter "Fetch Sub-entries". */
+    public static String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries";
 
     /** The MangageDsaIT control OID. */
     public static final String CONTROL_MANAGEDSAIT = "2.16.840.1.113730.3.4.2"; //$NON-NLS-1$
@@ -178,6 +181,22 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
 
     /**
+     * Checks if subentries should be fetched
+     * 
+     * @return the true if subentries should be fetched
+     */
+    public abstract boolean isFetchSubentries();
+
+
+    /**
+     * Sets if subentries should be fetched.
+     * 
+     * @param fetchSubentries true to fetch subentries
+     */
+    public abstract void setFetchSubentries( boolean fetchSubentries );
+
+
+    /**
      * Gets the root DSE.
      * 
      * @return the root DSE
@@ -255,5 +274,5 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * Clears all caches.
      */
     public abstract void clearCaches();
-    
+
 }
