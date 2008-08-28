@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.FilterDialog;
 import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterContentAssistProcessor;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;

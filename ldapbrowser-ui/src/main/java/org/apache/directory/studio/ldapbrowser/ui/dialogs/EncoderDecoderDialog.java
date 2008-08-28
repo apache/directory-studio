@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;

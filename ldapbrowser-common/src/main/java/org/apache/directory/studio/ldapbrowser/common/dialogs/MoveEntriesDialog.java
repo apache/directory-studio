@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;

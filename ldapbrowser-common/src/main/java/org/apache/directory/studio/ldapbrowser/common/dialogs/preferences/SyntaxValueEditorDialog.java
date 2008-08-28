@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
 import org.eclipse.jface.dialogs.Dialog;

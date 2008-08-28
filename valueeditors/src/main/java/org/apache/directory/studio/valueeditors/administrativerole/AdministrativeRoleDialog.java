@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.administrativerole;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;

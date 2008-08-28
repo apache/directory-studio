@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;

@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectBrowserConnectionDialog;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.events.SelectionAdapter;

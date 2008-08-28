@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
 
 import java.util.Arrays;
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;

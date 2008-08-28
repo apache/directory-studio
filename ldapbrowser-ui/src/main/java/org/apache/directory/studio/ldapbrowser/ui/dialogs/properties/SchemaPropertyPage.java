@@ -26,7 +26,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemaRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;

@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;

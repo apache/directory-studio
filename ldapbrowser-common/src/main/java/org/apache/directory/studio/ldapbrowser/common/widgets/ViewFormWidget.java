@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets;
 
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.jface.action.IMenuManager;

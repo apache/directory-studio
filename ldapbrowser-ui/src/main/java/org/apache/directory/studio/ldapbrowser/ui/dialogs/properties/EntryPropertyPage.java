@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
