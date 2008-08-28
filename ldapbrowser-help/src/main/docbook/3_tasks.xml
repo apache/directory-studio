@@ -234,7 +234,7 @@
 				administration of different aspects of the directory. By default 
 				they are not visible. To make them visible in the Browser view 
 				enable <emphasis role="strong">Fetch subentries</emphasis> in the 
-				<link linkend="preferences_browser_view">Browser's preferences</link>. 
+				<link linkend="tools_connection_properties_options">Connection properties</link>. 
 				
 			</para>
 		</section>

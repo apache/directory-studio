@@ -197,16 +197,6 @@
 							</entry>
 							<entry>on</entry>
 						</row>
-						<row>
-							<entry>
-								Show alias and referral objects
-							</entry>
-							<entry>
-								If checked aliases and referrals and their target 
-								entry are explicitly displayed. 
-							</entry>
-							<entry>on</entry>
-						</row>
 					</tbody>
 				</tgroup>
 			</informaltable>
