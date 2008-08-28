@@ -54,7 +54,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
 
 
     /**
-     * Disposes this object.
+     * Disposes this cell modifier.
      */
     public void dispose()
     {

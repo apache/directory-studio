@@ -305,8 +305,8 @@ public class Schema
             }
             catch ( Exception e )
             {
-                System.out.println( e.getMessage() + ": " + attributeName + " - " + value );
-                e.printStackTrace();
+                System.out.println( "Error reading schema: " + attributeName + " = " + value );
+                System.out.println( e.getMessage() );
             }
         }
 

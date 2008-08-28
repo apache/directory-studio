@@ -30,12 +30,28 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
 
 
+/**
+ * The OpenEditorAction is used to edit a value with a specific value editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenEditorAction extends AbstractOpenEditorAction
 {
 
+    /** The value editor. */
     private IValueEditor valueEditor;
 
 
+    /**
+     * Creates a new instance of OpenEditorAction.
+     * 
+     * @param viewer the viewer
+     * @param cursor the cursor
+     * @param valueEditorManager the value editor manager
+     * @param valueEditor the value editor
+     * @param actionGroup the action group
+     */
     public OpenEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
         ValueEditorManager valueEditorManager, IValueEditor valueEditor, SearchResultEditorActionGroup actionGroup )
     {
@@ -45,31 +61,39 @@ public class OpenEditorAction extends AbstractOpenEditorAction
     }
 
 
+    /**
+     * Gets the value editor.
+     * 
+     * @return the value editor
+     */
     public IValueEditor getValueEditor()
     {
-        return this.valueEditor;
+        return valueEditor;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-        this.valueEditorManager.setUserSelectedValueEditor( this.valueEditor );
+        valueEditorManager.setUserSelectedValueEditor( valueEditor );
         super.run();
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#dispose()
+     * {@inheritDoc}
      */
     public void dispose()
     {
-        this.valueEditor = null;
+        valueEditor = null;
         super.dispose();
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
+     * {@inheritDoc}
      */
     public String getCommandId()
     {
@@ -78,7 +102,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor()
     {
@@ -87,7 +111,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
+     * {@inheritDoc}
      */
     public String getText()
     {
@@ -96,7 +120,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
+     * {@inheritDoc}
      */
     public boolean isEnabled()
     {
@@ -112,8 +136,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
             {
                 AttributeHierarchy ah = getSelectedAttributeHierarchies()[0];
                 alternativeVps = valueEditorManager.getAlternativeValueEditors( ah );
-                return Arrays.asList( alternativeVps ).contains( this.valueEditor )
-                    && valueEditor.getRawValue( ah ) != null;
+                return Arrays.asList( alternativeVps ).contains( valueEditor ) && valueEditor.getRawValue( ah ) != null;
             }
         }
         else

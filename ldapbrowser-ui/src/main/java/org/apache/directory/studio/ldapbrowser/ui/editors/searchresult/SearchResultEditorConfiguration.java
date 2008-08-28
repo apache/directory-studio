@@ -29,11 +29,21 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchPart;
 
 
+/**
+ * The SearchResultEditorConfiguration contains the content provider, 
+ * label provider, cursor, sorter, filter, the context menu manager and the
+ * preferences for the search result editor. 
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorConfiguration
 {
 
+    /** The disposed flag. */
     private boolean disposed = false;
 
+    /** The cursor. */
     protected SearchResultEditorCursor cursor;
 
     protected SearchResultEditorSorter sorter;
@@ -51,117 +61,189 @@ public class SearchResultEditorConfiguration
     protected MenuManager contextMenuManager;
 
 
+    /**
+     * Creates a new instance of SearchResultEditorConfiguration.
+     * 
+     * @param part the workbench part
+     */
     public SearchResultEditorConfiguration( IWorkbenchPart part )
     {
         super();
     }
 
 
+    /**
+     * Disposes this configuration.
+     */
     public void dispose()
     {
-        if ( !this.disposed )
+        if ( !disposed )
         {
-
-            if ( this.contentProvider != null )
-                this.contentProvider.dispose();
-            this.contentProvider = null;
-
-            if ( this.labelProvider != null )
-                this.labelProvider.dispose();
-            this.labelProvider = null;
-
-            if ( this.cellModifier != null )
-                this.cellModifier.dispose();
-            this.cellModifier = null;
-
-            if ( this.valueEditorManager != null )
-                this.valueEditorManager.dispose();
-            this.valueEditorManager = null;
-
-            if ( this.contextMenuManager != null )
-                this.contextMenuManager.dispose();
-            this.contextMenuManager = null;
-
-            if ( this.cursor != null )
-                this.cursor.dispose();
-            this.cursor = null;
-
-            this.disposed = true;
+            if ( contentProvider != null )
+            {
+                contentProvider.dispose();
+                contentProvider = null;
+            }
+            if ( labelProvider != null )
+            {
+                labelProvider.dispose();
+                labelProvider = null;
+            }
+            if ( cellModifier != null )
+            {
+                cellModifier.dispose();
+                cellModifier = null;
+            }
+            if ( valueEditorManager != null )
+            {
+                valueEditorManager.dispose();
+                valueEditorManager = null;
+            }
+            if ( contextMenuManager != null )
+            {
+                contextMenuManager.dispose();
+                contextMenuManager = null;
+            }
+            if ( cursor != null )
+            {
+                cursor.dispose();
+                cursor = null;
+            }
+            disposed = true;
         }
     }
 
 
+    /**
+     * Gets the sorter.
+     * 
+     * @return the sorter
+     */
     public SearchResultEditorSorter getSorter()
     {
-        if ( this.sorter == null )
-            this.sorter = new SearchResultEditorSorter();
-
+        if ( sorter == null )
+        {
+            sorter = new SearchResultEditorSorter();
+        }
         return sorter;
     }
 
 
+    /**
+     * Gets the filter.
+     * 
+     * @return the filter
+     */
     public SearchResultEditorFilter getFilter()
     {
-        if ( this.filter == null )
-            this.filter = new SearchResultEditorFilter();
-
+        if ( filter == null )
+        {
+            filter = new SearchResultEditorFilter();
+        }
         return filter;
     }
 
 
+    /**
+     * Gets the context menu manager.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the context menu manager
+     */
     public IMenuManager getContextMenuManager( TableViewer viewer )
     {
-        if ( this.contextMenuManager == null )
+        if ( contextMenuManager == null )
         {
-            this.contextMenuManager = new MenuManager();
-            Menu menu = this.contextMenuManager.createContextMenu( viewer.getControl() );
+            contextMenuManager = new MenuManager();
+            Menu menu = contextMenuManager.createContextMenu( viewer.getControl() );
             getCursor( viewer ).setMenu( menu );
         }
-        return this.contextMenuManager;
+        return contextMenuManager;
     }
 
 
+    /**
+     * Gets the content provider.
+     * 
+     * @param mainWidget the main widget
+     * 
+     * @return the content provider
+     */
     public SearchResultEditorContentProvider getContentProvider( SearchResultEditorWidget mainWidget )
     {
-        if ( this.contentProvider == null )
-            this.contentProvider = new SearchResultEditorContentProvider( mainWidget, this );
-
+        if ( contentProvider == null )
+        {
+            contentProvider = new SearchResultEditorContentProvider( mainWidget, this );
+        }
         return contentProvider;
     }
 
 
+    /**
+     * Gets the label provider.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the label provider
+     */
     public SearchResultEditorLabelProvider getLabelProvider( TableViewer viewer )
     {
-        if ( this.labelProvider == null )
-            this.labelProvider = new SearchResultEditorLabelProvider( viewer, this.getValueEditorManager( viewer ) );
-
+        if ( labelProvider == null )
+        {
+            labelProvider = new SearchResultEditorLabelProvider( getValueEditorManager( viewer ) );
+        }
         return labelProvider;
     }
 
 
+    /**
+     * Gets the cell modifier.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the cell modifier
+     */
     public SearchResultEditorCellModifier getCellModifier( TableViewer viewer )
     {
-        if ( this.cellModifier == null )
-            this.cellModifier = new SearchResultEditorCellModifier( viewer, this.getValueEditorManager( viewer ) );
-
+        if ( cellModifier == null )
+        {
+            cellModifier = new SearchResultEditorCellModifier( getValueEditorManager( viewer ) );
+        }
         return cellModifier;
     }
 
 
+    /**
+     * Gets the cursor.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the cursor
+     */
     public SearchResultEditorCursor getCursor( TableViewer viewer )
     {
-        if ( this.cursor == null )
-            this.cursor = new SearchResultEditorCursor( viewer );
-
+        if ( cursor == null )
+        {
+            cursor = new SearchResultEditorCursor( viewer );
+        }
         return cursor;
     }
 
 
+    /**
+     * Gets the value editor manager.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the value editor manager
+     */
     public ValueEditorManager getValueEditorManager( TableViewer viewer )
     {
-        if ( this.valueEditorManager == null )
-            this.valueEditorManager = new ValueEditorManager( viewer.getTable() );
-
+        if ( valueEditorManager == null )
+        {
+            valueEditorManager = new ValueEditorManager( viewer.getTable() );
+        }
         return valueEditorManager;
     }
 

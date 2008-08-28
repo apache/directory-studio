@@ -30,20 +30,38 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
+/**
+ * The SearchResultEditorContentProvider implements the content provider for
+ * the search resutl editor. It accepts an {@link ISearch} as input.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorContentProvider implements ILazyContentProvider
 {
 
+    /** The main widget. */
     private SearchResultEditorWidget mainWidget;
 
+    /** The configuration. */
     private SearchResultEditorConfiguration configuration;
 
+    /** The input. */
     private Object input;
 
+    /** The elements. */
     private Object[] elements;
 
+    /** The filtered and sorted elements. */
     private Object[] filteredAndSortedElements;
 
 
+    /**
+     * Creates a new instance of SearchResultEditorContentProvider.
+     * 
+     * @param mainWidget the main widget
+     * @param configuration the configuration
+     */
     public SearchResultEditorContentProvider( SearchResultEditorWidget mainWidget,
         SearchResultEditorConfiguration configuration )
     {
@@ -55,50 +73,55 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        this.mainWidget = null;
-        this.configuration = null;
-        this.elements = null;
-        this.filteredAndSortedElements = null;
+        mainWidget = null;
+        configuration = null;
+        elements = null;
+        filteredAndSortedElements = null;
     }
 
 
+    /**
+     * Refreshes the viewer.
+     */
     public void refresh()
     {
-        this.filterAndSort();
-        this.mainWidget.getViewer().refresh();
+        filterAndSort();
+        mainWidget.getViewer().refresh();
     }
 
 
+    /**
+     * Filters and sorts the viewer.
+     */
     private void filterAndSort()
     {
-
-        this.filteredAndSortedElements = elements;
+        filteredAndSortedElements = elements;
 
         // filter and sort, use Job if too much elements
-        if ( this.configuration.getFilter().isFiltered() || this.configuration.getSorter().isSorted() )
+        if ( configuration.getFilter().isFiltered() || configuration.getSorter().isSorted() )
         {
-            if ( elements.length > 1000 && this.mainWidget.getViewer() != null
-                && !this.mainWidget.getViewer().getTable().isDisposed() )
+            if ( elements.length > 1000 && mainWidget.getViewer() != null
+                && !mainWidget.getViewer().getTable().isDisposed() )
             {
-                FilterAndSortRunnable runnable = new FilterAndSortRunnable( this.configuration, this.mainWidget, this.elements );
-                //RunnableContextJobAdapter.execute( job, new TimeTriggeredProgressMonitorDialog( Display.getCurrent()
-                //    .getActiveShell(), 5000 ) );
+                FilterAndSortRunnable runnable = new FilterAndSortRunnable( configuration, mainWidget, elements );
                 RunnableContextRunner.execute( runnable, null, true );
-                this.filteredAndSortedElements = runnable.getFilteredAndSortedElements();
+                filteredAndSortedElements = runnable.getFilteredAndSortedElements();
             }
-            else if ( elements.length > 0 && this.mainWidget.getViewer() != null
-                && !this.mainWidget.getViewer().getTable().isDisposed() )
+            else if ( elements.length > 0 && mainWidget.getViewer() != null
+                && !mainWidget.getViewer().getTable().isDisposed() )
             {
-                this.filteredAndSortedElements = this.configuration.getFilter().filter( this.mainWidget.getViewer(),
-                    "", elements );
-                this.configuration.getSorter().sort( this.mainWidget.getViewer(), this.filteredAndSortedElements );
+                filteredAndSortedElements = configuration.getFilter().filter( mainWidget.getViewer(), "", elements );
+                configuration.getSorter().sort( mainWidget.getViewer(), filteredAndSortedElements );
             }
         }
 
         // update virtual table
-        this.mainWidget.getViewer().setItemCount( this.filteredAndSortedElements.length );
+        mainWidget.getViewer().setItemCount( filteredAndSortedElements.length );
 
         // update state
         String url = "";
@@ -133,39 +156,48 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
             boolean showDn = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
                 BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN )
                 || search.getReturningAttributes().length == 0;
-            this.configuration.getFilter().inputChanged( search, showDn );
-            this.configuration.getSorter().inputChanged( search, showDn );
+            configuration.getFilter().inputChanged( search, showDn );
+            configuration.getSorter().inputChanged( search, showDn );
         }
         else
         {
-            url = "No search selected";;
+            url = "No search selected";
             enabled = false;
         }
 
-        if ( this.mainWidget.getInfoText() != null && !this.mainWidget.getInfoText().isDisposed() )
+        if ( mainWidget.getInfoText() != null && !mainWidget.getInfoText().isDisposed() )
         {
-            this.mainWidget.getInfoText().setText( url );
+            mainWidget.getInfoText().setText( url );
         }
-        if ( this.mainWidget.getQuickFilterWidget() != null )
+        if ( mainWidget.getQuickFilterWidget() != null )
         {
-            this.mainWidget.getQuickFilterWidget().setEnabled( enabled );
+            mainWidget.getQuickFilterWidget().setEnabled( enabled );
         }
-        if ( this.mainWidget.getViewer() != null && !this.mainWidget.getViewer().getTable().isDisposed() )
+        if ( mainWidget.getViewer() != null && !mainWidget.getViewer().getTable().isDisposed() )
         {
-            this.mainWidget.getViewer().getTable().setEnabled( enabled );
+            mainWidget.getViewer().getTable().setEnabled( enabled );
         }
 
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
         this.input = newInput;
         this.elements = getElements( newInput );
-        // this.filterAndSort();
     }
 
 
+    /**
+     * Gets the elements.
+     * 
+     * @param inputElement the input element
+     * 
+     * @return the elements
+     */
     public Object[] getElements( Object inputElement )
     {
         if ( inputElement != null && inputElement instanceof ISearch )
@@ -177,24 +209,29 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
         {
             return new Object[]
                 {};
-            // return new Object[]{inputElement};
         }
     }
 
 
+    /**
+     * Gets the viewer.
+     * 
+     * @return the viewer
+     */
     public TableViewer getViewer()
     {
-        return this.mainWidget.getViewer();
+        return mainWidget.getViewer();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void updateElement( int index )
     {
-        // if(sortedAndSortedElements instanceof ISearchResult[]) {
         if ( filteredAndSortedElements != null && filteredAndSortedElements.length > 0
             && index < filteredAndSortedElements.length )
         {
-            // System.out.println(index);
             mainWidget.getViewer().replace( filteredAndSortedElements[index], index );
         }
     }

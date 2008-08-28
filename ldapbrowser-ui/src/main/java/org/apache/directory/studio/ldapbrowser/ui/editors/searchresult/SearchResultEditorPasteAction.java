@@ -47,7 +47,7 @@ public class SearchResultEditorPasteAction extends PasteAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.PasteAction#getText()
+     * {@inheritDoc}
      */
     public String getText()
     {
@@ -62,11 +62,11 @@ public class SearchResultEditorPasteAction extends PasteAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.PasteAction#isEnabled()
+     * {@inheritDoc}
      */
     public boolean isEnabled()
     {
-        if ( this.getValuesToPaste() != null )
+        if ( getValuesToPaste() != null )
         {
             return true;
         }
@@ -76,7 +76,7 @@ public class SearchResultEditorPasteAction extends PasteAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.PasteAction#run()
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -86,22 +86,23 @@ public class SearchResultEditorPasteAction extends PasteAction
             IAttribute attribute = getSelectedAttributeHierarchies()[0].getAttribute();
             IEntry entry = attribute.getEntry();
 
-            IValue[] newValues = new IValue[values.length]; 
+            IValue[] newValues = new IValue[values.length];
             for ( int v = 0; v < values.length; v++ )
             {
                 newValues[v] = new Value( attribute, values[v].getRawValue() );
             }
-            
+
             new CreateValuesJob( entry, newValues ).execute();
         }
     }
 
 
     /**
-     * Conditions: - an search result and a multiattribute are selected -
-     * there are IValues in clipboard
+     * Conditions:
+     * <li> an search result and a mv-attribute are selected
+     * <li> there are IValues in clipboard.
      * 
-     * @return
+     * @return the values to paste
      */
     private IValue[] getValuesToPaste()
     {

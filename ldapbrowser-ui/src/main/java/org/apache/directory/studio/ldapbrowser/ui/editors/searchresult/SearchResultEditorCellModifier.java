@@ -21,8 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
-import java.util.Iterator;
-
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -31,35 +29,48 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.ICellModifier;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Item;
 
 
+/**
+ * The SearchResultEditorCellModifier implements the {@link ICellModifier} interface
+ * for the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorCellModifier implements ICellModifier
 {
 
-    private TableViewer viewer;
-
+    /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
 
 
-    public SearchResultEditorCellModifier( TableViewer viewer, ValueEditorManager valueEditorManager )
+    /**
+     * Creates a new instance of SearchResultEditorCellModifier.
+     * 
+     * @param valueEditorManager the value editor manager
+     */
+    public SearchResultEditorCellModifier( ValueEditorManager valueEditorManager )
     {
-        this.viewer = viewer;
         this.valueEditorManager = valueEditorManager;
     }
 
 
+    /**
+     * Disposes this cell modifier.
+     */
     public void dispose()
     {
-        this.viewer = null;
-        this.valueEditorManager = null;
+        valueEditorManager = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean canModify( Object element, String property )
     {
-
         if ( element != null && element instanceof ISearchResult && property != null )
         {
             ISearchResult result = ( ISearchResult ) element;
@@ -78,11 +89,10 @@ public class SearchResultEditorCellModifier implements ICellModifier
                     { new Attribute( result.getEntry(), property ) } );
             }
 
-            // check schema modifyable
+            // check schema modifiable
             boolean isOneModifyable = false;
-            for ( Iterator it = ah.iterator(); it.hasNext(); )
+            for ( IAttribute attribute : ah )
             {
-                IAttribute attribute = ( IAttribute ) it.next();
                 if ( SchemaUtils.isModifyable( attribute.getAttributeTypeDescription() ) )
                 {
                     isOneModifyable = true;
@@ -96,9 +106,8 @@ public class SearchResultEditorCellModifier implements ICellModifier
 
             // check if property is valid for the entry
             boolean isOneValid = false;
-            for ( Iterator it = ah.iterator(); it.hasNext(); )
+            for ( IAttribute attribute : ah )
             {
-                IAttribute attribute = ( IAttribute ) it.next();
                 if ( attribute.isObjectClassAttribute() || attribute.isMustAttribute() || attribute.isMayAttribute() )
                 {
                     isOneValid = true;
@@ -111,7 +120,7 @@ public class SearchResultEditorCellModifier implements ICellModifier
             }
 
             // call value editor
-            return this.valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah ) != null;
+            return valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah ) != null;
         }
         else
         {
@@ -120,15 +129,17 @@ public class SearchResultEditorCellModifier implements ICellModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getValue( Object element, String property )
     {
-
         if ( element != null && element instanceof ISearchResult && property != null )
         {
             ISearchResult result = ( ISearchResult ) element;
             AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
 
-            if ( !this.canModify( element, property ) )
+            if ( !canModify( element, property ) )
             {
                 return null;
             }
@@ -139,7 +150,7 @@ public class SearchResultEditorCellModifier implements ICellModifier
                     { new Attribute( result.getEntry(), property ) } );
             }
 
-            return this.valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );
+            return valueEditorManager.getCurrentValueEditor( ah ).getRawValue( ah );
         }
         else
         {
@@ -148,6 +159,9 @@ public class SearchResultEditorCellModifier implements ICellModifier
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void modify( Object element, String property, Object newRawValue )
     {
         if ( element != null && element instanceof Item )
@@ -163,15 +177,15 @@ public class SearchResultEditorCellModifier implements ICellModifier
             // switch operation:
             if ( ah == null && newRawValue != null )
             {
-                this.valueEditorManager.createValue( result.getEntry(), property, newRawValue );
+                valueEditorManager.createValue( result.getEntry(), property, newRawValue );
             }
             else if ( ah != null && newRawValue == null )
             {
-                this.valueEditorManager.deleteAttribute( ah );
+                valueEditorManager.deleteAttribute( ah );
             }
             else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
             {
-                this.valueEditorManager.modifyValue( ah.getAttribute().getValues()[0], newRawValue );
+                valueEditorManager.modifyValue( ah.getAttribute().getValues()[0], newRawValue );
             }
         }
     }

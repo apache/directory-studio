@@ -115,7 +115,6 @@ public class RunnableContextRunner
                 }
                 else
                 {
-                    System.out.println( "NoBulk: " + runnable );
                     runnable.run( spm[0] );
                 }
 

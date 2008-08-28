@@ -40,133 +40,163 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.TableColumn;
 
 
+/**
+ * The SearchResultEditorSorter implements the Sorter for the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorSorter extends ViewerSorter implements SelectionListener
 {
 
+    /** The content provider. */
     protected SearchResultEditorContentProvider contentProvider;
 
+    /** The search. */
     private ISearch search;
 
+    /** The columns. */
     private TableColumn[] columns;
 
+    /** The show DN flag. */
     private boolean showDn;
 
+    /** The sort property. */
     private int sortBy;
 
+    /** The sort order. */
     private int sortOrder;
 
 
-    public SearchResultEditorSorter()
-    {
-        super();
-    }
-
-
+    /**
+     * Connects this sorter to the given content provider.
+     * 
+     * @param contentProvider the content provider
+     */
     public void connect( SearchResultEditorContentProvider contentProvider )
     {
-
         this.contentProvider = contentProvider;
 
-        this.sortBy = 0;
-        this.sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
+        sortBy = 0;
+        sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
 
-        this.columns = this.contentProvider.getViewer().getTable().getColumns();
-        for ( int i = 0; i < this.columns.length; i++ )
+        columns = contentProvider.getViewer().getTable().getColumns();
+        for ( int i = 0; i < columns.length; i++ )
         {
-            this.columns[i].addSelectionListener( this );
+            columns[i].addSelectionListener( this );
         }
     }
 
 
+    /**
+     * Called when the input of the viewer has been changed.
+     * 
+     * @param newSearch the new search
+     * @param showDn the show DN flag
+     */
     public void inputChanged( ISearch newSearch, boolean showDn )
     {
-
         this.search = newSearch;
         this.showDn = showDn;
 
-        for ( int i = 0; this.columns != null && i < this.columns.length; i++ )
+        for ( int i = 0; columns != null && i < columns.length; i++ )
         {
-            this.columns[i].removeSelectionListener( this );
+            columns[i].removeSelectionListener( this );
         }
-        this.columns = this.contentProvider.getViewer().getTable().getColumns();
-        for ( int i = 0; i < this.columns.length; i++ )
+        columns = contentProvider.getViewer().getTable().getColumns();
+        for ( int i = 0; i < columns.length; i++ )
         {
-            this.columns[i].addSelectionListener( this );
+            columns[i].addSelectionListener( this );
         }
 
         // check sort column
-        int visibleColumns = this.search.getReturningAttributes().length;
-        if ( this.showDn )
-            visibleColumns++;
-        if ( visibleColumns < this.sortBy + 1 )
+        int visibleColumns = search.getReturningAttributes().length;
+        if ( showDn )
         {
-            this.setSortColumn( 0 );
-            this.setSortColumn( 0 );
-            this.setSortColumn( 0 );
+            visibleColumns++;
+        }
+        if ( visibleColumns < sortBy + 1 )
+        {
+            setSortColumn( 0 );
+            setSortColumn( 0 );
+            setSortColumn( 0 );
         }
     }
 
 
     public void dispose()
     {
-        for ( int i = 0; this.columns != null && i < this.columns.length; i++ )
+        for ( int i = 0; columns != null && i < columns.length; i++ )
         {
-            if ( !this.columns[i].isDisposed() )
-                this.columns[i].removeSelectionListener( this );
+            if ( !columns[i].isDisposed() )
+            {
+                columns[i].removeSelectionListener( this );
+            }
         }
-        this.columns = null;
-        this.search = null;
-        this.contentProvider = null;
+        columns = null;
+        search = null;
+        contentProvider = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetDefaultSelected( SelectionEvent e )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetSelected( SelectionEvent e )
     {
         if ( e.widget instanceof TableColumn )
         {
-            int index = this.contentProvider.getViewer().getTable().indexOf( ( ( TableColumn ) e.widget ) );
-            this.setSortColumn( index );
+            int index = contentProvider.getViewer().getTable().indexOf( ( ( TableColumn ) e.widget ) );
+            setSortColumn( index );
         }
     }
 
 
+    /**
+     * Sets the sort column.
+     * 
+     * @param index the new sort column
+     */
     private void setSortColumn( int index )
     {
-        if ( this.sortBy == index )
+        if ( sortBy == index )
         {
             // toggle sort order
-            this.sortOrder = this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? BrowserCoreConstants.SORT_ORDER_DESCENDING
-                : this.sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING ? BrowserCoreConstants.SORT_ORDER_NONE
+            sortOrder = sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? BrowserCoreConstants.SORT_ORDER_DESCENDING
+                : sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING ? BrowserCoreConstants.SORT_ORDER_NONE
                     : BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
         else
         {
             // set new sort by
-            this.sortBy = index;
-            this.sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
+            sortBy = index;
+            sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
-        if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
+        if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
         {
-            this.sortBy = BrowserCoreConstants.SORT_BY_NONE;
+            sortBy = BrowserCoreConstants.SORT_BY_NONE;
         }
 
-        TableColumn[] columns = this.contentProvider.getViewer().getTable().getColumns();
+        TableColumn[] columns = contentProvider.getViewer().getTable().getColumns();
         for ( int i = 0; i < columns.length; i++ )
         {
             columns[i].setImage( null );
         }
 
-        if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING )
+        if ( sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING )
         {
             ( columns[index] ).setImage( BrowserCommonActivator.getDefault().getImage(
                 BrowserCommonConstants.IMG_SORT_ASCENDING ) );
         }
-        else if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING )
+        else if ( sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING )
         {
             ( columns[index] ).setImage( BrowserCommonActivator.getDefault().getImage(
                 BrowserCommonConstants.IMG_SORT_DESCENDING ) );
@@ -176,24 +206,30 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             ( columns[index] ).setImage( null );
         }
 
-        this.contentProvider.refresh();
-
+        contentProvider.refresh();
     }
 
 
+    /**
+     * Checks if is sorted.
+     * 
+     * @return true, if is sorted
+     */
     public boolean isSorted()
     {
-        // return this.sortOrder != SORT_ORDER_NONE;
+        // return sortOrder != SORT_ORDER_NONE;
         return true;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void sort( final Viewer viewer, Object[] elements )
     {
-
         if ( isSorted() )
         {
-            Arrays.sort( elements, new Comparator()
+            Arrays.sort( elements, new Comparator<Object>()
             {
                 public int compare( Object a, Object b )
                 {
@@ -205,37 +241,16 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int compare( Viewer viewer, Object o1, Object o2 )
     {
-
-        if ( this.search == null )
+        if ( search == null )
         {
-            return this.equal();
+            return equal();
         }
 
-        // if(o1 == null && o2 == null) {
-        // return this.equal();
-        // }
-        // else if(o1 == null && o2 != null) {
-        // return this.lessThan();
-        // }
-        // else if(o1 != null && o2 == null) {
-        // return this.greaterThan();
-        // }
-        // else {
-        // if(!(o1 instanceof ISearchResult) && !(o2 instanceof ISearchResult))
-        // {
-        // return this.equal();
-        // }
-        // else if(!(o1 instanceof ISearchResult) && (o2 instanceof
-        // ISearchResult)) {
-        // return this.lessThan();
-        // }
-        // else if((o1 instanceof ISearchResult) && !(o2 instanceof
-        // ISearchResult)) {
-        // return this.greaterThan();
-        // }
-        // else {
         ISearchResult sr1 = ( ISearchResult ) o1;
         ISearchResult sr2 = ( ISearchResult ) o2;
 
@@ -243,17 +258,17 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         IEntry entry2 = sr2.getEntry();
 
         String attributeName;
-        if ( showDn && this.sortBy == 0 )
+        if ( showDn && sortBy == 0 )
         {
             attributeName = BrowserUIConstants.DN;
         }
-        else if ( showDn && this.sortBy > 0 )
+        else if ( showDn && sortBy > 0 )
         {
-            attributeName = this.search.getReturningAttributes()[this.sortBy - 1];
+            attributeName = search.getReturningAttributes()[sortBy - 1];
         }
         else
         {
-            attributeName = this.search.getReturningAttributes()[this.sortBy];
+            attributeName = search.getReturningAttributes()[sortBy];
         }
 
         if ( attributeName == BrowserUIConstants.DN )
@@ -267,15 +282,15 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             AttributeHierarchy ah2 = entry2.getAttributeWithSubtypes( attributeName );
             if ( ah1 == null && ah2 == null )
             {
-                return this.equal();
+                return equal();
             }
             else if ( ah1 == null && ah2 != null )
             {
-                return this.lessThan();
+                return lessThan();
             }
             else if ( ah1 != null && ah2 == null )
             {
-                return this.greaterThan();
+                return greaterThan();
             }
             else
             {
@@ -287,11 +302,16 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
                 return compare( value1, value2 );
             }
         }
-        // }
-        // }
     }
 
 
+    /**
+     * Gets the value.
+     * 
+     * @param attribute the attribute
+     * 
+     * @return the value
+     */
     private String getValue( IAttribute attribute )
     {
         if ( attribute.getValueSize() > 0 )
@@ -305,27 +325,50 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
     }
 
 
+    /**
+     * Gets the less than value.
+     * 
+     * @return the less than value
+     */
     private int lessThan()
     {
-        return this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
+        return sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
     }
 
 
+    /**
+     * Gets the equal value.
+     * 
+     * @return the equal value
+     */
     private int equal()
     {
         return 0;
     }
 
 
+    /**
+     * Gets the greater than value.
+     * 
+     * @return the greater than value
+     */
     private int greaterThan()
     {
-        return this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
+        return sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
     }
 
 
+    /**
+     * Compare two strings.
+     * 
+     * @param s1 the 1st string
+     * @param s2 the 2nd string
+     * 
+     * @return the compare result
+     */
     private int compare( String s1, String s2 )
     {
-        return this.sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 ) : s2
+        return sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 ) : s2
             .compareToIgnoreCase( s1 );
     }
 

@@ -28,57 +28,88 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 
+/**
+ * The SearchResultEditorFilter implements the filter for the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorFilter extends ViewerFilter
 {
 
+    /** The content provider. */
     protected SearchResultEditorContentProvider contentProvider;
 
+    /** The quick filter value. */
     protected String quickFilterValue;
 
+    /** The show DN flag. */
     private boolean showDn;
 
 
+    /**
+     * Creates a new instance of SearchResultEditorFilter.
+     */
     public SearchResultEditorFilter()
     {
         this.quickFilterValue = "";
     }
 
 
+    /**
+     * Connects this filter with the given content provider.
+     * 
+     * @param viewer the viewer
+     */
     public void connect( SearchResultEditorContentProvider contentProvider )
     {
         this.contentProvider = contentProvider;
     }
 
 
+    /**
+     * Called when the input of the viewer changes.
+     * 
+     * @param newSearch the new search
+     * @param showDn the show DN flag
+     */
     public void inputChanged( ISearch newSearch, boolean showDn )
     {
         this.showDn = showDn;
     }
 
 
+    /**
+     * Checks if is filtered.
+     * 
+     * @return true, if is filtered
+     */
     public boolean isFiltered()
     {
-        return this.quickFilterValue != null && !"".equals( quickFilterValue );
+        return quickFilterValue != null && !"".equals( quickFilterValue );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object[] filter( Viewer viewer, Object parent, Object[] elements )
     {
-
         if ( isFiltered() )
         {
             int size = elements.length;
-            ArrayList out = new ArrayList( size );
+            ArrayList<Object> out = new ArrayList<Object>( size );
             for ( int i = 0; i < size; ++i )
             {
                 Object element = elements[i];
                 if ( select( viewer, parent, element ) )
+                {
                     out.add( element );
+                }
             }
 
             return out.toArray();
@@ -87,13 +118,14 @@ public class SearchResultEditorFilter extends ViewerFilter
         {
             return elements;
         }
-
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean select( Viewer viewer, Object parentElement, Object element )
     {
-
         if ( element instanceof ISearchResult )
         {
             ISearchResult searchResult = ( ISearchResult ) element;
@@ -120,17 +152,8 @@ public class SearchResultEditorFilter extends ViewerFilter
                 }
             }
 
-            // IAttribute[] attributes = searchResult.getAttributes();
-            // for (int i = 0; i < attributes.length; i++) {
-            // IValue[] values = attributes[i].getValues();
-            // for (int k = 0; k < values.length; k++) {
-            // if (this.goesThroughQuickFilter(values[k])) {
-            // return true;
-            // }
-            // }
-            // }
-            if ( this.showDn
-                && searchResult.getDn().getUpName().toUpperCase().indexOf( this.quickFilterValue.toUpperCase() ) > -1 )
+            if ( showDn
+                && searchResult.getDn().getUpName().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) > -1 )
             {
                 return true;
             }
@@ -144,14 +167,16 @@ public class SearchResultEditorFilter extends ViewerFilter
     }
 
 
+    /**
+     * Checks if the value goes through quick filter.
+     * 
+     * @param value the value
+     * 
+     * @return true, if successful
+     */
     private boolean goesThroughQuickFilter( IValue value )
     {
-
-        // fitler value
-        // if(this.quickFilterValue != null &&
-        // !"".equals(this.quickFilterValue)) {
-        if ( value.isString()
-            && value.getStringValue().toUpperCase().indexOf( this.quickFilterValue.toUpperCase() ) == -1 )
+        if ( value.isString() && value.getStringValue().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) == -1 )
         {
             return false;
         }
@@ -159,31 +184,45 @@ public class SearchResultEditorFilter extends ViewerFilter
         {
             return false;
         }
-        // }
 
         return true;
     }
 
 
+    /**
+     * Disposes this filter.
+     */
     public void dispose()
     {
-        this.contentProvider = null;
+        contentProvider = null;
     }
 
 
+    /**
+     * Gets the quick filter value.
+     * 
+     * @return the quick filter value
+     */
     public String getQuickFilterValue()
     {
         return quickFilterValue;
     }
 
 
+    /**
+     * Sets the quick filter value.
+     * 
+     * @param quickFilterValue the new quick filter value
+     */
     public void setQuickFilterValue( String quickFilterValue )
     {
         if ( !this.quickFilterValue.equals( quickFilterValue ) )
         {
             this.quickFilterValue = quickFilterValue;
-            if ( this.contentProvider != null )
-                this.contentProvider.refresh();
+            if ( contentProvider != null )
+            {
+                contentProvider.refresh();
+            }
         }
     }
 

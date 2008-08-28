@@ -26,20 +26,31 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * Action to show/hide the DN column.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ShowDNAction extends Action
 {
 
+    /**
+     * Creates a new instance of ShowDNAction.
+     */
     public ShowDNAction()
     {
         super( "Show DN", AS_CHECK_BOX );
         super.setToolTipText( getText() );
         super.setEnabled( true );
-
         super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
@@ -47,18 +58,9 @@ public class ShowDNAction extends Action
     }
 
 
-    public void setChecked( boolean checked )
-    {
-        super.setChecked( checked );
-    }
-
-
-    public boolean isChecked()
-    {
-        return super.isChecked();
-    }
-
-
+    /**
+     * Disposes this action.
+     */
     public void dispose()
     {
     }

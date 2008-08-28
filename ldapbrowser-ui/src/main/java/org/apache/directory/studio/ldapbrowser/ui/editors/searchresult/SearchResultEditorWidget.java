@@ -30,89 +30,131 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 
 
+/**
+ * The EntryEditorWidget is a widget to display and edit the attributes of 
+ * the results of a search.
+ * 
+ * It provides a context menu and a local toolbar with actions to
+ * manage attributes. Further there is an instant search feature to filter 
+ * the visible search results.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorWidget extends ViewFormWidget
 {
 
+    /** The configuration. */
     private SearchResultEditorConfiguration configuration;
 
+    /** The quick filter widget. */
     private SearchResultEditorQuickFilterWidget quickFilterWidget;
 
+    /** The table. */
     private Table table;
 
+    /** The viewer. */
     private TableViewer viewer;
 
 
+    /**
+     * Creates a new instance of SearchResultEditorWidget.
+     * 
+     * @param configuration the configuration
+     */
     public SearchResultEditorWidget( SearchResultEditorConfiguration configuration )
     {
         this.configuration = configuration;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContent( Composite parent )
     {
-
         // create quick filter
-        this.quickFilterWidget = new SearchResultEditorQuickFilterWidget( this.configuration.getFilter() );
-        this.quickFilterWidget.createComposite( parent );
+        quickFilterWidget = new SearchResultEditorQuickFilterWidget( configuration.getFilter() );
+        quickFilterWidget.createComposite( parent );
 
         // create table widget and viewer
-        this.table = new Table( parent, SWT.BORDER | SWT.HIDE_SELECTION | SWT.VIRTUAL );
-        this.table.setHeaderVisible( true );
-        this.table.setLinesVisible( true );
-        this.table.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        this.viewer = new TableViewer( this.table );
-        this.viewer.setUseHashlookup( true );
+        table = new Table( parent, SWT.BORDER | SWT.HIDE_SELECTION | SWT.VIRTUAL );
+        table.setHeaderVisible( true );
+        table.setLinesVisible( true );
+        table.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        viewer = new TableViewer( table );
+        viewer.setUseHashlookup( true );
 
         // setup providers
-        this.viewer.setContentProvider( configuration.getContentProvider( this ) );
-        this.viewer.setLabelProvider( configuration.getLabelProvider( this.viewer ) );
+        viewer.setContentProvider( configuration.getContentProvider( this ) );
+        viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
 
         // set table cell editors
-        this.viewer.setCellModifier( configuration.getCellModifier( this.viewer ) );
+        viewer.setCellModifier( configuration.getCellModifier( viewer ) );
 
-        return this.table;
+        return table;
     }
 
 
+    /**
+     * Sets the input.
+     * 
+     * @param input the new input
+     */
     public void setInput( Object input )
     {
-        this.viewer.setInput( input );
+        viewer.setInput( input );
     }
 
 
+    /**
+     * Sets the focus.
+     */
     public void setFocus()
     {
-        this.configuration.getCursor( this.viewer ).setFocus();
+        configuration.getCursor( viewer ).setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.viewer != null )
+        if ( viewer != null )
         {
-            this.configuration.dispose();
+            configuration.dispose();
 
-            if ( this.quickFilterWidget != null )
+            if ( quickFilterWidget != null )
             {
-                this.quickFilterWidget.dispose();
-                this.quickFilterWidget = null;
+                quickFilterWidget.dispose();
+                quickFilterWidget = null;
             }
 
-            // this.table.dispose();
-            this.table = null;
-            this.viewer = null;
+            table = null;
+            viewer = null;
         }
 
         super.dispose();
     }
 
 
+    /**
+     * Gets the viewer.
+     * 
+     * @return the viewer
+     */
     public TableViewer getViewer()
     {
         return viewer;
     }
 
 
+    /**
+     * Gets the quick filter widget.
+     * 
+     * @return the quick filter widget
+     */
     public SearchResultEditorQuickFilterWidget getQuickFilterWidget()
     {
         return quickFilterWidget;

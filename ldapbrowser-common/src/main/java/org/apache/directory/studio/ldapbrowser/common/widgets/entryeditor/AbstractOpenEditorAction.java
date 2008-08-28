@@ -33,7 +33,7 @@ import org.eclipse.swt.events.KeyListener;
 
 
 /**
- * The base class for all value editor actions of the entry editor widget.
+ * Base class for all value editor actions of the entry editor widget.
  * It manages activation and closing of value editors. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -160,7 +160,7 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
         }
 
         // reset custom value editor and set selection to notify all
-        // openeditoractions to update their enabled state.
+        // actions to update their enabled state.
         valueEditorManager.setUserSelectedValueEditor( null );
         viewer.setSelection( viewer.getSelection() );
 

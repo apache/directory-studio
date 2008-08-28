@@ -26,8 +26,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 
 /**
- * The BrowserConfiguration contains the content provider, 
- * label provider, sorter, filter the context menu manager and the
+ * The EntryEditorWidgetConfiguration contains the content provider, 
+ * label provider, sorter, filter, the context menu manager and the
  * preferences for the entry editor widget. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

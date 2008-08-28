@@ -26,20 +26,31 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.action.Action;
 
 
+/**
+ * Action to enable/disable DNs as link.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ShowLinksAction extends Action
 {
 
+    /**
+     * Creates a new instance of ShowLinksAction.
+     */
     public ShowLinksAction()
     {
         super( "DN as link", AS_CHECK_BOX );
         super.setToolTipText( getText() );
         super.setEnabled( true );
-
         super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
@@ -47,18 +58,9 @@ public class ShowLinksAction extends Action
     }
 
 
-    public void setChecked( boolean checked )
-    {
-        super.setChecked( checked );
-    }
-
-
-    public boolean isChecked()
-    {
-        return super.isChecked();
-    }
-
-
+    /**
+     * Disposes this action.
+     */
     public void dispose()
     {
     }

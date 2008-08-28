@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -180,7 +180,8 @@ public class EntryEditorWidgetQuickFilterWidget
 
         clearQuickFilterButton = new Button( innerComposite, SWT.PUSH );
         clearQuickFilterButton.setToolTipText( "Clear Quick Filter" );
-        clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_CLEAR ) );
+        clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault()
+            .getImage( BrowserCommonConstants.IMG_CLEAR ) );
         clearQuickFilterButton.setEnabled( false );
         clearQuickFilterButton.addSelectionListener( new SelectionAdapter()
         {
@@ -268,7 +269,7 @@ public class EntryEditorWidgetQuickFilterWidget
     /**
      * Activates or deactivates this quick filter widget.
      *
-     * @param visible true to crate this quick filter widget, false to destroy it
+     * @param visible true to create this quick filter widget, false to destroy it
      */
     public void setActive( boolean visible )
     {

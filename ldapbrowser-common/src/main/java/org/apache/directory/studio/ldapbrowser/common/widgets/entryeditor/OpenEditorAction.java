@@ -71,7 +71,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction#run()
+     * {@inheritDoc}
      */
     public void run()
     {
@@ -83,17 +83,17 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction#dispose()
+     * {@inheritDoc}
      */
     public void dispose()
     {
-        this.valueEditor = null;
+        valueEditor = null;
         super.dispose();
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
+     * {@inheritDoc}
      */
     public String getCommandId()
     {
@@ -102,7 +102,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor()
     {
@@ -111,7 +111,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
+     * {@inheritDoc}
      */
     public String getText()
     {
@@ -120,7 +120,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
+     * {@inheritDoc}
      */
     public boolean isEnabled()
     {

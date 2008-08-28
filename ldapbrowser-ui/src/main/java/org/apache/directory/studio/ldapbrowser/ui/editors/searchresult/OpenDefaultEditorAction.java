@@ -28,12 +28,28 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
 
 
+/**
+ * The OpenBestEditorAction is used to edit a value with the best value editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenDefaultEditorAction extends AbstractOpenEditorAction
 {
 
+    /** The best value editor proxy. */
     private SearchResultEditorActionProxy bestValueEditorProxy;
 
 
+    /**
+     * Creates a new instance of OpenDefaultEditorAction.
+     * 
+     * @param viewer the viewer
+     * @param cursor the cursor
+     * @param valueEditorManager the value editor manager
+     * @param bestValueEditorProxy the best value editor proxy
+     * @param actionGroup the action group
+     */
     public OpenDefaultEditorAction( TableViewer viewer, SearchResultEditorCursor cursor,
         ValueEditorManager valueEditorManager, SearchResultEditorActionProxy bestValueEditorProxy,
         SearchResultEditorActionGroup actionGroup )
@@ -43,22 +59,27 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-        this.bestValueEditorProxy.run();
+        bestValueEditorProxy.run();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        this.bestValueEditorProxy = null;
-
+        bestValueEditorProxy = null;
         super.dispose();
     }
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getCommandId()
+     * {@inheritDoc}
      */
     public String getCommandId()
     {
@@ -67,7 +88,7 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getImageDescriptor()
+     * {@inheritDoc}
      */
     public ImageDescriptor getImageDescriptor()
     {
@@ -83,7 +104,7 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#getText()
+     * {@inheritDoc}
      */
     public String getText()
     {
@@ -92,7 +113,7 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction#isEnabled()
+     * {@inheritDoc}
      */
     public boolean isEnabled()
     {

@@ -85,8 +85,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.views.contentoutline.ContentOutlinePage#createControl(org.eclipse.swt.widgets.Composite)
+    /**
+     * {@inheritDoc}
      */
     public void createControl( Composite parent )
     {
@@ -110,9 +110,9 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                         IEntry entry = ( IEntry ) o;
                         IAttribute[] attributes = entry.getAttributes();
 
-                        List selectionList = new ArrayList();
+                        List<Object> selectionList = new ArrayList<Object>();
 
-                        Iterator it = ( ( IStructuredSelection ) event.getSelection() ).iterator();
+                        Iterator<?> it = ( ( IStructuredSelection ) event.getSelection() ).iterator();
                         while ( it.hasNext() )
                         {
                             Object element = it.next();
@@ -121,15 +121,12 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                             {
                                 // select the value
                                 LdifAttrValLine line = ( LdifAttrValLine ) element;
-                                for ( int a = 0; a < attributes.length; a++ )
+                                for ( IAttribute attribute : attributes )
                                 {
-                                    IAttribute attribute = attributes[a];
                                     if ( attribute.getDescription().equals( line.getUnfoldedAttributeDescription() ) )
                                     {
-                                        IValue[] values = attribute.getValues();
-                                        for ( int v = 0; v < values.length; v++ )
+                                        for ( IValue value : attribute.getValues() )
                                         {
-                                            IValue value = values[v];
                                             if ( value.getStringValue().equals( line.getValueAsString() ) )
                                             {
                                                 selectionList.add( value );
@@ -141,15 +138,13 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                             else if ( element instanceof List )
                             {
                                 // select attribute and all values
-                                List list = ( List ) element;
+                                List<?> list = ( List<?> ) element;
                                 if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
                                 {
                                     LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
-                                    for ( int a = 0; a < attributes.length; a++ )
+                                    for ( IAttribute attribute : attributes )
                                     {
-                                        IAttribute attribute = attributes[a];
-                                        if ( attribute.getDescription().equals(
-                                            line.getUnfoldedAttributeDescription() ) )
+                                        if ( attribute.getDescription().equals( line.getUnfoldedAttributeDescription() ) )
                                         {
                                             selectionList.add( attribute );
                                             selectionList.addAll( Arrays.asList( attribute.getValues() ) );
@@ -159,9 +154,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
                             }
                             else if ( element instanceof LdifRecord )
                             {
-                                for ( int a = 0; a < attributes.length; a++ )
+                                for ( IAttribute attribute : attributes )
                                 {
-                                    IAttribute attribute = attributes[a];
                                     selectionList.add( attribute );
                                     selectionList.addAll( Arrays.asList( attribute.getValues() ) );
                                 }
@@ -259,8 +253,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     }
 
 
-    /* (non-Javadoc)
-     * @see org.eclipse.ui.part.Page#dispose()
+    /**
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -317,9 +311,9 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine --> Array of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                List list = ( List ) element;
+                List<?> list = ( List<?> ) element;
                 return list.toArray();
             }
             else if ( element instanceof LdifModSpec )
@@ -345,21 +339,21 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
          */
         private Object[] getUniqueAttrValLineArray( LdifAttrValLine[] lines )
         {
-            Map uniqueAttrMap = new LinkedHashMap();
+            Map<String, List<LdifAttrValLine>> uniqueAttrMap = new LinkedHashMap<String, List<LdifAttrValLine>>();
             for ( int i = 0; i < lines.length; i++ )
             {
                 if ( !uniqueAttrMap.containsKey( lines[i].getUnfoldedAttributeDescription() ) )
                 {
-                    uniqueAttrMap.put( lines[i].getUnfoldedAttributeDescription(), new ArrayList() );
+                    uniqueAttrMap.put( lines[i].getUnfoldedAttributeDescription(), new ArrayList<LdifAttrValLine>() );
                 }
-                ( ( List ) uniqueAttrMap.get( lines[i].getUnfoldedAttributeDescription() ) ).add( lines[i] );
+                ( uniqueAttrMap.get( lines[i].getUnfoldedAttributeDescription() ) ).add( lines[i] );
             }
             return uniqueAttrMap.values().toArray();
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public Object getParent( Object element )
         {
@@ -367,8 +361,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public boolean hasChildren( Object element )
         {
@@ -376,8 +370,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public Object[] getElements( Object inputElement )
         {
@@ -385,16 +379,16 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+        /**
+         * {@inheritDoc}
          */
         public void dispose()
         {
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
         {
@@ -409,8 +403,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
      */
     private static class LdifLabelProvider extends LabelProvider
     {
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.LabelProvider#getText(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public String getText( Object element )
         {
@@ -422,9 +416,9 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                List list = ( List ) element;
+                List<?> list = ( List<?> ) element;
                 return ( ( LdifAttrValLine ) list.get( 0 ) ).getUnfoldedAttributeDescription() + " (" + list.size()
                     + ")";
             }
@@ -449,8 +443,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         }
 
 
-        /* (non-Javadoc)
-         * @see org.eclipse.jface.viewers.LabelProvider#getImage(java.lang.Object)
+        /**
+         * {@inheritDoc}
          */
         public Image getImage( Object element )
         {
@@ -477,7 +471,7 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
                 return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_ATTRIBUTE );
             }

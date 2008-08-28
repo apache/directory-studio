@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -47,38 +46,57 @@ import org.eclipse.ui.part.IShowInTargetList;
 import org.eclipse.ui.part.ShowInContext;
 
 
+/**
+ * The SearchResultEditor is an {@link IEditorPart} is used to display and edit 
+ * the attributes of the results of a search.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditor extends EditorPart implements INavigationLocationProvider, IReusableEditor,
     IPropertyChangeListener
 {
 
+    /** The configuration. */
     private SearchResultEditorConfiguration configuration;
 
+    /** The action group. */
     private SearchResultEditorActionGroup actionGroup;
 
+    /** The main widget. */
     private SearchResultEditorWidget mainWidget;
 
+    /** The universal listener. */
     private SearchResultEditorUniversalListener universalListener;
 
 
+    /**
+     * Gets the ID of the SearchResultEditor.
+     * 
+     * @return the id of the SearchResultEditor
+     */
     public static String getId()
     {
         return SearchResultEditor.class.getName();
     }
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
     public void setInput( IEditorInput input )
     {
         super.setInput( input );
-        
-        if ( input instanceof SearchResultEditorInput && this.universalListener != null )
+
+        if ( input instanceof SearchResultEditorInput && universalListener != null )
         {
             SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
             ISearch search = srei.getSearch();
-            this.universalListener.setInput( search );
+            universalListener.setInput( search );
 
             if ( search != null )
             {
-                // enable one instance hack before fireing the input change event 
+                // enable one instance hack before firing the input change event 
                 // otherwise the navigation history is cleared.
                 SearchResultEditorInput.enableOneInstanceHack( true );
                 firePropertyChange( IEditorPart.PROP_INPUT );
@@ -94,31 +112,39 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     }
 
 
+    /**
+     * Refreshes this search result editor.
+     */
     public void refresh()
     {
-        if ( this.universalListener != null )
+        if ( universalListener != null )
         {
-            this.universalListener.refreshInput();
+            universalListener.refreshInput();
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.setSite( site );
 
         // mark dummy location, necessary because the first marked
         // location doesn't appear in history
-        this.setInput( new SearchResultEditorInput( null ) );
+        setInput( new SearchResultEditorInput( null ) );
         getSite().getPage().getNavigationHistory().markLocation( this );
 
-        this.setInput( input );
+        setInput( input );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void createPartControl( Composite parent )
     {
-
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout();
@@ -132,46 +158,52 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
             BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_result_editor" );
 
         // create configuration
-        this.configuration = new SearchResultEditorConfiguration( this );
+        configuration = new SearchResultEditorConfiguration( this );
 
         // create main widget
-        this.mainWidget = new SearchResultEditorWidget( this.configuration );
-        this.mainWidget.createWidget( composite );
+        mainWidget = new SearchResultEditorWidget( configuration );
+        mainWidget.createWidget( composite );
 
         // create actions and context menu (and register global actions)
-        this.actionGroup = new SearchResultEditorActionGroup( this );
-        this.actionGroup.fillToolBar( this.mainWidget.getToolBarManager() );
-        this.actionGroup.fillMenu( this.mainWidget.getMenuManager() );
-        this.actionGroup.enableGlobalActionHandlers( getEditorSite().getActionBars() );
-        this.actionGroup.fillContextMenu( this.configuration.getContextMenuManager( this.mainWidget.getViewer() ) );
+        actionGroup = new SearchResultEditorActionGroup( this );
+        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+        actionGroup.fillMenu( mainWidget.getMenuManager() );
+        actionGroup.enableGlobalActionHandlers( getEditorSite().getActionBars() );
+        actionGroup.fillContextMenu( configuration.getContextMenuManager( mainWidget.getViewer() ) );
 
         // create the listener
-        this.universalListener = new SearchResultEditorUniversalListener( this );
-        getSite().setSelectionProvider( this.configuration.getCursor( this.mainWidget.getViewer() ) );
+        universalListener = new SearchResultEditorUniversalListener( this );
+        getSite().setSelectionProvider( configuration.getCursor( mainWidget.getViewer() ) );
         this.setInput( getEditorInput() );
 
         BrowserUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( this );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setFocus()
     {
-        this.mainWidget.setFocus();
+        mainWidget.setFocus();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
-        if ( this.configuration != null )
+        if ( configuration != null )
         {
-            this.actionGroup.dispose();
-            this.actionGroup = null;
-            this.universalListener.dispose();
-            this.universalListener = null;
-            this.mainWidget.dispose();
-            this.mainWidget = null;
-            this.configuration.dispose();
-            this.configuration = null;
+            actionGroup.dispose();
+            actionGroup = null;
+            universalListener.dispose();
+            universalListener = null;
+            mainWidget.dispose();
+            mainWidget = null;
+            configuration.dispose();
+            configuration = null;
             getSite().setSelectionProvider( null );
             BrowserUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener( this );
         }
@@ -180,40 +212,61 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSave( IProgressMonitor monitor )
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void doSaveAs()
     {
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isDirty()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean isSaveAsAllowed()
     {
         return false;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public INavigationLocation createEmptyNavigationLocation()
     {
         return null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public INavigationLocation createNavigationLocation()
     {
         return new SearchResultEditorNavigationLocation( this );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public Object getAdapter( Class required )
     {
 
@@ -245,36 +298,56 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     }
 
 
+    /**
+     * Gets the action group.
+     * 
+     * @return the action group
+     */
     public SearchResultEditorActionGroup getActionGroup()
     {
         return actionGroup;
     }
 
 
+    /**
+     * Gets the configuration.
+     * 
+     * @return the configuration
+     */
     public SearchResultEditorConfiguration getConfiguration()
     {
         return configuration;
     }
 
 
+    /**
+     * Gets the main widget.
+     * 
+     * @return the main widget
+     */
     public SearchResultEditorWidget getMainWidget()
     {
         return mainWidget;
     }
 
 
+    /**
+     * Gets the universal listener.
+     * 
+     * @return the universal listener
+     */
     public SearchResultEditorUniversalListener getUniversalListener()
     {
         return universalListener;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void propertyChange( PropertyChangeEvent event )
     {
-        // if(this.mainWidget.getViewer() != null) {
-        // this.mainWidget.getViewer().refresh();
-        // }
-        this.refresh();
+        refresh();
     }
 
 }

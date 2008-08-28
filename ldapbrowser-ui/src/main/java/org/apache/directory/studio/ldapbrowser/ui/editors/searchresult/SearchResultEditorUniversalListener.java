@@ -21,12 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
-/**
- * The SearchResultEditorUniversalListener manages all events for the search result editor.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
- */
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
@@ -79,6 +73,12 @@ import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
 
+/**
+ * The SearchResultEditorUniversalListener manages all events for the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorUniversalListener implements SearchUpdateListener, EntryUpdateListener
 {
 
@@ -168,8 +168,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             {
                 IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                     IContextService.class );
-                contextActivation = contextService
-                    .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
+                contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
 
                 editor.getActionGroup().activateGlobalActionHandlers();
             }
@@ -540,12 +539,11 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
      */
     public void entryUpdated( EntryModificationEvent event )
     {
-
         if ( event instanceof EmptyValueAddedEvent && !editor.getActionGroup().isEditorActive() )
         {
             EmptyValueAddedEvent evae = ( EmptyValueAddedEvent ) event;
             IAttribute att = evae.getAddedValue().getAttribute();
-            AttributeHierarchy ah = cursor.getSelectedAttributeHierarchie();
+            AttributeHierarchy ah = cursor.getSelectedAttributeHierarchy();
             if ( ah != null && ah.contains( att ) )
             {
                 viewer.setSelection( null, true );
@@ -583,7 +581,6 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
      */
     void refreshInput()
     {
-
         // create at least on column
         ensureColumnCount( 1 );
 
@@ -703,7 +700,6 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
      */
     private void checkDnLink( TableItem item )
     {
-
         if ( dnLink == null || dnLink.isDisposed() || tableEditor == null || viewer.getTable().isDisposed()
             || cursor.isDisposed() )
         {

@@ -26,8 +26,8 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryE
 
 
 /**
- * The BrowserConfiguration contains the content provider, 
- * label provider, sorter, filter the context menu manager and the
+ * The EntryEditorConfiguration contains the content provider, 
+ * label provider, sorter, filter, the context menu manager and the
  * preferences for the entry editor. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

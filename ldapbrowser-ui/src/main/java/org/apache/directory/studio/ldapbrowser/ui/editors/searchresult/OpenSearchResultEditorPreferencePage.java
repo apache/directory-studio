@@ -28,9 +28,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
+/**
+ * This action opens the preference page of the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class OpenSearchResultEditorPreferencePage extends Action
 {
 
+    /**
+     * Creates a new instance of OpenSearchResultEditorPreferencePage.
+     */
     public OpenSearchResultEditorPreferencePage()
     {
         super.setText( "Preferences..." );
@@ -39,6 +48,9 @@ public class OpenSearchResultEditorPreferencePage extends Action
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
         Shell shell = Display.getCurrent().getActiveShell();
@@ -46,11 +58,6 @@ public class OpenSearchResultEditorPreferencePage extends Action
         String attPageId = BrowserUIConstants.PREFERENCEPAGEID_ATTRIBUTES;
         PreferencesUtil.createPreferenceDialogOn( shell, srePageId, new String[]
             { srePageId, attPageId }, null ).open();
-    }
-
-
-    public void dispose()
-    {
     }
 
 }

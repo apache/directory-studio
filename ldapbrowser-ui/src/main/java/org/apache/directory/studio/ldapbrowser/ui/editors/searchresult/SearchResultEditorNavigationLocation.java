@@ -153,7 +153,6 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
      */
     private ISearch getSearch()
     {
-
         Object editorInput = getInput();
         if ( editorInput != null && editorInput instanceof SearchResultEditorInput )
         {

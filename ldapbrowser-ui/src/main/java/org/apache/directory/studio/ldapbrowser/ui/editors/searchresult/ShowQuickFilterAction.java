@@ -31,9 +31,11 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 public class ShowQuickFilterAction extends Action
 {
 
+    /** The Constant SHOW_QUICKFILTER_DIALOGSETTING_KEY. */
     public static final String SHOW_QUICKFILTER_DIALOGSETTING_KEY = ShowQuickFilterAction.class.getName()
         + ".showQuickFilter";
 
+    /** The quick filter widget. */
     private SearchResultEditorQuickFilterWidget quickFilterWidget;
 
 
@@ -41,7 +43,8 @@ public class ShowQuickFilterAction extends Action
     {
         super( "Show Quick Filter", AS_CHECK_BOX );
         super.setToolTipText( "Show Quick Filter" );
-        super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_FILTER ) );
+        super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_FILTER ) );
         super.setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );
         super.setEnabled( true );
 
@@ -53,40 +56,43 @@ public class ShowQuickFilterAction extends Action
         }
         super.setChecked( BrowserUIPlugin.getDefault().getDialogSettings().getBoolean(
             SHOW_QUICKFILTER_DIALOGSETTING_KEY ) );
-        this.quickFilterWidget.setActive( super.isChecked() );
+        quickFilterWidget.setActive( isChecked() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void run()
     {
-
-        boolean checked = super.isChecked();
+        boolean checked = isChecked();
         super.setChecked( !checked );
 
-        BrowserUIPlugin.getDefault().getDialogSettings().put( SHOW_QUICKFILTER_DIALOGSETTING_KEY, super.isChecked() );
+        BrowserUIPlugin.getDefault().getDialogSettings().put( SHOW_QUICKFILTER_DIALOGSETTING_KEY, isChecked() );
 
-        if ( this.quickFilterWidget != null )
+        if ( quickFilterWidget != null )
         {
-            this.quickFilterWidget.setActive( super.isChecked() );
+            quickFilterWidget.setActive( isChecked() );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation does nothing. Toggling of the checked state is done within the run() method.
+     */
     public void setChecked( boolean checked )
     {
-        // super.setChecked(checked);
     }
 
 
-    public boolean isChecked()
-    {
-        return super.isChecked();
-    }
-
-
+    /**
+     * Disposes this action.
+     */
     public void dispose()
     {
-        this.quickFilterWidget = null;
+        quickFilterWidget = null;
     }
 
 }

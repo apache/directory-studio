@@ -40,6 +40,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 public class OpenEntryEditorAction extends AbstractOpenEditorAction
 {
 
+    /** The value editor. */
     private IValueEditor valueEditor;
 
 

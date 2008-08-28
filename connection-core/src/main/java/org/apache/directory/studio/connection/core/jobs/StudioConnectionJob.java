@@ -117,7 +117,6 @@ public class StudioConnectionJob extends Job
                 }
                 else
                 {
-                    System.out.println( "NoBulk: " + runnable );
                     runnable.run( monitor );
                 }
 

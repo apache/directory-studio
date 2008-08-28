@@ -25,18 +25,25 @@ import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
+/**
+ * Special delete action to avoid the deletion of the whole entry.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultDeleteAction extends DeleteAction
 {
 
-    public SearchResultDeleteAction()
-    {
-        super();
-    }
+    private static IEntry[] EMPTY = new IEntry[0];
 
 
-    protected IEntry[] getEntries() throws Exception
+    /**
+     * Takes care that not the whole selected entry is deleted, but only
+     * the selected attribute.
+     */
+    protected IEntry[] getEntries()
     {
-        return new IEntry[0];
+        return EMPTY;
     }
 
 }

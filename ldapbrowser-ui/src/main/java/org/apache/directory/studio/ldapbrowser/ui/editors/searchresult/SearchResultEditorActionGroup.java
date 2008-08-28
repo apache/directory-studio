@@ -65,17 +65,28 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ContributionItemFactory;
 
 
+/**
+ * The SearchResultEditorActionGroup manages all actions of the search result editor.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorActionGroup implements ActionHandlerManager, IMenuListener
 {
 
+    /** The show DN action. */
     private ShowDNAction showDNAction;
 
+    /** The show links action. */
     private ShowLinksAction showLinksAction;
 
+    /** The show raw values action. */
     private ShowRawValuesAction showRawValuesAction;
 
+    /** The open search result editor preference page. */
     private OpenSearchResultEditorPreferencePage openSearchResultEditorPreferencePage;
 
+    /** The show quick filter action. */
     private ShowQuickFilterAction showQuickFilterAction;
 
     /** The open default editor action. */
@@ -89,7 +100,8 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
 
     /** The open entry value editor action. */
     private SearchResultEditorActionProxy openEntryValueEditorActionProxy;
-    
+
+    /** The open value editor preferences action. */
     private ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
     private static final String copyTableAction = "copyTableAction";
@@ -148,28 +160,35 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
 
     private final static String propertyDialogAction = "propertyDialogAction";
 
-    private Map searchResultEditorActionMap;
+    /** The search result editor action map. */
+    private Map<String, SearchResultEditorActionProxy> searchResultEditorActionMap;
 
+    /** The action bars. */
     private IActionBars actionBars;
 
+    /** The search result editor. */
     private SearchResultEditor searchResultEditor;
 
 
+    /**
+     * Creates a new instance of SearchResultEditorActionGroup.
+     * 
+     * @param searchResultEditor the search result editor
+     */
     public SearchResultEditorActionGroup( SearchResultEditor searchResultEditor )
     {
         this.searchResultEditor = searchResultEditor;
-        this.searchResultEditorActionMap = new HashMap();
+        searchResultEditorActionMap = new HashMap<String, SearchResultEditorActionProxy>();
 
         TableViewer viewer = searchResultEditor.getMainWidget().getViewer();
         SearchResultEditorCursor cursor = searchResultEditor.getConfiguration().getCursor( viewer );
         ValueEditorManager valueEditorManager = searchResultEditor.getConfiguration().getValueEditorManager( viewer );
 
-        this.showDNAction = new ShowDNAction();
-        this.showLinksAction = new ShowLinksAction();
-        this.showRawValuesAction = new ShowRawValuesAction();
-        this.openSearchResultEditorPreferencePage = new OpenSearchResultEditorPreferencePage();
-        this.showQuickFilterAction = new ShowQuickFilterAction( searchResultEditor.getMainWidget()
-            .getQuickFilterWidget() );
+        showDNAction = new ShowDNAction();
+        showLinksAction = new ShowLinksAction();
+        showRawValuesAction = new ShowRawValuesAction();
+        openSearchResultEditorPreferencePage = new OpenSearchResultEditorPreferencePage();
+        showQuickFilterAction = new ShowQuickFilterAction( searchResultEditor.getMainWidget().getQuickFilterWidget() );
 
         openBestValueEditorActionProxy = new SearchResultEditorActionProxy( cursor, new OpenBestEditorAction( viewer,
             cursor, valueEditorManager, this ) );
@@ -185,87 +204,88 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         }
         openEntryValueEditorActionProxy = new SearchResultEditorActionProxy( cursor, new OpenEntryEditorAction( viewer,
             cursor, valueEditorManager, valueEditorManager.getEntryValueEditor(), this ) );
-        this.openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
+        openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
-        this.searchResultEditorActionMap.put( copyTableAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyTableAction, new SearchResultEditorActionProxy( cursor,
             new CopyEntryAsCsvAction( CopyEntryAsCsvAction.MODE_TABLE ) ) );
-        this.searchResultEditorActionMap.put( refreshSearchAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( refreshSearchAction, new SearchResultEditorActionProxy( cursor,
             new RefreshAction() ) );
 
-        this.searchResultEditorActionMap.put( newValueAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( newValueAction, new SearchResultEditorActionProxy( cursor,
             new NewValueAction() ) );
-        this.searchResultEditorActionMap.put( newSearchAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( newSearchAction, new SearchResultEditorActionProxy( cursor,
             new NewSearchAction() ) );
-        this.searchResultEditorActionMap.put( newBatchOperationAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( newBatchOperationAction, new SearchResultEditorActionProxy( cursor,
             new NewBatchOperationAction() ) );
 
-        this.searchResultEditorActionMap.put( locateDnInDitAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( locateDnInDitAction, new SearchResultEditorActionProxy( cursor,
             new LocateDnInDitAction() ) );
-        this.searchResultEditorActionMap.put( openSearchResultAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( openSearchResultAction, new SearchResultEditorActionProxy( cursor,
             new OpenSearchResultAction() ) );
 
-        this.searchResultEditorActionMap.put( showOcdAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( showOcdAction, new SearchResultEditorActionProxy( cursor,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_OBJECTCLASS ) ) );
-        this.searchResultEditorActionMap.put( showAtdAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( showAtdAction, new SearchResultEditorActionProxy( cursor,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ATTRIBUTETYPE ) ) );
-        this.searchResultEditorActionMap.put( showEqualityMrdAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( showEqualityMrdAction, new SearchResultEditorActionProxy( cursor,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_EQUALITYMATCHINGRULE ) ) );
-        this.searchResultEditorActionMap.put( showSubstringMrdAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( showSubstringMrdAction, new SearchResultEditorActionProxy( cursor,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SUBSTRINGMATCHINGRULE ) ) );
-        this.searchResultEditorActionMap.put( showOrderingMrdAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( showOrderingMrdAction, new SearchResultEditorActionProxy( cursor,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_ORDERINGMATCHINGRULE ) ) );
-        this.searchResultEditorActionMap.put( showLsdAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( showLsdAction, new SearchResultEditorActionProxy( cursor,
             new OpenSchemaBrowserAction( OpenSchemaBrowserAction.MODE_SYNTAX ) ) );
 
-        this.searchResultEditorActionMap.put( pasteAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( pasteAction, new SearchResultEditorActionProxy( cursor,
             new SearchResultEditorPasteAction() ) );
-        this.searchResultEditorActionMap.put( copyAction, new SearchResultEditorActionProxy( cursor, new CopyAction(
+        searchResultEditorActionMap.put( copyAction, new SearchResultEditorActionProxy( cursor, new CopyAction(
             ( BrowserActionProxy ) this.searchResultEditorActionMap.get( pasteAction ) ) ) );
-        this.searchResultEditorActionMap.put( deleteAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( deleteAction, new SearchResultEditorActionProxy( cursor,
             new SearchResultDeleteAction() ) );
 
-        this.searchResultEditorActionMap.put( copyDnAction, new SearchResultEditorActionProxy( cursor,
-            new CopyDnAction() ) );
-        this.searchResultEditorActionMap.put( copyUrlAction, new SearchResultEditorActionProxy( cursor,
-            new CopyUrlAction() ) );
-        this.searchResultEditorActionMap.put( copyAttriuteDescriptionAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyDnAction, new SearchResultEditorActionProxy( cursor, new CopyDnAction() ) );
+        searchResultEditorActionMap
+            .put( copyUrlAction, new SearchResultEditorActionProxy( cursor, new CopyUrlAction() ) );
+        searchResultEditorActionMap.put( copyAttriuteDescriptionAction, new SearchResultEditorActionProxy( cursor,
             new CopyAttributeDescriptionAction() ) );
-        this.searchResultEditorActionMap.put( copyValueUtf8Action, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyValueUtf8Action, new SearchResultEditorActionProxy( cursor,
             new CopyValueAction( CopyValueAction.MODE_UTF8 ) ) );
-        this.searchResultEditorActionMap.put( copyValueBase64Action, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyValueBase64Action, new SearchResultEditorActionProxy( cursor,
             new CopyValueAction( CopyValueAction.MODE_BASE64 ) ) );
-        this.searchResultEditorActionMap.put( copyValueHexAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyValueHexAction, new SearchResultEditorActionProxy( cursor,
             new CopyValueAction( CopyValueAction.MODE_HEX ) ) );
-        this.searchResultEditorActionMap.put( copyValueAsLdifAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyValueAsLdifAction, new SearchResultEditorActionProxy( cursor,
             new CopyValueAction( CopyValueAction.MODE_LDIF ) ) );
 
-        this.searchResultEditorActionMap.put( copySearchFilterAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copySearchFilterAction, new SearchResultEditorActionProxy( cursor,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_EQUALS ) ) );
-        this.searchResultEditorActionMap.put( copyNotSearchFilterAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyNotSearchFilterAction, new SearchResultEditorActionProxy( cursor,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_NOT ) ) );
-        this.searchResultEditorActionMap.put( copyAndSearchFilterAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyAndSearchFilterAction, new SearchResultEditorActionProxy( cursor,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_AND ) ) );
-        this.searchResultEditorActionMap.put( copyOrSearchFilterAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( copyOrSearchFilterAction, new SearchResultEditorActionProxy( cursor,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_OR ) ) );
 
-        this.searchResultEditorActionMap.put( propertyDialogAction, new SearchResultEditorActionProxy( cursor,
+        searchResultEditorActionMap.put( propertyDialogAction, new SearchResultEditorActionProxy( cursor,
             new PropertiesAction() ) );
     }
 
 
+    /**
+     * Disposes this action group.
+     */
     public void dispose()
     {
-
-        if ( this.searchResultEditor != null )
+        if ( searchResultEditor != null )
         {
-            this.showRawValuesAction = null;
-            this.showDNAction.dispose();
-            this.showDNAction = null;
-            this.showLinksAction.dispose();
-            this.showLinksAction = null;
-            this.openSearchResultEditorPreferencePage = null;
-            this.showQuickFilterAction.dispose();
-            this.showQuickFilterAction = null;
+            showRawValuesAction = null;
+            showDNAction.dispose();
+            showDNAction = null;
+            showLinksAction.dispose();
+            showLinksAction = null;
+            openSearchResultEditorPreferencePage = null;
+            showQuickFilterAction.dispose();
+            showQuickFilterAction = null;
 
             openDefaultValueEditorActionProxy.dispose();
             openDefaultValueEditorActionProxy = null;
@@ -280,47 +300,56 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             openEntryValueEditorActionProxy = null;
             openValueEditorPreferencesAction = null;
 
-            for ( Iterator it = this.searchResultEditorActionMap.keySet().iterator(); it.hasNext(); )
+            for ( Iterator<String> it = this.searchResultEditorActionMap.keySet().iterator(); it.hasNext(); )
             {
-                String key = ( String ) it.next();
-                SearchResultEditorActionProxy action = ( SearchResultEditorActionProxy ) this.searchResultEditorActionMap
-                    .get( key );
+                String key = it.next();
+                SearchResultEditorActionProxy action = searchResultEditorActionMap.get( key );
                 action.dispose();
                 action = null;
                 it.remove();
             }
-            this.searchResultEditorActionMap.clear();
-            this.searchResultEditorActionMap = null;
+            searchResultEditorActionMap.clear();
+            searchResultEditorActionMap = null;
 
-            this.actionBars = null;
-            this.searchResultEditor = null;
+            actionBars = null;
+            searchResultEditor = null;
         }
     }
 
 
+    /**
+     * Fills the tool bar.
+     * 
+     * @param toolBarManager the tool bar manager
+     */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.searchResultEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( searchResultEditorActionMap.get( newValueAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.searchResultEditorActionMap.get( deleteAction ) );
+        toolBarManager.add( searchResultEditorActionMap.get( deleteAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.searchResultEditorActionMap.get( refreshSearchAction ) );
+        toolBarManager.add( searchResultEditorActionMap.get( refreshSearchAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyTableAction ) );
+        toolBarManager.add( searchResultEditorActionMap.get( copyTableAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( this.showQuickFilterAction );
+        toolBarManager.add( showQuickFilterAction );
         toolBarManager.update( true );
     }
 
 
+    /**
+     * Fills the menu.
+     * 
+     * @param menuManager the menu manager
+     */
     public void fillMenu( IMenuManager menuManager )
     {
-        menuManager.add( this.showDNAction );
-        menuManager.add( this.showLinksAction );
-        menuManager.add( this.showRawValuesAction );
+        menuManager.add( showDNAction );
+        menuManager.add( showLinksAction );
+        menuManager.add( showRawValuesAction );
         menuManager.add( new Separator() );
-        menuManager.add( this.openSearchResultEditorPreferencePage );
+        menuManager.add( openSearchResultEditorPreferencePage );
         menuManager.addMenuListener( new IMenuListener()
         {
             public void menuAboutToShow( IMenuManager manager )
@@ -333,13 +362,22 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     }
 
 
+    /**
+     * Enable global action handlers.
+     * 
+     * @param actionBars the action bars
+     */
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-//        this.activateGlobalActionHandlers();
     }
 
 
+    /**
+     * Fills the context menu.
+     * 
+     * @param menuManager the menu manager
+     */
     public void fillContextMenu( IMenuManager menuManager )
     {
         menuManager.setRemoveAllWhenShown( true );
@@ -347,24 +385,27 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void menuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( newValueAction ) );
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( newSearchAction ) );
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( newBatchOperationAction ) );
+        menuManager.add( searchResultEditorActionMap.get( newValueAction ) );
+        menuManager.add( searchResultEditorActionMap.get( newSearchAction ) );
+        menuManager.add( searchResultEditorActionMap.get( newBatchOperationAction ) );
         menuManager.add( new Separator() );
 
         // navigation
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction ) );
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction ) );
+        menuManager.add( searchResultEditorActionMap.get( locateDnInDitAction ) );
+        menuManager.add( searchResultEditorActionMap.get( openSearchResultAction ) );
         MenuManager schemaMenuManager = new MenuManager( "Open Schema Browser" );
-        schemaMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( showOcdAction ) );
-        schemaMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( showAtdAction ) );
-        schemaMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( showEqualityMrdAction ) );
-        schemaMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( showSubstringMrdAction ) );
-        schemaMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( showOrderingMrdAction ) );
-        schemaMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( showLsdAction ) );
+        schemaMenuManager.add( searchResultEditorActionMap.get( showOcdAction ) );
+        schemaMenuManager.add( searchResultEditorActionMap.get( showAtdAction ) );
+        schemaMenuManager.add( searchResultEditorActionMap.get( showEqualityMrdAction ) );
+        schemaMenuManager.add( searchResultEditorActionMap.get( showSubstringMrdAction ) );
+        schemaMenuManager.add( searchResultEditorActionMap.get( showOrderingMrdAction ) );
+        schemaMenuManager.add( searchResultEditorActionMap.get( showLsdAction ) );
         menuManager.add( schemaMenuManager );
         MenuManager showInSubMenu = new MenuManager( "Show In" );
         showInSubMenu.add( ContributionItemFactory.VIEWS_SHOW_IN.create( PlatformUI.getWorkbench()
@@ -373,25 +414,25 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( deleteAction ) );
+        menuManager.add( searchResultEditorActionMap.get( copyAction ) );
+        menuManager.add( searchResultEditorActionMap.get( pasteAction ) );
+        menuManager.add( searchResultEditorActionMap.get( deleteAction ) );
         MenuManager advancedMenuManager = new MenuManager( "Advanced" );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyDnAction ) );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyUrlAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyDnAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyUrlAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyAttriuteDescriptionAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyAttriuteDescriptionAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyValueUtf8Action ) );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyValueBase64Action ) );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyValueHexAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyValueUtf8Action ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyValueBase64Action ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyValueHexAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyValueAsLdifAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyValueAsLdifAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copySearchFilterAction ) );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyNotSearchFilterAction ) );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyAndSearchFilterAction ) );
-        advancedMenuManager.add( ( IAction ) this.searchResultEditorActionMap.get( copyOrSearchFilterAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copySearchFilterAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyNotSearchFilterAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyAndSearchFilterAction ) );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyOrSearchFilterAction ) );
         menuManager.add( advancedMenuManager );
         menuManager.add( new Separator() );
 
@@ -413,55 +454,61 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             }
         }
         editorMenuManager.add( new Separator() );
-        editorMenuManager.add( this.openValueEditorPreferencesAction );
+        editorMenuManager.add( openValueEditorPreferencesAction );
         menuManager.add( editorMenuManager );
         menuManager.add( openEntryValueEditorActionProxy );
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( refreshSearchAction ) );
+        menuManager.add( searchResultEditorActionMap.get( refreshSearchAction ) );
         menuManager.add( new Separator() );
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
 
         // / properties
-        menuManager.add( ( IAction ) this.searchResultEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( searchResultEditorActionMap.get( propertyDialogAction ) );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void activateGlobalActionHandlers()
     {
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) this.searchResultEditorActionMap
-                .get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(),
-                ( IAction ) this.searchResultEditorActionMap.get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(),
-                ( IAction ) this.searchResultEditorActionMap.get( deleteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(),
-                ( IAction ) this.searchResultEditorActionMap.get( refreshSearchAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(),
-                ( IAction ) this.searchResultEditorActionMap.get( propertyDialogAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), this.showQuickFilterAction );
+            actionBars
+                .setGlobalActionHandler( ActionFactory.COPY.getId(), searchResultEditorActionMap.get( copyAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), searchResultEditorActionMap
+                .get( pasteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), searchResultEditorActionMap
+                .get( deleteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), searchResultEditorActionMap
+                .get( refreshSearchAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), searchResultEditorActionMap
+                .get( propertyDialogAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickFilterAction );
             actionBars.updateActionBars();
         }
 
-        IAction nva = ( IAction ) this.searchResultEditorActionMap.get( newValueAction );
+        IAction nva = searchResultEditorActionMap.get( newValueAction );
         ActionUtils.activateActionHandler( nva );
-        IAction lid = ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction );
+        IAction lid = searchResultEditorActionMap.get( locateDnInDitAction );
         ActionUtils.activateActionHandler( lid );
-        IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
+        IAction osr = searchResultEditorActionMap.get( openSearchResultAction );
         ActionUtils.activateActionHandler( osr );
         ActionUtils.activateActionHandler( openDefaultValueEditorActionProxy );
         ActionUtils.activateActionHandler( openEntryValueEditorActionProxy );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void deactivateGlobalActionHandlers()
     {
-        if ( this.actionBars != null )
+        if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), null );
             actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), null );
@@ -472,33 +519,47 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             actionBars.updateActionBars();
         }
 
-        IAction nva = ( IAction ) this.searchResultEditorActionMap.get( newValueAction );
+        IAction nva = searchResultEditorActionMap.get( newValueAction );
         ActionUtils.deactivateActionHandler( nva );
-        IAction lid = ( IAction ) this.searchResultEditorActionMap.get( locateDnInDitAction );
+        IAction lid = searchResultEditorActionMap.get( locateDnInDitAction );
         ActionUtils.deactivateActionHandler( lid );
-        IAction osr = ( IAction ) this.searchResultEditorActionMap.get( openSearchResultAction );
+        IAction osr = searchResultEditorActionMap.get( openSearchResultAction );
         ActionUtils.deactivateActionHandler( osr );
         ActionUtils.deactivateActionHandler( openDefaultValueEditorActionProxy );
         ActionUtils.deactivateActionHandler( openEntryValueEditorActionProxy );
     }
 
 
+    /**
+     * Gets the open best editor action.
+     * 
+     * @return the open best editor action
+     */
     public OpenBestEditorAction getOpenBestEditorAction()
     {
         return ( OpenBestEditorAction ) openBestValueEditorActionProxy.getAction();
     }
 
 
+    /**
+     * Sets the input.
+     * 
+     * @param search the new input
+     */
     public void setInput( ISearch search )
     {
-        for ( Iterator it = this.searchResultEditorActionMap.values().iterator(); it.hasNext(); )
+        for ( SearchResultEditorActionProxy action : searchResultEditorActionMap.values() )
         {
-            SearchResultEditorActionProxy action = ( SearchResultEditorActionProxy ) it.next();
             action.inputChanged( search );
         }
     }
 
 
+    /**
+     * Checks if is editor active.
+     * 
+     * @return true, if is editor active
+     */
     public boolean isEditorActive()
     {
         if ( ( ( AbstractOpenEditorAction ) openDefaultValueEditorActionProxy.getAction() ).isActive() )

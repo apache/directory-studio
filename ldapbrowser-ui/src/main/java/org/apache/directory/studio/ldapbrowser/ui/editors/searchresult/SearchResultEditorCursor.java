@@ -48,16 +48,32 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Display;
 
 
+/**
+ * The cursor implementation for the search result editor.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class SearchResultEditorCursor extends TableCursor implements ISelectionProvider, EntryUpdateListener
 {
 
+    /** The viewer. */
     private TableViewer viewer;
 
+    /** The selection changes listener list. */
+    private List<ISelectionChangedListener> selectionChangesListenerList;
 
+
+    /**
+     * Creates a new instance of SearchResultEditorCursor.
+     * 
+     * @param viewer the viewer
+     */
     public SearchResultEditorCursor( TableViewer viewer )
     {
         super( viewer.getTable(), SWT.NONE );
         this.viewer = viewer;
+        this.selectionChangesListenerList = new ArrayList<ISelectionChangedListener>();
 
         setBackground( Display.getDefault().getSystemColor( SWT.COLOR_LIST_SELECTION ) );
         setForeground( Display.getDefault().getSystemColor( SWT.COLOR_LIST_SELECTION_TEXT ) );
@@ -69,9 +85,12 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
     }
 
 
+    /**
+     * Initializes the selection checker.
+     */
     private void initSelectionChecker()
     {
-        this.addSelectionListener( new SelectionListener()
+        addSelectionListener( new SelectionListener()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -97,19 +116,16 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
     }
 
 
-    public boolean setFocus()
-    {
-        return super.setFocus();
-    }
-
-
+    /**
+     * Initializes the selection provider.
+     */
     private void initSelectionProvider()
     {
-        this.addSelectionListener( new SelectionAdapter()
+        addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                for ( Iterator it = selectionChangesListenerList.iterator(); it.hasNext(); )
+                for ( Iterator<?> it = selectionChangesListenerList.iterator(); it.hasNext(); )
                 {
                     ( ( ISelectionChangedListener ) it.next() ).selectionChanged( new SelectionChangedEvent(
                         SearchResultEditorCursor.this, getSelection() ) );
@@ -119,42 +135,65 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean setFocus()
+    {
+        return super.setFocus();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void dispose()
     {
         EventRegistry.removeEntryUpdateListener( this );
-        this.viewer = null;
+        viewer = null;
         super.dispose();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void entryUpdated( EntryModificationEvent event )
     {
-        this.viewer.refresh();
-        this.redraw();
+        viewer.refresh();
+        redraw();
     }
 
 
+    /**
+     * Gets the selected property.
+     * 
+     * @return the selected property
+     */
     public String getSelectedProperty()
     {
-        if ( !this.isDisposed() && this.getRow() != null && this.viewer != null
-            && this.viewer.getColumnProperties() != null
-            && this.viewer.getColumnProperties().length >= this.getColumn() + 1 )
+        if ( !isDisposed() && getRow() != null && viewer != null && viewer.getColumnProperties() != null
+            && viewer.getColumnProperties().length >= getColumn() + 1 )
         {
-            String property = ( String ) this.viewer.getColumnProperties()[this.getColumn()];
+            String property = ( String ) viewer.getColumnProperties()[getColumn()];
             return property;
         }
         return null;
     }
 
 
-    public AttributeHierarchy getSelectedAttributeHierarchie()
+    /**
+     * Gets the selected attribute hierarchy.
+     * 
+     * @return the selected attribute hierarchy
+     */
+    public AttributeHierarchy getSelectedAttributeHierarchy()
     {
-        if ( !this.isDisposed() && this.getRow() != null && this.viewer != null
-            && this.viewer.getColumnProperties() != null
-            && this.viewer.getColumnProperties().length >= this.getColumn() + 1 )
+        if ( !isDisposed() && getRow() != null && viewer != null && viewer.getColumnProperties() != null
+            && viewer.getColumnProperties().length >= getColumn() + 1 )
         {
-            Object o = this.getRow().getData();
-            String property = ( String ) this.viewer.getColumnProperties()[this.getColumn()];
+            Object o = getRow().getData();
+            String property = ( String ) viewer.getColumnProperties()[getColumn()];
             if ( o instanceof ISearchResult && !BrowserUIConstants.DN.equals( property ) )
             {
                 ISearchResult sr = ( ISearchResult ) o;
@@ -173,11 +212,16 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
     }
 
 
+    /**
+     * Gets the selected search result.
+     * 
+     * @return the selected search result
+     */
     public ISearchResult getSelectedSearchResult()
     {
-        if ( !this.isDisposed() && this.getRow() != null )
+        if ( !isDisposed() && getRow() != null )
         {
-            Object o = this.getRow().getData();
+            Object o = getRow().getData();
             if ( o instanceof ISearchResult )
             {
                 return ( ISearchResult ) o;
@@ -186,51 +230,61 @@ public class SearchResultEditorCursor extends TableCursor implements ISelectionP
         return null;
     }
 
-    private List selectionChangesListenerList = new ArrayList();
 
-
+    /**
+     * {@inheritDoc}
+     */
     public void addSelectionChangedListener( ISelectionChangedListener listener )
     {
-        if ( !this.selectionChangesListenerList.contains( listener ) )
+        if ( !selectionChangesListenerList.contains( listener ) )
         {
-            this.selectionChangesListenerList.add( listener );
+            selectionChangesListenerList.add( listener );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ISelection getSelection()
     {
-        ISearchResult searchResult = this.getSelectedSearchResult();
-        AttributeHierarchy ah = this.getSelectedAttributeHierarchie();
-        String property = this.getSelectedProperty();
-        // String attributeName = this.getSelectedAttributeName();
+        ISearchResult searchResult = getSelectedSearchResult();
+        AttributeHierarchy ah = getSelectedAttributeHierarchy();
+        String property = getSelectedProperty();
 
-        // System.out.println(attributes.length);
-
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<Object>();
         if ( searchResult != null )
+        {
             list.add( searchResult );
+        }
         if ( ah != null )
+        {
             list.add( ah );
+        }
         if ( property != null )
         {
             list.add( property );
         }
-        // if(attributeName != null) list.add(attributeName);
 
         return new StructuredSelection( list );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void removeSelectionChangedListener( ISelectionChangedListener listener )
     {
-        if ( this.selectionChangesListenerList.contains( listener ) )
+        if ( selectionChangesListenerList.contains( listener ) )
         {
-            this.selectionChangesListenerList.remove( listener );
+            selectionChangesListenerList.remove( listener );
         }
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setSelection( ISelection selection )
     {
     }
