@@ -21,13 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.connection.core.Utils;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -38,16 +37,28 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * This page shows some info about the selected Bookmark.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
+    /** The bookmark. */
     private IBookmark bookmark;
 
+    /** The bookmark name text. */
     private Text bookmarkNameText;
 
+    /** The bookmark entry widget. */
     private EntryWidget bookmarkEntryWidget;
 
 
+    /**
+     * Creates a new instance of BookmarkPropertyPage.
+     */
     public BookmarkPropertyPage()
     {
         super();
@@ -55,32 +66,28 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
     }
 
 
-    public void dispose()
-    {
-        super.dispose();
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
 
         if ( getElement() instanceof IAdaptable )
         {
-            this.bookmark = ( IBookmark ) ( ( IAdaptable ) getElement() ).getAdapter( IBookmark.class );
+            bookmark = ( IBookmark ) ( ( IAdaptable ) getElement() ).getAdapter( IBookmark.class );
             super.setMessage( "Bookmark " + Utils.shorten( bookmark.getName(), 30 ) );
         }
         else
         {
-            this.bookmark = null;
+            bookmark = null;
         }
 
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         BaseWidgetUtils.createLabel( innerComposite, "Bookmark Name:", 1 );
-        this.bookmarkNameText = BaseWidgetUtils.createText( innerComposite, this.bookmark != null ? this.bookmark
-            .getName() : "", 2 );
-        this.bookmarkNameText.setFocus();
-        this.bookmarkNameText.addModifyListener( new ModifyListener()
+        bookmarkNameText = BaseWidgetUtils.createText( innerComposite, bookmark != null ? bookmark.getName() : "", 2 );
+        bookmarkNameText.setFocus();
+        bookmarkNameText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
             {
@@ -89,13 +96,13 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
         } );
 
         BaseWidgetUtils.createLabel( innerComposite, "Bookmark DN:", 1 );
-        this.bookmarkEntryWidget = new EntryWidget();
-        this.bookmarkEntryWidget.createWidget( innerComposite );
-        if ( this.bookmark != null )
+        bookmarkEntryWidget = new EntryWidget();
+        bookmarkEntryWidget.createWidget( innerComposite );
+        if ( bookmark != null )
         {
-            this.bookmarkEntryWidget.setInput( this.bookmark.getBrowserConnection(), this.bookmark.getDn() );
+            bookmarkEntryWidget.setInput( bookmark.getBrowserConnection(), bookmark.getDn() );
         }
-        this.bookmarkEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
+        bookmarkEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
             public void widgetModified( WidgetModifyEvent event )
             {
@@ -107,38 +114,43 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
-        if ( this.bookmark != null )
+        if ( bookmark != null )
         {
-            this.bookmark.setName( this.bookmarkNameText.getText() );
-            this.bookmark.setDn( this.bookmarkEntryWidget.getDn() );
-            this.bookmarkEntryWidget.saveDialogSettings();
+            bookmark.setName( bookmarkNameText.getText() );
+            bookmark.setDn( bookmarkEntryWidget.getDn() );
+            bookmarkEntryWidget.saveDialogSettings();
         }
 
         return true;
     }
 
 
+    /**
+     * Validates the input fields.
+     */
     private void validate()
     {
+        setValid( bookmarkEntryWidget.getDn() != null && !"".equals( bookmarkNameText.getText() ) );
 
-        setValid( this.bookmarkEntryWidget.getDn() != null && !"".equals( this.bookmarkNameText.getText() ) );
-
-        if ( this.bookmark != null )
+        if ( bookmark != null )
         {
-            if ( this.bookmarkEntryWidget.getDn() == null )
+            if ( bookmarkEntryWidget.getDn() == null )
             {
                 setValid( false );
                 setErrorMessage( "Please enter a DN." );
             }
-            else if ( "".equals( this.bookmarkNameText.getText() ) )
+            else if ( "".equals( bookmarkNameText.getText() ) )
             {
                 setValid( false );
                 setErrorMessage( "Please enter a name." );
             }
-            else if ( !bookmark.getName().equals( this.bookmarkNameText.getText() )
-                && bookmark.getBrowserConnection().getBookmarkManager().getBookmark( this.bookmarkNameText.getText() ) != null )
+            else if ( !bookmark.getName().equals( bookmarkNameText.getText() )
+                && bookmark.getBrowserConnection().getBookmarkManager().getBookmark( bookmarkNameText.getText() ) != null )
             {
                 setValid( false );
                 setErrorMessage( "A bookmark with this name already exists." );

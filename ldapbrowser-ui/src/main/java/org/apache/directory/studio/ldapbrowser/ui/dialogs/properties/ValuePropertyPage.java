@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
@@ -37,18 +36,31 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * This page shows some info about the selected Value.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
+    /** The description text. */
     private Text descriptionText;
 
+    /** The value text. */
     private Text valueText;
 
+    /** The type text. */
     private Text typeText;
 
+    /** The size text. */
     private Text sizeText;
 
 
+    /**
+     * Creates a new instance of ValuePropertyPage.
+     */
     public ValuePropertyPage()
     {
         super();
@@ -56,9 +68,11 @@ public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropert
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         IValue value = getValue( getElement() );
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
@@ -110,6 +124,13 @@ public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropert
     }
 
 
+    /**
+     * Gets the value.
+     * 
+     * @param element the element
+     * 
+     * @return the value
+     */
     private static IValue getValue( Object element )
     {
         IValue value = null;

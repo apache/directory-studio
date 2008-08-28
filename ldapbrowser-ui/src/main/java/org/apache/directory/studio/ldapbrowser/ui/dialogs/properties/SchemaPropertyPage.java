@@ -46,7 +46,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 
 /**
- * Property page to shows some meta information of the schema an the 
+ * Property page to shows some meta information of the schema and the 
  * schema cache. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

@@ -44,7 +44,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 
 /**
- * This page shows some info of the Root DSE.
+ * This page shows some info about the Root DSE.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

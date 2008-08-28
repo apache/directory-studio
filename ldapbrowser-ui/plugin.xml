@@ -278,12 +278,6 @@
         name="%PropPage_Entry_name"
         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider">
   </page>            
-		<page
-        category="%PropPage_Entry_id"
-        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SubSchemaPropertyPage"
-        id="%PropPage_Subschema_id"
-        name="%PropPage_Subschema_name"
-        objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider"/>
 	  <page
          class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"
          id="%PropPage_Attribute_id"

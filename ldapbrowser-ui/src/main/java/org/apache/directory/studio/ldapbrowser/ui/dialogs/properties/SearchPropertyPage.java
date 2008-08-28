@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -29,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
-import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPropertyPage;
@@ -63,7 +63,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
 
 
     /**
-     * @see org.eclipse.jface.dialogs.DialogPage#dispose()
+     * {@inheritDoc}
      */
     public void dispose()
     {
@@ -73,11 +73,10 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
 
 
     /**
-     * @see org.eclipse.jface.preference.PreferencePage#createContents(org.eclipse.swt.widgets.Composite)
+     * {@inheritDoc}
      */
     protected Control createContents( Composite parent )
     {
-
         // declare search
         ISearch search = ( ISearch ) getElement();
         if ( search != null )
@@ -105,7 +104,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
 
 
     /**
-     * @see org.eclipse.jface.preference.PreferencePage#performOk()
+     * {@inheritDoc}
      */
     public boolean performOk()
     {
@@ -124,7 +123,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent)
+     * {@inheritDoc}
      */
     public void widgetModified( WidgetModifyEvent event )
     {

@@ -42,46 +42,73 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * This page shows some info about the selected Attribute.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class AttributePropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
+    /** The attribute name text. */
     private Text attributeNameText;
 
+    /** The attribute type text. */
     private Text attributeTypeText;
 
+    /** The attribute values text. */
     private Text attributeValuesText;
 
+    /** The attribute size text. */
     private Text attributeSizeText;
 
+    /** The atd oid text. */
     private Text atdOidText;
 
+    /** The atd names text. */
     private Text atdNamesText;
 
+    /** The atd desc text. */
     private Text atdDescText;
 
+    /** The atd usage text. */
     private Text atdUsageText;
 
+    /** The single valued flag. */
     private Button singleValuedFlag;
 
+    /** The collective flag. */
     private Button collectiveFlag;
 
+    /** The obsolete flag. */
     private Button obsoleteFlag;
 
+    /** The no user modification flag. */
     private Button noUserModificationFlag;
 
+    /** The equality matching rule text. */
     private Text equalityMatchingRuleText;
 
+    /** The substring matching rule text. */
     private Text substringMatchingRuleText;
 
+    /** The ordering matching rule text. */
     private Text orderingMatchingRuleText;
 
+    /** The syntax oid text. */
     private Text syntaxOidText;
 
+    /** The syntax desc text. */
     private Text syntaxDescText;
 
+    /** The syntax length text. */
     private Text syntaxLengthText;
 
 
+    /**
+     * Creates a new instance of AttributePropertyPage.
+     */
     public AttributePropertyPage()
     {
         super();
@@ -89,6 +116,9 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
@@ -287,6 +317,13 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
     }
 
 
+    /**
+     * Gets the attribute.
+     * 
+     * @param element the element
+     * 
+     * @return the attribute
+     */
     private static IAttribute getAttribute( Object element )
     {
         IAttribute attribute = null;

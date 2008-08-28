@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -44,36 +43,58 @@ import org.eclipse.ui.IWorkbenchPropertyPage;
 import org.eclipse.ui.dialogs.PropertyPage;
 
 
+/**
+ * This page shows some info about the selected Entry.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropertyPage
 {
 
+    /** The dn text. */
     private Text dnText;
 
+    /** The url text. */
     private Text urlText;
 
+    /** The ct text. */
     private Text ctText;
 
+    /** The cn text. */
     private Text cnText;
 
+    /** The mt text. */
     private Text mtText;
 
+    /** The mn text. */
     private Text mnText;
 
+    /** The reload cmi button. */
     private Button reloadCmiButton;
 
+    /** The size text. */
     private Text sizeText;
 
+    /** The children text. */
     private Text childrenText;
 
+    /** The attributes text. */
     private Text attributesText;
 
+    /** The values text. */
     private Text valuesText;
 
+    /** The include operational attributes button. */
     private Button includeOperationalAttributesButton;
 
+    /** The reload entry button. */
     private Button reloadEntryButton;
 
 
+    /**
+     * Creates a new instance of EntryPropertyPage.
+     */
     public EntryPropertyPage()
     {
         super();
@@ -81,9 +102,11 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected Control createContents( Composite parent )
     {
-
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         Composite mainGroup = BaseWidgetUtils.createColumnContainer( BaseWidgetUtils.createColumnContainer( composite,
@@ -207,23 +230,28 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
             }
         } );
 
-        this.entryUpdated( getEntry( getElement() ) );
+        entryUpdated( getEntry( getElement() ) );
 
         return composite;
     }
 
 
+    /**
+     * Reload operational attributes.
+     */
     private void reloadOperationalAttributes()
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
         InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
             { entry }, true );
         RunnableContextRunner.execute( runnable, null, true );
-
-        this.entryUpdated( entry );
+        entryUpdated( entry );
     }
 
 
+    /**
+     * Reload entry.
+     */
     private void reloadEntry()
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
@@ -233,10 +261,17 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
             { entry }, true );
         RunnableContextRunner.execute( runnable1, null, true );
         RunnableContextRunner.execute( runnable2, null, true );
-        this.entryUpdated( entry );
+        entryUpdated( entry );
     }
 
 
+    /**
+     * Gets the entry.
+     * 
+     * @param element the element
+     * 
+     * @return the entry
+     */
     static IEntry getEntry( Object element )
     {
         IEntry entry = null;
@@ -248,18 +283,24 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     }
 
 
+    /**
+     * Checks if is disposed.
+     * 
+     * @return true, if is disposed
+     */
     public boolean isDisposed()
     {
         return this.dnText.isDisposed();
     }
 
 
-    public void entryUpdated( EntryModificationEvent event )
-    {
-        this.entryUpdated( event.getModifiedEntry() );
-    }
-
-
+    /**
+     * Gets the non-null string value.
+     * 
+     * @param att the attribute
+     * 
+     * @return the non-null string value
+     */
     private String getNonNullStringValue( IAttribute att )
     {
         String value = null;
@@ -271,25 +312,29 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     }
 
 
+    /**
+     * Updates the text widgets if the entry was updated.
+     * 
+     * @param entry the entry
+     */
     private void entryUpdated( IEntry entry )
     {
 
         if ( !this.dnText.isDisposed() )
         {
+            setMessage( "Entry " + entry.getDn().getUpName() );
 
-            this.setMessage( "Entry " + entry.getDn().getUpName() );
-
-            this.dnText.setText( entry.getDn().getUpName() );
-            this.urlText.setText( entry.getUrl().toString() );
-            this.ctText.setText( getNonNullStringValue( entry
+            dnText.setText( entry.getDn().getUpName() );
+            urlText.setText( entry.getUrl().toString() );
+            ctText.setText( getNonNullStringValue( entry
                 .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) ) );
-            this.cnText.setText( getNonNullStringValue( entry
-                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATORS_NAME ) ) );
-            this.mtText.setText( getNonNullStringValue( entry
+            cnText
+                .setText( getNonNullStringValue( entry.getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATORS_NAME ) ) );
+            mtText.setText( getNonNullStringValue( entry
                 .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) ) );
-            this.mnText.setText( getNonNullStringValue( entry
-                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFIERS_NAME ) ) );
-            this.reloadCmiButton.setText( "Refresh" );
+            mnText
+                .setText( getNonNullStringValue( entry.getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFIERS_NAME ) ) );
+            reloadCmiButton.setText( "Refresh" );
 
             int attCount = 0;
             int valCount = 0;
@@ -301,7 +346,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
                 for ( int attIndex = 0; attIndex < allAttributes.length; attIndex++ )
                 {
                     if ( !allAttributes[attIndex].isOperationalAttribute()
-                        || this.includeOperationalAttributesButton.getSelection() )
+                        || includeOperationalAttributesButton.getSelection() )
                     {
                         attCount++;
                         IValue[] allValues = allAttributes[attIndex].getValues();
@@ -317,19 +362,19 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
                 }
             }
 
-            this.reloadEntryButton.setText( "Refresh" );
+            reloadEntryButton.setText( "Refresh" );
             if ( !entry.isChildrenInitialized() )
             {
-                this.childrenText.setText( "Not checked" );
+                childrenText.setText( "Not checked" );
             }
             else
             {
-                this.childrenText.setText( "" + entry.getChildrenCount()
+                childrenText.setText( "" + entry.getChildrenCount()
                     + ( entry.hasMoreChildren() ? " fetched, may have more" : "" ) );
             }
-            this.attributesText.setText( "" + attCount );
-            this.valuesText.setText( "" + valCount );
-            this.sizeText.setText( Utils.formatBytes( bytes ) );
+            attributesText.setText( "" + attCount );
+            valuesText.setText( "" + valCount );
+            sizeText.setText( Utils.formatBytes( bytes ) );
         }
     }
 
