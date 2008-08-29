@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.equinox.launcher.carbon</groupId>
+  <artifactId>macosx</artifactId>
+  <version>1.0.3.R33x_v20080118</version>
+  <versioning>
+    <versions>
+      <version>1.0.3.R33x_v20080118</version>
+    </versions>
+    <lastUpdated>20080829073739</lastUpdated>
+  </versioning>
+</metadata>

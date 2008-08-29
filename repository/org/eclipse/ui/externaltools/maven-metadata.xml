@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.ui</groupId>
+  <artifactId>externaltools</artifactId>
+  <version>3.1.200-v20070416</version>
+  <versioning>
+    <versions>
+      <version>3.1.200-v20070416</version>
+    </versions>
+    <lastUpdated>20080829085603</lastUpdated>
+  </versioning>
+</metadata>

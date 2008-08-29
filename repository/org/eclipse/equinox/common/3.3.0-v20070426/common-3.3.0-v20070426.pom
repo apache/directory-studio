@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.equinox</groupId>
+  <artifactId>common</artifactId>
+  <version>3.3.0-v20070426</version>
+</project>

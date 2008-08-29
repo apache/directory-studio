@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.core</groupId>
+  <artifactId>databinding</artifactId>
+  <version>1.0.1-M20070822-0800</version>
+  <versioning>
+    <versions>
+      <version>1.0.1-M20070822-0800</version>
+    </versions>
+    <lastUpdated>20080829082126</lastUpdated>
+  </versioning>
+</metadata>

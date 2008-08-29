@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.core.runtime.compatibility</groupId>
+  <artifactId>auth</artifactId>
+  <version>3.2.100.v20070502</version>
+  <versioning>
+    <versions>
+      <version>3.2.100.v20070502</version>
+    </versions>
+    <lastUpdated>20080829095540</lastUpdated>
+  </versioning>
+</metadata>
