@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.ObjectClassAdapter;
 import org.apache.directory.studio.schemaeditor.controller.ObjectClassListener;
@@ -52,7 +53,7 @@ public class ObjectClassEditor extends FormEditor
     private static Logger logger = Logger.getLogger( ObjectClassEditor.class );
 
     /** The ID of the Editor */
-    public static final String ID = Activator.PLUGIN_ID + ".view.objectClassEditor"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.EDITOR_OBJECT_CLASS_ID;
 
     /** The editor */
     private ObjectClassEditor instance;

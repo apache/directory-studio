@@ -39,7 +39,7 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewObjectClassWizard extends Wizard implements INewWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.NewObjectClassWizard";
+    public static final String ID = PluginConstants.NEW_WIZARD_NEW_OBJECT_CLASS_WIZARD;
 
     /** The selected schema */
     private Schema selectedSchema;

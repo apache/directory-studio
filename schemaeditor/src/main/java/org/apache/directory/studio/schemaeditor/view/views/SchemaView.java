@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaViewController;
 import org.apache.directory.studio.schemaeditor.view.wrappers.SchemaViewRoot;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
@@ -42,7 +43,7 @@ import org.eclipse.ui.part.ViewPart;
 public class SchemaView extends ViewPart
 {
     /** The ID of the View */
-    public static final String ID = Activator.PLUGIN_ID + ".view.SchemaView"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.VIEW_SCHEMA_VIEW_ID;
 
     /** The viewer */
     private TreeViewer treeViewer;
@@ -62,7 +63,7 @@ public class SchemaView extends ViewPart
         new SchemaViewController( this );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "schema_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "schema_view" );
     }
 
 

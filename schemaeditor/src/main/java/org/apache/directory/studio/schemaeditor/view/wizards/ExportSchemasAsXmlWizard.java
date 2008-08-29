@@ -25,7 +25,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileExporter;
@@ -46,8 +45,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportSchemasAsXmlWizard";
-
     /** The selected schemas */
     private Schema[] selectedSchemas = new Schema[0];
 

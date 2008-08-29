@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
@@ -43,15 +44,15 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewProjectWizard extends Wizard implements INewWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.NewProjectWizard";
+    public static final String ID = PluginConstants.NEW_WIZARD_NEW_PROJECT_WIZARD;
 
     // The pages of the wizard
     private NewProjectWizardInformationPage informationPage;
-//    private NewProjectWizardConnectionSelectionPage connectionSelectionPage;
+    //    private NewProjectWizardConnectionSelectionPage connectionSelectionPage;
     private NewProjectWizardSchemasSelectionPage schemasSelectionPage;
 
-//    private Throwable exceptionThrown = null;
 
+    //    private Throwable exceptionThrown = null;
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#addPages()
@@ -60,12 +61,12 @@ public class NewProjectWizard extends Wizard implements INewWizard
     {
         // Creating pages
         informationPage = new NewProjectWizardInformationPage();
-//        connectionSelectionPage = new NewProjectWizardConnectionSelectionPage();
+        //        connectionSelectionPage = new NewProjectWizardConnectionSelectionPage();
         schemasSelectionPage = new NewProjectWizardSchemasSelectionPage();
 
         // Adding pages
         addPage( informationPage );
-//        addPage( connectionSelectionPage );
+        //        addPage( connectionSelectionPage );
         addPage( schemasSelectionPage );
     }
 
@@ -81,108 +82,108 @@ public class NewProjectWizard extends Wizard implements INewWizard
         // Creating the project
         final Project project = new Project( projectType, projectName );
 
-//        if ( projectType.equals( ProjectType.ONLINE ) )
-//        // Project is an "Online Project"
-//        {
-//            // Setting the connection to use
-//            project.setConnection( connectionSelectionPage.getSelectedConnection() );
-//
-//            // Reseting the Exception Thrown
-//            exceptionThrown = null;
-//
-//            try
-//            {
-//                getContainer().run( false, false, new IRunnableWithProgress()
-//                {
-//                    public void run( IProgressMonitor monitor )
-//                    {
-//                        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( monitor );
-//
-//                        // Getting the correct SchemaConnector for this connection
-//                        List<SchemaConnector> correctSchemaConnectors = getCorrectSchemaConnectors( project
-//                            .getConnection(), studioProgressMonitor );
-//
-//                        // If no suitable SchemaConnector has been found, we display an
-//                        // error message and return false;
-//                        if ( correctSchemaConnectors.size() == 0 )
-//                        {
-//                            studioProgressMonitor.reportError(
-//                                "No suitable SchemaConnector has been found for the choosen Directory Server.",
-//                                new NoSuitableSchemaConnectorException() );
-//                        }
-//
-//                        // Getting the correct SchemaConnector
-//                        SchemaConnector correctSchemaConnector = null;
-//                        if ( correctSchemaConnectors.size() == 1 )
-//                        {
-//                            correctSchemaConnector = correctSchemaConnectors.get( 0 );
-//                        }
-//                        else
-//                        {
-//                            // TODO display a dialog in which the user can select the correct schema connector
-//                        }
-//
-//                        project.setSchemaConnector( correctSchemaConnector );
-//
-//                        // Fetching the Online Schema
-//                        project.fetchOnlineSchema( new StudioProgressMonitor( monitor ) );
-//
-//                        // Checking if an error has occured
-//                        if ( studioProgressMonitor.errorsReported() )
-//                        {
-//                            exceptionThrown = studioProgressMonitor.getException();
-//                            return;
-//                        }
-//                    }
-//                } );
-//            }
-//            catch ( InvocationTargetException e )
-//            {
-//                // Nothing to do (it will never occur)
-//            }
-//            catch ( InterruptedException e )
-//            {
-//                // Nothing to do.
-//            }
-//
-//            if ( exceptionThrown != null )
-//            {
-//                if ( exceptionThrown instanceof NoSuitableSchemaConnectorException )
-//                // Special case for the 'NoSuitableSchemaConnectorException'
-//                {
-//                    PluginUtils.logError( "No suitable SchemaConnector has been found for the selected connection.",
-//                        exceptionThrown );
-//                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when creating the project.\n"
-//                        + "No suitable SchemaConnector has been found for the selected connection." );
-//                }
-//                else
-//                // Standard case
-//                {
-//                    PluginUtils.logError( "An error occured when creating the project.", exceptionThrown );
-//                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when creating the project." );
-//                }
-//                return false;
-//            }
-//        }
-//        else if ( projectType.equals( ProjectType.OFFLINE ) )
-//        // Project is an "Offline Project"
-//        {
-            // Getting the selected 'core' schemas
-            String[] selectedSchemas = schemasSelectionPage.getSelectedSchemas();
-            ServerTypeEnum serverType = schemasSelectionPage.getServerType();
-            if ( ( selectedSchemas != null ) && ( serverType != null ) )
+        //        if ( projectType.equals( ProjectType.ONLINE ) )
+        //        // Project is an "Online Project"
+        //        {
+        //            // Setting the connection to use
+        //            project.setConnection( connectionSelectionPage.getSelectedConnection() );
+        //
+        //            // Reseting the Exception Thrown
+        //            exceptionThrown = null;
+        //
+        //            try
+        //            {
+        //                getContainer().run( false, false, new IRunnableWithProgress()
+        //                {
+        //                    public void run( IProgressMonitor monitor )
+        //                    {
+        //                        StudioProgressMonitor studioProgressMonitor = new StudioProgressMonitor( monitor );
+        //
+        //                        // Getting the correct SchemaConnector for this connection
+        //                        List<SchemaConnector> correctSchemaConnectors = getCorrectSchemaConnectors( project
+        //                            .getConnection(), studioProgressMonitor );
+        //
+        //                        // If no suitable SchemaConnector has been found, we display an
+        //                        // error message and return false;
+        //                        if ( correctSchemaConnectors.size() == 0 )
+        //                        {
+        //                            studioProgressMonitor.reportError(
+        //                                "No suitable SchemaConnector has been found for the choosen Directory Server.",
+        //                                new NoSuitableSchemaConnectorException() );
+        //                        }
+        //
+        //                        // Getting the correct SchemaConnector
+        //                        SchemaConnector correctSchemaConnector = null;
+        //                        if ( correctSchemaConnectors.size() == 1 )
+        //                        {
+        //                            correctSchemaConnector = correctSchemaConnectors.get( 0 );
+        //                        }
+        //                        else
+        //                        {
+        //                            // TODO display a dialog in which the user can select the correct schema connector
+        //                        }
+        //
+        //                        project.setSchemaConnector( correctSchemaConnector );
+        //
+        //                        // Fetching the Online Schema
+        //                        project.fetchOnlineSchema( new StudioProgressMonitor( monitor ) );
+        //
+        //                        // Checking if an error has occured
+        //                        if ( studioProgressMonitor.errorsReported() )
+        //                        {
+        //                            exceptionThrown = studioProgressMonitor.getException();
+        //                            return;
+        //                        }
+        //                    }
+        //                } );
+        //            }
+        //            catch ( InvocationTargetException e )
+        //            {
+        //                // Nothing to do (it will never occur)
+        //            }
+        //            catch ( InterruptedException e )
+        //            {
+        //                // Nothing to do.
+        //            }
+        //
+        //            if ( exceptionThrown != null )
+        //            {
+        //                if ( exceptionThrown instanceof NoSuitableSchemaConnectorException )
+        //                // Special case for the 'NoSuitableSchemaConnectorException'
+        //                {
+        //                    PluginUtils.logError( "No suitable SchemaConnector has been found for the selected connection.",
+        //                        exceptionThrown );
+        //                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when creating the project.\n"
+        //                        + "No suitable SchemaConnector has been found for the selected connection." );
+        //                }
+        //                else
+        //                // Standard case
+        //                {
+        //                    PluginUtils.logError( "An error occured when creating the project.", exceptionThrown );
+        //                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when creating the project." );
+        //                }
+        //                return false;
+        //            }
+        //        }
+        //        else if ( projectType.equals( ProjectType.OFFLINE ) )
+        //        // Project is an "Offline Project"
+        //        {
+        // Getting the selected 'core' schemas
+        String[] selectedSchemas = schemasSelectionPage.getSelectedSchemas();
+        ServerTypeEnum serverType = schemasSelectionPage.getServerType();
+        if ( ( selectedSchemas != null ) && ( serverType != null ) )
+        {
+            SchemaHandler schemaHandler = project.getSchemaHandler();
+            for ( String selectedSchema : selectedSchemas )
             {
-                SchemaHandler schemaHandler = project.getSchemaHandler();
-                for ( String selectedSchema : selectedSchemas )
+                Schema schema = PluginUtils.loadCoreSchema( serverType, selectedSchema );
+                if ( schema != null )
                 {
-                    Schema schema = PluginUtils.loadCoreSchema( serverType, selectedSchema );
-                    if ( schema != null )
-                    {
-                        schemaHandler.addSchema( schema );
-                    }
+                    schemaHandler.addSchema( schema );
                 }
             }
-//        }
+        }
+        //        }
 
         ProjectsHandler projectsHandler = Activator.getDefault().getProjectsHandler();
         projectsHandler.addProject( project );
@@ -192,69 +193,66 @@ public class NewProjectWizard extends Wizard implements INewWizard
     }
 
 
-//    /**
-//     * Gets the List of suitable SchemaConnectors
-//     *
-//     * @param connection
-//     *      the connection to test the SchemaConnectors with
-//     * @return
-//     *      the List of suitable SchemaConnectors
-//     */
-//    private List<SchemaConnector> getCorrectSchemaConnectors( Connection connection, StudioProgressMonitor monitor )
-//    {
-//        List<SchemaConnector> suitableSchemaConnectors = new ArrayList<SchemaConnector>();
-//
-//        // Looping on the SchemaConnectors
-//        List<SchemaConnector> schemaConectors = PluginUtils.getSchemaConnectors();
-//        for ( SchemaConnector schemaConnector : schemaConectors )
-//        {
-//            // Testing if the SchemaConnector is suitable for this connection
-//            if ( schemaConnector.isSuitableConnector( connection, monitor ) )
-//            {
-//                suitableSchemaConnectors.add( schemaConnector );
-//            }
-//        }
-//
-//        return suitableSchemaConnectors;
-//    }
+    //    /**
+    //     * Gets the List of suitable SchemaConnectors
+    //     *
+    //     * @param connection
+    //     *      the connection to test the SchemaConnectors with
+    //     * @return
+    //     *      the List of suitable SchemaConnectors
+    //     */
+    //    private List<SchemaConnector> getCorrectSchemaConnectors( Connection connection, StudioProgressMonitor monitor )
+    //    {
+    //        List<SchemaConnector> suitableSchemaConnectors = new ArrayList<SchemaConnector>();
+    //
+    //        // Looping on the SchemaConnectors
+    //        List<SchemaConnector> schemaConectors = PluginUtils.getSchemaConnectors();
+    //        for ( SchemaConnector schemaConnector : schemaConectors )
+    //        {
+    //            // Testing if the SchemaConnector is suitable for this connection
+    //            if ( schemaConnector.isSuitableConnector( connection, monitor ) )
+    //            {
+    //                suitableSchemaConnectors.add( schemaConnector );
+    //            }
+    //        }
+    //
+    //        return suitableSchemaConnectors;
+    //    }
 
+    //    /* (non-Javadoc)
+    //     * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
+    //     */
+    //    public IWizardPage getNextPage( IWizardPage page )
+    //    {
+    //        if ( page.equals( informationPage ) )
+    //        {
+    //            if ( informationPage.getProjectType().equals( ProjectType.ONLINE ) )
+    //            {
+    //                return connectionSelectionPage;
+    //            }
+    //            else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
+    //            {
+    //                return schemasSelectionPage;
+    //            }
+    //        }
+    //
+    //        // Default
+    //        return null;
+    //    }
 
-//    /* (non-Javadoc)
-//     * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
-//     */
-//    public IWizardPage getNextPage( IWizardPage page )
-//    {
-//        if ( page.equals( informationPage ) )
-//        {
-//            if ( informationPage.getProjectType().equals( ProjectType.ONLINE ) )
-//            {
-//                return connectionSelectionPage;
-//            }
-//            else if ( informationPage.getProjectType().equals( ProjectType.OFFLINE ) )
-//            {
-//                return schemasSelectionPage;
-//            }
-//        }
-//
-//        // Default
-//        return null;
-//    }
-
-
-//    /* (non-Javadoc)
-//     * @see org.eclipse.jface.wizard.Wizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
-//     */
-//    public IWizardPage getPreviousPage( IWizardPage page )
-//    {
-//        if ( ( page.equals( connectionSelectionPage ) ) || ( page.equals( schemasSelectionPage ) ) )
-//        {
-//            return informationPage;
-//        }
-//
-//        // Default
-//        return null;
-//    }
-
+    //    /* (non-Javadoc)
+    //     * @see org.eclipse.jface.wizard.Wizard#getPreviousPage(org.eclipse.jface.wizard.IWizardPage)
+    //     */
+    //    public IWizardPage getPreviousPage( IWizardPage page )
+    //    {
+    //        if ( ( page.equals( connectionSelectionPage ) ) || ( page.equals( schemasSelectionPage ) ) )
+    //        {
+    //            return informationPage;
+    //        }
+    //
+    //        // Default
+    //        return null;
+    //    }
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.wizard.Wizard#canFinish()
@@ -271,10 +269,10 @@ public class NewProjectWizard extends Wizard implements INewWizard
         {
             return true;
         }
-//        else if ( currentPage.equals( connectionSelectionPage ) )
-//        {
-//            return connectionSelectionPage.isPageComplete();
-//        }
+        //        else if ( currentPage.equals( connectionSelectionPage ) )
+        //        {
+        //            return connectionSelectionPage.isPageComplete();
+        //        }
         else
         {
             return false;

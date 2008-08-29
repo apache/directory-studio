@@ -52,7 +52,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class HierarchyViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
     /** The preference page ID */
-    public static final String ID = Activator.PLUGIN_ID + ".preferences.hierarchyView"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.PREF_PAGE_HIERARCHY_VIEW_ID;
 
     /** The First Name category */
     private static final String FIRST_NAME = "First Name";

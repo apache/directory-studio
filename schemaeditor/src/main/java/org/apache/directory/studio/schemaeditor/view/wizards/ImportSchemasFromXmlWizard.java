@@ -50,8 +50,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.ImportSchemasFromXmlWizard";
-
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 

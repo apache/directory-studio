@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.io.ProjectsExporter;
@@ -49,8 +48,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportProjectsWizard extends Wizard implements IExportWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportProjectsWizard";
-
     /** The selected projects */
     private Project[] selectedProjects = new Project[0];
 

@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -45,7 +46,7 @@ public class SchemaEditor extends FormEditor
     private static Logger logger = Logger.getLogger( SchemaEditor.class );
 
     /** The ID of the Editor */
-    public static final String ID = Activator.PLUGIN_ID + ".view.schemaEditor"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.EDITOR_SCHEMA_ID;
 
     /** The editor */
     private SchemaEditor instance;

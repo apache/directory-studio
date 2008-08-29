@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -36,7 +37,7 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewSchemaWizard extends Wizard implements INewWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.NewSchemaWizard";
+    public static final String ID = PluginConstants.NEW_WIZARD_NEW_SCHEMA_WIZARD;
 
     // The pages of the wizard
     private NewSchemaWizardPage page;

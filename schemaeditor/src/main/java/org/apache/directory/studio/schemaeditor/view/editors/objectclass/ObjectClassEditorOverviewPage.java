@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -856,7 +857,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "object_class_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "object_class_editor" );
     }
 
 

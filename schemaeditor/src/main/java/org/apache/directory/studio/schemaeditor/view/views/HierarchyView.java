@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.HierarchyViewController;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -46,7 +47,7 @@ import org.eclipse.ui.part.ViewPart;
 public class HierarchyView extends ViewPart
 {
     /** The view's ID */
-    public static final String ID = Activator.PLUGIN_ID + ".view.HierarchyView"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.VIEW_HIERARCHY_VIEW_ID;
 
     /** The tree viewer */
     private TreeViewer viewer;
@@ -88,7 +89,7 @@ public class HierarchyView extends ViewPart
         controller = new HierarchyViewController( this );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "hierarchy_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "hierarchy_view" );
     }
 
 

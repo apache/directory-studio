@@ -51,7 +51,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class SchemaViewPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
     /** The preference page ID */
-    public static final String ID = Activator.PLUGIN_ID + ".preferences.schemaView"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.PREF_PAGE_SCHEMA_VIEW_ID;
 
     /** The First Name category */
     private static final String FIRST_NAME = "First Name";

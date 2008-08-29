@@ -39,7 +39,7 @@ import org.eclipse.ui.IWorkbench;
  */
 public class NewAttributeTypeWizard extends Wizard implements INewWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.NewAttributeTypeWizard";
+    public static final String ID = PluginConstants.NEW_WIZARD_NEW_ATTRIBUTE_TYPE_WIZARD;
 
     /** The selected schema */
     private Schema selectedSchema;

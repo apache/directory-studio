@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view;
 
 
-import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.view.views.HierarchyView;
 import org.apache.directory.studio.schemaeditor.view.views.ProblemsView;
 import org.apache.directory.studio.schemaeditor.view.views.ProjectsView;
@@ -46,13 +46,13 @@ import org.eclipse.ui.IPerspectiveFactory;
 public class Perspective implements IPerspectiveFactory
 {
     /** The ID of the view */
-    public static final String ID = Activator.PLUGIN_ID + ".perspective"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.PERSPECTIVE_SCHEMA_EDITOR_ID;
 
     /** The ID of the top left folder */
-    public static final String topLeftFolderId = "org.apache.directory.studio.schemaeditor.topleftfolder"; //$NON-NLS-1$
+    public static final String topLeftFolderId = PluginConstants.PERSPECTIVE_TOP_LEFT_FOLDER_ID;
 
     /** The ID of the bottom folder */
-    public static final String bottomFolderId = "org.apache.directory.studio.schemaeditor.bottomfolder"; //$NON-NLS-1$
+    public static final String bottomFolderId = PluginConstants.PERSPECTIVE_BOTTOM_FOLDER_ID;
 
 
     /* (non-Javadoc)
@@ -82,7 +82,7 @@ public class Perspective implements IPerspectiveFactory
         layout.getViewLayout( ProjectsView.ID ).setCloseable( false );
 
         // Adding Perspective shortcuts
-        layout.addPerspectiveShortcut( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" ); //$NON-NLS-1$
+        layout.addPerspectiveShortcut( PluginConstants.PERSPECTIVE_LDAP_BROWSER_ID );
         layout.addPerspectiveShortcut( Perspective.ID );
 
         // Adding View shortcuts

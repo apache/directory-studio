@@ -58,8 +58,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.ExportSchemasForADSWizard";
-
     /** The selected schemas */
     private Schema[] selectedSchemas = new Schema[0];
 

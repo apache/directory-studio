@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.ProblemsViewController;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.schemaeditor.view.wrappers.ProblemsViewRoot;
@@ -47,7 +48,7 @@ import org.eclipse.ui.part.ViewPart;
 public class ProblemsView extends ViewPart
 {
     /** The ID of the View */
-    public static final String ID = Activator.PLUGIN_ID + ".view.ProblemsView"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.VIEW_PROBLEMS_VIEW_ID;
 
     /** The viewer */
     private TreeViewer treeViewer;
@@ -71,7 +72,7 @@ public class ProblemsView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, Activator.PLUGIN_ID + "." + "problems_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "problems_view" );
 
         GridLayout gridLayout = new GridLayout();
         gridLayout.horizontalSpacing = 0;

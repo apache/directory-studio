@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.schema.parser.AttributeTypeLiteral;
 import org.apache.directory.shared.ldap.schema.parser.OpenLdapSchemaParser;
-import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
 import org.apache.directory.studio.schemaeditor.view.widget.SchemaSourceViewer;
@@ -150,7 +150,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "attribute_type_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" );
     }
 
 

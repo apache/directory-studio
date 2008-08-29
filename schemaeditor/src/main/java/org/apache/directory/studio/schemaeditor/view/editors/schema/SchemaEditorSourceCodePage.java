@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.schema;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaListener;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
@@ -223,7 +224,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "schema_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" );
     }
 
 

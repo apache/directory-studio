@@ -44,9 +44,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class CommitChangesWizard extends Wizard implements IExportWizard
 {
-    /** The wizard's ID */
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.CommitChangesWizard";
-
     /** The flag to know if the Schema contains errors */
     private boolean schemaContainsErrors = false;
 

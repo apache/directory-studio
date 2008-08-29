@@ -33,6 +33,85 @@ import org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPrefe
  */
 public interface PluginConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = Activator.getDefault().getPluginProperties().getString( "Plugin_id" );
+
+    /** The Schema Editor perspective ID */
+    public static final String PERSPECTIVE_SCHEMA_EDITOR_ID = Activator.getDefault().getPluginProperties().getString(
+        "Perspective_SchemaEditor_id" );
+
+    /** The LDAP Browser perspective ID */
+    public static final String PERSPECTIVE_LDAP_BROWSER_ID = Activator.getDefault().getPluginProperties().getString(
+        "Perspective_LdapBrowser_id" );
+
+    /** The top left folder ID */
+    public static final String PERSPECTIVE_TOP_LEFT_FOLDER_ID = Activator.getDefault().getPluginProperties().getString(
+        "Perspective_TopLeftFolder_id" );
+
+    /** The bottom folder ID */
+    public static final String PERSPECTIVE_BOTTOM_FOLDER_ID = Activator.getDefault().getPluginProperties().getString(
+        "Perspective_BottomFolder_id" );
+
+    /** The Attribute Type Editor ID */
+    public static final String EDITOR_ATTRIBUTE_TYPE_ID = Activator.getDefault().getPluginProperties().getString(
+        "Editor_AttributeTypeEditor_id" );
+
+    /** The Object Class Editor ID */
+    public static final String EDITOR_OBJECT_CLASS_ID = Activator.getDefault().getPluginProperties().getString(
+        "Editor_ObjectClassEditor_id" );
+
+    /** The Schema Editor ID */
+    public static final String EDITOR_SCHEMA_ID = Activator.getDefault().getPluginProperties().getString(
+        "Editor_SchemaEditor_id" );
+
+    /** The Hierarchy View Preference Page ID */
+    public static final String PREF_PAGE_HIERARCHY_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "PrefPage_HierarchyView_id" );
+
+    /** The Schema View Preference Page ID */
+    public static final String PREF_PAGE_SCHEMA_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "PrefPage_SchemaView_id" );
+
+    /** The Search View Preference Page ID */
+    public static final String PREF_PAGE_SEARCH_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "PrefPage_SearchView_id" );
+
+    /** The Hierarchy View ID */
+    public static final String VIEW_HIERARCHY_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "View_HierarchyView_id" );
+
+    /** The Problems View ID */
+    public static final String VIEW_PROBLEMS_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "View_ProblemsView_id" );
+
+    /** The Projects View ID */
+    public static final String VIEW_PROJECTS_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "View_ProjectsView_id" );
+
+    /** The Schema View ID */
+    public static final String VIEW_SCHEMA_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "View_SchemaView_id" );
+
+    /** The Search View ID */
+    public static final String VIEW_SEARCH_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
+        "View_SearchView_id" );
+
+    /** The New Attribute Type Wizard ID */
+    public static final String NEW_WIZARD_NEW_ATTRIBUTE_TYPE_WIZARD = Activator.getDefault().getPluginProperties().getString(
+        "NewWizard_NewAttributeTypeWizard_id" );
+
+    /** The New Object Class Wizard ID */
+    public static final String NEW_WIZARD_NEW_OBJECT_CLASS_WIZARD = Activator.getDefault().getPluginProperties().getString(
+        "NewWizard_NewObjectClassWizard_id" );
+
+    /** The New Project Wizard ID */
+    public static final String NEW_WIZARD_NEW_PROJECT_WIZARD = Activator.getDefault().getPluginProperties().getString(
+        "NewWizard_NewProjectWizard_id" );
+
+    /** The New Schema Wizard ID */
+    public static final String NEW_WIZARD_NEW_SCHEMA_WIZARD = Activator.getDefault().getPluginProperties().getString(
+        "NewWizard_NewSchemaWizard_id" );
+
     // Images
     public static final String IMG_ATTRIBUTE_TYPE = "resources/icons/attribute_type.gif";
     public static final String IMG_ATTRIBUTE_TYPE_HIERARCHY_SELECTED = "resources/icons/attribute_type_hierarchy_selected.gif";
@@ -113,25 +192,25 @@ public interface PluginConstants
     public static final String CMD_DELETE_PROJECT = Activator.getDefault().getPluginProperties().getString(
         "Cmd_DeleteProject_id" );
     public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_DeleteSchemaElement_id" );
+        "Cmd_DeleteSchemaElement_id" );
     public static final String CMD_OPEN_ELEMENT = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_OpenElement_id" );
+        "Cmd_OpenElement_id" );
     public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_OpenTypeHierarchy_id" );
+        "Cmd_OpenTypeHierarchy_id" );
     public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_NewAttributeType_id" );
+        "Cmd_NewAttributeType_id" );
     public static final String CMD_NEW_OBJECT_CLASS = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_NewObjectClass_id" );
+        "Cmd_NewObjectClass_id" );
     public static final String CMD_NEW_PROJECT = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_NewProject_id" );
+        "Cmd_NewProject_id" );
     public static final String CMD_NEW_SCHEMA = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_NewSchema_id" );
+        "Cmd_NewSchema_id" );
     public static final String CMD_RENAME_PROJECT = Activator.getDefault().getPluginProperties().getString(
-    "Cmd_RenameProject_id" );
+        "Cmd_RenameProject_id" );
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */
-    public static final String PREFS_DIFFERENCES_WIDGET_GROUPING = Activator.PLUGIN_ID
+    public static final String PREFS_DIFFERENCES_WIDGET_GROUPING = PluginConstants.PLUGIN_ID
         + ".prefs.DifferencesWidget.grouping";
     /** The preference value for DifferencesWidget Grouping 'Property' */
     public static final int PREFS_DIFFERENCES_WIDGET_GROUPING_PROPERTY = 0;
@@ -174,19 +253,21 @@ public interface PluginConstants
     public static final String PREFS_SCHEMA_VIEW_SCHEMA_LABEL_DISPLAY = SchemaViewPreferencePage.ID
         + ".schemaLabel.display"; //$NON-NLS-1$
     /** The preference ID for Schema View Grouping */
-    public static final String PREFS_SCHEMA_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SchemaView.grouping"; //$NON-NLS-1$
+    public static final String PREFS_SCHEMA_VIEW_GROUPING = PluginConstants.PLUGIN_ID
+        + ".preferences.SchemaView.grouping"; //$NON-NLS-1$
     /** The preference value for Schema View Grouping 'group ATs and OCs in folders' */
     public static final int PREFS_SCHEMA_VIEW_GROUPING_FOLDERS = 0;
     /** The preference value for Schema View Grouping 'mixed' */
     public static final int PREFS_SCHEMA_VIEW_GROUPING_MIXED = 1;
     /** The preference ID for Schema View Sorting By */
-    public static final String PREFS_SCHEMA_VIEW_SORTING_BY = Activator.PLUGIN_ID + ".preferences.SchemaView.sortingBy"; //$NON-NLS-1$
+    public static final String PREFS_SCHEMA_VIEW_SORTING_BY = PluginConstants.PLUGIN_ID
+        + ".preferences.SchemaView.sortingBy"; //$NON-NLS-1$
     /** The preference value for Schema View Sorting 'First Name' */
     public static final int PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME = 0;
     /** The preference value for Schema View Sorting 'OID' */
     public static final int PREFS_SCHEMA_VIEW_SORTING_BY_OID = 1;
     /** The preference ID for Sorting Order */
-    public static final String PREFS_SCHEMA_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+    public static final String PREFS_SCHEMA_VIEW_SORTING_ORDER = PluginConstants.PLUGIN_ID
         + ".preferences.SchemaView.sortingOrder"; //$NON-NLS-1$
     /** The preference value for Schema View Sorting 'ascending' */
     public static final int PREFS_SCHEMA_VIEW_SORTING_ORDER_ASCENDING = 0;
@@ -195,7 +276,8 @@ public interface PluginConstants
 
     // Preferences - Hierarchy View
     /** The preference ID for Mode of the Hierarchy View */
-    public static final String PREFS_HIERARCHY_VIEW_MODE = Activator.PLUGIN_ID + ".preferences.HierarchyView.mode"; //$NON-NLS-1$
+    public static final String PREFS_HIERARCHY_VIEW_MODE = PluginConstants.PLUGIN_ID
+        + ".preferences.HierarchyView.mode"; //$NON-NLS-1$
     /** The preference value for Hierarchy View Mode 'Supertype' */
     public static final int PREFS_HIERARCHY_VIEW_MODE_SUPERTYPE = 0;
     /** The preference value for Hierarchy View Mode 'Subtype' */
@@ -230,37 +312,37 @@ public interface PluginConstants
 
     // Search - SearchPage
     /** The preference ID for Search History of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_HISTORY = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_HISTORY = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.searchHistory"; //$NON-NLS-1$
     /** The preference ID for Search In 'Aliases' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_ALIASES = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeAliases"; //$NON-NLS-1$
     /** The preference ID for Search In 'OID' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OID = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OID = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeOid"; //$NON-NLS-1$
     /** The preference ID for Search In 'Description' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_DESCRIPTION = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeDescription"; //$NON-NLS-1$
     /** The preference ID for Search In 'Superior' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIOR = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeSuperior"; //$NON-NLS-1$
     /** The preference ID for Search In 'Syntax' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SYNTAX = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeSyntax"; //$NON-NLS-1$
     /** The preference ID for Search In 'Matching Rules' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_MATCHING_RULES = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeMatchingRules"; //$NON-NLS-1$
     /** The preference ID for Search In 'Superiors' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_SUPERIORS = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeSuperiors"; //$NON-NLS-1$
     /** The preference ID for Search In 'Mandatory Attributes' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_MANDATORY_ATTRIBUTES = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeMandatoryAttributes"; //$NON-NLS-1$
     /** The preference ID for Search In 'Optional Attributes' of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_PAGE_SEARCH_IN_OPTIONAL_ATTRIBUTES = PluginConstants.PLUGIN_ID
         + ".preferences.SearchPage.scopeOptionalAttributes"; //$NON-NLS-1$
     /** The preference ID for Scope of the SearchPage */
-    public static final String PREFS_SEARCH_PAGE_SCOPE = Activator.PLUGIN_ID + ".preferences.SearchPage.scope"; //$NON-NLS-1$
+    public static final String PREFS_SEARCH_PAGE_SCOPE = PluginConstants.PLUGIN_ID + ".preferences.SearchPage.scope"; //$NON-NLS-1$
     /** The preference value for Scope Attribute Types And Object Classes of the SearchPage */
     public static final int PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC = 0;
     /** The preference value for Scope Attribute Types only of the SearchPage */
@@ -295,7 +377,8 @@ public interface PluginConstants
     public static final String PREFS_SEARCH_VIEW_SECONDARY_LABEL_ABBREVIATE_MAX_LENGTH = SearchViewPreferencePage.ID
         + ".secondaryLabel.abbreviate.maxLength"; //$NON-NLS-1$
     /** The preference ID for Search View Grouping */
-    public static final String PREFS_SEARCH_VIEW_GROUPING = Activator.PLUGIN_ID + ".preferences.SearchView.grouping"; //$NON-NLS-1$
+    public static final String PREFS_SEARCH_VIEW_GROUPING = PluginConstants.PLUGIN_ID
+        + ".preferences.SearchView.grouping"; //$NON-NLS-1$
     /** The preference value for Search View Grouping 'Display ATs first' */
     public static final int PREFS_SEARCH_VIEW_GROUPING_ATTRIBUTE_TYPES_FIRST = 0;
     /** The preference value for Search View Grouping 'Display OCs first' */
@@ -303,13 +386,14 @@ public interface PluginConstants
     /** The preference value for Search View Grouping 'mixed' */
     public static final int PREFS_SEARCH_VIEW_GROUPING_MIXED = 2;
     /** The preference ID for Search View Sorting By */
-    public static final String PREFS_SEARCH_VIEW_SORTING_BY = Activator.PLUGIN_ID + ".preferences.SearchView.sortingBy"; //$NON-NLS-1$
+    public static final String PREFS_SEARCH_VIEW_SORTING_BY = PluginConstants.PLUGIN_ID
+        + ".preferences.SearchView.sortingBy"; //$NON-NLS-1$
     /** The preference value for Search View Sorting 'First Name' */
     public static final int PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME = 0;
     /** The preference value for Search View Sorting 'OID' */
     public static final int PREFS_SEARCH_VIEW_SORTING_BY_OID = 1;
     /** The preference ID for Sorting Order */
-    public static final String PREFS_SEARCH_VIEW_SORTING_ORDER = Activator.PLUGIN_ID
+    public static final String PREFS_SEARCH_VIEW_SORTING_ORDER = PluginConstants.PLUGIN_ID
         + ".preferences.SchemaView.sortingOrder"; //$NON-NLS-1$
     /** The preference value for Search View Sorting 'ascending' */
     public static final int PREFS_SEARCH_VIEW_SORTING_ORDER_ASCENDING = 0;
@@ -321,29 +405,31 @@ public interface PluginConstants
 
     // Contexts
     /** The Context for the SchemaView */
-    public static final String CONTEXT_SCHEMA_VIEW = Activator.PLUGIN_ID + ".contexts.schemaView"; //$NON-NLS-1$
+    public static final String CONTEXT_SCHEMA_VIEW = PluginConstants.PLUGIN_ID + ".contexts.schemaView"; //$NON-NLS-1$
     /** The Context for the SchemaView */
-    public static final String CONTEXT_PROJECTS_VIEW = Activator.PLUGIN_ID + ".contexts.projectsView"; //$NON-NLS-1$
+    public static final String CONTEXT_PROJECTS_VIEW = PluginConstants.PLUGIN_ID + ".contexts.projectsView"; //$NON-NLS-1$
 
     // File Dialogs
     /** The File Dialog path for 'Export Schema Projects' */
-    public static final String FILE_DIALOG_EXPORT_PROJECTS = Activator.PLUGIN_ID + ".fileDialog.exportProjects";
+    public static final String FILE_DIALOG_EXPORT_PROJECTS = PluginConstants.PLUGIN_ID + ".fileDialog.exportProjects";
     /** The File Dialog path for 'Export Schemas to OpenLDAP files' */
-    public static final String FILE_DIALOG_EXPORT_SCHEMAS_OPENLDAP = Activator.PLUGIN_ID
+    public static final String FILE_DIALOG_EXPORT_SCHEMAS_OPENLDAP = PluginConstants.PLUGIN_ID
         + ".fileDialog.exportSchemasOpenLDAP";
     /** The File Dialog path for 'Export Schemas to XML files' */
-    public static final String FILE_DIALOG_EXPORT_SCHEMAS_XML = Activator.PLUGIN_ID + ".fileDialog.exportSchemasXML";
+    public static final String FILE_DIALOG_EXPORT_SCHEMAS_XML = PluginConstants.PLUGIN_ID
+        + ".fileDialog.exportSchemasXML";
     /** The File Dialog path for 'Export Schemas for Apache DS' */
-    public static final String FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS = Activator.PLUGIN_ID
+    public static final String FILE_DIALOG_EXPORT_SCHEMAS_APACHE_DS = PluginConstants.PLUGIN_ID
         + ".fileDialog.exportSchemasApacheDS";
     /** The File Dialog path for 'Import Schema Projects' */
-    public static final String FILE_DIALOG_IMPORT_PROJECTS = Activator.PLUGIN_ID + ".fileDialog.importProjects";
+    public static final String FILE_DIALOG_IMPORT_PROJECTS = PluginConstants.PLUGIN_ID + ".fileDialog.importProjects";
     /** The File Dialog path for 'Import Schemas from OpenLDAP files' */
-    public static final String FILE_DIALOG_IMPORT_SCHEMAS_OPENLDAP = Activator.PLUGIN_ID
+    public static final String FILE_DIALOG_IMPORT_SCHEMAS_OPENLDAP = PluginConstants.PLUGIN_ID
         + ".fileDialog.importSchemasOpenLDAP";
     /** The File Dialog path for 'Import Schemas from XML files' */
-    public static final String FILE_DIALOG_IMPORT_SCHEMAS_XML = Activator.PLUGIN_ID + ".fileDialog.importSchemasXML";
+    public static final String FILE_DIALOG_IMPORT_SCHEMAS_XML = PluginConstants.PLUGIN_ID
+        + ".fileDialog.importSchemasXML";
 
     // Dialog Settings
-    public static final String DIALOG_SETTINGS_OID_HISTORY = Activator.PLUGIN_ID + ".dialogSettings.oidHistory";
+    public static final String DIALOG_SETTINGS_OID_HISTORY = PluginConstants.PLUGIN_ID + ".dialogSettings.oidHistory";
 }

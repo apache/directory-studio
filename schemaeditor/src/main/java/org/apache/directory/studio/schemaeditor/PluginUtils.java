@@ -344,7 +344,7 @@ public class PluginUtils
 
         try
         {
-            URL url = Platform.getBundle( Activator.PLUGIN_ID ).getResource(
+            URL url = Activator.getDefault().getBundle().getResource(
                 "resources/schemas/" + getFolderName( serverType ) + "/" + schemaName + ".xml" );
 
             if ( url == null )

@@ -24,6 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
@@ -671,7 +672,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, Activator.PLUGIN_ID + "." + "attribute_type_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" );
     }
 
 

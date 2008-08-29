@@ -40,8 +40,6 @@ import org.eclipse.ui.IWorkbench;
  */
 public class ImportCoreSchemasWizard extends Wizard implements IImportWizard
 {
-    public static final String ID = Activator.PLUGIN_ID + ".wizards.ImportCoreSchemasWizard";
-
     // The pages of the wizard
     private ImportCoreSchemasWizardPage page;
 

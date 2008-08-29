@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.AttributeTypeAdapter;
 import org.apache.directory.studio.schemaeditor.controller.AttributeTypeListener;
@@ -54,7 +55,7 @@ public class AttributeTypeEditor extends FormEditor
     private static Logger logger = Logger.getLogger( AttributeTypeEditor.class );
 
     /** The ID of the Editor */
-    public static final String ID = Activator.PLUGIN_ID + ".view.attributeTypeEditor"; //$NON-NLS-1$
+    public static final String ID = PluginConstants.EDITOR_ATTRIBUTE_TYPE_ID;
 
     /** The editor */
     private AttributeTypeEditor instance;

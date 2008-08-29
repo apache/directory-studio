@@ -55,9 +55,6 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin
 {
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.schemaeditor"; //$NON-NLS-1$
-
     /** The shared instance */
     private static Activator plugin;
 
@@ -332,8 +329,10 @@ public class Activator extends AbstractUIPlugin
             }
             catch ( IOException e )
             {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.schemaeditor", Status.OK,
                         "Unable to get the plugin properties.", e ) );
             }
         }
