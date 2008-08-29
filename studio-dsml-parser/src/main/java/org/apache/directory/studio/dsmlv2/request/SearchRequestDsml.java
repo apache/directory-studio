@@ -53,9 +53,6 @@ public class SearchRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of SearchRequestDsml.
-     *
-     * @param ldapMessage
-     *      the message to decorate
      */
     public SearchRequestDsml()
     {
