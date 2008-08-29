@@ -34,9 +34,6 @@ public class AuthRequestDsml extends AbstractRequestDsml
 {
     /**
      * Creates a new instance of AuthRequestDsml.
-     *
-     * @param ldapMessage
-     *      the message to decorate
      */
     public AuthRequestDsml()
     {
