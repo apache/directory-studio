@@ -96,7 +96,7 @@ public class Dsmlv2Container implements Container
     /**
      * Sets the DSML Batch Request
      * 
-     * @param batchRequest
+     * @param batchResponse
      *      the Batch Response to set
      */
     public void setBatchResponse( BatchResponse batchResponse )
