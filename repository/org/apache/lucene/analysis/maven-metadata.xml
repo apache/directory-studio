@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.apache.lucene</groupId>
+  <artifactId>analysis</artifactId>
+  <version>1.9.1-v200706181610</version>
+  <versioning>
+    <versions>
+      <version>1.9.1-v200706181610</version>
+    </versions>
+    <lastUpdated>20080829080236</lastUpdated>
+  </versioning>
+</metadata>
