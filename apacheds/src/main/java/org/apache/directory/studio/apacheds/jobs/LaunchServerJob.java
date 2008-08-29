@@ -324,7 +324,7 @@ public class LaunchServerJob extends Job
                                         server.setState( ServerStateEnum.STOPPED );
 
                                         // Removing the listener
-                                        DebugPlugin.getDefault().addDebugEventListener( debugEventSetListener );
+                                        DebugPlugin.getDefault().removeDebugEventListener( debugEventSetListener );
                                     }
                                 }
                             }
