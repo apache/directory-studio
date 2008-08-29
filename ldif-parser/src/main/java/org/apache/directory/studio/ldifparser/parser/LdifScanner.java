@@ -384,7 +384,6 @@ public class LdifScanner
      * Inverses the previous read().
      * 
      * @param sb
-     * @return the previous character if available
      * @throws EOFException
      */
     public void unread( StringBuffer sb )
