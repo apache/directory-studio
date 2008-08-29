@@ -270,6 +270,7 @@ public class ParserUtils
      * @param document
      *      the Dom4j Document
      * @return
+     *      the transformed document
      */
     public static Document styleDocument( Document document )
     {
