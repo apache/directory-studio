@@ -269,9 +269,6 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         initFields();
 
         setControl( composite );
-
-        displayErrorMessage( null );
-        setPageComplete( false );
     }
 
 
@@ -280,9 +277,19 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
      */
     private void initFields()
     {
-        // Filling the Schemas table
-        if ( schemaHandler != null )
+        if ( schemaHandler == null )
         {
+            schemaComboViewer.getCombo().setEnabled( false );
+            oidCombo.setEnabled( false );
+            aliasesText.setEnabled( false );
+            aliasesButton.setEnabled( false );
+            descriptionText.setEnabled( false );
+
+            displayErrorMessage( "A schema project must be opened before adding a new attribute type." );
+        }
+        else
+        {
+            // Filling the Schemas table
             List<Schema> schemas = new ArrayList<Schema>();
             schemas.addAll( schemaHandler.getSchemas() );
 
@@ -300,7 +307,11 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             {
                 schemaComboViewer.setSelection( new StructuredSelection( selectedSchema ) );
             }
+
+            displayErrorMessage( null );
         }
+
+        setPageComplete( false );
     }
 
 

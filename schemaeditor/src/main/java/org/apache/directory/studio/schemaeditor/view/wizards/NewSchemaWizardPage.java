@@ -96,8 +96,16 @@ public class NewSchemaWizardPage extends AbstractWizardPage
      */
     private void initFields()
     {
-        displayErrorMessage( null );
-        setPageComplete( false );
+        if ( Activator.getDefault().getSchemaHandler() == null )
+        {
+            nameText.setEnabled( false );
+            displayErrorMessage( "A schema project must be opened before adding a new schema." );
+        }
+        else
+        {
+            displayErrorMessage( null );
+            setPageComplete( false );
+        }
     }
 
 
