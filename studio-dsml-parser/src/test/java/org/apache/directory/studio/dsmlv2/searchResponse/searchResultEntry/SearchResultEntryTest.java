@@ -22,14 +22,13 @@ package org.apache.directory.studio.dsmlv2.searchResponse.searchResultEntry;
 
 
 import java.io.UnsupportedEncodingException;
-
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
+import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.AbstractResponseTest;
 import org.apache.directory.studio.dsmlv2.Dsmlv2ResponseParser;
@@ -308,15 +307,12 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
+        Entry entry = searchResultEntry.getEntry();
+        assertEquals( 1, entry.size() );
 
-        assertEquals( 1, attributes.size() );
-
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = ( Attribute ) ne.nextElement();
-
-        assertEquals( "dc", attribute.getID() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "dc", attribute.getUpId() );
     }
 
 
@@ -343,31 +339,17 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
+        Entry entry = searchResultEntry.getEntry();
+        assertEquals( 1, entry.size() );
 
-        assertEquals( 1, attributes.size() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "dc", attribute.getUpId() );
 
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = ( Attribute ) ne.nextElement();
-
-        assertEquals( "dc", attribute.getID() );
-
-        assertEquals( 1, attribute.size() );
-
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail();
-        }
-
-        String value = ( String ) ne2.nextElement();
-
-        assertEquals( "example", value );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "example", value.get() );
     }
 
 
@@ -395,35 +377,22 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
+        Entry entry = searchResultEntry.getEntry();
+        assertEquals( 1, entry.size() );
 
-        assertEquals( 1, attributes.size() );
-
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = ( Attribute ) ne.nextElement();
-
-        assertEquals( "cn", attribute.getID() );
-
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "cn", attribute.getUpId() );
         assertEquals( 1, attribute.size() );
 
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail();
-        }
-
-        Object value = ne2.nextElement();
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
 
         String expected = new String( new byte[]
             { 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n',
                 'y' }, "UTF-8" );
-
-        assertEquals( expected, new String( ( byte[] ) value, "UTF-8" ) );
+        assertEquals( expected, new String( ( byte[] ) value.get(), "UTF-8" ) );
     }
 
 
@@ -450,31 +419,18 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
+        Entry entry = searchResultEntry.getEntry();
+        assertEquals( 1, entry.size() );
 
-        assertEquals( 1, attributes.size() );
-
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = ( Attribute ) ne.nextElement();
-
-        assertEquals( "dc", attribute.getID() );
-
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "dc", attribute.getUpId() );
         assertEquals( 1, attribute.size() );
 
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail();
-        }
-
-        String value = ( String ) ne2.nextElement();
-
-        assertEquals( "", value );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "", value.get() );
     }
 
 
@@ -501,35 +457,22 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
+        Entry entry = searchResultEntry.getEntry();
+        assertEquals( 1, entry.size() );
 
-        assertEquals( 1, attributes.size() );
-
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = ( Attribute ) ne.nextElement();
-
-        assertEquals( "objectclass", attribute.getID() );
-
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
         assertEquals( 2, attribute.size() );
 
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail();
-        }
-
-        String value = ( String ) ne2.nextElement();
-
-        assertEquals( "top", value );
-
-        value = ( String ) ne2.nextElement();
-
-        assertEquals( "domain", value );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "top", value.get() );
+        assertTrue( valueIterator.hasNext() );
+        value = valueIterator.next();
+        assertEquals( "domain", value.get() );
+        assertFalse( valueIterator.hasNext() );
     }
 
 
@@ -556,47 +499,26 @@ public class SearchResultEntryTest extends AbstractResponseTest
         SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse() )
             .getCurrentSearchResultEntry();
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
+        Entry entry = searchResultEntry.getEntry();
+        assertEquals( 2, entry.size() );
 
-        assertEquals( 2, attributes.size() );
-
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute objectClassAttribute = attributes.get( "objectclass" );
-
+        EntryAttribute objectClassAttribute = entry.get( "objectclass" );
         assertEquals( 1, objectClassAttribute.size() );
 
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = objectClassAttribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail();
-        }
+        Iterator<Value<?>> valueIterator = objectClassAttribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "top", value.get() );
+        assertFalse( valueIterator.hasNext() );
 
-        String value = ( String ) ne2.nextElement();
+        EntryAttribute dcAttribute = entry.get( "dc" );
+        assertEquals( 1, objectClassAttribute.size() );
 
-        assertEquals( "top", value );
-
-        Attribute dcAttribute = attributes.get( "dc" );
-
-        assertEquals( 1, dcAttribute.size() );
-
-        ne2 = null;
-        try
-        {
-            ne2 = dcAttribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail();
-        }
-
-        value = ( String ) ne2.nextElement();
-
-        assertEquals( "example", value );
+        valueIterator = dcAttribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        value = valueIterator.next();
+        assertEquals( "example", value.get() );
+        assertFalse( valueIterator.hasNext() );
     }
 
 

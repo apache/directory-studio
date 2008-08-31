@@ -20,12 +20,12 @@
 package org.apache.directory.studio.dsmlv2.request;
 
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.ldap.codec.add.AddRequest;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
@@ -87,45 +87,32 @@ public class AddRequestDsml extends AbstractRequestDsml
         }
 
         // Attributes
-        Attributes attributes = request.getAttributes();
-        if ( attributes != null )
+        Entry entry = request.getEntry();
+        if ( entry != null )
         {
-            NamingEnumeration ne = attributes.getAll();
-            while ( ne.hasMoreElements() )
+            for ( EntryAttribute attribute : entry )
             {
-                Attribute attribute = ( Attribute ) ne.nextElement();
                 Element attributeElement = element.addElement( "attr" );
-                attributeElement.addAttribute( "name", attribute.getID() );
-
-                // Looping on Values Enumeration
-                try
+                attributeElement.addAttribute( "name", attribute.getId() );
+                // Looping on Values
+                for ( Value<?> value : attribute )
                 {
-                    NamingEnumeration ne2 = attribute.getAll();
-
-                    while ( ne2.hasMoreElements() )
+                    if ( ParserUtils.needsBase64Encoding( value.get() ) )
                     {
-                        Object value = ne2.nextElement();
+                        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
+                        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                        attributeElement.getDocument().getRootElement().add( xsdNamespace );
+                        attributeElement.getDocument().getRootElement().add( xsiNamespace );
 
-                        if ( ParserUtils.needsBase64Encoding( value ) )
-                        {
-                            Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                            Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                            attributeElement.getDocument().getRootElement().add( xsdNamespace );
-                            attributeElement.getDocument().getRootElement().add( xsiNamespace );
-
-                            Element valueElement = attributeElement.addElement( "value" ).addText(
-                                ParserUtils.base64Encode( value ) );
-                            valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
-                                + ParserUtils.BASE64BINARY );
-                        }
-                        else
-                        {
-                            attributeElement.addElement( "value" ).addText( value.toString() );
-                        }
+                        Element valueElement = attributeElement.addElement( "value" ).addText(
+                            ParserUtils.base64Encode( value.get() ) );
+                        valueElement
+                            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                     }
-                }
-                catch ( NamingException e )
-                {
+                    else
+                    {
+                        attributeElement.addElement( "value" ).addText( value.get().toString() );
+                    }
                 }
             }
         }
@@ -135,22 +122,22 @@ public class AddRequestDsml extends AbstractRequestDsml
 
 
     /**
-     * Initialize the ArrayList for attributes.
+     * Initialize the Entry.
      */
-    public void initAttributes()
+    public void initEntry()
     {
-        ( ( AddRequest ) instance ).initAttributes();
+        ( ( AddRequest ) instance ).initEntry();
     }
 
 
     /**
-     * Get the entry's attributes to be added
+     * Get the entry with its attributes.
      * 
-     * @return Returns the attributes.
+     * @return Returns the entry.
      */
-    public Attributes getAttributes()
+    public Entry getEntry()
     {
-        return ( ( AddRequest ) instance ).getAttributes();
+        return ( ( AddRequest ) instance ).getEntry();
     }
 
 
@@ -158,8 +145,9 @@ public class AddRequestDsml extends AbstractRequestDsml
      * Create a new attributeValue
      * 
      * @param type The attribute's name (called 'type' in the grammar)
+     * @throws NamingException 
      */
-    public void addAttributeType( String type )
+    public void addAttributeType( String type ) throws NamingException
     {
         ( ( AddRequest ) instance ).addAttributeType( type );
     }
@@ -179,22 +167,22 @@ public class AddRequestDsml extends AbstractRequestDsml
     /**
      * Get the added DN
      * 
-     * @return Returns the entry.
+     * @return Returns the entry DN.
      */
-    public LdapDN getEntry()
+    public LdapDN getEntryDn()
     {
-        return ( ( AddRequest ) instance ).getEntry();
+        return ( ( AddRequest ) instance ).getEntryDn();
     }
 
 
     /**
      * Set the added DN.
      * 
-     * @param entry The entry to set.
+     * @param entry The entry DN to set.
      */
-    public void setEntry( LdapDN entry )
+    public void setEntryDn( LdapDN entryDn )
     {
-        ( ( AddRequest ) instance ).setEntry( entry );
+        ( ( AddRequest ) instance ).setEntryDn( entryDn );
     }
 
 

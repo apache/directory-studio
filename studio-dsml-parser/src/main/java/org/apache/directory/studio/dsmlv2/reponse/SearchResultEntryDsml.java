@@ -21,12 +21,10 @@
 package org.apache.directory.studio.dsmlv2.reponse;
 
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-
 import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
@@ -82,46 +80,31 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
         SearchResultEntry searchResultEntry = ( SearchResultEntry ) instance;
         element.addAttribute( "dn", searchResultEntry.getObjectName().toString() );
 
-        Attributes attributes = searchResultEntry.getPartialAttributeList();
-        NamingEnumeration ne = attributes.getAll();
-
-        // Looping on Attributes Enumeration
-        while ( ne.hasMoreElements() )
+        Entry entry = searchResultEntry.getEntry();
+        for ( EntryAttribute attribute : entry )
         {
-            Attribute attribute = ( Attribute ) ne.nextElement();
 
             Element attributeElement = element.addElement( "attr" );
-            attributeElement.addAttribute( "name", attribute.getID() );
+            attributeElement.addAttribute( "name", attribute.getId() );
 
-            // Looping on Values Enumeration
-            try
+            for ( Value<?> value : attribute )
             {
-                NamingEnumeration ne2 = attribute.getAll();
-
-                while ( ne2.hasMoreElements() )
+                if ( ParserUtils.needsBase64Encoding( value.get() ) )
                 {
-                    Object value = ne2.nextElement();
+                    Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
+                    Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                    attributeElement.getDocument().getRootElement().add( xsdNamespace );
+                    attributeElement.getDocument().getRootElement().add( xsiNamespace );
 
-                    if ( ParserUtils.needsBase64Encoding( value ) )
-                    {
-                        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
-                        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                        attributeElement.getDocument().getRootElement().add( xsdNamespace );
-                        attributeElement.getDocument().getRootElement().add( xsiNamespace );
-
-                        Element valueElement = attributeElement.addElement( "value" ).addText(
-                            ParserUtils.base64Encode( value ) );
-                        valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
-                            + ParserUtils.BASE64BINARY );
-                    }
-                    else
-                    {
-                        attributeElement.addElement( "value" ).addText( value.toString() );
-                    }
+                    Element valueElement = attributeElement.addElement( "value" ).addText(
+                        ParserUtils.base64Encode( value.get() ) );
+                    valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                        + ParserUtils.BASE64BINARY );
                 }
-            }
-            catch ( NamingException e )
-            {
+                else
+                {
+                    attributeElement.addElement( "value" ).addText( value.get().toString() );
+                }
             }
         }
 
@@ -152,22 +135,24 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
 
 
     /**
-     * Get the entry's attributes
+     * Get the entry.
      * 
-     * @return Returns the partialAttributeList.
+     * @return Returns the entry.
      */
-    public Attributes getPartialAttributeList()
+    public Entry getEntry()
     {
-        return ( ( SearchResultEntry ) instance ).getPartialAttributeList();
+        return ( ( SearchResultEntry ) instance ).getEntry();
     }
 
 
     /**
-     * Initialize the partial Attribute list.
+     * Initialize the entry.
+     * 
+     * @param entry the entry
      */
-    public void setPartialAttributeList( Attributes partialAttributeList )
+    public void setEntry( Entry entry )
     {
-        ( ( SearchResultEntry ) instance ).setPartialAttributeList( partialAttributeList );
+        ( ( SearchResultEntry ) instance ).setEntry( entry );
     }
 
 

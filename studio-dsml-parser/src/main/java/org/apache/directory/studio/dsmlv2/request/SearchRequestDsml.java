@@ -22,9 +22,6 @@ package org.apache.directory.studio.dsmlv2.request;
 
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attributes;
-
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.search.AndFilter;
@@ -36,6 +33,7 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
@@ -156,15 +154,14 @@ public class SearchRequestDsml extends AbstractRequestDsml
         toDsml( filterElement, request.getFilter() );
 
         // Attributes
-        Attributes attributes = request.getAttributes();
+        List<EntryAttribute> attributes = request.getAttributes();
         if ( attributes.size() > 0 )
         {
             Element attributesElement = element.addElement( "attributes" );
 
-            NamingEnumeration<String> ids = attributes.getIDs();
-            while ( ids.hasMoreElements() )
+            for ( EntryAttribute entryAttribute : attributes )
             {
-                attributesElement.addElement( "attribute" ).addAttribute( "name", ids.nextElement() );
+                attributesElement.addElement( "attribute" ).addAttribute( "name", entryAttribute.getId() );
             }
         }
 

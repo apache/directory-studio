@@ -21,13 +21,13 @@
 package org.apache.directory.studio.dsmlv2.addRequest;
 
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
+import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.add.AddRequest;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.AbstractTest;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
@@ -71,7 +71,7 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", addRequest.getEntry().toString() );
+        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", addRequest.getEntryDn().toString() );
     }
 
 
@@ -284,37 +284,17 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = addRequest.getAttributes();
+        Entry entry = addRequest.getEntry();
+        assertEquals( 1, entry.size() );
 
-        assertEquals( 1, attributes.size() );
-
-        // Getting the Attribute       
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = null;
-        try
-        {
-            attribute = ( Attribute ) ne.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "objectclass", attribute.getID() );
+        // Getting the Attribute  
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertFalse( ne2.hasMoreElements() );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertFalse( valueIterator.hasNext() );
     }
 
 
@@ -340,37 +320,17 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = addRequest.getAttributes();
-
-        assertEquals( 1, attributes.size() );
+        Entry entry = addRequest.getEntry();
+        assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = null;
-        try
-        {
-            attribute = ( Attribute ) ne.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "objectclass", attribute.getID() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertFalse( ne2.hasMoreElements() );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertFalse( valueIterator.hasNext() );
     }
 
 
@@ -396,47 +356,19 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = addRequest.getAttributes();
-
-        assertEquals( 1, attributes.size() );
+        Entry entry = addRequest.getEntry();
+        assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = null;
-        try
-        {
-            attribute = ( Attribute ) ne.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "objectclass", attribute.getID() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        String value = null;
-        try
-        {
-            value = ( String ) ne2.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "top", value );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "top", value.get() );
     }
 
 
@@ -462,47 +394,20 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = addRequest.getAttributes();
-
-        assertEquals( 1, attributes.size() );
+        Entry entry = addRequest.getEntry();
+        assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = null;
-        try
-        {
-            attribute = ( Attribute ) ne.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "objectclass", attribute.getID() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        Object value = null;
-        try
-        {
-            value = ne2.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) value ) );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertTrue( value.isBinary() );
+        assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) value.get() ) );
     }
 
 
@@ -528,58 +433,23 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = addRequest.getAttributes();
-
-        assertEquals( 1, attributes.size() );
+        Entry entry = addRequest.getEntry();
+        assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = null;
-        try
-        {
-            attribute = ( Attribute ) ne.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "objectclass", attribute.getID() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        String value = null;
-        try
-        {
-            value = ( String ) ne2.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "top", value );
-
-        try
-        {
-            value = ( String ) ne2.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "person", value );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "top", value.get() );
+        assertTrue( valueIterator.hasNext() );
+        value = valueIterator.next();
+        assertEquals( "person", value.get() );
+        assertFalse( valueIterator.hasNext() );
     }
 
 
@@ -614,58 +484,23 @@ public class AddRequestTest extends AbstractTest
 
         AddRequest addRequest = ( AddRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = addRequest.getAttributes();
-
-        assertEquals( 1, attributes.size() );
+        Entry entry = addRequest.getEntry();
+        assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = null;
-        try
-        {
-            attribute = ( Attribute ) ne.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "objectclass", attribute.getID() );
+        Iterator<EntryAttribute> attributeIterator = entry.iterator();
+        EntryAttribute attribute = attributeIterator.next();
+        assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
-        NamingEnumeration ne2 = null;
-        try
-        {
-            ne2 = attribute.getAll();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        String value = null;
-        try
-        {
-            value = ( String ) ne2.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "top", value );
-
-        try
-        {
-            value = ( String ) ne2.next();
-        }
-        catch ( NamingException e )
-        {
-            fail( e.getMessage() );
-        }
-
-        assertEquals( "person", value );
+        Iterator<Value<?>> valueIterator = attribute.iterator();
+        assertTrue( valueIterator.hasNext() );
+        Value<?> value = valueIterator.next();
+        assertEquals( "top", value.get() );
+        assertTrue( valueIterator.hasNext() );
+        value = valueIterator.next();
+        assertEquals( "person", value.get() );
+        assertFalse( valueIterator.hasNext() );
     }
 
 

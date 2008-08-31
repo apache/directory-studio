@@ -26,6 +26,7 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 
 import javax.naming.InvalidNameException;
+import javax.naming.NamingException;
 
 import org.apache.directory.shared.asn1.Asn1Object;
 import org.apache.directory.shared.asn1.codec.DecoderException;
@@ -1179,7 +1180,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
         {
             AddRequest addRequest = new AddRequest();
             container.getBatchRequest().addRequest( addRequest );
-            addRequest.initAttributes(); // TODO maybe delay that to the first attribute discovery
+            addRequest.initEntry(); // TODO maybe delay that to the first attribute discovery
 
             XmlPullParser xpp = container.getParser();
 
@@ -1204,7 +1205,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             {
                 try
                 {
-                    addRequest.setEntry( new LdapDN( attributeValue ) );
+                    addRequest.setEntryDn( new LdapDN( attributeValue ) );
                 }
                 catch ( InvalidNameException e )
                 {
@@ -1235,7 +1236,14 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             attributeValue = xpp.getAttributeValue( "", "name" );
             if ( attributeValue != null )
             {
-                addRequest.addAttributeType( attributeValue );
+                try
+                {
+                    addRequest.addAttributeType( attributeValue );
+                }
+                catch ( NamingException e )
+                {
+                    throw new XmlPullParserException( "can not add attribute value", xpp, e );
+                }
             }
             else
             {

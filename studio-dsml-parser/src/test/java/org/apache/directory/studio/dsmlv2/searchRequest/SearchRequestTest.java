@@ -23,10 +23,7 @@ package org.apache.directory.studio.dsmlv2.searchRequest;
 
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.Control;
@@ -40,6 +37,7 @@ import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.AbstractTest;
@@ -760,15 +758,11 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = searchRequest.getAttributes();
-
+        List<EntryAttribute> attributes = searchRequest.getAttributes();
         assertEquals( 1, attributes.size() );
 
-        NamingEnumeration ne = attributes.getAll();
-
-        Attribute attribute = ( Attribute ) ne.next();
-
-        assertEquals( "sn", attribute.getID() );
+        EntryAttribute attribute = attributes.get( 0 );
+        assertEquals( "sn", attribute.getUpId() );
     }
 
 
@@ -795,19 +789,14 @@ public class SearchRequestTest extends AbstractTest
 
         SearchRequest searchRequest = ( SearchRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        Attributes attributes = searchRequest.getAttributes();
-
+        List<EntryAttribute> attributes = searchRequest.getAttributes();
         assertEquals( 2, attributes.size() );
 
-        NamingEnumeration ne = attributes.getAll();
+        EntryAttribute attribute1 = attributes.get( 0 );
+        assertEquals( "sn", attribute1.getUpId() );
 
-        Attribute attribute = ( Attribute ) ne.next();
-
-        assertEquals( "sn", attribute.getID() );
-
-        attribute = ( Attribute ) ne.next();
-
-        assertEquals( "givenName", attribute.getID() );
+        EntryAttribute attribute2 = attributes.get( 1 );
+        assertEquals( "givenName", attribute2.getUpId() );
     }
 
 
@@ -993,7 +982,7 @@ public class SearchRequestTest extends AbstractTest
         AttributeValueAssertion assertion = approxMatchFilter.getAssertion();
 
         assertEquals( "sn", assertion.getAttributeDesc() );
-        
+
         assertEquals( "DSMLv2.0 rocks!!", new String( ( byte[] ) assertion.getAssertionValue().get() ) );
     }
 
