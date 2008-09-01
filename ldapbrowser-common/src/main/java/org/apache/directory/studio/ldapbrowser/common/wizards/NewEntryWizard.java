@@ -81,7 +81,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
     /** The read only flag of the selected connection. */
     protected boolean originalReadOnlyFlag;
-    
+
     /** The prototype entry. */
     protected DummyEntry prototypeEntry;
 
@@ -103,7 +103,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public static String getId()
     {
-        return NewEntryWizard.class.getName();
+        return BrowserCommonConstants.WIZARD_NEW_ENTRY_WIZARD;
     }
 
 
@@ -304,7 +304,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
             if ( selectedConnection != null && selectedConnection.getConnection() != null )
             {
                 selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
-                
+
                 typePage.saveDialogSettings();
                 dnPage.saveDialogSettings();
 

@@ -198,5 +198,10 @@ public interface BrowserCommonConstants
         .getString( "DnD_SearchTransfer" );
     public static final String DND_VALUES_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "DnD_ValuesTransfer" );
-
+    
+    public static final String WIZARD_ATTRIBUTE_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
+    .getString( "Wizard_AttributeWizard_id" );
+   
+    public static final String WIZARD_NEW_ENTRY_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
+    .getString( "NewWizard_NewEntryWizard_id" );
 }

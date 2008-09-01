@@ -111,7 +111,7 @@ public class AttributeWizard extends Wizard implements INewWizard
      */
     public static String getId()
     {
-        return AttributeWizard.class.getName();
+        return BrowserCommonConstants.WIZARD_ATTRIBUTE_WIZARD;
     }
 
 
