@@ -210,7 +210,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public static String getId()
     {
-        return LdifEditor.class.getName();
+        return LdifEditorConstants.EDITOR_LDIF_EDITOR;
     }
 
 
@@ -573,7 +573,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
                 + ( browserConnection == null || browserConnection.getConnection() == null ? "-" : browserConnection
                     .getConnection().getName() ) );
         // getStatusField("ldapconnection").setText();
-        
+
         IAction action = getAction( ExecuteLdifAction.class.getName() );
         if ( action != null )
         {
@@ -638,10 +638,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
-    
-    
-    
-    
     /**
      * This implementation checks if the input is of type
      * NonExistingLdifEditorInput. In that case doSaveAs() is
@@ -662,7 +658,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     }
 
 
-    
     /**
      * The input could be one of the following types:
      * - NonExistingLdifEditorInput: New file, not yet saved
@@ -794,8 +789,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         {
             IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                 IContextService.class );
-            contextActivation = contextService
-                .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
+            contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
 
             activateGlobalActionHandlers();
         }

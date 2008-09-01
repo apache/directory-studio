@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifeditor.wizards;
 
 
+import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -81,7 +82,7 @@ public class NewLdifFileWizard extends Wizard implements INewWizard
      */
     public static String getId()
     {
-        return NewLdifFileWizard.class.getName();
+        return LdifEditorConstants.NEW_WIZARD_NEW_LDIF_FILE;
     }
 
 

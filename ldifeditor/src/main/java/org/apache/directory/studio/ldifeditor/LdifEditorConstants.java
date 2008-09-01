@@ -35,6 +35,12 @@ public interface LdifEditorConstants
     public static final String ACTION_ID_EDIT_RECORD = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "Cmd_EditRecord_id" );
 
+    public static final String NEW_WIZARD_NEW_LDIF_FILE = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewLdifFileWizard_id" );
+
+    public static final String EDITOR_LDIF_EDITOR = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "Editor_LdifEditor_id" );
+
     public static final String PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP = "ldifEditorFormatterAutoWrap";
 
     public static final String PREFERENCE_LDIFEDITOR_FOLDING_ENABLE = "ldifEditorFoldingEnable";
