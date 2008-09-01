@@ -34,7 +34,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.NonExistingLdifEditorInput;
 import org.eclipse.core.runtime.IStatus;
@@ -151,15 +151,15 @@ public class BatchOperationWizard extends Wizard implements INewWizard
         
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( applyOnPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( ldifPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( modifyPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( finishPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
     }
 
 

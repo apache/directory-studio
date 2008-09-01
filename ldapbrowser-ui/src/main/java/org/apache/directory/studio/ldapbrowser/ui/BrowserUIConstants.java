@@ -29,11 +29,13 @@ package org.apache.directory.studio.ldapbrowser.ui;
  */
 public interface BrowserUIConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = BrowserUIPlugin.getDefault().getPluginProperties().getString( "Plugin_id" );
 
     public static final String DN = "DN";
 
     public static final String PREFERENCE_BROWSER_LINK_WITH_EDITOR = "browserLinkWithEditor";
-    
+
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN = "searchResultEditorShowDn";
 
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS = "searchResultEditorShowLinks";
@@ -49,14 +51,13 @@ public interface BrowserUIConstants
     public static final String PREFERENCEPAGEID_ENTRYEDITOR = "org.apache.directory.studio.ldapbrowser.preferences.EntryEditorPreferencePage";
 
     public static final String PREFERENCEPAGEID_SEARCHRESULTEDITOR = "org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage";
-    
+
     public static final String PREFERENCEPAGEID_MODIFICATIONLOGS = "org.apache.directory.studio.ldapbrowser.preferences.ModificationLogsPreferencePage";
-    
+
     public static final String PREFERENCEPAGEID_SEARCHLOGS = "org.apache.directory.studio.ldapbrowser.preferences.SearchLogsPreferencePage";
 
-    
     public static final String IMG_EXPANDALL = "resources/icons/expandall.gif";
-    
+
     public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif";
 
     public static final String IMG_BATCH = "resources/icons/batch.gif";
@@ -64,9 +65,9 @@ public interface BrowserUIConstants
     public static final String IMG_IMPORT = "resources/icons/import.gif";
 
     public static final String IMG_EXPORT = "resources/icons/export.gif";
-    
+
     public static final String IMG_IMPORT_DSML_WIZARD = "resources/icons/import_dsml_wizard.gif";
-    
+
     public static final String IMG_EXPORT_DSML_WIZARD = "resources/icons/export_dsml_wizard.gif";
 
     public static final String IMG_IMPORT_LDIF_WIZARD = "resources/icons/import_ldif_wizard.gif";
@@ -74,9 +75,9 @@ public interface BrowserUIConstants
     public static final String IMG_EXPORT_LDIF_WIZARD = "resources/icons/export_ldif_wizard.gif";
 
     public static final String IMG_IMPORT_CONNECTIONS_WIZARD = "resources/icons/import_connections_wizard.gif";
-    
+
     public static final String IMG_EXPORT_CONNECTIONS_WIZARD = "resources/icons/export_connections_wizard.gif";
-    
+
     public static final String IMG_IMPORT_CSV_WIZARD = "resources/icons/import_csv_wizard.gif";
 
     public static final String IMG_EXPORT_CSV_WIZARD = "resources/icons/export_csv_wizard.gif";
@@ -86,9 +87,9 @@ public interface BrowserUIConstants
     public static final String IMG_EXPORT_XLS_WIZARD = "resources/icons/export_xls_wizard.gif";
 
     public static final String IMG_IMPORT_DSML = "resources/icons/import_dsml.gif";
-    
+
     public static final String IMG_EXPORT_DSML = "resources/icons/export_dsml.gif";
-    
+
     public static final String IMG_IMPORT_LDIF = "resources/icons/import_ldif.gif";
 
     public static final String IMG_EXPORT_LDIF = "resources/icons/export_ldif.gif";
@@ -96,7 +97,7 @@ public interface BrowserUIConstants
     public static final String IMG_IMPORT_CONNECTIONS = "resources/icons/import_connections.gif";
 
     public static final String IMG_EXPORT_CONNECTIONS = "resources/icons/export_connections.gif";
-    
+
     public static final String IMG_IMPORT_CSV = "resources/icons/import_csv.gif";
 
     public static final String IMG_EXPORT_CSV = "resources/icons/export_csv.gif";
@@ -240,7 +241,7 @@ public interface BrowserUIConstants
     public static final String IMG_PREVIOUS = "resources/icons/previous.gif";
 
     public static final String IMG_REFRESH = "resources/icons/refresh.gif";
-    
+
     public static final String IMG_CLEAR = "resources/icons/clear.gif";
 
 }

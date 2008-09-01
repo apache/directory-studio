@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.search;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -166,9 +166,9 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
         errorMessageLabel = BaseWidgetUtils.createLabel( parent, "", 3 );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_dialog" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_dialog" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_dialog" );
 
         super.setControl( parent );
     }

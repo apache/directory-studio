@@ -25,7 +25,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionConfiguration;
 import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -125,7 +125,7 @@ public class ConnectionView extends ViewPart
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_connections_view" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_connections_view" );
 
         // create configuration
         configuration = new ConnectionConfiguration();

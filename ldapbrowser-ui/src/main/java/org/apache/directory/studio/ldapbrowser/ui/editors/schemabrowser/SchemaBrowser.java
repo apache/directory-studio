@@ -180,11 +180,11 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
 
         // init help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_schema_browser" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( tabFolder,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_schema_browser" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( ocdPageControl,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_schema_browser" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" );
     }
 
 

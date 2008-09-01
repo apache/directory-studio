@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -151,7 +151,7 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_entry_editor" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_entry_editor" );
 
         // create configuration
         configuration = new EntryEditorConfiguration();

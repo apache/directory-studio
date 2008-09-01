@@ -30,7 +30,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -158,7 +158,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
         super.createPageControls( pageContainer );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
     }
 
 

@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -155,7 +156,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_search_result_editor" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_result_editor" );
 
         // create configuration
         configuration = new SearchResultEditorConfiguration( this );

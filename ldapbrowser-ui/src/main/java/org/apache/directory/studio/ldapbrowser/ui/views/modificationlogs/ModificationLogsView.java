@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.widgets.LdifEditorWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -125,7 +125,7 @@ public class ModificationLogsView extends ViewPart
         
         // set help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_modification_logs_view" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" );
     }
 
 

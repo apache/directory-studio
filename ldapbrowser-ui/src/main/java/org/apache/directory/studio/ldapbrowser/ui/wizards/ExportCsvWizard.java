@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExportCsvJob;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
@@ -84,9 +84,9 @@ public class ExportCsvWizard extends ExportBaseWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_csvexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIPlugin.PLUGIN_ID + "." + "tools_csvexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" );
     }
 
 
