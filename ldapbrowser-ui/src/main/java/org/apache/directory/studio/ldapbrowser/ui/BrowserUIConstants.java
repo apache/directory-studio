@@ -40,21 +40,29 @@ public interface BrowserUIConstants
 
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS = "searchResultEditorShowLinks";
 
-    public static final String PREFERENCEPAGEID_MAIN = "org.apache.directory.studio.ldapbrowser.preferences.MainPreferencePage";
+    public static final String PREFERENCEPAGEID_MAIN = BrowserUIPlugin.getDefault().getPluginProperties().getString(
+        "PrefPage_MainPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_ATTRIBUTES = "org.apache.directory.studio.ldapbrowser.preferences.AttributesPreferencePage";
+    public static final String PREFERENCEPAGEID_ATTRIBUTES = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_AttributesPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_BINARYATTRIBUTES = "org.apache.directory.studio.ldapbrowser.preferences.BinaryAttributesAndSyntaxesPreferencePage";
+    public static final String PREFERENCEPAGEID_BINARYATTRIBUTES = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_BinaryAttributesAndSyntaxesPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_BROWSER = "org.apache.directory.studio.ldapbrowser.preferences.BrowserPreferencePage";
+    public static final String PREFERENCEPAGEID_BROWSER = BrowserUIPlugin.getDefault().getPluginProperties().getString(
+        "PrefPage_BrowserPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_ENTRYEDITOR = "org.apache.directory.studio.ldapbrowser.preferences.EntryEditorPreferencePage";
+    public static final String PREFERENCEPAGEID_ENTRYEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_EntryEditorPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_SEARCHRESULTEDITOR = "org.apache.directory.studio.ldapbrowser.preferences.SearchResultEditorPreferencePage";
+    public static final String PREFERENCEPAGEID_SEARCHRESULTEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_SearchResultEditorPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_MODIFICATIONLOGS = "org.apache.directory.studio.ldapbrowser.preferences.ModificationLogsPreferencePage";
+    public static final String PREFERENCEPAGEID_MODIFICATIONLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_ModificationLogsPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_SEARCHLOGS = "org.apache.directory.studio.ldapbrowser.preferences.SearchLogsPreferencePage";
+    public static final String PREFERENCEPAGEID_SEARCHLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_SearchLogsPreferencePage_id" );
 
     public static final String IMG_EXPANDALL = "resources/icons/expandall.gif";
 
