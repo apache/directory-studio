@@ -21,8 +21,6 @@
 package org.apache.directory.studio.connection.ui;
 
 
-
-
 /**
  * Constants used in the connection UI plugin.
  *
@@ -80,4 +78,23 @@ public interface ConnectionUIConstants
     /** The image to add a connection folder. */
     public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.gif";
 
+    /** The plug-in ID */
+    public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
+        "ConnectionTransfert_Typename" );
+    
+    /** The plug-in ID */
+    public static final String CMD_COPY = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Copy_id" );
+    
+    /** The plug-in ID */
+    public static final String CMD_PASTE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Paste_id" );
+    
+    /** The plug-in ID */
+    public static final String CMD_DELETE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Delete_id" );
+    
+    /** The plug-in ID */
+    public static final String CMD_PROPERTIES = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_Properties_id" );
 }

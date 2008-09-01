@@ -34,6 +34,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
@@ -50,9 +51,8 @@ import org.eclipse.swt.dnd.TransferData;
  */
 public class ConnectionTransfer extends ByteArrayTransfer
 {
-
     /** The Constant TYPENAME. */
-    private static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.connection";
+    private static final String TYPENAME = ConnectionUIConstants.TYPENAME;
 
     /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );

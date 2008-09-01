@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.actions.ActionHandlerManager;
 import org.apache.directory.studio.connection.ui.actions.CloseConnectionAction;
 import org.apache.directory.studio.connection.ui.actions.ConnectionViewActionProxy;
@@ -289,19 +290,19 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         else
         {
             IAction ca = ( IAction ) connectionActionMap.get( copyConnectionAction );
-            ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
+            ca.setActionDefinitionId( ConnectionUIConstants.CMD_COPY );
             ActionUtils.activateActionHandler( ca );
 
             IAction pa = ( IAction ) connectionActionMap.get( pasteConnectionAction );
-            pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
+            pa.setActionDefinitionId( ConnectionUIConstants.CMD_PASTE );
             ActionUtils.activateActionHandler( pa );
 
             IAction da = ( IAction ) connectionActionMap.get( deleteConnectionAction );
-            da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
+            da.setActionDefinitionId( ConnectionUIConstants.CMD_DELETE );
             ActionUtils.activateActionHandler( da );
 
             IAction pda = ( IAction ) connectionActionMap.get( propertyDialogAction );
-            pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
+            pda.setActionDefinitionId( ConnectionUIConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( pda );
         }
     }
