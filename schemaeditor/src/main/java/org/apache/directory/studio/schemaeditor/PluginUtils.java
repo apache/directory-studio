@@ -307,10 +307,8 @@ public class PluginUtils
     public static void logInfo( Throwable exception, String message, Object... args )
     {
         String msg = MessageFormat.format( message, args );
-        Activator.getDefault().getLog()
-            .log(
-                new Status( Status.INFO, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, msg,
-                    exception ) );
+        Activator.getDefault().getLog().log(
+            new Status( Status.INFO, Activator.getDefault().getBundle().getSymbolicName(), Status.OK, msg, exception ) );
     }
 
 
@@ -462,7 +460,7 @@ public class PluginUtils
         List<SchemaConnector> schemaConnectors = new ArrayList<SchemaConnector>();
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            "org.apache.directory.studio.schemaeditor.schemaConnectors" );
+            Activator.getDefault().getPluginProperties().getString( "ExtensionPoint_SchemaConnectors_id" ) );
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
 
         if ( members != null )
