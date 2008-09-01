@@ -41,9 +41,6 @@ import org.osgi.framework.BundleContext;
  */
 public class ConnectionUIPlugin extends AbstractUIPlugin
 {
-    /** The Constant PLUGIN_ID. */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.connection.ui";
-
     /** The shared plugin instance. */
     private static ConnectionUIPlugin plugin;
 
@@ -211,8 +208,10 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
             }
             catch ( IOException e )
             {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, ConnectionUIPlugin.PLUGIN_ID, Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.connection.ui", Status.OK,
                         "Unable to get the plugin properties.", e ) );
             }
         }

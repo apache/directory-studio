@@ -73,7 +73,7 @@ public class ConnectionParameterPageManager
             catch ( Exception e )
             {
                 ConnectionUIPlugin.getDefault().getLog().log(
-                    new Status( IStatus.ERROR, ConnectionUIPlugin.PLUGIN_ID, 1,
+                    new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, 1,
                         "Unable to create connection parameter page " + member.getAttribute( "class" ), e ) );
             }
         }

@@ -21,6 +21,8 @@
 package org.apache.directory.studio.connection.ui;
 
 
+
+
 /**
  * Constants used in the connection UI plugin.
  *
@@ -29,6 +31,9 @@ package org.apache.directory.studio.connection.ui;
  */
 public interface ConnectionUIConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "Plugin_id" );
 
     /** The dialog setting key used for the history of host names. */
     public static final String DIALOGSETTING_KEY_HOST_HISTORY = "hostHistory";
@@ -50,7 +55,7 @@ public interface ConnectionUIConstants
 
     /** The image used to display the disconnected state of connections. */
     public static final String IMG_CONNECTION_DISCONNECTED = "resources/icons/connection_disconnected.gif";
-    
+
     /** The image used to display the connected state of SSL connections. */
     public static final String IMG_CONNECTION_SSL_CONNECTED = "resources/icons/connection_ssl_connected.gif";
 

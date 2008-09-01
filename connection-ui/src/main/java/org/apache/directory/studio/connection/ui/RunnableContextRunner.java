@@ -129,7 +129,7 @@ public class RunnableContextRunner
         catch ( Exception ex )
         {
             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                new Status( IStatus.ERROR, ConnectionUIPlugin.PLUGIN_ID, IStatus.ERROR, ex.getMessage() != null ? ex
+                new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, IStatus.ERROR, ex.getMessage() != null ? ex
                     .getMessage() : "", ex ) );
         }
 
