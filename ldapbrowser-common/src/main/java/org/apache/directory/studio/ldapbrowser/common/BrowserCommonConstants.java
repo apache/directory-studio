@@ -163,6 +163,9 @@ public interface BrowserCommonConstants
     public static final String IMG_OCD_STRUCTURAL = "resources/icons/ocd_structural.gif";
     public static final String IMG_MRD = "resources/icons/mrd.png";
     public static final String IMG_ENTRY_WIZARD = "resources/icons/entry_wizard.gif";
+    public static final String IMG_TOP = "resources/icons/top.gif";
+    public static final String IMG_NEXT = "resources/icons/next.gif";
+    public static final String IMG_PREVIOUS = "resources/icons/previous.gif";
 
     public static final String CMD_ADD_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
         "Cmd_AddAttribute_id" );

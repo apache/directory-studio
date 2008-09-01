@@ -47,10 +47,9 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.util.EmptyEnumeration;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -275,11 +274,13 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
-    public NamingEnumeration<SearchResult> search( final String searchBase, final String filter,
+    public StudioNamingEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
+        final long requestNum = SEARCH_RESQUEST_NUM++;
+        
         // start
         InnerRunnable runnable = new InnerRunnable()
         {
@@ -287,7 +288,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             {
                 // add ManageDsaIT control
                 Control[] localControls = addManageDsaItControls( controls, referralsHandlingMethod );
-                long requestNum = SEARCH_RESQUEST_NUM++;
 
                 try
                 {
@@ -309,7 +309,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     //   user provided ATAV.
                     NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapName( searchBase ), filter,
                         searchControls );
-                    namingEnumeration = new StudioNamingEnumeration( connection, ne, searchBase, filter,
+                    namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, ne, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
                         monitor, referralsInfo );
                 }
@@ -418,7 +418,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            return new EmptyEnumeration<SearchResult>();
+            return new StudioNamingEnumeration( connection, null, null, searchBase, filter,
+                searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
+                monitor, referralsInfo );
         }
     }
 
@@ -1136,7 +1138,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
          * 
          * @return the result
          */
-        public NamingEnumeration<SearchResult> getResult()
+        public StudioNamingEnumeration getResult()
         {
             return namingEnumeration;
         }

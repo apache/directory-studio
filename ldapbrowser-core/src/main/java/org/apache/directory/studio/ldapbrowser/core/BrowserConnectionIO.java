@@ -20,8 +20,12 @@
 package org.apache.directory.studio.ldapbrowser.core;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +35,7 @@ import java.util.Map;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
@@ -38,6 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
@@ -61,10 +67,10 @@ public class BrowserConnectionIO
 {
     // XML tags
     private static final String BROWSER_CONNECTIONS_TAG = "browserConnections";
-    
+
     private static final String BROWSER_CONNECTION_TAG = "browserConnection";
     private static final String ID_TAG = "id";
-    
+
     private static final String SEARCHES_TAG = "searches";
     private static final String SEARCH_PARAMETER_TAG = "searchParameter";
     private static final String NAME_TAG = "name";
@@ -78,12 +84,13 @@ public class BrowserConnectionIO
     private static final String COUNT_LIMIT_TAG = "countLimit";
     private static final String ALIASES_DEREFERENCING_METHOD_TAG = "aliasesDereferencingMethod";
     private static final String REFERRALS_HANDLING_METHOD_TAG = "referralsHandlingMethod";
-    //TODO: Controls
-    
+    private static final String CONTROLS_TAG = "controls";
+    private static final String CONTROL_TAG = "control";
+
     private static final String BOOKMARKS_TAG = "bookmarks";
     private static final String BOOKMARK_PARAMETER_TAG = "bookmarkParameter";
     private static final String DN_TAG = "dn";
-    
+
 
     /**
      * Loads the browser connections using the input stream.
@@ -95,7 +102,8 @@ public class BrowserConnectionIO
      * @throws ConnectionIOException 
      *      if an error occurs when converting the document
      */
-    public static void load( InputStream stream, Map<String, IBrowserConnection> browserConnectionMap ) throws ConnectionIOException
+    public static void load( InputStream stream, Map<String, IBrowserConnection> browserConnectionMap )
+        throws ConnectionIOException
     {
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -133,7 +141,8 @@ public class BrowserConnectionIO
      * @throws ConnectionIOException
      *      if an error occurs when converting values
      */
-    private static void readBrowserConnection( Element element, Map<String, IBrowserConnection> browserConnectionMap ) throws ConnectionIOException
+    private static void readBrowserConnection( Element element, Map<String, IBrowserConnection> browserConnectionMap )
+        throws ConnectionIOException
     {
         // ID
         Attribute idAttribute = element.attribute( ID_TAG );
@@ -141,8 +150,8 @@ public class BrowserConnectionIO
         {
             String id = idAttribute.getValue();
             IBrowserConnection browserConnection = browserConnectionMap.get( id );
-            
-            if( browserConnection != null )
+
+            if ( browserConnection != null )
             {
                 Element searchesElement = element.element( SEARCHES_TAG );
                 if ( searchesElement != null )
@@ -155,7 +164,7 @@ public class BrowserConnectionIO
                         browserConnection.getSearchManager().addSearch( search );
                     }
                 }
-                
+
                 Element bookmarksElement = element.element( BOOKMARKS_TAG );
                 if ( bookmarksElement != null )
                 {
@@ -170,19 +179,20 @@ public class BrowserConnectionIO
             }
         }
     }
-    
-    
-    private static SearchParameter readSearch( Element searchParameterElement, IBrowserConnection browserConnection ) throws ConnectionIOException
+
+
+    private static SearchParameter readSearch( Element searchParameterElement, IBrowserConnection browserConnection )
+        throws ConnectionIOException
     {
         SearchParameter searchParameter = new SearchParameter();
-        
+
         // Name
         Attribute nameAttribute = searchParameterElement.attribute( NAME_TAG );
         if ( nameAttribute != null )
         {
             searchParameter.setName( nameAttribute.getValue() );
         }
-        
+
         // Search base
         Attribute searchBaseAttribute = searchParameterElement.attribute( SEARCH_BASE_TAG );
         if ( searchBaseAttribute != null )
@@ -193,18 +203,18 @@ public class BrowserConnectionIO
             }
             catch ( InvalidNameException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Search Base' of search '" + searchParameter.getName()
-                    + "' :" + searchBaseAttribute.getValue() );
+                throw new ConnectionIOException( "Unable to parse 'Search Base' of search '"
+                    + searchParameter.getName() + "' :" + searchBaseAttribute.getValue() );
             }
         }
-        
+
         // Filter
         Attribute filterAttribute = searchParameterElement.attribute( FILTER_TAG );
         if ( filterAttribute != null )
         {
             searchParameter.setFilter( filterAttribute.getValue() );
         }
-        
+
         // Returning Attributes
         Element returningAttributesElement = searchParameterElement.element( RETURNING_ATTRIBUTES_TAG );
         if ( returningAttributesElement != null )
@@ -213,7 +223,7 @@ public class BrowserConnectionIO
             for ( Iterator<?> i = returningAttributesElement.elementIterator( RETURNING_ATTRIBUTE_TAG ); i.hasNext(); )
             {
                 Element returningAttributeElement = ( Element ) i.next();
-                
+
                 Attribute valueAttribute = returningAttributeElement.attribute( VALUE_TAG );
                 if ( valueAttribute != null )
                 {
@@ -223,7 +233,7 @@ public class BrowserConnectionIO
             searchParameter.setReturningAttributes( returningAttributes
                 .toArray( new String[returningAttributes.size()] ) );
         }
-        
+
         // Scope
         Attribute scopeAttribute = searchParameterElement.attribute( SCOPE_TAG );
         if ( scopeAttribute != null )
@@ -234,12 +244,11 @@ public class BrowserConnectionIO
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Scope' of search '"
-                    + searchParameter.getName() + "' as int value. Scope value :"
-                    + scopeAttribute.getValue() );
+                throw new ConnectionIOException( "Unable to parse 'Scope' of search '" + searchParameter.getName()
+                    + "' as int value. Scope value :" + scopeAttribute.getValue() );
             }
         }
-        
+
         // Time limit
         Attribute timeLimitAttribute = searchParameterElement.attribute( TIME_LIMIT_TAG );
         if ( timeLimitAttribute != null )
@@ -254,7 +263,7 @@ public class BrowserConnectionIO
                     + "' as int value. Time limit value :" + timeLimitAttribute.getValue() );
             }
         }
-        
+
         // Count limit
         Attribute countLimitAttribute = searchParameterElement.attribute( COUNT_LIMIT_TAG );
         if ( countLimitAttribute != null )
@@ -265,13 +274,15 @@ public class BrowserConnectionIO
             }
             catch ( NumberFormatException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Count limit' of search '" + searchParameter.getName()
-                    + "' as int value. Count limit value :" + countLimitAttribute.getValue() );
+                throw new ConnectionIOException( "Unable to parse 'Count limit' of search '"
+                    + searchParameter.getName() + "' as int value. Count limit value :"
+                    + countLimitAttribute.getValue() );
             }
         }
-        
+
         // Alias dereferencing method
-        Attribute aliasesDereferencingMethodAttribute = searchParameterElement.attribute( ALIASES_DEREFERENCING_METHOD_TAG );
+        Attribute aliasesDereferencingMethodAttribute = searchParameterElement
+            .attribute( ALIASES_DEREFERENCING_METHOD_TAG );
         if ( aliasesDereferencingMethodAttribute != null )
         {
             try
@@ -286,7 +297,7 @@ public class BrowserConnectionIO
                     + aliasesDereferencingMethodAttribute.getValue() );
             }
         }
-        
+
         // Referrals handling method
         Attribute referralsHandlingMethodAttribute = searchParameterElement.attribute( REFERRALS_HANDLING_METHOD_TAG );
         if ( referralsHandlingMethodAttribute != null )
@@ -303,25 +314,54 @@ public class BrowserConnectionIO
                     + referralsHandlingMethodAttribute.getValue() );
             }
         }
-    
-        // TODO: Controls
-    
+
+        // Controls
+        Element controlsElement = searchParameterElement.element( CONTROLS_TAG );
+        if ( controlsElement != null )
+        {
+            for ( Iterator<?> i = controlsElement.elementIterator( CONTROL_TAG ); i.hasNext(); )
+            {
+                Element controlElement = ( Element ) i.next();
+
+                Attribute valueAttribute = controlElement.attribute( VALUE_TAG );
+                if ( valueAttribute != null )
+                {
+                    byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                    ByteArrayInputStream bais = null;
+                    ObjectInputStream ois = null;
+                    try
+                    {
+                        bais = new ByteArrayInputStream( bytes );
+                        ois = new ObjectInputStream( bais );
+                        StudioControl control = ( StudioControl ) ois.readObject();
+                        searchParameter.getControls().add( control );
+                        ois.close();
+                    }
+                    catch ( Exception e )
+                    {
+                        throw new ConnectionIOException( "Unable to parse 'Control' of search '"
+                            + searchParameter.getName() + "'. Control value :" + valueAttribute.getValue() );
+                    }
+                }
+            }
+        }
+
         return searchParameter;
     }
 
 
-    private static BookmarkParameter readBookmark( Element bookmarkParameterElement, IBrowserConnection browserConnection )
-        throws ConnectionIOException
+    private static BookmarkParameter readBookmark( Element bookmarkParameterElement,
+        IBrowserConnection browserConnection ) throws ConnectionIOException
     {
         BookmarkParameter bookmarkParameter = new BookmarkParameter();
-    
+
         // Name
         Attribute nameAttribute = bookmarkParameterElement.attribute( NAME_TAG );
         if ( nameAttribute != null )
         {
             bookmarkParameter.setName( nameAttribute.getValue() );
         }
-    
+
         // DN
         Attribute dnAttribute = bookmarkParameterElement.attribute( DN_TAG );
         if ( dnAttribute != null )
@@ -336,7 +376,7 @@ public class BrowserConnectionIO
                     + "' :" + dnAttribute.getValue() );
             }
         }
-    
+
         return bookmarkParameter;
     }
 
@@ -351,7 +391,8 @@ public class BrowserConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void save( OutputStream stream, Map<String, IBrowserConnection> browserConnectionMap ) throws IOException
+    public static void save( OutputStream stream, Map<String, IBrowserConnection> browserConnectionMap )
+        throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -383,8 +424,10 @@ public class BrowserConnectionIO
      *      the parent Element
      * @param browserConnection
      *      the browser connection
+     * @throws IOException 
      */
     private static void writeBrowserConnection( Element parent, IBrowserConnection browserConnection )
+        throws IOException
     {
         Element browserConnectionElement = parent.addElement( BROWSER_CONNECTION_TAG );
 
@@ -399,7 +442,7 @@ public class BrowserConnectionIO
             Element searchParameterElement = searchesElement.addElement( SEARCH_PARAMETER_TAG );
             writeSearch( searchParameterElement, search.getSearchParameter() );
         }
-        
+
         // Bookmarks
         Element bookmarksElement = browserConnectionElement.addElement( BOOKMARKS_TAG );
         IBookmark[] bookmarks = browserConnection.getBookmarkManager().getBookmarks();
@@ -408,70 +451,61 @@ public class BrowserConnectionIO
             Element bookmarkParameterElement = bookmarksElement.addElement( BOOKMARK_PARAMETER_TAG );
             writeBookmark( bookmarkParameterElement, bookmark.getBookmarkParameter() );
         }
-        
-        
-//        // Name
-//        connectionElement.addAttribute( NAME_TAG, connection.getName() );
-//
-//        // Host
-//        connectionElement.addAttribute( HOST_TAG, connection.getHost() );
-//
-//        // Port
-//        connectionElement.addAttribute( PORT_TAG, "" + connection.getPort() );
-//
-//        // Encryption Method
-//        connectionElement.addAttribute( ENCRYPTION_METHOD_TAG, connection.getEncryptionMethod().toString() );
-//
-//        // Auth Method
-//        connectionElement.addAttribute( AUTH_METHOD_TAG, connection.getAuthMethod().toString() );
-//
-//        // Bind Principal
-//        connectionElement.addAttribute( BIND_PRINCIPAL_TAG, connection.getBindPrincipal() );
-//
-//        // Bind Password
-//        connectionElement.addAttribute( BIND_PASSWORD_TAG, connection.getBindPassword() );
-
     }
 
 
     private static void writeSearch( Element searchParameterElement, SearchParameter searchParameter )
+        throws IOException
     {
         // Name
         searchParameterElement.addAttribute( NAME_TAG, searchParameter.getName() );
-        
+
         // Search base
         String searchBase = searchParameter.getSearchBase() != null ? searchParameter.getSearchBase().getUpName() : "";
         searchParameterElement.addAttribute( SEARCH_BASE_TAG, searchBase );
-        
+
         // Filter
         searchParameterElement.addAttribute( FILTER_TAG, searchParameter.getFilter() );
-        
+
         // Returning Attributes
         Element returningAttributesElement = searchParameterElement.addElement( RETURNING_ATTRIBUTES_TAG );
         for ( String ra : searchParameter.getReturningAttributes() )
         {
             Element raElement = returningAttributesElement.addElement( RETURNING_ATTRIBUTE_TAG );
             raElement.addAttribute( VALUE_TAG, ra );
-        } 
-        
+        }
+
         // Scope
         searchParameterElement.addAttribute( SCOPE_TAG, searchParameter.getScope().toString() );
-        
+
         // Time limit
         searchParameterElement.addAttribute( TIME_LIMIT_TAG, "" + searchParameter.getTimeLimit() );
-        
+
         // Count limit
         searchParameterElement.addAttribute( COUNT_LIMIT_TAG, "" + searchParameter.getCountLimit() );
-        
+
         // Alias dereferencing method
         searchParameterElement.addAttribute( ALIASES_DEREFERENCING_METHOD_TAG, searchParameter
             .getAliasesDereferencingMethod().toString() );
-        
+
         // Referrals handling method
         searchParameterElement.addAttribute( REFERRALS_HANDLING_METHOD_TAG, searchParameter
             .getReferralsHandlingMethod().toString() );
-        
-        // TODO: Controls
+
+        // Controls
+        Element controlsElement = searchParameterElement.addElement( CONTROLS_TAG );
+        for ( StudioControl studioControl : searchParameter.getControls() )
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream( baos );
+            oos.writeObject( studioControl );
+            oos.close();
+            byte[] bytes = baos.toByteArray();
+            String controlsValue = new String( Base64.encode( bytes ) );
+
+            Element controlElement = controlsElement.addElement( CONTROL_TAG );
+            controlElement.addAttribute( VALUE_TAG, controlsValue );
+        }
     }
 
 
@@ -479,7 +513,7 @@ public class BrowserConnectionIO
     {
         // Name
         bookmarkParameterElement.addAttribute( NAME_TAG, bookmarkParameter.getName() );
-        
+
         // DN
         String dn = bookmarkParameter.getDn() != null ? bookmarkParameter.getDn().getUpName() : "";
         bookmarkParameterElement.addAttribute( DN_TAG, dn );

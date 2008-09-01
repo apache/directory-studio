@@ -45,12 +45,16 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 
 /**
@@ -85,6 +89,12 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     private static final String X_FETCH_SUBENTRIES = "X-FETCH-SUBENTRIES";
 
+    private static final String X_PAGED_SEARCH = "X-PAGED-SEARCH";
+
+    private static final String X_PAGED_SEARCH_SIZE = "X-PAGED-SEARCH-SIZE";
+
+    private static final String X_PAGED_SEARCH_SCROLL_MODE = "X-PAGED-SEARCH-SCROLL-MODE";
+
     /** The checkbox to fetch the base DN's from namingContexts whenever opening the connection */
     private Button autoFetchBaseDnsButton;
 
@@ -105,6 +115,18 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     /** The fetch subentries button. */
     private Button fetchSubentriesButton;
+
+    /** The paged search button. */
+    protected Button pagedSearchButton;
+
+    /** The paged search size label. */
+    protected Label pagedSearchSizeLabel;
+
+    /** The paged search size text. */
+    protected Text pagedSearchSizeText;
+
+    /** The paged search scroll mode button. */
+    protected Button pagedSearchScrollModeButton;
 
 
     /**
@@ -195,7 +217,51 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets a temporary connection with all conection parameter 
+     * Returns true if paged search should be used
+     * while browsing.
+     * 
+     * @return true, if paged search should be used
+     */
+    private boolean isPagedSearch()
+    {
+        return pagedSearchButton.getSelection();
+    }
+
+
+    /**
+     * Gets the paged search size.
+     * 
+     * @return the paged search size
+     */
+    private int getPagedSearchSize()
+    {
+        int pageSize;
+        try
+        {
+            pageSize = new Integer( pagedSearchSizeText.getText() ).intValue();
+        }
+        catch ( NumberFormatException e )
+        {
+            pageSize = 100;
+        }
+        return pageSize;
+    }
+
+
+    /**
+     * Returns true if scroll mode should be used
+     * for paged search.
+     * 
+     * @return true, if scroll mode should be used
+     */
+    private boolean isPagedSearchScrollMode()
+    {
+        return pagedSearchScrollModeButton.getSelection();
+    }
+
+
+    /**
+     * Gets a temporary connection with all connection parameter 
      * entered in this page. 
      *
      * @return a test connection
@@ -215,7 +281,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         addBaseDNInput( parent );
         addLimitInput( parent );
-        addOptionsInput( parent );
+        addControlInput( parent );
     }
 
 
@@ -248,20 +314,39 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Adds the options input.
+     * Adds the control input.
      * 
      * @param parent the parent
      */
-    private void addOptionsInput( Composite parent )
+    private void addControlInput( Composite parent )
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( composite, "Options", 1 );
+        Group group = BaseWidgetUtils.createGroup( composite, "Controls", 1 );
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
 
+        // fetch subentries control
         fetchSubentriesButton = BaseWidgetUtils.createCheckbox( groupComposite,
             "Fetch subentries while browsing (requires additional search request)", 1 );
+        fetchSubentriesButton
+            .setToolTipText( "If enabled both, normal entries and subentries according to RFC 3672, are retrieved. "
+                + "This causes additional search requests while browsing the DIT." );
         fetchSubentriesButton.setSelection( false );
+
+        // paged search control
+        Composite sprcComposite = BaseWidgetUtils.createColumnContainer( groupComposite, 4, 1 );
+        pagedSearchButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Paged Search", 1 );
+        pagedSearchButton.setToolTipText( "If enabled simple paged results control is used." );
+
+        pagedSearchSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, " Page Size:", 1 );
+        pagedSearchSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 );
+        pagedSearchScrollModeButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Scroll Mode", 1 );
+        pagedSearchScrollModeButton
+            .setToolTipText( "If enabled only one page is fetched from the server at once while browsing, "
+                + "you could 'scroll' through the pages by using the 'next page' and 'top page' items. "
+                + "If disabled _all_ entries are fetched from the server, the paged result control "
+                + "is only used in background to avoid server-side limits." );
+        pagedSearchScrollModeButton.setSelection( true );
     }
 
 
@@ -292,6 +377,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         // set enabled/disabled state of fields and buttons
         baseDNCombo.setEnabled( !isAutoFetchBaseDns() );
+        pagedSearchSizeLabel.setEnabled( isPagedSearch() );
+        pagedSearchSizeText.setEnabled( isPagedSearch() );
+        pagedSearchScrollModeButton.setEnabled( isPagedSearch() );
 
         // validate input fields
         message = null;
@@ -340,6 +428,15 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         boolean fetchSubentries = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
         fetchSubentriesButton.setSelection( fetchSubentries );
+
+        boolean pagedSearch = parameter.getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
+        pagedSearchButton.setSelection( pagedSearch );
+        String pagedSearchSize = parameter
+            .getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
+        pagedSearchSizeText.setText( pagedSearchSize != null ? pagedSearchSize : "100" );
+        boolean pagedSearchScrollMode = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
+        pagedSearchScrollModeButton.setSelection( pagedSearch ? pagedSearchScrollMode : true );
     }
 
 
@@ -405,6 +502,31 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 connectionPageModified();
             }
         } );
+
+        pagedSearchButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                connectionPageModified();
+            }
+        } );
+        pagedSearchSizeText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+        pagedSearchSizeText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                connectionPageModified();
+            }
+        } );
     }
 
 
@@ -424,6 +546,11 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             getAliasesDereferencingMethod().getOrdinal() );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES,
             isFetchSubentries() );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, isPagedSearch() );
+        parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE,
+            getPagedSearchSize() );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
+            isPagedSearchScrollMode() );
     }
 
 
@@ -480,10 +607,18 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
         boolean fetchSubentries = connectionParameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
+        boolean pagedSearch = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
+        int pagedSearchSize = connectionParameter
+            .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
+        boolean pagedSearchScrollMode = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
 
         return fetchBaseDns != isAutoFetchBaseDns() || !StringUtils.equals( baseDn, getBaseDN() )
             || referralsHandlingMethod != getReferralsHandlingMethod()
-            || aliasesDereferencingMethod != getAliasesDereferencingMethod() || fetchSubentries != isFetchSubentries();
+            || aliasesDereferencingMethod != getAliasesDereferencingMethod() || fetchSubentries != isFetchSubentries()
+            || pagedSearch != isPagedSearch() || pagedSearchSize != getPagedSearchSize()
+            || pagedSearchScrollMode != isPagedSearchScrollMode();
     }
 
 
@@ -553,11 +688,29 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 break;
         }
 
+        // fetch subentries
         boolean fetchSubentries = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
         if ( fetchSubentries )
         {
             ldapUrl.getExtensions().add( new Extension( false, X_FETCH_SUBENTRIES, null ) );
+        }
+
+        // paged search
+        boolean pagedSearch = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
+        if ( pagedSearch )
+        {
+            ldapUrl.getExtensions().add( new Extension( false, X_PAGED_SEARCH, null ) );
+            ldapUrl.getExtensions().add(
+                new Extension( false, X_PAGED_SEARCH_SIZE, parameter
+                    .getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE ) ) );
+            boolean pagedSearchScrollMode = parameter
+                .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
+            if ( pagedSearchScrollMode )
+            {
+                ldapUrl.getExtensions().add( new Extension( false, X_PAGED_SEARCH_SCROLL_MODE, null ) );
+            }
         }
     }
 
@@ -649,5 +802,26 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Extension fetchSubentries = ldapUrl.getExtension( X_FETCH_SUBENTRIES );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES,
             fetchSubentries != null );
+
+        // paged search
+        Extension pagedSearch = ldapUrl.getExtension( X_PAGED_SEARCH );
+        String pagedSearchSize = ldapUrl.getExtensionValue( X_PAGED_SEARCH_SIZE );
+        Extension pagedSearchScrollMode = ldapUrl.getExtension( X_PAGED_SEARCH_SCROLL_MODE );
+        if ( pagedSearch != null )
+        {
+            parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH,
+                pagedSearch != null );
+            try
+            {
+                parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE,
+                    new Integer( pagedSearchSize ).intValue() );
+            }
+            catch ( NumberFormatException e )
+            {
+                parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 100 );
+            }
+            parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
+                pagedSearchScrollMode != null );
+        }
     }
 }

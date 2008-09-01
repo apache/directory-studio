@@ -145,7 +145,7 @@ public class BrowserConfiguration
     {
         if ( contentProvider == null )
         {
-            contentProvider = new BrowserContentProvider( getPreferences(), getSorter() );
+            contentProvider = new BrowserContentProvider( viewer, getPreferences(), getSorter() );
         }
 
         return contentProvider;

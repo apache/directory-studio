@@ -24,8 +24,10 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.math.BigInteger;
 
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
@@ -142,6 +144,71 @@ public class BrowserSorter extends ViewerSorter
      */
     public int compare( Viewer viewer, Object o1, Object o2 )
     {
+        if ( o1 instanceof StudioRunnableWithProgress )
+        {
+            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) o1;
+            for ( Object lockedObject : runnable.getLockedObjects() )
+            {
+                if ( lockedObject instanceof ISearch )
+                {
+                    ISearch search = ( ISearch ) lockedObject;
+                    if ( o1 == search.getTopSearchRunnable() )
+                    {
+                        return lessThan();
+                    }
+                    else if ( o1 == search.getNextSearchRunnable() )
+                    {
+                        return greaterThan();
+                    }
+                }
+                else if ( lockedObject instanceof IEntry )
+                {
+                    IEntry entry = ( IEntry ) lockedObject;
+                    if ( o1 == entry.getTopPageChildrenRunnable() )
+                    {
+                        return lessThan();
+                    }
+                    else if ( o1 == entry.getNextPageChildrenRunnable() )
+                    {
+                        return greaterThan();
+                    }
+                }
+            }
+            return lessThan();
+        }
+        if ( o2 instanceof StudioRunnableWithProgress )
+        {
+            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) o2;
+            for ( Object lockedObject : runnable.getLockedObjects() )
+            {
+                if ( lockedObject instanceof ISearch )
+                {
+                    ISearch search = ( ISearch ) lockedObject;
+                    if ( o2 == search.getTopSearchRunnable() )
+                    {
+                        return greaterThan();
+                    }
+                    else if ( o2 == search.getNextSearchRunnable() )
+                    {
+                        return lessThan();
+                    }
+                }
+                else if ( lockedObject instanceof IEntry )
+                {
+                    IEntry entry = ( IEntry ) lockedObject;
+                    if ( o2 == entry.getTopPageChildrenRunnable() )
+                    {
+                        return greaterThan();
+                    }
+                    else if ( o2 == entry.getNextPageChildrenRunnable() )
+                    {
+                        return lessThan();
+                    }
+                }
+            }
+            return greaterThan();
+        }
+
         if ( o1 == null && o2 == null )
         {
             return equal();

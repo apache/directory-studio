@@ -139,6 +139,10 @@ public class RefreshAction extends BrowserAction
         }
         if ( searches.length > 0 )
         {
+            for ( ISearch search : searches )
+            {
+                search.setSearchResults( null );
+            }
             new StudioBrowserJob( new SearchRunnable( searches ) ).execute();
         }
 
@@ -149,6 +153,7 @@ public class RefreshAction extends BrowserAction
         }
         if ( searchInput != null )
         {
+            searchInput.setSearchResults( null );
             new StudioBrowserJob( new SearchRunnable( new ISearch[]
                 { searchInput } ) ).execute();
         }

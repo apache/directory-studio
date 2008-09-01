@@ -68,6 +68,15 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     /** The key for the connection parameter "Fetch Sub-entries". */
     public static String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries";
 
+    /** The key for the connection parameter "Paged Search". */
+    public static String CONNECTION_PARAMETER_PAGED_SEARCH = "ldapbrowser.pagedSearch";
+
+    /** The key for the connection parameter "Paged Search Size". */
+    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SIZE = "ldapbrowser.pagedSearchSize";
+
+    /** The key for the connection parameter "Paged Search Scroll Mode". */
+    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE = "ldapbrowser.pagedSearchScrollMode";
+
     /** The MangageDsaIT control OID. */
     public static final String CONTROL_MANAGEDSAIT = "2.16.840.1.113730.3.4.2"; //$NON-NLS-1$
 
@@ -181,7 +190,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
 
     /**
-     * Checks if subentries should be fetched
+     * Checks if subentries should be fetched.
      * 
      * @return the true if subentries should be fetched
      */
@@ -194,6 +203,54 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @param fetchSubentries true to fetch subentries
      */
     public abstract void setFetchSubentries( boolean fetchSubentries );
+
+
+    /**
+     * Checks if paged search should be used.
+     * 
+     * @return the true if paged search should be used
+     */
+    public abstract boolean isPagedSearch();
+
+
+    /**
+     * Sets if paged search should be used.
+     * 
+     * @param pagedSearch true to use paged search
+     */
+    public abstract void setPagedSearch( boolean pagedSearch );
+
+
+    /**
+     * Gets the paged search size.
+     * 
+     * @return the paged search size
+     */
+    public abstract int getPagedSearchSize();
+
+
+    /**
+     * Sets the paged search size.
+     * 
+     * @param pagedSearchSize the new paged search size
+     */
+    public abstract void setPagedSearchSize( int pagedSearchSize );
+
+
+    /**
+     * Checks if paged search scroll mode should be used.
+     * 
+     * @return the true if paged search scroll mode should be used
+     */
+    public abstract boolean isPagedSearchScrollMode();
+
+
+    /**
+     * Sets if paged search scroll mode should be used.
+     * 
+     * @param pagedSearch true to use paged search scroll mode
+     */
+    public abstract void setPagedSearchScrollMode( boolean pagedSearchScrollMode );
 
 
     /**

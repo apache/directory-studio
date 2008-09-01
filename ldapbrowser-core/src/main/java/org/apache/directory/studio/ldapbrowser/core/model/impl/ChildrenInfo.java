@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.io.Serializable;
 import java.util.Set;
 
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
@@ -47,6 +48,12 @@ public class ChildrenInfo implements Serializable
 
     /** The has more children flag. */
     protected volatile boolean hasMoreChildren = false;
+
+    /** The runnable used to fetch the top page of children. */
+    protected StudioBulkRunnableWithProgress topPageChildrenRunnable;
+
+    /** The runnable used to fetch the next page of children. */
+    protected StudioBulkRunnableWithProgress nextPageChildrenRunnable;
 
 
     /**

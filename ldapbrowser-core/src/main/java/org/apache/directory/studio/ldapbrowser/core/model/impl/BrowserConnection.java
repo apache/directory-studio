@@ -103,6 +103,10 @@ public class BrowserConnection implements IBrowserConnection, Serializable
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_BASE_DNS, true );
             connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, "" );
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES, false );
+            connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH, false );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 100 );
+            connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
+                true );
         }
 
         this.searchManager = new SearchManager( this );
@@ -155,6 +159,11 @@ public class BrowserConnection implements IBrowserConnection, Serializable
      */
     public IEntry getEntryFromCache( LdapDN dn )
     {
+        if ( dn == null )
+        {
+            return null;
+        }
+
         String oidDn = Utils.getNormalizedOidString( dn, getSchema() );
         if ( dnToEntryCache != null && dnToEntryCache.containsKey( oidDn ) )
         {
@@ -311,6 +320,66 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     {
         connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES,
             fetchSubentries );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isPagedSearch()
+    {
+        return connection.getConnectionParameter().getExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setPagedSearch( boolean pagedSearch )
+    {
+        connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH, pagedSearch );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getPagedSearchSize()
+    {
+        return connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setPagedSearchSize( int pagedSearchSize )
+    {
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SIZE,
+            pagedSearchSize );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isPagedSearchScrollMode()
+    {
+        return connection.getConnectionParameter().getExtendedBoolProperty(
+            CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setPagedSearchScrollMode( boolean pagedSearchScrollMode )
+    {
+        connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
+            pagedSearchScrollMode );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 

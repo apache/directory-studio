@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
@@ -39,7 +40,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 
@@ -53,7 +58,10 @@ import org.eclipse.jface.viewers.Viewer;
 public class BrowserContentProvider implements ITreeContentProvider
 {
 
-    /** The prefernces */
+    /** The viewer. */
+    private TreeViewer viewer;
+
+    /** The preferences */
     protected BrowserPreferences preferences;
 
     /** The sorter */
@@ -68,20 +76,38 @@ public class BrowserContentProvider implements ITreeContentProvider
     /** This map contains the top-level categories for each connection */
     private Map<IBrowserConnection, BrowserCategory[]> connectionToCategoriesMap;
 
+    /** The page listener. */
+    private ISelectionChangedListener pageListener = new ISelectionChangedListener()
+    {
+        public void selectionChanged( SelectionChangedEvent event )
+        {
+            IStructuredSelection selection = ( IStructuredSelection ) event.getSelection();
+            if ( selection.size() == 1 && selection.getFirstElement() instanceof StudioRunnableWithProgress )
+            {
+                StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) selection.getFirstElement();
+                new StudioBrowserJob( runnable ).execute();
+            }
+        }
+    };
+
 
     /**
      * Creates a new instance of BrowserContentProvider.
      *
+     * @param viewer the viewer
      * @param preferences the preferences
      * @param sorter the sorter
      */
-    public BrowserContentProvider( BrowserPreferences preferences, BrowserSorter sorter )
+    public BrowserContentProvider( TreeViewer viewer, BrowserPreferences preferences, BrowserSorter sorter )
     {
+        this.viewer = viewer;
         this.preferences = preferences;
         this.sorter = sorter;
         this.entryToEntryPagesMap = new HashMap<IEntry, BrowserEntryPage[]>();
         this.searchToSearchResultPagesMap = new HashMap<ISearch, BrowserSearchResultPage[]>();
         this.connectionToCategoriesMap = new HashMap<IBrowserConnection, BrowserCategory[]>();
+
+        viewer.addSelectionChangedListener( pageListener );
     }
 
 
@@ -113,6 +139,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             connectionToCategoriesMap.clear();
             connectionToCategoriesMap = null;
         }
+        viewer.removeSelectionChangedListener( pageListener );
     }
 
 
@@ -315,15 +342,32 @@ public class BrowserContentProvider implements ITreeContentProvider
                     entryToEntryPagesMap.remove( parentEntry );
                 }
 
-                IEntry[] entries = parentEntry.getChildren();
-                if ( entries == null )
+                Object[] results = parentEntry.getChildren();
+
+                List<Object> objects = new ArrayList<Object>();
+
+                if ( parentEntry.getTopPageChildrenRunnable() != null )
+                {
+                    objects.add( parentEntry.getTopPageChildrenRunnable() );
+                }
+
+                objects.addAll( Arrays.asList( results ) );
+
+                if ( parentEntry.getNextPageChildrenRunnable() != null )
+                {
+                    objects.add( parentEntry.getNextPageChildrenRunnable() );
+                }
+
+                results = objects.toArray();
+
+                if ( results == null )
                 {
                     return new String[]
                         { "Fetching Entries..." };
                 }
                 else
                 {
-                    return entries;
+                    return results;
                 }
             }
             else
@@ -382,7 +426,23 @@ public class BrowserContentProvider implements ITreeContentProvider
             }
             else if ( search.getSearchResults().length <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
-                ISearchResult[] results = search.getSearchResults();
+                Object[] results = search.getSearchResults();
+                List<Object> objects = new ArrayList<Object>();
+
+                if ( search.getTopSearchRunnable() != null )
+                {
+                    objects.add( search.getTopSearchRunnable() );
+                }
+
+                objects.addAll( Arrays.asList( results ) );
+
+                if ( search.getNextSearchRunnable() != null )
+                {
+                    objects.add( search.getNextSearchRunnable() );
+                }
+
+                results = objects.toArray();
+
                 return results;
             }
             else
@@ -548,5 +608,4 @@ public class BrowserContentProvider implements ITreeContentProvider
 
         return pages;
     }
-
 }

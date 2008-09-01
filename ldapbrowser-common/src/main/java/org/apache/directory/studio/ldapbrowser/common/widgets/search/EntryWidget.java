@@ -212,7 +212,7 @@ public class EntryWidget extends BrowserWidget
                         entry = browserConnection.getEntryFromCache( initialDN );
                         if ( entry == null )
                         {
-                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, suffix );
+                            ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, initialDN );
                             RunnableContextRunner.execute( runnable, null, true );
                             entry = runnable.getReadEntry();
                         }

@@ -23,16 +23,18 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.studio.ldapbrowser.core.model.Control;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -65,6 +67,12 @@ public class Search implements ISearch
     /** The count limit exceeded flag. */
     private boolean countLimitExceeded;
 
+    /** The next search runnable. */
+    private StudioBulkRunnableWithProgress nextSearchRunnable;
+
+    /** The top search runnable. */
+    private StudioBulkRunnableWithProgress topSearchRunnable;
+
 
     /**
      * Creates a new search with the following parameters:
@@ -81,7 +89,7 @@ public class Search implements ISearch
      * <li>follow referrals
      * <li>no initialization of hasChildren flag
      * <li>no controls
-     * <li>
+     * <li>no response controls
      * </ul>
      */
     public Search()
@@ -105,6 +113,7 @@ public class Search implements ISearch
         this.searchResults = null;
         this.searchParameter = searchParameter;
         this.countLimitExceeded = false;
+        this.nextSearchRunnable = null;
     }
 
 
@@ -141,12 +150,13 @@ public class Search implements ISearch
      */
     public Search( String searchName, IBrowserConnection conn, LdapDN searchBase, String filter,
         String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
-        AliasDereferencingMethod aliasesDereferencingMethod,
-        ReferralHandlingMethod referralsHandlingMethod, boolean initHasChildrenFlag, Control[] controls )
+        AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
+        boolean initHasChildrenFlag, List<StudioControl> controls )
     {
         this.connection = conn;
         this.searchResults = null;
         this.countLimitExceeded = false;
+        this.nextSearchRunnable = null;
 
         this.searchParameter = new SearchParameter();
         this.searchParameter.setName( searchName );
@@ -159,7 +169,10 @@ public class Search implements ISearch
         this.searchParameter.setAliasesDereferencingMethod( aliasesDereferencingMethod );
         this.searchParameter.setReferralsHandlingMethod( referralsHandlingMethod );
         this.searchParameter.setInitHasChildrenFlag( initHasChildrenFlag );
-        this.searchParameter.setControls( controls );
+        if ( controls != null )
+        {
+            this.searchParameter.getControls().addAll( controls );
+        }
     }
 
 
@@ -197,9 +210,18 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public Control[] getControls()
+    public List<StudioControl> getControls()
     {
         return searchParameter.getControls();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StudioControl> getResponseControls()
+    {
+        return searchParameter.getResponseControls();
     }
 
 
@@ -435,6 +457,42 @@ public class Search implements ISearch
         searchParameter.setAliasesDereferencingMethod( connection.getAliasesDereferencingMethod() );
         searchParameter.setReferralsHandlingMethod( connection.getReferralsHandlingMethod() );
         fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PARAMETER_UPDATED );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public StudioBulkRunnableWithProgress getNextSearchRunnable()
+    {
+        return nextSearchRunnable;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setNextPageSearchRunnable( StudioBulkRunnableWithProgress nextSearchRunnable )
+    {
+        this.nextSearchRunnable = nextSearchRunnable;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public StudioBulkRunnableWithProgress getTopSearchRunnable()
+    {
+        return topSearchRunnable;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setTopPageSearchRunnable( StudioBulkRunnableWithProgress topSearchRunnable )
+    {
+        this.topSearchRunnable = topSearchRunnable;
     }
 
 

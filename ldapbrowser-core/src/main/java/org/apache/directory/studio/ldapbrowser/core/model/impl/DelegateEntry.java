@@ -21,9 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -109,17 +110,17 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         {
             throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
         }
-        
+
         // always get the fresh entry from cache
         delegate = browserConnection.getEntryFromCache( dn );
-        
+
         if ( delegate != null
             && !delegate.getBrowserConnection().getConnection().getJNDIConnectionWrapper().isConnected() )
         {
             entryDoesNotExist = false;
             delegate = null;
         }
-        
+
         return delegate;
     }
 
@@ -227,8 +228,8 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             return false;
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -477,6 +478,38 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
+    public StudioBulkRunnableWithProgress getTopPageChildrenRunnable()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().getTopPageChildrenRunnable();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public StudioBulkRunnableWithProgress getNextPageChildrenRunnable()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().getNextPageChildrenRunnable();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean hasParententry()
     {
         if ( getDelegate() != null )
@@ -586,8 +619,8 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             }
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -608,6 +641,30 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         if ( getDelegate() != null )
         {
             getDelegate().setHasMoreChildren( b );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable )
+    {
+        if ( getDelegate() != null )
+        {
+            getDelegate().setTopPageChildrenRunnable( topPageChildrenRunnable );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable )
+    {
+        if ( getDelegate() != null )
+        {
+            getDelegate().setNextPageChildrenRunnable( nextPageChildrenRunnable );
         }
     }
 
@@ -764,7 +821,7 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
             EventRegistry.removeEntryUpdateListener( this );
             return;
         }
-        
+
         if ( event.getModifiedEntry() == getDelegate() )
         {
             if ( event instanceof AttributeAddedEvent )

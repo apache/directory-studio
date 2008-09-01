@@ -32,15 +32,20 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.Control;
+import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -78,7 +83,8 @@ public class ExportLdifJob extends AbstractEclipseJob
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
      */
-    public ExportLdifJob( String exportLdifFilename, IBrowserConnection browserConnection, SearchParameter searchParameter )
+    public ExportLdifJob( String exportLdifFilename, IBrowserConnection browserConnection,
+        SearchParameter searchParameter )
     {
         this.exportLdifFilename = exportLdifFilename;
         this.browserConnection = browserConnection;
@@ -140,15 +146,15 @@ public class ExportLdifJob extends AbstractEclipseJob
     }
 
 
-    
-    private static void export( IBrowserConnection browserConnection, SearchParameter searchParameter, BufferedWriter bufferedWriter,
-        int count, StudioProgressMonitor monitor ) throws IOException, ConnectionException
+    private static void export( IBrowserConnection browserConnection, SearchParameter searchParameter,
+        BufferedWriter bufferedWriter, int count, StudioProgressMonitor monitor ) throws IOException,
+        ConnectionException
     {
         try
         {
             AttributeComparator comparator = new AttributeComparator( browserConnection );
             JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
-            
+
             while ( !monitor.isCanceled() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
@@ -182,8 +188,8 @@ public class ExportLdifJob extends AbstractEclipseJob
         }
         catch ( ConnectionException ce )
         {
-            if ( ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_TIMELIMIT_EXCEEDED 
-                || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_SIZELIMIT_EXCEEDED 
+            if ( ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_TIMELIMIT_EXCEEDED
+                || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_SIZELIMIT_EXCEEDED
                 || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_ADMINLIMIT_EXCEEDED )
             {
                 // ignore
@@ -201,31 +207,38 @@ public class ExportLdifJob extends AbstractEclipseJob
         return BrowserCoreMessages.jobs__export_ldif_error;
     }
 
-    
-    static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter, StudioProgressMonitor monitor )
-        throws ConnectionException
+
+    static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
+        StudioProgressMonitor monitor ) throws ConnectionException
     {
-        NamingEnumeration<SearchResult> result = SearchRunnable.search( browserConnection, parameter, monitor );
-        
-        if(monitor.errorsReported())
+        StudioNamingEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
+
+        if ( monitor.errorsReported() )
         {
             throw JNDIUtils.createConnectionException( null, monitor.getException() );
         }
-        return new JndiLdifEnumeration( result, parameter );
+        return new JndiLdifEnumeration( result, browserConnection, parameter, monitor );
     }
-    
+
     static class JndiLdifEnumeration implements LdifEnumeration
     {
 
-        private NamingEnumeration<SearchResult> enumeration;
+        private StudioNamingEnumeration enumeration;
+
+        private IBrowserConnection browserConnection;
 
         private SearchParameter parameter;
 
+        private StudioProgressMonitor monitor;
 
-        public JndiLdifEnumeration( NamingEnumeration<SearchResult> enumeration, SearchParameter parameter )
+
+        public JndiLdifEnumeration( StudioNamingEnumeration enumeration, IBrowserConnection browserConnection,
+            SearchParameter parameter, StudioProgressMonitor monitor )
         {
             this.enumeration = enumeration;
+            this.browserConnection = browserConnection;
             this.parameter = parameter;
+            this.monitor = monitor;
         }
 
 
@@ -233,7 +246,42 @@ public class ExportLdifJob extends AbstractEclipseJob
         {
             try
             {
-                return enumeration != null && enumeration.hasMore();
+                if ( enumeration != null )
+                {
+                    if ( enumeration.hasMore() )
+                    {
+                        return true;
+                    }
+
+                    Control[] jndiControls = enumeration.getResponseControls();
+                    if ( jndiControls != null )
+                    {
+                        for ( Control jndiControl : jndiControls )
+                        {
+                            if ( jndiControl instanceof PagedResultsResponseControl )
+                            {
+                                PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
+                                byte[] cookie = prrc.getCookie();
+                                if ( cookie != null )
+                                {
+                                    // search again: pass the response cookie to the request control
+                                    for ( StudioControl studioControl : parameter.getControls() )
+                                    {
+                                        if ( studioControl instanceof StudioPagedResultsControl )
+                                        {
+                                            StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
+                                            sprc.setCookie( cookie );
+                                        }
+                                    }
+                                    enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
+                                    return enumeration != null && enumeration.hasMore();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
             catch ( NamingException e )
             {
@@ -281,5 +329,5 @@ public class ExportLdifJob extends AbstractEclipseJob
             }
         }
     }
-    
+
 }

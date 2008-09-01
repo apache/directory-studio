@@ -254,6 +254,57 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
+    public boolean isPagedSearch()
+    {
+        return false;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setPagedSearch( boolean pagedSearch )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public int getPagedSearchSize()
+    {
+        return 0;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setPagedSearchSize( int pagedSearchSize )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isPagedSearchScrollMode()
+    {
+        return false;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setPagedSearchScrollMode( boolean pagedSearchScrollMode )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
     public LdapURL getUrl()
     {
         return null;

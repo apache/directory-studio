@@ -27,12 +27,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -96,7 +97,8 @@ public class DummyEntry implements IEntry
         }
         else
         {
-            this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId() : null;
+            this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId()
+                : null;
         }
 
         this.dn = dn;
@@ -300,6 +302,24 @@ public class DummyEntry implements IEntry
 
 
     /**
+     * This implementation always returns null.
+     */
+    public StudioBulkRunnableWithProgress getNextPageChildrenRunnable()
+    {
+        return null;
+    }
+
+
+    /**
+     * This implementation always returns null.
+     */
+    public StudioBulkRunnableWithProgress getTopPageChildrenRunnable()
+    {
+        return null;
+    }
+    
+    
+    /**
      * This implementation always returns false.
      */
     public boolean hasParententry()
@@ -468,6 +488,22 @@ public class DummyEntry implements IEntry
      * This implementation does nothing.
      */
     public void setHasMoreChildren( boolean b )
+    {
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable )
+    {
+    }
+    
+    
+    /**
+     * This implementation does nothing.
+     */
+    public void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable )
     {
     }
 

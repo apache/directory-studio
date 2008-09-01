@@ -28,13 +28,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
@@ -195,7 +196,8 @@ public abstract class AbstractEntry implements IEntry
         }
         else
         {
-            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": " + attributeToDelete );
+            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
+                + attributeToDelete );
         }
     }
 
@@ -460,8 +462,8 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         return ai != null && ai.operationalAttributesInitialized;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -473,14 +475,14 @@ public abstract class AbstractEntry implements IEntry
             ai = new AttributeInfo();
             getBrowserConnectionImpl().setAttributeInfo( this, ai );
         }
-        
+
         if ( ai != null )
         {
             ai.operationalAttributesInitialized = b;
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -700,6 +702,64 @@ public abstract class AbstractEntry implements IEntry
     {
         ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
         return ci != null && ci.hasMoreChildren;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable )
+    {
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
+        if ( ci == null && topPageChildrenRunnable != null )
+        {
+            ci = new ChildrenInfo();
+            getBrowserConnectionImpl().setChildrenInfo( this, ci );
+        }
+
+        if ( ci != null )
+        {
+            ci.topPageChildrenRunnable = topPageChildrenRunnable;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public StudioBulkRunnableWithProgress getTopPageChildrenRunnable()
+    {
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
+        return ci != null ? ci.topPageChildrenRunnable : null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable )
+    {
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
+        if ( ci == null && nextPageChildrenRunnable != null )
+        {
+            ci = new ChildrenInfo();
+            getBrowserConnectionImpl().setChildrenInfo( this, ci );
+        }
+
+        if ( ci != null )
+        {
+            ci.nextPageChildrenRunnable = nextPageChildrenRunnable;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public StudioBulkRunnableWithProgress getNextPageChildrenRunnable()
+    {
+        ChildrenInfo ci = getBrowserConnectionImpl().getChildrenInfo( this );
+        return ci != null ? ci.nextPageChildrenRunnable : null;
     }
 
 

@@ -26,21 +26,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
@@ -58,6 +59,9 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     /** The entries. */
     private IEntry[] entries;
 
+    /** The paged search control, only used internally. */
+    private StudioControl pagedSearchControl;
+
 
     /**
      * Creates a new instance of InitializeChildrenRunnable.
@@ -67,6 +71,20 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     public InitializeChildrenRunnable( IEntry[] entries )
     {
         this.entries = entries;
+    }
+
+
+    /**
+     * Creates a new instance of InitializeChildrenRunnable.
+     * 
+     * @param entry the entry
+     * @param pagedSearchControl the paged search control
+     */
+    private InitializeChildrenRunnable( IEntry entry, StudioControl pagedSearchControl )
+    {
+        this.entries = new IEntry[]
+            { entry };
+        this.pagedSearchControl = pagedSearchControl;
     }
 
 
@@ -122,15 +140,22 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
-        for ( int pi = 0; pi < entries.length && !monitor.isCanceled(); pi++ )
+        for ( IEntry entry : entries )
         {
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
-                { this.entries[pi].getDn().getUpName() } ) );
+                { entry.getDn().getUpName() } ) );
             monitor.worked( 1 );
 
-            if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
+            IBrowserConnection browserConnection = entry.getBrowserConnection();
+            if ( browserConnection != null && entry.isDirectoryEntry() )
             {
-                initializeChildren( entries[pi], monitor );
+                if ( pagedSearchControl == null && browserConnection.isPagedSearch() )
+                {
+                    pagedSearchControl = new StudioPagedResultsControl( browserConnection.getPagedSearchSize(), null,
+                        false, browserConnection.isPagedSearchScrollMode() );
+                }
+
+                initializeChildren( entry, monitor, pagedSearchControl );
             }
         }
     }
@@ -141,12 +166,11 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
      */
     public void runNotification()
     {
-        for ( int pi = 0; pi < entries.length; pi++ )
+        for ( IEntry entry : entries )
         {
-            IEntry parent = entries[pi];
-            if ( parent.getBrowserConnection() != null && parent.isDirectoryEntry() )
+            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() )
             {
-                EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
+                EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( entry ), this );
             }
         }
     }
@@ -157,8 +181,10 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
      * 
      * @param parent the parent
      * @param monitor the progress monitor
+     * @param pagedSearchControl the paged search control
      */
-    public static void initializeChildren( IEntry parent, StudioProgressMonitor monitor )
+    private static void initializeChildren( IEntry parent, StudioProgressMonitor monitor,
+        StudioControl pagedSearchControl )
     {
         if ( parent instanceof IRootDSE )
         {
@@ -172,73 +198,95 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
                     { parent.getDn().getUpName() } ) );
 
             // clear old children
-            IEntry[] oldChildren = parent.getChildren();
-            for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
-            {
-                if ( oldChildren[i] != null )
-                {
-                    parent.deleteChild( oldChildren[i] );
-                }
-            }
-            parent.setChildrenInitialized( false );
+            clearParent( parent );
 
-            // determine alias and referral handling
-            SearchScope scope = SearchScope.ONELEVEL;
-            AliasDereferencingMethod aliasesDereferencingMethod = parent.getBrowserConnection()
-                .getAliasesDereferencingMethod();
-            if ( parent.isAlias() )
-            {
-                aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
-            }
-            ReferralHandlingMethod referralsHandlingMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
-            if ( parent.isReferral() )
-            {
-                referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
-            }
-            Control[] controls = null;
+            // create search
+            ISearch search = createSearch( parent, pagedSearchControl, false );
 
-            // get children,
-            ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
-                .getChildrenFilter(), ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
-                parent.getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
-                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), controls );
-            SearchRunnable.searchAndUpdateModel( parent.getBrowserConnection(), search, monitor );
-            ISearchResult[] srs = search.getSearchResults();
-            monitor.reportProgress( BrowserCoreMessages
-                .bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
-                    new String[]
-                        { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ),
-                            parent.getDn().getUpName() } ) );
+            // search
+            ISearchResult[] srs = executeSearch( parent, search, monitor );
 
             // fill children in search result
             if ( srs != null && srs.length > 0 )
             {
                 // clearing old children before filling new children is
                 // necessary to handle aliases and referrals.
-                IEntry[] connChildren = parent.getChildren();
-                for ( int i = 0; connChildren != null && i < connChildren.length; i++ )
-                {
-                    if ( connChildren[i] != null )
-                    {
-                        parent.deleteChild( connChildren[i] );
-                    }
-                }
-                parent.setChildrenInitialized( false );
+                clearParent( parent );
 
-                for ( int i = 0; srs != null && i < srs.length; i++ )
+                do
                 {
-                    if ( parent.isAlias() && !( srs[i].getEntry() instanceof AliasBaseEntry ) )
+                    for ( ISearchResult searchResult : srs )
                     {
-                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( srs[i].getEntry().getBrowserConnection(),
-                            srs[i].getEntry().getDn() );
-                        parent.addChild( aliasBaseEntry );
+                        if ( parent.isAlias() && !( searchResult.getEntry() instanceof AliasBaseEntry ) )
+                        {
+                            AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( searchResult.getEntry()
+                                .getBrowserConnection(), searchResult.getEntry().getDn() );
+                            parent.addChild( aliasBaseEntry );
+                        }
+                        else
+                        {
+                            parent.addChild( searchResult.getEntry() );
+                        }
                     }
-                    else
+                    srs = null;
+
+                    StudioPagedResultsControl sprRequestControl = null;
+                    StudioPagedResultsControl sprResponseControl = null;
+                    for ( StudioControl responseControl : search.getResponseControls() )
                     {
-                        parent.addChild( srs[i].getEntry() );
+                        if ( responseControl instanceof StudioPagedResultsControl )
+                        {
+                            sprResponseControl = ( StudioPagedResultsControl ) responseControl;
+                        }
+                    }
+                    for ( StudioControl requestControl : search.getControls() )
+                    {
+                        if ( requestControl instanceof StudioPagedResultsControl )
+                        {
+                            sprRequestControl = ( StudioPagedResultsControl ) requestControl;
+                        }
+                    }
+
+                    if ( sprRequestControl != null && sprResponseControl != null )
+                    {
+                        if ( sprRequestControl.isScrollMode() )
+                        {
+                            if ( sprRequestControl.getCookie() != null )
+                            {
+                                // create top page search runnable, same as original search
+                                InitializeChildrenRunnable topPageChildrenRunnable = new InitializeChildrenRunnable(
+                                    parent, null );
+                                parent.setTopPageChildrenRunnable( topPageChildrenRunnable );
+                            }
+
+                            if ( sprResponseControl.getCookie() != null )
+                            {
+                                StudioPagedResultsControl newSprc = new StudioPagedResultsControl( sprRequestControl
+                                    .getSize(), sprResponseControl.getCookie(), sprRequestControl.isCritical(),
+                                    sprRequestControl.isScrollMode() );
+                                InitializeChildrenRunnable nextPageChildrenRunnable = new InitializeChildrenRunnable(
+                                    parent, newSprc );
+                                parent.setNextPageChildrenRunnable( nextPageChildrenRunnable );
+                            }
+                        }
+                        else
+                        {
+                            // transparently continue search, till count limit is reached
+                            if ( sprResponseControl.getCookie() != null
+                                && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
+                                    .getCountLimit() ) )
+                            {
+
+                                search.setSearchResults( new ISearchResult[0] );
+                                search.getResponseControls().clear();
+                                sprRequestControl.setCookie( sprResponseControl.getCookie() );
+
+                                srs = executeSearch( parent, search, monitor );
+                            }
+                        }
                     }
                 }
+                while ( srs != null && srs.length > 0 );
             }
             else
             {
@@ -246,29 +294,17 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
             }
 
             // get sub-entries
-            ISearch subSearch = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
-                .getChildrenFilter() != null ? parent.getChildrenFilter() : ISearch.FILTER_SUBENTRY,
-                ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent
-                    .getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
-                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), new Control[]
-                    { Control.SUBENTRIES_CONTROL } );
+            ISearch subSearch = createSearch( parent, null, true );
             if ( parent.getBrowserConnection().isFetchSubentries() )
             {
-                SearchRunnable.searchAndUpdateModel( parent.getBrowserConnection(), subSearch, monitor );
-                ISearchResult[] subSrs = subSearch.getSearchResults();
-                monitor.reportProgress( BrowserCoreMessages.bind(
-                    BrowserCoreMessages.jobs__init_entries_progress_subcount, new String[]
-                        { subSrs == null ? Integer.toString( 0 ) : Integer.toString( subSrs.length ),
-                            parent.getDn().getUpName() } ) );
+                ISearchResult[] subSrs = executeSearch( parent, subSearch, monitor );
 
                 // fill children in search result
                 if ( subSrs != null && subSrs.length > 0 )
                 {
-
-                    for ( int i = 0; subSrs != null && i < subSrs.length; i++ )
+                    for ( ISearchResult searchResult : subSrs )
                     {
-                        parent.addChild( subSrs[i].getEntry() );
+                        parent.addChild( searchResult.getEntry() );
                     }
                 }
             }
@@ -280,6 +316,76 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
             // set initialized state
             parent.setChildrenInitialized( true );
         }
+    }
+
+
+    private static ISearchResult[] executeSearch( IEntry parent, ISearch search, StudioProgressMonitor monitor )
+    {
+        SearchRunnable.searchAndUpdateModel( parent.getBrowserConnection(), search, monitor );
+        ISearchResult[] srs = search.getSearchResults();
+        monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
+            new String[]
+                { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getUpName() } ) );
+        return srs;
+    }
+
+
+    private static ISearch createSearch( IEntry parent, StudioControl pagedSearchControl, boolean isSubSearch )
+    {
+        // determine alias and referral handling
+        SearchScope scope = SearchScope.ONELEVEL;
+        AliasDereferencingMethod aliasesDereferencingMethod = parent.getBrowserConnection()
+            .getAliasesDereferencingMethod();
+        if ( parent.isAlias() )
+        {
+            aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
+        }
+        ReferralHandlingMethod referralsHandlingMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
+        if ( parent.isReferral() )
+        {
+            referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
+        }
+
+        if ( !isSubSearch )
+        {
+            ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
+                .getChildrenFilter(), ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
+                parent.getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
+                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
+            if ( pagedSearchControl != null )
+            {
+                search.getSearchParameter().getControls().add( pagedSearchControl );
+            }
+            return search;
+        }
+        else
+        {
+            ISearch subSearch = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
+                .getChildrenFilter() != null ? parent.getChildrenFilter() : ISearch.FILTER_SUBENTRY,
+                ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent
+                    .getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
+                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
+            subSearch.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
+            return subSearch;
+        }
+    }
+
+
+    private static void clearParent( IEntry parent )
+    {
+        IEntry[] oldChildren = parent.getChildren();
+        for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
+        {
+            if ( oldChildren[i] != null )
+            {
+                parent.deleteChild( oldChildren[i] );
+            }
+        }
+        parent.setChildrenInitialized( false );
+        parent.setTopPageChildrenRunnable( null );
+        parent.setNextPageChildrenRunnable( null );
     }
 
 }

@@ -46,6 +46,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -165,7 +166,7 @@ public class DeleteAction extends BrowserAction
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
 
                 if ( entries[0].getBrowserConnection().getRootDSE().isControlSupported(
-                    org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid() ) )
+                    StudioControl.TREEDELETE_CONTROL.getOid() ) )
                 {
                     askForTreeDeleteControl = true;
                 }

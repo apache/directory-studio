@@ -24,7 +24,9 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
@@ -35,18 +37,21 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
-import org.apache.directory.studio.ldapbrowser.core.model.Control;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -192,6 +197,18 @@ public class SearchPageWrapper extends BrowserWidget
 
     /** The subentries control button. */
     protected Button subentriesControlButton;
+
+    /** The paged search control button. */
+    protected Button pagedSearchControlButton;
+
+    /** The paged search control size label. */
+    protected Label pagedSearchControlSizeLabel;
+
+    /** The paged search control size text. */
+    protected Text pagedSearchControlSizeText;
+
+    /** The paged search control scroll button. */
+    protected Button pagedSearchControlScrollButton;
 
 
     /**
@@ -509,16 +526,59 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        controlLabel = BaseWidgetUtils.createLabel( composite, "Controls:", 1 );
+        Composite controlComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
+        Group controlGroup = BaseWidgetUtils.createGroup( controlComposite, "Controls", 1 );
 
-        subentriesControlButton = BaseWidgetUtils.createCheckbox( composite, Control.SUBENTRIES_CONTROL.getName(), 2 );
-        subentriesControlButton.addSelectionListener( new SelectionListener()
+        // subentries control
+        subentriesControlButton = BaseWidgetUtils.createCheckbox( controlGroup, "Subentries", 1 );
+        subentriesControlButton
+            .setToolTipText( "If enabled only subentries according to RFC 3672 are retrieved, no normal entries." );
+        subentriesControlButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetDefaultSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent e )
             {
+                validate();
             }
+        } );
 
-
+        // simple paged results control
+        Composite sprcComposite = BaseWidgetUtils.createColumnContainer( controlGroup, 4, 1 );
+        pagedSearchControlButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Paged Search", 1 );
+        pagedSearchControlButton.setToolTipText( "If enabled simple paged results control is used." );
+        pagedSearchControlButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                validate();
+            }
+        } );
+        pagedSearchControlSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, " Page Size:", 1 );
+        pagedSearchControlSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 );
+        pagedSearchControlSizeText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+        pagedSearchControlSizeText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                validate();
+            }
+        } );
+        pagedSearchControlScrollButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Scroll Mode", 1 );
+        pagedSearchControlScrollButton.setToolTipText( "If enabled only one page is fetched from the server at once, "
+            + "you could 'scroll' through the pages by using the 'next page' and 'top page' items. "
+            + "If disabled _all_ entries are fetched from the server, the paged result control "
+            + "is only used in background to avoid server-side limits." );
+        pagedSearchControlScrollButton.setSelection( true );
+        pagedSearchControlScrollButton.addSelectionListener( new SelectionAdapter()
+        {
             public void widgetSelected( SelectionEvent e )
             {
                 validate();
@@ -532,7 +592,6 @@ public class SearchPageWrapper extends BrowserWidget
      */
     protected void validate()
     {
-
         if ( browserConnectionWidget.getBrowserConnection() != null )
         {
             if ( searchBaseWidget.getDn() == null
@@ -543,6 +602,10 @@ public class SearchPageWrapper extends BrowserWidget
         }
 
         filterWidget.setBrowserConnection( browserConnectionWidget.getBrowserConnection() );
+
+        pagedSearchControlSizeLabel.setEnabled( pagedSearchControlButton.getSelection() );
+        pagedSearchControlSizeText.setEnabled( pagedSearchControlButton.getSelection() );
+        pagedSearchControlScrollButton.setEnabled( pagedSearchControlButton.getSelection() );
 
         super.notifyListeners();
     }
@@ -617,15 +680,21 @@ public class SearchPageWrapper extends BrowserWidget
             }
             if ( subentriesControlButton != null )
             {
-                Control[] searchControls = search.getControls();
-                if ( searchControls != null && searchControls.length > 0 )
+                List<StudioControl> searchControls = search.getControls();
+                if ( searchControls != null && searchControls.size() > 0 )
                 {
-                    for ( int i = 0; i < searchControls.length; i++ )
+                    for ( StudioControl c : searchControls )
                     {
-                        Control c = searchControls[i];
-                        if ( Control.SUBENTRIES_CONTROL.equals( c ) )
+                        if ( StudioControl.SUBENTRIES_CONTROL.equals( c ) )
                         {
                             subentriesControlButton.setSelection( true );
+                        }
+                        else if ( c.getOid().equalsIgnoreCase( StudioPagedResultsControl.OID ) )
+                        {
+                            pagedSearchControlButton.setSelection( true );
+                            pagedSearchControlSizeText.setText( "" + ( ( StudioPagedResultsControl ) c ).getSize() );
+                            pagedSearchControlScrollButton.setSelection( ( ( StudioPagedResultsControl ) c )
+                                .isScrollMode() );
                         }
                     }
                 }
@@ -702,7 +771,8 @@ public class SearchPageWrapper extends BrowserWidget
                     if ( returnOperationalAttributesButton.getSelection() )
                     {
                         Collection<AttributeTypeDescription> opAtds = SchemaUtils
-                            .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection().getSchema() );
+                            .getOperationalAttributeDescriptions( browserConnectionWidget.getBrowserConnection()
+                                .getSchema() );
                         Collection<String> opAtdNames = SchemaUtils.getNames( opAtds );
                         raList.addAll( opAtdNames );
                         raList.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
@@ -753,7 +823,8 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( referralsHandlingWidget != null )
         {
-            Connection.ReferralHandlingMethod referralsHandlingMethod = referralsHandlingWidget.getReferralsHandlingMethod();
+            Connection.ReferralHandlingMethod referralsHandlingMethod = referralsHandlingWidget
+                .getReferralsHandlingMethod();
             if ( referralsHandlingMethod != search.getReferralsHandlingMethod() )
             {
                 search.getSearchParameter().setReferralsHandlingMethod( referralsHandlingMethod );
@@ -762,35 +833,38 @@ public class SearchPageWrapper extends BrowserWidget
         }
         if ( subentriesControlButton != null )
         {
-            Control selectedSubControl = subentriesControlButton.getSelection() ? Control.SUBENTRIES_CONTROL : null;
-            Control searchSubentriesControl = null;
-            Control[] searchControls = search.getControls();
-            if ( searchControls != null && searchControls.length > 0 )
+            Set<StudioControl> oldControls = new HashSet<StudioControl>();
+            oldControls.addAll( search.getSearchParameter().getControls() );
+
+            search.getSearchParameter().getControls().clear();
+
+            if ( subentriesControlButton.getSelection() )
             {
-                for ( int i = 0; i < searchControls.length; i++ )
-                {
-                    Control c = searchControls[i];
-                    if ( Control.SUBENTRIES_CONTROL.equals( c ) )
-                    {
-                        searchSubentriesControl = Control.SUBENTRIES_CONTROL;
-                        break;
-                    }
-                }
+                search.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
             }
-            if ( selectedSubControl != searchSubentriesControl )
+            if ( pagedSearchControlButton.getSelection() )
             {
-                if ( selectedSubControl == null )
+                int pageSize;
+                try
                 {
-                    search.getSearchParameter().setControls( null );
+                    pageSize = new Integer( pagedSearchControlSizeText.getText() ).intValue();
                 }
-                else
+                catch ( NumberFormatException e )
                 {
-                    search.getSearchParameter().setControls( new Control[]
-                        { selectedSubControl } );
+                    pageSize = 100;
                 }
-                searchModified = true;
+                boolean isScrollMode = pagedSearchControlScrollButton.getSelection();
+                StudioPagedResultsControl control = new StudioPagedResultsControl( pageSize, null, false, isScrollMode );
+                search.getSearchParameter().getControls().add( control );
             }
 
+            Set<StudioControl> newControls = new HashSet<StudioControl>();
+            newControls.addAll( search.getSearchParameter().getControls() );
+
+            if ( !oldControls.equals( newControls ) )
+            {
+                searchModified = true;
+            }
         }
 
         return searchModified;
@@ -808,6 +882,7 @@ public class SearchPageWrapper extends BrowserWidget
     {
         if ( search.getBrowserConnection() != null )
         {
+            search.setSearchResults( null );
             new StudioBrowserJob( new SearchRunnable( new ISearch[]
                 { search } ) ).execute();
             return true;
@@ -842,12 +917,16 @@ public class SearchPageWrapper extends BrowserWidget
         {
             return false;
         }
+        if ( pagedSearchControlButton != null && pagedSearchControlButton.isEnabled()
+            && "".equals( pagedSearchControlButton.getText() ) )
+        {
+            return false;
+        }
 
         return true;
     }
 
 
-    
     /**
      * Gets the error message or null if the search page is valid.
      * 
@@ -871,11 +950,11 @@ public class SearchPageWrapper extends BrowserWidget
         {
             return "Please enter a valid filter.";
         }
-        
+
         return null;
     }
-    
-    
+
+
     /**
      * Sets the enabled state of the widget.
      * 

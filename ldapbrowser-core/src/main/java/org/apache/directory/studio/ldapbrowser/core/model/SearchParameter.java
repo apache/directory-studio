@@ -22,6 +22,8 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.InvalidNameException;
 
@@ -72,7 +74,10 @@ public class SearchParameter implements Serializable
     private ReferralHandlingMethod referralsHandlingMethod;
 
     /** The controls */
-    private Control[] controls;
+    private List<StudioControl> controls;
+
+    /** The response controls */
+    private List<StudioControl> responseControls;
 
     /** Flag indicating weather the hasChildren flag of IEntry should be initialized */
     private boolean initHasChildrenFlag;
@@ -92,7 +97,8 @@ public class SearchParameter implements Serializable
      * <li>follow referrals
      * <li>no initialization of hasChildren flag
      * <li>no initialization of isAlias and isReferral flag
-     * <li>no controls 
+     * <li>no controls
+     * <li>no response controls
      * </ul>
      */
     public SearchParameter()
@@ -106,7 +112,8 @@ public class SearchParameter implements Serializable
         countLimit = 0;
         aliasesDereferencingMethod = AliasDereferencingMethod.ALWAYS;
         referralsHandlingMethod = ReferralHandlingMethod.FOLLOW;
-        controls = null;
+        controls = new ArrayList<StudioControl>();
+        responseControls = new ArrayList<StudioControl>();
         initHasChildrenFlag = false;
     }
 
@@ -320,8 +327,8 @@ public class SearchParameter implements Serializable
         {
         }
     }
-    
-    
+
+
     /**
      * Gets the time limit in seconds, 0 means no limit.
      * 
@@ -360,7 +367,7 @@ public class SearchParameter implements Serializable
         clone.setAliasesDereferencingMethod( getAliasesDereferencingMethod() );
         clone.setReferralsHandlingMethod( getReferralsHandlingMethod() );
         clone.setInitHasChildrenFlag( isInitHasChildrenFlag() );
-        clone.setControls( getControls() );
+        clone.getControls().addAll( getControls() );
         return clone;
     }
 
@@ -392,20 +399,20 @@ public class SearchParameter implements Serializable
      * 
      * @return the controls
      */
-    public Control[] getControls()
+    public List<StudioControl> getControls()
     {
         return controls;
     }
 
 
     /**
-     * Sets the controls.
+     * Gets the response controls.
      * 
-     * @param controls the controls
+     * @return the response controls
      */
-    public void setControls( Control[] controls )
+    public List<StudioControl> getResponseControls()
     {
-        this.controls = controls;
+        return responseControls;
     }
 
 }

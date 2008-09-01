@@ -36,16 +36,18 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
+import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -59,6 +61,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
@@ -77,7 +81,10 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
 {
 
     /** The searches. */
-    private ISearch[] searches;
+    protected ISearch[] searches;
+
+    /** The searches to perform. */
+    protected ISearch[] searchesToPerform;
 
 
     /**
@@ -88,6 +95,22 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
     public SearchRunnable( ISearch[] searches )
     {
         this.searches = searches;
+        this.searchesToPerform = searches;
+    }
+
+
+    /**
+     * Creates a new instance of SearchRunnable.
+     * 
+     * @param search the search
+     * @param searchToPerform the search to perform
+     */
+    private SearchRunnable( ISearch search, ISearch searchToPerform )
+    {
+        this.searches = new ISearch[]
+            { search };
+        this.searchesToPerform = new ISearch[]
+            { searchToPerform };
     }
 
 
@@ -136,6 +159,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         for ( int pi = 0; pi < searches.length; pi++ )
         {
             ISearch search = searches[pi];
+            ISearch searchToPerform = searchesToPerform[pi];
 
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__search_task, new String[]
                 { search.getName() } ) );
@@ -143,7 +167,99 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
 
             if ( search.getBrowserConnection() != null )
             {
-                searchAndUpdateModel( search.getBrowserConnection(), search, monitor );
+                // reset search results
+                search.setSearchResults( new ISearchResult[0] );
+                search.getResponseControls().clear();
+                search.setNextPageSearchRunnable( null );
+                search.setTopPageSearchRunnable( null );
+                searchToPerform.setSearchResults( new ISearchResult[0] );
+                searchToPerform.setNextPageSearchRunnable( null );
+                searchToPerform.setTopPageSearchRunnable( null );
+                searchToPerform.getResponseControls().clear();
+
+                do
+                {
+                    // perform search
+                    searchAndUpdateModel( searchToPerform.getBrowserConnection(), searchToPerform, monitor );
+
+                    if ( search != searchToPerform )
+                    {
+                        // merge search results
+                        ISearchResult[] sr1 = search.getSearchResults();
+                        ISearchResult[] sr2 = searchToPerform.getSearchResults();
+                        ISearchResult[] sr = new ISearchResult[sr1.length + sr2.length];
+                        System.arraycopy( sr1, 0, sr, 0, sr1.length );
+                        System.arraycopy( sr2, 0, sr, sr1.length, sr2.length );
+                        search.setSearchResults( sr );
+                    }
+                    else
+                    {
+                        // set search results
+                        search.setSearchResults( searchToPerform.getSearchResults() );
+                    }
+
+                    // check response controls
+                    ISearch clonedSearch = ( ISearch ) searchToPerform.clone();
+                    clonedSearch.getResponseControls().clear();
+                    StudioPagedResultsControl sprResponseControl = null;
+                    StudioPagedResultsControl sprRequestControl = null;
+                    for ( StudioControl responseControl : searchToPerform.getResponseControls() )
+                    {
+                        if ( responseControl instanceof StudioPagedResultsControl )
+                        {
+                            sprResponseControl = ( StudioPagedResultsControl ) responseControl;
+                        }
+                    }
+                    for ( Iterator<StudioControl> it = clonedSearch.getControls().iterator(); it.hasNext(); )
+                    {
+                        StudioControl requestControl = it.next();
+                        if ( requestControl instanceof StudioPagedResultsControl )
+                        {
+                            sprRequestControl = ( StudioPagedResultsControl ) requestControl;
+                            it.remove();
+                        }
+                    }
+                    searchToPerform = null;
+
+                    // paged search
+                    if ( sprResponseControl != null && sprRequestControl != null )
+                    {
+                        StudioPagedResultsControl nextSpsc = new StudioPagedResultsControl(
+                            sprRequestControl.getSize(), sprResponseControl.getCookie(),
+                            sprRequestControl.isCritical(), sprRequestControl.isScrollMode() );
+                        ISearch nextPageSearch = ( ISearch ) clonedSearch.clone();
+                        nextPageSearch.getResponseControls().clear();
+                        nextPageSearch.getControls().add( nextSpsc );
+                        if ( sprRequestControl.isScrollMode() )
+                        {
+                            if ( sprRequestControl.getCookie() != null )
+                            {
+                                // create top page search runnable, same as original search
+                                ISearch topPageSearch = ( ISearch ) search.clone();
+                                topPageSearch.getResponseControls().clear();
+                                SearchRunnable topPageSearchRunnable = new SearchRunnable( search, topPageSearch );
+                                search.setTopPageSearchRunnable( topPageSearchRunnable );
+                            }
+                            if ( sprResponseControl.getCookie() != null )
+                            {
+                                // create next page search runnable
+                                SearchRunnable nextPageSearchRunnable = new SearchRunnable( search, nextPageSearch );
+                                search.setNextPageSearchRunnable( nextPageSearchRunnable );
+                            }
+                        }
+                        else
+                        {
+                            // transparently continue search, till count limit is reached
+                            if ( sprResponseControl.getCookie() != null
+                                && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
+                                    .getCountLimit() ) )
+                            {
+                                searchToPerform = nextPageSearch;
+                            }
+                        }
+                    }
+                }
+                while ( searchToPerform != null );
             }
         }
     }
@@ -184,10 +300,6 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
     {
         if ( browserConnection.getConnection() == null )
         {
-            if ( search != null )
-            {
-                search.setSearchResults( new ISearchResult[0] );
-            }
             return;
         }
 
@@ -199,31 +311,24 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 SearchParameter searchParameter = getSearchParameter( search );
                 ArrayList<ISearchResult> searchResultList = new ArrayList<ISearchResult>();
 
+                StudioNamingEnumeration enumeration = null;
+                // search
                 try
                 {
-                    // search
-                    NamingEnumeration<SearchResult> enumeration = search( browserConnection, searchParameter, monitor );
+                    enumeration = search( browserConnection, searchParameter, monitor );
 
                     // iterate through the search result
                     while ( !monitor.isCanceled() && enumeration != null && enumeration.hasMore() )
                     {
-                        SearchResult sr = enumeration.next();
+                        StudioSearchResult sr = enumeration.next();
                         LdapDN dn = JNDIUtils.getDn( sr );
-                        boolean isReferral = false;
-                        IBrowserConnection resultBrowserConnection = browserConnection;
-                        if ( sr instanceof StudioSearchResult )
+                        boolean isReferral = sr.isReferral();
+                        Connection resultConnection = sr.getConnection();
+                        IBrowserConnection resultBrowserConnection = BrowserCorePlugin.getDefault()
+                            .getConnectionManager().getBrowserConnection( resultConnection );
+                        if ( resultBrowserConnection == null )
                         {
-                            StudioSearchResult ssr = ( StudioSearchResult ) sr;
-
-                            isReferral = ssr.isReferral();
-
-                            Connection connection = ssr.getConnection();
-                            IBrowserConnection bc = BrowserCorePlugin.getDefault().getConnectionManager()
-                                .getBrowserConnection( connection );
-                            if ( bc != null )
-                            {
-                                resultBrowserConnection = bc;
-                            }
+                            resultBrowserConnection = browserConnection;
                         }
 
                         // get entry from cache or create it
@@ -268,6 +373,43 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                     }
                 }
 
+                // check for response controls
+                try
+                {
+                    if ( enumeration != null )
+                    {
+                        Control[] jndiControls = enumeration.getResponseControls();
+                        if ( jndiControls != null )
+                        {
+                            for ( Control jndiControl : jndiControls )
+                            {
+                                if ( jndiControl instanceof PagedResultsResponseControl )
+                                {
+                                    PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
+                                    StudioPagedResultsControl studioControl = new StudioPagedResultsControl( prrc
+                                        .getResultSize(), prrc.getCookie(), prrc.isCritical(), false );
+                                    search.getResponseControls().add( studioControl );
+
+                                    search.setCountLimitExceeded( prrc.getCookie() != null );
+                                }
+                                else
+                                {
+                                    StudioControl studioControl = new StudioControl();
+                                    studioControl.setOid( jndiControl.getID() );
+                                    studioControl.setCritical( jndiControl.isCritical() );
+                                    studioControl.setControlValue( jndiControl.getEncodedValue() );
+                                    search.getResponseControls().add( studioControl );
+                                }
+                            }
+                        }
+                    }
+                }
+                catch ( Exception e )
+                {
+                    ConnectionException ce = JNDIUtils.createConnectionException( searchParameter, e );
+                    monitor.reportError( ce );
+                }
+
                 monitor.reportProgress( searchResultList.size() == 1 ? BrowserCoreMessages.model__retrieved_1_entry
                     : BrowserCoreMessages.bind( BrowserCoreMessages.model__retrieved_n_entries, new String[]
                         { Integer.toString( searchResultList.size() ) } ) );
@@ -288,7 +430,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
     }
 
 
-    static NamingEnumeration<SearchResult> search( IBrowserConnection browserConnection, SearchParameter parameter,
+    static StudioNamingEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
         if ( browserConnection == null )
@@ -324,19 +466,20 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         AliasDereferencingMethod aliasesDereferencingMethod = parameter.getAliasesDereferencingMethod();
         ReferralHandlingMethod referralsHandlingMethod = parameter.getReferralsHandlingMethod();
 
-        Control[] ldapControls = null;
+        Control[] jndiControls = null;
         if ( parameter.getControls() != null )
         {
-            org.apache.directory.studio.ldapbrowser.core.model.Control[] ctls = parameter.getControls();
-            ldapControls = new Control[ctls.length];
-            for ( int i = 0; i < ctls.length; i++ )
+            List<StudioControl> ctls = parameter.getControls();
+            jndiControls = new Control[ctls.size()];
+            for ( int i = 0; i < ctls.size(); i++ )
             {
-                ldapControls[i] = new BasicControl( ctls[i].getOid(), ctls[i].isCritical(), ctls[i].getControlValue() );
+                StudioControl ctl = ctls.get( i );
+                jndiControls[i] = new BasicControl( ctl.getOid(), ctl.isCritical(), ctl.getControlValue() );
             }
         }
 
-        NamingEnumeration<SearchResult> result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-            searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, ldapControls, monitor,
+        StudioNamingEnumeration result = browserConnection.getConnection().getJNDIConnectionWrapper().search(
+            searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, jndiControls, monitor,
             null );
         return result;
     }
@@ -404,7 +547,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         if ( searchParameter.getControls() != null )
         {
             IBrowserConnection connection = search.getBrowserConnection();
-            Set<String> suppportedConrolSet = new HashSet<String>();
+            Set<String> supportedConrolSet = new HashSet<String>();
             if ( connection.getRootDSE() != null
                 && connection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ) != null )
             {
@@ -413,21 +556,19 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 String[] supportedControls = scAttribute.getStringValues();
                 for ( int i = 0; i < supportedControls.length; i++ )
                 {
-                    suppportedConrolSet.add( supportedControls[i].toLowerCase() );
+                    supportedConrolSet.add( supportedControls[i].toLowerCase() );
                 }
             }
 
-            org.apache.directory.studio.ldapbrowser.core.model.Control[] controls = searchParameter.getControls();
-            List<org.apache.directory.studio.ldapbrowser.core.model.Control> controlList = new ArrayList<org.apache.directory.studio.ldapbrowser.core.model.Control>();
-            for ( int i = 0; i < controls.length; i++ )
+            List<StudioControl> controls = searchParameter.getControls();
+            for ( Iterator<StudioControl> it = controls.iterator(); it.hasNext(); )
             {
-                if ( suppportedConrolSet.contains( controls[i].getOid().toLowerCase() ) )
+                StudioControl control = it.next();
+                if ( !supportedConrolSet.contains( control.getOid().toLowerCase() ) )
                 {
-                    controlList.add( controls[i] );
+                    it.remove();
                 }
             }
-            searchParameter.setControls( controlList
-                .toArray( new org.apache.directory.studio.ldapbrowser.core.model.Control[controlList.size()] ) );
         }
 
         return searchParameter;
@@ -558,7 +699,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         }
 
         if ( ( searchParameter.getControls() != null && Arrays.asList( searchParameter.getControls() ).contains(
-            org.apache.directory.studio.ldapbrowser.core.model.Control.SUBENTRIES_CONTROL ) )
+            StudioControl.SUBENTRIES_CONTROL ) )
             || ISearch.FILTER_SUBENTRY.equalsIgnoreCase( searchParameter.getFilter() ) )
         {
             entry.setSubentry( true );

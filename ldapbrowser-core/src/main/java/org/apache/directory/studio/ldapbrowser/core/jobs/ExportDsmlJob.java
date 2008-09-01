@@ -60,7 +60,7 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.studio.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.Control;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
@@ -434,15 +434,15 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * @return
      *      a List of Shared LDAP Control Objects corresponding to the given Controls
      */
-    private List<org.apache.directory.shared.ldap.codec.Control> convertToSharedLdapControls( Control[] controls )
+    private List<org.apache.directory.shared.ldap.codec.Control> convertToSharedLdapControls( List<StudioControl> controls )
     {
         List<org.apache.directory.shared.ldap.codec.Control> returnList = new ArrayList<org.apache.directory.shared.ldap.codec.Control>();
 
         if ( controls != null )
         {
-            for ( int i = 0; i < controls.length; i++ )
+            for ( StudioControl control : controls )
             {
-                returnList.add( convertToSharedLDAP( controls[i] ) );
+                returnList.add( convertToSharedLDAP( control ) );
             }
         }
 
@@ -458,7 +458,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * @return
      *      the corresponding Control in the Shared LDAP Model
      */
-    private static org.apache.directory.shared.ldap.codec.Control convertToSharedLDAP( Control control )
+    private static org.apache.directory.shared.ldap.codec.Control convertToSharedLDAP( StudioControl control )
     {
         org.apache.directory.shared.ldap.codec.Control sharedLdapControl = new org.apache.directory.shared.ldap.codec.Control();
 

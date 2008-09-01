@@ -269,7 +269,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                 0, aliasesDereferencingMethod, referralsHandlingMethod, false, null );
             SearchRunnable.searchAndUpdateModel( entry.getBrowserConnection(), search, monitor );
 
-            // set initialized state
+            // we requested all attributes, set initialized state
             entry.setAttributesInitialized( true );
         }
     }

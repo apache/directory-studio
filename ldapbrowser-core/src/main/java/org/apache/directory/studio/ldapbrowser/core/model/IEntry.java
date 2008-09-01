@@ -23,10 +23,11 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
@@ -194,8 +195,8 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @return the DN of this entry, never null.
      */
     public abstract LdapDN getDn();
-    
-    
+
+
     /**
      * Gets the RDN of this entry, never null.
      * 
@@ -241,16 +242,16 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @return true if this entry's attributes are initialized
      */
     public abstract boolean isOperationalAttributesInitialized();
-    
-    
+
+
     /**
      * Sets a flag whether this entry's operational attributes are initialized.
      * 
      * @param b the operational attributes initialized flag
      */
     public abstract void setOperationalAttributesInitialized( boolean b );
-    
-    
+
+
     /**
      * Gets the attributes of the entry.
      * 
@@ -366,6 +367,38 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @param b the has more children flag
      */
     public abstract void setHasMoreChildren( boolean b );
+
+
+    /**
+     * Gets the runnable used to fetch the top page of children.
+     * 
+     * @return the runnable used to fetch the top page of children, null if none
+     */
+    public abstract StudioBulkRunnableWithProgress getTopPageChildrenRunnable();
+
+
+    /**
+     * Sets the runnable used to fetch the top page of children.
+     * 
+     * @param moreChildrenRunnable the runnable used to fetch the top page of children
+     */
+    public abstract void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable );
+    
+    
+    /**
+     * Gets the runnable used to fetch the next page of children.
+     * 
+     * @return the runnable used to fetch the next page of children, null if none
+     */
+    public abstract StudioBulkRunnableWithProgress getNextPageChildrenRunnable();
+    
+    
+    /**
+     * Sets the runnable used to fetch the next page of children.
+     * 
+     * @param moreChildrenRunnable the runnable used to fetch the next page of children
+     */
+    public abstract void setNextPageChildrenRunnable( StudioBulkRunnableWithProgress nextPageChildrenRunnable );
 
 
     /**

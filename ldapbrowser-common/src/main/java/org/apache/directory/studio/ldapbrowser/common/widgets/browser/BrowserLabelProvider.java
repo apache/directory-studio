@@ -25,6 +25,8 @@ import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
@@ -36,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
-import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -85,7 +86,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             IEntry entry = ( IEntry ) obj;
 
             StringBuffer append = new StringBuffer();
-           
+
             if ( entry.isChildrenInitialized() && ( entry.getChildrenCount() > 0 ) || entry.getChildrenFilter() != null )
             {
                 append.append( " (" ).append( entry.getChildrenCount() );
@@ -219,6 +220,38 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
 
         }
+        else if ( obj instanceof StudioRunnableWithProgress )
+        {
+            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) obj;
+            for ( Object lockedObject : runnable.getLockedObjects() )
+            {
+                if ( lockedObject instanceof ISearch )
+                {
+                    ISearch search = ( ISearch ) lockedObject;
+                    if ( obj == search.getTopSearchRunnable() )
+                    {
+                        return "--- Top Page ---";
+                    }
+                    else if ( obj == search.getNextSearchRunnable() )
+                    {
+                        return "--- Next Page ---";
+                    }
+                }
+                else if ( lockedObject instanceof IEntry )
+                {
+                    IEntry entry = ( IEntry ) lockedObject;
+                    if ( obj == entry.getTopPageChildrenRunnable() )
+                    {
+                        return "--- Top Page ---";
+                    }
+                    else if ( obj == entry.getNextPageChildrenRunnable() )
+                    {
+                        return "--- Next Page ---";
+                    }
+                }
+            }
+            return obj.toString();
+        }
         else if ( obj instanceof BrowserCategory )
         {
             BrowserCategory category = ( BrowserCategory ) obj;
@@ -275,6 +308,38 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             IEntry entry = sr.getEntry();
             return getImageByRdn( entry );
         }
+        else if ( obj instanceof StudioRunnableWithProgress )
+        {
+            StudioRunnableWithProgress runnable = ( StudioRunnableWithProgress ) obj;
+            for ( Object lockedObject : runnable.getLockedObjects() )
+            {
+                if ( lockedObject instanceof ISearch )
+                {
+                    ISearch search = ( ISearch ) lockedObject;
+                    if ( obj == search.getTopSearchRunnable() )
+                    {
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_TOP );
+                    }
+                    else if ( obj == search.getNextSearchRunnable() )
+                    {
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_NEXT );
+                    }
+                }
+                else if ( lockedObject instanceof IEntry )
+                {
+                    IEntry entry = ( IEntry ) lockedObject;
+                    if ( obj == entry.getTopPageChildrenRunnable() )
+                    {
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_TOP );
+                    }
+                    else if ( obj == entry.getNextPageChildrenRunnable() )
+                    {
+                        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_NEXT );
+                    }
+                }
+            }
+            return null;
+        }
         else if ( obj instanceof BrowserCategory )
         {
             BrowserCategory category = ( BrowserCategory ) obj;
@@ -318,11 +383,13 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         }
         else if ( entry instanceof DirectoryMetadataEntry && ( ( DirectoryMetadataEntry ) entry ).isSchemaEntry() )
         {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+            return BrowserCommonActivator.getDefault()
+                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
         else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
         {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+            return BrowserCommonActivator.getDefault()
+                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
         else if ( entry.isAlias() )
         {
@@ -334,7 +401,8 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         }
         else if ( entry.isSubentry() )
         {
-            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+            return BrowserCommonActivator.getDefault()
+                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
         }
         else
         {

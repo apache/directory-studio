@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
 
 
 /**
- * The Control class represents a LDAP control as defined in RFC 4511
+ * The StudioControl class represents a LDAP control as defined in RFC 4511
  * <pre>
  * Control ::= SEQUENCE {
  *     controlType             LDAPOID,
@@ -38,7 +38,7 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class Control implements Serializable
+public class StudioControl implements Serializable
 {
 
     /** The serialVersionUID. */
@@ -47,39 +47,39 @@ public class Control implements Serializable
     /**
      * The subentries control as defined in RFC 3672.
      */
-    public static final Control SUBENTRIES_CONTROL = new Control( "Subentries Control", "1.3.6.1.4.1.4203.1.10.1",
+    public static final StudioControl SUBENTRIES_CONTROL = new StudioControl( "Subentries", "1.3.6.1.4.1.4203.1.10.1",
         false, new byte[]
             { 0x01, 0x01, ( byte ) 0xFF } );
 
     /**
      * The Manage DSA IT control as defined in RFC 3296.
      */
-    public static final Control MANAGEDSAIT_CONTROL = new Control( "Manage DSA IT Control", "2.16.840.1.113730.3.4.2",
-        false, null );
+    public static final StudioControl MANAGEDSAIT_CONTROL = new StudioControl( "Manage DSA IT",
+        "2.16.840.1.113730.3.4.2", false, null );
 
     /**
      * The Tree Delete control as defined in draft-armijo-ldap-treedelete-02.
      */
-    public static final Control TREEDELETE_CONTROL = new Control( "Tree Delete Control", "1.2.840.113556.1.4.805",
+    public static final StudioControl TREEDELETE_CONTROL = new StudioControl( "Tree Delete", "1.2.840.113556.1.4.805",
         false, null );
 
     /** The symbolic name. */
-    private String name;
+    protected String name;
 
     /** The oid. */
-    private String oid;
+    protected String oid;
 
     /** The critical. */
-    private boolean critical;
+    protected boolean critical;
 
     /** The control value. */
-    private transient byte[] controlValue;
+    protected byte[] controlValue;
 
 
     /**
      * Creates a new instance of Control.
      */
-    public Control()
+    public StudioControl()
     {
     }
 
@@ -92,7 +92,7 @@ public class Control implements Serializable
      * @param critical the criticality
      * @param controlValue the control value
      */
-    public Control( String name, String oid, boolean critical, byte[] controlValue )
+    public StudioControl( String name, String oid, boolean critical, byte[] controlValue )
     {
         super();
         this.name = name == null ? "" : name;
@@ -151,7 +151,6 @@ public class Control implements Serializable
      */
     public String toString()
     {
-
         if ( oid == null )
         {
             return "";
@@ -163,7 +162,7 @@ public class Control implements Serializable
         s = s.substring( line.getRawControlType().length(), s.length() );
         s = s.substring( 0, s.length() - line.getRawNewLine().length() );
 
-        // System.out.println(s);
+        //System.out.println( s );
 
         return s;
     }
@@ -216,13 +215,25 @@ public class Control implements Serializable
     /**
      * {@inheritDoc}
      */
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + toString().hashCode();
+        return result;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object obj )
     {
-        if ( obj == null || !( obj instanceof Control ) )
+        if ( obj == null || !( obj instanceof StudioControl ) )
         {
             return false;
         }
-        Control other = ( Control ) obj;
+        StudioControl other = ( StudioControl ) obj;
 
         return this.toString().equals( other.toString() );
     }

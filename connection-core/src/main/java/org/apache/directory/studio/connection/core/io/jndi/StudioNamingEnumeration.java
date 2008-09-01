@@ -27,6 +27,7 @@ import javax.naming.ReferralException;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
+import javax.naming.ldap.LdapContext;
 
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
@@ -47,6 +48,7 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
 {
     private final Connection connection;
+    private final LdapContext ctx;
     private NamingEnumeration<SearchResult> delegate;
 
     private long requestNum;
@@ -66,6 +68,7 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      * Creates a new instance of ReferralNamingEnumeration.
      * 
      * @param connection the connection
+     * @param LdapContext ctx the JNDI context
      * @param delegate the delegate
      * @param searchBase the search base
      * @param filter the filter
@@ -76,12 +79,13 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public StudioNamingEnumeration( Connection connection, NamingEnumeration<SearchResult> delegate, String searchBase,
+    public StudioNamingEnumeration( Connection connection, LdapContext ctx, NamingEnumeration<SearchResult> delegate, String searchBase,
         String filter, SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
         ReferralHandlingMethod referralsHandlingMethod, Control[] controls, long requestNum,
         StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
         this.connection = connection;
+        this.ctx = ctx;
         this.delegate = delegate;
         this.requestNum = requestNum;
         this.resultEntryCounter = 0;
@@ -238,7 +242,7 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
     /**
      * @see javax.naming.NamingEnumeration#next()
      */
-    public SearchResult next() throws NamingException
+    public StudioSearchResult next() throws NamingException
     {
         StudioSearchResult studioSearchResult = null;
         NamingException namingException = null;
@@ -267,7 +271,7 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
     /**
      * @see java.util.Enumeration#nextElement()
      */
-    public SearchResult nextElement()
+    public StudioSearchResult nextElement()
     {
         SearchResult searchResult = delegate.nextElement();
         resultEntryCounter++;
@@ -296,6 +300,20 @@ public class StudioNamingEnumeration implements NamingEnumeration<SearchResult>
         {
             return connection;
         }
+    }
+
+    
+    
+    /**
+     * Gets the response controls.
+     * 
+     * @return the response controls, may be null
+     * 
+     * @throws NamingException the naming exception
+     */
+    public Control[] getResponseControls() throws NamingException
+    {
+        return ctx != null ? ctx.getResponseControls() : null;
     }
 
 }

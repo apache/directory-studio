@@ -50,6 +50,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 
 
@@ -239,7 +240,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
             // do not follow referrals or dereference aliases when deleting entries
             AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.NEVER;
             ReferralHandlingMethod referralsHandlingMethod = browserConnection.getRootDSE().isControlSupported(
-                org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
+                StudioControl.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
                 : ReferralHandlingMethod.IGNORE;
 
             // perform one-level search and delete recursively
@@ -350,20 +351,17 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         // controls
         List<Control> controlList = new ArrayList<Control>();
         if ( useTreeDeleteControl
-            && browserConnection.getRootDSE().isControlSupported(
-                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid() ) )
+            && browserConnection.getRootDSE().isControlSupported( StudioControl.TREEDELETE_CONTROL.getOid() ) )
         {
-            Control treeDeleteControl = new BasicControl(
-                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getOid(),
-                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.isCritical(),
-                org.apache.directory.studio.ldapbrowser.core.model.Control.TREEDELETE_CONTROL.getControlValue() );
+            Control treeDeleteControl = new BasicControl( StudioControl.TREEDELETE_CONTROL.getOid(),
+                StudioControl.TREEDELETE_CONTROL.isCritical(), StudioControl.TREEDELETE_CONTROL.getControlValue() );
             controlList.add( treeDeleteControl );
         }
         Control[] controls = controlList.toArray( new Control[controlList.size()] );
 
         // do not follow referrals
         ReferralHandlingMethod referralsHandlingMethod = browserConnection.getRootDSE().isControlSupported(
-            org.apache.directory.studio.ldapbrowser.core.model.Control.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
+            StudioControl.MANAGEDSAIT_CONTROL.getOid() ) ? ReferralHandlingMethod.MANAGE
             : ReferralHandlingMethod.IGNORE;
 
         // delete entry

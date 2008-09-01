@@ -302,6 +302,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                     ISearch search = applyOnPage.getApplyOnSearch();
                     if ( search.getBrowserConnection() != null )
                     {
+                        search.setSearchResults( null );
                         SearchRunnable runnable = new SearchRunnable( new ISearch[]
                             { search } );
                         IStatus status = RunnableContextRunner.execute( runnable, getContainer(), true );
