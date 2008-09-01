@@ -82,23 +82,32 @@ public interface LdifEditorConstants
 
     public static final String PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN = "ldifEditorSyntaxChangetypeModdn";
 
-    public static final String PREFERENCEPAGEID_LDIFEDITOR = "org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage";
+    public static final String PREFERENCEPAGEID_LDIFEDITOR = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "PrefPage_LdifEditorPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_LDIFEDITOR_CONTENTASSIST = "org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorContentAssistPreferencePage";
+    public static final String PREFERENCEPAGEID_LDIFEDITOR_CONTENTASSIST = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "PrefPage_LdifEditorContentAssistPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_LDIFEDITOR_SYNTAXCOLORING = "org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorSyntaxColoringPreferencePage";
+    public static final String PREFERENCEPAGEID_LDIFEDITOR_SYNTAXCOLORING = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "PrefPage_LdifEditorSyntaxColoringPreferencePage_id" );
 
-    public static final String PREFERENCEPAGEID_LDIFEDITOR_TEMPLATES = "org.apache.directory.studio.ldifeditor.dialogs.preferences.TemplatesPreferencePage";
+    public static final String PREFERENCEPAGEID_LDIFEDITOR_TEMPLATES = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "PrefPage_LdifEditorTemplatesPreferencePage_id" );
 
-    public static final String LDIF_FILE_TEMPLATE_ID = "org.apache.directory.studio.ldifeditor.templates.ldifFile";
+    public static final String LDIF_FILE_TEMPLATE_ID = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "CtxType_LdifFile_id" );
 
-    public static final String LDIF_ATTR_VAL_RECORD_TEMPLATE_ID = "org.apache.directory.studio.ldifeditor.templates.ldifAttrValRecord";
+    public static final String LDIF_ATTR_VAL_RECORD_TEMPLATE_ID = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "CtxType_LdifAttributeValueRecord_id" );
 
-    public static final String LDIF_MODIFICATION_RECORD_TEMPLATE_ID = "org.apache.directory.studio.ldifeditor.templates.ldifModificationRecord";
+    public static final String LDIF_MODIFICATION_RECORD_TEMPLATE_ID = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "CtxType_LdifModificationRecord_id" );
 
-    public static final String LDIF_MODIFICATION_ITEM_TEMPLATE_ID = "org.apache.directory.studio.ldifeditor.templates.ldifModificationItem";
+    public static final String LDIF_MODIFICATION_ITEM_TEMPLATE_ID = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "CtxType_LdifModificationItem_id" );
 
-    public static final String LDIF_MODDN_RECORD_TEMPLATE_ID = "org.apache.directory.studio.ldifeditor.templates.ldifModdnRecord";
+    public static final String LDIF_MODDN_RECORD_TEMPLATE_ID = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "CtxType_LdifModdnRecord_id" );
 
     public static final String IMG_LDIF_ADD = "resources/icons/ldif_add.gif";
 
