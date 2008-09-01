@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds;
 
 
+
 /**
  * This interface stores all the constants used in the plugin.
  *
@@ -28,6 +29,9 @@ package org.apache.directory.studio.apacheds;
  */
 public interface ApacheDsPluginConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = ApacheDsPlugin.getDefault().getPluginProperties().getString( "Plugin_id" );
+    
     // ------
     // IMAGES
     // ------

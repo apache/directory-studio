@@ -39,9 +39,6 @@ import org.osgi.framework.BundleContext;
  */
 public class ApacheDsPlugin extends AbstractUIPlugin
 {
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.apacheds";
-
     /** The shared instance */
     private static ApacheDsPlugin plugin;
 
@@ -169,8 +166,10 @@ public class ApacheDsPlugin extends AbstractUIPlugin
             }
             catch ( IOException e )
             {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, ApacheDsPlugin.PLUGIN_ID, Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.apacheds", Status.OK,
                         "Unable to get the plugin properties.", e ) );
             }
         }
