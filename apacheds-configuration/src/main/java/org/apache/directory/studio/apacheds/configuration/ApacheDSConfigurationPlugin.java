@@ -53,9 +53,6 @@ import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIO
  */
 public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
 {
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.apacheds.configuration"; //$NON-NLS-1$
-
     /** The shared instance */
     private static ApacheDSConfigurationPlugin plugin;
 
@@ -208,8 +205,10 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
             }
             catch ( IOException e )
             {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, ApacheDSConfigurationPlugin.PLUGIN_ID, Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.apacheds.configuration", Status.OK,
                         "Unable to get the plugin properties.", e ) );
             }
         }

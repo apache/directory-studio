@@ -309,7 +309,7 @@ public class ServerConfigurationEditor extends FormEditor
         catch ( PartInitException e )
         {
             ApacheDSConfigurationPlugin.getDefault().getLog().log(
-                new Status( Status.ERROR, ApacheDSConfigurationPlugin.PLUGIN_ID, Status.OK, e.getMessage(), e
+                new Status( Status.ERROR, ApacheDSConfigurationPluginConstants.PLUGIN_ID, Status.OK, e.getMessage(), e
                     .getCause() ) );
         }
     }
