@@ -33,6 +33,9 @@ import java.io.OutputStreamWriter;
  */
 public interface BrowserCoreConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = BrowserCorePlugin.getDefault().getPluginProperties().getString( "Plugin_id" );
+
     public static final String PREFERENCE_BINARY_SYNTAXES = "binarySyntaxes"; //$NON-NLS-1$
 
     public static final String PREFERENCE_BINARY_ATTRIBUTES = "binaryAttributes"; //$NON-NLS-1$

@@ -21,9 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.core;
 
 
+import java.io.IOException;
+import java.util.PropertyResourceBundle;
+
 import org.apache.directory.studio.ldapbrowser.core.events.CoreEventRunner;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 
@@ -32,9 +38,6 @@ import org.osgi.framework.BundleContext;
  */
 public class BrowserCorePlugin extends Plugin
 {
-    /** The plugin ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.ldapbrowser.core"; //$NON-NLS-1$
-
     /** The shared instance. */
     private static BrowserCorePlugin plugin;
 
@@ -46,6 +49,9 @@ public class BrowserCorePlugin extends Plugin
 
     /** The event runner. */
     private EventRunner eventRunner;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -92,11 +98,11 @@ public class BrowserCorePlugin extends Plugin
 
         if ( connectionManager != null )
         {
-//            IConnection[] connections = connectionManager.getConnections();
-//            for ( int i = 0; i < connections.length; i++ )
-//            {
-//                connections[i].close();
-//            }
+            //            IConnection[] connections = connectionManager.getConnections();
+            //            for ( int i = 0; i < connections.length; i++ )
+            //            {
+            //                connections[i].close();
+            //            }
             connectionManager = null;
         }
     }
@@ -143,5 +149,34 @@ public class BrowserCorePlugin extends Plugin
     public EventRunner getEventRunner()
     {
         return eventRunner;
+    }
+
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
+                getLog().log(
+                    new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.core", Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
     }
 }
