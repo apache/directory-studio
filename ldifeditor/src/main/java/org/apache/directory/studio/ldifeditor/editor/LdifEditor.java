@@ -29,10 +29,10 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
@@ -156,7 +156,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
             { browserStore, editorStore } );
         setPreferenceStore( combinedStore );
 
-        setHelpContextId( LdifEditorActivator.PLUGIN_ID + "." + "tools_ldif_editor" );
+        setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" );
     }
 
 
@@ -446,7 +446,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void createPartControl( Composite parent )
     {
-        setHelpContextId( LdifEditorActivator.PLUGIN_ID + "." + "tools_ldif_editor" );
+        setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" );
 
         Composite composite = new Composite( parent, SWT.NONE );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );

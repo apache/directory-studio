@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.text.LdifExternalAnnotationModel;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
@@ -280,7 +280,7 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
         }
         catch ( IOException e )
         {
-            throw new CoreException( new Status( IStatus.ERROR, LdifEditorActivator.PLUGIN_ID, IStatus.OK,
+            throw new CoreException( new Status( IStatus.ERROR, LdifEditorConstants.PLUGIN_ID, IStatus.OK,
                 "error reading file", e ) ); //$NON-NLS-1$
         }
     }

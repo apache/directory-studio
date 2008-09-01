@@ -23,10 +23,12 @@ package org.apache.directory.studio.ldifeditor;
 import java.io.IOException;
 import java.net.URL;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
@@ -46,10 +48,6 @@ import org.osgi.framework.BundleContext;
  */
 public class LdifEditorActivator extends AbstractUIPlugin
 {
-
-    /** The plugin ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.ldifeditor";
-
     /** The shared instance */
     private static LdifEditorActivator plugin;
 
@@ -64,6 +62,9 @@ public class LdifEditorActivator extends AbstractUIPlugin
 
     /** The context type registry */
     private ContributionContextTypeRegistry ldifTemplateContextTypeRegistry;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -283,4 +284,32 @@ public class LdifEditorActivator extends AbstractUIPlugin
         return resourceBundle;
     }
 
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
+                getLog().log(
+                    new Status( Status.ERROR, "org.apache.directory.studio.ldifeditor", Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
+    }
 }

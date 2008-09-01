@@ -28,6 +28,9 @@ package org.apache.directory.studio.ldifeditor;
  */
 public interface LdifEditorConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = LdifEditorActivator.getDefault().getPluginProperties().getString(
+        "Plugin_id" );
 
     public static final String ACTION_ID_EDIT_RECORD = "org.apache.directory.studio.ldapbrowser.action.editRecord";
 
