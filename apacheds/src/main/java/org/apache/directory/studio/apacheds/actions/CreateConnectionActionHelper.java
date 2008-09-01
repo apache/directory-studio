@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.actions;
 
 
+import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -139,7 +140,7 @@ public class CreateConnectionActionHelper
     {
         for ( IPerspectiveDescriptor perspective : PlatformUI.getWorkbench().getPerspectiveRegistry().getPerspectives() )
         {
-            if ( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"
+            if ( ApacheDsPlugin.getDefault().getPluginProperties().getString( "Perspective_LdapBrowserPerspective_id" )
                 .equalsIgnoreCase( perspective.getId() ) )
             {
                 return perspective;

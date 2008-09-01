@@ -23,6 +23,7 @@ package org.apache.directory.studio.apacheds.actions;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
@@ -228,8 +229,10 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
      */
     private boolean isLdapBrowserPluginsAvailable()
     {
+        PropertyResourceBundle properties = ApacheDsPlugin.getDefault().getPluginProperties();
+        
         // Connection Core Plugin
-        Bundle connectionCoreBundle = Platform.getBundle( "org.apache.directory.studio.connection.core" );
+        Bundle connectionCoreBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionCore_id" ) );
         if ( connectionCoreBundle != null )
         {
             // Checking the state of the plugin
@@ -239,7 +242,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
             }
 
             // Connection UI Plugin
-            Bundle connectionUiBundle = Platform.getBundle( "org.apache.directory.studio.connection.ui" );
+            Bundle connectionUiBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionUi_id" ) );
             if ( connectionUiBundle != null )
             {
                 // Checking the state of the plugin
@@ -249,7 +252,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                 }
 
                 // LDAP Browser Common Plugin
-                Bundle ldapBrowserCommonBundle = Platform.getBundle( "org.apache.directory.studio.ldapbrowser.common" );
+                Bundle ldapBrowserCommonBundle = Platform.getBundle( properties.getString( "Plugin_LdapBrowserCommon_id" )  );
                 if ( ldapBrowserCommonBundle != null )
                 {
                     // Checking the state of the plugin
@@ -259,7 +262,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                     }
 
                     // LDAP Browser Core Plugin
-                    Bundle ldapBrowserCoreBundle = Platform.getBundle( "org.apache.directory.studio.ldapbrowser.core" );
+                    Bundle ldapBrowserCoreBundle = Platform.getBundle( properties.getString( "Plugin_LdapBrowserCore_id" )  );
                     if ( ldapBrowserCoreBundle != null )
                     {
                         // Checking the state of the plugin
@@ -269,7 +272,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                         }
 
                         // LDAP Browser UI Plugin
-                        Bundle ldapBrowserUiBundle = Platform.getBundle( "org.apache.directory.studio.ldapbrowser.ui" );
+                        Bundle ldapBrowserUiBundle = Platform.getBundle(properties.getString( "Plugin_LdapBrowserUi_id" ) );
                         if ( ldapBrowserUiBundle != null )
                         {
                             // Checking the state of the plugin
@@ -279,7 +282,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                             }
 
                             // LDIF Editor Plugin
-                            Bundle ldifEditorBundle = Platform.getBundle( "org.apache.directory.studio.ldifeditor" );
+                            Bundle ldifEditorBundle = Platform.getBundle( properties.getString( "Plugin_LdifEditor_id" ) );
                             if ( ldifEditorBundle != null )
                             {
                                 // Checking the state of the plugin
@@ -289,7 +292,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                                 }
 
                                 // LDIF Parser Plugin
-                                Bundle ldifParserBundle = Platform.getBundle( "org.apache.directory.studio.ldifparser" );
+                                Bundle ldifParserBundle = Platform.getBundle( properties.getString( "Plugin_LdifParser_id" )  );
                                 if ( ldifParserBundle != null )
                                 {
                                     // Checking the state of the plugin
@@ -299,7 +302,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                                     }
 
                                     // Jars Plugin
-                                    Bundle jarsBundle = Platform.getBundle( "org.apache.directory.studio.jars" );
+                                    Bundle jarsBundle = Platform.getBundle( properties.getString( "Plugin_Jars_id" ) );
                                     if ( jarsBundle != null )
                                     {
                                         // Checking the state of the plugin

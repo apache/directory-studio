@@ -90,32 +90,32 @@ public interface ApacheDsPluginConstants
     // PREFERENCES
     // -----------
     /** The Preference ID for the Colors and Font Debug Font setting */
-    public static final String PREFS_COLORS_AND_FONTS_DEBUG_FONT = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.debugFont";
+    public static final String PREFS_COLORS_AND_FONTS_DEBUG_FONT = "prefs.colorAndFonts.debugFont";
     /** The Preference ID for the Colors and Font Debug Color setting */
-    public static final String PREFS_COLORS_AND_FONTS_DEBUG_COLOR = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.debugColor";
+    public static final String PREFS_COLORS_AND_FONTS_DEBUG_COLOR = "prefs.colorAndFonts.debugColor";
 
     /** The Preference ID for the Colors and Font Info Font setting */
-    public static final String PREFS_COLORS_AND_FONTS_INFO_FONT = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.infoFont";
+    public static final String PREFS_COLORS_AND_FONTS_INFO_FONT = "prefs.colorAndFonts.infoFont";
     /** The Preference ID for the Colors and Font Info Color setting */
-    public static final String PREFS_COLORS_AND_FONTS_INFO_COLOR = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.infoColor";
+    public static final String PREFS_COLORS_AND_FONTS_INFO_COLOR = "prefs.colorAndFonts.infoColor";
 
     /** The Preference ID for the Colors and Font Warn Font setting */
-    public static final String PREFS_COLORS_AND_FONTS_WARN_FONT = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.warnFont";
+    public static final String PREFS_COLORS_AND_FONTS_WARN_FONT = "prefs.colorAndFonts.warnFont";
     /** The Preference ID for the Colors and Font Warn Color setting */
-    public static final String PREFS_COLORS_AND_FONTS_WARN_COLOR = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.warnColor";
+    public static final String PREFS_COLORS_AND_FONTS_WARN_COLOR = "prefs.colorAndFonts.warnColor";
 
     /** The Preference ID for the Colors and Font Error Font settings */
-    public static final String PREFS_COLORS_AND_FONTS_ERROR_FONT = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.errorFont";
+    public static final String PREFS_COLORS_AND_FONTS_ERROR_FONT = "prefs.colorAndFonts.errorFont";
     /** The Preference ID for the Colors and Font Error Color setting */
-    public static final String PREFS_COLORS_AND_FONTS_ERROR_COLOR = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.errorColor";
+    public static final String PREFS_COLORS_AND_FONTS_ERROR_COLOR = "prefs.colorAndFonts.errorColor";
 
     /** The Preference ID for the Colors and Font Fatal Font setting */
-    public static final String PREFS_COLORS_AND_FONTS_FATAL_FONT = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.fatalFont";
+    public static final String PREFS_COLORS_AND_FONTS_FATAL_FONT = "prefs.colorAndFonts.fatalFont";
     /** The Preference ID for the Colors and Font Fatal Color setting */
-    public static final String PREFS_COLORS_AND_FONTS_FATAL_COLOR = "org.apache.directory.studio.apacheds.prefs.colorAndFonts.fatalColor";
+    public static final String PREFS_COLORS_AND_FONTS_FATAL_COLOR = "prefs.colorAndFonts.fatalColor";
 
     /** The Preference ID for the Servers Logs Level setting */
-    public static final String PREFS_SERVER_LOGS_LEVEL = "org.apache.directory.studio.apacheds.prefs.serverLogs.level";
+    public static final String PREFS_SERVER_LOGS_LEVEL = "prefs.serverLogs.level";
     /** The Preference ID for the Servers Logs Level Debug value */
     public static final String PREFS_SERVER_LOGS_LEVEL_DEBUG = "debug";
     /** The Preference ID for the Servers Logs Level Info value */
@@ -128,5 +128,5 @@ public interface ApacheDsPluginConstants
     public static final String PREFS_SERVER_LOGS_LEVEL_FATAL = "fatal";
 
     /** The Preference ID for the Servers Logs Pattern setting */
-    public static final String PREFS_SERVER_LOGS_PATTERN = "org.apache.directory.studio.apacheds.prefs.serverLogs.pattern";
+    public static final String PREFS_SERVER_LOGS_PATTERN = "prefs.serverLogs.pattern";
 }

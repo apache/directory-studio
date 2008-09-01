@@ -93,8 +93,8 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(),
-                    "org.apache.directory.studio.apacheds.ColorsAndFontsPage", null, null ); //$NON-NLS-1$
+                PreferencesUtil.createPreferenceDialogOn( getShell(), ApacheDsPlugin.getDefault().getPluginProperties()
+                    .getString( "Pref_ColorsAndFontsPage_id" ), null, null ); //$NON-NLS-1$
             }
         } );
 
