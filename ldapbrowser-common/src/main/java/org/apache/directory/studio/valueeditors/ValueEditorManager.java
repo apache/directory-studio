@@ -714,7 +714,7 @@ public class ValueEditorManager
             catch ( Exception e )
             {
                 BrowserCommonActivator.getDefault().getLog().log(
-                    new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, 1, "Unable to create ValueEditor "
+                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, 1, "Unable to create ValueEditor "
                         + vee.className, e ) );
             }
         }

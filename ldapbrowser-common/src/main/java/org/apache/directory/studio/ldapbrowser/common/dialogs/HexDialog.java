@@ -116,13 +116,13 @@ public class HexDialog extends Dialog
                 catch ( FileNotFoundException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR,
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
                             "Can't write to file", e ) );
                 }
                 catch ( IOException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR,
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
                             "Can't write to file", e ) );
                 }
             }
@@ -153,13 +153,13 @@ public class HexDialog extends Dialog
                 catch ( FileNotFoundException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR, "Can't read file",
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, "Can't read file",
                             e ) );
                 }
                 catch ( IOException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonActivator.PLUGIN_ID, IStatus.ERROR, "Can't read file",
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, "Can't read file",
                             e ) );
                 }
             }

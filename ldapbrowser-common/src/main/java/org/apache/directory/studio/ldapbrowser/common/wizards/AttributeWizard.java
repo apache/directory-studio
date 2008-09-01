@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -155,9 +155,9 @@ public class AttributeWizard extends Wizard implements INewWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-            BrowserCommonActivator.PLUGIN_ID + "." + "tools_attribute_wizard" );
+            BrowserCommonConstants.PLUGIN_ID + "." + "tools_attribute_wizard" );
         PlatformUI.getWorkbench().getHelpSystem().setHelp( optionsPage.getControl(),
-            BrowserCommonActivator.PLUGIN_ID + "." + "tools_attribute_wizard" );
+            BrowserCommonConstants.PLUGIN_ID + "." + "tools_attribute_wizard" );
     }
 
     /** 

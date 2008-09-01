@@ -222,22 +222,22 @@ public class NewEntryWizard extends Wizard implements INewWizard
             if ( typePage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-                    BrowserCommonActivator.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
             }
             if ( ocPage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( ocPage.getControl(),
-                    BrowserCommonActivator.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
             }
             if ( dnPage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( dnPage.getControl(),
-                    BrowserCommonActivator.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
             }
             if ( attributePage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( attributePage.getControl(),
-                    BrowserCommonActivator.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
             }
         }
     }

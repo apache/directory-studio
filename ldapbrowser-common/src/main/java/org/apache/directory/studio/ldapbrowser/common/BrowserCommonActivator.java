@@ -54,9 +54,6 @@ import org.osgi.framework.BundleContext;
  */
 public class BrowserCommonActivator extends AbstractUIPlugin
 {
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.ldapbrowser.common";
-
     /** The shared instance */
     private static BrowserCommonActivator plugin;
 
@@ -390,7 +387,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
             catch ( IOException e )
             {
                 getLog().log(
-                    new Status( Status.ERROR, BrowserCommonActivator.PLUGIN_ID, Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.common", Status.OK,
                         "Unable to get the plugin properties.", e ) );
             }
         }
