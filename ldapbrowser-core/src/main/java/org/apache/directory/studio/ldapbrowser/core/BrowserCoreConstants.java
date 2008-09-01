@@ -91,4 +91,7 @@ public interface BrowserCoreConstants
     public static final int SORT_ORDER_ASCENDING = 1;
 
     public static final int SORT_ORDER_DESCENDING = 2;
+
+    public static final String LDAP_SEARCH_PAGE_ID = BrowserCorePlugin.getDefault().getPluginProperties().getString(
+        "SearchPage_LdapSearch_id" );
 }

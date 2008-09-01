@@ -21,13 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.core.internal.search;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
 
 public class LdapSearchPageScoreComputer implements ISearchPageScoreComputer
 {
 
-    public static final String LDAP_SEARCH_PAGE_ID = "org.apache.directory.studio.ldapbrowser.ui.search.SearchPage"; //$NON-NLS-1$
+    public static final String LDAP_SEARCH_PAGE_ID = BrowserCoreConstants.LDAP_SEARCH_PAGE_ID;
 
 
     public int computeScore( String pageId, Object input )
