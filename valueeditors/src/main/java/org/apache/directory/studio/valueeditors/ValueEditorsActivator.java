@@ -20,10 +20,13 @@
 package org.apache.directory.studio.valueeditors;
 
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.PropertyResourceBundle;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -35,12 +38,11 @@ import org.osgi.framework.BundleContext;
  */
 public class ValueEditorsActivator extends AbstractUIPlugin
 {
-
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.valueeditors";
-
     /** The shared instance */
     private static ValueEditorsActivator plugin;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -134,5 +136,33 @@ public class ValueEditorsActivator extends AbstractUIPlugin
         }
         return image;
     }
-    
+
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
+                getLog().log(
+                    new Status( Status.ERROR, "org.apache.directory.studio.valueeditors", Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
+    }
 }

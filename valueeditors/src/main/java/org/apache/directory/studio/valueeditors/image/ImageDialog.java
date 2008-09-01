@@ -58,6 +58,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
+
 /**
  * The ImageDialog is used from the image value editor to view the current image
  * and to select a new image.
@@ -232,7 +233,8 @@ public class ImageDialog extends Dialog
         // load dialog settings
         try
         {
-            int tabIndex = ValueEditorsActivator.getDefault().getDialogSettings().getInt( SELECTED_TAB_DIALOGSETTINGS_KEY );
+            int tabIndex = ValueEditorsActivator.getDefault().getDialogSettings().getInt(
+                SELECTED_TAB_DIALOGSETTINGS_KEY );
             tabFolder.setSelection( tabIndex );
         }
         catch ( Exception e )
@@ -316,17 +318,15 @@ public class ImageDialog extends Dialog
                         catch ( FileNotFoundException e )
                         {
 
-                            ConnectionUIPlugin.getDefault()
-                                .getExceptionHandler().handleException(
-                                    new Status( IStatus.ERROR, ValueEditorsActivator.PLUGIN_ID, IStatus.ERROR,
-                                        "Can't write to file", e ) );
+                            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR,
+                                    "Can't write to file", e ) );
                         }
                         catch ( IOException e )
                         {
-                            ConnectionUIPlugin.getDefault()
-                                .getExceptionHandler().handleException(
-                                    new Status( IStatus.ERROR, ValueEditorsActivator.PLUGIN_ID, IStatus.ERROR,
-                                        "Can't write to file", e ) );
+                            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR,
+                                    "Can't write to file", e ) );
                         }
                     }
                 }
@@ -748,7 +748,7 @@ public class ImageDialog extends Dialog
     private static String getImageType( int swtCode )
     {
         String type = "";
-        
+
         if ( swtCode == SWT.IMAGE_JPEG )
         {
             type = "JPEG";
@@ -765,7 +765,7 @@ public class ImageDialog extends Dialog
         {
             type = "BMP";
         }
-        
+
         return type;
     }
 
