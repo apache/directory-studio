@@ -80,16 +80,19 @@ public interface ConnectionUIConstants
 
     public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
         "ConnectionTransfert_Typename" );
-    
+
     public static final String CMD_COPY = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
         "Cmd_Copy_id" );
-    
+
     public static final String CMD_PASTE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
         "Cmd_Paste_id" );
-    
+
     public static final String CMD_DELETE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
         "Cmd_Delete_id" );
-    
+
     public static final String CMD_PROPERTIES = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
         "Cmd_Properties_id" );
+
+    public static final String NEW_WIZARD_NEW_CONNECTION = ConnectionUIPlugin.getDefault().getPluginProperties()
+        .getString( "NewWizards_NewConnectionWizard_id" );
 }

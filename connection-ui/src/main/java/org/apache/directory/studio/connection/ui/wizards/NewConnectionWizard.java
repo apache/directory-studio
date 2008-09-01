@@ -29,6 +29,7 @@ import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
+import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
@@ -54,6 +55,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     /** The selected connection folder. */
     private ConnectionFolder selectedConnectionFolder;
 
+
     /**
      * Creates a new instance of NewConnectionWizard.
      */
@@ -71,7 +73,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public static String getId()
     {
-        return NewConnectionWizard.class.getName();
+        return ConnectionUIConstants.NEW_WIZARD_NEW_CONNECTION;
     }
 
 
@@ -165,7 +167,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
         // create persistent connection
         final Connection conn = new Connection( connectionParameter );
         ConnectionCorePlugin.getDefault().getConnectionManager().addConnection( conn );
-        
+
         // add connection to folder
         selectedConnectionFolder.addConnectionId( conn.getId() );
 
