@@ -70,7 +70,6 @@ public class ACISourceViewerConfiguration extends SourceViewerConfiguration
         IContentAssistProcessor aciContentAssistProcessor = new ACIContentAssistProcessor();
 
         assistant.setContentAssistProcessor( aciContentAssistProcessor, IDocument.DEFAULT_CONTENT_TYPE );
-        assistant.setDocumentPartitioning( "org.apache.directory.studio.aci" ); //$NON-NLS-1$
         assistant.enableAutoActivation( true );
         assistant.setAutoActivationDelay( 500 );
         assistant.setProposalPopupOrientation( IContentAssistant.PROPOSAL_STACKED );
