@@ -96,7 +96,7 @@ public class NewAttributeAction extends BrowserAction
                     if ( att == null )
                     {
                         att = new Attribute( entry, newAttributeDescription );
-                        entry.addAttribute( att ) ;
+                        entry.addAttribute( att );
                     }
 
                     att.addEmptyValue();
@@ -129,7 +129,7 @@ public class NewAttributeAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.apache.directory.studio.ldapbrowser.action.addAttribute";
+        return BrowserCommonConstants.CMD_ADD_ATTRIBUTE;
     }
 
 

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -50,7 +51,7 @@ public class ValuesTransfer extends ByteArrayTransfer
 {
 
     /** The Constant TYPENAME. */
-    private static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.value";
+    private static final String TYPENAME = BrowserCommonConstants.DND_VALUES_TRANSFER;
 
     /** The Constant TYPEID. */
     private static final int TYPEID = registerType( TYPENAME );
@@ -175,8 +176,8 @@ public class ValuesTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] connectionId = new byte[size];
                             readIn.read( connectionId );
-                            connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                                new String( connectionId, "UTF-8" ) );
+                            connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                                .getBrowserConnectionById( new String( connectionId, "UTF-8" ) );
                         }
 
                         IEntry entry = null;

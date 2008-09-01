@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.connection.core.Utils;
 import org.eclipse.core.runtime.IAdaptable;
@@ -81,7 +82,8 @@ public class PropertiesAction extends BrowserAction
     {
 
         return getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length
-                + getSelectedSearches().length == 1 || getSelectedAttributes().length + getSelectedValues().length == 1
+            + getSelectedSearches().length == 1
+            || getSelectedAttributes().length + getSelectedValues().length == 1
             || ( getSelectedAttributeHierarchies().length == 1 && getSelectedAttributeHierarchies()[0].size() == 1 );
 
     }
@@ -100,44 +102,44 @@ public class PropertiesAction extends BrowserAction
         if ( getSelectedValues().length == 1 )
         {
             element = ( IAdaptable ) getSelectedValues()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage";
+            pageId = BrowserCommonConstants.PROP_VALUE;
             title = getSelectedValues()[0].toString();
         }
         else if ( getSelectedAttributes().length == 1 )
         {
             element = ( IAdaptable ) getSelectedAttributes()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage";
+            pageId = BrowserCommonConstants.PROP_ATTRIBUTE;
             title = getSelectedAttributes()[0].toString();
         }
         else if ( getSelectedAttributeHierarchies().length == 1 )
         {
             IAttribute att = getSelectedAttributeHierarchies()[0].getAttribute();
             element = att;
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage";
+            pageId = BrowserCommonConstants.PROP_ATTRIBUTE;
             title = att.toString();
         }
         else if ( getSelectedSearches().length == 1 )
         {
             element = ( IAdaptable ) getSelectedSearches()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage";
+            pageId = BrowserCommonConstants.PROP_SEARCH;
             title = getSelectedSearches()[0].getName();
         }
         else if ( getSelectedBookmarks().length == 1 )
         {
             element = ( IAdaptable ) getSelectedBookmarks()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage";
+            pageId = BrowserCommonConstants.PROP_BOOKMARK;
             title = getSelectedBookmarks()[0].getName();
         }
         else if ( getSelectedEntries().length == 1 )
         {
             element = ( IAdaptable ) getSelectedEntries()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
+            pageId = BrowserCommonConstants.PROP_ENTRY;
             title = getSelectedEntries()[0].getDn().getUpName();
         }
         else if ( getSelectedSearchResults().length == 1 )
         {
             element = ( IAdaptable ) getSelectedSearchResults()[0];
-            pageId = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage";
+            pageId = BrowserCommonConstants.PROP_ENTRY;
             title = getSelectedSearchResults()[0].getDn().getUpName();
         }
 

@@ -163,4 +163,40 @@ public interface BrowserCommonConstants
     public static final String IMG_OCD_STRUCTURAL = "resources/icons/ocd_structural.gif";
     public static final String IMG_MRD = "resources/icons/mrd.png";
     public static final String IMG_ENTRY_WIZARD = "resources/icons/entry_wizard.gif";
+
+    public static final String CMD_ADD_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_AddAttribute_id" );
+    public static final String CMD_ADD_VALUE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_AddValue_id" );
+    public static final String CMD_OPEN_SEARCH_RESULT = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_OpenSearchResult_id" );
+    public static final String CMD_COPY = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_Copy_id" );
+    public static final String CMD_PASTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_Paste_id" );
+    public static final String CMD_DELETE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_Delete_id" );
+    public static final String CMD_PROPERTIES = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_Properties_id" );
+    public static final String CMD_FIND = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "Cmd_Find_id" );
+
+    public static final String PROP_VALUE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "PropPage_Value_id" );
+    public static final String PROP_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "PropPage_Attribute_id" );
+    public static final String PROP_SEARCH = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "PropPage_Search_id" );
+    public static final String PROP_BOOKMARK = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "PropPage_Bookmark_id" );
+    public static final String PROP_ENTRY = BrowserCommonActivator.getDefault().getPluginProperties().getString(
+        "PropPage_Entry_id" );
+
+    public static final String DND_ENTRY_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "DnD_EntryTransfer" );
+    public static final String DND_SEARCH_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "DnD_SearchTransfer" );
+    public static final String DND_VALUES_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
+        .getString( "DnD_ValuesTransfer" );
+
 }

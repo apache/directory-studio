@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.CollapseAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FilterChildrenAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
@@ -239,7 +240,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         else
         {
             IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
-            pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
+            pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( pda );
 
             IAction ra = ( IAction ) browserActionMap.get( refreshAction );

@@ -193,7 +193,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     public void enableGlobalActionHandlers( IActionBars actionBars )
     {
         this.actionBars = actionBars;
-//        activateGlobalActionHandlers();
+        //        activateGlobalActionHandlers();
     }
 
 
@@ -315,12 +315,9 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     {
         if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), entryEditorActionMap
-                .get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), entryEditorActionMap
-                .get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), entryEditorActionMap
-                .get( deleteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), entryEditorActionMap.get( copyAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), entryEditorActionMap.get( pasteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), entryEditorActionMap.get( deleteAction ) );
             actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), entryEditorActionMap
                 .get( selectAllAction ) );
             actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), entryEditorActionMap
@@ -332,22 +329,22 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         else
         {
             IAction da = entryEditorActionMap.get( deleteAction );
-            da.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.delete" );
+            da.setActionDefinitionId( BrowserCommonConstants.CMD_DELETE );
             ActionUtils.activateActionHandler( da );
 
             IAction ca = entryEditorActionMap.get( copyAction );
-            ca.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.copy" );
+            ca.setActionDefinitionId( BrowserCommonConstants.CMD_COPY );
             ActionUtils.activateActionHandler( ca );
 
             IAction pa = entryEditorActionMap.get( pasteAction );
-            pa.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.paste" );
+            pa.setActionDefinitionId( BrowserCommonConstants.CMD_PASTE );
             ActionUtils.activateActionHandler( pa );
 
-            showQuickFilterAction.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.find" );
+            showQuickFilterAction.setActionDefinitionId( BrowserCommonConstants.CMD_FIND );
             ActionUtils.activateActionHandler( showQuickFilterAction );
 
             IAction pda = entryEditorActionMap.get( propertyDialogAction );
-            pda.setActionDefinitionId( "org.apache.directory.studio.ldapbrowser.action.properties" );
+            pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( pda );
         }
 
