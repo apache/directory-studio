@@ -59,7 +59,7 @@ public class ExportExcelWizard extends ExportBaseWizard
      */
     public static String getId()
     {
-        return ExportExcelWizard.class.getName();
+        return BrowserUIConstants.WIZARD_EXPORT_EXCEL;
     }
 
 

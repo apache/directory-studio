@@ -55,7 +55,7 @@ public class BrowserPerspective implements IPerspectiveFactory
      */
     public static String getId()
     {
-        return BrowserPerspective.class.getName();
+        return BrowserUIConstants.PERSPECTIVE_LDAP;
     }
 
 

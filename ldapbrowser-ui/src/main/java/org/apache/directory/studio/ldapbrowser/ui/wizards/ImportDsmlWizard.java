@@ -94,7 +94,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
      */
     public static String getId()
     {
-        return ImportDsmlWizard.class.getName();
+        return BrowserUIConstants.WIZARD_IMPORT_DSML;
     }
 
 

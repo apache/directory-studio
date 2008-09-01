@@ -78,7 +78,7 @@ public class BrowserView extends ViewPart
      */
     public static String getId()
     {
-        return BrowserView.class.getName();
+        return BrowserUIConstants.VIEW_BROWSER_VIEW;
     }
 
 

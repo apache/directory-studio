@@ -84,7 +84,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
     public static String getId()
     {
-        return BatchOperationWizard.class.getName();
+        return BrowserUIConstants.WIZARD_BATCH_OPERATION;
     }
 
 

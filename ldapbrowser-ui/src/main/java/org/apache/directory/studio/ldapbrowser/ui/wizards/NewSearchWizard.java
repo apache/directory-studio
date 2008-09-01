@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.search.SearchPage;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -77,7 +78,7 @@ public class NewSearchWizard extends Wizard implements INewWizard
      */
     public static String getId()
     {
-        return NewSearchWizard.class.getName();
+        return BrowserUIConstants.WIZARD_NEW_SEARCH;
     }
 
 

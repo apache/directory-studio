@@ -59,7 +59,7 @@ public class ExportCsvWizard extends ExportBaseWizard
      */
     public static String getId()
     {
-        return ExportCsvWizard.class.getName();
+        return BrowserUIConstants.WIZARD_EXPORT_CSV;
     }
 
 

@@ -40,6 +40,7 @@ import org.apache.directory.studio.connection.core.io.ConnectionIO;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionIO;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -71,7 +72,7 @@ public class ExportConnectionsWizard extends ExportBaseWizard
      */
     public static String getId()
     {
-        return ExportConnectionsWizard.class.getName();
+        return BrowserUIConstants.WIZARD_EXPORT_CONNECTIONS;
     }
 
 

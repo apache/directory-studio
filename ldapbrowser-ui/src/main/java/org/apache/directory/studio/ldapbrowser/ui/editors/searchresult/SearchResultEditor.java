@@ -78,7 +78,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
      */
     public static String getId()
     {
-        return SearchResultEditor.class.getName();
+        return BrowserUIConstants.EDITOR_SEARCH_RESULT;
     }
 
 

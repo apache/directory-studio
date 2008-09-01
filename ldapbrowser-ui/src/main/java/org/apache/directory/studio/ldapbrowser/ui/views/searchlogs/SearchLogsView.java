@@ -58,7 +58,7 @@ public class SearchLogsView extends ViewPart
      */
     public static String getId()
     {
-        return SearchLogsView.class.getName();
+        return BrowserUIConstants.VIEW_SEARCH_LOGS_VIEW;
     }
 
 
@@ -119,10 +119,10 @@ public class SearchLogsView extends ViewPart
         actionGroup = new SearchLogsViewActionGroup( this );
         actionGroup.fillActionBars( getViewSite().getActionBars() );
         // this.actionGroup.fillContextMenu(this.configuration.getContextMenuManager(this.mainWidget.getViewer()));
-        
+
         // create the listener
         universalListener = new SearchLogsViewUniversalListener( this );
-        
+
         // set help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
             BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" );

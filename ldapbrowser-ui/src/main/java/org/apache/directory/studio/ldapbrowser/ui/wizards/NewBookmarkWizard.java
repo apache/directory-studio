@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -78,7 +79,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
      */
     public static String getId()
     {
-        return NewBookmarkWizard.class.getName();
+        return BrowserUIConstants.WIZARD_NEW_BOOKMARK;
     }
 
 

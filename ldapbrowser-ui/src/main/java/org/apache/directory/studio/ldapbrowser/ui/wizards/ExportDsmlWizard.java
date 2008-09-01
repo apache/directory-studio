@@ -61,7 +61,7 @@ public class ExportDsmlWizard extends ExportBaseWizard
      */
     public static String getId()
     {
-        return ExportDsmlWizard.class.getName();
+        return BrowserUIConstants.WIZARD_EXPORT_DSML;
     }
 
 

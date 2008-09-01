@@ -97,7 +97,7 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
      */
     public static String getId()
     {
-        return SchemaBrowser.class.getName();
+        return BrowserUIConstants.EDITOR_SCHEMA_BROWSER;
     }
 
 

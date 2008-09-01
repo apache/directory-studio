@@ -58,7 +58,7 @@ public class ModificationLogsView extends ViewPart
      */
     public static String getId()
     {
-        return ModificationLogsView.class.getName();
+        return BrowserUIConstants.VIEW_MODIFICATION_LOGS_VIEW;
     }
 
 

@@ -70,7 +70,7 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
      */
     public static String getId()
     {
-        return SearchPage.class.getName();
+        return BrowserUIConstants.SEARCH_PAGE_LDAP_SEARCH;
     }
 
 

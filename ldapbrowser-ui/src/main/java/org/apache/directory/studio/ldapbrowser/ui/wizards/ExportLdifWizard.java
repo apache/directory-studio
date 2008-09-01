@@ -59,7 +59,7 @@ public class ExportLdifWizard extends ExportBaseWizard
      */
     public static String getId()
     {
-        return ExportLdifWizard.class.getName();
+        return BrowserUIConstants.WIZARD_EXPORT_LDIF;
     }
 
 

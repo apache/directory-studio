@@ -77,7 +77,7 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
      */
     public static String getId()
     {
-        return EntryEditor.class.getName();
+        return BrowserUIConstants.EDITOR_ENTRY_EDITOR;
     }
 
 

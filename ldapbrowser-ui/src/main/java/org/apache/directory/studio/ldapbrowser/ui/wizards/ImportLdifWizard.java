@@ -99,7 +99,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      */
     public static String getId()
     {
-        return ImportLdifWizard.class.getName();
+        return BrowserUIConstants.WIZARD_IMPORT_LDIF;
     }
 
 

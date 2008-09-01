@@ -66,7 +66,7 @@ public class ConnectionView extends ViewPart
      */
     public static String getId()
     {
-        return ConnectionView.class.getName();
+        return BrowserUIConstants.VIEW_CONNECTION_VIEW;
     }
 
 
