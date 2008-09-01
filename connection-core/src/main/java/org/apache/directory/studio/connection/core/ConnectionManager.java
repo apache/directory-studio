@@ -111,7 +111,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         }
         catch ( CoreException e )
         {
-            Status status = new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID,
+            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
                 "Exception occured while executing connection initializer: " + e.getMessage(), e );
             ConnectionCorePlugin.getDefault().getLog().log( status );
         }

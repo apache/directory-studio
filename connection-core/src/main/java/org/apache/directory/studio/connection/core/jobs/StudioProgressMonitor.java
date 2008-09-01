@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.Messages;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -260,7 +260,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                 message = ""; //$NON-NLS-1$
             }
 
-            Status errorStatus = new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, IStatus.ERROR, message,
+            Status errorStatus = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, IStatus.ERROR, message,
                 exception );
             errorStatusList.add( errorStatus );
 
@@ -310,7 +310,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                 }
             }
 
-            MultiStatus multiStatus = new MultiStatus( ConnectionCorePlugin.PLUGIN_ID, IStatus.ERROR, message,
+            MultiStatus multiStatus = new MultiStatus( ConnectionCoreConstants.PLUGIN_ID, IStatus.ERROR, message,
                 exception );
 
             for ( Iterator<Status> it = errorStatusList.iterator(); it.hasNext(); )

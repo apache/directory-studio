@@ -20,6 +20,8 @@
 package org.apache.directory.studio.connection.core;
 
 
+
+
 /**
  * Constants for the connection core plugin.
  *
@@ -28,6 +30,9 @@ package org.apache.directory.studio.connection.core;
  */
 public interface ConnectionCoreConstants
 {
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = ConnectionCorePlugin.getDefault().getPluginProperties().getString(
+        "Plugin_id" );
 
     /** The line separator. */
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$

@@ -46,9 +46,6 @@ import org.osgi.framework.BundleContext;
  */
 public class ConnectionCorePlugin extends Plugin
 {
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.connection.core";
-
     /** The shared instance */
     private static ConnectionCorePlugin plugin;
 
@@ -299,7 +296,7 @@ public class ConnectionCorePlugin extends Plugin
                 catch ( Exception e )
                 {
                     getLog().log(
-                        new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, 1, "Unable to create JNDI logger "
+                        new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1, "Unable to create JNDI logger "
                             + member.getAttribute( "class" ), e ) );
                 }
             }
@@ -337,7 +334,7 @@ public class ConnectionCorePlugin extends Plugin
                 catch ( Exception e )
                 {
                     getLog().log(
-                        new Status( IStatus.ERROR, ConnectionCorePlugin.PLUGIN_ID, 1,
+                        new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
                             "Unable to create connection listener " + member.getAttribute( "class" ), e ) );
                 }
             }
@@ -364,8 +361,10 @@ public class ConnectionCorePlugin extends Plugin
             }
             catch ( IOException e )
             {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, ConnectionCorePlugin.PLUGIN_ID, Status.OK,
+                    new Status( Status.ERROR, "org.apache.directory.studio.connection.core", Status.OK,
                         "Unable to get the plugin properties.", e ) );
             }
         }
