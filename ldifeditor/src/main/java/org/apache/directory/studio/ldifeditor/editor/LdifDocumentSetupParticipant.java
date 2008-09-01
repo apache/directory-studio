@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifeditor.editor;
 
 
+import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.text.LdifPartitionScanner;
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.jface.text.IDocument;
@@ -38,7 +39,7 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 public class LdifDocumentSetupParticipant implements IDocumentSetupParticipant
 {
     /** The LDIF Partitioning ID */
-    public final static String LDIF_PARTITIONING = "org.apache.directory.studio.ldifeditor.LdifPartitioning"; //$NON-NLS-1$
+    public final static String LDIF_PARTITIONING = LdifEditorConstants.LDIF_PARTITIONING;
 
 
     /**

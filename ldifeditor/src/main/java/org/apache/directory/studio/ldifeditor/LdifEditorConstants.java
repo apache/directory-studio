@@ -32,7 +32,8 @@ public interface LdifEditorConstants
     public static final String PLUGIN_ID = LdifEditorActivator.getDefault().getPluginProperties().getString(
         "Plugin_id" );
 
-    public static final String ACTION_ID_EDIT_RECORD = "org.apache.directory.studio.ldapbrowser.action.editRecord";
+    public static final String ACTION_ID_EDIT_RECORD = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "Cmd_EditRecord_id" );
 
     public static final String PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP = "ldifEditorFormatterAutoWrap";
 
@@ -141,4 +142,9 @@ public interface LdifEditorConstants
 
     public static final String IMG_EXECUTE = "resources/icons/execute.gif";
 
+    public static final String LDIF_PARTITIONING = LdifEditorActivator.getDefault().getPluginProperties().getString(
+        "Ldif_Partitioning_id" );
+
+    public static final String CONTENTASSIST_ACTION = LdifEditorActivator.getDefault().getPluginProperties().getString(
+        "Action_ContentAssist_id" );
 }

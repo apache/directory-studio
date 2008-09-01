@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldifeditor.editor;
 
 
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
+import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -40,7 +41,7 @@ import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 public class LdifEditorContributor extends BasicTextEditorActionContributor
 {
 
-    private static final String CONTENTASSIST_ACTION = "org.apache.directory.studio.ldapbrowser.ContentAssist";
+    private static final String CONTENTASSIST_ACTION = LdifEditorConstants.CONTENTASSIST_ACTION;
 
     private RetargetTextEditorAction contentAssist;
 
