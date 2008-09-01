@@ -22,8 +22,8 @@ package org.apache.directory.studio.aciitemeditor.widgets;
 
 import java.text.ParseException;
 
+import org.apache.directory.studio.aciitemeditor.ACIITemConstants;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
-import org.apache.directory.studio.aciitemeditor.Activator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -192,7 +192,7 @@ public class ACIItemTabFolderComposite extends Composite
             }
             catch ( ParseException pe )
             {
-                IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
+                IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
                     .getString( "ACIItemTabFolderComposite.error.onVisualEditor" ), pe ); //$NON-NLS-1$
                 ErrorDialog.openError( getShell(),
                     Messages.getString( "ACIItemTabFolderComposite.error.title" ), null, status ); //$NON-NLS-1$
@@ -210,7 +210,7 @@ public class ACIItemTabFolderComposite extends Composite
             }
             catch ( ParseException pe )
             {
-                IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
+                IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
                     .getString( "ACIItemTabFolderComposite.error.onSourceEditor" ), pe ); //$NON-NLS-1$
                 ErrorDialog.openError( getShell(),
                     Messages.getString( "ACIItemTabFolderComposite.error.title" ), null, status ); //$NON-NLS-1$
@@ -238,7 +238,7 @@ public class ACIItemTabFolderComposite extends Composite
         }
         catch ( ParseException pe )
         {
-            IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
+            IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
                 .getString( "ACIItemTabFolderComposite.error.onInput" ), pe ); //$NON-NLS-1$
             ErrorDialog.openError( getShell(),
                 Messages.getString( "ACIItemTabFolderComposite.error.title" ), null, status ); //$NON-NLS-1$

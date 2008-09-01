@@ -22,6 +22,7 @@ package org.apache.directory.studio.aciitemeditor.dialogs;
 
 import java.text.ParseException;
 
+import org.apache.directory.studio.aciitemeditor.ACIITemConstants;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.widgets.ACIItemTabFolderComposite;
@@ -128,7 +129,7 @@ public class ACIItemDialog extends Dialog
             }
             catch ( ParseException pe )
             {
-                IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
+                IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
                     .getString( "ACIItemDialog.error.invalidSyntax" ), pe ); //$NON-NLS-1$
                 ErrorDialog.openError( getShell(), Messages.getString( "ACIItemDialog.error.title" ), null, status ); //$NON-NLS-1$
             }
@@ -151,7 +152,7 @@ public class ACIItemDialog extends Dialog
         }
         catch ( ParseException pe )
         {
-            IStatus status = new Status( IStatus.ERROR, Activator.PLUGIN_ID, 1, Messages
+            IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
                 .getString( "ACIItemDialog.error.invalidSyntax" ), pe ); //$NON-NLS-1$
             ErrorDialog.openError( getShell(), Messages.getString( "ACIItemDialog.error.title" ), null, status ); //$NON-NLS-1$
         }

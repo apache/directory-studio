@@ -53,7 +53,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.aciitemeditor"; //$NON-NLS-1$
+//    public static final String PLUGIN_ID = "org.apache.directory.studio.aciitemeditor"; //$NON-NLS-1$
 
     /** The shared instance */
     private static Activator plugin;
@@ -150,7 +150,7 @@ public class Activator extends AbstractUIPlugin
      */
     public static ImageDescriptor getImageDescriptor( String path )
     {
-        return imageDescriptorFromPlugin( PLUGIN_ID, path );
+        return imageDescriptorFromPlugin( ACIITemConstants.PLUGIN_ID, path );
     }
 
 
@@ -291,7 +291,7 @@ public class Activator extends AbstractUIPlugin
                 // So we're using a default plugin id.
                 getLog()
                     .log(
-                        new Status( Status.ERROR, Activator.PLUGIN_ID, Status.OK,
+                        new Status( Status.ERROR, "org.apache.directory.studio.aciitemeditor", Status.OK,
                             "Unable to get the plugin properties.", e ) );
             }
         }
