@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -92,7 +93,7 @@ public abstract class LocateInDitAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.apache.directory.studio.ldapbrowser.action.locateInDit";
+        return BrowserUIConstants.CMD_LOCATE_IN_DIT;
     }
 
 
@@ -112,7 +113,6 @@ public abstract class LocateInDitAction extends BrowserAction
      */
     protected abstract ConnectionAndDn getConnectionAndDn();
 
-    
     /**
      * Inner class to get connection and DN of the entry to locate.
      *

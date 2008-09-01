@@ -102,7 +102,7 @@ public class OpenSearchResultAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.apache.directory.studio.ldapbrowser.action.openSearchResult";
+        return BrowserUIConstants.CMD_OPEN_SEARCH_RESULT;
     }
 
 

@@ -252,4 +252,15 @@ public interface BrowserUIConstants
 
     public static final String IMG_CLEAR = "resources/icons/clear.gif";
 
+    public static final String CMD_LOCATE_IN_DIT = BrowserUIPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_LocateInDit_id" );
+
+    public static final String CMD_OPEN_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties().getString(
+        "Cmd_OpenSearchResult_id" );
+
+    public static final String PERSPECTIVE_LDAP = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Perspective_LdapPerspective_id" );
+
+    public static final String PERSPECTIVE_SCHEMA_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Perspective_SchemaEditor_id" );
 }
