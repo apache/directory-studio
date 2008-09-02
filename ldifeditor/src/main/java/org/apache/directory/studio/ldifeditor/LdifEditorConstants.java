@@ -20,6 +20,7 @@
 package org.apache.directory.studio.ldifeditor;
 
 
+
 /**
  * Constants for the LDIF editor.
  *
@@ -35,11 +36,23 @@ public interface LdifEditorConstants
     public static final String ACTION_ID_EDIT_RECORD = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "Cmd_EditRecord_id" );
 
+    public static final String ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "Cmd_EditAttributeDescription_id" );
+
+    public static final String ACTION_ID_FORMAT_LDIF_DOCUMENT = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "Cmd_FormatLdifDocument_id" );
+
+    public static final String ACTION_ID_FORMAT_LDIF_RECORD = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "Cmd_FormatLdifRecord_id" );
+
+    public static final String ACTION_ID_EXECUTE_LDIF = LdifEditorActivator.getDefault()
+        .getPluginProperties().getString( "Cmd_ExecuteLdif_id" );
+
     public static final String NEW_WIZARD_NEW_LDIF_FILE = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "NewWizard_NewLdifFileWizard_id" );
 
-    public static final String EDITOR_LDIF_EDITOR = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Editor_LdifEditor_id" );
+    public static final String EDITOR_LDIF_EDITOR = LdifEditorActivator.getDefault().getPluginProperties().getString(
+        "Editor_LdifEditor_id" );
 
     public static final String PREFERENCE_LDIFEDITOR_FORMATTER_AUTOWRAP = "ldifEditorFormatterAutoWrap";
 
@@ -153,4 +166,7 @@ public interface LdifEditorConstants
 
     public static final String CONTENTASSIST_ACTION = LdifEditorActivator.getDefault().getPluginProperties().getString(
         "Action_ContentAssist_id" );
+
+    public static final String PREFERENCEPAGEID_TEXTFORMATS = LdifEditorActivator.getDefault().getPluginProperties()
+        .getString( "PrefPage_TextFormatsPreferencePage_id" );
 }

@@ -338,8 +338,9 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         }
 
         // add Edit actions
-        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, EditLdifAttributeAction.class.getName() );
-        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, OpenDefaultValueEditorAction.class.getName() );
+        addAction( menu, ITextEditorActionConstants.GROUP_EDIT,
+            LdifEditorConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
+        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
 
         MenuManager valueEditorMenuManager = new MenuManager( "Edit Value With" );
         if ( this.openBestValueEditorAction.isEnabled() )
@@ -362,12 +363,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         valueEditorMenuManager.add( this.valueEditorPreferencesAction );
         menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, valueEditorMenuManager );
 
-        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, EditLdifRecordAction.class.getName() );
+        addAction( menu, ITextEditorActionConstants.GROUP_EDIT, LdifEditorConstants.ACTION_ID_EDIT_RECORD );
 
         // add Format actions
         MenuManager formatMenuManager = new MenuManager( "Format" );
-        addAction( formatMenuManager, FormatLdifDocumentAction.class.getName() );
-        addAction( formatMenuManager, FormatLdifRecordAction.class.getName() );
+        addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT );
+        addAction( formatMenuManager, LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD );
         menu.appendToGroup( ITextEditorActionConstants.GROUP_EDIT, formatMenuManager );
     }
 
@@ -388,12 +389,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         // add execute action (for tool bar)
         ExecuteLdifAction executeLdifAction = new ExecuteLdifAction( this );
         actionToolBarManager.add( executeLdifAction );
-        setAction( ExecuteLdifAction.class.getName(), executeLdifAction );
+        setAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF, executeLdifAction );
         actionToolBarManager.update( true );
 
         // add context menu edit actions
         EditLdifAttributeAction editLdifAttributeAction = new EditLdifAttributeAction( this );
-        setAction( EditLdifAttributeAction.class.getName(), editLdifAttributeAction );
+        setAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION, editLdifAttributeAction );
 
         openBestValueEditorAction = new OpenBestValueEditorAction( this );
         IValueEditor[] valueEditors = valueEditorManager.getAllValueEditors();
@@ -406,16 +407,16 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         OpenDefaultValueEditorAction openDefaultValueEditorAction = new OpenDefaultValueEditorAction( this,
             openBestValueEditorAction );
-        setAction( OpenDefaultValueEditorAction.class.getName(), openDefaultValueEditorAction );
+        setAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE, openDefaultValueEditorAction );
 
         EditLdifRecordAction editRecordAction = new EditLdifRecordAction( this );
-        setAction( EditLdifRecordAction.class.getName(), editRecordAction );
+        setAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD, editRecordAction );
 
         // add context menu format actions
         FormatLdifDocumentAction formatDocumentAction = new FormatLdifDocumentAction( this );
-        setAction( FormatLdifDocumentAction.class.getName(), formatDocumentAction );
+        setAction( LdifEditorConstants.ACTION_ID_FORMAT_LDIF_DOCUMENT, formatDocumentAction );
         FormatLdifRecordAction formatRecordAction = new FormatLdifRecordAction( this );
-        setAction( FormatLdifRecordAction.class.getName(), formatRecordAction );
+        setAction( LdifEditorConstants.ACTION_ID_FORMAT_LDIF_RECORD, formatRecordAction );
 
         // update cut, copy, paste
         IAction cutAction = getAction( ITextEditorActionConstants.CUT );
@@ -574,7 +575,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
                     .getConnection().getName() ) );
         // getStatusField("ldapconnection").setText();
 
-        IAction action = getAction( ExecuteLdifAction.class.getName() );
+        IAction action = getAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF );
         if ( action != null )
         {
             action.setEnabled( browserConnection == null );
@@ -849,11 +850,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void activateGlobalActionHandlers()
     {
-        IAction elaa = getAction( EditLdifAttributeAction.class.getName() );
+        IAction elaa = getAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
         ActionUtils.activateActionHandler( elaa );
-        IAction elva = getAction( OpenDefaultValueEditorAction.class.getName() );
+        IAction elva = getAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
         ActionUtils.activateActionHandler( elva );
-        IAction elra = getAction( EditLdifRecordAction.class.getName() );
+        IAction elra = getAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
         ActionUtils.activateActionHandler( elra );
     }
 
@@ -863,11 +864,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public void deactivateGlobalActionHandlers()
     {
-        IAction elaa = getAction( EditLdifAttributeAction.class.getName() );
+        IAction elaa = getAction( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
         ActionUtils.deactivateActionHandler( elaa );
-        IAction elva = getAction( OpenDefaultValueEditorAction.class.getName() );
+        IAction elva = getAction( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
         ActionUtils.deactivateActionHandler( elva );
-        IAction elra = getAction( EditLdifRecordAction.class.getName() );
+        IAction elra = getAction( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
         ActionUtils.deactivateActionHandler( elra );
     }
 

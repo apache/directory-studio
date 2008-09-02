@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldifeditor.dialogs.preferences;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.TextFormatsPreferencePage;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
@@ -129,7 +128,7 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(), TextFormatsPreferencePage.class.getName(), null,
+                PreferencesUtil.createPreferenceDialogOn( getShell(), LdifEditorConstants.PREFERENCEPAGEID_TEXTFORMATS, null,
                     null ); //$NON-NLS-1$
             }
         } );
