@@ -76,7 +76,7 @@ public class ExportExcelToWizardPage extends ExportBaseToPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(), TextFormatsPreferencePage.class.getName(), null,
+                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS, null,
                     TextFormatsPreferencePage.XLS_TAB ).open();
             }
         } );

@@ -77,7 +77,7 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(), TextFormatsPreferencePage.class.getName(), null,
+                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS, null,
                     TextFormatsPreferencePage.LDIF_TAB ).open();
             }
         } );

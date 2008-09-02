@@ -76,8 +76,8 @@ public class ExportCsvToWizardPage extends ExportBaseToPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(), TextFormatsPreferencePage.class.getName(), null,
-                    TextFormatsPreferencePage.CSV_TAB ).open();
+                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS,
+                    null, TextFormatsPreferencePage.CSV_TAB ).open();
             }
         } );
     }

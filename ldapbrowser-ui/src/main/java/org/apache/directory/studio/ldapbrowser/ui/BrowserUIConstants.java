@@ -53,6 +53,8 @@ public interface BrowserUIConstants
         .getString( "PrefPage_ModificationLogsPreferencePage_id" );
     public static final String PREFERENCEPAGEID_SEARCHLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_SearchLogsPreferencePage_id" );
+    public static final String PREFERENCEPAGEID_TEXTFORMATS = BrowserUIPlugin.getDefault().getPluginProperties()
+    .getString( "PrefPage_TextFormatsPreferencePage_id" );
 
     public static final String IMG_EXPANDALL = "resources/icons/expandall.gif";
     public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif";
