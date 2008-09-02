@@ -51,7 +51,6 @@ public class ReportABugAction extends Action implements IWorkbenchWindowActionDe
      */
     public ReportABugAction()
     {
-        setId( "org.apache.directory.studio.reportABug" ); //$NON-NLS-1$
         setText( Messages.getString( "ReportABugAction.Report_a_bug" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "ReportABugAction.Open_a_web_browser" ) ); //$NON-NLS-1$
         setEnabled( true );

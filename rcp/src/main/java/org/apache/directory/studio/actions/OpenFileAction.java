@@ -56,7 +56,6 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
      */
     public OpenFileAction()
     {
-        setId( "org.apache.directory.studio.openFile" ); //$NON-NLS-1$
         setText( Messages.getString( "OpenFileAction.Open_File" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "OpenFileAction.Open_file_from_filesystem" ) ); //$NON-NLS-1$
         setEnabled( true );

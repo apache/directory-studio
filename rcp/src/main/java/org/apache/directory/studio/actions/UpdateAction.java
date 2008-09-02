@@ -51,7 +51,6 @@ public class UpdateAction extends Action implements IAction
     public UpdateAction( IWorkbenchWindow window )
     {
         this.window = window;
-        setId( "org.apache.directory.studio.newUpdates" ); //$NON-NLS-1$
         setText( Messages.getString( "UpdateAction.Search_for_updates" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "UpdateAction.Search_for_updates_for_LDAP_Studio" ) ); //$NON-NLS-1$
     }

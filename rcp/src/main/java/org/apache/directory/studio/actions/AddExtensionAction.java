@@ -58,7 +58,6 @@ public class AddExtensionAction extends Action implements IAction
     public AddExtensionAction( IWorkbenchWindow window )
     {
         this.window = window;
-        setId( "org.apache.directory.studio.newExtensions" ); //$NON-NLS-1$
         setText( Messages.getString( "AddExtensionAction.Add_Extensions" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "AddExtensionAction.Search_for_new_extensions" ) ); //$NON-NLS-1$
     }
