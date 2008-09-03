@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -61,6 +61,8 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
     private Label foldingThresholdLabel;
 
     private Text foldingThresholdText;
+
+    private Button autoExpandFoldedAttributesButton;
 
 
     /**
@@ -115,8 +117,8 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         String foldingTooltip = "If an attribute has more than the specified number of values it will be folded to one line. You may expand and collapse the values.";
         Group foldingGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
             "Folding", 1 );
-        Composite pagingGroupComposite = BaseWidgetUtils.createColumnContainer( foldingGroup, 2, 1 );
-        enableFoldingButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite, "Enable folding", 2 );
+        Composite pagingGroupComposite = BaseWidgetUtils.createColumnContainer( foldingGroup, 3, 1 );
+        enableFoldingButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite, "Enable folding", 3 );
         enableFoldingButton.setToolTipText( foldingTooltip );
         enableFoldingButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING ) );
@@ -127,6 +129,7 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
                 updateEnabled();
             }
         } );
+        BaseWidgetUtils.createRadioIndent( pagingGroupComposite, 1 );
         foldingThresholdLabel = BaseWidgetUtils.createLabel( pagingGroupComposite, "Folding threshold: ", 1 );
         foldingThresholdLabel.setToolTipText( foldingTooltip );
         foldingThresholdLabel.setEnabled( enableFoldingButton.getSelection() );
@@ -148,6 +151,12 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
                 }
             }
         } );
+        BaseWidgetUtils.createRadioIndent( pagingGroupComposite, 1 );
+        autoExpandFoldedAttributesButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite,
+            "Auto-expand folded attributes", 2 );
+        autoExpandFoldedAttributesButton.setEnabled( enableFoldingButton.getSelection() );
+        autoExpandFoldedAttributesButton.setSelection( getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES ) );
 
         updateEnabled();
 
@@ -161,6 +170,7 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
     {
         foldingThresholdText.setEnabled( enableFoldingButton.getSelection() );
         foldingThresholdLabel.setEnabled( enableFoldingButton.getSelection() );
+        autoExpandFoldedAttributesButton.setEnabled( enableFoldingButton.getSelection() );
     }
 
 
@@ -182,6 +192,8 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
             enableFoldingButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD,
             foldingThresholdText.getText() );
+        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES,
+            autoExpandFoldedAttributesButton.getSelection() );
 
         return true;
     }
@@ -201,8 +213,12 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         showOperationalAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
 
+        enableFoldingButton.setSelection( getPreferenceStore().getDefaultBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING ) );
         foldingThresholdText.setText( getPreferenceStore().getDefaultString(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD ) );
+        autoExpandFoldedAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES ) );
 
         updateEnabled();
 

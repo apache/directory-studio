@@ -132,8 +132,7 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
 
                 IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
                     IContextService.class );
-                contextActivation = contextService
-                    .activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
+                contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_WINDOWS );
                 // org.eclipse.ui.contexts.dialogAndWindow
                 // org.eclipse.ui.contexts.window
                 // org.eclipse.ui.text_editor_context
@@ -238,6 +237,7 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
         {
             viewer.setInput( entry );
             entryEditor.getActionGroup().setInput( entry );
+            expandFoldedAttributes();
         }
 
     }
@@ -251,11 +251,25 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
     public void entryUpdated( EntryModificationEvent event )
     {
         super.entryUpdated( event );
+        expandFoldedAttributes();
 
-        EntryEditorOutlinePage outlinePage = ( EntryEditorOutlinePage ) entryEditor.getAdapter( IContentOutlinePage.class );
+        EntryEditorOutlinePage outlinePage = ( EntryEditorOutlinePage ) entryEditor
+            .getAdapter( IContentOutlinePage.class );
         if ( outlinePage != null )
         {
             outlinePage.refresh();
+        }
+    }
+
+
+    /**
+     * Expands folded attributes if the appropriate preference is set.
+     */
+    private void expandFoldedAttributes()
+    {
+        if ( entryEditor.getConfiguration().getPreferences().isAutoExpandFoldedAttributes() )
+        {
+            viewer.expandAll();
         }
     }
 

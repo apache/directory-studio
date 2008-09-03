@@ -136,6 +136,7 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         // Entry Editor
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD, 10 );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES, false );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES, true );

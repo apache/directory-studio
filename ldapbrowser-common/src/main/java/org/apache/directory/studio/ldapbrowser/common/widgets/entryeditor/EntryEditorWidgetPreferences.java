@@ -98,6 +98,18 @@ public class EntryEditorWidgetPreferences implements IPropertyChangeListener
 
 
     /**
+     * Checks if is auto expand folded attributes.
+     * 
+     * @return true, if is auto expand folded attributes
+     */
+    public boolean isAutoExpandFoldedAttributes()
+    {
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES );
+    }
+
+
+    /**
      * Checks if may attributes should be shown.
      * 
      * @return true, if may attributes should be shown

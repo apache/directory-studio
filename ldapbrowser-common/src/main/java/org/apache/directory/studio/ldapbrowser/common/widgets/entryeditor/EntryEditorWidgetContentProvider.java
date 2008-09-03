@@ -182,8 +182,8 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 || ( attribute.getEntry() instanceof IRootDSE ) )
             {
                 IValue[] values = attribute.getValues();
-                if ( this.preferences == null || !this.preferences.isUseFolding()
-                    || ( values.length <= this.preferences.getFoldingThreshold() ) )
+                if ( preferences == null || !preferences.isUseFolding()
+                    || ( values.length <= preferences.getFoldingThreshold() ) )
                 {
                     for ( IValue value : values )
                     {

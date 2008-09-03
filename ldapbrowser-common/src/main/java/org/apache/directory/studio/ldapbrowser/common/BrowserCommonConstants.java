@@ -89,6 +89,7 @@ public interface BrowserCommonConstants
     public static final String PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES = "entryeditorShowOperationalAttributes";
     public static final String PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING = "entryeditorEnableFolding";
     public static final String PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD = "entryeditorFoldingThreshold";
+    public static final String PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES = "entryeditorAutoExpandFoldedAttributes";
     public static final String PREFERENCE_ENTRYEDITOR_OBJECTCLASS_AND_MUST_ATTRIBUTES_FIRST = "entryeditorObjectClassAndMustAttributesFirst";
     public static final String PREFERENCE_ENTRYEDITOR_OPERATIONAL_ATTRIBUTES_LAST = "entryeditorOperationalAttributesLast";
     public static final String PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_BY = "entryeditorDefaultSortBy";
