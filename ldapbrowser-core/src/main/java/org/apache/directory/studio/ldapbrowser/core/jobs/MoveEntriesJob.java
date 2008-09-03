@@ -35,9 +35,9 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryMovedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -239,17 +239,28 @@ public class MoveEntriesJob extends AbstractNotificationJob
      */
     protected void runNotification()
     {
-        for ( int i = 0; i < newEntries.length; i++ )
+        // notify the entries and their parents
+        if ( newEntries.length < 2 )
         {
-            if ( oldEntries[i] != null && newEntries[i] != null )
+            // notify fore each moved entry
+            for ( int i = 0; i < newEntries.length; i++ )
             {
-                EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i] ), this );
+                if ( oldEntries[i] != null && newEntries[i] != null )
+                {
+                    EventRegistry.fireEntryUpdated( new EntryMovedEvent( oldEntries[i], newEntries[i] ), this );
+                }
             }
         }
-        for ( ISearch search : searchesToUpdateSet )
+        else
         {
-            EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search,
-                SearchUpdateEvent.EventDetail.SEARCH_PERFORMED ), this );
+            // reset the old and new parents and send only a bulk update event
+            // notifying for each moved entry would cause lot of UI updates...
+            for ( IEntry oldEntry : oldEntries )
+            {
+                oldEntry.getParententry().setChildrenInitialized( false );
+            }
+            newParent.setChildrenInitialized( false );
+            EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
         }
     }
 

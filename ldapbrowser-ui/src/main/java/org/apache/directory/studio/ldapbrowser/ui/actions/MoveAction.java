@@ -40,7 +40,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
- * This Action moves Entries from on node of the Tree to another.
+ * This Action moves entries from one node of the tree to another.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -61,7 +61,6 @@ public class MoveAction extends BrowserAction
      */
     public String getText()
     {
-
         IEntry[] entries = getEntries();
         ISearch[] searches = getSearches();
         IBookmark[] bookmarks = getBookmarks();
@@ -70,15 +69,6 @@ public class MoveAction extends BrowserAction
         {
             return entries.length == 1 ? "Move Entry..." : "Move Entries...";
         }
-        // else if(searches.length > 0 && entries.length==0 &&
-        // bookmarks.length==0) {
-        // return entries.length == 1 ? "Move Search..." : "Move Searches...";
-        // }
-        // else if(bookmarks.length > 0 && entries.length==0 &&
-        // searches.length==0) {
-        // return entries.length == 1 ? "Move Bookmark..." : "Move
-        // Bookmarks...";
-        // }
         else
         {
             return "Move...";
@@ -109,7 +99,6 @@ public class MoveAction extends BrowserAction
      */
     public void run()
     {
-
         IEntry[] entries = getEntries();
         ISearch[] searches = getSearches();
         IBookmark[] bookmarks = getBookmarks();
@@ -117,14 +106,6 @@ public class MoveAction extends BrowserAction
         if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0 )
         {
             moveEntries( entries );
-        }
-        else if ( searches.length > 0 && entries.length == 0 && bookmarks.length == 0 )
-        {
-            // tbd
-        }
-        else if ( bookmarks.length > 0 && entries.length == 0 && searches.length == 0 )
-        {
-            // tbd
         }
     }
 
@@ -134,7 +115,6 @@ public class MoveAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-
         try
         {
             IEntry[] entries = getEntries();
@@ -142,7 +122,6 @@ public class MoveAction extends BrowserAction
             IBookmark[] bookmarks = getBookmarks();
 
             return entries.length > 0 && searches.length == 0 && bookmarks.length == 0;
-
         }
         catch ( Exception e )
         {
@@ -159,8 +138,8 @@ public class MoveAction extends BrowserAction
      */
     protected IEntry[] getEntries()
     {
-        if ( getSelectedBookmarks().length + getSelectedSearches().length
-            + getSelectedAttributes().length + getSelectedValues().length == 0
+        if ( getSelectedBookmarks().length + getSelectedSearches().length + getSelectedAttributes().length
+            + getSelectedValues().length == 0
             && getSelectedEntries().length + getSelectedSearchResults().length > 0 )
         {
             LinkedHashSet<IEntry> entriesSet = new LinkedHashSet<IEntry>();
@@ -190,7 +169,7 @@ public class MoveAction extends BrowserAction
 
 
     /**
-     * Opens a Move Entries Dialog and lauches the Move Entries Jobs.
+     * Opens a Move Entries Dialog and launches the Move Entries Jobs.
      *
      * @param entries
      *      the entries to move
@@ -204,7 +183,7 @@ public class MoveAction extends BrowserAction
             if ( newParentDn != null /* && !newRdn.equals(entry.getRdn()) */)
             {
                 IEntry newParentEntry = entries[0].getBrowserConnection().getEntryFromCache( newParentDn );
-                if( newParentEntry == null )
+                if ( newParentEntry == null )
                 {
                     ReadEntryRunnable runnable = new ReadEntryRunnable( entries[0].getBrowserConnection(), newParentDn );
                     RunnableContextRunner.execute( runnable, null, true );
@@ -255,4 +234,5 @@ public class MoveAction extends BrowserAction
             return new IBookmark[0];
         }
     }
+
 }
