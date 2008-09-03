@@ -27,6 +27,8 @@ import java.util.List;
 import javax.naming.CommunicationException;
 import javax.naming.Context;
 import javax.naming.InsufficientResourcesException;
+import javax.naming.InvalidNameException;
+import javax.naming.Name;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.PartialResultException;
@@ -280,7 +282,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         final long requestNum = SEARCH_RESQUEST_NUM++;
-        
+
         // start
         InnerRunnable runnable = new InnerRunnable()
         {
@@ -302,12 +304,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    // we use LdapName here for the following reason:
-                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
-                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
-                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
-                    //   user provided ATAV.
-                    NamingEnumeration<SearchResult> ne = searchCtx.search( new LdapName( searchBase ), filter,
+                    NamingEnumeration<SearchResult> ne = searchCtx.search( getJndiSaveLdapName( searchBase ), filter,
                         searchControls );
                     namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, ne, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
@@ -418,9 +415,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            return new StudioNamingEnumeration( connection, null, null, searchBase, filter,
-                searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
-                monitor, referralsInfo );
+            return new StudioNamingEnumeration( connection, null, null, searchBase, filter, searchControls,
+                aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
         }
     }
 
@@ -461,12 +457,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform modification
-                    // we use LdapName here for the following reason:
-                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
-                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
-                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
-                    //   user provided ATAV.
-                    modCtx.modifyAttributes( new LdapName( dn ), modificationItems );
+                    modCtx.modifyAttributes( getJndiSaveLdapName( dn ), modificationItems );
                 }
                 catch ( ReferralException re )
                 {
@@ -567,12 +558,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
 
                     // rename entry
-                    // we use LdapName here for the following reason:
-                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
-                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
-                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
-                    //   user provided ATAV.
-                    modCtx.rename( new LdapName( oldDn ), new LdapName( newDn ) );
+                    modCtx.rename( getJndiSaveLdapName( oldDn ), getJndiSaveLdapName( newDn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -662,12 +648,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // create entry
-                    // we use LdapName here for the following reason:
-                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
-                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
-                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
-                    //   user provided ATAV.
-                    modCtx.createSubcontext( new LdapName( dn ), attributes );
+                    modCtx.createSubcontext( getJndiSaveLdapName( dn ), attributes );
                 }
                 catch ( ReferralException re )
                 {
@@ -755,12 +736,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // delete entry
-                    // we use LdapName here for the following reason:
-                    // - when passing dn as String, JNDI doesn't handle slashes '/' correctly
-                    // - when using LdapDN from shared-ldap, JNDI uses the toString() method 
-                    //   and LdapDN.toString() returns the normalized ATAV, but we need the 
-                    //   user provided ATAV.
-                    modCtx.destroySubcontext( new LdapName( dn ) );
+                    modCtx.destroySubcontext( getJndiSaveLdapName( dn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -942,7 +918,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             IAuthHandler authHandler = ConnectionCorePlugin.getDefault().getAuthHandler();
             if ( authHandler == null )
             {
-                NamingException namingException = new NamingException(  Messages.model__no_auth_handler );
+                NamingException namingException = new NamingException( Messages.model__no_auth_handler );
                 monitor.reportError( Messages.model__no_auth_handler, namingException );
                 throw namingException;
             }
@@ -956,7 +932,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
             if ( credentials.getBindPrincipal() == null || credentials.getBindPassword() == null )
             {
-                NamingException namingException = new NamingException(  Messages.model__no_credentials );
+                NamingException namingException = new NamingException( Messages.model__no_credentials );
                 monitor.reportError( Messages.model__no_credentials, namingException );
                 throw namingException;
             }
@@ -1232,6 +1208,31 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
         }
         return localControls;
+    }
+
+
+    /**
+     * Gets a Name object that is save for JNDI operations.
+     * <li>When passing DN as String, JNDI doesn't handle slashes '/' correctly.
+     *     So we must use a Name object here.
+     * <li>When using LdapDN from shared-ldap, JNDI uses the toString() method 
+     *     and LdapDN.toString() returns the normalized ATAV, but we need the 
+     *     user provided ATAV. Thats the cause we use LdapName by default.
+     * <li>When using for the empty DN (Root DSE) JNDI _sometimes_ throws an 
+     *     Exception (java.lang.IndexOutOfBoundsException: Posn: -1, Size: 0
+     *     at javax.naming.ldap.LdapName.getPrefix(LdapName.java:240)). 
+     *     Thats the cause we use LdapDN for the empty DN.
+     */
+    private static Name getJndiSaveLdapName( String name ) throws InvalidNameException
+    {
+        if ( name == null || "".equals( name ) )
+        {
+            return LdapDN.EMPTY_LDAPDN;
+        }
+        else
+        {
+            return new LdapName( name );
+        }
     }
 
 
