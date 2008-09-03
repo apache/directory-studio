@@ -176,22 +176,25 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                     contextEntryDnCombo.setText( newEntry.getDn().getUpName() );
                 }
             }
-
         }
         else
         {
-
             Subschema subschema = newEntry.getSubschema();
             String[] attributeNames = subschema.getAllAttributeNames();
 
             LdapDN parentDn = null;
-            if ( DnUtils.getParent( newEntry.getDn() ) != null )
+            if ( newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
+                && DnUtils.getParent( newEntry.getDn() ) != null )
             {
                 parentDn = DnUtils.getParent( newEntry.getDn() );
             }
             else if ( wizard.getSelectedEntry() != null )
             {
                 parentDn = wizard.getSelectedEntry().getDn();
+            }
+            else if ( DnUtils.getParent( newEntry.getDn() ) != null )
+            {
+                parentDn = DnUtils.getParent( newEntry.getDn() );
             }
 
             Rdn rdn = newEntry.getRdn();
