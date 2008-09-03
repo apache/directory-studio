@@ -229,8 +229,8 @@ public class LdifEntryEditorDialog extends Dialog
         } );
 
         // create the listener
-        universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), actionGroup
-            .getOpenDefaultEditorAction() );
+        universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), configuration, actionGroup,
+            actionGroup.getOpenDefaultEditorAction() );
 
         try
         {
@@ -246,7 +246,7 @@ public class LdifEntryEditorDialog extends Dialog
 
             if ( entry != null )
             {
-                mainWidget.getViewer().setInput( entry );
+                universalListener.setInput( entry );
             }
 
         }

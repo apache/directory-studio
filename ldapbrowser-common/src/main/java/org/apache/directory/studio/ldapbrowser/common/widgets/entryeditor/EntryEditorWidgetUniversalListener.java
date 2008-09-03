@@ -34,7 +34,9 @@ import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -57,6 +59,12 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 
     /** The tree viewer */
     protected TreeViewer viewer;
+
+    /** The configuration. */
+    protected EntryEditorWidgetConfiguration configuration;
+
+    /** The action group. */
+    protected EntryEditorWidgetActionGroup actionGroup;
 
     /** The action used to start the default value editor */
     protected OpenDefaultEditorAction startEditAction;
@@ -111,12 +119,14 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
             }
         }
 
+
         /**
          * {@inheritDoc}
          */
         public void mouseDown( MouseEvent e )
         {
         }
+
 
         /**
          * {@inheritDoc}
@@ -129,18 +139,23 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 
     /**
      * Creates a new instance of EntryEditorWidgetUniversalListener.
-     *
+     * 
      * @param treeViewer the tree viewer
+     * @param configuration the configuration
+     * @param actionGroup the action group
      * @param startEditAction the action used to start the default value editor
      */
-    public EntryEditorWidgetUniversalListener( TreeViewer treeViewer, OpenDefaultEditorAction startEditAction )
+    public EntryEditorWidgetUniversalListener( TreeViewer treeViewer, EntryEditorWidgetConfiguration configuration,
+        EntryEditorWidgetActionGroup actionGroup, OpenDefaultEditorAction startEditAction )
     {
         this.startEditAction = startEditAction;
         this.viewer = treeViewer;
+        this.configuration = configuration;
+        this.actionGroup = actionGroup;
 
         // register listeners
-        viewer.getTree().addSelectionListener( viewerSelectionListener  );
-        viewer.getTree().addMouseListener( viewerMouseListener  );
+        viewer.getTree().addSelectionListener( viewerSelectionListener );
+        viewer.getTree().addMouseListener( viewerMouseListener );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
@@ -156,6 +171,8 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 
             startEditAction = null;
             viewer = null;
+            configuration = null;
+            actionGroup = null;
         }
     }
 
@@ -206,10 +223,9 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
             EmptyValueAddedEvent evaEvent = ( EmptyValueAddedEvent ) event;
 
             // show operational attributes if an operational attribute was added
-            if ( evaEvent.getAddedValue().getAttribute().isOperationalAttribute() && 
-                !BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                    BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES )
-                )
+            if ( evaEvent.getAddedValue().getAttribute().isOperationalAttribute()
+                && !BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+                    BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) )
             {
                 BrowserCommonActivator.getDefault().getPreferenceStore().setValue(
                     BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES, true );
@@ -243,6 +259,52 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
             // select the renamed value
             ValueRenamedEvent vrEvent = ( ValueRenamedEvent ) event;
             viewer.setSelection( new StructuredSelection( vrEvent.getNewValue() ), true );
+        }
+    }
+
+
+    /**
+     * Sets the input to the viewer.
+     *
+     * @param entry the entry input
+     */
+    public void setInput( IEntry entry )
+    {
+        if ( entry != viewer.getInput() )
+        {
+            viewer.setInput( entry );
+            actionGroup.setInput( entry );
+            expandFoldedAttributes();
+        }
+
+    }
+
+
+    /**
+     * Sets the input to the viewer.
+     * 
+     * @param attributeHierarchy the attribute hierarchy
+     */
+    public void setInput( AttributeHierarchy attributeHierarchy )
+    {
+        if ( attributeHierarchy != viewer.getInput() )
+        {
+            viewer.setInput( attributeHierarchy );
+            actionGroup.setInput( attributeHierarchy );
+            expandFoldedAttributes();
+        }
+
+    }
+
+
+    /**
+     * Expands folded attributes if the appropriate preference is set.
+     */
+    protected void expandFoldedAttributes()
+    {
+        if ( configuration.getPreferences().isAutoExpandFoldedAttributes() )
+        {
+            viewer.expandAll();
         }
     }
 

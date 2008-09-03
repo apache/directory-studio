@@ -198,7 +198,8 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
      */
     public EntryEditorUniversalListener( EntryEditor entryEditor )
     {
-        super( entryEditor.getMainWidget().getViewer(), entryEditor.getActionGroup().getOpenDefaultEditorAction() );
+        super( entryEditor.getMainWidget().getViewer(), entryEditor.getConfiguration(), entryEditor.getActionGroup(),
+            entryEditor.getActionGroup().getOpenDefaultEditorAction() );
         this.entryEditor = entryEditor;
 
         // register listeners
@@ -226,21 +227,7 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
     }
 
 
-    /**
-     * Sets the input to the viewer.
-     *
-     * @param entry the entry input
-     */
-    void setInput( IEntry entry )
-    {
-        if ( entry != viewer.getInput() )
-        {
-            viewer.setInput( entry );
-            entryEditor.getActionGroup().setInput( entry );
-            expandFoldedAttributes();
-        }
 
-    }
 
 
     /**
@@ -262,15 +249,6 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
     }
 
 
-    /**
-     * Expands folded attributes if the appropriate preference is set.
-     */
-    private void expandFoldedAttributes()
-    {
-        if ( entryEditor.getConfiguration().getPreferences().isAutoExpandFoldedAttributes() )
-        {
-            viewer.expandAll();
-        }
-    }
+
 
 }

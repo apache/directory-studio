@@ -37,6 +37,8 @@ import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPrefere
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.utils.ActionUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.eclipse.jface.action.IAction;
@@ -397,6 +399,34 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     public OpenDefaultEditorAction getOpenDefaultEditorAction()
     {
         return ( OpenDefaultEditorAction ) openDefaultValueEditorActionProxy.getAction();
+    }
+
+
+    /**
+     * Sets the input.
+     * 
+     * @param entry the input
+     */
+    public void setInput( IEntry entry )
+    {
+        for ( EntryEditorActionProxy action : entryEditorActionMap.values() )
+        {
+            action.inputChanged( entry );
+        }
+    }
+
+
+    /**
+     * Sets the input.
+     * 
+     * @param attributeHierarchy the attribute hierarchy
+     */
+    public void setInput( AttributeHierarchy attributeHierarchy )
+    {
+        for ( EntryEditorActionProxy action : entryEditorActionMap.values() )
+        {
+            action.inputChanged( attributeHierarchy );
+        }
     }
 
 }

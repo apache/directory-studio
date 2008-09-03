@@ -191,7 +191,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
             }
 
             // set the input
-            mainWidget.getViewer().setInput( newEntry );
+            universalListener.setInput( newEntry );
             mainWidget.getViewer().refresh();
             validate();
 
@@ -263,8 +263,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         actionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), actionGroup
-            .getOpenDefaultEditorAction() );
+        universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), configuration, actionGroup,
+            actionGroup.getOpenDefaultEditorAction() );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
 
         setControl( composite );

@@ -31,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorA
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EditAttributeDescriptionAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.OpenDefaultEditorAction;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyAttributeDescriptionAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopySearchFilterAction;
@@ -70,7 +69,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
     /** The open entry value editor action. */
     private EntryEditorActionProxy openEntryValueEditorActionProxy;
-    
+
     /** The open entry editor preference page. */
     private OpenEntryEditorPreferencePageAction openEntryEditorPreferencePage;
 
@@ -413,20 +412,6 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         IAction eada = entryEditorActionMap.get( editAttributeDescriptionAction );
         ActionUtils.deactivateActionHandler( eada );
         ActionUtils.deactivateActionHandler( openEntryValueEditorActionProxy );
-    }
-
-
-    /**
-     * Sets the input.
-     * 
-     * @param entry the input
-     */
-    public void setInput( IEntry entry )
-    {
-        for ( EntryEditorActionProxy action : entryEditorActionMap.values() )
-        {
-            action.inputChanged( entry );
-        }
     }
 
 }

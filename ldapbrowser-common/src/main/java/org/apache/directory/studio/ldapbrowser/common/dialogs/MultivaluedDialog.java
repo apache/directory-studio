@@ -232,7 +232,6 @@ public class MultivaluedDialog extends Dialog
         // create main widget
         mainWidget = new EntryEditorWidget( configuration );
         mainWidget.createWidget( composite );
-        mainWidget.getViewer().setInput( attributeHierarchie );
         mainWidget.getViewer().getTree().setFocus();
 
         // create actions
@@ -246,8 +245,9 @@ public class MultivaluedDialog extends Dialog
         actionGroup.activateGlobalActionHandlers();
 
         // create the listener
-        universalListener = new MultiValuedEntryEditorUniversalListener( mainWidget.getViewer(), actionGroup
-            .getOpenDefaultEditorAction() );
+        universalListener = new MultiValuedEntryEditorUniversalListener( mainWidget.getViewer(), configuration,
+            actionGroup, actionGroup.getOpenDefaultEditorAction() );
+        universalListener.setInput( attributeHierarchie );
 
         // start edit mode if an empty value exists
         for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
@@ -282,12 +282,16 @@ public class MultivaluedDialog extends Dialog
         /**
          * Creates a new instance of MultiValuedEntryEditorUniversalListener.
          * 
-         * @param startEditAction the start edit action
          * @param treeViewer the tree viewer
+         * @param configuration the configuration
+         * @param actionGroup the action group
+         * @param startEditAction the start edit action
          */
-        public MultiValuedEntryEditorUniversalListener( TreeViewer treeViewer, OpenDefaultEditorAction startEditAction )
+        public MultiValuedEntryEditorUniversalListener( TreeViewer treeViewer,
+            EntryEditorWidgetConfiguration configuration, EntryEditorWidgetActionGroup actionGroup,
+            OpenDefaultEditorAction startEditAction )
         {
-            super( treeViewer, startEditAction );
+            super( treeViewer, configuration, actionGroup, startEditAction );
         }
 
 
