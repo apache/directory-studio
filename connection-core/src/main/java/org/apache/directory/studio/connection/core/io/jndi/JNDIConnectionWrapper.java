@@ -25,6 +25,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import javax.naming.CommunicationException;
+import javax.naming.CompositeName;
 import javax.naming.Context;
 import javax.naming.InsufficientResourcesException;
 import javax.naming.InvalidNameException;
@@ -53,6 +54,7 @@ import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.IAuthHandler;
@@ -67,6 +69,7 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+import org.eclipse.core.runtime.Preferences;
 
 
 /**
@@ -304,7 +307,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform the search
-                    NamingEnumeration<SearchResult> ne = searchCtx.search( getJndiSaveLdapName( searchBase ), filter,
+                    NamingEnumeration<SearchResult> ne = searchCtx.search( getSaveJndiName( searchBase ), filter,
                         searchControls );
                     namingEnumeration = new StudioNamingEnumeration( connection, searchCtx, ne, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
@@ -457,7 +460,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // perform modification
-                    modCtx.modifyAttributes( getJndiSaveLdapName( dn ), modificationItems );
+                    modCtx.modifyAttributes( getSaveJndiName( dn ), modificationItems );
                 }
                 catch ( ReferralException re )
                 {
@@ -558,7 +561,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
 
                     // rename entry
-                    modCtx.rename( getJndiSaveLdapName( oldDn ), getJndiSaveLdapName( newDn ) );
+                    modCtx.rename( getSaveJndiName( oldDn ), getSaveJndiName( newDn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -648,7 +651,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // create entry
-                    modCtx.createSubcontext( getJndiSaveLdapName( dn ), attributes );
+                    modCtx.createSubcontext( getSaveJndiName( dn ), attributes );
                 }
                 catch ( ReferralException re )
                 {
@@ -736,7 +739,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     modCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
 
                     // delete entry
-                    modCtx.destroySubcontext( getJndiSaveLdapName( dn ) );
+                    modCtx.destroySubcontext( getSaveJndiName( dn ) );
                 }
                 catch ( ReferralException re )
                 {
@@ -803,7 +806,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         useStartTLS = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS;
 
         environment = new Hashtable<String, String>();
-        environment.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" ); //$NON-NLS-1$
+        Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+        String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
+        environment.put( Context.INITIAL_CONTEXT_FACTORY, ldapCtxFactory ); //$NON-NLS-1$
         environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // timeouts
@@ -1213,21 +1218,43 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
     /**
      * Gets a Name object that is save for JNDI operations.
+     * <p>
+     * In JNDI we have could use the following classes for names:
+     * <ul>
+     * <li>DN as String</li>
+     * <li>javax.naming.CompositeName</li>
+     * <li>javax.naming.ldap.LdapName (since Java5)</li>
+     * <li>org.apache.directory.shared.ldap.name.LdapDN</li>
+     * </ul>
+     * <p>
+     * There are some drawbacks when using this classes:
+     * <ul>
      * <li>When passing DN as String, JNDI doesn't handle slashes '/' correctly.
-     *     So we must use a Name object here.
-     * <li>When using LdapDN from shared-ldap, JNDI uses the toString() method 
-     *     and LdapDN.toString() returns the normalized ATAV, but we need the 
-     *     user provided ATAV. Thats the cause we use LdapName by default.
-     * <li>When using for the empty DN (Root DSE) JNDI _sometimes_ throws an 
-     *     Exception (java.lang.IndexOutOfBoundsException: Posn: -1, Size: 0
-     *     at javax.naming.ldap.LdapName.getPrefix(LdapName.java:240)). 
-     *     Thats the cause we use LdapDN for the empty DN.
+     * So we must use a Name object here.</li>
+     * <li>With CompositeName we have the same problem with slashes '/'.</li>
+     * <li>When using LdapDN from shared-ldap, JNDI uses the toString() method
+     * and LdapDN.toString() returns the normalized ATAV, but we need the
+     * user provided ATAV.</li>
+     * <li>When using LdapName for the empty DN (Root DSE) JNDI _sometimes_ throws
+     * an Exception (java.lang.IndexOutOfBoundsException: Posn: -1, Size: 0
+     * at javax.naming.ldap.LdapName.getPrefix(LdapName.java:240)).</li>
+     * <li>Using LdapDN for the RootDSE doesn't work with Apache Harmony because
+     * its JNDI provider only accepts intstances of CompositeName or LdapName.</li>
+     * </ul>
+     * <p>
+     * So we use LdapName as default and the CompositeName for the empty DN.
+     * 
+     * @param name the DN
+     * 
+     * @return the save JNDI name
+     * 
+     * @throws InvalidNameException the invalid name exception
      */
-    private static Name getJndiSaveLdapName( String name ) throws InvalidNameException
+    private Name getSaveJndiName( String name ) throws InvalidNameException
     {
         if ( name == null || "".equals( name ) )
         {
-            return LdapDN.EMPTY_LDAPDN;
+            return new CompositeName();
         }
         else
         {

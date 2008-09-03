@@ -21,11 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -38,6 +43,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
+
+    private Text jndiLdapContextProvider;
+
 
     /**
      * 
@@ -54,7 +62,6 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
     /**
      * {@inheritDoc}
      */
-
     public void init( IWorkbench workbench )
     {
     }
@@ -67,18 +74,43 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+
+        Group group = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            "JNDI LDAP context provider", 1 );
+
+        Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+        String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
+        String defaultLdapCtxFactory = preferences
+            .getDefaultString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
+        String note = "Note: The system detected '" + defaultLdapCtxFactory + "'.";
+
+        jndiLdapContextProvider = BaseWidgetUtils.createText( group, ldapCtxFactory, 1 );
+        BaseWidgetUtils.createWrappedLabel( group, note, 1 );
+
         return composite;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     protected void performDefaults()
     {
+        jndiLdapContextProvider.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
+            ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY ) );
         super.performDefaults();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public boolean performOk()
     {
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, jndiLdapContextProvider.getText() );
         return true;
     }
 

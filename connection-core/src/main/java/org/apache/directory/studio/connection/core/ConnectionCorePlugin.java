@@ -296,8 +296,8 @@ public class ConnectionCorePlugin extends Plugin
                 catch ( Exception e )
                 {
                     getLog().log(
-                        new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1, "Unable to create JNDI logger "
-                            + member.getAttribute( "class" ), e ) );
+                        new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
+                            "Unable to create JNDI logger " + member.getAttribute( "class" ), e ) );
                 }
             }
         }
@@ -371,4 +371,43 @@ public class ConnectionCorePlugin extends Plugin
 
         return properties;
     }
+
+
+    /**
+     * Gets the default LDAP context factory.
+     * 
+     * Right now the following context factories are supported:
+     * <ul>
+     * <li>com.sun.jndi.ldap.LdapCtxFactory</li>
+     * <li>org.apache.harmony.jndi.provider.ldap.LdapContextFactory</li>
+     * </ul>
+     * 
+     * @return the default LDAP context factory
+     */
+    public String getDefaultLdapContextFactory()
+    {
+        String defaultLdapContextFactory = "";
+
+        try
+        {
+            String sun = "com.sun.jndi.ldap.LdapCtxFactory";
+            Class.forName( sun );
+            defaultLdapContextFactory = sun;
+        }
+        catch ( ClassNotFoundException e )
+        {
+        }
+        try
+        {
+            String apache = "org.apache.harmony.jndi.provider.ldap.LdapContextFactory";
+            Class.forName( apache );
+            defaultLdapContextFactory = apache;
+        }
+        catch ( ClassNotFoundException e )
+        {
+        }
+
+        return defaultLdapContextFactory;
+    }
+
 }

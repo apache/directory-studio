@@ -40,6 +40,10 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
     {
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
 
+        // LDAP context factory
+        String defaultLdapContextFactory = ConnectionCorePlugin.getDefault().getDefaultLdapContextFactory();
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, defaultLdapContextFactory );
+
         // Modification Logs
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
 
