@@ -22,7 +22,9 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import javax.naming.directory.Attribute;
+import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.ModificationItem;
 import javax.naming.directory.DirContext;
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
@@ -33,8 +35,6 @@ import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
 
 import org.apache.directory.server.unit.AbstractServerTest;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 
 
 /**
@@ -62,9 +62,9 @@ public class NewEntryWizardTest extends AbstractServerTest
         // if krb5kdc is disabled then enable it
         if ( isKrb5KdcDisabled )
         {
-            Attribute disabled = new AttributeImpl( "m-disabled" );
-            ModificationItemImpl[] mods = new ModificationItemImpl[]
-                { new ModificationItemImpl( DirContext.REMOVE_ATTRIBUTE, disabled ) };
+            Attribute disabled = new BasicAttribute( "m-disabled" );
+            ModificationItem[] mods = new ModificationItem[]
+                { new ModificationItem( DirContext.REMOVE_ATTRIBUTE, disabled ) };
             schemaRoot.modifyAttributes( "cn=Krb5kdc", mods );
         }
 

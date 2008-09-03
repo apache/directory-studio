@@ -25,9 +25,9 @@ import java.util.List;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -88,11 +88,11 @@ public class ModifyRequestDsml extends AbstractRequestDsml
         }
 
         // Modifications
-        List<ModificationItemImpl> modifications = request.getModifications();
+        List<ModificationItem> modifications = request.getModifications();
 
         for ( int i = 0; i < modifications.size(); i++ )
         {
-            ModificationItemImpl modificationItem = modifications.get( i );
+            ModificationItem modificationItem = modifications.get( i );
 
             Element modElement = element.addElement( "modification" );
             if ( modificationItem.getAttribute() != null )

@@ -27,13 +27,13 @@ import java.util.Iterator;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttributes;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.shared.ldap.ldif.LdifReader;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.dom4j.Document;
@@ -200,7 +200,7 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
         BufferedReader in = new BufferedReader( strIn );
 
         String line = null;
-        Attributes attributes = new AttributesImpl( true );
+        Attributes attributes = new BasicAttributes( true );
 
         try
         {

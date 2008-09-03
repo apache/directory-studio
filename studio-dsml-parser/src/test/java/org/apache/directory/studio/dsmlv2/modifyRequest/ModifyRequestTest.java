@@ -31,7 +31,6 @@ import javax.naming.directory.ModificationItem;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.AbstractTest;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
@@ -265,7 +264,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
+        List<ModificationItem> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
@@ -305,7 +304,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
+        List<ModificationItem> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
@@ -349,7 +348,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "sn", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
+        List<ModificationItem> modifications = modifyRequest.getModifications();
 
         assertEquals( 2, modifications.size() );
 
@@ -496,7 +495,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
+        List<ModificationItem> modifications = modifyRequest.getModifications();
 
         ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
 
@@ -533,7 +532,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
+        List<ModificationItem> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
@@ -574,7 +573,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItemImpl> modifications = modifyRequest.getModifications();
+        List<ModificationItem> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
