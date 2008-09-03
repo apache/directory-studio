@@ -21,6 +21,12 @@
 package org.apache.directory.studio;
 
 
+import java.io.IOException;
+import java.util.PropertyResourceBundle;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -37,6 +43,9 @@ public class Activator extends AbstractUIPlugin
 
     //The shared instance.
     private static Activator plugin;
+
+    /** The plugin properties */
+    private PropertyResourceBundle properties;
 
 
     /**
@@ -88,5 +97,34 @@ public class Activator extends AbstractUIPlugin
     public static ImageDescriptor getImageDescriptor( String path )
     {
         return AbstractUIPlugin.imageDescriptorFromPlugin( Application.PLUGIN_ID, path );
+    }
+
+
+    /**
+     * Gets the plugin properties.
+     *
+     * @return
+     *      the plugin properties
+     */
+    public PropertyResourceBundle getPluginProperties()
+    {
+        if ( properties == null )
+        {
+            try
+            {
+                properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
+                    "plugin.properties" ), false ) );
+            }
+            catch ( IOException e )
+            {
+                // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
+                // So we're using a default plugin id.
+                getLog().log(
+                    new Status( Status.ERROR, "org.apache.directory.studio.rcp", Status.OK,
+                        "Unable to get the plugin properties.", e ) );
+            }
+        }
+
+        return properties;
     }
 }

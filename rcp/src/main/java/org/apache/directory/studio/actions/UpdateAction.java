@@ -22,6 +22,7 @@ package org.apache.directory.studio.actions;
 
 
 import org.apache.directory.studio.Messages;
+import org.apache.directory.studio.PluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -51,6 +52,7 @@ public class UpdateAction extends Action implements IAction
     public UpdateAction( IWorkbenchWindow window )
     {
         this.window = window;
+        setId( PluginConstants.ACTION_UPDATE_ID ); //$NON-NLS-1$
         setText( Messages.getString( "UpdateAction.Search_for_updates" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "UpdateAction.Search_for_updates_for_LDAP_Studio" ) ); //$NON-NLS-1$
     }

@@ -22,6 +22,7 @@ package org.apache.directory.studio.actions;
 
 
 import org.apache.directory.studio.Messages;
+import org.apache.directory.studio.PluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -50,6 +51,7 @@ public class ManageConfigurationAction extends Action implements IAction
     public ManageConfigurationAction( IWorkbenchWindow window )
     {
         this.window = window;
+        setId( PluginConstants.ACTION_MANAGE_CONFIGURATION_ID ); //$NON-NLS-1$
         setText( Messages.getString( "ManageConfigurationAction.Manage_Configuration" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "ManageConfigurationAction.Manage_configuration_for_LDAP_Studio" ) ); //$NON-NLS-1$
     }

@@ -24,6 +24,7 @@ package org.apache.directory.studio.actions;
 import java.text.MessageFormat;
 
 import org.apache.directory.studio.Messages;
+import org.apache.directory.studio.PluginConstants;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
@@ -56,6 +57,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
      */
     public OpenFileAction()
     {
+        setId( PluginConstants.ACTION_OPEN_FILE_ID ); //$NON-NLS-1$
         setText( Messages.getString( "OpenFileAction.Open_File" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "OpenFileAction.Open_file_from_filesystem" ) ); //$NON-NLS-1$
         setEnabled( true );

@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.directory.studio.Messages;
+import org.apache.directory.studio.PluginConstants;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -51,6 +52,7 @@ public class ReportABugAction extends Action implements IWorkbenchWindowActionDe
      */
     public ReportABugAction()
     {
+        setId( PluginConstants.ACTION_REPORT_A_BUG_ID ); //$NON-NLS-1$
         setText( Messages.getString( "ReportABugAction.Report_a_bug" ) ); //$NON-NLS-1$
         setToolTipText( Messages.getString( "ReportABugAction.Open_a_web_browser" ) ); //$NON-NLS-1$
         setEnabled( true );
@@ -112,14 +114,14 @@ public class ReportABugAction extends Action implements IWorkbenchWindowActionDe
         try
         {
             workbenchWindow.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(
-                new URL( Messages.getString("ReportABugAction.JIRA_URL") ) ); //$NON-NLS-1$
+                new URL( Messages.getString( "ReportABugAction.JIRA_URL" ) ) ); //$NON-NLS-1$
         }
         catch ( PartInitException e )
         {
         }
         catch ( MalformedURLException e )
         {
-        } 
+        }
     }
 
 }
