@@ -185,6 +185,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         BaseWidgetUtils.createLabel( groupComposite, "Port:", 1 );
         String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
+        portCombo.setTextLimit( 5 );
 
         String[] encMethods = new String[]
             { "No encryption", "Use SSL encryption (ldaps://)", "Use StartTLS extension" };
@@ -284,10 +285,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             public void verifyText( VerifyEvent event )
             {
                 if ( !event.text.matches( "[0-9]*" ) )
-                {
-                    event.doit = false;
-                }
-                if ( portCombo.getText().length() > 4 && event.text.length() > 0 )
                 {
                     event.doit = false;
                 }
