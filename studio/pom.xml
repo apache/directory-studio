@@ -839,6 +839,14 @@
         and goes to the target/ApacheDirectoryStudio folder
       -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>maven-studio-plugin</artifactId>
         <executions>
