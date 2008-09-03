@@ -149,6 +149,13 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
             IBrowserConnection browserConnection = entry.getBrowserConnection();
             if ( browserConnection != null && entry.isDirectoryEntry() )
             {
+                if ( entry instanceof IRootDSE )
+                {
+                    // special handling for Root DSE.
+                    InitializeAttributesRunnable.loadRootDSE( browserConnection, monitor );
+                    continue;
+                }
+
                 if ( pagedSearchControl == null && browserConnection.isPagedSearch() )
                 {
                     pagedSearchControl = new StudioPagedResultsControl( browserConnection.getPagedSearchSize(), null,
@@ -186,136 +193,128 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     private static void initializeChildren( IEntry parent, StudioProgressMonitor monitor,
         StudioControl pagedSearchControl )
     {
-        if ( parent instanceof IRootDSE )
-        {
-            // special handling for Root DSE
-            return;
-        }
-        else
-        {
-            monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
-                new String[]
-                    { parent.getDn().getUpName() } ) );
+        monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
+            new String[]
+                { parent.getDn().getUpName() } ) );
 
-            // clear old children
+        // clear old children
+        clearParent( parent );
+
+        // create search
+        ISearch search = createSearch( parent, pagedSearchControl, false );
+
+        // search
+        ISearchResult[] srs = executeSearch( parent, search, monitor );
+
+        // fill children in search result
+        if ( srs != null && srs.length > 0 )
+        {
+            // clearing old children before filling new children is
+            // necessary to handle aliases and referrals.
             clearParent( parent );
 
-            // create search
-            ISearch search = createSearch( parent, pagedSearchControl, false );
-
-            // search
-            ISearchResult[] srs = executeSearch( parent, search, monitor );
-
-            // fill children in search result
-            if ( srs != null && srs.length > 0 )
+            do
             {
-                // clearing old children before filling new children is
-                // necessary to handle aliases and referrals.
-                clearParent( parent );
-
-                do
+                for ( ISearchResult searchResult : srs )
                 {
-                    for ( ISearchResult searchResult : srs )
+                    if ( parent.isAlias() && !( searchResult.getEntry() instanceof AliasBaseEntry ) )
                     {
-                        if ( parent.isAlias() && !( searchResult.getEntry() instanceof AliasBaseEntry ) )
-                        {
-                            AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( searchResult.getEntry()
-                                .getBrowserConnection(), searchResult.getEntry().getDn() );
-                            parent.addChild( aliasBaseEntry );
-                        }
-                        else
-                        {
-                            parent.addChild( searchResult.getEntry() );
-                        }
+                        AliasBaseEntry aliasBaseEntry = new AliasBaseEntry( searchResult.getEntry()
+                            .getBrowserConnection(), searchResult.getEntry().getDn() );
+                        parent.addChild( aliasBaseEntry );
                     }
-                    srs = null;
-
-                    StudioPagedResultsControl sprRequestControl = null;
-                    StudioPagedResultsControl sprResponseControl = null;
-                    for ( StudioControl responseControl : search.getResponseControls() )
-                    {
-                        if ( responseControl instanceof StudioPagedResultsControl )
-                        {
-                            sprResponseControl = ( StudioPagedResultsControl ) responseControl;
-                        }
-                    }
-                    for ( StudioControl requestControl : search.getControls() )
-                    {
-                        if ( requestControl instanceof StudioPagedResultsControl )
-                        {
-                            sprRequestControl = ( StudioPagedResultsControl ) requestControl;
-                        }
-                    }
-
-                    if ( sprRequestControl != null && sprResponseControl != null )
-                    {
-                        if ( sprRequestControl.isScrollMode() )
-                        {
-                            if ( sprRequestControl.getCookie() != null )
-                            {
-                                // create top page search runnable, same as original search
-                                InitializeChildrenRunnable topPageChildrenRunnable = new InitializeChildrenRunnable(
-                                    parent, null );
-                                parent.setTopPageChildrenRunnable( topPageChildrenRunnable );
-                            }
-
-                            if ( sprResponseControl.getCookie() != null )
-                            {
-                                StudioPagedResultsControl newSprc = new StudioPagedResultsControl( sprRequestControl
-                                    .getSize(), sprResponseControl.getCookie(), sprRequestControl.isCritical(),
-                                    sprRequestControl.isScrollMode() );
-                                InitializeChildrenRunnable nextPageChildrenRunnable = new InitializeChildrenRunnable(
-                                    parent, newSprc );
-                                parent.setNextPageChildrenRunnable( nextPageChildrenRunnable );
-                            }
-                        }
-                        else
-                        {
-                            // transparently continue search, till count limit is reached
-                            if ( sprResponseControl.getCookie() != null
-                                && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
-                                    .getCountLimit() ) )
-                            {
-
-                                search.setSearchResults( new ISearchResult[0] );
-                                search.getResponseControls().clear();
-                                sprRequestControl.setCookie( sprResponseControl.getCookie() );
-
-                                srs = executeSearch( parent, search, monitor );
-                            }
-                        }
-                    }
-                }
-                while ( srs != null && srs.length > 0 );
-            }
-            else
-            {
-                parent.setHasChildrenHint( false );
-            }
-
-            // get sub-entries
-            ISearch subSearch = createSearch( parent, null, true );
-            if ( parent.getBrowserConnection().isFetchSubentries() )
-            {
-                ISearchResult[] subSrs = executeSearch( parent, subSearch, monitor );
-
-                // fill children in search result
-                if ( subSrs != null && subSrs.length > 0 )
-                {
-                    for ( ISearchResult searchResult : subSrs )
+                    else
                     {
                         parent.addChild( searchResult.getEntry() );
                     }
                 }
+                srs = null;
+
+                StudioPagedResultsControl sprRequestControl = null;
+                StudioPagedResultsControl sprResponseControl = null;
+                for ( StudioControl responseControl : search.getResponseControls() )
+                {
+                    if ( responseControl instanceof StudioPagedResultsControl )
+                    {
+                        sprResponseControl = ( StudioPagedResultsControl ) responseControl;
+                    }
+                }
+                for ( StudioControl requestControl : search.getControls() )
+                {
+                    if ( requestControl instanceof StudioPagedResultsControl )
+                    {
+                        sprRequestControl = ( StudioPagedResultsControl ) requestControl;
+                    }
+                }
+
+                if ( sprRequestControl != null && sprResponseControl != null )
+                {
+                    if ( sprRequestControl.isScrollMode() )
+                    {
+                        if ( sprRequestControl.getCookie() != null )
+                        {
+                            // create top page search runnable, same as original search
+                            InitializeChildrenRunnable topPageChildrenRunnable = new InitializeChildrenRunnable(
+                                parent, null );
+                            parent.setTopPageChildrenRunnable( topPageChildrenRunnable );
+                        }
+
+                        if ( sprResponseControl.getCookie() != null )
+                        {
+                            StudioPagedResultsControl newSprc = new StudioPagedResultsControl( sprRequestControl
+                                .getSize(), sprResponseControl.getCookie(), sprRequestControl.isCritical(),
+                                sprRequestControl.isScrollMode() );
+                            InitializeChildrenRunnable nextPageChildrenRunnable = new InitializeChildrenRunnable(
+                                parent, newSprc );
+                            parent.setNextPageChildrenRunnable( nextPageChildrenRunnable );
+                        }
+                    }
+                    else
+                    {
+                        // transparently continue search, till count limit is reached
+                        if ( sprResponseControl.getCookie() != null
+                            && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
+                                .getCountLimit() ) )
+                        {
+
+                            search.setSearchResults( new ISearchResult[0] );
+                            search.getResponseControls().clear();
+                            sprRequestControl.setCookie( sprResponseControl.getCookie() );
+
+                            srs = executeSearch( parent, search, monitor );
+                        }
+                    }
+                }
             }
-
-            // check exceeded limits / canceled
-            parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
-                || monitor.isCanceled() );
-
-            // set initialized state
-            parent.setChildrenInitialized( true );
+            while ( srs != null && srs.length > 0 );
         }
+        else
+        {
+            parent.setHasChildrenHint( false );
+        }
+
+        // get sub-entries
+        ISearch subSearch = createSearch( parent, null, true );
+        if ( parent.getBrowserConnection().isFetchSubentries() )
+        {
+            ISearchResult[] subSrs = executeSearch( parent, subSearch, monitor );
+
+            // fill children in search result
+            if ( subSrs != null && subSrs.length > 0 )
+            {
+                for ( ISearchResult searchResult : subSrs )
+                {
+                    parent.addChild( searchResult.getEntry() );
+                }
+            }
+        }
+
+        // check exceeded limits / canceled
+        parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
+            || monitor.isCanceled() );
+
+        // set initialized state
+        parent.setChildrenInitialized( true );
     }
 
 

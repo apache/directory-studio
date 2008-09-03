@@ -36,10 +36,10 @@ import javax.naming.InvalidNameException;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -73,11 +73,11 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
 
     /** The requested attributes when reading the Root DSE. */
     public static final String[] ROOT_DSE_ATTRIBUTES =
-        { IRootDSE.ROOTDSE_ATTRIBUTE_MONITORCONTEXT, IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
-            IRootDSE.ROOTDSE_ATTRIBUTE_ALTSERVER, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM, ISearch.ALL_OPERATIONAL_ATTRIBUTES };
+        { IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM,
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL,
+            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES, IRootDSE.ROOTDSE_ATTRIBUTE_VENDORNAME,
+            IRootDSE.ROOTDSE_ATTRIBUTE_VENDORVERSION, ISearch.ALL_OPERATIONAL_ATTRIBUTES };
 
 
     /**
@@ -180,7 +180,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
      * @param initOperationalAttributes true if operational attributes should be initialized
      * @param monitor the progress monitor
      */
-    public static void initializeAttributes( IEntry entry, boolean initOperationalAttributes,
+    public static synchronized void initializeAttributes( IEntry entry, boolean initOperationalAttributes,
         StudioProgressMonitor monitor )
     {
         // get user attributes or both user and operational attributes
@@ -219,7 +219,8 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
      * @param clearAllAttributes true to clear all old attributes before searching
      * @param monitor the progress monitor
      */
-    public static void initializeAttributes( IEntry entry, String[] attributes, boolean clearAllAttributes, StudioProgressMonitor monitor )
+    public static synchronized void initializeAttributes( IEntry entry, String[] attributes,
+        boolean clearAllAttributes, StudioProgressMonitor monitor )
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_att,
             new String[]
@@ -262,7 +263,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                     }
                 }
             }
-            
+
             // search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
@@ -283,7 +284,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
      * 
      * @throws Exception the exception
      */
-    static void loadRootDSE( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    static synchronized void loadRootDSE( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
         // delete old children
         IEntry[] oldChildren = browserConnection.getRootDSE().getChildren();
@@ -308,13 +309,13 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                 browserConnection.getRootDSE().deleteAttribute( oldAttribute );
             }
         }
-        
+
         // load well-known Root DSE attributes and operational attributes
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, ROOT_DSE_ATTRIBUTES,
-            SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
+            ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-        
+
         // load all user attributes
         search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
             { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
@@ -352,7 +353,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
                     namingContextSet.add( values[i] );
                 }
             }
-            
+
             if ( !namingContextSet.isEmpty() )
             {
                 for ( String namingContext : namingContextSet )
@@ -420,8 +421,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         for ( IEntry entry : rootDseEntries.values() )
         {
-            initBaseEntry( entry.getBrowserConnection(), entry.getDn(), dummyMonitor );
-            // TODO: log if a base entry doesn't exist
+            initBaseEntry( entry, dummyMonitor );
         }
 
         // set flags
@@ -433,24 +433,30 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
     }
 
 
-    private static void initBaseEntry( IBrowserConnection browserConnection, LdapDN dn, StudioProgressMonitor monitor )
+    private static void initBaseEntry( IEntry entry, StudioProgressMonitor monitor )
     {
-        ISearch search;
-        IEntry entry;
+        IBrowserConnection browserConnection = entry.getBrowserConnection();
+        LdapDN dn = entry.getDn();
+
         // search the entry
         AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
         ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
-        search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
+        ISearch search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
             SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
-        // add entry to Root DSE
         ISearchResult[] results = search.getSearchResults();
         if ( results != null && results.length == 1 )
         {
+            // add entry to Root DSE
             ISearchResult result = results[0];
             entry = result.getEntry();
             browserConnection.getRootDSE().addChild( entry );
+        }
+        else
+        {
+            // DN exists in the Root DSE, but doesn't exist in directory
+            browserConnection.uncacheEntryRecursive( entry );
         }
     }
 

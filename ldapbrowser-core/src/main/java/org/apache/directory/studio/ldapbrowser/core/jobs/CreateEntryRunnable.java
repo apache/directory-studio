@@ -114,7 +114,6 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
         if ( !monitor.errorsReported() )
         {
             createdEntry = ReadEntryRunnable.getEntry( browserConnection, entryToCreate.getDn(), monitor );
-            // createdEntries[i].getParententry().addChild(entry, this);
             createdEntry.setHasChildrenHint( false );
         }
 

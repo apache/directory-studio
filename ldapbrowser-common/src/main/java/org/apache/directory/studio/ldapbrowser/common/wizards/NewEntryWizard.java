@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -85,13 +86,16 @@ public class NewEntryWizard extends Wizard implements INewWizard
     /** The prototype entry. */
     protected DummyEntry prototypeEntry;
 
+    /** The is new context entry flag. */
+    protected boolean isNewContextEntry;
+
 
     /**
      * Creates a new instance of NewEntryWizard.
      */
     public NewEntryWizard()
     {
-        setWindowTitle( "New Entry" );
+        //setWindowTitle( "New Entry" );
         setNeedsProgressMonitor( true );
     }
 
@@ -114,6 +118,17 @@ public class NewEntryWizard extends Wizard implements INewWizard
     {
         // determine the currently selected entry
         Object o = selection.getFirstElement();
+        
+        isNewContextEntry = isNewContextEntry( selection );
+        if(isNewContextEntry)
+        {
+            setWindowTitle( "New Context Entry" );
+        }
+        else
+        {
+            setWindowTitle( "New Entry" );
+        }
+        
         if ( o instanceof IEntry )
         {
             selectedEntry = ( ( IEntry ) o );
@@ -374,6 +389,41 @@ public class NewEntryWizard extends Wizard implements INewWizard
     public void setPrototypeEntry( DummyEntry getPrototypeEntry )
     {
         this.prototypeEntry = getPrototypeEntry;
+    }
+
+
+    /**
+     * Checks if is new context entry.
+     * 
+     * @return true, if is new context entry
+     */
+    public boolean isNewContextEntry()
+    {
+        return isNewContextEntry;
+    }
+
+
+    /**
+     * Checks if the current selection starts the "New Context Entry" process.
+     * This is if the selection is the Root DSE.
+     * 
+     * @param selection the selection
+     * 
+     * @return true, if is new context entry
+     */
+    public static boolean isNewContextEntry( IStructuredSelection selection )
+    {
+        if ( selection != null )
+        {
+            Object object = selection.getFirstElement();
+
+            if ( object instanceof IRootDSE || object instanceof BrowserCategory )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

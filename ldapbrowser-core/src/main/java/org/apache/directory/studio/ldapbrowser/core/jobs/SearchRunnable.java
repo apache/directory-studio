@@ -63,6 +63,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Entry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
@@ -335,7 +336,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                         IEntry entry = resultBrowserConnection.getEntryFromCache( dn );
                         if ( entry == null )
                         {
-                            entry = createAndCacheEntry( resultBrowserConnection, dn );
+                            entry = createAndCacheEntry( resultBrowserConnection, dn, monitor );
                         }
 
                         // initialize special flags
@@ -580,11 +581,14 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
      * 
      * @param browserConnection the browser connection
      * @param dn the DN of the entry
+     * @param monitor 
      * 
      * @return the created entry
      */
-    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, LdapDN dn )
+    private static IEntry createAndCacheEntry( IBrowserConnection browserConnection, LdapDN dn,
+        StudioProgressMonitor monitor )
     {
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
         IEntry entry = null;
 
         // build tree to parent
@@ -595,32 +599,59 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
             parentDnList.addFirst( parentDN );
             parentDN = DnUtils.getParent( parentDN );
         }
+
         for ( LdapDN aDN : parentDnList )
         {
             parentDN = DnUtils.getParent( aDN );
             if ( parentDN == null )
             {
-                entry = new BaseDNEntry( aDN, browserConnection );
-                browserConnection.cacheEntry( entry );
+                entry = browserConnection.getRootDSE();
             }
             else if ( browserConnection.getEntryFromCache( parentDN ) != null )
             {
-                IEntry parentEntry = browserConnection.getEntryFromCache( parentDN );
-                entry = new Entry( parentEntry, aDN.getRdn() );
-                entry.setDirectoryEntry( true );
+                // check if the entry really exists
+                // if not a base dn entry will be created in then next iteration
+                SearchParameter searchParameter = new SearchParameter();
+                searchParameter.setSearchBase( aDN );
+                searchParameter.setFilter( null );
+                searchParameter.setReturningAttributes( ISearch.NO_ATTRIBUTES );
+                searchParameter.setScope( SearchScope.OBJECT );
+                searchParameter.setCountLimit( 1 );
+                searchParameter.setTimeLimit( 0 );
+                searchParameter.setAliasesDereferencingMethod( browserConnection.getAliasesDereferencingMethod() );
+                searchParameter.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
+                searchParameter.setInitHasChildrenFlag( true );
+                dummyMonitor.reset();
+                StudioNamingEnumeration enumeration = search( browserConnection, searchParameter, dummyMonitor );
+                try
+                {
+                    if ( enumeration != null && enumeration.hasMore() )
+                    {
+                        // entry exists, create entry and establish parent-child connection
+                        IEntry parentEntry = browserConnection.getEntryFromCache( parentDN );
+                        entry = new Entry( parentEntry, aDN.getRdn() );
+                        entry.setDirectoryEntry( true );
 
-                parentEntry.addChild( entry );
-                // parentEntry.setAttributesInitialized(false, this);
+                        parentEntry.addChild( entry );
+                        // parentEntry.setAttributesInitialized(false, this);
 
-                parentEntry.setChildrenInitialized( true );
-                parentEntry.setHasMoreChildren( true );
-                parentEntry.setHasChildrenHint( true );
+                        parentEntry.setChildrenInitialized( true );
+                        parentEntry.setHasMoreChildren( true );
+                        parentEntry.setHasChildrenHint( true );
 
-                browserConnection.cacheEntry( entry );
+                        browserConnection.cacheEntry( entry );
+                    }
+                }
+                catch ( NamingException e )
+                {
+                }
             }
             else
             {
-                // ??
+                // create base dn entry
+                entry = new BaseDNEntry( aDN, browserConnection );
+                browserConnection.getRootDSE().addChild( entry );
+                browserConnection.cacheEntry( entry );
             }
         }
 

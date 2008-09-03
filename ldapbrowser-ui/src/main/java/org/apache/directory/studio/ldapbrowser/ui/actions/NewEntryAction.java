@@ -32,7 +32,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 
 
 /**
- * This Action lauches the New Entry Wizard.
+ * This action launches the New Entry Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -90,8 +90,7 @@ public class NewEntryAction extends BrowserAction
     {
         NewEntryWizard wizard = new NewEntryWizard();
 
-        wizard.init( this.window.getWorkbench(), ( IStructuredSelection ) this.window.getSelectionService()
-            .getSelection() );
+        wizard.init( window.getWorkbench(), ( IStructuredSelection ) window.getSelectionService().getSelection() );
         WizardDialog dialog = new WizardDialog( getShell(), wizard );
         dialog.setBlockOnOpen( true );
         dialog.create();
@@ -104,7 +103,9 @@ public class NewEntryAction extends BrowserAction
      */
     public String getText()
     {
-        return "New Entry...";
+        boolean isNewContextEntry = NewEntryWizard.isNewContextEntry( ( IStructuredSelection ) window
+            .getSelectionService().getSelection() );
+        return isNewContextEntry ? "New Context Entry..." : "New Entry...";
     }
 
 
@@ -133,4 +134,5 @@ public class NewEntryAction extends BrowserAction
     {
         return true;
     }
+
 }

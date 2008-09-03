@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunna
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -135,7 +136,11 @@ public class RefreshAction extends BrowserAction
         if ( entries.length > 0 )
         {
             new StudioBrowserJob( new InitializeAttributesRunnable( entries, soa ) ).execute();
-            new StudioBrowserJob( new InitializeChildrenRunnable( entries ) ).execute();
+            // avoid duplicate search on Root DSE
+            if ( entries.length > 1 || !( entries[0] instanceof IRootDSE ) )
+            {
+                new StudioBrowserJob( new InitializeChildrenRunnable( entries ) ).execute();
+            }
         }
         if ( searches.length > 0 )
         {

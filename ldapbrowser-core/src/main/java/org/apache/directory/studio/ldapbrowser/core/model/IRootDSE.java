@@ -62,7 +62,13 @@ public interface IRootDSE extends IEntry
 
     /** The supportedSASLMechanisms attribute */
     public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM = "supportedSASLMechanisms"; //$NON-NLS-1$
+    
+    /** The vendorName attribute */
+    public static final String ROOTDSE_ATTRIBUTE_VENDORNAME = "vendorName"; //$NON-NLS-1$
 
+    /** The vendorVersion attribute */
+    public static final String ROOTDSE_ATTRIBUTE_VENDORVERSION = "vendorVersion"; //$NON-NLS-1$
+    
     /** The OID of feature 'All Operational Attributes' */
     public static final String FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID = "1.3.6.1.4.1.4203.1.5.1"; //$NON-NLS-1$
 
