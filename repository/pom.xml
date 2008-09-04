@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -18,7 +17,6 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -38,7 +36,7 @@
   </organization>
 
   <dependencies>
-    <!-- Apache Directory Studio launchers binaries -->
+    <!-- Apache Directory Studio launchers dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>launcher-linux-x86</artifactId>
@@ -64,18 +62,8 @@
       <artifactId>launcher-win32</artifactId>
       <type>tar.gz</type>
     </dependency>
-
-    <!-- Eclipse RCP artifacts -->
-
-    <dependency>
-      <groupId>net.sf.swtbot.eclipse</groupId>
-      <artifactId>finder</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.swtbot</groupId>
-      <artifactId>finder</artifactId>
-    </dependency>
-
+	
+	<!-- Eclipse dependencies -->
     <dependency>
       <groupId>com.ibm</groupId>
       <artifactId>icu</artifactId>
@@ -97,8 +85,44 @@
       <artifactId>logging</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache</groupId>
+      <artifactId>jasper</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache</groupId>
+      <artifactId>lucene</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>analysis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>compare</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
-      <artifactId>jobs</artifactId>
+      <artifactId>boot</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>commands</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>contenttype</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>databinding</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>expressions</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>filebuffers</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
@@ -117,20 +141,57 @@
       <artifactId>x86_64</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core.filesystem</groupId>
+      <artifactId>macosx</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core.filesystem.win32</groupId>
       <artifactId>x86</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.core.filesystem</groupId>
-      <artifactId>macosx</artifactId>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>jobs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>net</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>resources</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>rcp</artifactId>
+      <groupId>org.eclipse.core.resources</groupId>
+      <artifactId>compatibility</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.runtime</groupId>
+      <artifactId>compatibility</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.runtime.compatibility</groupId>
+      <artifactId>auth</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.runtime.compatibility</groupId>
+      <artifactId>registry</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>variables</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.debug</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.debug</groupId>
+      <artifactId>ui</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
@@ -139,71 +200,6 @@
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox</groupId>
-      <artifactId>launcher</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>osgi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.gtk.linux</groupId>
-      <artifactId>x86</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.gtk.linux</groupId>
-      <artifactId>x86_64</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.gtk.linux</groupId>
-      <artifactId>ppc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.win32.win32</groupId>
-      <artifactId>x86</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.carbon</groupId>
-      <artifactId>macosx</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
-      <artifactId>x86</artifactId>
-      <type>tar.gz</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
-      <artifactId>x86_64</artifactId>
-      <type>tar.gz</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
-      <artifactId>ppc</artifactId>
-      <type>tar.gz</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
-      <artifactId>x86</artifactId>
-      <type>tar.gz</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
-      <artifactId>macosx</artifactId>
-      <type>tar.gz</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache</groupId>
-      <artifactId>jasper</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.lucene</groupId>
-      <artifactId>analysis</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core.resources</groupId>
-      <artifactId>compatibility</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox.http</groupId>
@@ -226,46 +222,33 @@
       <artifactId>registry</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.osgi</groupId>
-      <artifactId>services</artifactId>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>launcher</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.osgi</groupId>
-      <artifactId>util</artifactId>
+      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
+      <artifactId>macosx</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui.ide</groupId>
-      <artifactId>application</artifactId>
+      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
+      <artifactId>ppc</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui.workbench</groupId>
-      <artifactId>compatibility</artifactId>
+      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.update</groupId>
-      <artifactId>scheduler</artifactId>
+      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
+      <artifactId>x86_64</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.mortbay</groupId>
-      <artifactId>jetty</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>jface</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.eclipse</groupId>
-          <artifactId>swt</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>runtime</artifactId>
+      <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
+      <artifactId>x86</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
@@ -276,118 +259,16 @@
       <artifactId>registry</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>workbench</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>commands</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>contenttype</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>databinding</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>expressions</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>net</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core.runtime.compatibility</groupId>
-      <artifactId>auth</artifactId>
+      <groupId>org.eclipse.equinox</groupId>
+      <artifactId>security</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>help</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.jface</groupId>
-      <artifactId>databinding</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>swt</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.update</groupId>
-      <artifactId>configurator</artifactId>
-    </dependency>
-
-    <!-- Eclipse SDK dependencies -->
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>search</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>navigator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui.views.properties</groupId>
-      <artifactId>tabbed</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui.navigator</groupId>
-      <artifactId>resources</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>cheatsheets</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>filebuffers</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jface</groupId>
-      <artifactId>text</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>editors</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui.workbench</groupId>
-      <artifactId>texteditor</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>text</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>forms</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.update</groupId>
-      <artifactId>ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.update</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>views</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>intro</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>ide</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.help</groupId>
-      <artifactId>ui</artifactId>
+      <artifactId>appserver</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.help</groupId>
@@ -395,57 +276,24 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.help</groupId>
-      <artifactId>appserver</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core.runtime</groupId>
-      <artifactId>compatibility</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache</groupId>
-      <artifactId>lucene</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core.runtime.compatibility</groupId>
-      <artifactId>registry</artifactId>
+      <artifactId>ui</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.help</groupId>
       <artifactId>webapp</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>sdk</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>tomcat</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>carbon</artifactId>
-    </dependency>
-    
-    <!-- Dependencies for the Apache DS plugin -->
-    <dependency>
-      <groupId>org.eclipse.debug</groupId>
+      <groupId>org.eclipse.jdt</groupId>
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.debug</groupId>
-      <artifactId>ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>launching</artifactId>
+      <groupId>org.eclipse.jdt.core</groupId>
+      <artifactId>manipulation</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
       <artifactId>debug</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jdt</groupId>
-      <artifactId>ui</artifactId>
+      <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt.debug</groupId>
@@ -453,31 +301,27 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.ui</groupId>
-      <artifactId>console</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>variables</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse</groupId>
-      <artifactId>compare</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core</groupId>
-      <artifactId>boot</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jdt.core</groupId>
-      <artifactId>manipulation</artifactId>
+      <artifactId>launching</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt.launching</groupId>
       <artifactId>macosx</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jdt</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>jface</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jface</groupId>
+      <artifactId>databinding</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jface</groupId>
+      <artifactId>text</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ltk.core</groupId>
@@ -488,12 +332,97 @@
       <artifactId>refactoring</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>osgi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.osgi</groupId>
+      <artifactId>services</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.osgi</groupId>
+      <artifactId>util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>rcp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>sdk</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>search</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>swt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.carbon</groupId>
+      <artifactId>macosx</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.gtk.linux</groupId>
+      <artifactId>ppc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.gtk.linux</groupId>
+      <artifactId>x86</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.gtk.linux</groupId>
+      <artifactId>x86_64</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.swt.win32.win32</groupId>
+      <artifactId>x86</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.team</groupId>
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.team</groupId>
       <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>text</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>carbon</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>console</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>editors</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>forms</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>ide</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui.ide</groupId>
+      <artifactId>application</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>intro</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
@@ -504,12 +433,66 @@
       <artifactId>resources</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>net</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>views</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.ui.views.properties</groupId>
       <artifactId>tabbed</artifactId>
     </dependency>
-
-
-    <!-- Other dependencies -->
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>win32</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>workbench</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui.workbench</groupId>
+      <artifactId>compatibility</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui.workbench</groupId>
+      <artifactId>texteditor</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.update</groupId>
+      <artifactId>configurator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.update</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.update</groupId>
+      <artifactId>scheduler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.update</groupId>
+      <artifactId>ui</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay</groupId>
+      <artifactId>jetty</artifactId>
+    </dependency>
+    
+    <!-- Testing framework dependencies -->
+    <dependency>
+      <groupId>net.sf.swtbot.eclipse</groupId>
+      <artifactId>finder</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.swtbot</groupId>
+      <artifactId>finder</artifactId>
+    </dependency>
+    
+    <!-- Documentation generation dependencies -->
     <dependency>
       <groupId>docbook</groupId>
       <artifactId>docbook-xml</artifactId>
@@ -520,6 +503,7 @@
       <artifactId>docbook-xsl</artifactId>
       <type>zip</type>
     </dependency>
+
   </dependencies>
 
   <repositories>
