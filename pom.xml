@@ -757,12 +757,12 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
-      <version>3.4.0.I20080606-1300</version>
+      <version>3.4.0.I20080606-1300-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
       <artifactId>application</artifactId>
-      <version>1.0.0.I20080603-2000</version>
+      <version>1.0.0.I20080603-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
