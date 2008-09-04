@@ -34,10 +34,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -49,9 +45,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 
 /**
@@ -84,9 +80,6 @@ public class AttributeTypeWizardPage extends WizardPage
 
     /** The possible attribute types applicable to the entry's schema only, existing attributes are hidden. */
     private String[] possibleAttributeTypesSubschemaOnlyAndExistingHidden;
-    
-    /** The attribute type combo field. */
-    private DecoratedField attributeTypeComboField;
 
     /** The attribute type combo. */
     private Combo attributeTypeCombo;
@@ -127,7 +120,8 @@ public class AttributeTypeWizardPage extends WizardPage
         this.initialShowSubschemaAttributesOnly = initialShowSubschemaAttributesOnly;
         this.initialHideExistingAttributes = initialHideExistingAttributes;
 
-        Collection<AttributeTypeDescription> atds = initialEntry.getBrowserConnection().getSchema().getAttributeTypeDescriptions();
+        Collection<AttributeTypeDescription> atds = initialEntry.getBrowserConnection().getSchema()
+            .getAttributeTypeDescriptions();
         Collection<String> atdNames = SchemaUtils.getNames( atds );
         possibleAttributeTypes = atdNames.toArray( new String[atdNames.size()] );
         Arrays.sort( possibleAttributeTypes );
@@ -187,33 +181,18 @@ public class AttributeTypeWizardPage extends WizardPage
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         BaseWidgetUtils.createLabel( composite, "Attribute type:", 1 );
-//        attributeTypeCombo = BaseWidgetUtils.createCombo( composite, possibleAttributeTypes, -1, 1 );
-//        attributeTypeCombo.setText( parsedAttributeType );
 
-        // attribute combo with field decoration
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        attributeTypeComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-        {
-            public Control createControl( Composite parent, int style )
-            {
-                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                combo.setVisibleItemCount( 20 );
-                return combo;
-            }
-        } );
-        attributeTypeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        attributeTypeComboField.getLayoutControl().setLayoutData(
-            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        attributeTypeCombo = ( Combo ) attributeTypeComboField.getControl();
+        // attribute combo with field decoration and content proposal
+        attributeTypeCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
+        attributeTypeCombo.setVisibleItemCount( 20 );
         attributeTypeCombo.setItems( possibleAttributeTypes );
         attributeTypeCombo.setText( parsedAttributeType );
-
-        // content proposal adapter
-        attributeTypeCPA = new ContentProposalAdapter (attributeTypeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( possibleAttributeTypes ), null, null );
+        attributeTypeCPA = new ContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );
+        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
         attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );  
+        attributeTypeCPA.setAutoActivationCharacters( null );
+        attributeTypeCPA.setAutoActivationDelay( 0 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, "Show subschema attributes only",

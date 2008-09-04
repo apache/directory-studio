@@ -300,7 +300,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
 
         List<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>();
         LdapFilter filter = parser.getModel().getFilter( offset );
-        if ( filter != null )
+        if ( filter != null && offset > 0 )
         {
             // case 0: open curly started, show templates and all attribute types
             if ( filter.getStartToken() != null && filter.getFilterComponent() == null )

@@ -30,23 +30,18 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 
 /**
@@ -252,30 +247,15 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         String[] attributeDescriptions = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
         Arrays.sort( attributeDescriptions );
 
-        // attribute combo with field decoration
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        modSpec.modAttributeComboField = new DecoratedField( modSpecComposite, SWT.NONE, new IControlCreator()
-        {
-            public Control createControl( Composite parent, int style )
-            {
-                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                combo.setVisibleItemCount( 20 );
-                return combo;
-            }
-        } );
-        modSpec.modAttributeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        modSpec.modAttributeComboField.getLayoutControl().setLayoutData(
-            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        modSpec.modAttributeCombo = ( Combo ) modSpec.modAttributeComboField.getControl();
-        modSpec.modAttributeCombo.setItems( attributeDescriptions );
-        modSpec.modAttributeCombo.addModifyListener( this );
-
-        // content proposal adapter
-        modSpec.modAttributeCPA = new ContentProposalAdapter( modSpec.modAttributeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( attributeDescriptions ), null, null );
-        modSpec.modAttributeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        // attribute combo with field decoration and content proposal
+        modSpec.modAttributeCombo = BaseWidgetUtils.createCombo( modSpecComposite, new String[0], -1, 1 );
+        modSpec.modAttributeCombo.setVisibleItemCount( 20 );
+        modSpec.modAttributeCPA = new ContentAssistCommandAdapter( modSpec.modAttributeCombo,
+            new ComboContentAdapter(), new ListContentProposalProvider( attributeDescriptions ), null, null, true );
         modSpec.modAttributeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+        modSpec.modAttributeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        modSpec.modAttributeCPA.setAutoActivationCharacters( null );
+        modSpec.modAttributeCPA.setAutoActivationDelay( 0 );
 
         // add button with listener
         modSpec.modAddButton = new Button( modComposite, SWT.PUSH );
@@ -556,9 +536,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         /** The mod type. */
         private Combo modType;
-
-        /** The modification attribute field. */
-        private DecoratedField modAttributeComboField;
 
         /** The modification attribute. */
         private Combo modAttributeCombo;

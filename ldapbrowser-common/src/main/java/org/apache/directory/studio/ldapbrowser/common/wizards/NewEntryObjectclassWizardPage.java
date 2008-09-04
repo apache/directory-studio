@@ -28,9 +28,9 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -39,10 +39,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -67,7 +65,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -232,10 +229,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             {
                 for ( IValue ocValue : ocAttribute.getValues() )
                 {
-                    if(!ocValue.isEmpty())
+                    if ( !ocValue.isEmpty() )
                     {
                         ObjectClassDescription ocd = wizard.getSelectedConnection().getSchema()
-                        .getObjectClassDescription( ocValue.getStringValue() );
+                            .getObjectClassDescription( ocValue.getStringValue() );
                         availableObjectClasses.remove( ocd );
                         selectedObjectClasses.add( ocd );
                     }
@@ -322,27 +319,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         Composite availableObjectClassesComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        if ( FieldDecorationRegistry.getDefault().getFieldDecoration( getClass().getName() ) == null )
-        {
-            FieldDecoration dummy = FieldDecorationRegistry.getDefault().getFieldDecoration(
-                FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-            FieldDecorationRegistry.getDefault().registerFieldDecoration( getClass().getName(),
-                "You may enter a filter to restrict the list below", dummy.getImage() );
-        }
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            getClass().getName() );
-        final DecoratedField availabeObjectClassesInstantSearchField = new DecoratedField(
-            availableObjectClassesComposite, SWT.BORDER, new IControlCreator()
-            {
-                public Control createControl( Composite parent, int style )
-                {
-                    return BaseWidgetUtils.createText( parent, "", 1 );
-                }
-            } );
-        availabeObjectClassesInstantSearchField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        availabeObjectClassesInstantSearchField.getLayoutControl().setLayoutData(
-            new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        availableObjectClassesInstantSearch = ( Text ) availabeObjectClassesInstantSearchField.getControl();
+        availableObjectClassesInstantSearch = BaseWidgetUtils.createText( availableObjectClassesComposite, "", 1 );
         availableObjectClassesInstantSearch.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -365,6 +342,12 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 }
             }
         } );
+        ControlDecoration availableObjectClassesInstantSearchDecoration = new ControlDecoration(
+            availableObjectClassesInstantSearch, SWT.TOP | SWT.LEFT, composite );
+        availableObjectClassesInstantSearchDecoration
+            .setDescriptionText( "You may enter a filter to restrict the list below" );
+        availableObjectClassesInstantSearchDecoration.setImage( FieldDecorationRegistry.getDefault()
+            .getFieldDecoration( FieldDecorationRegistry.DEC_CONTENT_PROPOSAL ).getImage() );
 
         availableObjectClassesViewer = new TableViewer( availableObjectClassesComposite );
         GridData data = new GridData( GridData.FILL_BOTH );

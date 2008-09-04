@@ -21,31 +21,28 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.FilterDialog;
 import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterContentAssistProcessor;
-import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
-import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 
 /**
@@ -62,11 +59,8 @@ public class FilterWidget extends BrowserWidget
     /** The filter combo. */
     private Combo filterCombo;
 
-    /** The filter combo field. */
-    private DecoratedField filterComboField;
-
     /** The filter content proposal adapter */
-    private ContentProposalAdapter filterCPA;
+    private ExtendedContentAssistCommandAdapter filterCPA;
 
     /** The button to open the filter editor. */
     private Button filterEditorButton;
@@ -118,25 +112,10 @@ public class FilterWidget extends BrowserWidget
         gd.horizontalSpan = 1;
         gd.widthHint = 200;
         composite.setLayoutData( gd );
-        
-        // filter combo with field decoration
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        filterComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-        {
-            public Control createControl( Composite parent, int style )
-            {
-                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-                gd.horizontalSpan = 1;
-                combo.setLayoutData( gd );
-                combo.setVisibleItemCount( 20 );
-                return combo;
-            }
-        } );
-        filterComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        filterComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        filterCombo = ( Combo ) filterComboField.getControl();
+
+        // filter combo with field decoration and content proposal
+        filterCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
+        filterCombo.setVisibleItemCount( 20 );
         filterCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -144,13 +123,33 @@ public class FilterWidget extends BrowserWidget
                 notifyListeners();
             }
         } );
+        filterCombo.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                // close proposal popup when paste a string
 
+                // either with 3rd mouse button (linux)
+                if ( !filterCombo.getText().equals( e.text ) && e.character == 0 && e.start == e.end )
+                {
+                    filterCPA.closeProposalPopup();
+                }
+
+                // or with ctrl+v / command+v
+                if ( !filterCombo.getText().equals( e.text ) && e.stateMask == SWT.MOD1 && e.start == e.end )
+                {
+                    filterCPA.closeProposalPopup();
+                }
+            }
+        } );
         parser = new LdapFilterParser();
         contentAssistProcessor = new FilterContentAssistProcessor( parser );
-        filterCPA = new ContentProposalAdapter( filterCombo, new ComboContentAdapter(), contentAssistProcessor,
-            KeyStroke.getInstance( SWT.CTRL, ' ' ), null );
-        filterCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        filterCPA = new ExtendedContentAssistCommandAdapter( filterCombo, new ComboContentAdapter(),
+            contentAssistProcessor, null, null, true );
         filterCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+        filterCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        filterCPA.setAutoActivationCharacters( null );
+        filterCPA.setAutoActivationDelay( 0 );
 
         // auto edit strategy
         new FilterWidgetAutoEditStrategyAdapter( filterCombo, parser );
