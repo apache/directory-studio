@@ -31,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.HistoryUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -146,10 +145,6 @@ public class FilterWidget extends BrowserWidget
         contentAssistProcessor = new FilterContentAssistProcessor( parser );
         filterCPA = new ExtendedContentAssistCommandAdapter( filterCombo, new ComboContentAdapter(),
             contentAssistProcessor, null, null, true );
-        filterCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
-        filterCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        filterCPA.setAutoActivationCharacters( null );
-        filterCPA.setAutoActivationDelay( 0 );
 
         // auto edit strategy
         new FilterWidgetAutoEditStrategyAdapter( filterCombo, parser );

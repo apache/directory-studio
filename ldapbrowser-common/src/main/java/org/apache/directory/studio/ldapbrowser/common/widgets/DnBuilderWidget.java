@@ -30,6 +30,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -46,7 +47,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 
 /**
@@ -462,12 +462,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         gd.widthHint = 180;
         rdnLine.rdnTypeCombo.setLayoutData( gd );
         rdnLine.rdnTypeCombo.setVisibleItemCount( 20 );
-        rdnLine.rdnNameCPA = new ContentAssistCommandAdapter( rdnLine.rdnTypeCombo, new ComboContentAdapter(),
+        rdnLine.rdnNameCPA = new ExtendedContentAssistCommandAdapter( rdnLine.rdnTypeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( attributeNames ), null, null, true );
-        rdnLine.rdnNameCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
-        rdnLine.rdnNameCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        rdnLine.rdnNameCPA.setAutoActivationCharacters( null );
-        rdnLine.rdnNameCPA.setAutoActivationDelay( 0 );
 
         rdnLine.rdnEqualsLabel = new Label( rdnComposite, SWT.NONE );
         rdnLine.rdnEqualsLabel.setText( "=" );

@@ -20,6 +20,7 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.swt.widgets.Control;
@@ -38,7 +39,14 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
 {
 
     /**
-     * Creates a new instance of ExtendedContentAssistCommandAdapter.
+     * Creates a new instance of ExtendedContentAssistCommandAdapter 
+     * with the following settings:
+     * <ul>
+     * <li>setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE )</li>
+     * <li>setFilterStyle( ContentProposalAdapter.FILTER_NONE )</li>
+     * <li>setAutoActivationCharacters( null )</li>
+     * <li>setAutoActivationDelay( 0 )</li>
+     * </ul>
      * 
      * @param control the control
      * @param controlContentAdapter the control content adapter
@@ -53,6 +61,10 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
     {
         super( control, controlContentAdapter, proposalProvider, commandId, autoActivationCharacters, installDecoration );
 
+        setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+        setFilterStyle( ContentProposalAdapter.FILTER_NONE );
+        setAutoActivationCharacters( null );
+        setAutoActivationDelay( 0 );
     }
 
 

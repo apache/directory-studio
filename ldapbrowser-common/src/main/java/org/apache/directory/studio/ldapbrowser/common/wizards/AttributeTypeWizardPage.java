@@ -28,12 +28,12 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -47,7 +47,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 
 /**
@@ -83,9 +82,6 @@ public class AttributeTypeWizardPage extends WizardPage
 
     /** The attribute type combo. */
     private Combo attributeTypeCombo;
-
-    /** The attribute type content proposal adapter */
-    private ContentProposalAdapter attributeTypeCPA;
 
     /** The show subschem attributes only button. */
     private Button showSubschemAttributesOnlyButton;
@@ -187,12 +183,8 @@ public class AttributeTypeWizardPage extends WizardPage
         attributeTypeCombo.setVisibleItemCount( 20 );
         attributeTypeCombo.setItems( possibleAttributeTypes );
         attributeTypeCombo.setText( parsedAttributeType );
-        attributeTypeCPA = new ContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
+        new ExtendedContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );
-        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
-        attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        attributeTypeCPA.setAutoActivationCharacters( null );
-        attributeTypeCPA.setAutoActivationDelay( 0 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, "Show subschema attributes only",

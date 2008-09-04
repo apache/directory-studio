@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -41,7 +41,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
 
 
 /**
@@ -250,12 +249,8 @@ public class ModWidget extends BrowserWidget implements ModifyListener
         // attribute combo with field decoration and content proposal
         modSpec.modAttributeCombo = BaseWidgetUtils.createCombo( modSpecComposite, new String[0], -1, 1 );
         modSpec.modAttributeCombo.setVisibleItemCount( 20 );
-        modSpec.modAttributeCPA = new ContentAssistCommandAdapter( modSpec.modAttributeCombo,
-            new ComboContentAdapter(), new ListContentProposalProvider( attributeDescriptions ), null, null, true );
-        modSpec.modAttributeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
-        modSpec.modAttributeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        modSpec.modAttributeCPA.setAutoActivationCharacters( null );
-        modSpec.modAttributeCPA.setAutoActivationDelay( 0 );
+        new ExtendedContentAssistCommandAdapter( modSpec.modAttributeCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( attributeDescriptions ), null, null, true );
 
         // add button with listener
         modSpec.modAddButton = new Button( modComposite, SWT.PUSH );
@@ -539,9 +534,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         /** The modification attribute. */
         private Combo modAttributeCombo;
-
-        /** The modification content proposal adapter */
-        private ContentProposalAdapter modAttributeCPA;
 
         /** The mod add button. */
         private Button modAddButton;
