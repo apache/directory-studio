@@ -24,6 +24,7 @@ package org.apache.directory.studio.valueeditors.objectclass;
 import java.util.Arrays;
 
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -32,11 +33,6 @@ import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -63,14 +59,8 @@ public class ObjectClassDialog extends Dialog
     /** The initial value. */
     private String initialValue;
 
-    /** The object class combo field. */
-    private DecoratedField objectClassComboField;
-
     /** The object class combo. */
     private Combo objectClassCombo;
-
-    /** The object class content proposal adapter */
-    private ContentProposalAdapter objectClassCPA;
 
     /** The return value. */
     private String returnValue;
@@ -138,28 +128,13 @@ public class ObjectClassDialog extends Dialog
         String[] allOcNames = SchemaUtils.getNamesAsArray( schema.getObjectClassDescriptions() );
         Arrays.sort( allOcNames );
 
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        objectClassComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-        {
-            public Control createControl( Composite parent, int style )
-            {
-                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                combo.setVisibleItemCount( 20 );
-                return combo;
-            }
-        } );
-        objectClassComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        objectClassComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        objectClassCombo = ( Combo ) objectClassComboField.getControl();
+        // attribute combo with field decoration and content proposal
+        objectClassCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
+        objectClassCombo.setVisibleItemCount( 20 );
         objectClassCombo.setItems( allOcNames );
         objectClassCombo.setText( initialValue );
-
-        // content proposal adapter
-        objectClassCPA = new ContentProposalAdapter( objectClassCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( objectClassCombo.getItems() ), null, null );
-        objectClassCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        objectClassCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+        new ExtendedContentAssistCommandAdapter( objectClassCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( objectClassCombo.getItems() ), null, null, true );
 
         applyDialogFont( composite );
         return composite;

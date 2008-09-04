@@ -461,7 +461,6 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         GridData gd = new GridData();
         gd.widthHint = 180;
         rdnLine.rdnTypeCombo.setLayoutData( gd );
-        rdnLine.rdnTypeCombo.setVisibleItemCount( 20 );
         rdnLine.rdnNameCPA = new ExtendedContentAssistCommandAdapter( rdnLine.rdnTypeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( attributeNames ), null, null, true );
 

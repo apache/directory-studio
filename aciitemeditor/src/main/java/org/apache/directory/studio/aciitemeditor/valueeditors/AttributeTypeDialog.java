@@ -26,17 +26,13 @@ import java.util.Collection;
 
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -60,14 +56,8 @@ public class AttributeTypeDialog extends Dialog
     /** The initial value. */
     private String initialValue;
 
-    /** The attribute type combo field. */
-    private DecoratedField attributeTypeComboField;
-
     /** The attribute type combo. */
     private Combo attributeTypeCombo;
-
-    /** The attribute type content proposal adapter */
-    private ContentProposalAdapter attributeTypeCPA;
 
     /** The return value. */
     private String returnValue;
@@ -96,8 +86,8 @@ public class AttributeTypeDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("AttributeTypeDialog.title") ); //$NON-NLS-1$
-        shell.setImage( Activator.getDefault().getImage( Messages.getString("AttributeTypeDialog.icon") ) ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "AttributeTypeDialog.title" ) ); //$NON-NLS-1$
+        shell.setImage( Activator.getDefault().getImage( Messages.getString( "AttributeTypeDialog.icon" ) ) ); //$NON-NLS-1$
     }
 
 
@@ -136,28 +126,11 @@ public class AttributeTypeDialog extends Dialog
         String[] allAtNames = names.toArray( new String[names.size()] );
         Arrays.sort( allAtNames );
 
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        attributeTypeComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-        {
-            public Control createControl( Composite parent, int style )
-            {
-                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                combo.setVisibleItemCount( 20 );
-                return combo;
-            }
-        } );
-        attributeTypeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        attributeTypeComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        attributeTypeCombo = ( Combo ) attributeTypeComboField.getControl();
-        attributeTypeCombo.setItems( allAtNames );
+        // attribute combo with field decoration and content proposal
+        attributeTypeCombo = BaseWidgetUtils.createCombo( composite, allAtNames, -1, 1 );
         attributeTypeCombo.setText( initialValue );
-
-        // content proposal adapter
-        attributeTypeCPA = new ContentProposalAdapter( attributeTypeCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( attributeTypeCombo.getItems() ), null, null );
-        attributeTypeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        attributeTypeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+        new ExtendedContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( attributeTypeCombo.getItems() ), null, null, true );
 
         applyDialogFont( composite );
         return composite;
@@ -173,4 +146,5 @@ public class AttributeTypeDialog extends Dialog
     {
         return returnValue;
     }
+
 }

@@ -179,9 +179,7 @@ public class AttributeTypeWizardPage extends WizardPage
         BaseWidgetUtils.createLabel( composite, "Attribute type:", 1 );
 
         // attribute combo with field decoration and content proposal
-        attributeTypeCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
-        attributeTypeCombo.setVisibleItemCount( 20 );
-        attributeTypeCombo.setItems( possibleAttributeTypes );
+        attributeTypeCombo = BaseWidgetUtils.createCombo( composite, possibleAttributeTypes, -1, 1 );
         attributeTypeCombo.setText( parsedAttributeType );
         new ExtendedContentAssistCommandAdapter( attributeTypeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );

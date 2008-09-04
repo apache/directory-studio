@@ -26,8 +26,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.directory.studio.aciitemeditor.Activator;
-import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -37,11 +38,6 @@ import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -96,8 +92,8 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value.getStringValue() )
-            : null;
+        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
+            .getStringValue() ) : null;
     }
 
 
@@ -190,23 +186,11 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
         /** The initial values in. */
         private String initialValuesIn;
 
-        /** The type combo field. */
-        private DecoratedField typeComboField;
-
         /** The type combo. */
         private Combo typeCombo;
 
-        /** The type content proposal adapter */
-        private ContentProposalAdapter typeCPA;
-
-        /** The values in combo field. */
-        private DecoratedField valuesInComboField;
-
         /** The values in combo. */
         private Combo valuesInCombo;
-
-        /** The values in content proposal adapter */
-        private ContentProposalAdapter valuesInCPA;
 
         /** The return type. */
         private String returnType;
@@ -285,52 +269,19 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
             String[] allAtNames = names.toArray( new String[names.size()] );
             Arrays.sort( allAtNames );
 
-            final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-                FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-
-            typeComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-            {
-                public Control createControl( Composite parent, int style )
-                {
-                    Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                    combo.setVisibleItemCount( 20 );
-                    return combo;
-                }
-            } );
-            typeComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-            typeComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-            typeCombo = ( Combo ) typeComboField.getControl();
-            typeCombo.setItems( allAtNames );
+            // type combo with field decoration and content proposal
+            typeCombo = BaseWidgetUtils.createCombo( composite, allAtNames, -1, 1 );
             typeCombo.setText( initialType );
-
-            // content proposal adapter
-            typeCPA = new ContentProposalAdapter( typeCombo, new ComboContentAdapter(),
-                new ListContentProposalProvider( typeCombo.getItems() ), null, null );
-            typeCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-            typeCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+            new ExtendedContentAssistCommandAdapter( typeCombo, new ComboContentAdapter(),
+                new ListContentProposalProvider( typeCombo.getItems() ), null, null, true );
 
             BaseWidgetUtils.createLabel( composite, SEP_VALUESIN, 1 );
 
-            valuesInComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-            {
-                public Control createControl( Composite parent, int style )
-                {
-                    Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                    combo.setVisibleItemCount( 20 );
-                    return combo;
-                }
-            } );
-            valuesInComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-            valuesInComboField.getLayoutControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-            valuesInCombo = ( Combo ) valuesInComboField.getControl();
-            valuesInCombo.setItems( allAtNames );
+            // valuesIn combo with field decoration and content proposal
+            valuesInCombo = BaseWidgetUtils.createCombo( composite, allAtNames, -1, 1 );
             valuesInCombo.setText( initialValuesIn );
-
-            // content proposal adapter
-            valuesInCPA = new ContentProposalAdapter( valuesInCombo, new ComboContentAdapter(),
-                new ListContentProposalProvider( valuesInCombo.getItems() ), null, null );
-            valuesInCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-            valuesInCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+            new ExtendedContentAssistCommandAdapter( valuesInCombo, new ComboContentAdapter(),
+                new ListContentProposalProvider( valuesInCombo.getItems() ), null, null, true );
 
             BaseWidgetUtils.createLabel( composite, R_CURLY, 1 );
 

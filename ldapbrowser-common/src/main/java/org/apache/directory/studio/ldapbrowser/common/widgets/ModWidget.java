@@ -248,7 +248,6 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         // attribute combo with field decoration and content proposal
         modSpec.modAttributeCombo = BaseWidgetUtils.createCombo( modSpecComposite, new String[0], -1, 1 );
-        modSpec.modAttributeCombo.setVisibleItemCount( 20 );
         new ExtendedContentAssistCommandAdapter( modSpec.modAttributeCombo, new ComboContentAdapter(),
             new ListContentProposalProvider( attributeDescriptions ), null, null, true );
 

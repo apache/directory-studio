@@ -114,7 +114,6 @@ public class FilterWidget extends BrowserWidget
 
         // filter combo with field decoration and content proposal
         filterCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
-        filterCombo.setVisibleItemCount( 20 );
         filterCombo.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )

@@ -22,17 +22,13 @@ package org.apache.directory.studio.valueeditors.administrativerole;
 
 
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.DecoratedField;
-import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
-import org.eclipse.jface.fieldassist.IControlCreator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -62,14 +58,8 @@ public class AdministrativeRoleDialog extends Dialog
     /** The initial value. */
     private String initialValue;
 
-    /** The administrative role combo field. */
-    private DecoratedField administrativeRoleComboField;
-
     /** The administrative role combo. */
     private Combo administrativeRoleCombo;
-
-    /** The administrative role content proposal adapter */
-    private ContentProposalAdapter administrativeRoleCPA;
 
     /** The return value. */
     private String returnValue;
@@ -132,30 +122,13 @@ public class AdministrativeRoleDialog extends Dialog
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         composite.setLayoutData( gd );
 
-        // combo widget
-        final FieldDecoration fieldDecoration = FieldDecorationRegistry.getDefault().getFieldDecoration(
-            FieldDecorationRegistry.DEC_CONTENT_PROPOSAL );
-        administrativeRoleComboField = new DecoratedField( composite, SWT.NONE, new IControlCreator()
-        {
-            public Control createControl( Composite parent, int style )
-            {
-                Combo combo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
-                combo.setVisibleItemCount( 20 );
-                return combo;
-            }
-        } );
-        administrativeRoleComboField.addFieldDecoration( fieldDecoration, SWT.TOP | SWT.LEFT, true );
-        administrativeRoleComboField.getLayoutControl()
-            .setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        administrativeRoleCombo = ( Combo ) administrativeRoleComboField.getControl();
+        // attribute combo with field decoration and content proposal
+        administrativeRoleCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
+        administrativeRoleCombo.setVisibleItemCount( 20 );
         administrativeRoleCombo.setItems( administrativeRoleValues );
         administrativeRoleCombo.setText( initialValue );
-
-        // content proposal adapter
-        administrativeRoleCPA = new ContentProposalAdapter( administrativeRoleCombo, new ComboContentAdapter(),
-            new ListContentProposalProvider( administrativeRoleCombo.getItems() ), null, null );
-        administrativeRoleCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
-        administrativeRoleCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
+        new ExtendedContentAssistCommandAdapter( administrativeRoleCombo, new ComboContentAdapter(),
+            new ListContentProposalProvider( administrativeRoleCombo.getItems() ), null, null, true );
 
         applyDialogFont( composite );
         return composite;
@@ -171,4 +144,5 @@ public class AdministrativeRoleDialog extends Dialog
     {
         return returnValue;
     }
+
 }
