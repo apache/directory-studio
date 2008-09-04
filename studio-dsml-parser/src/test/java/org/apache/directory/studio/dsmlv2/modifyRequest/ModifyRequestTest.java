@@ -25,12 +25,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.AbstractTest;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
@@ -264,15 +264,15 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItem> modifications = modifyRequest.getModifications();
+        List<Modification> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+        Modification modification = ( Modification ) modifications.get( 0 );
 
-        Attribute attribute = modification.getAttribute();
+        EntryAttribute attribute = modification.getAttribute();
 
-        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ) );
+        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ).get() );
     }
 
 
@@ -304,20 +304,20 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItem> modifications = modifyRequest.getModifications();
+        List<Modification> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+        Modification modification = ( Modification ) modifications.get( 0 );
 
-        Attribute attribute = modification.getAttribute();
+        EntryAttribute attribute = modification.getAttribute();
 
         String expected = new String( new byte[]
             { 'c', 'n', '=', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', 'L', ( byte ) 0xc3, ( byte ) 0xa9, 'c', 'h',
                 'a', 'r', 'n', 'y', ',', ' ', 'o', 'u', '=', 'p', 'e', 'o', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=',
                 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', ' ', 'd', 'c', '=', 'c', 'o', 'm' }, "UTF-8" );
 
-        assertEquals( expected, new String( ( byte[] ) attribute.get( 0 ), "UTF-8" ) );
+        assertEquals( expected, new String( ( byte[] ) attribute.get( 0 ).get(), "UTF-8" ) );
     }
 
 
@@ -348,15 +348,15 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "sn", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItem> modifications = modifyRequest.getModifications();
+        List<Modification> modifications = modifyRequest.getModifications();
 
         assertEquals( 2, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 1 );
+        Modification modification = ( Modification ) modifications.get( 1 );
 
-        Attribute attribute = modification.getAttribute();
+        EntryAttribute attribute = modification.getAttribute();
 
-        assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get( 0 ) );
+        assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get( 0 ).get() );
     }
 
 
@@ -495,11 +495,11 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItem> modifications = modifyRequest.getModifications();
+        List<Modification> modifications = modifyRequest.getModifications();
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+        Modification modification = ( Modification ) modifications.get( 0 );
 
-        Attribute attribute = modification.getAttribute();
+        EntryAttribute attribute = modification.getAttribute();
 
         assertEquals( 0, attribute.size() );
     }
@@ -532,17 +532,17 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItem> modifications = modifyRequest.getModifications();
+        List<Modification> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+        Modification modification = ( Modification ) modifications.get( 0 );
 
-        Attribute attribute = modification.getAttribute();
+        EntryAttribute attribute = modification.getAttribute();
 
         assertEquals( 2, attribute.size() );
-        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ) );
-        assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get( 1 ) );
+        assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get( 0 ).get() );
+        assertEquals( "CN=Steve Jobs, DC=apple, DC=com", attribute.get( 1 ).get() );
     }
 
 
@@ -573,16 +573,16 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( "directreport", modifyRequest.getCurrentAttributeType() );
 
-        List<ModificationItem> modifications = modifyRequest.getModifications();
+        List<Modification> modifications = modifyRequest.getModifications();
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
+        Modification modification = ( Modification ) modifications.get( 0 );
 
-        Attribute attribute = modification.getAttribute();
+        EntryAttribute attribute = modification.getAttribute();
 
         assertEquals( 1, attribute.size() );
-        assertEquals( "", attribute.get( 0 ) );
+        assertEquals( "", attribute.get( 0 ).get() );
     }
 
 

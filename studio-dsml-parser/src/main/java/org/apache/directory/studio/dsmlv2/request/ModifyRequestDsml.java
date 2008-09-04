@@ -20,14 +20,13 @@
 package org.apache.directory.studio.dsmlv2.request;
 
 
+import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
+import org.apache.directory.shared.ldap.entry.Modification;
+import org.apache.directory.shared.ldap.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.studio.dsmlv2.ParserUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -88,60 +87,54 @@ public class ModifyRequestDsml extends AbstractRequestDsml
         }
 
         // Modifications
-        List<ModificationItem> modifications = request.getModifications();
+        List<Modification> modifications = request.getModifications();
 
         for ( int i = 0; i < modifications.size(); i++ )
         {
-            ModificationItem modificationItem = modifications.get( i );
+            Modification modificationItem = modifications.get( i );
 
             Element modElement = element.addElement( "modification" );
             if ( modificationItem.getAttribute() != null )
             {
-                modElement.addAttribute( "name", modificationItem.getAttribute().getID() );
+                modElement.addAttribute( "name", modificationItem.getAttribute().getId() );
 
-                try
+                Iterator<Value<?>> iterator = modificationItem.getAttribute().getAll();
+                while ( iterator.hasNext() )
                 {
-                    NamingEnumeration ne = modificationItem.getAttribute().getAll();
-                    while ( ne.hasMoreElements() )
+                    Value<?> value = iterator.next();
+
+                    if ( value.get() != null )
                     {
-                        Object value = ( Object ) ne.nextElement();
-
-                        if ( value != null )
+                        if ( ParserUtils.needsBase64Encoding( value.get() ) )
                         {
-                            if ( ParserUtils.needsBase64Encoding( value ) )
-                            {
-                                Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                                Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                                element.getDocument().getRootElement().add( xsdNamespace );
-                                element.getDocument().getRootElement().add( xsiNamespace );
+                            Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
+                            Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                            element.getDocument().getRootElement().add( xsdNamespace );
+                            element.getDocument().getRootElement().add( xsiNamespace );
 
-                                Element valueElement = modElement.addElement( "value" ).addText(
-                                    ParserUtils.base64Encode( value ) );
-                                valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
-                                    + ParserUtils.BASE64BINARY );
-                            }
-                            else
-                            {
-                                modElement.addElement( "value" ).setText( ( String ) value );
-                            }
+                            Element valueElement = modElement.addElement( "value" ).addText(
+                                ParserUtils.base64Encode( value.get() ) );
+                            valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:"
+                                + ParserUtils.BASE64BINARY );
+                        }
+                        else
+                        {
+                            modElement.addElement( "value" ).setText( ( String ) value.get() );
                         }
                     }
                 }
-                catch ( NamingException e )
-                {
-                }
             }
 
-            int operation = modificationItem.getModificationOp();
-            if ( operation == DirContext.ADD_ATTRIBUTE )
+            ModificationOperation operation = modificationItem.getOperation();
+            if ( operation == ModificationOperation.ADD_ATTRIBUTE )
             {
                 modElement.addAttribute( "operation", "add" );
             }
-            else if ( operation == DirContext.REPLACE_ATTRIBUTE )
+            else if ( operation == ModificationOperation.REPLACE_ATTRIBUTE )
             {
                 modElement.addAttribute( "operation", "replace" );
             }
-            else if ( operation == DirContext.REMOVE_ATTRIBUTE )
+            else if ( operation == ModificationOperation.REMOVE_ATTRIBUTE )
             {
                 modElement.addAttribute( "operation", "delete" );
             }
