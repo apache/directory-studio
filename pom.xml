@@ -787,7 +787,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>views</artifactId>
-      <version>3.3.0.I20080509-2000</version>
+      <version>3.3.0.I20080509-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.views.properties</groupId>
