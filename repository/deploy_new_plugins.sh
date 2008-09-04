@@ -19,21 +19,15 @@
 # Looping on each file
 for file in $( ls newplugins ); 
 do
+    # The path to the file
     tmpFile=newplugins/$file
-  
-    # pack to jar file if it's a directory
-    if [ -d $tmpFile ]; 
-    then
-        echo "Zipping directory $tmpFile to $tmpFile.jar"
-        tmpDir=$PWD
-        cd $tmpFile/..
-        zip -r $file.jar $file
-        tmpFile=$tmpFile.jar
-        cd $tmpDir
-    fi
 
-    # Test for _64_ in artifactId
+    # By default the packaging is 'jar'
+    packaging=jar
+
+    # Extracting the groupId, artifactId and version
     case "$file" in
+    # Test for _64_ in artifactId
     *"_64_"*)
         fullname=${file%%_64_*}_64
         groupId=${fullname%\.*}
@@ -51,8 +45,20 @@ do
         ;;
     esac
     
+    # Pack to zip file if it's a directory
+    if [ -d $tmpFile ]; 
+    then
+        echo "Zipping directory $tmpFile to $tmpFile.zip"
+        tmpDir=$PWD
+        cd $tmpFile
+        zip -r ../$file.zip *
+        tmpFile=$tmpFile.zip
+        cd $tmpDir
+        packaging=zip
+    fi
+    
     echo
-    echo "=> Deploying $groupId:$artifactId:$version to the repository"
+    echo "=> Deploying $groupId:$artifactId:$version:$packaging to the repository"
     
     mvn deploy:deploy-file \
         -Durl=file://$PWD \
@@ -60,7 +66,7 @@ do
         -DgroupId=$groupId \
         -DartifactId=$artifactId \
         -Dversion=$version \
-        -Dpackaging=jar \
+        -Dpackaging=$packaging \
         -DgeneratePom=true
 
 done
