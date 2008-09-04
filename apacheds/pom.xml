@@ -669,7 +669,6 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>console</artifactId>
-      <version>3.2.2.v20071031_r332</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

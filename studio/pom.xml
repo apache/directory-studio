@@ -95,7 +95,6 @@
                     <artifactItem>
                       <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
                       <artifactId>x86</artifactId>
-                      <type>tar.gz</type>
                       <outputDirectory>${studio-dir}-linux-x86/plugins</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -245,7 +244,6 @@
                     <artifactItem>
                       <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
                       <artifactId>x86_64</artifactId>
-                      <type>tar.gz</type>
                       <outputDirectory>${studio-dir}-linux-x86_64/plugins</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -395,7 +393,6 @@
                     <artifactItem>
                       <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
                       <artifactId>ppc</artifactId>
-                      <type>tar.gz</type>
                       <outputDirectory>${studio-dir}-linux-ppc/plugins</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -544,7 +541,6 @@
                     <artifactItem>
                       <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
                       <artifactId>x86</artifactId>
-                      <type>tar.gz</type>
                       <outputDirectory>${studio-dir}-win32/plugins</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -688,12 +684,6 @@
                       <type>tar.gz</type>
                       <outputDirectory>${studio-dir}-macosx</outputDirectory>
                     </artifactItem>
-                    <artifactItem>
-                      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
-                      <artifactId>macosx</artifactId>
-                      <type>tar.gz</type>
-                      <outputDirectory>${studio-dir}-macosx</outputDirectory>
-                    </artifactItem>
                   </artifactItems>
                 </configuration>
               </execution>
@@ -711,9 +701,6 @@
                   <tasks>
                     <untar dest="${studio-dir}-macosx" compression="gzip">
                         <fileset dir="${studio-dir}-macosx" includes="launcher-macosx*.tar.gz"/>
-                    </untar>
-                    <untar dest="${studio-dir}-macosx/Apache Directory Studio.app/Contents/Resources/Java/plugins" compression="gzip">
-                        <fileset dir="${studio-dir}-macosx" includes="macosx*.tar.gz"/>
                     </untar>
                     <delete>
                         <fileset dir="${studio-dir}-macosx/" includes="*.tar.gz"/>
@@ -798,6 +785,23 @@
                   </artifactItems>
                 </configuration>
               </execution>
+              <execution>
+	            <id>unpack-launcher-macosx</id>
+	            <phase>generate-resources</phase>
+	            <goals>
+	              <goal>unpack-with-artifactid-prefix</goal>
+	            </goals>
+	            <configuration>
+	              <outputDirectory>${studio-dir}-macosx/Apache Directory Studio.app/Contents/Resources/Java/plugins</outputDirectory>
+	              <artifactItems>
+	                <artifactItem>
+                      <groupId>org.eclipse.equinox.launcher.carbon</groupId>
+                      <artifactId>macosx</artifactId>
+      				  <type>zip</type>
+	                </artifactItem>
+	              </artifactItems>
+	            </configuration>
+	          </execution>
             </executions>
           </plugin>
           <plugin>
@@ -862,6 +866,38 @@
                 <!-- The directory studio plugins -->
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>aciitemeditor</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.configuration</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.configuration.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>apacheds.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>connection.core</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>connection.ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>jars</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ldapbrowser.core</artifactId>
                 </artifactItem>
                 <artifactItem>
@@ -870,19 +906,11 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>connection.ui</artifactId>
+                  <artifactId>ldapbrowser.help</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>connection.core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>valueeditors</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>rcp</artifactId>
+                  <artifactId>ldapbrowser.ui</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -890,7 +918,19 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>ldifeditor.help</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>ldifparser</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>rcp</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>rcp.help</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
@@ -902,389 +942,331 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ldapbrowser.ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>apacheds.configuration</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>apacheds</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>jars</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>aciitemeditor</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>rcp.help</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ldifeditor.help</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>ldapbrowser.help</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>apacheds.configuration.help</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.apache.directory.studio</groupId>
-                  <artifactId>apacheds.help</artifactId>
+                  <artifactId>valueeditors</artifactId>
                 </artifactItem>
                  
-                <!-- The eclipse plugins -->
-                <artifactItem>
-                  <groupId>org.eclipse.update</groupId>
-                  <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.update</groupId>
-                  <artifactId>core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui.workbench</groupId>
-                  <artifactId>texteditor</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>views</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>intro</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>ide</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>forms</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>editors</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>net</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>text</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>search</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jface</groupId>
-                  <artifactId>text</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.help</groupId>
-                  <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.help</groupId>
-                  <artifactId>base</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.help</groupId>
-                  <artifactId>appserver</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core.runtime</groupId>
-                  <artifactId>compatibility</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>resources</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>filesystem</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>filebuffers</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core.runtime</groupId>
-                  <artifactId>compatibility</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.update</groupId>
-                  <artifactId>configurator</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>workbench</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>swt</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>rcp</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>osgi</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>jface</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jface</groupId>
-                  <artifactId>databinding</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>help</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>com.ibm</groupId>
-                  <artifactId>icu</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>commands</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>contenttype</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>databinding</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>expressions</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>jobs</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>net</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core.runtime.compatibility</groupId>
-                  <artifactId>auth</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.equinox</groupId>
-                  <artifactId>app</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.equinox</groupId>
-                  <artifactId>common</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.equinox</groupId>
-                  <artifactId>launcher</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.equinox</groupId>
-                  <artifactId>preferences</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.equinox</groupId>
-                  <artifactId>registry</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>runtime</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>javax</groupId>
-                    <artifactId>servlet</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>jsp</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>el</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.apache.commons</groupId>
-                    <artifactId>logging</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.apache</groupId>
-                    <artifactId>jasper</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.apache.lucene</groupId>
-                    <artifactId>analysis</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.core.resources</groupId>
-                    <artifactId>compatibility</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.equinox.http</groupId>
-                    <artifactId>jetty</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.equinox.http</groupId>
-                    <artifactId>registry</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.equinox.http</groupId>
-                    <artifactId>servlet</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.equinox.jsp</groupId>
-                    <artifactId>jasper</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.equinox.jsp.jasper</groupId>
-                    <artifactId>registry</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.osgi</groupId>
-                    <artifactId>services</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.osgi</groupId>
-                    <artifactId>util</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.ui.ide</groupId>
-                    <artifactId>application</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.update</groupId>
-                    <artifactId>scheduler</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.mortbay</groupId>
-                    <artifactId>jetty</artifactId>
-                </artifactItem>
-                
-                <!-- Added for the Apache DS plugin -->
-                <artifactItem>
-                    <groupId>org.eclipse.debug</groupId>
-                    <artifactId>core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.debug</groupId>
-                    <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.jdt</groupId>
-                    <artifactId>launching</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.ui</groupId>
-                    <artifactId>console</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jdt</groupId>
-                  <artifactId>core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jdt</groupId>
-                  <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jdt.debug</groupId>
-                  <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>variables</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse</groupId>
-                  <artifactId>compare</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.core</groupId>
-                  <artifactId>boot</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jdt.core</groupId>
-                  <artifactId>manipulation</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jdt.launching</groupId>
-                  <artifactId>macosx</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ltk.core</groupId>
-                  <artifactId>refactoring</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ltk.ui</groupId>
-                  <artifactId>refactoring</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.team</groupId>
-                  <artifactId>core</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.team</groupId>
-                  <artifactId>ui</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui</groupId>
-                  <artifactId>navigator</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui.navigator</groupId>
-                  <artifactId>resources</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.ui.views.properties</groupId>
-                  <artifactId>tabbed</artifactId>
-                </artifactItem>
+                <!-- Eclipse plugins -->
+                <artifactItem>
+			      <groupId>com.ibm</groupId>
+			      <artifactId>icu</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>javax</groupId>
+			      <artifactId>servlet</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>javax.servlet</groupId>
+			      <artifactId>jsp</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.apache.commons</groupId>
+			      <artifactId>el</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.apache.commons</groupId>
+			      <artifactId>logging</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.apache</groupId>
+			      <artifactId>jasper</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.apache</groupId>
+			      <artifactId>lucene</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.apache.lucene</groupId>
+			      <artifactId>analysis</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>compare</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>boot</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>commands</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>contenttype</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>databinding</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>expressions</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>filebuffers</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>filesystem</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>jobs</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>net</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>resources</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core.resources</groupId>
+			      <artifactId>compatibility</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>runtime</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core.runtime</groupId>
+			      <artifactId>compatibility</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core.runtime.compatibility</groupId>
+			      <artifactId>auth</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.core</groupId>
+			      <artifactId>variables</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.debug</groupId>
+			      <artifactId>core</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.debug</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>app</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>common</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.http</groupId>
+			      <artifactId>jetty</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.http</groupId>
+			      <artifactId>registry</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.http</groupId>
+			      <artifactId>servlet</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.jsp</groupId>
+			      <artifactId>jasper</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox.jsp.jasper</groupId>
+			      <artifactId>registry</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>launcher</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>preferences</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>registry</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.equinox</groupId>
+			      <artifactId>security</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>help</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.help</groupId>
+			      <artifactId>appserver</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.help</groupId>
+			      <artifactId>base</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.help</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.help</groupId>
+			      <artifactId>webapp</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jdt</groupId>
+			      <artifactId>core</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jdt.core</groupId>
+			      <artifactId>manipulation</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jdt.debug</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jdt</groupId>
+			      <artifactId>launching</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jdt</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>jface</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jface</groupId>
+			      <artifactId>databinding</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.jface</groupId>
+			      <artifactId>text</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ltk.core</groupId>
+			      <artifactId>refactoring</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ltk.ui</groupId>
+			      <artifactId>refactoring</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>osgi</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.osgi</groupId>
+			      <artifactId>services</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.osgi</groupId>
+			      <artifactId>util</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>rcp</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>search</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>swt</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.team</groupId>
+			      <artifactId>core</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.team</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>text</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>console</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>editors</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>forms</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>ide</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui.ide</groupId>
+			      <artifactId>application</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>intro</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>navigator</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui.navigator</groupId>
+			      <artifactId>resources</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>net</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>views</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui.views.properties</groupId>
+			      <artifactId>tabbed</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui</groupId>
+			      <artifactId>workbench</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.ui.workbench</groupId>
+			      <artifactId>texteditor</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.update</groupId>
+			      <artifactId>configurator</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.update</groupId>
+			      <artifactId>core</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.update</groupId>
+			      <artifactId>scheduler</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.eclipse.update</groupId>
+			      <artifactId>ui</artifactId>
+			    </artifactItem>
+			    <artifactItem>
+			      <groupId>org.mortbay</groupId>
+			      <artifactId>jetty</artifactId>
+			    </artifactItem>
 
-              </artifactItems>
-            </configuration>
-          </execution>
-          <execution>
-            <id>unpack-plugins-with-artifactid-prefix</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>unpack-with-artifactid-prefix</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${studio-dir}/plugins</outputDirectory>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>org.apache</groupId>
-                  <artifactId>lucene</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.help</groupId>
-                  <artifactId>webapp</artifactId>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>org.eclipse.jdt</groupId>
-                  <artifactId>debug</artifactId>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
@@ -1299,16 +1281,24 @@
               <outputDirectory>${studio-dir}/plugins</outputDirectory>
               <artifactItems>
                 <artifactItem>
+                    <groupId>org.eclipse.ui.workbench</groupId>
+                    <artifactId>compatibility</artifactId>
+                    <type>zip</type>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.jdt</groupId>
+                  <artifactId>debug</artifactId>
+                  <type>zip</type>
+                </artifactItem>
+                <artifactItem>
                   <groupId>org.eclipse</groupId>
                   <artifactId>sdk</artifactId>
+                  <type>zip</type>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.eclipse.core.runtime.compatibility</groupId>
                   <artifactId>registry</artifactId>
-                </artifactItem>
-                <artifactItem>
-                    <groupId>org.eclipse.ui.workbench</groupId>
-                    <artifactId>compatibility</artifactId>
+                  <type>zip</type>
                 </artifactItem>
               </artifactItems>
             </configuration>
