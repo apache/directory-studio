@@ -480,7 +480,7 @@
     <dependency>
       <groupId>org.eclipse.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.4.0.v20080529-1300</version>
+      <version>3.4.0.v20080529-1300-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
@@ -611,7 +611,7 @@
     <dependency>
       <groupId>org.eclipse.jdt.debug</groupId>
       <artifactId>ui</artifactId>
-      <version>3.3.0.v20080603</version>
+      <version>3.3.0.v20080603-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jdt</groupId>
