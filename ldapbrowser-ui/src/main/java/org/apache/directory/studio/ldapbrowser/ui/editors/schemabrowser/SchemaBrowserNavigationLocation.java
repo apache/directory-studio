@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
@@ -65,27 +66,28 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
         {
             if ( schemaElement instanceof ObjectClassDescription )
             {
-                return "Object Class " + schemaElement.toString();
+
+                return "Object Class " + SchemaUtils.toString( schemaElement );
             }
             else if ( schemaElement instanceof AttributeTypeDescription )
             {
-                return "Attribute Type " + schemaElement.toString();
+                return "Attribute Type " + SchemaUtils.toString( schemaElement );
             }
             else if ( schemaElement instanceof LdapSyntaxDescription )
             {
-                return "Syntax " + schemaElement.toString();
+                return "Syntax " + SchemaUtils.toString( schemaElement );
             }
             else if ( schemaElement instanceof MatchingRuleDescription )
             {
-                return "Matching Rule " + schemaElement.toString();
+                return "Matching Rule " + SchemaUtils.toString( schemaElement );
             }
             else if ( schemaElement instanceof MatchingRuleUseDescription )
             {
-                return "Matching Rule Use " + schemaElement.toString();
+                return "Matching Rule Use " + SchemaUtils.toString( schemaElement );
             }
             else
             {
-                return schemaElement.getNumericOid();
+                return SchemaUtils.toString( schemaElement );
             }
         }
         else

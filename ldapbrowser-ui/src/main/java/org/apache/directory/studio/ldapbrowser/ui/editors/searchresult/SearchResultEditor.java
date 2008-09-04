@@ -97,13 +97,15 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
             if ( search != null )
             {
-                // enable one instance hack before firing the input change event 
+                // disable one instance hack before firing the input change event 
                 // otherwise the navigation history is cleared.
-                SearchResultEditorInput.enableOneInstanceHack( true );
+                // Note: seems this behavior has been changed with Eclipse 3.3
+                SearchResultEditorInput.enableOneInstanceHack( false );
                 firePropertyChange( IEditorPart.PROP_INPUT );
 
-                // disable one instance hack for marking the location
-                SearchResultEditorInput.enableOneInstanceHack( false );
+                // enable one instance hack for marking the location
+                // Note: seems this behavior has been changed with Eclipse 3.3
+                SearchResultEditorInput.enableOneInstanceHack( true );
                 getSite().getPage().getNavigationHistory().markLocation( this );
             }
         }

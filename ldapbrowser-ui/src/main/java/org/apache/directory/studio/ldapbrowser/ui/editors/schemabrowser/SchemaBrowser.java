@@ -233,13 +233,15 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
 
             if ( connection != null && schemaElement != null )
             {
-                // enable one instance hack before fireing the input change event 
+                // disable one instance hack before fireing the input change event 
                 // otherwise the navigation history is cleared.
-                SchemaBrowserInput.enableOneInstanceHack( true );
+                // Note: seems this behavior has been changed with Eclipse 3.3
+                SchemaBrowserInput.enableOneInstanceHack( false );
                 firePropertyChange( IEditorPart.PROP_INPUT );
 
-                // disable one instance hack for marking the location
-                SchemaBrowserInput.enableOneInstanceHack( false );
+                // enable one instance hack for marking the location
+                // Note: seems this behavior has been changed with Eclipse 3.3
+                SchemaBrowserInput.enableOneInstanceHack( true );
                 getSite().getPage().getNavigationHistory().markLocation( this );
             }
 

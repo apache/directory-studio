@@ -216,7 +216,7 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
     {
         if ( entryEditor != null )
         {
-            // deregister listneners
+            // deregister listeners
             entryEditor.getSite().getPage().removePartListener( partListener );
             entryEditor.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
                 BrowserView.getId(), entrySelectionListener );
@@ -225,9 +225,6 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
 
         super.dispose();
     }
-
-
-
 
 
     /**
@@ -247,8 +244,5 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
             outlinePage.refresh();
         }
     }
-
-
-
 
 }

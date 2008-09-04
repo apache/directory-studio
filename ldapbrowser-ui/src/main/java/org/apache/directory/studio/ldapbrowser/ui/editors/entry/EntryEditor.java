@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.INavigationHistory;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
 import org.eclipse.ui.IReusableEditor;
@@ -99,13 +100,15 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
             // mark location for back/forward history navigation
             if ( entry != null )
             {
-                // enable one instance hack before fireing the input change event 
+                // disable one instance hack before fireing the input change event 
                 // otherwise the navigation history is cleared.
-                EntryEditorInput.enableOneInstanceHack( true );
+                // Note: seems this behavior has been changed with Eclipse 3.3
+                EntryEditorInput.enableOneInstanceHack( false );
                 firePropertyChange( IEditorPart.PROP_INPUT );
 
-                // disable one instance hack for marking the location
-                EntryEditorInput.enableOneInstanceHack( false );
+                // enable one instance hack for marking the location
+                // Note: seems this behavior has been changed with Eclipse 3.3
+                EntryEditorInput.enableOneInstanceHack( true );
                 getSite().getPage().getNavigationHistory().markLocation( this );
             }
 
