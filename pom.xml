@@ -777,7 +777,7 @@
     <dependency>
       <groupId>org.eclipse.ui.navigator</groupId>
       <artifactId>resources</artifactId>
-      <version>3.3.100.I20080606-1300</version>
+      <version>3.3.100.I20080606-1300-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
