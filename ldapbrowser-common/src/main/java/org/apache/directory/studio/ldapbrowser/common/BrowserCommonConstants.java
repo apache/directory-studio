@@ -122,6 +122,7 @@ public interface BrowserCommonConstants
     public static final String IMG_TEXTEDITOR = "resources/icons/texteditor.gif";
     public static final String IMG_INPLACE_TEXTEDITOR = "resources/icons/inplace_texteditor.gif";
     public static final String IMG_MULTIVALUEDEDITOR = "resources/icons/multivaluededitor.gif";
+    public static final String IMG_DNEDITOR = "resources/icons/dneditor.gif";
     public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif";
     public static final String IMG_SORT = "resources/icons/sort.gif";
     public static final String IMG_DIT = "resources/icons/dit.gif";

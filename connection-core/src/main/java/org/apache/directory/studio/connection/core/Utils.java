@@ -26,8 +26,8 @@ import java.util.Arrays;
 import javax.naming.InvalidNameException;
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -254,6 +254,31 @@ public class Utils
         }
 
         return cmdLine.toString();
+    }
+
+
+    /**
+     * Gets the LdapDN from the given String or null if the 
+     * String can't be parsed.
+     * 
+     * @param dn the DN as String
+     * 
+     * @return the DN as LdapDN
+     */
+    public static LdapDN getLdapDn( String dn )
+    {
+        if ( dn == null )
+        {
+            return null;
+        }
+        try
+        {
+            return new LdapDN( dn );
+        }
+        catch ( InvalidNameException e )
+        {
+            return null;
+        }
     }
 
 }

@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsCsvAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsLdifAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyUrlAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.LocateEntryInDitAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.MoveAction;
@@ -79,6 +80,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
     /** The Constant locateEntryInDitAction. */
     private static final String locateEntryInDitAction = "locateEntryInDitAction";
+
+    /** The Constant gotoDnAction. */
+    private static final String gotoDnAction = "gotoDnAction";
 
     /** The Constant newEntryAction. */
     private static final String newEntryAction = "newEntryAction";
@@ -183,6 +187,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         browserActionMap
             .put( locateEntryInDitAction, new BrowserViewActionProxy( viewer, new LocateEntryInDitAction() ) );
+        browserActionMap.put( gotoDnAction, new BrowserViewActionProxy( viewer, new GotoDnAction() ) );
 
         browserActionMap.put( pasteAction, new BrowserViewActionProxy( viewer, new PasteAction() ) );
         browserActionMap.put( copyAction, new BrowserViewActionProxy( viewer, new CopyAction(
@@ -254,9 +259,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     public void fillToolBar( IToolBarManager toolBarManager )
     {
 
-        toolBarManager.add( ( IAction ) browserActionMap.get( upAction ) );
+        toolBarManager.add( browserActionMap.get( upAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
+        toolBarManager.add( browserActionMap.get( refreshAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( collapseAllAction );
         toolBarManager.add( linkWithEditorAction );
@@ -289,68 +294,69 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     public void menuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( ( IAction ) browserActionMap.get( newEntryAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( newSearchAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( newBookmarkAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( newBatchOperationAction ) );
+        menuManager.add( browserActionMap.get( newEntryAction ) );
+        menuManager.add( browserActionMap.get( newSearchAction ) );
+        menuManager.add( browserActionMap.get( newBookmarkAction ) );
+        menuManager.add( browserActionMap.get( newBatchOperationAction ) );
         menuManager.add( new Separator() );
 
         // navigation
         BrowserViewActionProxy leid = ( BrowserViewActionProxy ) browserActionMap.get( locateEntryInDitAction );
         leid.setImageDescriptor( leid.getAction().getImageDescriptor() );
         menuManager.add( leid );
-        menuManager.add( ( IAction ) browserActionMap.get( upAction ) );
+        menuManager.add( browserActionMap.get( gotoDnAction ) );
+        menuManager.add( browserActionMap.get( upAction ) );
         menuManager.add( new Separator() );
 
         // copy/paste/...
-        menuManager.add( ( IAction ) browserActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( moveAction ) );
-        menuManager.add( ( IAction ) browserActionMap.get( renameAction ) );
+        menuManager.add( browserActionMap.get( copyAction ) );
+        menuManager.add( browserActionMap.get( pasteAction ) );
+        menuManager.add( browserActionMap.get( deleteAction ) );
+        menuManager.add( browserActionMap.get( moveAction ) );
+        menuManager.add( browserActionMap.get( renameAction ) );
         MenuManager advancedMenuManager = new MenuManager( "Advanced" );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyDnAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyUrlAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyDnAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyUrlAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifDnOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifReturningAttributesOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsLdifOperationalAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsLdifDnOnlyAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsLdifReturningAttributesOnlyAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsLdifAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsLdifOperationalAction ) );
         advancedMenuManager.add( new Separator() );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvDnOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvReturningAttributesOnlyAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvAction ) );
-        advancedMenuManager.add( ( IAction ) browserActionMap.get( copyEntryAsCsvOperationalAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvDnOnlyAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvReturningAttributesOnlyAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvAction ) );
+        advancedMenuManager.add( browserActionMap.get( copyEntryAsCsvOperationalAction ) );
         advancedMenuManager.add( new Separator() );
         menuManager.add( advancedMenuManager );
         menuManager.add( new Separator() );
 
         // filter, batch
-        menuManager.add( ( IAction ) browserActionMap.get( filterChildrenAction ) );
-        if ( ( ( IAction ) browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
+        menuManager.add( browserActionMap.get( filterChildrenAction ) );
+        if ( ( browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) browserActionMap.get( unfilterChildrenAction ) );
+            menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
         }
         menuManager.add( new Separator() );
 
         // import/export
         MenuManager importMenuManager = new MenuManager( "Import" );
-        importMenuManager.add( ( IAction ) browserActionMap.get( importLdifAction ) );
-        importMenuManager.add( ( IAction ) browserActionMap.get( importDsmlAction ) );
+        importMenuManager.add( browserActionMap.get( importLdifAction ) );
+        importMenuManager.add( browserActionMap.get( importDsmlAction ) );
         importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
 
         MenuManager exportMenuManager = new MenuManager( "Export" );
-        exportMenuManager.add( ( IAction ) browserActionMap.get( exportLdifAction ) );
-        exportMenuManager.add( ( IAction ) browserActionMap.get( exportDsmlAction ) );
+        exportMenuManager.add( browserActionMap.get( exportLdifAction ) );
+        exportMenuManager.add( browserActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );
-        exportMenuManager.add( ( IAction ) browserActionMap.get( exportCsvAction ) );
-        exportMenuManager.add( ( IAction ) browserActionMap.get( exportExcelAction ) );
+        exportMenuManager.add( browserActionMap.get( exportCsvAction ) );
+        exportMenuManager.add( browserActionMap.get( exportExcelAction ) );
         menuManager.add( exportMenuManager );
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
+        menuManager.add( browserActionMap.get( refreshAction ) );
         menuManager.add( new Separator() );
 
         // additions
@@ -358,7 +364,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) browserActionMap.get( propertyDialogAction ) );
+        menuManager.add( browserActionMap.get( propertyDialogAction ) );
 
     }
 
@@ -370,21 +376,16 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     {
         if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), ( IAction ) browserActionMap
-                .get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), ( IAction ) browserActionMap
-                .get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), ( IAction ) browserActionMap
-                .get( deleteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.MOVE.getId(), ( IAction ) browserActionMap
-                .get( moveAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.RENAME.getId(), ( IAction ) browserActionMap
-                .get( renameAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), browserActionMap.get( copyAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), browserActionMap.get( pasteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), browserActionMap.get( deleteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.MOVE.getId(), browserActionMap.get( moveAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.RENAME.getId(), browserActionMap.get( renameAction ) );
         }
 
         super.activateGlobalActionHandlers();
 
-        IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
+        IAction leid = browserActionMap.get( locateEntryInDitAction );
         ActionUtils.activateActionHandler( leid );
     }
 
@@ -405,7 +406,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         super.deactivateGlobalActionHandlers();
 
-        IAction leid = ( IAction ) browserActionMap.get( locateEntryInDitAction );
+        IAction leid = browserActionMap.get( locateEntryInDitAction );
         ActionUtils.deactivateActionHandler( leid );
     }
 

@@ -18,17 +18,17 @@
  *
  */
 
-package org.apache.directory.studio.valueeditors.dn;
+package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
-import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -48,6 +48,12 @@ import org.eclipse.swt.widgets.Shell;
 public class DnDialog extends Dialog
 {
 
+    /** The title. */
+    private String title;
+    
+    /** The description. */
+    private String description;
+
     /** The entry widget. */
     private EntryWidget entryWidget;
 
@@ -62,13 +68,17 @@ public class DnDialog extends Dialog
      * Creates a new instance of DnDialog.
      * 
      * @param parentShell the parent shell
-     * @param connection the connection
-     * @param dn the dn
+     * @param title the title of the dialog
+     * @param description the description of the dialog
+     * @param connection the connection used to browse the directory
+     * @param dn the initial DN, may be null
      */
-    public DnDialog( Shell parentShell, IBrowserConnection connection, LdapDN dn )
+    public DnDialog( Shell parentShell, String title, String description, IBrowserConnection connection, LdapDN dn )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
+        this.title = title;
+        this.description = description;
         this.connection = connection;
         this.dn = dn;
     }
@@ -80,8 +90,8 @@ public class DnDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "DN Editor" );
-        shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_DNEDITOR ) );
+        shell.setText( title );
+        shell.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_DNEDITOR ) );
     }
 
 
@@ -112,12 +122,16 @@ public class DnDialog extends Dialog
      */
     protected Control createDialogArea( Composite parent )
     {
-
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 3 / 2;
         composite.setLayoutData( gd );
 
+        if(description != null)
+        {
+            BaseWidgetUtils.createLabel( composite, description, 1 );
+        }
+        
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
         entryWidget = new EntryWidget( connection, dn );
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()

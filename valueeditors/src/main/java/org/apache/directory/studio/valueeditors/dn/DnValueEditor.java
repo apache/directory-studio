@@ -24,6 +24,7 @@ package org.apache.directory.studio.valueeditors.dn;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -62,7 +63,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
             {
                 dn = null;
             }
-            DnDialog dialog = new DnDialog( shell, wrapper.connection, dn );
+            DnDialog dialog = new DnDialog( shell, "DN Editor", null, wrapper.connection, dn );
             if ( dialog.open() == TextDialog.OK && dialog.getDn() != null )
             {
                 setValue( dialog.getDn().toString() );
@@ -124,7 +125,6 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
 
         return null;
     }
-
 
     /**
      * The DnValueEditorRawValueWrapper is used to pass contextual

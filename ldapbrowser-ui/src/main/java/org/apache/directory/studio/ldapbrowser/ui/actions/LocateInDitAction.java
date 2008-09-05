@@ -100,7 +100,7 @@ public abstract class LocateInDitAction extends BrowserAction
     /**
      * {@inheritDoc}
      */
-    public final boolean isEnabled()
+    public boolean isEnabled()
     {
         return getConnectionAndDn() != null;
     }
