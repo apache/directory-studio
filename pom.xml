@@ -722,7 +722,7 @@
     <dependency>
       <groupId>org.eclipse.team</groupId>
       <artifactId>ui</artifactId>
-      <version>3.4.0.I20080604</version>
+      <version>3.4.0.I20080604-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
