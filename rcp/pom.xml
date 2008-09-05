@@ -39,12 +39,18 @@
       <resource>
         <directory>.</directory>
         <includes>
-          <include>about.ini</include>
           <include>plugin.properties</include>
           <include>plugin.xml</include>
-          <include>studio.png</include>
         </includes>
         <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>about.ini</include>
+          <include>studio.png</include>
+        </includes>
+        <filtering>false</filtering>
       </resource>
       <resource>
         <directory>resources</directory>
