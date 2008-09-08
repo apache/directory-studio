@@ -45,7 +45,7 @@ public class EntryEditorTest extends AbstractServerTest
         super.loadTestLdif( true );
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "EntryEditorTest", ldapServer.getIpPort() );
+        SWTBotUtils.createTestConnection( bot, "EntryEditorTest", ldapService.getIpPort() );
     }
 
 

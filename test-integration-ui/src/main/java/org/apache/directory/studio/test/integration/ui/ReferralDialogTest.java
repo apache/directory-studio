@@ -52,7 +52,7 @@ public class ReferralDialogTest extends AbstractServerTest
         super.setUp();
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapServer.getIpPort() );
+        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapService.getIpPort() );
     }
 
 
@@ -102,11 +102,11 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
+        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort()
             + "/ou=users,ou=system" );
         assertNotNull( referralNode );
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ldap://localhost:"
-            + ldapServer.getIpPort() + "/ou=users,ou=system" );
+            + ldapService.getIpPort() + "/ou=users,ou=system" );
 
     }
 
@@ -150,7 +150,7 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is not visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
+        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort()
             + "/ou=users,ou=system" );
         assertNull( referralNode );
     }
@@ -178,7 +178,7 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral entry is not visible
-        SWTBotTreeItem referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapServer.getIpPort()
+        SWTBotTreeItem referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort()
             + "/ou=users,ou=system" );
         assertNull( referralNode1 );
         SWTBotTreeItem referralNode2 = systemNode.getNode( "cn=referralDialogTest" );
@@ -220,7 +220,7 @@ public class ReferralDialogTest extends AbstractServerTest
         entry.setDn( new LdapDN("cn=referralDialogTest,ou=system"  ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapServer.getIpPort() + "/ou=users,ou=system" );
+        entry.add( "ref", "ldap://localhost:" + ldapService.getIpPort() + "/ou=users,ou=system" );
         rootDSE.add( entry );
     }
 }

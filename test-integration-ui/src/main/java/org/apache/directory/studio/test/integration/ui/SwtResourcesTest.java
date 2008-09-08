@@ -49,7 +49,7 @@ public class SwtResourcesTest extends AbstractServerTest
         super.setUp();
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "SwtResourcesTest", ldapServer.getIpPort() );
+        SWTBotUtils.createTestConnection( bot, "SwtResourcesTest", ldapService.getIpPort() );
     }
 
 
