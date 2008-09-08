@@ -90,6 +90,9 @@
     <valueeditors.version>1.3.0.SNAPSHOT</valueeditors.version>
     <test.integration.core.version>1.3.0.SNAPSHOT</test.integration.core.version>
     <test.integration.ui.version>1.3.0.SNAPSHOT</test.integration.ui.version>
+
+    <!-- Set versions for depending projects -->
+    <org.apache.directory.shared.version>0.9.12-SNAPSHOT</org.apache.directory.shared.version>
   </properties>
 
   <profiles>
@@ -871,17 +874,17 @@
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-ldap</artifactId>
-        <version>0.9.12-SNAPSHOT</version>
+        <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-asn1</artifactId>
-        <version>0.9.12-SNAPSHOT</version>
+        <version>${org.apache.directory.shared.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.shared</groupId>
         <artifactId>shared-converter</artifactId>
-        <version>0.9.12-SNAPSHOT</version>
+        <version>${org.apache.directory.shared.version}</version>
       </dependency>
 
       <!-- Other dependencies -->
