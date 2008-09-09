@@ -21,20 +21,27 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.ldap.codec.LdapResponse;
-import org.apache.directory.shared.ldap.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.codec.add.AddRequest;
+import org.apache.directory.shared.ldap.codec.compare.CompareRequest;
+import org.apache.directory.shared.ldap.codec.del.DelRequest;
+import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
+import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
+import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
+import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
-import org.apache.directory.studio.dsmlv2.reponse.ErrorResponse;
+import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 
@@ -110,7 +117,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
      */
     protected Object[] getLockedObjects()
     {
-        List l = new ArrayList();
+        List<Object> l = new ArrayList<Object>();
         l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( dsmlFile.toString() ) );
         return l.toArray();
     }
@@ -121,53 +128,92 @@ public class ImportDsmlJob extends AbstractEclipseJob
      */
     protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
-
         monitor.beginTask( BrowserCoreMessages.jobs__import_dsml_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
-        
-        Dsmlv2Engine engine = new Dsmlv2Engine( browserConnection.getConnection().getHost(), browserConnection
-            .getConnection().getPort(), browserConnection.getConnection().getBindPrincipal(), browserConnection
-            .getConnection().getBindPassword() );
+
         try
         {
-            // Executing the DSML request and getting the response
-            String response = engine.processDSMLFile( dsmlFile.getAbsolutePath() );
-            
-            // Saving Response if needed
+            // Parsing the file
+            Dsmlv2Parser parser = new Dsmlv2Parser();
+            parser.setInput( new FileInputStream( dsmlFile ), "UTF-8" );
+            parser.parseAllRequests();
+
+            // Getting the batch request
+            BatchRequest batchRequest = parser.getBatchRequest();
+
+            // Creating a DSML batch response (only if needed)
+            BatchResponseDsml batchResponseDsml = null;
             if ( responseFile != null )
             {
-                FileOutputStream fout = new FileOutputStream( responseFile );
-                new PrintStream( fout ).println( response );
-                fout.close();
+                batchResponseDsml = new BatchResponseDsml();
             }
-            
-            // Processing Reponse (Reading and displaying possible errors)
-            int errorCount = 0;
-            Dsmlv2ResponseParser responseParser = new Dsmlv2ResponseParser();
-            responseParser.setInput( response );
-            LdapResponse ldapResponse = responseParser.getNextResponse();
-            while ( ldapResponse != null )
+
+            // Processing each request
+            List<?> requests = batchRequest.getRequests();
+            for ( Object request : requests )
             {
-                if ( ( ldapResponse instanceof ErrorResponse ) 
-                     || ( ldapResponse.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS ) )
-                {
-                    errorCount++;
-                }
-                ldapResponse = responseParser.getNextResponse();
+                processRequest( request, batchResponseDsml );
             }
-            
-            if ( errorCount > 0 )
+
+            // Writing the DSML response file to its final destination file.
+            if ( responseFile != null )
             {
-                monitor.reportError( BrowserCoreMessages.bind(
-                        BrowserCoreMessages.dsml__n_errors_see_responsefile, new String[]
-                            { "" + errorCount } ) ); //$NON-NLS-1$
+                FileOutputStream fos = new FileOutputStream( responseFile );
+                OutputStreamWriter osw = new OutputStreamWriter( fos );
+                BufferedWriter bufferedWriter = new BufferedWriter( osw );
+                bufferedWriter.write( batchResponseDsml.toDsml() );
+                bufferedWriter.close();
+                osw.close();
+                fos.close();
             }
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
         }
+    }
+
+
+    private void processRequest( Object request, BatchResponseDsml batchResponseDsml )
+    {
+        if ( request instanceof AddRequest )
+        {
+            AddRequest addRequest = ( AddRequest ) request;
+
+        }
+        else if ( request instanceof CompareRequest )
+        {
+            CompareRequest compareRequest = ( CompareRequest ) request;
+
+        }
+        else if ( request instanceof DelRequest )
+        {
+            DelRequest delRequest = ( DelRequest ) request;
+
+        }
+        else if ( request instanceof ExtendedRequest )
+        {
+            ExtendedRequest extendedRequest = ( ExtendedRequest ) request;
+
+        }
+        else if ( request instanceof ModifyRequest )
+        {
+            ModifyRequest modifyRequest = ( ModifyRequest ) request;
+
+        }
+        else if ( request instanceof ModifyDNRequest )
+        {
+            ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) request;
+
+        }
+        else if ( request instanceof SearchRequest )
+        {
+            SearchRequest searchRequest = ( SearchRequest ) request;
+
+        }
+
+        System.out.println( request );
     }
 
 
