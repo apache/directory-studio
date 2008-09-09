@@ -72,7 +72,11 @@ public class SearchResultDoneDsml extends LdapResponseDecorator implements DsmlD
         Element element = root.addElement( "searchResultDone" );
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( ( ( SearchResultDone ) instance ).getLdapResult(), instance );
-        ldapResultDsml.toDsml( element );
+        if ( ldapResultDsml != null)
+        {
+            ldapResultDsml.toDsml( element ); 
+        }
+        
         return element;
     }
 }
