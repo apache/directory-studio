@@ -20,6 +20,7 @@
 package org.apache.directory.studio.dsmlv2.reponse;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.codec.LdapMessage;
@@ -38,7 +39,7 @@ import org.dom4j.Element;
 public class SearchResponseDsml extends LdapResponseDecorator implements DsmlDecorator
 {
     /** The responses */
-    private List<DsmlDecorator> responses;
+    private List<DsmlDecorator> responses = new ArrayList<DsmlDecorator>();
 
 
     /**
