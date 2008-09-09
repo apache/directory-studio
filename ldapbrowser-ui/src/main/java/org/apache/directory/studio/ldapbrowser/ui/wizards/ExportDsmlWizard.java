@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExportDsmlJob;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExportDsmlJob.ExportDsmlJobType;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -35,7 +36,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ExportDsmlWizard extends ExportBaseWizard
 {
-    
+
     /** The title. */
     public static final String WIZARD_TITLE = "DSML Export";
 
@@ -44,6 +45,19 @@ public class ExportDsmlWizard extends ExportBaseWizard
 
     /** The to page, used to select the target file. */
     private ExportDsmlToWizardPage toPage;
+
+    private ExportDsmlWizardSaveAsType saveAsType = ExportDsmlWizardSaveAsType.RESPONSE;
+
+    /**
+     * This enum contains the two possible export types.
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum ExportDsmlWizardSaveAsType
+    {
+        RESPONSE, REQUEST
+    };
 
 
     /**
@@ -100,9 +114,42 @@ public class ExportDsmlWizard extends ExportBaseWizard
         fromPage.saveDialogSettings();
         toPage.saveDialogSettings();
 
-        ExportDsmlJob edj = new ExportDsmlJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter() );
-        edj.execute();
+        switch ( saveAsType )
+        {
+            case RESPONSE:
+                new ExportDsmlJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
+                    ExportDsmlJobType.RESPONSE ).execute();
+                break;
+            case REQUEST:
+                new ExportDsmlJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
+                    ExportDsmlJobType.REQUEST ).execute();
+                break;
+        }
 
         return true;
+    }
+
+
+    /**
+     * Gets the "Save as" type.
+     *
+     * @return
+     *      the "Save as" type
+     */
+    public ExportDsmlWizardSaveAsType getSaveAsType()
+    {
+        return saveAsType;
+    }
+
+
+    /**
+     * Sets the "Save as" type.
+     *
+     * @param saveAsType
+     *      the "Save as" type
+     */
+    public void setSaveAsType( ExportDsmlWizardSaveAsType saveAsType )
+    {
+        this.saveAsType = saveAsType;
     }
 }

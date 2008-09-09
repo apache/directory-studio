@@ -24,7 +24,15 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDsmlWizard.ExportDsmlWizardSaveAsType;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 
 
 /**
@@ -35,6 +43,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ExportDsmlToWizardPage extends ExportBaseToPage
 {
+    /** The associated wizard */
+    private ExportDsmlWizard wizard;
+
     /** The extensions used by DSML files*/
     private static final String[] EXTENSIONS = new String[]
         { "*.xml", "*.*" };
@@ -48,9 +59,10 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
      * @param wizard
      *          the wizard the page is attached to
      */
-    public ExportDsmlToWizardPage( String pageName, ExportBaseWizard wizard )
+    public ExportDsmlToWizardPage( String pageName, ExportDsmlWizard wizard )
     {
         super( pageName, wizard );
+        this.wizard = wizard;
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_DSML_WIZARD ) );
     }
@@ -63,6 +75,36 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
     {
         final Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
         super.createControl( composite );
+
+        Composite saveAsOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
+        Group saveAsGroup = BaseWidgetUtils.createGroup( saveAsOuterComposite, "Save As", 1 );
+        Composite saveAsComposite = BaseWidgetUtils.createColumnContainer( saveAsGroup, 2, 1 );
+
+        Button saveAsDsmlResponseButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, "DSML Response", 2 );
+        saveAsDsmlResponseButton.setSelection( true );
+        wizard.setSaveAsType( ExportDsmlWizardSaveAsType.RESPONSE );
+        saveAsDsmlResponseButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                wizard.setSaveAsType( ExportDsmlWizardSaveAsType.RESPONSE );
+            }
+        } );
+        BaseWidgetUtils.createRadioIndent( saveAsComposite, 1 );
+        BaseWidgetUtils.createWrappedLabel( saveAsComposite,
+            "The search will be saved as a response to a DSML search request.", 1 );
+
+        Button saveAsDsmlRequestButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, "DSML Request", 2 );
+        saveAsDsmlRequestButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                wizard.setSaveAsType( ExportDsmlWizardSaveAsType.REQUEST );
+            }
+        } );
+        BaseWidgetUtils.createRadioIndent( saveAsComposite, 1 );
+        BaseWidgetUtils.createWrappedLabel( saveAsComposite,
+            "The search will be saved as a DSML request containing an add request for each entry.", 1 );
     }
 
 
