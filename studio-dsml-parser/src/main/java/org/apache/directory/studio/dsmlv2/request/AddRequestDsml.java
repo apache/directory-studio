@@ -83,7 +83,7 @@ public class AddRequestDsml extends AbstractRequestDsml
         // DN
         if ( request.getEntry() != null )
         {
-            element.addAttribute( "dn", request.getEntry().toString() );
+            element.addAttribute( "dn", request.getEntry().getDn().toString() );
         }
 
         // Attributes
@@ -183,6 +183,18 @@ public class AddRequestDsml extends AbstractRequestDsml
     public void setEntryDn( LdapDN entryDn )
     {
         ( ( AddRequest ) instance ).setEntryDn( entryDn );
+    }
+
+
+    /**
+     * Sets the entry.
+     *
+     * @param entry
+     *      the entry
+     */
+    public void setEntry( Entry entry )
+    {
+        ( ( AddRequest ) instance ).setEntry( entry );
     }
 
 
