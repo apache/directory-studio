@@ -33,13 +33,17 @@ import javax.naming.directory.InvalidAttributeIdentifierException;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.codec.LdapResult;
+import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
 import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.SearchResultDoneDsml;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.studio.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.studio.dsmlv2.request.BatchRequestDsml;
@@ -128,7 +132,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
      */
     protected void executeAsyncJob( StudioProgressMonitor monitor )
     {
-        monitor.beginTask( BrowserCoreMessages.jobs__export_dsml_task, 2 );
+        monitor.beginTask( BrowserCoreMessages.jobs__export_dsml_task, 4 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
@@ -136,6 +140,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
         {
             // Searching for the requested entries
             NamingEnumeration<SearchResult> ne = SearchRunnable.search( browserConnection, searchParameter, monitor );
+            monitor.worked( 1 );
 
             // Getting the DSML string associated to the search
             // and the type of answer the user is expecting
@@ -149,6 +154,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
                     dsmlExportString = processAsDsmlRequest( ne );
                     break;
             }
+            monitor.worked( 1 );
 
             // Writing the DSML string to the final destination file.
             if ( dsmlExportString != null )
@@ -161,6 +167,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
                 osw.close();
                 fos.close();
             }
+            monitor.worked( 1 );
         }
         catch ( Exception e )
         {
@@ -182,10 +189,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
     private String processAsDsmlResponse( NamingEnumeration<SearchResult> ne )
         throws InvalidAttributeIdentifierException, InvalidNameException
     {
+        // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
+
+        // Creating and adding the search response
         SearchResponseDsml sr = new SearchResponseDsml();
         batchResponse.addResponse( sr );
 
+        // Creating and adding a search result entry for each result
         while ( ne.hasMoreElements() )
         {
             SearchResult searchResult = ( SearchResult ) ne.nextElement();
@@ -193,6 +204,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
             sr.addResponse( sreDsml );
         }
 
+        // Creating and adding a search result done at the end of the results
+        SearchResultDone srd = new SearchResultDone();
+        LdapResult ldapResult = new LdapResult();
+        ldapResult.setResultCode( ResultCodeEnum.SUCCESS );
+        srd.setLdapResult( ldapResult );
+        sr.addResponse( new SearchResultDoneDsml( srd ) );
+
+        // Returning the associated DSML
         return batchResponse.toDsml();
     }
 
@@ -232,8 +251,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
     private String processAsDsmlRequest( NamingEnumeration<SearchResult> ne )
         throws InvalidAttributeIdentifierException, InvalidNameException
     {
+        // Creating the batch request
         BatchRequestDsml batchRequest = new BatchRequestDsml();
 
+        // Creating and adding an add request for each result
         while ( ne.hasMoreElements() )
         {
             SearchResult searchResult = ( SearchResult ) ne.nextElement();
@@ -241,6 +262,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             batchRequest.addRequest( arDsml );
         }
 
+        // Returning the associated DSML
         return batchRequest.toDsml();
     }
 
