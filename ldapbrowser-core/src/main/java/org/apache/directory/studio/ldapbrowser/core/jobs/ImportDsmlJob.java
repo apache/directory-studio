@@ -29,6 +29,9 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.codec.add.AddRequest;
 import org.apache.directory.shared.ldap.codec.compare.CompareRequest;
@@ -37,7 +40,14 @@ import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
+import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.Modification;
+import org.apache.directory.shared.ldap.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
@@ -153,7 +163,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
             List<?> requests = batchRequest.getRequests();
             for ( Object request : requests )
             {
-                processRequest( request, batchResponseDsml );
+                processRequest( request, batchResponseDsml, monitor );
             }
 
             // Writing the DSML response file to its final destination file.
@@ -175,45 +185,233 @@ public class ImportDsmlJob extends AbstractEclipseJob
     }
 
 
-    private void processRequest( Object request, BatchResponseDsml batchResponseDsml )
+    /**
+     * Processes the request.
+     *
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
     {
         if ( request instanceof AddRequest )
         {
-            AddRequest addRequest = ( AddRequest ) request;
-
+            processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof CompareRequest )
         {
-            CompareRequest compareRequest = ( CompareRequest ) request;
-
+            processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof DelRequest )
         {
-            DelRequest delRequest = ( DelRequest ) request;
-
+            processDelRequest( ( DelRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof ExtendedRequest )
         {
-            ExtendedRequest extendedRequest = ( ExtendedRequest ) request;
-
+            processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof ModifyRequest )
         {
-            ModifyRequest modifyRequest = ( ModifyRequest ) request;
-
+            processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof ModifyDNRequest )
         {
-            ModifyDNRequest modifyDNRequest = ( ModifyDNRequest ) request;
-
+            processModifyDNRequest( ( ModifyDNRequest ) request, batchResponseDsml, monitor );
         }
         else if ( request instanceof SearchRequest )
         {
-            SearchRequest searchRequest = ( SearchRequest ) request;
-
+            processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
         }
 
         System.out.println( request );
+    }
+
+
+    /**
+     * Processes an add request.
+     * 
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processAddRequest( AddRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // Creating a dummy monitor that will be used to check if something
+        // went wrong when executing the request
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
+        // Executing the add request
+        Entry entry = request.getEntry();
+        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( entry.getDn().toString(),
+            AttributeUtils.toAttributes( entry ), ReferralHandlingMethod.IGNORE, null, dummyMonitor, null );
+
+        if ( dummyMonitor.errorsReported() )
+        {
+            dummyMonitor.getException().printStackTrace();
+        }
+    }
+
+
+    /**
+     * Processes a compare request.
+     *
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processCompareRequest( CompareRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    /**
+     * Processes a del request.
+     *
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processDelRequest( DelRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // Creating a dummy monitor that will be used to check if something
+        // went wrong when executing the request
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
+        // Executing the del request
+        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( request.getEntry().toString(),
+            ReferralHandlingMethod.IGNORE, null, dummyMonitor, null );
+
+        if ( dummyMonitor.errorsReported() )
+        {
+            dummyMonitor.getException().printStackTrace();
+        }
+    }
+
+
+    /**
+     * Processes an extended request.
+     *
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+
+    /**
+     * Processes a modify request.
+     *
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processModifyRequest( ModifyRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // Creating a dummy monitor that will be used to check if something
+        // went wrong when executing the request
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
+        // Creating the modification items
+        List<ModificationItem> modificationItems = new ArrayList<ModificationItem>();
+        for ( Modification modification : request.getModifications() )
+        {
+            modificationItems.add( new ModificationItem( convertModificationOperation( modification.getOperation() ),
+                AttributeUtils.toAttribute( modification.getAttribute() ) ) );
+        }
+
+        // Executing the modify request
+        browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( request.getObject().toString(),
+            modificationItems.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, null, dummyMonitor,
+            null );
+
+        if ( dummyMonitor.errorsReported() )
+        {
+            dummyMonitor.getException().printStackTrace();
+        }
+    }
+
+
+    /**
+     * Converts the modification operation from Shared LDAP to JNDI
+     *
+     * @param operation
+     *      the Shared LDAP modification operation
+     * @return
+     *      the equivalent modification operation in JNDI
+     */
+    private int convertModificationOperation( ModificationOperation operation )
+    {
+        switch ( operation )
+        {
+            case ADD_ATTRIBUTE:
+                return DirContext.ADD_ATTRIBUTE;
+            case REMOVE_ATTRIBUTE:
+                return DirContext.REMOVE_ATTRIBUTE;
+            case REPLACE_ATTRIBUTE:
+                return DirContext.REPLACE_ATTRIBUTE;
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Processes a modify DN request.
+     * 
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processModifyDNRequest( ModifyDNRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // Creating a dummy monitor that will be used to check if something
+        // went wrong when executing the request
+        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
+        // Executing the modify DN request
+        browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( request.getEntry().toString(),
+            request.getNewRDN().toString(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null,
+            dummyMonitor, null );
+
+        if ( dummyMonitor.errorsReported() )
+        {
+            dummyMonitor.getException().printStackTrace();
+        }
+    }
+
+
+    /**
+     * Processes a search request.
+     * 
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // TODO Auto-generated method stub
+
     }
 
 
