@@ -39,6 +39,41 @@
     <local-repo>${project.basedir}/../repository</local-repo>
   </properties>
 
+  <profiles>
+    <profile>
+      <id>CI</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copyFiles</id>
+                <phase>install</phase>
+                <configuration>
+                  <tasks>
+                    <mkdir dir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin" />
+                    <copy
+                      todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin"
+                      overwrite="true"
+                      file="target/nightlybuild-studio-plugin.tar.gz" />
+                    <copy
+                      todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin"
+                      overwrite="true"
+                      file="target/nightlybuild-studio-plugin.zip" />
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <resources>
       <resource>
@@ -239,8 +274,7 @@
             <id>nightly</id>
             <phase>package</phase>
             <configuration>
-              <finalName>nightlybuild-${pom.version}</finalName>
-              <outputDirectory>../target/distributions</outputDirectory>
+              <finalName>nightlybuild-studio-plugin</finalName>
               <descriptors>
                 <descriptor>src/main/assembly/nightlybuild.xml</descriptor>
               </descriptors>
