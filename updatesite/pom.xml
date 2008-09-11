@@ -235,6 +235,20 @@
               <goal>attached</goal>
             </goals>
           </execution>
+          <execution>
+            <id>nightly</id>
+            <phase>package</phase>
+            <configuration>
+              <finalName>nightlybuild-${pom.version}</finalName>
+              <outputDirectory>../target/distributions</outputDirectory>
+              <descriptors>
+                <descriptor>src/main/assembly/nightlybuild.xml</descriptor>
+              </descriptors>
+            </configuration>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
