@@ -56,11 +56,11 @@
                     <copy
                       todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin"
                       overwrite="true"
-                      file="target/nightlybuild-studio-plugin.tar.gz" />
+                      file="target/studio-plugin-nightlybuild.tar.gz" />
                     <copy
                       todir="/var/www/html/mirror-maven2/org/apache/directory/studio/nightly-plugin"
                       overwrite="true"
-                      file="target/nightlybuild-studio-plugin.zip" />
+                      file="target/studio-plugin-nightlybuild.zip" />
                   </tasks>
                 </configuration>
                 <goals>
@@ -274,7 +274,7 @@
             <id>nightly</id>
             <phase>package</phase>
             <configuration>
-              <finalName>nightlybuild-studio-plugin</finalName>
+              <finalName>studio-plugin</finalName>
               <descriptors>
                 <descriptor>src/main/assembly/nightlybuild.xml</descriptor>
               </descriptors>
