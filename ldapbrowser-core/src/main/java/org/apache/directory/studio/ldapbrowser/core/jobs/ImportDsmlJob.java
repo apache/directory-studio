@@ -33,7 +33,9 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.add.AddRequest;
+import org.apache.directory.shared.ldap.codec.bind.BindRequest;
 import org.apache.directory.shared.ldap.codec.compare.CompareRequest;
 import org.apache.directory.shared.ldap.codec.del.DelRequest;
 import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
@@ -43,14 +45,19 @@ import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.studio.dsmlv2.reponse.AddResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.AuthResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.CompareResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.DelResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.ExtendedResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -159,11 +166,27 @@ public class ImportDsmlJob extends AbstractEclipseJob
                 batchResponseDsml = new BatchResponseDsml();
             }
 
+            // Setting the errors counter
+            int errorsCount = 0;
+
+            // Creating a dummy monitor that will be used to check if something
+            // went wrong when executing the request
+            StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
+
             // Processing each request
             List<?> requests = batchRequest.getRequests();
             for ( Object request : requests )
             {
-                processRequest( request, batchResponseDsml, monitor );
+                // Processing the request
+                processRequest( request, batchResponseDsml, dummyMonitor );
+
+                // Verifying if any error has been reported
+                if ( dummyMonitor.errorsReported() )
+                {
+                    errorsCount++;
+                }
+
+                dummyMonitor.reset();
             }
 
             // Writing the DSML response file to its final destination file.
@@ -177,10 +200,21 @@ public class ImportDsmlJob extends AbstractEclipseJob
                 osw.close();
                 fos.close();
             }
+
+            // Displaying an error message if we've had some errors
+            if ( errorsCount > 0 )
+            {
+                monitor.reportError( BrowserCoreMessages.bind(
+                    "{0} errors occurred, see the response file for details", new String[]
+                        { "" + errorsCount } ) );
+            }
         }
         catch ( Exception e )
         {
             monitor.reportError( e );
+
+            // TODO Remove this
+            e.printStackTrace();
         }
     }
 
@@ -195,7 +229,11 @@ public class ImportDsmlJob extends AbstractEclipseJob
      */
     private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
     {
-        if ( request instanceof AddRequest )
+        if ( request instanceof BindRequest )
+        {
+            processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
+        }
+        else if ( request instanceof AddRequest )
         {
             processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
         }
@@ -223,8 +261,33 @@ public class ImportDsmlJob extends AbstractEclipseJob
         {
             processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
         }
+    }
 
-        System.out.println( request );
+
+    /**
+     * Processes an bind request.
+     * 
+     * @param request
+     *      the request
+     * @param batchResponseDsml
+     *      the DSML batch response (can be <code>null</code>)
+     */
+    private void processBindRequest( BindRequest request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
+    {
+        // We can not support extended requests at the moment,
+        // we need a more advanced connection wrapper.
+
+        // Creating the response
+        if ( batchResponseDsml != null )
+        {
+            AuthResponseDsml authResponseDsml = new AuthResponseDsml();
+            LdapResult ldapResult = new LdapResult();
+            ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
+            ldapResult.setErrorMessage( "This kind of request is not yet supported." );
+            authResponseDsml.setLdapResult( ldapResult );
+            batchResponseDsml.addResponse( authResponseDsml );
+        }
     }
 
 
@@ -239,18 +302,17 @@ public class ImportDsmlJob extends AbstractEclipseJob
     private void processAddRequest( AddRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // Creating a dummy monitor that will be used to check if something
-        // went wrong when executing the request
-        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
-
         // Executing the add request
         Entry entry = request.getEntry();
         browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( entry.getDn().toString(),
-            AttributeUtils.toAttributes( entry ), ReferralHandlingMethod.IGNORE, null, dummyMonitor, null );
+            AttributeUtils.toAttributes( entry ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
-        if ( dummyMonitor.errorsReported() )
+        // Creating the response
+        if ( batchResponseDsml != null )
         {
-            dummyMonitor.getException().printStackTrace();
+            AddResponseDsml addResponseDsml = new AddResponseDsml();
+            addResponseDsml.setLdapResult( getLdapResult( monitor ) );
+            batchResponseDsml.addResponse( addResponseDsml );
         }
     }
 
@@ -266,8 +328,19 @@ public class ImportDsmlJob extends AbstractEclipseJob
     private void processCompareRequest( CompareRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // TODO Auto-generated method stub
+        // We can not support extended requests at the moment,
+        // we need a more advanced connection wrapper.
 
+        // Creating the response
+        if ( batchResponseDsml != null )
+        {
+            CompareResponseDsml compareResponseDsml = new CompareResponseDsml();
+            LdapResult ldapResult = new LdapResult();
+            ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
+            ldapResult.setErrorMessage( "This kind of request is not yet supported." );
+            compareResponseDsml.setLdapResult( ldapResult );
+            batchResponseDsml.addResponse( compareResponseDsml );
+        }
     }
 
 
@@ -282,17 +355,17 @@ public class ImportDsmlJob extends AbstractEclipseJob
     private void processDelRequest( DelRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // Creating a dummy monitor that will be used to check if something
-        // went wrong when executing the request
-        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
-
         // Executing the del request
         browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( request.getEntry().toString(),
-            ReferralHandlingMethod.IGNORE, null, dummyMonitor, null );
+            ReferralHandlingMethod.IGNORE, null, monitor, null );
 
-        if ( dummyMonitor.errorsReported() )
+        // Creating the response
+        if ( batchResponseDsml != null )
         {
-            dummyMonitor.getException().printStackTrace();
+            DelResponseDsml delResponseDsml = new DelResponseDsml();
+            delResponseDsml.setLdapResult( getLdapResult( monitor ) );
+            delResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
+            batchResponseDsml.addResponse( delResponseDsml );
         }
     }
 
@@ -308,8 +381,19 @@ public class ImportDsmlJob extends AbstractEclipseJob
     private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // TODO Auto-generated method stub
+        // We can not support extended requests at the moment,
+        // we need a more advanced connection wrapper.
 
+        // Creating the response
+        if ( batchResponseDsml != null )
+        {
+            ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml();
+            LdapResult ldapResult = new LdapResult();
+            ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
+            ldapResult.setErrorMessage( "This kind of request is not yet supported." );
+            extendedResponseDsml.setLdapResult( ldapResult );
+            batchResponseDsml.addResponse( extendedResponseDsml );
+        }
     }
 
 
@@ -324,10 +408,6 @@ public class ImportDsmlJob extends AbstractEclipseJob
     private void processModifyRequest( ModifyRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // Creating a dummy monitor that will be used to check if something
-        // went wrong when executing the request
-        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
-
         // Creating the modification items
         List<ModificationItem> modificationItems = new ArrayList<ModificationItem>();
         for ( Modification modification : request.getModifications() )
@@ -338,12 +418,14 @@ public class ImportDsmlJob extends AbstractEclipseJob
 
         // Executing the modify request
         browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( request.getObject().toString(),
-            modificationItems.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, null, dummyMonitor,
-            null );
+            modificationItems.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
-        if ( dummyMonitor.errorsReported() )
+        // Creating the response
+        if ( batchResponseDsml != null )
         {
-            dummyMonitor.getException().printStackTrace();
+            ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml();
+            modifyResponseDsml.setLdapResult( getLdapResult( monitor ) );
+            batchResponseDsml.addResponse( modifyResponseDsml );
         }
     }
 
@@ -366,9 +448,9 @@ public class ImportDsmlJob extends AbstractEclipseJob
                 return DirContext.REMOVE_ATTRIBUTE;
             case REPLACE_ATTRIBUTE:
                 return DirContext.REPLACE_ATTRIBUTE;
+            default:
+                return 0;
         }
-
-        return 0;
     }
 
 
@@ -383,18 +465,14 @@ public class ImportDsmlJob extends AbstractEclipseJob
     private void processModifyDNRequest( ModifyDNRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // Creating a dummy monitor that will be used to check if something
-        // went wrong when executing the request
-        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
-
         // Executing the modify DN request
         browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( request.getEntry().toString(),
-            request.getNewRDN().toString(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null,
-            dummyMonitor, null );
+            request.getNewRDN().toString(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null, monitor,
+            null );
 
-        if ( dummyMonitor.errorsReported() )
+        if ( monitor.errorsReported() )
         {
-            dummyMonitor.getException().printStackTrace();
+            monitor.getException().printStackTrace();
         }
     }
 
@@ -412,6 +490,38 @@ public class ImportDsmlJob extends AbstractEclipseJob
     {
         // TODO Auto-generated method stub
 
+    }
+
+
+    /**
+     * Get the LDAP Result corresponding to the given monitor
+     *
+     * @param monitor
+     *      the progress monitor
+     * @return
+     *      the corresponding LDAP Result
+     */
+    private LdapResult getLdapResult( StudioProgressMonitor monitor )
+    {
+        LdapResult ldapResult = new LdapResult();
+
+        if ( !monitor.errorsReported() )
+        {
+            ldapResult.setResultCode( ResultCodeEnum.SUCCESS );
+        }
+        else
+        {
+            // TODO: Improve error handling.
+
+            ldapResult.setResultCode( ResultCodeEnum.UNKNOWN );
+            Throwable t = monitor.getException();
+            if ( ( t != null ) && ( t.getMessage() != null ) )
+            {
+                ldapResult.setErrorMessage( t.getMessage() );
+            }
+        }
+
+        return ldapResult;
     }
 
 
