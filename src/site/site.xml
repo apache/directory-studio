@@ -24,9 +24,12 @@
     <href>http://directory.apache.org/studio/</href>
     <name>${project.name}</name>
   </bannerLeft>
-  <publishDate position="right" format="dd-MM-yyyy HH:mm"/>
+  <publishDate position="navigation-bottom" format="dd-MM-yyyy HH:mm"/>
   <version position="right"/>
   <body>
+    <breadcrumbs>
+      <item name="Apache Directory Studio" href="http://vm094.oxylos.org/projects/studio/" />
+    </breadcrumbs>
     <links>
        <!--
          Need to encode a part of the url due to Issue
@@ -39,18 +42,7 @@
        <item name="Apache" href="http://www.apache.org/"/>
        <item name="Maven" href="http://maven.apache.org/"/>
     </links>
-    <menu name="Overview">
-      <item name="Introduction" href="index.html" />
-      <item name="Goals" href="plugin-info.html" />
-      <item name="Usage" href="usage.html" />
-      <item name="FAQ" href="faq.html" />
-    </menu>
-    <menu name="Examples">
-      <item name="prepare-jar-package" href="examples/prepare-jar-package.html" />
-      <item name="unpack-with-artifactid-prefix" href="examples/unpack-with-artifactid-prefix.html" />
-      <item name="replace-file-in-eclipse-artifact" href="examples/replace-file-in-eclipse-artifact.html" />
-      <item name="copy-eclipse-artifact" href="examples/copy-eclipse-artifact.html" />
-    </menu>
-    <menu ref="reports" />
+    <menu ref="reports"/>
+    <menu ref="modules"/>
   </body>
 </project>
