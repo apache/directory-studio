@@ -550,7 +550,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         // If the returning attributes are empty, we need to return the user attributes
         // [Cf. RFC 2251 - "There are two special values which may be used: an empty 
         //  list with no attributes, and the attribute description string '*'.  Both of 
-        // these signify that all user attributes are to be returned."]
+        //  these signify that all user attributes are to be returned."]
         if ( returningAttributes.size() == 0 )
         {
             returningAttributes.add( "*" );
