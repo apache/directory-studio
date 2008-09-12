@@ -29,10 +29,14 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.InvalidNameException;
 import javax.naming.directory.DirContext;
+import javax.naming.directory.InvalidAttributeIdentifierException;
 import javax.naming.directory.ModificationItem;
+import javax.naming.directory.SearchControls;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.add.AddRequest;
 import org.apache.directory.shared.ldap.codec.bind.BindRequest;
@@ -43,12 +47,15 @@ import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
 import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.studio.dsmlv2.reponse.AddResponseDsml;
@@ -226,8 +233,11 @@ public class ImportDsmlJob extends AbstractEclipseJob
      *      the request
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
+     * @throws InvalidNameException 
+     * @throws InvalidAttributeIdentifierException 
      */
     private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
+        throws InvalidAttributeIdentifierException, InvalidNameException
     {
         if ( request instanceof BindRequest )
         {
@@ -484,12 +494,103 @@ public class ImportDsmlJob extends AbstractEclipseJob
      *      the request
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
+     * @throws InvalidNameException 
+     * @throws InvalidAttributeIdentifierException 
      */
     private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
-        StudioProgressMonitor monitor )
+        StudioProgressMonitor monitor ) throws InvalidAttributeIdentifierException, InvalidNameException
     {
-        // TODO Auto-generated method stub
+        // Creating the response
+        if ( batchResponseDsml != null )
+        {
+            // [Optimization] We're only searching if we need to produce a response
+            StudioNamingEnumeration ne = browserConnection.getConnection().getJNDIConnectionWrapper().search(
+                request.getBaseObject().toString(), request.getFilter().toString(), getSearchControls( request ),
+                getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
+            ExportDsmlJob.processAsDsmlResponse( ne, batchResponseDsml );
+        }
+    }
+
+
+    /**
+     * Returns the {@link SearchControls} object associated with the request.
+     *
+     * @param request
+     *      the search request
+     * @return
+     *      the associated {@link SearchControls} object
+     */
+    private SearchControls getSearchControls( SearchRequest request )
+    {
+        SearchControls controls = new SearchControls();
+
+        // Scope
+        switch ( request.getScope() )
+        {
+            case OBJECT:
+                controls.setSearchScope( SearchControls.OBJECT_SCOPE );
+                break;
+            case ONELEVEL:
+                controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+                break;
+            case SUBTREE:
+                controls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+                break;
+            default:
+                controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+        }
+
+        // Returning attributes
+        List<String> returningAttributes = new ArrayList<String>();
+        for ( EntryAttribute entryAttribute : request.getAttributes() )
+        {
+            returningAttributes.add( entryAttribute.getId() );
+        }
+        // If the returning attributes are empty, we need to return the user attributes
+        // [Cf. RFC 2251 - "There are two special values which may be used: an empty 
+        //  list with no attributes, and the attribute description string '*'.  Both of 
+        // these signify that all user attributes are to be returned."]
+        if ( returningAttributes.size() == 0 )
+        {
+            returningAttributes.add( "*" );
+        }
+
+        controls.setReturningAttributes( returningAttributes.toArray( new String[0] ) );
+
+        // Size Limit
+        controls.setCountLimit( request.getSizeLimit() );
+
+        // Time Limit
+        controls.setTimeLimit( request.getTimeLimit() );
+
+        return controls;
+    }
+
+
+    /**
+     * Returns the {@link AliasDereferencingMethod} object associated with the request.
+     *
+     * @param request
+     *      the search request
+     * @return
+     *      the associated {@link AliasDereferencingMethod} object
+     */
+    private AliasDereferencingMethod getAliasDereferencingMethod( SearchRequest request )
+    {
+        switch ( request.getDerefAliases() )
+        {
+            case LdapConstants.NEVER_DEREF_ALIASES:
+                return AliasDereferencingMethod.NEVER;
+            case LdapConstants.DEREF_ALWAYS:
+                return AliasDereferencingMethod.ALWAYS;
+            case LdapConstants.DEREF_FINDING_BASE_OBJ:
+                return AliasDereferencingMethod.FINDING;
+            case LdapConstants.DEREF_IN_SEARCHING:
+                return AliasDereferencingMethod.SEARCH;
+            default:
+                return AliasDereferencingMethod.NEVER;
+        }
     }
 
 

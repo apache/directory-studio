@@ -192,6 +192,24 @@ public class ExportDsmlJob extends AbstractEclipseJob
         // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
 
+        processAsDsmlResponse( ne, batchResponse );
+
+        // Returning the associated DSML
+        return batchResponse.toDsml();
+    }
+
+
+    /**
+     * Processes the {@link NamingEnumeration} as a DSML response.
+     *
+     * @param ne
+     *      the naming enumeration
+     * @throws InvalidNameException 
+     * @throws InvalidAttributeIdentifierException 
+     */
+    public static void processAsDsmlResponse( NamingEnumeration<SearchResult> ne, BatchResponseDsml batchResponse )
+        throws InvalidAttributeIdentifierException, InvalidNameException
+    {
         // Creating and adding the search response
         SearchResponseDsml sr = new SearchResponseDsml();
         batchResponse.addResponse( sr );
@@ -210,9 +228,6 @@ public class ExportDsmlJob extends AbstractEclipseJob
         ldapResult.setResultCode( ResultCodeEnum.SUCCESS );
         srd.setLdapResult( ldapResult );
         sr.addResponse( new SearchResultDoneDsml( srd ) );
-
-        // Returning the associated DSML
-        return batchResponse.toDsml();
     }
 
 
@@ -226,7 +241,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
      * @throws InvalidNameException 
      * @throws InvalidAttributeIdentifierException 
      */
-    private SearchResultEntryDsml convertToSearchResultEntryDsml( SearchResult searchResult )
+    private static SearchResultEntryDsml convertToSearchResultEntryDsml( SearchResult searchResult )
         throws InvalidAttributeIdentifierException, InvalidNameException
     {
         SearchResultEntryDsml sre = new SearchResultEntryDsml();
