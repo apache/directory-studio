@@ -39,8 +39,8 @@
         -->
        <item name="Apache Directory Studio" href="http://directory.apache%2eorg/studio/"/>
        <item name="Apache Directory" href="http://directory.apache%2eorg/"/>
-       <item name="Apache" href="http://www.apache.org/"/>
-       <item name="Maven" href="http://maven.apache.org/"/>
+       <item name="Apache" href="http://www.apache%2eorg/"/>
+       <item name="Maven" href="http://maven.apache%2eorg/"/>
     </links>
     <menu ref="reports"/>
     <menu ref="modules"/>
