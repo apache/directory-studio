@@ -508,7 +508,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
                 request.getBaseObject().toString(), request.getFilter().toString(), getSearchControls( request ),
                 getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
-            ExportDsmlJob.processAsDsmlResponse( ne, batchResponseDsml );
+            ExportDsmlJob.processAsDsmlResponse( ne, batchResponseDsml, monitor );
         }
     }
 
