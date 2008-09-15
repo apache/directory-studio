@@ -25,27 +25,38 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.InvalidNameException;
 import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 import javax.naming.directory.InvalidAttributeIdentifierException;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.LdapResponseDecorator;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResultDoneDsml;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResultEntryDsml;
+import org.apache.directory.studio.dsmlv2.reponse.SearchResultReferenceDsml;
 import org.apache.directory.studio.dsmlv2.request.AddRequestDsml;
 import org.apache.directory.studio.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -61,6 +72,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
  */
 public class ExportDsmlJob extends AbstractEclipseJob
 {
+    private static final String REFERRAL_ATTRIBUTE_OID = "2.16.840.1.113730.3.2.6";
+
+    private static final String REFERRAL_ATTRIBUTE_NAME = "referral";
+
     /** The name of the DSML file to export to */
     private String exportDsmlFilename;
 
@@ -145,8 +160,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
 
             // Searching for the requested entries
-            NamingEnumeration<SearchResult> ne = SearchRunnable.search( browserConnection, searchParameter,
-                dummyMonitor );
+            StudioNamingEnumeration ne = SearchRunnable.search( browserConnection, searchParameter, dummyMonitor );
             monitor.worked( 1 );
 
             // Getting the DSML string associated to the search
@@ -192,16 +206,16 @@ public class ExportDsmlJob extends AbstractEclipseJob
      *      the monitor
      * @return
      *      the associated DSML
-     * @throws InvalidNameException 
-     * @throws InvalidAttributeIdentifierException 
+     * @throws NamingException 
+     * @throws LdapURLEncodingException 
      */
-    private String processAsDsmlResponse( NamingEnumeration<SearchResult> ne, StudioProgressMonitor monitor )
-        throws InvalidAttributeIdentifierException, InvalidNameException
+    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor )
+        throws NamingException, LdapURLEncodingException
     {
         // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
 
-        processAsDsmlResponse( ne, batchResponse, monitor );
+        processAsDsmlResponse( ne, batchResponse, monitor, searchParameter );
 
         // Returning the associated DSML
         return batchResponse.toDsml();
@@ -215,11 +229,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
      *      the naming enumeration
      * @param monitor 
      *      the monitor
-     * @throws InvalidNameException 
-     * @throws InvalidAttributeIdentifierException 
+     * @param searchParameter 
+     *      the search parameter
+     * @throws NamingException 
+     * @throws LdapURLEncodingException 
      */
-    public static void processAsDsmlResponse( NamingEnumeration<SearchResult> ne, BatchResponseDsml batchResponse,
-        StudioProgressMonitor monitor ) throws InvalidAttributeIdentifierException, InvalidNameException
+    public static void processAsDsmlResponse( StudioNamingEnumeration ne, BatchResponseDsml batchResponse,
+        StudioProgressMonitor monitor, SearchParameter searchParameter ) throws NamingException,
+        LdapURLEncodingException
     {
         // Creating and adding the search response
         SearchResponseDsml sr = new SearchResponseDsml();
@@ -227,12 +244,11 @@ public class ExportDsmlJob extends AbstractEclipseJob
 
         if ( !monitor.errorsReported() )
         {
-            // Creating and adding a search result entry for each result
-            while ( ne.hasMoreElements() )
+            // Creating and adding a search result entry or reference for each result
+            while ( ne.hasMore() )
             {
                 SearchResult searchResult = ( SearchResult ) ne.nextElement();
-                SearchResultEntryDsml sreDsml = convertToSearchResultEntryDsml( searchResult );
-                sr.addResponse( sreDsml );
+                sr.addResponse( convertSearchResultToDsml( searchResult, searchParameter ) );
             }
         }
 
@@ -271,16 +287,50 @@ public class ExportDsmlJob extends AbstractEclipseJob
      *      the associated search result entry DSML
      * @throws InvalidNameException 
      * @throws InvalidAttributeIdentifierException 
+     * @throws LdapURLEncodingException 
      */
-    private static SearchResultEntryDsml convertToSearchResultEntryDsml( SearchResult searchResult )
-        throws InvalidAttributeIdentifierException, InvalidNameException
+    private static DsmlDecorator convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
+        throws InvalidAttributeIdentifierException, InvalidNameException, LdapURLEncodingException
     {
-        SearchResultEntryDsml sre = new SearchResultEntryDsml();
         Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(), new LdapDN( searchResult
             .getNameInNamespace() ) );
-        sre.setEntry( entry );
 
-        return sre;
+        if ( ( ( entry.containsAttribute( ExportDsmlJob.REFERRAL_ATTRIBUTE_NAME ) ) || ( entry
+            .containsAttribute( ExportDsmlJob.REFERRAL_ATTRIBUTE_OID ) ) )
+            && ( searchParameter.getReferralsHandlingMethod() == ReferralHandlingMethod.MANAGE ) )
+        {
+            // The search result is a referral
+            SearchResultReferenceDsml srr = new SearchResultReferenceDsml();
+
+            // Getting the 'referral' attribute
+            EntryAttribute referralAttribute = entry.get( ExportDsmlJob.REFERRAL_ATTRIBUTE_NAME );
+            if ( referralAttribute == null )
+            {
+                // If we did not get it by its name, let's get it by its OID
+                referralAttribute = entry.get( ExportDsmlJob.REFERRAL_ATTRIBUTE_OID );
+            }
+
+            // Adding references
+            if ( referralAttribute != null )
+            {
+                for ( Iterator<Value<?>> iterator = referralAttribute.iterator(); iterator.hasNext(); )
+                {
+                    Value<?> value = ( Value<?> ) iterator.next();
+
+                    srr.addSearchResultReference( new LdapURL( ( String ) value.get() ) );
+                }
+            }
+
+            return srr;
+        }
+        else
+        {
+            // The search result is NOT a referral
+            SearchResultEntryDsml sre = new SearchResultEntryDsml();
+            sre.setEntry( entry );
+
+            return sre;
+        }
     }
 
 
@@ -293,11 +343,10 @@ public class ExportDsmlJob extends AbstractEclipseJob
      *      the monitor
      * @return
      *      the associated DSML
-     * @throws InvalidNameException 
-     * @throws InvalidAttributeIdentifierException 
+     * @throws NamingException 
      */
-    private String processAsDsmlRequest( NamingEnumeration<SearchResult> ne, StudioProgressMonitor monitor )
-        throws InvalidAttributeIdentifierException, InvalidNameException
+    private String processAsDsmlRequest( StudioNamingEnumeration ne, StudioProgressMonitor monitor )
+        throws NamingException
     {
         // Creating the batch request
         BatchRequestDsml batchRequest = new BatchRequestDsml();
@@ -305,7 +354,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
         if ( !monitor.errorsReported() )
         {
             // Creating and adding an add request for each result
-            while ( ne.hasMoreElements() )
+            while ( ne.hasMore() )
             {
                 SearchResult searchResult = ( SearchResult ) ne.nextElement();
                 AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );

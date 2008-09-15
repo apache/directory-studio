@@ -29,9 +29,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.InvalidNameException;
+import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.InvalidAttributeIdentifierException;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 
@@ -46,6 +45,7 @@ import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
 import org.apache.directory.shared.ldap.codec.search.SearchRequest;
+import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Modification;
@@ -69,6 +69,7 @@ import org.apache.directory.studio.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
 /**
@@ -234,11 +235,11 @@ public class ImportDsmlJob extends AbstractEclipseJob
      *      the request
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
-     * @throws InvalidNameException 
-     * @throws InvalidAttributeIdentifierException 
+     * @throws NamingException 
+     * @throws LdapURLEncodingException 
      */
     private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
-        throws InvalidAttributeIdentifierException, InvalidNameException
+        throws NamingException, LdapURLEncodingException
     {
         if ( request instanceof BindRequest )
         {
@@ -495,11 +496,11 @@ public class ImportDsmlJob extends AbstractEclipseJob
      *      the request
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
-     * @throws InvalidNameException 
-     * @throws InvalidAttributeIdentifierException 
+     * @throws NamingException 
+     * @throws LdapURLEncodingException 
      */
     private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
-        StudioProgressMonitor monitor ) throws InvalidAttributeIdentifierException, InvalidNameException
+        StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException
     {
         // Creating the response
         if ( batchResponseDsml != null )
@@ -509,7 +510,9 @@ public class ImportDsmlJob extends AbstractEclipseJob
                 request.getBaseObject().toString(), request.getFilter().toString(), getSearchControls( request ),
                 getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
-            ExportDsmlJob.processAsDsmlResponse( ne, batchResponseDsml, monitor );
+            SearchParameter sp = new SearchParameter();
+            sp.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
+            ExportDsmlJob.processAsDsmlResponse( ne, batchResponseDsml, monitor, sp );
         }
     }
 
