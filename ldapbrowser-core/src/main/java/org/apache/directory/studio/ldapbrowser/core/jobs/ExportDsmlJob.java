@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,12 +48,10 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.dsmlv2.DsmlDecorator;
 import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.LdapResponseDecorator;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResultDoneDsml;
 import org.apache.directory.studio.dsmlv2.reponse.SearchResultEntryDsml;
@@ -72,9 +71,14 @@ import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
  */
 public class ExportDsmlJob extends AbstractEclipseJob
 {
-    private static final String REFERRAL_ATTRIBUTE_OID = "2.16.840.1.113730.3.2.6";
+    private static final String OBJECTCLASS_OBJECTCLASS_OID = "objectClass";
+    private static final String OBJECTCLASS_OBJECTCLASS_NAME = "2.5.4.0";
 
-    private static final String REFERRAL_ATTRIBUTE_NAME = "referral";
+    private static final String REFERRAL_OBJECTCLASS_OID = "2.16.840.1.113730.3.2.6";
+    private static final String REFERRAL_OBJECTCLASS_NAME = "referral";
+
+    private static final String REF_ATTRIBUTETYPE_OID = "2.16.840.1.113730.3.1.34";
+    private static final String REF_ATTRIBUTETYPE_NAME = "ref";
 
     /** The name of the DSML file to export to */
     private String exportDsmlFilename;
@@ -117,6 +121,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
         this.browserConnection = connection;
         this.searchParameter = searchParameter;
         this.type = type;
+
+        // Adding the name and OID of the 'ref' attribute to the list of returning attributes
+        // for handling externals correctly
+        List<String> returningAttributes = new ArrayList<String>( Arrays.asList( searchParameter
+            .getReturningAttributes() ) );
+        returningAttributes.add( REF_ATTRIBUTETYPE_NAME );
+        returningAttributes.add( REF_ATTRIBUTETYPE_OID );
+        searchParameter.setReturningAttributes( returningAttributes.toArray( new String[0] ) );
 
         setName( BrowserCoreMessages.jobs__export_dsml_name );
     }
@@ -295,25 +307,23 @@ public class ExportDsmlJob extends AbstractEclipseJob
         Entry entry = AttributeUtils.toClientEntry( searchResult.getAttributes(), new LdapDN( searchResult
             .getNameInNamespace() ) );
 
-        if ( ( ( entry.containsAttribute( ExportDsmlJob.REFERRAL_ATTRIBUTE_NAME ) ) || ( entry
-            .containsAttribute( ExportDsmlJob.REFERRAL_ATTRIBUTE_OID ) ) )
-            && ( searchParameter.getReferralsHandlingMethod() == ReferralHandlingMethod.MANAGE ) )
+        if ( isReferral( entry ) )
         {
             // The search result is a referral
             SearchResultReferenceDsml srr = new SearchResultReferenceDsml();
 
-            // Getting the 'referral' attribute
-            EntryAttribute referralAttribute = entry.get( ExportDsmlJob.REFERRAL_ATTRIBUTE_NAME );
-            if ( referralAttribute == null )
+            // Getting the 'ref' attribute
+            EntryAttribute refAttribute = entry.get( ExportDsmlJob.REF_ATTRIBUTETYPE_NAME );
+            if ( refAttribute == null )
             {
                 // If we did not get it by its name, let's get it by its OID
-                referralAttribute = entry.get( ExportDsmlJob.REFERRAL_ATTRIBUTE_OID );
+                refAttribute = entry.get( ExportDsmlJob.REF_ATTRIBUTETYPE_OID );
             }
 
             // Adding references
-            if ( referralAttribute != null )
+            if ( refAttribute != null )
             {
-                for ( Iterator<Value<?>> iterator = referralAttribute.iterator(); iterator.hasNext(); )
+                for ( Iterator<Value<?>> iterator = refAttribute.iterator(); iterator.hasNext(); )
                 {
                     Value<?> value = ( Value<?> ) iterator.next();
 
@@ -331,6 +341,38 @@ public class ExportDsmlJob extends AbstractEclipseJob
 
             return sre;
         }
+    }
+
+
+    /**
+     * Indicates if the given entry is a referral.
+     *
+     * @param entry
+     *      the entry
+     * @return
+     *      <code>true</code> if the given entry is a referral, <code>false</code> if not
+     */
+    private static boolean isReferral( Entry entry )
+    {
+        if ( entry != null )
+        {
+            // Getting the 'objectClass' Attribute
+            EntryAttribute objectClassAttribute = entry.get( ExportDsmlJob.OBJECTCLASS_OBJECTCLASS_NAME );
+            if ( objectClassAttribute == null )
+            {
+                objectClassAttribute = entry.get( ExportDsmlJob.OBJECTCLASS_OBJECTCLASS_OID );
+            }
+
+            if ( objectClassAttribute != null )
+            {
+                // Checking if the 'objectClass' attribute contains the 
+                // 'referral' object class as value
+                return ( ( objectClassAttribute.contains( ExportDsmlJob.REFERRAL_OBJECTCLASS_NAME ) ) || ( objectClassAttribute
+                    .contains( ExportDsmlJob.REFERRAL_OBJECTCLASS_OID ) ) );
+            }
+        }
+
+        return false;
     }
 
 
