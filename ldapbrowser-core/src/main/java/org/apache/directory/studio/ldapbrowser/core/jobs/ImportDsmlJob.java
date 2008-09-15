@@ -65,6 +65,7 @@ import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.CompareResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.DelResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.ExtendedResponseDsml;
+import org.apache.directory.studio.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -221,9 +222,6 @@ public class ImportDsmlJob extends AbstractEclipseJob
         catch ( Exception e )
         {
             monitor.reportError( e );
-
-            // TODO Remove this
-            e.printStackTrace();
         }
     }
 
@@ -324,6 +322,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         {
             AddResponseDsml addResponseDsml = new AddResponseDsml();
             addResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.ADD_REQUEST ) );
+            addResponseDsml.getLdapResult().setMatchedDN( entry.getDn() );
             batchResponseDsml.addResponse( addResponseDsml );
         }
     }
@@ -437,6 +436,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         {
             ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml();
             modifyResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MODIFY_REQUEST ) );
+            modifyResponseDsml.getLdapResult().setMatchedDN( request.getObject() );
             batchResponseDsml.addResponse( modifyResponseDsml );
         }
     }
@@ -482,9 +482,13 @@ public class ImportDsmlJob extends AbstractEclipseJob
             request.getNewRDN().toString(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null, monitor,
             null );
 
-        if ( monitor.errorsReported() )
+        // Creating the response
+        if ( batchResponseDsml != null )
         {
-            monitor.getException().printStackTrace();
+            ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml();
+            modDNResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MOD_DN_REQUEST ) );
+            modDNResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
+            batchResponseDsml.addResponse( modDNResponseDsml );
         }
     }
 
@@ -640,5 +644,4 @@ public class ImportDsmlJob extends AbstractEclipseJob
     {
         return BrowserCoreMessages.jobs__import_dsml_error;
     }
-
 }
