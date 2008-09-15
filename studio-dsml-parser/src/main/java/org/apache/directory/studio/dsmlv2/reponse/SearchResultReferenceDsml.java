@@ -40,6 +40,15 @@ public class SearchResultReferenceDsml extends LdapResponseDecorator implements 
 {
     /**
      * Creates a new instance of SearchResultReferenceDsml.
+     */
+    public SearchResultReferenceDsml()
+    {
+        super( new SearchResultReference() );
+    }
+
+
+    /**
+     * Creates a new instance of SearchResultReferenceDsml.
      *
      * @param ldapMessage
      *      the message to decorate
@@ -75,5 +84,27 @@ public class SearchResultReferenceDsml extends LdapResponseDecorator implements 
         }
 
         return element;
+    }
+
+
+    /**
+     * Add a new reference to the list.
+     * 
+     * @param searchResultReference The search result reference
+     */
+    public void addSearchResultReference( LdapURL searchResultReference )
+    {
+        ( ( SearchResultReference ) instance ).addSearchResultReference( searchResultReference );
+    }
+
+
+    /**
+     * Get the list of references
+     * 
+     * @return An ArrayList of SearchResultReferences
+     */
+    public List<LdapURL> getSearchResultReferences()
+    {
+        return ( ( SearchResultReference ) instance ).getSearchResultReferences();
     }
 }
