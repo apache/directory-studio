@@ -36,6 +36,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.shared.ldap.codec.LdapResult;
 import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
 import org.apache.directory.shared.ldap.entry.Entry;
+import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
@@ -244,9 +245,14 @@ public class ExportDsmlJob extends AbstractEclipseJob
         }
         else
         {
-            ldapResult.setResultCode( ResultCodeEnum.UNKNOWN );
+            // Getting the exception
             Throwable t = monitor.getException();
-            if ( ( t != null ) && ( t.getMessage() != null ) )
+
+            // Setting the result code
+            ldapResult.setResultCode( ResultCodeEnum.getBestEstimate( t, MessageTypeEnum.SEARCH_REQUEST ) );
+
+            // Setting the error message if there's one
+            if ( t.getMessage() != null )
             {
                 ldapResult.setErrorMessage( t.getMessage() );
             }

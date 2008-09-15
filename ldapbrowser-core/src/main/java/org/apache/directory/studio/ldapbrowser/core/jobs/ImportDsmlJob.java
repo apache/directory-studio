@@ -50,6 +50,7 @@ import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.connection.core.Connection;
@@ -321,7 +322,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         if ( batchResponseDsml != null )
         {
             AddResponseDsml addResponseDsml = new AddResponseDsml();
-            addResponseDsml.setLdapResult( getLdapResult( monitor ) );
+            addResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.ADD_REQUEST ) );
             batchResponseDsml.addResponse( addResponseDsml );
         }
     }
@@ -373,7 +374,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         if ( batchResponseDsml != null )
         {
             DelResponseDsml delResponseDsml = new DelResponseDsml();
-            delResponseDsml.setLdapResult( getLdapResult( monitor ) );
+            delResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.DEL_REQUEST ) );
             delResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
             batchResponseDsml.addResponse( delResponseDsml );
         }
@@ -434,7 +435,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         if ( batchResponseDsml != null )
         {
             ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml();
-            modifyResponseDsml.setLdapResult( getLdapResult( monitor ) );
+            modifyResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MODIFY_REQUEST ) );
             batchResponseDsml.addResponse( modifyResponseDsml );
         }
     }
@@ -602,7 +603,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
      * @return
      *      the corresponding LDAP Result
      */
-    private LdapResult getLdapResult( StudioProgressMonitor monitor )
+    private LdapResult getLdapResult( StudioProgressMonitor monitor, MessageTypeEnum messageType )
     {
         LdapResult ldapResult = new LdapResult();
 
@@ -612,11 +613,14 @@ public class ImportDsmlJob extends AbstractEclipseJob
         }
         else
         {
-            // TODO: Improve error handling.
-
-            ldapResult.setResultCode( ResultCodeEnum.UNKNOWN );
+            // Getting the exception
             Throwable t = monitor.getException();
-            if ( ( t != null ) && ( t.getMessage() != null ) )
+
+            // Setting the result code
+            ldapResult.setResultCode( ResultCodeEnum.getBestEstimate( t, messageType ) );
+
+            // Setting the error message if there's one
+            if ( t.getMessage() != null )
             {
                 ldapResult.setErrorMessage( t.getMessage() );
             }
