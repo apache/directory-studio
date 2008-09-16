@@ -128,7 +128,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
      * {@inheritDoc}
      *
      * This implementation initializes the must attributes of the
-     * protoype entry and initializes the entry widget when this
+     * prototype entry and initializes the entry widget when this
      * page becomes visible.
      */
     public void setVisible( boolean visible )
@@ -248,7 +248,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         configuration = new EntryEditorWidgetConfiguration();
 
         // create main widget
-        mainWidget = new EntryEditorWidget( this.configuration );
+        mainWidget = new EntryEditorWidget( configuration );
         mainWidget.createWidget( composite );
         mainWidget.getViewer().getTree().setFocus();
 

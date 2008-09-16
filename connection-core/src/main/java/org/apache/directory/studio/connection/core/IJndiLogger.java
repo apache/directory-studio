@@ -29,11 +29,10 @@ import javax.naming.ldap.Control;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
 
 
 /**
- * Callback interface to log modifications
+ * Callback interface to log modifications.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$

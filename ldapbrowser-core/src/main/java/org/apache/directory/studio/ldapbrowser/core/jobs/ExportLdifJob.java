@@ -296,7 +296,7 @@ public class ExportLdifJob extends AbstractEclipseJob
             {
                 SearchResult sr = enumeration.next();
                 LdapDN dn = JNDIUtils.getDn( sr );
-                LdifContentRecord record = LdifContentRecord.create( dn.toString() );
+                LdifContentRecord record = LdifContentRecord.create( dn.getUpName() );
 
                 NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
                 while ( attributeEnumeration.hasMore() )

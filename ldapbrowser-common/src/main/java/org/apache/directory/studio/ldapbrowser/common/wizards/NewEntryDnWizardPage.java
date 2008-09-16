@@ -339,7 +339,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      */
     public IWizardPage getNextPage()
     {
-        if ( !wizard.isNewContextEntry )
+        if ( !wizard.isNewContextEntry() )
         {
             dnBuilderWidget.validate();
 
@@ -380,6 +380,33 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 return null;
             }
         }
+        else
+        {
+            try
+            {
+                final LdapDN dn = new LdapDN( contextEntryDnCombo.getText() );
+                
+                // check that new entry does not exists yet 
+                ReadEntryRunnable readEntryRunnable2 = new ReadEntryRunnable( wizard.getSelectedConnection(), dn );
+                RunnableContextRunner.execute( readEntryRunnable2, getContainer(), false );
+                IEntry entry = readEntryRunnable2.getReadEntry();
+                if ( entry != null )
+                {
+                    getShell().getDisplay().syncExec( new Runnable()
+                    {
+                        public void run()
+                        {
+                            MessageDialog.openError( getShell(), "Error", "Entry " + dn.toString() + " already exists" );
+                        }
+                    } );
+                    return null;
+                }
+            }
+            catch ( InvalidNameException e )
+            {
+                return null;
+            }
+        }
 
         return super.getNextPage();
     }
@@ -393,7 +420,8 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         if ( wizard.isNewContextEntry() )
         {
             // the combo
-            contextEntryDnCombo = BaseWidgetUtils.createCombo( parent, ArrayUtils.EMPTY_STRING_ARRAY, 0, 1 );
+            Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
+            contextEntryDnCombo = BaseWidgetUtils.createCombo( composite, ArrayUtils.EMPTY_STRING_ARRAY, 0, 1 );
             contextEntryDnCombo.addModifyListener( new ModifyListener()
             {
                 public void modifyText( ModifyEvent e )
@@ -408,7 +436,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             contextEntryDnComboCPA.setFilterStyle( ContentProposalAdapter.FILTER_NONE );
             contextEntryDnComboCPA.setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
 
-            setControl( contextEntryDnCombo );
+            setControl( composite );
         }
         else
         {
