@@ -186,6 +186,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
         portCombo.setTextLimit( 5 );
+        portCombo.setText( "389" );
 
         String[] encMethods = new String[]
             { "No encryption", "Use SSL encryption (ldaps://)", "Use StartTLS extension" };
