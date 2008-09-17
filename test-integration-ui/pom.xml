@@ -206,7 +206,7 @@
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
                       <arg line="${integration-cmdline-params} -debug debugoptions -application net.sf.swtbot.eclipse.headless.swtbottestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.ui -className org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
                       <classpath>
-                        <pathelement location="target/test-sandbox/${integration-plugins-folder}/org.eclipse.equinox.launcher_1.0.1.R33x_v20080118.jar" />
+                        <pathelement location="target/test-sandbox/${integration-plugins-folder}/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
                       </classpath>
                     </java>
                   </tasks>
