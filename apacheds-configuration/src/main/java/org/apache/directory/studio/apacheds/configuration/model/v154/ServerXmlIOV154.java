@@ -106,8 +106,8 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_JDBM_PARTITION = "jdbmPartition";
     private static final String ELEMENT_KDC_SERVER = "kdcServer";
     private static final String ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER = "launchDiagnosticUiHandler";
-    private static final String ELEMENT_LDAP_SERVER = "ldapServer";
-    private static final String ELEMENT_LDAPS_SERVER = "ldapsServer";
+    private static final String ELEMENT_LDAP_SERVICE = "ldapService";
+    private static final String ELEMENT_LDAPS_SERVICE = "ldapsService";
     private static final String ELEMENT_LIST = "list";
     private static final String ELEMENT_LOGIC_EXECUTOR = "logicExecutor";
     private static final String ELEMENT_MAP = "map";
@@ -283,11 +283,11 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
         // Reading the 'dnsServer' Bean
         readDnsServerBean( rootElement, serverConfiguration );
 
-        // Reading the 'ldapsServer' Bean
-        readLdapsServerBean( rootElement, serverConfiguration );
+        // Reading the 'ldapsService' Bean
+        readLdapsServiceBean( rootElement, serverConfiguration );
 
-        // Reading the 'LdapServer' Bean
-        readLdapServerBean( rootElement, serverConfiguration );
+        // Reading the 'LdapService' Bean
+        readLdapServiceBean( rootElement, serverConfiguration );
 
         // Reading the 'apacheDS' Bean
         readApacheDSBean( rootElement, serverConfiguration );
@@ -1004,7 +1004,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
 
 
     /**
-     * Reads the LdapsSever Bean.
+     * Reads the LdapsService Bean.
      *
      * @param element
      *      the element
@@ -1014,31 +1014,31 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
      * @throws ServerXmlIOException 
      * @throws BooleanFormatException 
      */
-    private void readLdapsServerBean( Element element, ServerConfigurationV154 serverConfiguration )
+    private void readLdapsServiceBean( Element element, ServerConfigurationV154 serverConfiguration )
         throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
-        // Looping on all 'ldapServer' elements
+        // Looping on all 'ldapService' elements
         for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator(
-            ServerXmlIOV154.ELEMENT_LDAP_SERVER ); i.hasNext(); )
+            ServerXmlIOV154.ELEMENT_LDAP_SERVICE ); i.hasNext(); )
         {
-            // Getting the 'ldapServer' element
-            Element ldapServerElement = ( Element ) i.next();
+            // Getting the 'ldapService' element
+            Element ldapServiceElement = ( Element ) i.next();
 
             // Getting the 'id' attribute
-            org.dom4j.Attribute idAttribute = ldapServerElement.attribute( ServerXmlIOV154.ATTRIBUTE_ID );
+            org.dom4j.Attribute idAttribute = ldapServiceElement.attribute( ServerXmlIOV154.ATTRIBUTE_ID );
             if ( idAttribute == null )
             {
                 // If the 'id' attribute does not exists,
                 // we throw an exception
-                throw new ServerXmlIOException( "Unable to find the 'id' attribute for the 'ldapServer' bean." );
+                throw new ServerXmlIOException( "Unable to find the 'id' attribute for the 'ldapService' bean." );
             }
             else
             {
-                // Checking if the 'ldapServer' element is the one for LDAPS
-                if ( ServerXmlIOV154.ELEMENT_LDAPS_SERVER.equalsIgnoreCase( idAttribute.getValue() ) )
+                // Checking if the 'ldapService' element is the one for LDAPS
+                if ( ServerXmlIOV154.ELEMENT_LDAPS_SERVICE.equalsIgnoreCase( idAttribute.getValue() ) )
                 {
                     // Getting the 'enableLdaps' attribute
-                    org.dom4j.Attribute enableLdapsAttribute = ldapServerElement
+                    org.dom4j.Attribute enableLdapsAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_ENABLE_LDAPS );
                     if ( enableLdapsAttribute == null )
                     {
@@ -1048,7 +1048,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     else
                     {
                         // Getting the 'enabled' attribute
-                        org.dom4j.Attribute enabledAttribute = ldapServerElement
+                        org.dom4j.Attribute enabledAttribute = ldapServiceElement
                             .attribute( ServerXmlIOV154.ATTRIBUTE_ENABLED );
                         if ( enabledAttribute == null )
                         {
@@ -1063,7 +1063,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Getting the 'ipPort' attribute
-                    org.dom4j.Attribute ipPortAttribute = ldapServerElement
+                    org.dom4j.Attribute ipPortAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_IP_PORT );
                     if ( ipPortAttribute == null )
                     {
@@ -1085,7 +1085,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
 
 
     /**
-     * Reads the LdapSever Bean.
+     * Reads the LdapService Bean.
      *
      * @param element
      *      the element
@@ -1095,31 +1095,31 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
      * @throws ServerXmlIOException 
      * @throws BooleanFormatException 
      */
-    private void readLdapServerBean( Element element, ServerConfigurationV154 serverConfiguration )
+    private void readLdapServiceBean( Element element, ServerConfigurationV154 serverConfiguration )
         throws NumberFormatException, ServerXmlIOException, BooleanFormatException
     {
-        // Looping on all 'ldapServer' elements
+        // Looping on all 'ldapServeice' elements
         for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator(
-            ServerXmlIOV154.ELEMENT_LDAP_SERVER ); i.hasNext(); )
+            ServerXmlIOV154.ELEMENT_LDAP_SERVICE ); i.hasNext(); )
         {
-            // Getting the 'ldapServer' element
-            Element ldapServerElement = ( Element ) i.next();
+            // Getting the 'ldapService' element
+            Element ldapServiceElement = ( Element ) i.next();
 
             // Getting the 'id' attribute
-            org.dom4j.Attribute idAttribute = ldapServerElement.attribute( ServerXmlIOV154.ATTRIBUTE_ID );
+            org.dom4j.Attribute idAttribute = ldapServiceElement.attribute( ServerXmlIOV154.ATTRIBUTE_ID );
             if ( idAttribute == null )
             {
                 // If the 'id' attribute does not exists,
                 // we throw an exception
-                throw new ServerXmlIOException( "Unable to find the 'id' attribute for the 'ldapServer' bean." );
+                throw new ServerXmlIOException( "Unable to find the 'id' attribute for the 'ldapService' bean." );
             }
             else
             {
-                // Checking if the 'ldapServer' element is the one for LDAP
-                if ( ServerXmlIOV154.ELEMENT_LDAP_SERVER.equalsIgnoreCase( idAttribute.getValue() ) )
+                // Checking if the 'ldapService' element is the one for LDAP
+                if ( ServerXmlIOV154.ELEMENT_LDAP_SERVICE.equalsIgnoreCase( idAttribute.getValue() ) )
                 {
                     // Getting the 'enabled' attribute
-                    org.dom4j.Attribute enabledAttribute = ldapServerElement
+                    org.dom4j.Attribute enabledAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_ENABLED );
                     if ( enabledAttribute == null )
                     {
@@ -1132,14 +1132,14 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // IpPort
-                    org.dom4j.Attribute ipPortAttribute = ldapServerElement
+                    org.dom4j.Attribute ipPortAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_IP_PORT );
                     if ( ipPortAttribute == null )
                     {
                         // If the 'ipPort' attribute does not exists,
                         // we throw an exception
                         throw new ServerXmlIOException(
-                            "Unable to find the 'ipPort' attribute for the 'ldapServer' bean." );
+                            "Unable to find the 'ipPort' attribute for the 'ldapService' bean." );
                     }
                     else
                     {
@@ -1147,14 +1147,14 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Allow Anonymous Access
-                    org.dom4j.Attribute allowAnonymousAccessAttribute = ldapServerElement
+                    org.dom4j.Attribute allowAnonymousAccessAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_ALLOW_ANONYMOUS_ACCESS );
                     if ( allowAnonymousAccessAttribute == null )
                     {
                         // If the 'allowAnonymousAccess' attribute does not exists,
                         // we throw an exception
                         throw new ServerXmlIOException(
-                            "Unable to find the 'allowAnonymousAccess' attribute for the 'ldapServer' bean." );
+                            "Unable to find the 'allowAnonymousAccess' attribute for the 'ldapService' bean." );
                     }
                     else
                     {
@@ -1163,14 +1163,14 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SaslHost
-                    org.dom4j.Attribute saslHostAttribute = ldapServerElement
+                    org.dom4j.Attribute saslHostAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_SASL_HOST );
                     if ( saslHostAttribute == null )
                     {
                         // If the 'saslHost' attribute does not exists,
                         // we throw an exception
                         throw new ServerXmlIOException(
-                            "Unable to find the 'saslHost' attribute for the 'ldapServer' bean." );
+                            "Unable to find the 'saslHost' attribute for the 'ldapService' bean." );
                     }
                     else
                     {
@@ -1178,14 +1178,14 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SaslPrincipal
-                    org.dom4j.Attribute saslPrincipalAttribute = ldapServerElement
+                    org.dom4j.Attribute saslPrincipalAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_SASL_PRINCIPAL );
                     if ( saslPrincipalAttribute == null )
                     {
                         // If the 'saslPrincipal' attribute does not exists,
                         // we throw an exception
                         throw new ServerXmlIOException(
-                            "Unable to find the 'saslPrincipal' attribute for the 'ldapServer' bean." );
+                            "Unable to find the 'saslPrincipal' attribute for the 'ldapService' bean." );
                     }
                     else
                     {
@@ -1193,7 +1193,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SearchBaseDn
-                    org.dom4j.Attribute searchBaseDnAttribute = ldapServerElement
+                    org.dom4j.Attribute searchBaseDnAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_SEARCH_BASE_DN );
                     if ( searchBaseDnAttribute == null )
                     {
@@ -1208,7 +1208,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // MaxTimeLimit
-                    org.dom4j.Attribute maxTimeLimitAttribute = ldapServerElement
+                    org.dom4j.Attribute maxTimeLimitAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_MAX_TIME_LIMIT );
                     if ( maxTimeLimitAttribute == null )
                     {
@@ -1223,7 +1223,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // MaxSizeLimit
-                    org.dom4j.Attribute maxSizeLimitAttribute = ldapServerElement
+                    org.dom4j.Attribute maxSizeLimitAttribute = ldapServiceElement
                         .attribute( ServerXmlIOV154.ATTRIBUTE_MAX_SIZE_LIMIT );
                     if ( maxSizeLimitAttribute == null )
                     {
@@ -1238,7 +1238,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Supported Mechanisms
-                    Element supportedMechanismsElement = ldapServerElement
+                    Element supportedMechanismsElement = ldapServiceElement
                         .element( ServerXmlIOV154.ELEMENT_SASL_MECHANISM_HANDLERS );
                     if ( supportedMechanismsElement != null )
                     {
@@ -1315,7 +1315,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SaslQop
-                    Element SaslQopElement = ldapServerElement.element( ServerXmlIOV154.ELEMENT_SASL_QOP );
+                    Element SaslQopElement = ldapServiceElement.element( ServerXmlIOV154.ELEMENT_SASL_QOP );
                     if ( SaslQopElement != null )
                     {
                         // Looping on all 'value' elements
@@ -1343,7 +1343,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // SaslRealms
-                    Element SaslRealmsElement = ldapServerElement.element( ServerXmlIOV154.ELEMENT_SASL_REALMS );
+                    Element SaslRealmsElement = ldapServiceElement.element( ServerXmlIOV154.ELEMENT_SASL_REALMS );
                     if ( SaslRealmsElement != null )
                     {
                         // Looping on all 'value' elements
@@ -1360,7 +1360,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                     }
 
                     // Extended operations
-                    readExtendedOperations( ldapServerElement, serverConfiguration );
+                    readExtendedOperations( ldapServiceElement, serverConfiguration );
 
                     return;
                 }
@@ -1991,10 +1991,10 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private void createLdapsServerBean( Element root, ServerConfigurationV154 serverConfiguration )
     {
         // Adding the 'ldapServer' element
-        Element ldapServerElement = root.addElement( ServerXmlIOV154.ELEMENT_LDAP_SERVER );
+        Element ldapServerElement = root.addElement( ServerXmlIOV154.ELEMENT_LDAP_SERVICE );
 
         // Id
-        ldapServerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_ID, ServerXmlIOV154.ELEMENT_LDAPS_SERVER );
+        ldapServerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_ID, ServerXmlIOV154.ELEMENT_LDAPS_SERVICE );
 
         // IpPort
         ldapServerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_IP_PORT, "" + serverConfiguration.getLdapsPort() );
@@ -2025,10 +2025,10 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private void createLdapServerBean( Element root, ServerConfigurationV154 serverConfiguration )
     {
         // Adding the 'ldapServer' element
-        Element ldapServerElement = root.addElement( ServerXmlIOV154.ELEMENT_LDAP_SERVER );
+        Element ldapServerElement = root.addElement( ServerXmlIOV154.ELEMENT_LDAP_SERVICE );
 
         // Id
-        ldapServerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_ID, ServerXmlIOV154.ELEMENT_LDAP_SERVER );
+        ldapServerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_ID, ServerXmlIOV154.ELEMENT_LDAP_SERVICE );
 
         // Enabled
         ldapServerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_ENABLED, "" + serverConfiguration.isEnableLdap() );
@@ -2203,11 +2203,11 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
         // Adding 'directoryService' element
         apacheDSElement.addElement( ServerXmlIOV154.VALUE_DIRECTORY_SERVICE ).setText( "#directoryService" );
 
-        // Adding 'ldapServer' element
-        apacheDSElement.addElement( ServerXmlIOV154.ELEMENT_LDAP_SERVER ).setText( "#ldapServer" );
+        // Adding 'ldapService' element
+        apacheDSElement.addElement( ServerXmlIOV154.ELEMENT_LDAP_SERVICE ).setText( "#ldapService" );
 
-        // Adding 'ldapsServer' element
-        apacheDSElement.addElement( ServerXmlIOV154.ELEMENT_LDAPS_SERVER ).setText( "#ldapsServer" );
+        // Adding 'ldapsService' element
+        apacheDSElement.addElement( ServerXmlIOV154.ELEMENT_LDAPS_SERVICE ).setText( "#ldapsService" );
     }
 
 
