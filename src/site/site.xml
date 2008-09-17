@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project name="${project.name}">
+  <bannerLeft>
+    <src>images/studio-icon_128x128.png</src>
+    <href>http://directory.apache.org/studio/</href>
+    <name>${project.name}</name>
+  </bannerLeft>
+  <publishDate position="right" format="dd-MM-yyyy HH:mm"/>
+  <version position="right"/>
+  <body>
+    <links>
+       <!--
+         Need to encode a part of the url due to Issue
+         http://jira.codehaus.org/browse/MSITE-159
+         and as of https://bugzilla.mozilla.org/show_bug.cgi?id=43659
+         this workaround doesn't works in FF 3.x ...
+        -->
+       <item name="Apache Directory Studio" href="http://directory.apache%2eorg/studio/"/>
+       <item name="Apache Directory" href="http://directory.apache%2eorg/"/>
+       <item name="Apache" href="http://www.apache.org/"/>
+       <item name="Maven" href="http://maven.apache.org/"/>
+    </links>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html" />
+      <item name="Goals" href="plugin-info.html" />
+      <item name="Usage" href="usage.html" />
+      <item name="FAQ" href="faq.html" />
+    </menu>
+    <menu name="Examples">
+      <item name="prepare-jar-package" href="examples/prepare-jar-package.html" />
+      <item name="unpack-with-artifactid-prefix" href="examples/unpack-with-artifactid-prefix.html" />
+      <item name="replace-file-in-eclipse-artifact" href="examples/replace-file-in-eclipse-artifact.html" />
+      <item name="copy-eclipse-artifact" href="examples/copy-eclipse-artifact.html" />
+    </menu>
+    <menu ref="reports" />
+  </body>
+</project>

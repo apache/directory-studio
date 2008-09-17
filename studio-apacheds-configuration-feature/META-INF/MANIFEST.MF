@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio Apache DS Configuration Feature
-Bundle-SymbolicName: org.apache.directory.studio.apacheds.configuration.feature;singleton:=true
-Bundle-Version: 1.0.0
-Bundle-Localization: plugin
-Eclipse-LazyStart: true
-Bundle-Vendor: Apache Software Foundation

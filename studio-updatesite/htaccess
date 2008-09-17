@@ -1,6 +1,0 @@
-RewriteEngine on
-
-RewriteBase /studio/update
-
-RewriteRule ^site.xml$ site--xml.cgi [L]
-
