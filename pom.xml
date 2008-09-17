@@ -1025,7 +1025,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <tagBase>https://svn.apache.org/repos/asf/directory/studio/releases/</tagBase>
+          <tagBase>https://svn.apache.org/repos/asf/directory/studio/tags/</tagBase>
         </configuration>
       </plugin>
       <plugin>
@@ -1039,6 +1039,11 @@
 
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.directory.studio</groupId>
+          <artifactId>maven-studio-plugin</artifactId>
+          <version>1.0.0</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
