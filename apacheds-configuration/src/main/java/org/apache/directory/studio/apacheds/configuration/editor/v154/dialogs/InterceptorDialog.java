@@ -191,10 +191,6 @@ public class InterceptorDialog extends Dialog
         {
             availableInterceptors.add( InterceptorEnum.AUTHENTICATION );
         }
-        if ( !initialInterceptors.contains( InterceptorEnum.REFERRAL ) )
-        {
-            availableInterceptors.add( InterceptorEnum.REFERRAL );
-        }
         if ( !initialInterceptors.contains( InterceptorEnum.ACI_AUTHORIZATION ) )
         {
             availableInterceptors.add( InterceptorEnum.ACI_AUTHORIZATION );

@@ -90,6 +90,8 @@ public class NonExistingServerConfigurationInput implements IEditorInput
     {
         switch ( serverConfiguration.getVersion() )
         {
+            case VERSION_1_5_4:
+                return "New Apache DS 1.5.4 Configuration File";
             case VERSION_1_5_3:
                 return "New Apache DS 1.5.3 Configuration File";
             case VERSION_1_5_2:

@@ -20,8 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.model.v154;
 
 
-
-
 /**
  * This enum contains all the interceptors.
  *
@@ -37,11 +35,6 @@ public enum InterceptorEnum
 
     /** The Authentication Interceptor */
     AUTHENTICATION("Authentication", "An interceptor that authenticates users."),
-
-    /** The Referral Interceptor */
-    REFERRAL("Referral", "An interceptor which is responsible referral handling behaviors.  It "
-        + "manages  referral handling behavior when the Context#REFERRAL "
-        + "is implicitly or explicitly set to \"ignore\", when set to \"throw\" " + "and when set to \"follow\"."),
 
     /** The ACI Authorization Interceptor */
     ACI_AUTHORIZATION("ACI Authorization", "An ACI based authorization interceptor."),

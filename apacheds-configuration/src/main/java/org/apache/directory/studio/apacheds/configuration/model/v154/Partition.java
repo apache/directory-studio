@@ -23,9 +23,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v154;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
-
 
 /**
  * This class represents a Partition.
@@ -50,9 +47,6 @@ public class Partition
     /** The Synchronization On Write flag */
     private boolean synchronizationOnWrite;
 
-    /** The Context Entry */
-    private Attributes contextEntry;
-
     /** The indexed attributes */
     private List<IndexedAttribute> indexedAttributes;
 
@@ -66,7 +60,6 @@ public class Partition
     public Partition()
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
-        contextEntry = new BasicAttributes( true );
     }
 
 
@@ -79,7 +72,6 @@ public class Partition
     public Partition( String id )
     {
         indexedAttributes = new ArrayList<IndexedAttribute>();
-        contextEntry = new BasicAttributes( true );
         this.id = id;
     }
 
@@ -129,30 +121,6 @@ public class Partition
     public void setCacheSize( int cacheSize )
     {
         this.cacheSize = cacheSize;
-    }
-
-
-    /**
-     * Gets the Context Entry.
-     *
-     * @return
-     *      the Content Entry
-     */
-    public Attributes getContextEntry()
-    {
-        return contextEntry;
-    }
-
-
-    /**
-     * Sets the Context Entry
-     *
-     * @param contextEntry
-     *      the new Context Entry
-     */
-    public void setContextEntry( Attributes contextEntry )
-    {
-        this.contextEntry = contextEntry;
     }
 
 

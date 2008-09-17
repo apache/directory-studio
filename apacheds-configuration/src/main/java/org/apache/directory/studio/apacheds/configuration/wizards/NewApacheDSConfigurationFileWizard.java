@@ -84,6 +84,7 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
                     serverXmlIO = new ServerXmlIOV154();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
                         .getResourceAsStream( "default-server-1.5.4.xml" ) );
+                    break;
                 case VERSION_1_5_3:
                     serverXmlIO = new ServerXmlIOV153();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class

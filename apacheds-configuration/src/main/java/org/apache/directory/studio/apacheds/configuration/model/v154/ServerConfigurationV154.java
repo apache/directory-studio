@@ -138,7 +138,7 @@ public class ServerConfigurationV154 extends AbstractServerConfiguration impleme
      */
     public ServerConfigurationV154()
     {
-        super( ServerConfigurationVersionEnum.VERSION_1_5_3 );
+        super( ServerConfigurationVersionEnum.VERSION_1_5_4 );
 
         supportedMechanisms = new ArrayList<SupportedMechanismEnum>();
         saslQops = new ArrayList<SaslQualityOfProtectionEnum>();

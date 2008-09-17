@@ -208,7 +208,13 @@ public class ServerXmlIOV153 extends AbstractServerXmlIO implements ServerXmlIO
             {
                 // Looking for the 'apacheDS' element
                 Element apacheDSElement = rootElement.element( ServerXmlIOV153.ELEMENT_APACHE_DS );
-                return ( apacheDSElement != null );
+                if ( apacheDSElement != null )
+                {
+                    // Looking for the 'ldapServer' element
+                    Element ldapServerElement = rootElement.element( ServerXmlIOV153.ELEMENT_LDAP_SERVER );
+
+                    return ( ldapServerElement != null );
+                }
             }
         }
 
