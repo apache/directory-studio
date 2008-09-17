@@ -205,6 +205,7 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-x86</version>
                   <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -366,6 +367,7 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-x86_64</version>
                   <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -527,6 +529,7 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-ppc</version>
                   <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -687,6 +690,7 @@
                   <packaging>zip</packaging>
                   <version>${pom.version}-win32</version>
                   <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
@@ -793,6 +797,7 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-macosx</version>
                   <uniqueVersion>false</uniqueVersion>
+                  <generatePom>false</generatePom>
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
