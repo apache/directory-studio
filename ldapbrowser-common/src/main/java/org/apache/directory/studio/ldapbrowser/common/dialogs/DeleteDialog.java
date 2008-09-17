@@ -20,6 +20,7 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -37,6 +38,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class DeleteDialog extends MessageDialog
 {
+
+    /** The "Use Tree Delete Control" dialog setting . */
+    private static final String USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY = DeleteDialog.class.getName()
+        + ".useTreeDeleteControl";
 
     private Button useTreeDeleteControlCheckbox;
 
@@ -60,6 +65,12 @@ public class DeleteDialog extends MessageDialog
 
         this.askForTreeDeleteControl = askForTreeDeleteControl;
         this.useTreeDeleteControl = false;
+
+        if ( BrowserCommonActivator.getDefault().getDialogSettings().get( USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY ) == null )
+        {
+            BrowserCommonActivator.getDefault().getDialogSettings().put( USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY,
+                false );
+        }
     }
 
 
@@ -70,6 +81,8 @@ public class DeleteDialog extends MessageDialog
         {
             useTreeDeleteControlCheckbox = new Button( parent, SWT.CHECK );
             useTreeDeleteControlCheckbox.setText( "Use Tree Delete Control" );
+            useTreeDeleteControlCheckbox.setSelection( BrowserCommonActivator.getDefault().getDialogSettings()
+                .getBoolean( USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY ) );
             return useTreeDeleteControlCheckbox;
         }
         else
@@ -85,6 +98,12 @@ public class DeleteDialog extends MessageDialog
         if ( buttonId == OK )
         {
             useTreeDeleteControl = useTreeDeleteControlCheckbox != null && useTreeDeleteControlCheckbox.getSelection();
+
+            if ( useTreeDeleteControlCheckbox != null )
+            {
+                BrowserCommonActivator.getDefault().getDialogSettings().put( USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY,
+                    useTreeDeleteControlCheckbox.getSelection() );
+            }
         }
         super.buttonPressed( buttonId );
     }
