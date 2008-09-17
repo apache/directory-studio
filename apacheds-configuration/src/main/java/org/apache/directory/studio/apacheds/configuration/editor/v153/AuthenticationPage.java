@@ -613,6 +613,10 @@ public class AuthenticationPage extends FormPage implements SaveableFormPage
         }
 
         // SASL Realms
-        configuration.setSaslRealms( saslRealms );
+        if ( ( saslRealmsTableViewer != null ) && ( saslRealmsTableViewer.getTable() != null )
+            && ( !saslRealmsTableViewer.getTable().isDisposed() ) )
+        {
+            configuration.setSaslRealms( saslRealms );
+        }
     }
 }
