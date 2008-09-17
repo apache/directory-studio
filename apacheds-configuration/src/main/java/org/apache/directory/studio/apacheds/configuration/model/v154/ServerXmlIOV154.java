@@ -26,10 +26,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 import javax.xml.transform.TransformerException;
 
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
@@ -65,7 +61,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ATTRIBUTE_INSTANCE_ID = "instanceId";
     private static final String ATTRIBUTE_IP_PORT = "ipPort";
     private static final String ATTRIBUTE_KEY = "key";
-    private static final String ATTRIBUTE_LOCAL = "local";
     private static final String ATTRIBUTE_MAX_SIZE_LIMIT = "maxSizeLimit";
     private static final String ATTRIBUTE_MAX_THREADS = "maxThreads";
     private static final String ATTRIBUTE_MAX_TIME_LIMIT = "maxTimeLimit";
@@ -87,7 +82,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_BEANS = "beans";
     private static final String ELEMENT_CHANGE_PASSWORD_SERVER = "changePasswordServer";
     private static final String ELEMENT_COLLECTIVE_ATTRIBUTE_INTERCEPTOR = "collectiveAttributeInterceptor";
-    private static final String ELEMENT_CONTEXT_ENTRY = "contextEntry";
     private static final String ELEMENT_CRAM_MD5_MECHANISM_HANDLER = "cramMd5MechanismHandler";
     private static final String ELEMENT_DATAGRAM_ACCEPTOR = "datagramAcceptor";
     private static final String ELEMENT_DEFAULT_AUTHORIZATION_INTERCEPTOR = "defaultAuthorizationInterceptor";
@@ -108,7 +102,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_LAUNCH_DIAGNOSTIC_UI_HANDLER = "launchDiagnosticUiHandler";
     private static final String ELEMENT_LDAP_SERVICE = "ldapService";
     private static final String ELEMENT_LDAPS_SERVICE = "ldapsService";
-    private static final String ELEMENT_LIST = "list";
     private static final String ELEMENT_LOGIC_EXECUTOR = "logicExecutor";
     private static final String ELEMENT_MAP = "map";
     private static final String ELEMENT_NORMALIZATION_INTERCEPTOR = "normalizationInterceptor";
@@ -117,8 +110,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String ELEMENT_OPERATIONAL_ATTRIBUTE_INTERCEPTOR = "operationalAttributeInterceptor";
     private static final String ELEMENT_PARTITIONS = "partitions";
     private static final String ELEMENT_PROPERTY = "property";
-    private static final String ELEMENT_REF = "ref";
-    private static final String ELEMENT_REFERRAL_INTERCEPTOR = "referralInterceptor";
     private static final String ELEMENT_REPLICATION_INTERCEPTOR = "replicationInterceptor";
     private static final String ELEMENT_SASL_MECHANISM_HANDLERS = "saslMechanismHandlers";
     private static final String ELEMENT_SASL_QOP = "saslQop";
@@ -146,7 +137,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String SUPPORTED_MECHANISM_GSSAPI = "GSSAPI";
     private static final String SUPPORTED_MECHANISM_NTLM = "NTLM";
     private static final String SUPPORTED_MECHANISM_SIMPLE = "SIMPLE";
-    private static final String VALUE_ARGUMENTS = "arguments";
     private static final String VALUE_CUSTOM_EDITORS = "customEditors";
     private static final String VALUE_DEFAULT = "default";
     private static final String VALUE_DIRECTORY_SERVICE = "directoryService";
@@ -524,9 +514,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
 
         // Indexed attributes
         partition.setIndexedAttributes( readIndexedAttributes( element ) );
-
-        // Context Entry
-        partition.setContextEntry( readContextEntry( element ) );
     }
 
 
@@ -573,125 +560,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
         }
 
         return indexedAttributes;
-    }
-
-
-    /**
-     * Read the context from a partition element.
-     *
-     * @param element
-     *      the partition element
-     * @return
-     *      the corresponding attributes
-     * @throws ServerXmlIOException 
-     */
-    private Attributes readContextEntry( Element element ) throws ServerXmlIOException
-    {
-        Element contextEntryElement = element.element( ServerXmlIOV154.ELEMENT_CONTEXT_ENTRY );
-        if ( contextEntryElement == null )
-        {
-            // If the 'contextEntry' element does not exists,
-            // we throw an exception
-            throw new ServerXmlIOException( "Unable to find the 'contextEntry' element for a partition." );
-        }
-        else
-        {
-            // Getting the id of the linked bean
-            String linkedBeanId = contextEntryElement.getText().trim();
-
-            // Removing the '#' character at the beginning of the value
-            linkedBeanId = linkedBeanId.substring( 1, linkedBeanId.length() );
-
-            // Creating a 'foundBean' flag to check if we've found the associated bean
-            boolean foundBean = false;
-
-            // Looping on all 'bean' tags
-            for ( Iterator<?> i = element.getDocument().getRootElement().elementIterator( ServerXmlIOV154.ELEMENT_BEAN ); i
-                .hasNext(); )
-            {
-                // Getting the bean element
-                Element beanElement = ( Element ) i.next();
-
-                // Getting the id attribute
-                org.dom4j.Attribute idAttribute = beanElement.attribute( ServerXmlIOV154.ATTRIBUTE_ID );
-                if ( idAttribute != null )
-                {
-                    // Checking if we've found the correct bean
-                    if ( linkedBeanId.equalsIgnoreCase( idAttribute.getValue() ) )
-                    {
-                        // Setting the 'foundBean' flag to true
-                        foundBean = true;
-
-                        // Creating a 'foundProperty' flag to check if we've found the associated bean
-                        boolean foundProperty = false;
-
-                        // Looping on all 'property' tags
-                        for ( Iterator<?> i2 = beanElement.elementIterator( ServerXmlIOV154.ELEMENT_PROPERTY ); i2
-                            .hasNext(); )
-                        {
-                            // Getting the property element
-                            Element propertyElement = ( Element ) i2.next();
-
-                            // Getting the name attribute
-                            org.dom4j.Attribute nameAttribute = propertyElement
-                                .attribute( ServerXmlIOV154.ATTRIBUTE_NAME );
-                            if ( nameAttribute != null )
-                            {
-                                if ( nameAttribute.getValue().equalsIgnoreCase( ServerXmlIOV154.VALUE_ARGUMENTS ) )
-                                {
-                                    // Setting the 'foundProperty' flag to true
-                                    foundProperty = true;
-
-                                    // Getting the list element
-                                    Element listElement = propertyElement.element( ServerXmlIOV154.ELEMENT_LIST );
-                                    if ( listElement != null )
-                                    {
-                                        // Looping on all 'value' tags
-                                        for ( Iterator<?> i3 = listElement
-                                            .elementIterator( ServerXmlIOV154.ELEMENT_VALUE ); i3.hasNext(); )
-                                        {
-                                            // Getting the value element
-                                            Element valueElement = ( Element ) i3.next();
-
-                                            // Getting the text value
-                                            String value = valueElement.getText().trim();
-
-                                            // We are looking for LDIF, so let's look if the text value
-                                            // contains any ':'
-                                            if ( value.indexOf( ':' ) != -1 )
-                                            {
-                                                // Returning the LDIF converted to JNDI Attributes
-                                                return readContextEntry( valueElement.getText().trim() );
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        // Checking if we have found the associated property
-                        // If not, we throw an error
-                        if ( !foundProperty )
-                        {
-                            // If the correct property element does not exists,
-                            // we throw an exception
-                            throw new ServerXmlIOException( "Unable to find the property element named 'arguments'." );
-                        }
-                    }
-                }
-            }
-
-            // Checking if we have found the associated bean
-            // If not, we throw an error
-            if ( !foundBean )
-            {
-                // If the correct bean element does not exists,
-                // we throw an exception
-                throw new ServerXmlIOException( "Unable to find the bean element named '" + linkedBeanId + "'." );
-            }
-        }
-
-        return null;
     }
 
 
@@ -762,10 +630,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                 else if ( ServerXmlIOV154.ELEMENT_AUTHENTICATION_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
                 {
                     serverConfiguration.addInterceptor( InterceptorEnum.AUTHENTICATION );
-                }
-                else if ( ServerXmlIOV154.ELEMENT_REFERRAL_INTERCEPTOR.equalsIgnoreCase( interceptorElementName ) )
-                {
-                    serverConfiguration.addInterceptor( InterceptorEnum.REFERRAL );
                 }
                 else if ( ServerXmlIOV154.ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR
                     .equalsIgnoreCase( interceptorElementName ) )
@@ -1655,9 +1519,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
 
         // IndexedAttributes
         createIndexedAttributes( jdbmPartitionElement, partition.getIndexedAttributes() );
-
-        // ContextEntry
-        createContextEntry( jdbmPartitionElement, partition.getContextEntry(), partition.getId(), partition.getSuffix() );
     }
 
 
@@ -1691,92 +1552,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
 
 
     /**
-     * Creates the context entry bean.
-     *
-     * @param element
-     *      the element
-     * @param contextEntry
-     *      the attributes
-     * @param id
-     *      the partition id
-     * @param dn 
-     *      the dn
-     */
-    private void createContextEntry( Element element, Attributes contextEntry, String id, String dn )
-    {
-        // Adding the 'contextEntry' element
-        element.addElement( ServerXmlIOV154.ELEMENT_CONTEXT_ENTRY ).setText( "#" + id + "ContextEntry" );
-
-        // Adding the 'bean' element
-        Element beanElement = element.getDocument().getRootElement().addElement(
-            new QName( ServerXmlIOV154.ELEMENT_BEAN, NAMESPACE_XBEAN_SPRING ) );
-        beanElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_ID, id + "ContextEntry" );
-        beanElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_CLASS,
-            "org.springframework.beans.factory.config.MethodInvokingFactoryBean" );
-
-        // Adding the targetObject 'property' element
-        Element targetObjectPropertyElement = beanElement.addElement( new QName( ServerXmlIOV154.ELEMENT_PROPERTY,
-            NAMESPACE_XBEAN_SPRING ) );
-        targetObjectPropertyElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_NAME, "targetObject" );
-
-        // Adding the targetObject 'ref' element
-        Element targetObjectRefElement = targetObjectPropertyElement.addElement( new QName(
-            ServerXmlIOV154.ELEMENT_REF, NAMESPACE_XBEAN_SPRING ) );
-        targetObjectRefElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_LOCAL, ServerXmlIOV154.VALUE_DIRECTORY_SERVICE );
-
-        // Adding the targetMethod 'property' element
-        Element targetMethodPropertyElement = beanElement.addElement( new QName( ServerXmlIOV154.ELEMENT_PROPERTY,
-            NAMESPACE_XBEAN_SPRING ) );
-        targetMethodPropertyElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_NAME, "targetMethod" );
-
-        // Adding the targetMethod 'value' element
-        targetMethodPropertyElement.addElement( new QName( ServerXmlIOV154.ELEMENT_VALUE, NAMESPACE_XBEAN_SPRING ) )
-            .setText( "newEntry" );
-
-        // Adding the arguments 'property' element
-        Element argumentsPropertyElement = beanElement.addElement( new QName( ServerXmlIOV154.ELEMENT_PROPERTY,
-            NAMESPACE_XBEAN_SPRING ) );
-        argumentsPropertyElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_NAME, ServerXmlIOV154.VALUE_ARGUMENTS );
-
-        // Adding the arguments 'list' element
-        Element argumentsListElement = argumentsPropertyElement.addElement( new QName( ServerXmlIOV154.ELEMENT_LIST,
-            NAMESPACE_XBEAN_SPRING ) );
-
-        // Adding the arguments attributes 'value' element
-        Element argumentsAttributesValueElement = argumentsListElement.addElement( new QName(
-            ServerXmlIOV154.ELEMENT_VALUE, new Namespace( "spring", "http://www.springframework.org/schema/beans" ) ) );
-
-        // Creating a string buffer to contain the LDIF data
-        StringBuffer sb = new StringBuffer();
-
-        // Looping on attributes
-        NamingEnumeration<? extends Attribute> ne = contextEntry.getAll();
-        while ( ne.hasMoreElements() )
-        {
-            Attribute attribute = ( Attribute ) ne.nextElement();
-            try
-            {
-                NamingEnumeration<?> values = attribute.getAll();
-                while ( values.hasMoreElements() )
-                {
-                    sb.append( attribute.getID() + ": " + values.nextElement() + "\n" );
-                }
-            }
-            catch ( NamingException e )
-            {
-            }
-        }
-
-        // Assigning the value to the element
-        argumentsAttributesValueElement.setText( sb.toString() );
-
-        // Adding the arguments dn 'value' element
-        argumentsListElement.addElement( new QName( ServerXmlIOV154.ELEMENT_VALUE, NAMESPACE_XBEAN_SPRING ) ).setText(
-            dn );
-    }
-
-
-    /**
      * Creates the interceptor beans.
      *
      * @param interceptorsElement
@@ -1795,10 +1570,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
         if ( interceptors.contains( InterceptorEnum.AUTHENTICATION ) )
         {
             interceptorsElement.addElement( ServerXmlIOV154.ELEMENT_AUTHENTICATION_INTERCEPTOR );
-        }
-        if ( interceptors.contains( InterceptorEnum.REFERRAL ) )
-        {
-            interceptorsElement.addElement( ServerXmlIOV154.ELEMENT_REFERRAL_INTERCEPTOR );
         }
         if ( interceptors.contains( InterceptorEnum.ACI_AUTHORIZATION ) )
         {
@@ -2084,24 +1855,18 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
                         .addElement( ServerXmlIOV154.ELEMENT_CRAM_MD5_MECHANISM_HANDLER );
                     cramMd5MechanismHandlerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_MECH_NAME,
                         ServerXmlIOV154.SUPPORTED_MECHANISM_CRAM_MD5 );
-                    cramMd5MechanismHandlerElement.addAttribute( ServerXmlIOV154.VALUE_DIRECTORY_SERVICE,
-                        "#directoryService" );
                     break;
                 case DIGEST_MD5:
                     Element digestMd5MechanismHandlerElement = saslMechanismHandlersElement
                         .addElement( ServerXmlIOV154.ELEMENT_DIGEST_MD5_MECHANISM_HANDLER );
                     digestMd5MechanismHandlerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_MECH_NAME,
                         ServerXmlIOV154.SUPPORTED_MECHANISM_DIGEST_MD5 );
-                    digestMd5MechanismHandlerElement.addAttribute( ServerXmlIOV154.VALUE_DIRECTORY_SERVICE,
-                        "#directoryService" );
                     break;
                 case GSSAPI:
                     Element gssapiMechanismHandlerElement = saslMechanismHandlersElement
                         .addElement( ServerXmlIOV154.ELEMENT_GSSAPI_MECHANISM_HANDLER );
                     gssapiMechanismHandlerElement.addAttribute( ServerXmlIOV154.ATTRIBUTE_MECH_NAME,
                         ServerXmlIOV154.SUPPORTED_MECHANISM_GSSAPI );
-                    gssapiMechanismHandlerElement.addAttribute( ServerXmlIOV154.VALUE_DIRECTORY_SERVICE,
-                        "#directoryService" );
                     break;
                 case NTLM:
                     Element ntlmMechanismHandlerElement = saslMechanismHandlersElement
