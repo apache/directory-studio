@@ -28,7 +28,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -273,6 +275,7 @@ public class LdifModificationLogger implements IJndiLogger
 
         try
         {
+            Set<String> maskedAttributes = getMaskedAttributes();
             LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( dn ) );
             addControlLines( record, controls );
             record.setChangeType( LdifChangeTypeLine.createAdd() );
@@ -285,13 +288,20 @@ public class LdifModificationLogger implements IJndiLogger
                 while ( valueEnumeration.hasMore() )
                 {
                     Object o = valueEnumeration.next();
-                    if ( o instanceof String )
+                    if ( maskedAttributes.contains( attributeName.toLowerCase() ) )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) );
                     }
-                    if ( o instanceof byte[] )
+                    else
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        if ( o instanceof String )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                        }
+                        if ( o instanceof byte[] )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        }
                     }
                 }
             }
@@ -340,6 +350,7 @@ public class LdifModificationLogger implements IJndiLogger
 
         try
         {
+            Set<String> maskedAttributes = getMaskedAttributes();
             LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn ) );
             addControlLines( record, controls );
             record.setChangeType( LdifChangeTypeLine.createModify() );
@@ -366,13 +377,20 @@ public class LdifModificationLogger implements IJndiLogger
                 while ( valueEnumeration.hasMore() )
                 {
                     Object o = valueEnumeration.next();
-                    if ( o instanceof String )
+                    if ( maskedAttributes.contains( attributeDescription.toLowerCase() ) )
                     {
-                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( String ) o ) );
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, "**********" ) );
                     }
-                    if ( o instanceof byte[] )
+                    else
                     {
-                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( byte[] ) o ) );
+                        if ( o instanceof String )
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( String ) o ) );
+                        }
+                        if ( o instanceof byte[] )
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( byte[] ) o ) );
+                        }
                     }
                 }
                 modSpec.finish( LdifModSpecSepLine.create() );
@@ -590,6 +608,27 @@ public class LdifModificationLogger implements IJndiLogger
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE );
+    }
+
+
+    /**
+     * Gets the masked attributes.
+     * 
+     * @return the masked attributes
+     */
+    private Set<String> getMaskedAttributes()
+    {
+        Set<String> maskedAttributes = new HashSet<String>();
+
+        String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
+        String[] splitted = maskedAttributeString.split( "," );
+        for ( String s : splitted )
+        {
+            maskedAttributes.add( s.toLowerCase() );
+        }
+
+        return maskedAttributes;
     }
 
 

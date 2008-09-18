@@ -121,9 +121,9 @@ public class BaseWidgetUtils
     public static Label createWrappedLabel( Composite parent, String text, int span )
     {
         Label l = new Label( parent, SWT.WRAP );
-        GridData gd = new GridData();
+        GridData gd = new GridData( GridData.HORIZONTAL_ALIGN_FILL );
         gd.horizontalSpan = span;
-        // gd.verticalAlignment = SWT.BEGINNING;
+        gd.widthHint = 100;
         l.setLayoutData( gd );
         l.setText( text );
         return l;
@@ -293,6 +293,7 @@ public class BaseWidgetUtils
         return t;
     }
 
+
     /**
      * Creates a SWT {@link Text} under the given parent.
      * The created text control behaves like a label: it has no border, 
@@ -306,7 +307,7 @@ public class BaseWidgetUtils
      * @param widthHint the width hint
      * @return the created text
      */
-    public static Text createWrappedLabeledText( Composite parent, String text, int span, int widthHint  )
+    public static Text createWrappedLabeledText( Composite parent, String text, int span, int widthHint )
     {
         Text t = new Text( parent, SWT.WRAP );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
@@ -320,6 +321,7 @@ public class BaseWidgetUtils
         t.setText( text );
         return t;
     }
+
 
     /**
      * Creates a SWT {@link Text} under the given parent.

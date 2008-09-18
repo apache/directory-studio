@@ -50,6 +50,7 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
     private Button enableModificationLogging;
     private Text logFileCountText;
     private Text logFileSizeText;
+    private Text maskedAttributesText;
 
 
     /**
@@ -83,6 +84,22 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
         enableModificationLogging = BaseWidgetUtils.createCheckbox( composite, "Enable modification logs", 1 );
         enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+
+        Group maskedAttributesGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1,
+            1 ), "Masked Attributes", 1 );
+        Composite maskedAttributesComposite = BaseWidgetUtils.createColumnContainer( maskedAttributesGroup, 1, 1 );
+        maskedAttributesText = BaseWidgetUtils.createText( maskedAttributesComposite, "", 1 );
+        maskedAttributesText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES ) );
+        String maskedAttributesHelp = "Enter a comma-separated list of attributes that should be masked in the modification logs. "
+            + "A typical attribute to mask is userPassword.";
+        BaseWidgetUtils.createWrappedLabel( maskedAttributesComposite, maskedAttributesHelp, 1 );
+
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group rotateGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
             "Log File Rotation", 1 );
@@ -141,6 +158,8 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, logFileCountText.getText() );
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, logFileSizeText.getText() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES, maskedAttributesText.getText() );
         return true;
     }
 
@@ -156,6 +175,8 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT ) );
         logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE ) );
+        maskedAttributesText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES ) );
         super.performDefaults();
     }
 

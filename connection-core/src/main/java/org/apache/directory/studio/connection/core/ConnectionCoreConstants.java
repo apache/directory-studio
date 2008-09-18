@@ -62,4 +62,7 @@ public interface ConnectionCoreConstants
     /** The constant used to identify the "search log file size" preference  */
     public static final String PREFERENCE_SEARCHLOGS_FILE_SIZE = "searchLogsFileSize";
 
+    /** The constant used to identify the "masked attributes" preference  */
+    public static final String PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES = "modificationLogsMaskedAttributes";
+
 }
