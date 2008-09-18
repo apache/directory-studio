@@ -72,6 +72,8 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
+import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
+import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 
 
 /**
@@ -104,6 +106,46 @@ public class LdifModificationLogger implements IJndiLogger
      */
     public LdifModificationLogger()
     {
+        ConnectionCorePlugin.getDefault().getPluginPreferences().addPropertyChangeListener(
+            new IPropertyChangeListener()
+            {
+                public void propertyChange( PropertyChangeEvent event )
+                {
+                    if ( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT.equals( event.getProperty() )
+                        || ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE.equals( event.getProperty() ) )
+                    {
+                        // dispose all loggers/handlers
+                        for ( Logger logger : loggers.values() )
+                        {
+                            for ( Handler handler : logger.getHandlers() )
+                            {
+                                handler.close();
+                            }
+                        }
+
+                        // delete files with index greater than new file count
+                        for ( FileHandler fh : fileHandlers.values() )
+                        {
+                            try
+                            {
+                                File[] logFiles = getLogFiles( fh );
+                                for ( int i = getFileCount(); i < logFiles.length; i++ )
+                                {
+                                    if ( logFiles[i] != null && logFiles[i].exists() )
+                                    {
+                                        logFiles[i].delete();
+                                    }
+                                }
+                            }
+                            catch ( Exception e )
+                            {
+                            }
+                        }
+
+                        loggers.clear();
+                    }
+                }
+            } );
     }
 
 
@@ -119,7 +161,7 @@ public class LdifModificationLogger implements IJndiLogger
         String logfileName = ConnectionManager.getModificationLogFileName( connection );
         try
         {
-            FileHandler fileHandler = new FileHandler( logfileName, 100000, 10, true );
+            FileHandler fileHandler = new FileHandler( logfileName, getFileSizeInKb() * 1000, getFileCount(), true );
             fileHandlers.put( connection.getId(), fileHandler );
             fileHandler.setFormatter( new Formatter()
             {
@@ -402,7 +444,7 @@ public class LdifModificationLogger implements IJndiLogger
         // don't log searches 
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -411,6 +453,7 @@ public class LdifModificationLogger implements IJndiLogger
     {
         // don't log searches 
     }
+
 
     /**
      * {@inheritDoc}
@@ -523,6 +566,30 @@ public class LdifModificationLogger implements IJndiLogger
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE );
+    }
+
+
+    /**
+     * Gets the number of log files to use.
+     * 
+     * @return the number of log files to use
+     */
+    private int getFileCount()
+    {
+        return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT );
+    }
+
+
+    /**
+     * Gets the maximum file size in kB.
+     * 
+     * @return the maximum file size in kB
+     */
+    private int getFileSizeInKb()
+    {
+        return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE );
     }
 
 

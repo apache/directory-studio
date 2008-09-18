@@ -28,7 +28,6 @@ import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.SearchLogsViewActionProxy;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
@@ -60,6 +59,9 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
     /** The Constant refreshAction. */
     private static final String clearAction = "clearAction";
 
+    /** The Constant exportAction. */
+    private static final String exportAction = "exportAction";
+
     /** The enable search request logs action. */
     private EnableSearchRequestLogsAction enableSearchRequestLogsAction;
 
@@ -74,9 +76,9 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
 
 
     /**
-     * Creates a new instance of ModificationLogsViewActionGroup.
+     * Creates a new instance of SearchLogsViewActionGroup.
      *
-     * @param view the modification logs view
+     * @param view the search logs view
      */
     public SearchLogsViewActionGroup( SearchLogsView view )
     {
@@ -84,14 +86,11 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
         SourceViewer viewer = this.view.getMainWidget().getSourceViewer();
 
         searchLogsViewActionMap = new HashMap<String, SearchLogsViewActionProxy>();
-        searchLogsViewActionMap.put( olderAction, new SearchLogsViewActionProxy( viewer, new OlderAction(
-            view ) ) );
-        searchLogsViewActionMap.put( newerAction, new SearchLogsViewActionProxy( viewer, new NewerAction(
-            view ) ) );
-        searchLogsViewActionMap.put( refreshAction, new SearchLogsViewActionProxy( viewer,
-            new RefreshAction( view ) ) );
-        searchLogsViewActionMap.put( clearAction, new SearchLogsViewActionProxy( viewer, new ClearAction(
-            view ) ) );
+        searchLogsViewActionMap.put( olderAction, new SearchLogsViewActionProxy( viewer, new OlderAction( view ) ) );
+        searchLogsViewActionMap.put( newerAction, new SearchLogsViewActionProxy( viewer, new NewerAction( view ) ) );
+        searchLogsViewActionMap.put( refreshAction, new SearchLogsViewActionProxy( viewer, new RefreshAction( view ) ) );
+        searchLogsViewActionMap.put( clearAction, new SearchLogsViewActionProxy( viewer, new ClearAction( view ) ) );
+        searchLogsViewActionMap.put( exportAction, new SearchLogsViewActionProxy( viewer, new ExportAction() ) );
         enableSearchRequestLogsAction = new EnableSearchRequestLogsAction();
         enableSearchResultEntryLogsAction = new EnableSearchResultEntryLogsAction();
         openSearchLogsPreferencePageAction = new OpenSearchLogsPreferencePageAction();
@@ -130,11 +129,13 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
     public void fillActionBars( IActionBars actionBars )
     {
         // Tool Bar
-        actionBars.getToolBarManager().add( ( IAction ) searchLogsViewActionMap.get( clearAction ) );
-        actionBars.getToolBarManager().add( ( IAction ) searchLogsViewActionMap.get( refreshAction ) );
+        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( clearAction ) );
+        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( refreshAction ) );
         actionBars.getToolBarManager().add( new Separator() );
-        actionBars.getToolBarManager().add( ( IAction ) searchLogsViewActionMap.get( olderAction ) );
-        actionBars.getToolBarManager().add( ( IAction ) searchLogsViewActionMap.get( newerAction ) );
+        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( olderAction ) );
+        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( newerAction ) );
+        actionBars.getToolBarManager().add( new Separator() );
+        actionBars.getToolBarManager().add( searchLogsViewActionMap.get( exportAction ) );
 
         // Menu Bar
         actionBars.getMenuManager().add( enableSearchRequestLogsAction );

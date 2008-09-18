@@ -28,7 +28,6 @@ import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.ModificationLogsViewActionProxy;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
@@ -57,8 +56,11 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
     /** The Constant refreshAction. */
     private static final String refreshAction = "refreshAction";
 
-    /** The Constant refreshAction. */
+    /** The Constant clearAction. */
     private static final String clearAction = "clearAction";
+
+    /** The Constant exportAction. */
+    private static final String exportAction = "exportAction";
 
     /** The enable modification logs action. */
     private EnableModificationLogsAction enableModificationLogsAction;
@@ -89,6 +91,8 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
             new RefreshAction( view ) ) );
         modificationLogsViewActionMap.put( clearAction, new ModificationLogsViewActionProxy( viewer, new ClearAction(
             view ) ) );
+        modificationLogsViewActionMap.put( exportAction, new ModificationLogsViewActionProxy( viewer,
+            new ExportAction() ) );
         enableModificationLogsAction = new EnableModificationLogsAction();
         openModificationLogsPreferencePageAction = new OpenModificationLogsPreferencePageAction();
     }
@@ -125,11 +129,13 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
     public void fillActionBars( IActionBars actionBars )
     {
         // Tool Bar
-        actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( clearAction ) );
-        actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( refreshAction ) );
+        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( clearAction ) );
+        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( refreshAction ) );
         actionBars.getToolBarManager().add( new Separator() );
-        actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( olderAction ) );
-        actionBars.getToolBarManager().add( ( IAction ) modificationLogsViewActionMap.get( newerAction ) );
+        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( olderAction ) );
+        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( newerAction ) );
+        actionBars.getToolBarManager().add( new Separator() );
+        actionBars.getToolBarManager().add( modificationLogsViewActionMap.get( exportAction ) );
 
         // Menu Bar
         actionBars.getMenuManager().add( enableModificationLogsAction );

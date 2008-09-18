@@ -26,9 +26,13 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -44,6 +48,8 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
 {
 
     private Button enableModificationLogging;
+    private Text logFileCountText;
+    private Text logFileSizeText;
 
 
     /**
@@ -78,6 +84,47 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
         enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
 
+        Group rotateGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            "Log File Rotation", 1 );
+        Composite rotateComposite = BaseWidgetUtils.createColumnContainer( rotateGroup, 5, 1 );
+        BaseWidgetUtils.createLabel( rotateComposite, "Use ", 1 );
+        logFileCountText = BaseWidgetUtils.createText( rotateComposite, "", 3, 1 );
+        logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT ) );
+        logFileCountText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) )
+                {
+                    e.doit = false;
+                }
+                if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+        BaseWidgetUtils.createLabel( rotateComposite, " log files each with ", 1 );
+        logFileSizeText = BaseWidgetUtils.createText( rotateComposite, "", 5, 1 );
+        logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE ) );
+        logFileSizeText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                if ( !e.text.matches( "[0-9]*" ) )
+                {
+                    e.doit = false;
+                }
+                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
+        BaseWidgetUtils.createLabel( rotateComposite, " kB.", 1 );
+
         applyDialogFont( composite );
         return composite;
     }
@@ -90,6 +137,10 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, enableModificationLogging.getSelection() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, logFileCountText.getText() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, logFileSizeText.getText() );
         return true;
     }
 
@@ -101,6 +152,10 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
     {
         enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
             .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+        logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT ) );
+        logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE ) );
         super.performDefaults();
     }
 

@@ -39,6 +39,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -118,9 +119,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
     {
         // determine the currently selected entry
         Object o = selection.getFirstElement();
-        
+
         isNewContextEntry = isNewContextEntry( selection );
-        if(isNewContextEntry)
+        if ( isNewContextEntry )
         {
             setWindowTitle( "New Context Entry" );
         }
@@ -128,7 +129,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
         {
             setWindowTitle( "New Entry" );
         }
-        
+
         if ( o instanceof IEntry )
         {
             selectedEntry = ( ( IEntry ) o );
@@ -411,11 +412,11 @@ public class NewEntryWizard extends Wizard implements INewWizard
      * 
      * @return true, if is new context entry
      */
-    public static boolean isNewContextEntry( IStructuredSelection selection )
+    public static boolean isNewContextEntry( ISelection selection )
     {
-        if ( selection != null )
+        if ( selection != null && selection instanceof IStructuredSelection )
         {
-            Object object = selection.getFirstElement();
+            Object object = ( ( IStructuredSelection ) selection ).getFirstElement();
 
             if ( object instanceof IRootDSE || object instanceof BrowserCategory )
             {

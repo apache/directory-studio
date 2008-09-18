@@ -103,8 +103,7 @@ public class NewEntryAction extends BrowserAction
      */
     public String getText()
     {
-        boolean isNewContextEntry = NewEntryWizard.isNewContextEntry( ( IStructuredSelection ) window
-            .getSelectionService().getSelection() );
+        boolean isNewContextEntry = NewEntryWizard.isNewContextEntry( window.getSelectionService().getSelection() );
         return isNewContextEntry ? "New Context Entry..." : "New Entry...";
     }
 

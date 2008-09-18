@@ -46,10 +46,14 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
 
         // Modification Logs
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, 10 );
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, 100 );
 
         // Search Logs
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true );
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false );
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, 10 );
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, 100 );
     }
 
 }

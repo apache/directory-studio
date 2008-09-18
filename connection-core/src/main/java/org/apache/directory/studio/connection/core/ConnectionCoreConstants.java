@@ -44,10 +44,22 @@ public interface ConnectionCoreConstants
     /** The constant used to identify the "enable modification logs" preference  */
     public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable";
 
+    /** The constant used to identify the "modification log file count" preference  */
+    public static final String PREFERENCE_MODIFICATIONLOGS_FILE_COUNT = "modificationLogsFileCount";
+
+    /** The constant used to identify the "modification log file size" preference  */
+    public static final String PREFERENCE_MODIFICATIONLOGS_FILE_SIZE = "modificationLogsFileSize";
+
     /** The constant used to identify the "enable search request logs" preference  */
     public static final String PREFERENCE_SEARCHREQUESTLOGS_ENABLE = "searchRequestLogsEnable";
 
     /** The constant used to identify the "enable search result entry logs" preference  */
     public static final String PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE = "searchResultEntryLogsEnable";
+
+    /** The constant used to identify the "search log file count" preference  */
+    public static final String PREFERENCE_SEARCHLOGS_FILE_COUNT = "searchLogsFileCount";
+
+    /** The constant used to identify the "search log file size" preference  */
+    public static final String PREFERENCE_SEARCHLOGS_FILE_SIZE = "searchLogsFileSize";
 
 }
