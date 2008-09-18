@@ -21,7 +21,8 @@ body
 {
 	background-image : url("../graphics/rootpage/welcomebckgrd.png");
 	background-repeat: no-repeat;
-	background-position: center center;	background-attachment: fixed;
+	background-position: center center;
+	background-attachment: fixed;
 	background-color: #60a9cc;
 }
 

@@ -21,7 +21,8 @@ body
 {
 	background-image : url("../graphics/contentpages/background.gif");
 	background-repeat: repeat-x;
-	background-position: top left;	background-attachment: fixed;
+	background-position: top left;
+	background-attachment: fixed;
 	background-color: #FFFFFF;
 	color : #4D4D4D;
 	font-family : Arial, sans-serif;
