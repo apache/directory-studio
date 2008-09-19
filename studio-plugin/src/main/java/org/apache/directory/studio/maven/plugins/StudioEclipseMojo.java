@@ -83,6 +83,11 @@ public class StudioEclipseMojo extends AbstractStudioMojo
      */
     public final static String ENTRY_BUNDLE_SYMBOLICNAME = "Bundle-SymbolicName:";
 
+    /**
+     * Bundle version: updated with the project version.
+     */
+    public final static String ENTRY_BUNDLE_VERSION = "Bundle-Version:";
+
 
     public void execute() throws MojoExecutionException
     {
@@ -106,9 +111,12 @@ public class StudioEclipseMojo extends AbstractStudioMojo
                 removeMavenEclipseXml();
                 removeDotExternalToolBuilders();
 
-            } catch (FileNotFoundException e)
+            }
+            catch ( FileNotFoundException e )
             {
-                getLog().error("Please run eclipse:eclipse first to create .classpath, e.g. mvn eclipse:eclipse studio:eclipse.", e);
+                getLog().error(
+                    "Please run eclipse:eclipse first to create .classpath, e.g. mvn eclipse:eclipse studio:eclipse.",
+                    e );
             }
             catch ( Exception e )
             {
@@ -166,8 +174,8 @@ public class StudioEclipseMojo extends AbstractStudioMojo
         {
             if ( !artifact.getScope().equalsIgnoreCase( "test" ) )
             {
-                bundleClasspath.append( "," ).append( NEWLINE ).append( " " ).append( libraryPath ).append(
-                    '/' ).append( artifact.getFile().getName() );
+                bundleClasspath.append( "," ).append( NEWLINE ).append( " " ).append( libraryPath ).append( '/' )
+                    .append( artifact.getFile().getName() );
             }
         }
 
@@ -200,6 +208,14 @@ public class StudioEclipseMojo extends AbstractStudioMojo
                     manifestSb.append( " " );
                     manifestSb.append( maven2OsgiConverter.getBundleSymbolicName( project.getArtifact() ) );
                     manifestSb.append( ";singleton:=true" );
+                    manifestSb.append( NEWLINE );
+                }
+                else if ( name.equalsIgnoreCase( ENTRY_BUNDLE_VERSION ) )
+                {
+                    // get OSGI Bundle Version
+                    manifestSb.append( ENTRY_BUNDLE_VERSION );
+                    manifestSb.append( " " );
+                    manifestSb.append( maven2OsgiConverter.getVersion( project.getArtifact() ) );
                     manifestSb.append( NEWLINE );
                 }
                 else
@@ -252,16 +268,16 @@ public class StudioEclipseMojo extends AbstractStudioMojo
             {
                 entry = new Xpp3Dom( "classpathentry" );
                 entry.setAttribute( "kind", "lib" );
-                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( '/' )
-                    .append( artifact.getFile().getName() ).toString() );
+                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( '/' ).append(
+                    artifact.getFile().getName() ).toString() );
             }
             else
             {
                 entry = new Xpp3Dom( "classpathentry" );
                 entry.setAttribute( "exported", "true" );
                 entry.setAttribute( "kind", "lib" );
-                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( '/' )
-                    .append( artifact.getFile().getName() ).toString() );
+                entry.setAttribute( "path", ( new StringBuilder() ).append( libraryPath ).append( '/' ).append(
+                    artifact.getFile().getName() ).toString() );
             }
             dom.addChild( entry );
         }
