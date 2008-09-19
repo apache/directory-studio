@@ -49,7 +49,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
  * <p>
  * <ul>
  * <li>Copy artifacts nonscoped "provided" to ${basedir}/lib</li>
- * <li>Add artifacts nonscoped "provided" to Bundle-ClassPath ind MANIFEST.MF</li>
+ * <li>Add artifacts nonscoped "provided" to Bundle-ClassPath in MANIFEST.MF</li>
  * <li>Adapt ${basedir}/.classpath for artifacts nonscoped "provided"</li>
  * </ul>
  * </p>
