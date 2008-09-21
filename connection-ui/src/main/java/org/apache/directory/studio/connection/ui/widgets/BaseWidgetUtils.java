@@ -121,7 +121,7 @@ public class BaseWidgetUtils
     public static Label createWrappedLabel( Composite parent, String text, int span )
     {
         Label l = new Label( parent, SWT.WRAP );
-        GridData gd = new GridData( GridData.HORIZONTAL_ALIGN_FILL );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = span;
         gd.widthHint = 100;
         l.setLayoutData( gd );

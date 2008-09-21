@@ -52,8 +52,10 @@ import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
@@ -69,7 +71,10 @@ import org.apache.directory.studio.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.studio.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
@@ -79,7 +84,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ImportDsmlJob extends AbstractEclipseJob
+public class ImportDsmlJob extends AbstractNotificationJob
 {
     /** The connection to use */
     private IBrowserConnection browserConnection;
@@ -129,8 +134,8 @@ public class ImportDsmlJob extends AbstractEclipseJob
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+    /**
+     * {@inheritDoc}
      */
     protected Connection[] getConnections()
     {
@@ -139,8 +144,8 @@ public class ImportDsmlJob extends AbstractEclipseJob
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+    /**
+     * {@inheritDoc}
      */
     protected Object[] getLockedObjects()
     {
@@ -150,10 +155,10 @@ public class ImportDsmlJob extends AbstractEclipseJob
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#executeAsyncJob(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor)
+    /**
+     * {@inheritDoc}
      */
-    protected void executeAsyncJob( StudioProgressMonitor monitor )
+    protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
         monitor.beginTask( BrowserCoreMessages.jobs__import_dsml_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
@@ -314,7 +319,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
     {
         // Executing the add request
         Entry entry = request.getEntry();
-        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( entry.getDn().toString(),
+        browserConnection.getConnection().getJNDIConnectionWrapper().createEntry( entry.getDn().getUpName(),
             AttributeUtils.toAttributes( entry ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         // Creating the response
@@ -324,6 +329,20 @@ public class ImportDsmlJob extends AbstractEclipseJob
             addResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.ADD_REQUEST ) );
             addResponseDsml.getLdapResult().setMatchedDN( entry.getDn() );
             batchResponseDsml.addResponse( addResponseDsml );
+        }
+
+        // Update cached entries
+        LdapDN dn = entry.getDn();
+        IEntry e = browserConnection.getEntryFromCache( dn );
+        LdapDN parentDn = DnUtils.getParent( dn );
+        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn ) : null;
+        if ( e != null )
+        {
+            e.setAttributesInitialized( false );
+        }
+        if ( parentEntry != null )
+        {
+            parentEntry.setChildrenInitialized( false );
         }
     }
 
@@ -367,7 +386,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         StudioProgressMonitor monitor )
     {
         // Executing the del request
-        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( request.getEntry().toString(),
+        browserConnection.getConnection().getJNDIConnectionWrapper().deleteEntry( request.getEntry().getUpName(),
             ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         // Creating the response
@@ -377,6 +396,22 @@ public class ImportDsmlJob extends AbstractEclipseJob
             delResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.DEL_REQUEST ) );
             delResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
             batchResponseDsml.addResponse( delResponseDsml );
+        }
+        
+        // Update cached entries
+        LdapDN dn = request.getEntry();
+        IEntry e = browserConnection.getEntryFromCache( dn );
+        LdapDN parentDn = DnUtils.getParent( dn );
+        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn )
+            : null;
+        if ( e != null )
+        {
+            e.setAttributesInitialized( false );
+            browserConnection.uncacheEntryRecursive( e );
+        }
+        if ( parentEntry != null )
+        {
+            parentEntry.setChildrenInitialized( false );
         }
     }
 
@@ -428,7 +463,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         }
 
         // Executing the modify request
-        browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( request.getObject().toString(),
+        browserConnection.getConnection().getJNDIConnectionWrapper().modifyEntry( request.getObject().getUpName(),
             modificationItems.toArray( new ModificationItem[0] ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         // Creating the response
@@ -438,6 +473,13 @@ public class ImportDsmlJob extends AbstractEclipseJob
             modifyResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MODIFY_REQUEST ) );
             modifyResponseDsml.getLdapResult().setMatchedDN( request.getObject() );
             batchResponseDsml.addResponse( modifyResponseDsml );
+        }
+        
+        LdapDN dn = request.getObject();
+        IEntry e = browserConnection.getEntryFromCache( dn );
+        if ( e != null )
+        {
+            e.setAttributesInitialized( false );
         }
     }
 
@@ -478,8 +520,8 @@ public class ImportDsmlJob extends AbstractEclipseJob
         StudioProgressMonitor monitor )
     {
         // Executing the modify DN request
-        browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( request.getEntry().toString(),
-            request.getNewRDN().toString(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null, monitor,
+        browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( request.getEntry().getUpName(),
+            request.getNewRDN().getUpName(), request.isDeleteOldRDN(), ReferralHandlingMethod.IGNORE, null, monitor,
             null );
 
         // Creating the response
@@ -489,6 +531,31 @@ public class ImportDsmlJob extends AbstractEclipseJob
             modDNResponseDsml.setLdapResult( getLdapResult( monitor, MessageTypeEnum.MOD_DN_REQUEST ) );
             modDNResponseDsml.getLdapResult().setMatchedDN( request.getEntry() );
             batchResponseDsml.addResponse( modDNResponseDsml );
+        }
+        
+        // Update cached entries
+        LdapDN dn = request.getEntry();
+        IEntry e = browserConnection.getEntryFromCache( dn );
+        LdapDN parentDn = DnUtils.getParent( dn );
+        IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn )
+            : null;
+        if ( e != null )
+        {
+            e.setAttributesInitialized( false );
+            browserConnection.uncacheEntryRecursive( e );
+        }
+        if ( parentEntry != null )
+        {
+            parentEntry.setChildrenInitialized( false );
+        }
+        if ( request.getNewSuperior() != null )
+        {
+            LdapDN newSuperiorDn = request.getNewSuperior();
+            IEntry newSuperiorEntry = browserConnection.getEntryFromCache( newSuperiorDn );
+            if ( newSuperiorEntry != null )
+            {
+                newSuperiorEntry.setChildrenInitialized( false );
+            }
         }
     }
 
@@ -511,7 +578,7 @@ public class ImportDsmlJob extends AbstractEclipseJob
         {
             // [Optimization] We're only searching if we need to produce a response
             StudioNamingEnumeration ne = browserConnection.getConnection().getJNDIConnectionWrapper().search(
-                request.getBaseObject().toString(), request.getFilter().toString(), getSearchControls( request ),
+                request.getBaseObject().getUpName(), request.getFilter().toString(), getSearchControls( request ),
                 getAliasDereferencingMethod( request ), ReferralHandlingMethod.IGNORE, null, monitor, null );
 
             SearchParameter sp = new SearchParameter();
@@ -637,11 +704,21 @@ public class ImportDsmlJob extends AbstractEclipseJob
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+    /**
+     * {@inheritDoc}
      */
     protected String getErrorMessage()
     {
         return BrowserCoreMessages.jobs__import_dsml_error;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected void runNotification()
+    {
+        EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
+    }
+
 }

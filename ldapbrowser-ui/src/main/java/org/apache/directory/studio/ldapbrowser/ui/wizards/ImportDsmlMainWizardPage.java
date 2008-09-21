@@ -105,7 +105,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         // DSML file
-        BaseWidgetUtils.createLabel( composite, "DSML file:", 1 );
+        BaseWidgetUtils.createLabel( composite, "DSML File:", 1 );
         dsmlFileBrowserWidget = new FileBrowserWidget( "Select a DSML File", EXTENSIONS, FileBrowserWidget.TYPE_OPEN );
         dsmlFileBrowserWidget.createWidget( composite );
         dsmlFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()

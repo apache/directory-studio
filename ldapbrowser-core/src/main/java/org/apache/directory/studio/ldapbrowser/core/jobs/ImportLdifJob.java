@@ -142,7 +142,7 @@ public class ImportLdifJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getConnections()
+     * {@inheritDoc}
      */
     protected Connection[] getConnections()
     {
@@ -152,7 +152,7 @@ public class ImportLdifJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getLockedObjects()
+     * {@inheritDoc}
      */
     protected Object[] getLockedObjects()
     {
@@ -163,7 +163,7 @@ public class ImportLdifJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#executeNotificationJob(org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor)
+     * {@inheritDoc}
      */
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
@@ -215,7 +215,7 @@ public class ImportLdifJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractEclipseJob#getErrorMessage()
+     * {@inheritDoc}
      */
     protected String getErrorMessage()
     {
@@ -224,7 +224,7 @@ public class ImportLdifJob extends AbstractNotificationJob
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.core.jobs.AbstractNotificationJob#runNotification()
+     * {@inheritDoc}
      */
     protected void runNotification()
     {

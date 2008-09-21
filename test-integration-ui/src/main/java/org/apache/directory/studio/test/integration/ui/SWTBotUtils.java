@@ -85,7 +85,7 @@ public class SWTBotUtils
         {
             // no 'Connections' view, continue to open the LDAP perspective
         }
-        
+
         // open "Open Perspective" dialog
         SWTBotMenu windowMenu = eBot.menu( "Window" );
         windowMenu.click();
@@ -116,7 +116,7 @@ public class SWTBotUtils
                 return "Could not find widget";
             }
         } );
-        
+
         // close welcome view, if it is there
         try
         {

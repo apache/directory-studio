@@ -75,7 +75,7 @@ public class DelRequestDsml extends AbstractRequestDsml
         // DN
         if ( request.getEntry() != null )
         {
-            element.addAttribute( "dn", request.getEntry().toString() );
+            element.addAttribute( "dn", request.getEntry().getUpName() );
         }
 
         return element;

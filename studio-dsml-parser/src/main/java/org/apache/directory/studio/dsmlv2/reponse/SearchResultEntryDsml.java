@@ -78,7 +78,7 @@ public class SearchResultEntryDsml extends LdapResponseDecorator implements Dsml
     {
         Element element = root.addElement( "searchResultEntry" );
         SearchResultEntry searchResultEntry = ( SearchResultEntry ) instance;
-        element.addAttribute( "dn", searchResultEntry.getObjectName().toString() );
+        element.addAttribute( "dn", searchResultEntry.getObjectName().getUpName() );
 
         Entry entry = searchResultEntry.getEntry();
         for ( EntryAttribute attribute : entry )

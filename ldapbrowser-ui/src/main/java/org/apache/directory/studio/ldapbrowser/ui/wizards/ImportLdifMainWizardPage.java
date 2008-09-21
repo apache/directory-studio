@@ -194,7 +194,7 @@ public class ImportLdifMainWizardPage extends WizardPage
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         // LDIF file
-        BaseWidgetUtils.createLabel( composite, "LDIF file:", 1 );
+        BaseWidgetUtils.createLabel( composite, "LDIF File:", 1 );
         ldifFileBrowserWidget = new FileBrowserWidget( "Select LDIF File", EXTENSIONS, FileBrowserWidget.TYPE_OPEN );
         ldifFileBrowserWidget.createWidget( composite );
         ldifFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
