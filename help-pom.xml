@@ -295,6 +295,7 @@
                   <outputproperty name="encoding" value="iso8859_1" />
                   <outputproperty name="indent" value="es" />
                 </xslt>
+                <touch file="timestamp" />
               </tasks>
             </configuration>
             <goals>

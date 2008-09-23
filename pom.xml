@@ -103,6 +103,72 @@
         <maven.test.skip>true</maven.test.skip>
       </properties>
     </profile>
+    <profile>
+      <id>schemaeditor-help</id>
+      <activation>
+        <file>
+          <missing>schemaeditor-help/timestamp</missing>
+        </file>
+      </activation>
+      <modules>
+        <module>schemaeditor-help</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>ldapbrowser-help</id>
+      <activation>
+        <file>
+          <missing>ldapbrowser-help/timestamp</missing>
+        </file>
+      </activation>
+      <modules>
+        <module>ldapbrowser-help</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>ldifeditor-help</id>
+      <activation>
+        <file>
+          <missing>ldifeditor-help/timestamp</missing>
+        </file>
+      </activation>
+      <modules>
+        <module>ldifeditor-help</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>apacheds-configuration-help</id>
+      <activation>
+        <file>
+          <missing>apacheds-configuration-help/timestamp</missing>
+        </file>
+      </activation>
+      <modules>
+        <module>apacheds-configuration-help</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>apacheds-help</id>
+      <activation>
+        <file>
+          <missing>apacheds-help/timestamp</missing>
+        </file>
+      </activation>
+      <modules>
+        <module>apacheds-help</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>rcp-help</id>
+      <activation>
+        <file>
+          <missing>rcp-help/timestamp</missing>
+        </file>
+      </activation>
+      <modules>
+        <module>rcp-help</module>
+      </modules>
+    </profile>
   </profiles>
 
   <dependencyManagement>
@@ -981,22 +1047,16 @@
     <module>aciitemeditor</module>
     <module>schemaeditor</module>
     <module>schemaeditor-feature</module>
-    <module>schemaeditor-help</module>
     <module>rcp</module>
     <module>rcp-feature</module>
-    <module>rcp-help</module>
     <module>ldifeditor</module>
     <module>ldifeditor-feature</module>
-    <module>ldifeditor-help</module>
     <module>ldapbrowser-ui</module>
     <module>ldapbrowser-feature</module>
-    <module>ldapbrowser-help</module>
     <module>apacheds-configuration</module>
     <module>apacheds-configuration-feature</module>
-    <module>apacheds-configuration-help</module>
     <module>apacheds-launcher</module>
     <module>apacheds</module>
-    <module>apacheds-help</module>
     <module>apacheds-feature</module>
     <module>jars</module>
     <module>test-integration-core</module>
@@ -1108,6 +1168,21 @@
             -->
           </dependencies>
         </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>.</directory>
+                  <includes>
+                    <include>**/timestamp</include>
+                  </includes>
+                  <followSymlinks>false</followSymlinks>
+                </fileset>
+              </filesets>
+            </configuration>
+          </plugin>
       </plugins>
     </pluginManagement>
 
