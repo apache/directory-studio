@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Apache Directory Studio RCP Help
-Bundle-SymbolicName: org.apache.directory.studio.rcp.help;singleton:=true
-Bundle-Version: 1.3.0.SNAPSHOT
-Bundle-Localization: plugin
-Eclipse-LazyStart: true
-Bundle-Vendor: Apache Software Foundation
