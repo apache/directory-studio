@@ -91,8 +91,9 @@
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
             <Embed-Directory>lib</Embed-Directory>
             <Embed-StripGroup>true</Embed-StripGroup>
+            <Embed-Transitive>true</Embed-Transitive>
             <Export-Package>!org.apache.commons.lang.enum,*</Export-Package>
-            <Import-Package></Import-Package><Embed-Transitive>true</Embed-Transitive>  
+            <Import-Package></Import-Package>  
           </instructions>
         </configuration>
         <executions>
