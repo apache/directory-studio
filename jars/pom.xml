@@ -97,7 +97,7 @@
         </configuration>
         <executions>
           <execution>
-            <phase>generate-resources</phase>
+            <phase>process-classes</phase>
             <goals>    
               <goal>manifest</goal>
             </goals>   
