@@ -105,6 +105,14 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>maven-studio-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+          <createManifest>true</createManifest>
+        </configuration>
+      </plugin>
       <!-- No tests to run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

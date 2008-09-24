@@ -257,6 +257,7 @@
         <artifactId>maven-studio-plugin</artifactId>
         <configuration>
           <skip>false</skip>
+          <createManifest>true</createManifest>
         </configuration>
         <executions>
           <execution>
