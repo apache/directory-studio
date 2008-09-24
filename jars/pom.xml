@@ -76,6 +76,34 @@
           </archive>
         </configuration>
       </plugin>
+      <!-- MANIFEST.MF Generation -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>1.4.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>            
+            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Embed-Directory>lib</Embed-Directory>
+            <Embed-StripGroup>true</Embed-StripGroup>
+            <Export-Package>!org.apache.commons.lang.enum,*</Export-Package>
+            <Import-Package></Import-Package><Embed-Transitive>true</Embed-Transitive>  
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>    
+              <goal>manifest</goal>
+            </goals>   
+          </execution>
+        </executions>
+      </plugin>
       <!-- No tests to run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
