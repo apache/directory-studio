@@ -113,7 +113,7 @@
  org.apache.directory.studio.connection.core,
  org.eclipse.ui.workbench.texteditor
             </Require-Bundle>
-            <Export-Package>org.apache.directory.studio.connection.ui.*</Export-Package>
+            <Export-Package>org.apache.directory.studio.*</Export-Package>
             <Import-Package>!</Import-Package>
             <Private-Package>!</Private-Package>
           </instructions>
