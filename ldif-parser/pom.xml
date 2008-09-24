@@ -85,6 +85,32 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
       </plugin>
+      <!-- MANIFEST.MF Generation -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>            
+            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Require-Bundle>org.apache.directory.studio.jars</Require-Bundle>
+            <Export-Package>org.apache.directory.studio.ldifparser.*</Export-Package>
+            <Import-Package>!</Import-Package>
+            <Private-Package>!</Private-Package>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
