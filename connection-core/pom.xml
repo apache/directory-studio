@@ -88,6 +88,37 @@
           </archive>
         </configuration>
       </plugin>
+     <!-- MANIFEST.MF Generation -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>            
+            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Eclipse-LazyStart>true</Eclipse-LazyStart>
+            <Bundle-Activator>org.apache.directory.studio.connection.core.ConnectionCorePlugin</Bundle-Activator>
+            <Require-Bundle>org.eclipse.core.runtime,
+ org.apache.directory.studio.jars,
+ org.apache.directory.studio.ldifparser
+            </Require-Bundle>
+            <Export-Package>org.apache.directory.studio.connection.core.*</Export-Package>
+            <Import-Package>!</Import-Package>
+            <Private-Package>!</Private-Package>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <!-- No tests to run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
