@@ -204,6 +204,7 @@
         <artifactId>maven-studio-plugin</artifactId>
         <configuration>
           <skip>false</skip>
+          <createManifest>true</createManifest>
         </configuration>
         <executions>
           <execution>
@@ -343,6 +344,18 @@
           </execution>
         </executions>
       </plugin>
+
+<!-- Remove if above config of studio plugin is needed with the goal prepare-jar-package
+      <plugin>
+        <groupId>org.apache.directory.studio</groupId>
+        <artifactId>maven-studio-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+          <createManifest>true</createManifest>
+        </configuration>
+      </plugin>
+-->
+
       <!-- No tests to run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
