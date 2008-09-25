@@ -269,6 +269,40 @@
           </archive>
         </configuration>
       </plugin>
+      <!-- MANIFEST.MF Generation -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>1.4.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <manifestLocation>META-INF</manifestLocation>
+          <instructions>            
+            <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
+            <Bundle-Localization>plugin</Bundle-Localization>
+            <Require-Bundle>org.eclipse.core.runtime,
+ org.apache.directory.studio.jars,
+ org.apache.directory.studio.connection.core,
+ org.junit
+            </Require-Bundle>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Embed-Directory>lib</Embed-Directory>
+            <Embed-StripGroup>true</Embed-StripGroup>
+            <Embed-Transitive>true</Embed-Transitive>  
+            <Export-Package>!*</Export-Package>
+            <Import-Package>!</Import-Package>
+            <Private-Package>!</Private-Package>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-classes</phase>
+            <goals>    
+              <goal>manifest</goal>
+            </goals>   
+          </execution>
+        </executions>
+      </plugin>
       <!-- No tests to run -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
