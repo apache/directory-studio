@@ -51,8 +51,24 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
             <addMavenDescriptor>false</addMavenDescriptor>
+            <manifest>
+              <packageName>org.apache.directory.studio.dsmlv2.*</packageName>
+            </manifest>
+            <manifestSections>
+              <manifestSection>
+                <name>org.apache.directory.studio.dsmlv2.*</name>
+                <manifestEntries>
+                  <Bundle-ClassPath>.</Bundle-ClassPath>
+                  <Implementation-Title>org.apache.directory.studio.dsmlv2.*</Implementation-Title>
+                  <Implementation-Version>${pom.version}</Implementation-Version>
+                  <Implementation-Vendor>${pom.organization.name}</Implementation-Vendor>
+                  <Specification-Title>${pom.artifactId}</Specification-Title>
+                  <Specification-Version>${pom.version}</Specification-Version>
+                  <Specification-Vendor>${pom.organization.name}</Specification-Vendor>
+                </manifestEntries>
+              </manifestSection>
+            </manifestSections>
           </archive>
         </configuration>
       </plugin>
