@@ -99,7 +99,7 @@
           </plugin>
           <plugin>
             <groupId>org.apache.directory.studio</groupId>
-            <artifactId>maven-studio-plugin</artifactId>
+            <artifactId>studio-maven-plugin</artifactId>
             <executions>
               <execution>
                 <id>copy-plugins-linux-x86</id>
@@ -261,7 +261,7 @@
           </plugin>
           <plugin>
             <groupId>org.apache.directory.studio</groupId>
-            <artifactId>maven-studio-plugin</artifactId>
+            <artifactId>studio-maven-plugin</artifactId>
             <executions>
               <execution>
                 <id>copy-plugins-linux-x86_64</id>
@@ -423,7 +423,7 @@
           </plugin>
           <plugin>
             <groupId>org.apache.directory.studio</groupId>
-            <artifactId>maven-studio-plugin</artifactId>
+            <artifactId>studio-maven-plugin</artifactId>
             <executions>
               <execution>
                 <id>copy-plugins-linux-ppc</id>
@@ -584,7 +584,7 @@
           </plugin>
           <plugin>
             <groupId>org.apache.directory.studio</groupId>
-            <artifactId>maven-studio-plugin</artifactId>
+            <artifactId>studio-maven-plugin</artifactId>
             <executions>
               <execution>
                 <id>copy-plugins-win32</id>
@@ -807,7 +807,7 @@
           </plugin>
           <plugin>
             <groupId>org.apache.directory.studio</groupId>
-            <artifactId>maven-studio-plugin</artifactId>
+            <artifactId>studio-maven-plugin</artifactId>
             <executions>
               <execution>
                 <id>copy-plugins-macosx</id>
@@ -905,7 +905,7 @@
 
       <plugin>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>maven-studio-plugin</artifactId>
+        <artifactId>studio-maven-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-plugins</id>

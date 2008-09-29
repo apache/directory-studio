@@ -1014,7 +1014,7 @@
     <plugins>
       <plugin>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>maven-studio-plugin</artifactId>
+        <artifactId>studio-maven-plugin</artifactId>
         <configuration>
           <goalPrefix>studio</goalPrefix>
         </configuration>
@@ -1053,7 +1053,7 @@
       <plugins>
         <plugin>
           <groupId>org.apache.directory.studio</groupId>
-          <artifactId>maven-studio-plugin</artifactId>
+          <artifactId>studio-maven-plugin</artifactId>
           <version>1.0.1-SNAPSHOT</version>
         </plugin>
         <plugin>

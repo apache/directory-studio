@@ -118,7 +118,7 @@
       <!-- Deploy all to ${project.build.directory}/updatesite for local use-->
       <plugin>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>maven-studio-plugin</artifactId>
+        <artifactId>studio-maven-plugin</artifactId>
         <executions>
           <execution>
             <id>copy-directory-studio-plugins</id>

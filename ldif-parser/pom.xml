@@ -59,7 +59,7 @@
       </plugin>
       <plugin>
         <groupId>org.apache.directory.studio</groupId>
-        <artifactId>maven-studio-plugin</artifactId>
+        <artifactId>studio-maven-plugin</artifactId>
         <configuration>
           <skip>false</skip>
           <createManifest>true</createManifest>
