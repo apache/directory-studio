@@ -156,5 +156,16 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ALT+RETURN"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="%NewWizards_Category_id"
+            class="org.apache.directory.studio.apacheds.wizards.NewServerWizard"
+            descriptionImage="resources/icons/server_new.gif"
+            icon="resources/icons/server_new.gif"
+            id="%NewWizard_NewServerWizard_id"
+            name="%NewWizard_NewServerWizard_name">
+      </wizard>
+   </extension>
 
 </plugin>
