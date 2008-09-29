@@ -20,10 +20,7 @@
 package org.apache.directory.studio.apacheds.actions;
 
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +30,7 @@ import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
-import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
-import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
 import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
