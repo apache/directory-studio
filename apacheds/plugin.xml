@@ -167,5 +167,21 @@
             name="%NewWizard_NewServerWizard_name">
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="%Perspective_LdapPerspective_id">
+         <view
+               closeable="true"
+               id="%View_ServersView_id"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="%View_ConnectionView_id"
+               showTitle="true"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>
