@@ -29,7 +29,9 @@ import java.util.List;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
 import org.apache.directory.studio.apacheds.ConsolesHandler;
 import org.apache.directory.studio.apacheds.LogMessageConsole;
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
+import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.log4j.net.SocketServer;
@@ -70,7 +72,7 @@ public class LaunchServerJob extends Job
     private Server server;
 
     /** The configuration */
-    private ServerConfigurationV153 configuration;
+    private ServerConfiguration configuration;
 
     /** The launch that will be created when running the server */
     private ILaunch launch;
@@ -93,7 +95,7 @@ public class LaunchServerJob extends Job
      * @param configuration
      *            the configuration
      */
-    public LaunchServerJob( Server server, ServerConfigurationV153 configuration )
+    public LaunchServerJob( Server server, ServerConfiguration configuration )
     {
         super( "" );
         this.server = server;
@@ -168,37 +170,7 @@ public class LaunchServerJob extends Job
                     try
                     {
                         // Getting the port to test
-                        int port = 0;
-                        // LDAP
-                        if ( configuration.isEnableLdap() )
-                        {
-                            port = configuration.getLdapPort();
-                        }
-                        // LDAPS
-                        else if ( configuration.isEnableLdaps() )
-                        {
-                            port = configuration.getLdapsPort();
-                        }
-                        // Kerberos
-                        else if ( configuration.isEnableKerberos() )
-                        {
-                            port = configuration.getKerberosPort();
-                        }
-                        // DNS
-                        else if ( configuration.isEnableDns() )
-                        {
-                            port = configuration.getDnsPort();
-                        }
-                        // NTP
-                        else if ( configuration.isEnableNtp() )
-                        {
-                            port = configuration.getNtpPort();
-                        }
-                        // ChangePassword
-                        else if ( configuration.isEnableChangePassword() )
-                        {
-                            port = configuration.getChangePasswordPort();
-                        }
+                        int port = getTestingPort( configuration );
 
                         // If no protocol is enabled, we pass this and 
                         // declare the server as started
@@ -246,6 +218,125 @@ public class LaunchServerJob extends Job
                 {
                     server.setState( ServerStateEnum.STOPPED );
                     writeToInfoConsoleMessageStream( "Server stopped.\n" );
+                }
+            }
+
+
+            /**
+             * Gets the testing port.
+             *
+             * @param configuration
+             *      the server configuration
+             * @return
+             *      the testing port
+             */
+            private int getTestingPort( ServerConfiguration configuration )
+            {
+                if ( configuration instanceof ServerConfigurationV154 )
+                {
+                    return getTestingPortVersion154( ( ServerConfigurationV154 ) configuration );
+                }
+                else if ( configuration instanceof ServerConfigurationV154 )
+                {
+                    return getTestingPortVersion153( ( ServerConfigurationV153 ) configuration );
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+
+            /**
+             * Gets the testing port.
+             *
+             * @param configuration
+             *      the 1.5.4 server configuration
+             * @return
+             *      the testing port
+             */
+            private int getTestingPortVersion153( ServerConfigurationV153 configuration )
+            {
+                // LDAP
+                if ( configuration.isEnableLdap() )
+                {
+                    return configuration.getLdapPort();
+                }
+                // LDAPS
+                else if ( configuration.isEnableLdaps() )
+                {
+                    return configuration.getLdapsPort();
+                }
+                // Kerberos
+                else if ( configuration.isEnableKerberos() )
+                {
+                    return configuration.getKerberosPort();
+                }
+                // DNS
+                else if ( configuration.isEnableDns() )
+                {
+                    return configuration.getDnsPort();
+                }
+                // NTP
+                else if ( configuration.isEnableNtp() )
+                {
+                    return configuration.getNtpPort();
+                }
+                // ChangePassword
+                else if ( configuration.isEnableChangePassword() )
+                {
+                    return configuration.getChangePasswordPort();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+
+            /**
+             * Gets the testing port.
+             *
+             * @param configuration
+             *      the 1.5.4 server configuration
+             * @return
+             *      the testing port
+             */
+            private int getTestingPortVersion154( ServerConfigurationV154 configuration )
+            {
+                // LDAP
+                if ( configuration.isEnableLdap() )
+                {
+                    return configuration.getLdapPort();
+                }
+                // LDAPS
+                else if ( configuration.isEnableLdaps() )
+                {
+                    return configuration.getLdapsPort();
+                }
+                // Kerberos
+                else if ( configuration.isEnableKerberos() )
+                {
+                    return configuration.getKerberosPort();
+                }
+                // DNS
+                else if ( configuration.isEnableDns() )
+                {
+                    return configuration.getDnsPort();
+                }
+                // NTP
+                else if ( configuration.isEnableNtp() )
+                {
+                    return configuration.getNtpPort();
+                }
+                // ChangePassword
+                else if ( configuration.isEnableChangePassword() )
+                {
+                    return configuration.getChangePasswordPort();
+                }
+                else
+                {
+                    return 0;
                 }
             }
         };
@@ -415,8 +506,8 @@ public class LaunchServerJob extends Job
 
             // Creating the classpath list
             List<String> classpath = new ArrayList<String>();
-            IPath apacheDsLibrariesFolder = ApacheDsPluginUtils.getApacheDsLibrariesFolder();
-            for ( String library : ApacheDsPluginUtils.apachedsLibraries )
+            IPath apacheDsLibrariesFolder = ApacheDsPluginUtils.getApacheDsLibrariesFolder( server );
+            for ( String library : ApacheDsPluginUtils.getApacheDsLibraries( server ) )
             {
                 IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime
                     .newArchiveRuntimeClasspathEntry( apacheDsLibrariesFolder.append( library ) );

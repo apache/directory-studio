@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.apache.directory.studio.apacheds.model.Server;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -48,37 +49,19 @@ public class ApacheDsPluginUtils
     /** The name of the libraries folder */
     private static final String LIBRARIES_FOLDER_NAME = "libs";
     private static final String APACHEDS = "apacheds";
-    /** The version of ApacheDS bundle with the plugin */
-    private static final String APACHEDS_VERSION = "1.5.3";
 
     /** The line separator */
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" );
-
-    /** This array of String contains all filenames of the needed libraries to launch Apache DS */
-    public static final String[] apachedsLibraries = new String[]
-        { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.3.jar", "apacheds-bootstrap-partition-1.5.3.jar",
-            "apacheds-btree-base-1.5.3.jar", "apacheds-core-1.5.3.jar", "apacheds-core-constants-1.5.3.jar",
-            "apacheds-core-entry-1.5.3.jar", "apacheds-core-shared-1.5.3.jar", "apacheds-jdbm-1.5.3.jar",
-            "apacheds-jdbm-store-1.5.3.jar", "apacheds-kerberos-shared-1.5.3.jar", "apacheds-launcher-1.2.0.jar",
-            "apacheds-protocol-changepw-1.5.3.jar", "apacheds-protocol-dns-1.5.3.jar",
-            "apacheds-protocol-kerberos-1.5.3.jar", "apacheds-protocol-ldap-1.5.3.jar",
-            "apacheds-protocol-ntp-1.5.3.jar", "apacheds-protocol-shared-1.5.3.jar",
-            "apacheds-schema-bootstrap-1.5.3.jar", "apacheds-schema-extras-1.5.3.jar",
-            "apacheds-schema-registries-1.5.3.jar", "apacheds-server-jndi-1.5.3.jar", "apacheds-server-xml-1.5.3.jar",
-            "apacheds-utils-1.5.3.jar", "apacheds-xbean-spring-1.5.3.jar", "commons-cli-1.1.jar",
-            "commons-collections-3.2.jar", "commons-daemon-1.0.1.jar", "commons-lang-2.3.jar",
-            "daemon-bootstrappers-1.1.3.jar", "jcl104-over-slf4j-1.4.3.jar", "log4j-1.2.14.jar", "mina-core-1.1.6.jar",
-            "mina-filter-ssl-1.1.6.jar", "shared-asn1-0.9.11.jar", "shared-asn1-codec-0.9.11.jar",
-            "shared-bouncycastle-reduced-0.9.11.jar", "shared-ldap-0.9.11.jar", "shared-ldap-constants-0.9.11.jar",
-            "slf4j-api-1.4.3.jar", "slf4j-log4j12-1.4.3.jar", "spring-beans-2.0.6.jar", "spring-context-2.0.6.jar",
-            "spring-core-2.0.6.jar", "xbean-spring-3.3.jar" };
 
 
     /**
      * Verifies that the libraries folder exists and contains the jar files 
      * needed to launch the server.
+     * 
+     * @param server
+     *      the server
      */
-    public static void verifyLibrariesFolder()
+    public static void verifyLibrariesFolder( Server server )
     {
         IPath stateLocationPath = ApacheDsPlugin.getDefault().getStateLocation();
 
@@ -91,7 +74,7 @@ public class ApacheDsPluginUtils
         }
 
         // Specific Apache DS folder
-        IPath apacheDsFolderPath = librariesFolderPath.append( APACHEDS + "-" + APACHEDS_VERSION );
+        IPath apacheDsFolderPath = librariesFolderPath.append( APACHEDS + "-" + server.getVersion() );
         File apacheDsFolder = new File( apacheDsFolderPath.toOSString() );
         if ( !apacheDsFolder.exists() )
         {
@@ -99,7 +82,7 @@ public class ApacheDsPluginUtils
         }
 
         // Jar libraries
-        for ( String apachedsLibraryFilename : apachedsLibraries )
+        for ( String apachedsLibraryFilename : getApacheDsLibraries( server ) )
         {
             IPath apachedsLibraryPath = apacheDsFolderPath.append( apachedsLibraryFilename );
             File apachedsLibrary = new File( apachedsLibraryPath.toOSString() );
@@ -117,6 +100,75 @@ public class ApacheDsPluginUtils
                 }
             }
         }
+    }
+
+
+    /**
+     * Gets an array containing the names of the Apache DS libraries, according
+     * to the given server.
+     *
+     * @param server
+     *      the server
+     * @return
+     *      an array containing the names of the Apache DS libraries, according
+     * to the given server
+     */
+    public static String[] getApacheDsLibraries( Server server )
+    {
+        if ( server != null )
+        {
+            switch ( server.getVersion() )
+            {
+                case VERSION_1_5_4:
+                    // TODO modify this
+                    return new String[]
+                        { "antlr-2.7.7.jar", "xbean-spring-3.3.jar", "apacheds-bootstrap-extract-1.5.4.jar",
+                            "apacheds-bootstrap-partition-1.5.4.jar", "apacheds-core-1.5.4.jar",
+                            "apacheds-core-avl-1.5.4.jar", "apacheds-core-constants-1.5.4.jar",
+                            "apacheds-core-cursor-1.5.4.jar", "apacheds-core-entry-1.5.4.jar",
+                            "apacheds-core-shared-1.5.4.jar", "apacheds-jdbm-1.5.4.jar",
+                            "apacheds-jdbm-store-1.5.4.jar", "apacheds-kerberos-shared-1.5.4.jar",
+                            "apacheds-launcher-1.2.0.jar", "apacheds-protocol-changepw-1.5.4.jar",
+                            "apacheds-protocol-dns-1.5.4.jar", "apacheds-protocol-kerberos-1.5.4.jar",
+                            "apacheds-protocol-ldap-1.5.4.jar", "apacheds-protocol-ntp-1.5.4.jar",
+                            "apacheds-protocol-shared-1.5.4.jar", "apacheds-schema-bootstrap-1.5.4.jar",
+                            "apacheds-schema-extras-1.5.4.jar", "apacheds-schema-registries-1.5.4.jar",
+                            "apacheds-server-jndi-1.5.4.jar", "apacheds-server-xml-1.5.4.jar",
+                            "apacheds-utils-1.5.4.jar", "apacheds-xbean-spring-1.5.4.jar",
+                            "apacheds-xdbm-base-1.5.4.jar", "apacheds-xdbm-search-1.5.4.jar",
+                            "apacheds-xdbm-tools-1.5.4.jar", "commons-cli-1.1.jar", "commons-collections-3.2.jar",
+                            "commons-daemon-1.0.1.jar", "commons-lang-2.3.jar", "daemon-bootstrappers-1.1.4.jar",
+                            "jcl104-over-slf4j-1.4.3.jar", "log4j-1.2.14.jar", "mina-core-1.1.6.jar",
+                            "mina-filter-ssl-1.1.6.jar", "shared-asn1-0.9.12.jar", "shared-asn1-codec-0.9.12.jar",
+                            "shared-bouncycastle-reduced-0.9.12.jar", "shared-ldap-0.9.12.jar",
+                            "shared-ldap-constants-0.9.12.jar", "slf4j-api-1.4.3.jar", "slf4j-log4j12-1.4.3.jar",
+                            "spring-beans-2.0.6.jar", "spring-context-2.0.6.jar", "spring-core-2.0.6.jar" };
+                case VERSION_1_5_3:
+                    return new String[]
+                        { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.3.jar",
+                            "apacheds-bootstrap-partition-1.5.3.jar", "apacheds-btree-base-1.5.3.jar",
+                            "apacheds-core-1.5.3.jar", "apacheds-core-constants-1.5.3.jar",
+                            "apacheds-core-entry-1.5.3.jar", "apacheds-core-shared-1.5.3.jar",
+                            "apacheds-jdbm-1.5.3.jar", "apacheds-jdbm-store-1.5.3.jar",
+                            "apacheds-kerberos-shared-1.5.3.jar", "apacheds-launcher-1.2.0.jar",
+                            "apacheds-protocol-changepw-1.5.3.jar", "apacheds-protocol-dns-1.5.3.jar",
+                            "apacheds-protocol-kerberos-1.5.3.jar", "apacheds-protocol-ldap-1.5.3.jar",
+                            "apacheds-protocol-ntp-1.5.3.jar", "apacheds-protocol-shared-1.5.3.jar",
+                            "apacheds-schema-bootstrap-1.5.3.jar", "apacheds-schema-extras-1.5.3.jar",
+                            "apacheds-schema-registries-1.5.3.jar", "apacheds-server-jndi-1.5.3.jar",
+                            "apacheds-server-xml-1.5.3.jar", "apacheds-utils-1.5.3.jar",
+                            "apacheds-xbean-spring-1.5.3.jar", "commons-cli-1.1.jar", "commons-collections-3.2.jar",
+                            "commons-daemon-1.0.1.jar", "commons-lang-2.3.jar", "daemon-bootstrappers-1.1.3.jar",
+                            "jcl104-over-slf4j-1.4.3.jar", "log4j-1.2.14.jar", "mina-core-1.1.6.jar",
+                            "mina-filter-ssl-1.1.6.jar", "shared-asn1-0.9.11.jar", "shared-asn1-codec-0.9.11.jar",
+                            "shared-bouncycastle-reduced-0.9.11.jar", "shared-ldap-0.9.11.jar",
+                            "shared-ldap-constants-0.9.11.jar", "slf4j-api-1.4.3.jar", "slf4j-log4j12-1.4.3.jar",
+                            "spring-beans-2.0.6.jar", "spring-context-2.0.6.jar", "spring-core-2.0.6.jar",
+                            "xbean-spring-3.3.jar" };
+            };
+        }
+
+        return new String[0];
     }
 
 
@@ -173,13 +225,15 @@ public class ApacheDsPluginUtils
     /**
      * Get the path to the Apache DS libraries folder.
      *
+     * @param server
+     *      the server
      * @return
      *      the path to the Apache DS libraries folder
      */
-    public static IPath getApacheDsLibrariesFolder()
+    public static IPath getApacheDsLibrariesFolder( Server server )
     {
         return ApacheDsPlugin.getDefault().getStateLocation().append( LIBRARIES_FOLDER_NAME ).append(
-            APACHEDS + "-" + APACHEDS_VERSION );
+            APACHEDS + "-" + server.getVersion() );
     }
 
 
@@ -230,7 +284,7 @@ public class ApacheDsPluginUtils
 
             // Copying server.xml file
             File serverXmlFile = new File( confFolder, "server.xml" );
-            copyConfigurationFile( "server.xml", serverXmlFile );
+            copyConfigurationFile( "server-1.5.4.xml", serverXmlFile );
 
             // Creating log4j.properties file to the serverSocket folder
             File log4jPropertiesServerSocketFile = new File( serverSocketFolder, "log4j.properties" );

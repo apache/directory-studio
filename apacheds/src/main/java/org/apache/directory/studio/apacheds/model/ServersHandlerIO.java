@@ -50,6 +50,7 @@ public class ServersHandlerIO
     private static final String SERVER_TAG = "server";
     private static final String SERVER_ID_ATTRIBUTE = "id";
     private static final String SERVER_NAME_ATTRIBUTE = "name";
+    private static final String SERVER_VERSION_ATTRIBUTE = "version";
 
 
     /**
@@ -118,6 +119,34 @@ public class ServersHandlerIO
             server.setName( nameAttribute.getValue() );
         }
 
+        // Version
+        Attribute versionAttribute = element.attribute( SERVER_VERSION_ATTRIBUTE );
+        if ( versionAttribute != null )
+        {
+            if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.4" ) )
+            {
+                server.setVersion( ServerVersion.VERSION_1_5_4 );
+            }
+            else if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.3" ) )
+            {
+                server.setVersion( ServerVersion.VERSION_1_5_3 );
+            }
+            // <!> Compatibility mode <!>
+            // if the server does not have a version attribute, this means it's an
+            // Apache DS 1.5.3 server
+            else
+            {
+                server.setVersion( ServerVersion.VERSION_1_5_3 );
+            }
+        }
+        // <!> Compatibility mode <!>
+        // if the server does not have a version attribute, this means it's an
+        // Apache DS 1.5.3 server
+        else
+        {
+            server.setVersion( ServerVersion.VERSION_1_5_3 );
+        }
+
         return server;
     }
 
@@ -175,5 +204,8 @@ public class ServersHandlerIO
 
         // Name
         serverElement.addAttribute( SERVER_NAME_ATTRIBUTE, server.getName() );
+
+        // Version
+        serverElement.addAttribute( SERVER_VERSION_ATTRIBUTE, server.getVersion().toString() );
     }
 }

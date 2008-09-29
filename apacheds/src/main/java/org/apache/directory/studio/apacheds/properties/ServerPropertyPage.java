@@ -70,6 +70,14 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
         nameText.setBackground( parent.getBackground() );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
+        // Version
+        Label versionLabel = new Label( composite, SWT.NONE );
+        versionLabel.setText( "Version:" );
+        Text versionText = new Text( composite, SWT.NONE );
+        versionText.setEditable( false );
+        versionText.setBackground( parent.getBackground() );
+        versionText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
         // Location
         Label locationLabel = new Label( composite, SWT.NONE );
         locationLabel.setText( "Location:" );
@@ -85,6 +93,7 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
         if ( server != null )
         {
             nameText.setText( server.getName() );
+            versionText.setText( server.getVersion().toString() );
             locationText.setText( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).toOSString() );
         }
 

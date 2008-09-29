@@ -42,6 +42,9 @@ public class Server implements IAdaptable
     /** The ID of the server */
     private String id;
 
+    /** The version of the server */
+    private ServerVersion version = ServerVersion.VERSION_1_5_4;
+
     /** The state of the server */
     private ServerStateEnum state = ServerStateEnum.STOPPED;
 
@@ -267,6 +270,30 @@ public class Server implements IAdaptable
     public void setLaunchJob( LaunchServerJob launchJob )
     {
         this.launchJob = launchJob;
+    }
+
+
+    /**
+     * Gets the version of the server
+     *
+     * @return
+     *      the version of the server
+     */
+    public ServerVersion getVersion()
+    {
+        return version;
+    }
+
+
+    /**
+     * Sets the version of the server
+     *
+     * @param version
+     *      the version of the server
+     */
+    public void setVersion( ServerVersion version )
+    {
+        this.version = version;
     }
 
 

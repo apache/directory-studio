@@ -22,16 +22,20 @@ package org.apache.directory.studio.apacheds.actions;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
+import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
+import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
 import org.apache.directory.studio.apacheds.jobs.LaunchServerJob;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
@@ -111,15 +115,12 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 final Server server = ( Server ) selection.getFirstElement();
 
                 // Parsing the 'server.xml' file
-                ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
-                ServerConfigurationV153 serverConfiguration = null;
+                ServerConfiguration serverConfiguration = null;
                 try
                 {
-                    serverConfiguration = ( ServerConfigurationV153 ) serverXmlIOV153.parse( new FileInputStream(
-                        new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append(
-                            "conf" ).append( "server.xml" ).toOSString() ) ) );
+                    serverConfiguration = getServerConfiguration( server );
                 }
-                catch ( FileNotFoundException e )
+                catch ( IOException e )
                 {
                     reportErrorReadingServerConfiguration( e.getMessage() );
                     return;
@@ -173,7 +174,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 }
 
                 // Verifying the libraries in the plugin's folder
-                ApacheDsPluginUtils.verifyLibrariesFolder();
+                ApacheDsPluginUtils.verifyLibrariesFolder( server );
 
                 // Creating, setting and launching the launch job
                 LaunchServerJob job = new LaunchServerJob( server, serverConfiguration );
@@ -183,6 +184,55 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 job.schedule();
             }
         }
+    }
+
+
+    /**
+     * Gets the server configuration.
+     *
+     * @param server
+     *      the server
+     * @return
+     *      the associated server configuration
+     * @throws ServerXmlIOException 
+     * @throws ServerXmlIOException
+     * @throws IOException 
+     */
+    private ServerConfiguration getServerConfiguration( Server server ) throws ServerXmlIOException, IOException
+    {
+        InputStream fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append(
+            server.getId() ).append( "conf" ).append( "server.xml" ).toOSString() ) );
+
+        // First we test with version 1.5.4
+        ServerXmlIOV154 serverXmlIOV154 = new ServerXmlIOV154();
+        if ( serverXmlIOV154.isValid( fis ) )
+        {
+            // Reseting the input stream
+            fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
+                .append( "conf" ).append( "server.xml" ).toOSString() ) );
+
+            // Parsing and returning the server configuration
+            return serverXmlIOV154.parse( fis );
+        }
+
+        // Reseting the input stream
+        fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
+            .append( "conf" ).append( "server.xml" ).toOSString() ) );
+
+        // Then we test with version 1.5.3
+        ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
+        if ( serverXmlIOV153.isValid( fis ) )
+        {
+            // Reseting the input stream
+            fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
+                .append( "conf" ).append( "server.xml" ).toOSString() ) );
+
+            // Parsing and returning the server configuration
+            return serverXmlIOV153.parse( fis );
+        }
+
+        // No corresponding reader has been found, we return null
+        return null;
     }
 
 
@@ -224,7 +274,36 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      *      an array of String containing the ports and their associated 
      * protocols which are already in use.
      */
-    private String[] getAlreadyInUseProtocolPorts( ServerConfigurationV153 serverConfiguration )
+    private String[] getAlreadyInUseProtocolPorts( ServerConfiguration serverConfiguration )
+    {
+        // Version 1.5.4
+        if ( serverConfiguration instanceof ServerConfigurationV154 )
+        {
+            return getAlreadyInUseProtocolPortsVersion154( ( ServerConfigurationV154 ) serverConfiguration );
+        }
+        // Version 1.5.3
+        else if ( serverConfiguration instanceof ServerConfigurationV153 )
+        {
+            return getAlreadyInUseProtocolPortsVersion153( ( ServerConfigurationV153 ) serverConfiguration );
+        }
+        else
+        {
+            return new String[0];
+        }
+    }
+
+
+    /**
+     * Gets an array of String containing the ports and their associated 
+     * protocols which are already in use.
+     *
+     * @param serverConfiguration
+     *      the 1.5.3 server configuration
+     * @return
+     *      an array of String containing the ports and their associated 
+     * protocols which are already in use.
+     */
+    private String[] getAlreadyInUseProtocolPortsVersion153( ServerConfigurationV153 serverConfiguration )
     {
         List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
 
@@ -245,6 +324,80 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 alreadyInUseProtocolPortsList.add( "LDAPS (port " + serverConfiguration.getLdapsPort() + ")" );
             }
         }
+
+        // Kerberos
+        if ( serverConfiguration.isEnableKerberos() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getKerberosPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( "Kerberos (port " + serverConfiguration.getKerberosPort() + ")" );
+            }
+        }
+
+        // DNS
+        if ( serverConfiguration.isEnableDns() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getDnsPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( "DNS (port " + serverConfiguration.getDnsPort() + ")" );
+            }
+        }
+
+        // NTP
+        if ( serverConfiguration.isEnableNtp() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getNtpPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( "NTP (port " + serverConfiguration.getNtpPort() + ")" );
+            }
+        }
+
+        // Change Password
+        if ( serverConfiguration.isEnableChangePassword() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getChangePasswordPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( "ChangePassword (port "
+                    + serverConfiguration.getChangePasswordPort() + ")" );
+            }
+        }
+
+        return alreadyInUseProtocolPortsList.toArray( new String[0] );
+    }
+
+
+    /**
+     * Gets an array of String containing the ports and their associated 
+     * protocols which are already in use.
+     *
+     * @param serverConfiguration
+     *      the 1.5.4 server configuration
+     * @return
+     *      an array of String containing the ports and their associated 
+     * protocols which are already in use.
+     */
+    private String[] getAlreadyInUseProtocolPortsVersion154( ServerConfigurationV154 serverConfiguration )
+    {
+        List<String> alreadyInUseProtocolPortsList = new ArrayList<String>();
+
+        // LDAP
+        if ( serverConfiguration.isEnableLdap() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getLdapPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( "LDAP (port " + serverConfiguration.getLdapPort() + ")" );
+            }
+        }
+
+        // LDAPS
+        if ( serverConfiguration.isEnableLdaps() )
+        {
+            if ( !AvailablePortFinder.available( serverConfiguration.getLdapsPort() ) )
+            {
+                alreadyInUseProtocolPortsList.add( "LDAPS (port " + serverConfiguration.getLdapsPort() + ")" );
+            }
+        }
+
         // Kerberos
         if ( serverConfiguration.isEnableKerberos() )
         {
