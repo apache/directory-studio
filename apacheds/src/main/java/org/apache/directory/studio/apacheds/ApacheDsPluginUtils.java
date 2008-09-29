@@ -21,12 +21,17 @@ package org.apache.directory.studio.apacheds;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
+import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
+import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
+import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -90,7 +95,7 @@ public class ApacheDsPluginUtils
             {
                 try
                 {
-                    copyLibrary( apachedsLibraryFilename, apachedsLibrary );
+                    copyLibrary( apachedsLibraryFilename, apachedsLibrary, server );
                 }
                 catch ( IOException e )
                 {
@@ -179,14 +184,17 @@ public class ApacheDsPluginUtils
      *      the name of the library
      * @param destination
      *      the destination
+     * @param server
+     *      the server
      * @throws IOException
      *      if an error occurrs when copying the jar file
      */
-    private static void copyLibrary( String library, File destination ) throws IOException
+    private static void copyLibrary( String library, File destination, Server server ) throws IOException
     {
         // Getting he URL of the library within the bundle
         URL libraryUrl = FileLocator.find( ApacheDsPlugin.getDefault().getBundle(), new Path( RESOURCES
-            + IPath.SEPARATOR + LIBS + IPath.SEPARATOR + library ), null );
+            + IPath.SEPARATOR + LIBS + IPath.SEPARATOR + APACHEDS + "-" + server.getVersion().toString()
+            + IPath.SEPARATOR + library ), null );
 
         // Creating the input and output streams
         InputStream libraryInputStream = libraryUrl.openStream();
@@ -512,5 +520,36 @@ public class ApacheDsPluginUtils
             .getShell(), "Error!", null, message, MessageDialog.ERROR, new String[]
             { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
+    }
+    
+    /**
+     * Gets the server configuration.
+     *
+     * @param server
+     *      the server
+     * @return
+     *      the associated server configuration
+     * @throws ServerXmlIOException 
+     * @throws ServerXmlIOException
+     * @throws IOException 
+     */
+    public static ServerConfiguration getServerConfiguration( Server server ) throws ServerXmlIOException, IOException
+    {
+        InputStream fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append(
+            server.getId() ).append( "conf" ).append( "server.xml" ).toOSString() ) );
+
+        // Parsing and returning the server configuration
+        switch ( server.getVersion() )
+        {
+            case VERSION_1_5_4:
+                ServerXmlIOV154 serverXmlIOV154 = new ServerXmlIOV154();
+                return serverXmlIOV154.parse( fis );
+            case VERSION_1_5_3:
+                ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
+                return serverXmlIOV153.parse( fis );
+        }
+
+        // No corresponding reader has been found, we return null
+        return null;
     }
 }

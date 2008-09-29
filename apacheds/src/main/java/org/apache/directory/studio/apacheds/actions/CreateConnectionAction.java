@@ -20,17 +20,16 @@
 package org.apache.directory.studio.apacheds.actions;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.ApacheDsPluginConstants;
 import org.apache.directory.studio.apacheds.ApacheDsPluginUtils;
+import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
-import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
+import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.core.runtime.Platform;
@@ -111,15 +110,12 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                 Server server = ( Server ) selection.getFirstElement();
 
                 // Parsing the 'server.xml' file
-                ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
-                ServerConfigurationV153 serverConfiguration = null;
+                ServerConfiguration serverConfiguration = null;
                 try
                 {
-                    serverConfiguration = ( ServerConfigurationV153 ) serverXmlIOV153.parse( new FileInputStream(
-                        new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append(
-                            "conf" ).append( "server.xml" ).toOSString() ) ) );
+                    serverConfiguration = ApacheDsPluginUtils.getServerConfiguration( server );
                 }
-                catch ( FileNotFoundException e )
+                catch ( IOException e )
                 {
                     reportErrorReadingServerConfiguration( e.getMessage() );
                     return;
@@ -137,7 +133,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                     return;
                 }
 
-                if ( ( serverConfiguration.isEnableLdap() ) || ( serverConfiguration.isEnableLdaps() ) )
+                if ( isEnableLdapOrLdaps( serverConfiguration ))
                 {
                     // Creating the connection using the helper class
                     CreateConnectionActionHelper.createLdapBrowserConnection( server.getName(), serverConfiguration );
@@ -186,6 +182,31 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
 
     /**
+     * Indicates if LDAP or LDAPS is enabled.
+     *
+     * @param serverConfiguration
+     *      the server configuration
+     * @return
+     *      <code>true</code> if LDAP or LDAPS is enabled, <code>false</code> if not
+     */
+    private boolean isEnableLdapOrLdaps( ServerConfiguration serverConfiguration )
+    {
+        if ( serverConfiguration instanceof ServerConfigurationV154 )
+        {
+            ServerConfigurationV154 serverConfiguration154 = ( ServerConfigurationV154 ) serverConfiguration;
+            return ( serverConfiguration154.isEnableLdap() ) || ( serverConfiguration154.isEnableLdaps() );
+        }
+        else if ( serverConfiguration instanceof ServerConfigurationV153 )
+        {
+            ServerConfigurationV153 serverConfiguration153 = ( ServerConfigurationV153 ) serverConfiguration;
+            return ( serverConfiguration153.isEnableLdap() ) || ( serverConfiguration153.isEnableLdaps() );
+        }
+
+        return false;
+    }
+
+
+    /**
      * Sets the enabled state of this action.
      * <p>
      * When an action is in the enabled state, the control associated with 
@@ -230,7 +251,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
     private boolean isLdapBrowserPluginsAvailable()
     {
         PropertyResourceBundle properties = ApacheDsPlugin.getDefault().getPluginProperties();
-        
+
         // Connection Core Plugin
         Bundle connectionCoreBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionCore_id" ) );
         if ( connectionCoreBundle != null )
@@ -252,7 +273,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                 }
 
                 // LDAP Browser Common Plugin
-                Bundle ldapBrowserCommonBundle = Platform.getBundle( properties.getString( "Plugin_LdapBrowserCommon_id" )  );
+                Bundle ldapBrowserCommonBundle = Platform.getBundle( properties
+                    .getString( "Plugin_LdapBrowserCommon_id" ) );
                 if ( ldapBrowserCommonBundle != null )
                 {
                     // Checking the state of the plugin
@@ -262,7 +284,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                     }
 
                     // LDAP Browser Core Plugin
-                    Bundle ldapBrowserCoreBundle = Platform.getBundle( properties.getString( "Plugin_LdapBrowserCore_id" )  );
+                    Bundle ldapBrowserCoreBundle = Platform.getBundle( properties
+                        .getString( "Plugin_LdapBrowserCore_id" ) );
                     if ( ldapBrowserCoreBundle != null )
                     {
                         // Checking the state of the plugin
@@ -272,7 +295,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                         }
 
                         // LDAP Browser UI Plugin
-                        Bundle ldapBrowserUiBundle = Platform.getBundle(properties.getString( "Plugin_LdapBrowserUi_id" ) );
+                        Bundle ldapBrowserUiBundle = Platform.getBundle( properties
+                            .getString( "Plugin_LdapBrowserUi_id" ) );
                         if ( ldapBrowserUiBundle != null )
                         {
                             // Checking the state of the plugin
@@ -282,7 +306,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                             }
 
                             // LDIF Editor Plugin
-                            Bundle ldifEditorBundle = Platform.getBundle( properties.getString( "Plugin_LdifEditor_id" ) );
+                            Bundle ldifEditorBundle = Platform
+                                .getBundle( properties.getString( "Plugin_LdifEditor_id" ) );
                             if ( ldifEditorBundle != null )
                             {
                                 // Checking the state of the plugin
@@ -292,7 +317,8 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                                 }
 
                                 // LDIF Parser Plugin
-                                Bundle ldifParserBundle = Platform.getBundle( properties.getString( "Plugin_LdifParser_id" )  );
+                                Bundle ldifParserBundle = Platform.getBundle( properties
+                                    .getString( "Plugin_LdifParser_id" ) );
                                 if ( ldifParserBundle != null )
                                 {
                                     // Checking the state of the plugin

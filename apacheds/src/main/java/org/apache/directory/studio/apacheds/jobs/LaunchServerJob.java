@@ -236,7 +236,7 @@ public class LaunchServerJob extends Job
                 {
                     return getTestingPortVersion154( ( ServerConfigurationV154 ) configuration );
                 }
-                else if ( configuration instanceof ServerConfigurationV154 )
+                else if ( configuration instanceof ServerConfigurationV153 )
                 {
                     return getTestingPortVersion153( ( ServerConfigurationV153 ) configuration );
                 }
@@ -251,7 +251,7 @@ public class LaunchServerJob extends Job
              * Gets the testing port.
              *
              * @param configuration
-             *      the 1.5.4 server configuration
+             *      the 1.5.3 server configuration
              * @return
              *      the testing port
              */

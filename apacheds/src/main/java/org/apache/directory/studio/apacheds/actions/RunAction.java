@@ -118,7 +118,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 ServerConfiguration serverConfiguration = null;
                 try
                 {
-                    serverConfiguration = getServerConfiguration( server );
+                    serverConfiguration = ApacheDsPluginUtils.getServerConfiguration( server );
                 }
                 catch ( IOException e )
                 {
@@ -184,55 +184,6 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
                 job.schedule();
             }
         }
-    }
-
-
-    /**
-     * Gets the server configuration.
-     *
-     * @param server
-     *      the server
-     * @return
-     *      the associated server configuration
-     * @throws ServerXmlIOException 
-     * @throws ServerXmlIOException
-     * @throws IOException 
-     */
-    private ServerConfiguration getServerConfiguration( Server server ) throws ServerXmlIOException, IOException
-    {
-        InputStream fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append(
-            server.getId() ).append( "conf" ).append( "server.xml" ).toOSString() ) );
-
-        // First we test with version 1.5.4
-        ServerXmlIOV154 serverXmlIOV154 = new ServerXmlIOV154();
-        if ( serverXmlIOV154.isValid( fis ) )
-        {
-            // Reseting the input stream
-            fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-                .append( "conf" ).append( "server.xml" ).toOSString() ) );
-
-            // Parsing and returning the server configuration
-            return serverXmlIOV154.parse( fis );
-        }
-
-        // Reseting the input stream
-        fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-            .append( "conf" ).append( "server.xml" ).toOSString() ) );
-
-        // Then we test with version 1.5.3
-        ServerXmlIOV153 serverXmlIOV153 = new ServerXmlIOV153();
-        if ( serverXmlIOV153.isValid( fis ) )
-        {
-            // Reseting the input stream
-            fis = new FileInputStream( new File( ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-                .append( "conf" ).append( "server.xml" ).toOSString() ) );
-
-            // Parsing and returning the server configuration
-            return serverXmlIOV153.parse( fis );
-        }
-
-        // No corresponding reader has been found, we return null
-        return null;
     }
 
 
