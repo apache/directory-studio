@@ -103,6 +103,45 @@
         <maven.test.skip>true</maven.test.skip>
       </properties>
     </profile>
+    <!-- 
+      Building help modules can be skipped by adding 
+      -Dfastbuild
+      to the commandline.
+    -->
+    <profile>
+      <id>build-help-modules</id>
+      <activation>
+        <property>
+          <name>!fastbuild</name>
+        </property>
+      </activation>
+      <modules>
+        <module>schemaeditor-help</module>
+        <module>ldifeditor-help</module>
+        <module>ldapbrowser-help</module>
+        <module>apacheds-configuration-help</module>
+        <module>rcp-help</module>
+        <module>apacheds-help</module>
+      </modules>
+    </profile>
+    <!--
+      Add the dist modules as profile to force them being built
+      AFTER the help modules, otherwise we run into a backlog
+      of at least 1 iteration because the dist modules would be
+      built before the help modules ...
+    -->
+    <profile>
+      <id>build-dist-modules</id>
+      <activation>
+        <property>
+          <name>!must_stay_empty_property</name>
+        </property>
+      </activation>
+      <modules>
+        <module>updatesite</module>
+        <module>studio</module>
+      </modules>
+    </profile>
   </profiles>
 
   <dependencyManagement>
@@ -986,28 +1025,20 @@
     <module>aciitemeditor</module>
     <module>schemaeditor</module>
     <module>schemaeditor-feature</module>
-    <module>schemaeditor-help</module>
     <module>rcp</module>
     <module>rcp-feature</module>
-    <module>rcp-help</module>
     <module>ldifeditor</module>
     <module>ldifeditor-feature</module>
-    <module>ldifeditor-help</module>
     <module>ldapbrowser-ui</module>
     <module>ldapbrowser-feature</module>
-    <module>ldapbrowser-help</module>
     <module>apacheds-configuration</module>
     <module>apacheds-configuration-feature</module>
-    <module>apacheds-configuration-help</module>
     <module>apacheds-launcher</module>
     <module>apacheds</module>
     <module>apacheds-feature</module>
-    <module>apacheds-help</module>
     <module>jars</module>
     <module>test-integration-core</module>
     <module>test-integration-ui</module>
-    <module>updatesite</module>
-    <module>studio</module>
   </modules>
 
   <build>
@@ -1125,21 +1156,6 @@
             -->
           </dependencies>
         </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <configuration>
-              <filesets>
-                <fileset>
-                  <directory>.</directory>
-                  <includes>
-                    <include>**/timestamp</include>
-                  </includes>
-                  <followSymlinks>false</followSymlinks>
-                </fileset>
-              </filesets>
-            </configuration>
-          </plugin>
       </plugins>
     </pluginManagement>
 

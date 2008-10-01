@@ -166,13 +166,9 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <activation>
-        <file>
-          <missing>schemaeditor-help/timestamp</missing>
-        </file>
-      </activation>
-    <build>
+  </profiles>
+
+  <build>
     <resources>
       <resource>
         <directory>.</directory>
@@ -339,7 +335,6 @@
                   <outputproperty name="encoding" value="iso8859_1" />
                   <outputproperty name="indent" value="es" />
                 </xslt>
-                <touch file="timestamp" />
               </tasks>
             </configuration>
             <goals>
@@ -348,17 +343,6 @@
           </execution>
         </executions>
       </plugin>
-
-<!-- Remove if above config of studio plugin is needed with the goal prepare-jar-package
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <createManifest>true</createManifest>
-        </configuration>
-      </plugin>
--->
 
       <!-- No tests to run -->
       <plugin>
@@ -370,9 +354,5 @@
       </plugin>
     </plugins>
   </build>
-    </profile>
-  </profiles>
-    
-  
 
 </project>
