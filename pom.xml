@@ -133,9 +133,9 @@
     <profile>
       <id>build-dist-modules</id>
       <activation>
-        <property>
-          <name>!must_stay_empty_property</name>
-        </property>
+        <file>
+          <exists>pom.xml</exists>
+        </file>
       </activation>
       <modules>
         <module>updatesite</module>
