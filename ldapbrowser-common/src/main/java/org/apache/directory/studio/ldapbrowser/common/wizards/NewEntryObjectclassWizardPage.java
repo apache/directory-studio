@@ -340,6 +340,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
                 {
                     availableObjectClassesViewer.getTable().setFocus();
                 }
+                else if ( e.keyCode == SWT.CR || e.keyCode == SWT.KEYPAD_CR )
+                {
+                    add( availableObjectClassesViewer.getSelection() );
+                }
             }
         } );
         ControlDecoration availableObjectClassesInstantSearchDecoration = new ControlDecoration(
