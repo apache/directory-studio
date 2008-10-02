@@ -19,6 +19,39 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
+        <title>Apache Directory Studio 1.3.0 - (2008, TO BE DEFINED)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+                    <para>[DIRSTUDIO-394] - SASL Realms are not correctly saved in the 1.5.2 and 1.5.3 Apache DS Configuration Editor</para>
+                </listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-393] - Add support for ApacheDS 1.5.4 server.xml file in the ApacheDS Configuration Editor</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
