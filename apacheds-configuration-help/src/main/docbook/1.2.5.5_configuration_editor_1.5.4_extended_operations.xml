@@ -1,0 +1,131 @@
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<section id="configuration_editor_1.5.4_extended_operations">
+	<title>Extended Operations Page</title>
+	<para>
+		The
+		<emphasis role="strong">Extended Operations Page</emphasis>
+		of the Configuration Editor allows you to edit the server
+		extended operations.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Extended Operations Page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.4_extended_operations.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	<para>The page is divided vertically in two parts.</para>
+	<para>
+		You can choose the orientation of the page by clicking on the
+		appropriate button ("Horizontal Orientation"
+		<imageobject>
+			<imagedata contentdepth="1em"
+				fileref="images/gettingstarted/horizontal_orientation.gif"
+				format="GIF" />
+		</imageobject>
+		or "Vertical Orientation"
+		<imageobject>
+			<imagedata contentdepth="1em"
+				fileref="images/gettingstarted/vertical_orientation.gif"
+				format="GIF" />
+		</imageobject>
+		) at the right of the page.
+	</para>
+	<para>
+		The left side of the page shows the extended operations defined
+		on the server. This is where you can add or delete an extended
+		operation.
+	</para>
+	<screenshot>
+		<mediaobject>
+			<imageobject>
+				<imagedata scale="50"
+					fileref="images/gettingstarted/editor_1.5.4_extended_operations_list.png"
+					format="PNG" />
+			</imageobject>
+		</mediaobject>
+	</screenshot>
+	<para>
+		The right side of the page display and lets you see the details
+		of the selected extended operation in the left side.
+	</para>
+
+	<simplesect id="configuration_editor_1.5.4_extended_operation_details">
+		<title>Extended Operation details</title>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_1.5.4_extended_operations_details.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+		<para>
+			The
+			<emphasis role="strong">Name</emphasis>
+			field displays the name of the extended operation.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Description</emphasis>
+			field displays the description of the extended operation.
+		</para>
+	</simplesect>
+	<para></para>
+	<para>
+		The following icons can appear in the Extended Operations Page.
+	</para>
+	<para>
+		<informaltable>
+			<tgroup cols="2">
+				<colspec colname="Icon" colwidth="1* " />
+				<colspec colname="Description" colwidth="3*" />
+				<thead>
+					<row>
+						<entry>Icon</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry align="center">
+							<mediaobject>
+								<imageobject>
+									<imagedata contentdepth="1em"
+										fileref="images/gettingstarted/extended_operation.gif"
+										format="GIF" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+						<entry>Extended Operation</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+</section>
