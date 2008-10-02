@@ -19,6 +19,32 @@
 <chapter id="releasenotes">
 	<title>Release notes</title>
 	<simplesect>
+        <title>Apache Directory Studio 1.3.0 - (2008, TO BE DEFINED)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+                    <para>[DIRSTUDIO-372] - NPE when using the LdifEntryEditorDialog w/o selecting a connection</para>
+                </listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-374] - Clean duplicated dependencies in plugins</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
 			Various small bug fixes and improvements.
