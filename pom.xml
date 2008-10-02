@@ -124,6 +124,18 @@
         <module>apacheds-help</module>
       </modules>
     </profile>
+    <!-- 
+      Integration tests are disabled by default. Add
+      -Pintegration-tests
+      to the commandline to launch them.
+    -->
+    <profile>
+      <id>integration-tests</id>
+      <modules>
+        <module>test-integration-core</module>
+        <module>test-integration-ui</module>
+      </modules>
+    </profile>
     <!--
       Add the dist modules as profile to force them being built
       AFTER the help modules, otherwise we run into a backlog
@@ -1037,8 +1049,6 @@
     <module>apacheds</module>
     <module>apacheds-feature</module>
     <module>jars</module>
-    <module>test-integration-core</module>
-    <module>test-integration-ui</module>
   </modules>
 
   <build>
