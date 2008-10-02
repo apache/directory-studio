@@ -19,6 +19,32 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
+        <title>Apache Directory Studio 1.3.0 - (2008, TO BE DEFINED)</title>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+				    <para>[DIRSTUDIO-255] - Run in background should be configurable so one could set it to true by default</para>
+                </listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-376] - Move to the latest Eclipse 3.4 dependencies</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
