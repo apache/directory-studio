@@ -17,7 +17,124 @@
 	under the License.
 -->
 <chapter id="release_notes">
-	<title>Release notes</title>
+	<title>Release notes</title><simplesect>
+        <title>Apache Directory Studio 1.3.0 - (2008, TO BE DEFINED)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+                    <para>[DIRSTUDIO-389] - Back/Forward Navigation isn't working</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-380] - Attribute and Entry property pages makes the dialog very tall</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-379] - Class NewEntryWizard not found, application doesn't starts</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-367] - Tree delete control should not be used automatically</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-354] - Search window, paste problem</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-293] - Values of attributes of the syntax 'Generalized Time' must have the g-time-zone 'Z' and minutes and seconds set to be interpreted and shown as a date instead of the raw value</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-291] - Adding of an objectclass requiring attributes not present to an entry in the ldap browser, modify operation fails</para>
+                </listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+				    <para>[DIRSTUDIO-407] - In the NewEntryWizard, the first selected object class on the left side should be added if the Enter key is hit in the text field</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-383] - Make "Fetch subentries" setting configurable per connection, move from browser preferences to connection properties</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-378] - An attribute name containing an underscore ("_") is split in two when used in "Returning Attributes" field of the "Search" dialog</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-377] - Add value editor for OIDs</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-363] - Browser View doesn't accept menu additions thru viewerContribution extension point</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-327] - Add support for Paged Results Control</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-311] - Provide Goto DN dialog</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-291] - Using the 'new entry'/'use existing entry as template' feature from the context menu of an entry, the parent dn is also copied from the template entry </para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-244] - Add selection for copy strategy if an entry to copy already exists</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-228] - Mask userPassword in the log view</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-147] - Allow LDIF imports to overwrite existing entries</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-116] - Expand all folds by default</para>
+                </listitem>
+				<listitem>
+				    <para>[DIRSTUDIO-114] - Group container entries first in browser view</para>
+                </listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-385] - Add dialog to create a new context entry</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-356] - Add a way to get the connection config as an URL</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-297] - Add a 'save as' for logs</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-153] - Allow offline modifications of entries</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-107] - Enable Select/Copy in Property page of RootDSE in order to copy and paste detected OIDs</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-85] - Add support for search dialog to include * and + for returnable attributes</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-374] - Clean duplicated dependencies in plugins</para>
+				</listitem>
+				<listitem>
+					<para>[DIRSTUDIO-19] - Add Javadoc to LDAP Browser classes</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
 	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
