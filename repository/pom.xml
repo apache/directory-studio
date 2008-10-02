@@ -34,6 +34,24 @@
     <name>Apache Software Foundation</name>
     <url>http://www.apache.org</url>
   </organization>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+          <pde>true</pde>
+          <!-- Workaround for http://jira.codehaus.org/browse/MECLIPSE-94 -->
+          <eclipseProjectDir>..</eclipseProjectDir>
+          <!-- We don't want any sources or javadocs jars -->
+          <downloadSources>false</downloadSources>
+          <downloadJavadocs>false</downloadJavadocs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <dependencies>
     <!-- Apache Directory Studio launchers dependencies -->
