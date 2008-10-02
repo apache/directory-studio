@@ -37,6 +37,9 @@
                     <para>[DIRSTUDIO-367] - Tree delete control should not be used automatically</para>
                 </listitem>
 				<listitem>
+                    <para>[DIRSTUDIO-355] - DSML Import and Export fail with "Internal Error: null"</para>
+                </listitem>
+				<listitem>
                     <para>[DIRSTUDIO-354] - Search window, paste problem</para>
                 </listitem>
 				<listitem>
@@ -44,6 +47,9 @@
                 </listitem>
 				<listitem>
                     <para>[DIRSTUDIO-291] - Adding of an objectclass requiring attributes not present to an entry in the ldap browser, modify operation fails</para>
+                </listitem>
+				<listitem>
+                    <para>[DIRSTUDIO-260] - Unable to do a DSML Export from eDirectory</para>
                 </listitem>
 			</itemizedlist>
 		</para>
