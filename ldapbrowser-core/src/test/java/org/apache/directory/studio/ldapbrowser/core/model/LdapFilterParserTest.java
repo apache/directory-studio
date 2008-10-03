@@ -241,7 +241,7 @@ public class LdapFilterParserTest extends TestCase
      * From RFC4515:
      * The fifth example illustrates the use of the escaping mechanism to
      * represent various non-ASCII UTF-8 characters.  Specifically, there
-     * are 5 characters in the <assertionvalue> portion of this example:
+     * are 5 characters in the &lt;assertionvalue> portion of this example:
      * LATIN CAPITAL LETTER L (U+004C), LATIN SMALL LETTER U (U+0075), LATIN
      * SMALL LETTER C WITH CARON (U+010D), LATIN SMALL LETTER I (U+0069),
      * and LATIN SMALL LETTER C WITH ACUTE (U+0107).
@@ -343,7 +343,7 @@ public class LdapFilterParserTest extends TestCase
      * 
      * From RFC4515:
      * The fifth example is a filter that should be applied to any attribute
-     * supporting the matching rule given (since the <attr> has been
+     * supporting the matching rule given (since the &lt;attr> has been
      * omitted).
      */
     public void testExtensibleFilterRFC4515_5()

@@ -45,11 +45,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
  *      options = *( SEMI option )
  *      option = 1*keychar
  *
- *   where <attributetype> identifies the attribute type and each <option>
- *   identifies an attribute option.  Both <attributetype> and <option>
+ *   where &lt;attributetype> identifies the attribute type and each <option>
+ *   identifies an attribute option.  Both &lt;attributetype> and <option>
  *   productions are case insensitive.  The order in which <option>s
- *   appear is irrelevant.  That is, any two <attributedescription>s that
- *   consist of the same <attributetype> and same set of <option>s are
+ *   appear is irrelevant.  That is, any two &lt;attributedescription>s that
+ *   consist of the same &lt;attributetype> and same set of <option>s are
  *   equivalent.
  *
  *   Examples of valid attribute descriptions:
