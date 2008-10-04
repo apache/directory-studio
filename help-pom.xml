@@ -335,6 +335,12 @@
                   <outputproperty name="encoding" value="iso8859_1" />
                   <outputproperty name="indent" value="es" />
                 </xslt>
+                
+                <!-- Copy the good plugin.xml. 
+                     The eclipse.xsl creates its own plugin.xml but we want 
+                     to use our own.
+                -->
+                <copy todir="target/classes" file="plugin.xml" overwrite="true" />
               </tasks>
             </configuration>
             <goals>
