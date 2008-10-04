@@ -125,7 +125,7 @@ public class SearchLogsView extends ViewPart
 
         // set help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_logs_view" );
     }
 
 
