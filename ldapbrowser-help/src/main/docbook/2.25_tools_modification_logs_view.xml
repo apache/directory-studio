@@ -77,7 +77,11 @@
 		</para>	
 		<para>
 			The modification logging mechanism works with logfile rotation. 
-			It uses 10 logfiles each with 100KB per connection. 
+			By default 10 logfiles each with 100KB per connection are used, 
+			you may change these settings in the
+			<link linkend="preferences_modificatoin_logs_view">
+				Modification Logs preferences
+			</link>. 
 		</para>
 	</simplesect>
 			
@@ -129,6 +133,11 @@
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/next.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Newer</entry>
 					  <entry>Loads a newer modification logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/export.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Export Modification Logs...</entry>
+					  <entry>Exports the modification logs to a file.</entry>
 					</row>
 				</tbody>
 			</tgroup>

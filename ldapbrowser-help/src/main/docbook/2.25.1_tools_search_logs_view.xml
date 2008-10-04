@@ -121,7 +121,11 @@
 		</para>
 		<para>
 			The search logging mechanism works with logfile rotation. 
-			It uses 10 logfiles each with 100KB per connection. 
+			By default 10 logfiles each with 100KB per connection are used, 
+			you may change these settings in the
+			<link linkend="preferences_search_logs_view">
+				Search Logs preferences
+			</link> 
 		</para>
 	</simplesect>
 			
@@ -173,6 +177,11 @@
 					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/next.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Newer</entry>
 					  <entry>Loads a newer search logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/export.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Export Search Logs...</entry>
+					  <entry>Exports the search logs to a file.</entry>
 					</row>
 				</tbody>
 			</tgroup>
