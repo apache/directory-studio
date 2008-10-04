@@ -166,6 +166,10 @@ public class ServersView extends ViewPart
         initToolbar();
         initContextMenu();
         initListeners();
+
+        // set help context
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
+            ApacheDsPluginConstants.PLUGIN_ID + "." + "gettingstarted_views_servers" );
     }
 
 

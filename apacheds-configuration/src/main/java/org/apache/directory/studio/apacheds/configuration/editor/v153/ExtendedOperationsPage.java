@@ -20,8 +20,10 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v153;
 
 
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -63,6 +65,9 @@ public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_153" );
+
         final ScrolledForm form = managedForm.getForm();
         form.setText( "Extended Operations" );
         masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );

@@ -22,6 +22,7 @@ package org.apache.directory.studio.apacheds.configuration.editor.v150;
 
 import java.util.List;
 
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 import org.apache.directory.studio.apacheds.configuration.editor.v150.dialogs.BinaryAttributeDialog;
@@ -51,6 +52,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
@@ -117,6 +119,9 @@ public class GeneralPage extends FormPage implements SaveableFormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_150" );
+
         ScrolledForm form = managedForm.getForm();
         form.setText( "General" );
 

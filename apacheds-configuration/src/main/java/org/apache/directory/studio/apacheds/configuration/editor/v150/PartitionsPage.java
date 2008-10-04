@@ -20,11 +20,13 @@
 package org.apache.directory.studio.apacheds.configuration.editor.v150;
 
 
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
+import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
 import org.apache.directory.studio.apacheds.configuration.editor.SaveableFormPage;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
 
@@ -64,6 +66,9 @@ public class PartitionsPage extends FormPage implements SaveableFormPage
      */
     protected void createFormContent( IManagedForm managedForm )
     {
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_150" );
+
         ScrolledForm form = managedForm.getForm();
         form.setText( "Partitions" );
         masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
