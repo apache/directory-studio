@@ -35,6 +35,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -126,12 +127,11 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     {
         super.createPageControls( pageContainer );
 
-        // TODO: set help context ID, move help from browser-help plugin to connections-help plugin 
-        //        for ( NewConnectionWizardPage wizardPage : wizardPages )
-        //        {
-        //            PlatformUI.getWorkbench().getHelpSystem().setHelp( wizardPage.getControl(),
-        //                ConnectionUIPlugin.PLUGIN_ID + "." + "tools_newconnection_wizard" );
-        //        }
+        for ( NewConnectionWizardPage wizardPage : wizardPages )
+        {
+            PlatformUI.getWorkbench().getHelpSystem().setHelp( wizardPage.getControl(),
+                ConnectionUIConstants.PLUGIN_ID + "." + "tools_newconnection_wizard" );
+        }
     }
 
 

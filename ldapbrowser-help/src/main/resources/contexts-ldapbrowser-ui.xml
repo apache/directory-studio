@@ -19,7 +19,6 @@
   under the License.
 -->
 <contexts>
- 
  	<context id="tools_connections_view">
    		<description>The Connections view shows all the LDAP connections.</description>
    		<topic label="Connections view" href="html/tools_connections_view.html"/>
@@ -61,28 +60,6 @@
    		<description>The Search Logs view shows all sucessful and failed searches</description>
    		<topic label="Search Logs view" href="html/tools_search_logs_view.html"/>
    	</context>
-   	
- 	<context id="org.apache.directory.studio.connection.ui.tools_newconnection_wizard">
-   		<description>This wizard helps you to create a new connection to a LDAP directory.</description>
-   		<topic label="New LDAP Connection wizard" href="html/tools_newconnection_wizard.html"/>
-   		<topic label="Specify network parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_1"/>
-   		<topic label="Specify authentication parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_2"/>
-   		<topic label="Specify additional parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_3"/>
-   	</context>
- 	<context id="tools_newentry_wizard">
-   		<description>This wizard helps you to create a new entry in a LDAP directory.</description>
-   		<topic label="New Entry wizard" href="html/tools_newentry_wizard.html"/>
-   		<topic label="Select entry creation method" href="html/tools_newentry_wizard.html#tools_newentry_wizard_1"/>
-   		<topic label="Specify object classes" href="html/tools_newentry_wizard.html#tools_newentry_wizard_2"/>
-   		<topic label="Specifiy the distinguished name" href="html/tools_newentry_wizard.html#tools_newentry_wizard_3"/>
-   		<topic label="Enter attributes and values" href="html/tools_newentry_wizard.html#tools_newentry_wizard_4"/>
-   	</context>
- 	<context id="tools_attribute_wizard">
-   		<description>This wizard is used to create or edit an attribute.</description>
-   		<topic label="Attribute wizard" href="html/tools_attribute_wizard.html"/>
-   		<topic label="Enter attribute type" href="html/tools_attribute_wizard.html#tools_attribute_wizard_1"/>
-   		<topic label="Specify options" href="html/tools_attribute_wizard.html#tools_attribute_wizard_2"/>
-   	</context>
  	<context id="tools_search_dialog">
    		<description>In the LDAP Search page you can specify search parameters to query a directory.</description>
    		<topic label="LDAP Search page" href="html/tools_search_dialog.html"/>
@@ -119,6 +96,4 @@
    		<description>This wizard exports directory content to Excel files.</description>
    		<topic label="Excel Export wizard" href="html/tools_excelexport_wizard.html"/>
    	</context>
-
-    		
 </contexts>

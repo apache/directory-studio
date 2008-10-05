@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.2"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -18,17 +18,12 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<plugin>
-	<extension point="org.eclipse.help.toc">
-		<toc file="toc.xml" primary="true" />
-	</extension>
-	<extension point="org.eclipse.help.contexts">
-		<contexts file="contexts-ldapbrowser-ui.xml" plugin="org.apache.directory.studio.ldapbrowser.ui" />
-	</extension>
-	<extension point="org.eclipse.help.contexts">
-		<contexts file="contexts-ldapbrowser-common.xml" plugin="org.apache.directory.studio.ldapbrowser.common" />
-	</extension>
-	<extension point="org.eclipse.help.contexts">
-		<contexts file="contexts-connection-ui.xml" plugin="org.apache.directory.studio.connection.ui" />
-	</extension>
-</plugin>
+<contexts>
+ 	<context id="tools_newconnection_wizard">
+   		<description>This wizard helps you to create a new connection to a LDAP directory.</description>
+   		<topic label="New LDAP Connection wizard" href="html/tools_newconnection_wizard.html"/>
+   		<topic label="Specify network parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_1"/>
+   		<topic label="Specify authentication parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_2"/>
+   		<topic label="Specify additional parameters" href="html/tools_newconnection_wizard.html#tools_newconnection_wizard_3"/>
+   	</context>
+</contexts>
