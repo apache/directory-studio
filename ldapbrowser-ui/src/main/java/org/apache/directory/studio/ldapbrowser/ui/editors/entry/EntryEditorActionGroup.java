@@ -280,15 +280,15 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         menuManager.add( openSortDialogAction );
         menuManager.add( new Separator() );
         menuManager.add( showOperationalAttributesAction );
-        menuManager.add( showRawValuesAction );
+        menuManager.add( showDecoratedValuesAction );
         menuManager.add( new Separator() );
         menuManager.add( openEntryEditorPreferencePage );
         menuManager.addMenuListener( new IMenuListener()
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                showRawValuesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                    BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
+                showDecoratedValuesAction.setChecked( !BrowserCommonActivator.getDefault().getPreferenceStore()
+                    .getBoolean( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
                 showOperationalAttributesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore()
                     .getBoolean( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
             }

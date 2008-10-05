@@ -66,7 +66,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * Returns true if the user wishes to show raw values rather than
      * user-friendly values. If true the getDisplayValue() methods 
-     * shouldnot modify the value.
+     * should not modify the value.
      *
      * @return true if raw values should be displayed
      */

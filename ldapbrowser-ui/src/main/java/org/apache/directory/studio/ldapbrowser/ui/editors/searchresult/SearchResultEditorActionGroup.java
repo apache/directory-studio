@@ -31,7 +31,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RefreshAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.ShowRawValuesAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.ShowDecoratedValuesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
@@ -80,8 +80,8 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     /** The show links action. */
     private ShowLinksAction showLinksAction;
 
-    /** The show raw values action. */
-    private ShowRawValuesAction showRawValuesAction;
+    /** The show decorated values action. */
+    private ShowDecoratedValuesAction showDecoratedValuesAction;
 
     /** The open search result editor preference page. */
     private OpenSearchResultEditorPreferencePage openSearchResultEditorPreferencePage;
@@ -186,7 +186,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
 
         showDNAction = new ShowDNAction();
         showLinksAction = new ShowLinksAction();
-        showRawValuesAction = new ShowRawValuesAction();
+        showDecoratedValuesAction = new ShowDecoratedValuesAction();
         openSearchResultEditorPreferencePage = new OpenSearchResultEditorPreferencePage();
         showQuickFilterAction = new ShowQuickFilterAction( searchResultEditor.getMainWidget().getQuickFilterWidget() );
 
@@ -278,7 +278,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     {
         if ( searchResultEditor != null )
         {
-            showRawValuesAction = null;
+            showDecoratedValuesAction = null;
             showDNAction.dispose();
             showDNAction = null;
             showLinksAction.dispose();
@@ -347,15 +347,15 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     {
         menuManager.add( showDNAction );
         menuManager.add( showLinksAction );
-        menuManager.add( showRawValuesAction );
+        menuManager.add( showDecoratedValuesAction );
         menuManager.add( new Separator() );
         menuManager.add( openSearchResultEditorPreferencePage );
         menuManager.addMenuListener( new IMenuListener()
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                showRawValuesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                    BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
+                showDecoratedValuesAction.setChecked( !BrowserCommonActivator.getDefault().getPreferenceStore()
+                    .getBoolean( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
             }
         } );
         menuManager.update( true );

@@ -32,7 +32,7 @@ import org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.SelectAllAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.ShowRawValuesAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.ShowDecoratedValuesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.ValueEditorPreferencesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
@@ -64,8 +64,8 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     /** The open sort dialog action. */
     protected OpenSortDialogAction openSortDialogAction;
 
-    /** The show raw values action. */
-    protected ShowRawValuesAction showRawValuesAction;
+    /** The show decorated values action. */
+    protected ShowDecoratedValuesAction showDecoratedValuesAction;
 
     /** The show quick filter action. */
     protected ShowQuickFilterAction showQuickFilterAction;
@@ -124,7 +124,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         TreeViewer viewer = mainWidget.getViewer();
 
         openSortDialogAction = new OpenSortDialogAction( configuration.getPreferences() );
-        showRawValuesAction = new ShowRawValuesAction();
+        showDecoratedValuesAction = new ShowDecoratedValuesAction();
         showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
 
         openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenBestEditorAction( viewer,
@@ -162,7 +162,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
             openSortDialogAction = null;
             showQuickFilterAction.dispose();
             showQuickFilterAction = null;
-            showRawValuesAction = null;
+            showDecoratedValuesAction = null;
 
             openDefaultValueEditorActionProxy.dispose();
             openDefaultValueEditorActionProxy = null;
@@ -223,13 +223,13 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     public void fillMenu( IMenuManager menuManager )
     {
         menuManager.add( openSortDialogAction );
-        menuManager.add( showRawValuesAction );
+        menuManager.add( showDecoratedValuesAction );
         menuManager.addMenuListener( new IMenuListener()
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                showRawValuesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-                    BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
+                showDecoratedValuesAction.setChecked( !BrowserCommonActivator.getDefault().getPreferenceStore()
+                    .getBoolean( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
             }
         } );
     }

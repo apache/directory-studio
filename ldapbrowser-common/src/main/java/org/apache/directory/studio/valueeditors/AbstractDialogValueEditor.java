@@ -73,7 +73,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
     /**
      * Returns true if the user wishes to show raw values rather than
      * user-friendly values. If true the getDisplayValue() methods 
-     * shouldnot modify the value.
+     * should not modify the value.
      *
      * @return true if raw values should be displayed
      */

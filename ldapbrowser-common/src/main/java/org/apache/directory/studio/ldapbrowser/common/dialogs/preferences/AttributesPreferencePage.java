@@ -44,7 +44,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class AttributesPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private Button showRawValuesButton;
+    private Button showDecoratedValuesButton;
 
 
     /**
@@ -85,8 +85,8 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        showRawValuesButton = BaseWidgetUtils.createCheckbox( composite, "Show raw values", 1 );
-        showRawValuesButton.setSelection( getPreferenceStore().getBoolean(
+        showDecoratedValuesButton = BaseWidgetUtils.createCheckbox( composite, "Show decorated values", 1 );
+        showDecoratedValuesButton.setSelection( !getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
 
         applyDialogFont( composite );
@@ -100,7 +100,7 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
     public boolean performOk()
     {
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES,
-            showRawValuesButton.getSelection() );
+            !showDecoratedValuesButton.getSelection() );
         return true;
     }
 
@@ -110,7 +110,7 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
      */
     protected void performDefaults()
     {
-        showRawValuesButton.setSelection( getPreferenceStore().getDefaultBoolean(
+        showDecoratedValuesButton.setSelection( !getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
         super.performDefaults();
     }
