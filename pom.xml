@@ -1079,6 +1079,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <tagBase>https://svn.apache.org/repos/asf/directory/studio/tags/</tagBase>
+          <preparationGoals>clean studio:eclipse install</preparationGoals>
         </configuration>
       </plugin>
       <plugin>
