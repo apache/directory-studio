@@ -45,6 +45,25 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.2-beta-1</version>
+            <executions>
+              <execution>
+                <id>nightly</id>
+                <phase>package</phase>
+                <configuration>
+                  <finalName>studio-plugin</finalName>
+                  <descriptors>
+                    <descriptor>src/main/assembly/nightlybuild.xml</descriptor>
+                  </descriptors>
+                </configuration>
+                <goals>
+                  <goal>attached</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
@@ -278,19 +297,6 @@
               <outputDirectory>../target/distributions</outputDirectory>
               <descriptors>
                 <descriptor>src/main/assembly/bin.xml</descriptor>
-              </descriptors>
-            </configuration>
-            <goals>
-              <goal>attached</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>nightly</id>
-            <phase>package</phase>
-            <configuration>
-              <finalName>studio-plugin</finalName>
-              <descriptors>
-                <descriptor>src/main/assembly/nightlybuild.xml</descriptor>
               </descriptors>
             </configuration>
             <goals>
