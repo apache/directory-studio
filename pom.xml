@@ -52,13 +52,17 @@
   <distributionManagement>
     <site>
       <id>apache.directory.studio</id>
-      <url>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</url>
+      <url>${distributionManagement.site.url}</url>
     </site>
   </distributionManagement>
 
   <properties>
-    <!-- Set deployment url for dists. Can be overwritten in the settings.xml -->
+    <!--
+      Set default of various URLs for deployment repositories/paths/....
+      Can be overwritten in the settings.xml
+    -->
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
+    <distributionManagement.site.url>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distributionManagement.site.url>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.3.0-SNAPSHOT</aciitemeditor.version>
     <apacheds.launcher.version>1.2.0</apacheds.launcher.version>
