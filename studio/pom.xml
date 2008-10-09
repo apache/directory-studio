@@ -199,7 +199,7 @@
                 <phase>deploy</phase>
                 <configuration>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-x86-${pom.version}-dist.tar.gz</file>
-                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
                   <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
@@ -361,7 +361,7 @@
                 <phase>deploy</phase>
                 <configuration>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-x86_64-${pom.version}-dist.tar.gz</file>
-                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
                   <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
@@ -523,7 +523,7 @@
                 <phase>deploy</phase>
                 <configuration>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-ppc-${pom.version}-dist.tar.gz</file>
-                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
                   <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
@@ -684,7 +684,7 @@
                 <phase>deploy</phase>
                 <configuration>
                   <file>../target/distributions/ApacheDirectoryStudio-win32-${pom.version}-dist.zip</file>
-                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
                   <groupId>${pom.groupId}</groupId>
                   <packaging>zip</packaging>
@@ -791,7 +791,7 @@
                 <phase>deploy</phase>
                 <configuration>
                   <file>../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}-dist.tar.gz</file>
-                  <url>${pom.distributionManagement.snapshotRepository.url}</url>
+                  <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
                   <groupId>${pom.groupId}</groupId>
                   <packaging>tar.gz</packaging>
