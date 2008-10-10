@@ -109,6 +109,32 @@
         <maven.test.skip>true</maven.test.skip>
       </properties>
     </profile>
+    <!-- Release profile -->
+    <profile>
+      <id>release</id>
+       <build>
+         <plugins>
+          <!-- Configuration for signature of the jars using the keystore -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <keystore>${jarsign.keystore}</keystore>
+              <alias>${jarsign.alias}</alias>
+              <storepass>${jarsign.storepass}</storepass>
+              <verify>true</verify>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <!-- 
       Building help modules can be skipped by adding 
       -Dfastbuild
