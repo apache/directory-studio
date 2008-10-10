@@ -1,0 +1,146 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<!--
+  Sample for settings.xml configuration to use to release Apache Directory Studio
+-->
+<settings xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <servers>
+    <!-- Server configuration for 'people.apache.org' -->
+    <server>
+      <id>people.apache.org</id>
+      <username>yourusername</username>
+      <!--
+        Authentication can be done via private key or password.
+        Uncomment the line corresponding to your authentication method.
+      -->
+      <!--<privateKey>path_to_private_key</privateKey>-->
+      <!--<password>yourpassword</password>-->
+      <filePermissions>664</filePermissions>
+      <directoryPermissions>775</directoryPermissions>
+    </server>
+  </servers>
+
+  <profiles>
+  
+    <!-- Profile for to use for the release -->
+    <profile>
+      <id>release</id>
+      <properties>
+        <!--
+          Configuration for artifacts signature
+        -->
+        <gpg.passphrase>yourpassword</gpg.passphrase>
+        <!--
+          If you want to use another key than the default one, uncomment the 
+          following line.
+        -->
+        <!--<gpg.keyname>keyname</gpg.keyname>-->
+        
+        <!--
+          Configuration for jars signature
+        -->
+        <jarsign.keystore>path_to_keystore</jarsign.keystore>
+        <jarsign.alias>youralias</jarsign.alias>
+        <jarsign.storepass>yourstorepass</jarsign.storepass>
+        
+        <!--
+          This is an alternative URL for a deployment repository when doing a release
+          mvn release:perform -Prelease 
+        -->
+        <release.altDeploymentRepository>-DaltDeploymentRepository=apache.release::default::scpexe://localhost/tmp/projects/studio</release.altDeploymentRepository>
+        
+        <!--
+          This is the URL built distributions (*.tar.gz and *.zip) of the studio
+          will be deployed.
+        -->
+        <studio.dist.url>scpexe://localhost/tmp/studio</studio.dist.url>
+        
+        <!--
+          This is the URL built sites of the studio will be copied to
+        -->
+        <distributionManagement.site.url>scpexe://localhost/tmp/projects/studio/</distributionManagement.site.url>
+      </properties>
+      <build>
+        <plugins>
+          <!-- Configuration for signature of the jars using the keystore -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <keystore>/path/to/your/keystore</keystore>
+              <alias>youralias</alias>
+              <storepass>yourstorepassword</storepass>
+              <verify>true</verify>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <!-- Profile for Windows -->
+    <profile>
+      <id>win32</id>
+    </profile>
+    
+    <!-- Profile for Mac OS X -->
+    <profile>
+      <id>macosx</id>
+    </profile>
+    
+    <!-- Profile for Linux x86 -->
+    <profile>
+      <id>linux-x86</id>
+    </profile>
+    
+    <!-- Profile for x86_64 -->
+    <profile>
+      <id>linux-x86_64</id>
+    </profile>
+    
+    <!-- Profile for Linux PPC -->
+    <profile>
+      <id>linux-ppc</id>
+    </profile>
+  </profiles>
+
+  <!-- 
+    We need to activate these OS specific profiles, so all the distributions
+    are generated and deployed to the repository. 
+  -->
+  <activeProfiles>
+    <activeProfile>win32</activeProfile>
+    <activeProfile>macosx</activeProfile>
+    <activeProfile>linux-x86</activeProfile>
+    <activeProfile>linux-x86_64</activeProfile>
+    <activeProfile>linux-ppc</activeProfile>
+  </activeProfiles>
+  
+</settings>
