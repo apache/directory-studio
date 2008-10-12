@@ -167,6 +167,158 @@
 				<link linkend="tools_connection_properties">Connection properties</link>.
 			</para>
 		</section>
+		<section id="tasks_manage_connections_share">
+			<title>Sharing connections</title>
+			<para>
+				There are two ways to export and import connections.
+				This may be useful if you want to copy your connections from one computer 
+				to another or if you want to share connection parameters with other users.
+				You could also use this features to backup your defined connections.
+			</para>
+			<simplesect>
+				<title>Import/Export connections</title>
+				<para>
+					You could use the  
+					<link linkend="tools_exportconnection_wizard">Export Connection wizard</link>
+					and 
+					<link linkend="tools_importconnection_wizard">Import Connection wizard</link>
+					to export and import connections.
+				</para>
+			</simplesect>
+			<simplesect>
+				<title>Copy/Paste connections as LDAP URL</title>
+				<para>
+					A more simple way is to copy/paste connections as LDAP URL.
+				</para>
+				<para>
+					RFC 2255 specifies the LDAP URL format. Apache Directory Studio uses the 
+					host and port field	and uses X- extensions for all other connection paramter.
+				</para>
+				<para>
+				<informaltable frame="all">
+					<tgroup cols="4">
+						<colspec colname="Parameter" colwidth="1*" />
+						<colspec colname="Description" colwidth="1*" />
+						<colspec colname="Possible values" colwidth="1*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Parameter</entry>
+								<entry>Description</entry>
+								<entry>Possible values</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>X-CONNECTION-NAME</entry>
+								<entry>The connection name.</entry>
+								<entry>Any name, must be URL encoded</entry>
+								<entry>Current date</entry>
+							</row>
+							<row>
+								<entry>X-ENCRYPTION</entry>
+								<entry>The encryption to use.</entry>
+								<entry>none, ldaps, StartTLS</entry>
+								<entry>none</entry>
+							</row>
+							<row>
+								<entry>X-AUTH-METHOD</entry>
+								<entry>The authentication to use.</entry>
+								<entry>Anonymous, Simple, DIGEST-MD5, CRAM-MD5</entry>
+								<entry>Simple imf X-BIND-USER is present, else Anonymous</entry>
+							</row>
+							<row>
+								<entry>X-BIND-USER</entry>
+								<entry>The bind DN or user.</entry>
+								<entry>Any DN, must be URL encoded</entry>
+								<entry>none</entry>
+							</row>
+							<row>
+								<entry>X-BIND-PASSWORD</entry>
+								<entry>The bind password.</entry>
+								<entry></entry>
+								<entry>none</entry>
+							</row>
+							<row>
+								<entry>X-SASL-REALM</entry>
+								<entry>The SASL realm.</entry>
+								<entry></entry>
+								<entry>none</entry>
+							</row>
+							<row>
+								<entry>X-BASE-DN</entry>
+								<entry>The base DN.</entry>
+								<entry>A valid base DN, none to get base DNs from the Root DSE</entry>
+								<entry>none</entry>
+							</row>
+							<row>
+								<entry>X-COUNT-LIMIT</entry>
+								<entry>The count limit.</entry>
+								<entry>A positive integer, 0 for no count limit</entry>
+								<entry>0</entry>
+							</row>
+							<row>
+								<entry>X-TIME-LIMIT</entry>
+								<entry>The time limit in seconds.</entry>
+								<entry>A positive integer, 0 for no time limit</entry>
+								<entry>0</entry>
+							</row>
+							<row>
+								<entry>X-ALIAS-HANDLING</entry>
+								<entry>The alias handling method.</entry>
+								<entry>NEVER, SEARCHING, FINDING, ALWAYS</entry>
+								<entry>ALWAYS</entry>
+							</row>
+							<row>
+								<entry>X-REFERRAL-HANDLING</entry>
+								<entry>The referral handling method.</entry>
+								<entry>FOLLOW, IGNORE, MANAGE</entry>
+								<entry>FOLLOW</entry>
+							</row>
+							<row>
+								<entry>X-FETCH-SUBENTRIES</entry>
+								<entry>If present the subentries control is activated.</entry>
+								<entry>no value</entry>
+								<entry>-</entry>
+							</row>
+							<row>
+								<entry>X-PAGED-SEARCH</entry>
+								<entry>If present the paged control is activated.</entry>
+								<entry>no value</entry>
+								<entry>-</entry>
+							</row>
+							<row>
+								<entry>X-PAGED-SEARCH-SIZE</entry>
+								<entry>The paged search size.</entry>
+								<entry>Any positive integer</entry>
+								<entry>100</entry>
+							</row>
+							<row>
+								<entry>X-PAGED-SEARCH-SCROLL-MODE</entry>
+								<entry>If present the scroll mode is activated.</entry>
+								<entry>No value</entry>
+								<entry>-</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+				</para>
+				<para>
+					Here's an example how such an URL looks like:
+					ldap://localhost:10389/????X-CONNECTION-NAME=ApacheDS,X-BIND-USER=uid=admin%2cou=system,X-BIND-PASSWORD=secret,X-COUNT-LIMIT=1000
+				</para>
+				<para>
+					When you copy a connection within the Connections view it is copied
+					in the described format to your clipboard. You could then paste this LDAP URL
+					into a text editor or to an email.
+				</para>
+				<para>
+					The same way you could copy an LDAP URL from somewhere and paste it into the 
+					Connections view.
+				</para>
+			</simplesect>
+		</section>
 	</section>	
 
 	
