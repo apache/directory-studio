@@ -162,7 +162,7 @@
 		<section id="tasks_manage_connections_secure">
 			<title>Enabling secure connections</title>
 			<para>
-				Apache Directory Studio supports secure connections with ldaps or StartTLS extension. 
+				Apache Directory Studio supports secure connections using SSL (ldaps) or StartTLS extended operation. 
 				Select a proper encryption method in the 
 				<link linkend="tools_connection_properties">Connection properties</link>.
 			</para>
