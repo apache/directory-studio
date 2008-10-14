@@ -3,11 +3,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.3.0.v20081014</version>
+    <version>1.3.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>ldapbrowser.core</artifactId>
-  <version>1.3.0.v20081014</version>
+  <version>1.3.1-SNAPSHOT</version>
   <name>Apache Directory Studio LDAP Browser Core</name>
   <packaging>jar</packaging>
 
