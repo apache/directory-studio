@@ -1136,7 +1136,7 @@
         <plugin>
           <groupId>org.apache.directory.studio</groupId>
           <artifactId>studio-maven-plugin</artifactId>
-          <version>1.0.1-SNAPSHOT</version>
+          <version>1.0.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.felix</groupId>
