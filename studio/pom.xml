@@ -447,7 +447,7 @@
                 </configuration>
               </execution>
               <execution>
-	            <id>unpack-plugins-linux-x86_64</id>
+	            <id>unpack-plugins-linux-ppc</id>
 	            <phase>generate-resources</phase>
 	            <goals>
 	              <goal>unpack-with-artifactid-prefix</goal>
