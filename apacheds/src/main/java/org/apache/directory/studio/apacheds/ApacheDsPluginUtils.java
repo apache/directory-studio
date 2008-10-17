@@ -125,7 +125,6 @@ public class ApacheDsPluginUtils
             switch ( server.getVersion() )
             {
                 case VERSION_1_5_4:
-                    // TODO modify this
                     return new String[]
                         { "antlr-2.7.7.jar", "xbean-spring-3.3.jar", "apacheds-bootstrap-extract-1.5.4.jar",
                             "apacheds-bootstrap-partition-1.5.4.jar", "apacheds-core-1.5.4.jar",
@@ -133,7 +132,7 @@ public class ApacheDsPluginUtils
                             "apacheds-core-cursor-1.5.4.jar", "apacheds-core-entry-1.5.4.jar",
                             "apacheds-core-shared-1.5.4.jar", "apacheds-jdbm-1.5.4.jar",
                             "apacheds-jdbm-store-1.5.4.jar", "apacheds-kerberos-shared-1.5.4.jar",
-                            "apacheds-launcher-1.2.0.jar", "apacheds-protocol-changepw-1.5.4.jar",
+                            "apacheds-launcher-1.2.1.jar", "apacheds-protocol-changepw-1.5.4.jar",
                             "apacheds-protocol-dns-1.5.4.jar", "apacheds-protocol-kerberos-1.5.4.jar",
                             "apacheds-protocol-ldap-1.5.4.jar", "apacheds-protocol-ntp-1.5.4.jar",
                             "apacheds-protocol-shared-1.5.4.jar", "apacheds-schema-bootstrap-1.5.4.jar",
@@ -155,7 +154,7 @@ public class ApacheDsPluginUtils
                             "apacheds-core-1.5.3.jar", "apacheds-core-constants-1.5.3.jar",
                             "apacheds-core-entry-1.5.3.jar", "apacheds-core-shared-1.5.3.jar",
                             "apacheds-jdbm-1.5.3.jar", "apacheds-jdbm-store-1.5.3.jar",
-                            "apacheds-kerberos-shared-1.5.3.jar", "apacheds-launcher-1.2.0.jar",
+                            "apacheds-kerberos-shared-1.5.3.jar", "apacheds-launcher-1.2.1.jar",
                             "apacheds-protocol-changepw-1.5.3.jar", "apacheds-protocol-dns-1.5.3.jar",
                             "apacheds-protocol-kerberos-1.5.3.jar", "apacheds-protocol-ldap-1.5.3.jar",
                             "apacheds-protocol-ntp-1.5.3.jar", "apacheds-protocol-shared-1.5.3.jar",
