@@ -1,20 +1,69 @@
 Release Notes
 
-Apache Directory Studio 1.2.0
+Apache Directory Studio 1.3.0 RC1
+
+Sub-task
+  * [DIRSTUDIO-398] - Improve the DSML decorated classes by adding an empty constructor and linking the methods of the underlying ldapmessage
 
 Bug
-  * [DIRSTUDIO-121] - Some property pages make the dialog very tall
-  * [DIRSTUDIO-360] - cannot read attribute from items with a / in the dn
-  * [DIRSTUDIO-364] - Installing in Eclipse fails
-  * [DIRSTUDIO-365] - Can't delete entry with studio 1.1.0. works with 1.0.1
+  * [DIRSTUDIO-260] - Unable to do a DSML Export from eDirectory
+  * [DIRSTUDIO-291] - Adding of an objectclass requiring attributes not present to an entry in the ldap browser, modify operation fails
+  * [DIRSTUDIO-293] - Values of attributes of the syntax 'Generalized Time' must have the g-time-zone 'Z' and minutes and seconds set to be interpreted and shown as a date instead of the raw value
+  * [DIRSTUDIO-354] - Search window, paste problem
+  * [DIRSTUDIO-355] - DSML Import and Export fail with "Internal Error: null"
+  * [DIRSTUDIO-367] - Tree delete control should not be used automatically
+  * [DIRSTUDIO-372] - NPE when using the LdifEntryEditorDialog w/o selecting a connection
+  * [DIRSTUDIO-379] - Class NewEntryWizard not found, application doesn't starts
+  * [DIRSTUDIO-380] - Attribute and Entry property pages makes the dialog very tall
+  * [DIRSTUDIO-382] - Unable to launch Apache Directory Server with Turkish Regional Settings
+  * [DIRSTUDIO-386] - Can't change 5-digit port number by typing
+  * [DIRSTUDIO-389] - Back/Forward Navigation isn't working
+  * [DIRSTUDIO-394] - SASL Realms are not correctly saved in the 1.5.2 and 1.5.3 Apache DS Configuration Editor
 
 Improvement
-  * [DIRSTUDIO-361] - Auto-activate 'show operational attributes' when adding an operational attribute
+  * [DIRSTUDIO-114] - Group container entries first in browser view
+  * [DIRSTUDIO-116] - Expand all folds by default
+  * [DIRSTUDIO-147] - Allow LDIF imports to overwrite existing entries
+  * [DIRSTUDIO-182] - [Ldap][studio] Use property file to designate ldap context factory etc. instead of hard code
+  * [DIRSTUDIO-228] - Mask userPassword in the log view
+  * [DIRSTUDIO-244] - Add selection for copy strategy if an entry to copy already exists
+  * [DIRSTUDIO-255] - Run in background should be configurable so one could set it to true by default
+  * [DIRSTUDIO-272] - Use the rat maven plugin with the -Prelease profile option to generate releases
+  * [DIRSTUDIO-292] - Using the 'new entry'/'use existing entry as template' feature from the context menu of an entry, the parent dn is also copied from the template entry
+  * [DIRSTUDIO-311] - Provide Goto DN dialog
+  * [DIRSTUDIO-327] - Add support for Paged Results Control
+  * [DIRSTUDIO-358] - Connections View can have an extension point for initial values
+  * [DIRSTUDIO-363] - Browser View doesn't accept menu additions thru viewerContribution extension point
+  * [DIRSTUDIO-377] - Add value editor for OIDs
+  * [DIRSTUDIO-378] - An attribute name containing an underscore ("_") is split in two when used in "Returning Attributes" field of the "Search" dialog
+  * [DIRSTUDIO-383] - Make "Fetch subentries" setting configurable per connection, move from browser preferences to connection properties
+  * [DIRSTUDIO-384] - Improve New Attribute Type, New Object Class and New Schema Wizards when no schema project is opened
+  * [DIRSTUDIO-391] - Show default values directly
+  * [DIRSTUDIO-393] - Add support for ApacheDS 1.5.4 server.xml file in the ApacheDS Configuration Editor
+  * [DIRSTUDIO-405] - Update the Apache DS plugin to use Apache DS 1.5.4 dependencies
+  * [DIRSTUDIO-406] - The New Server Wizard should be listed in the NewWizards section
+  * [DIRSTUDIO-407] - Stack the Servers view aside the Connections view as a perpective extension of the LDAP Browser Perpective
+  * [DIRSTUDIO-408] - In the NewEntryWizard, the first selected object class on the left side should be added if the Enter key is hit in the text field
+
+New Feature
+  * [DIRSTUDIO-85] - Add support for search dialog to include * and + for returnable attributes
+  * [DIRSTUDIO-107] - Enable Select/Copy in Property page of RootDSE in order to copy and paste detected OIDs
+  * [DIRSTUDIO-153] - Allow offline modifications of entries
+  * [DIRSTUDIO-297] - Add a 'save as' for logs
+  * [DIRSTUDIO-356] - Add a way to get the connection config as an URL
+  * [DIRSTUDIO-385] - Add dialog to create a new context entry
+
+Task
+  * [DIRSTUDIO-19] - Add Javadoc to LDAP Browser classes
+  * [DIRSTUDIO-374] - Clean duplicated dependencies in plugins
+  * [DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file
+  * [DIRSTUDIO-376] - Move to the latest Eclipse 3.4 dependencies
 
 
----------------------------------------------------------------------------------
 
-Apache Directory Studio 1.2.0 RC1
+--------------------------------------------------------------------------------
+
+Apache Directory Studio 1.2.0
 
 Bug
   * [DIRSTUDIO-89] - Entry painted even though not created in server
@@ -38,6 +87,9 @@ Bug
   * [DIRSTUDIO-347] - Keybinding conflict for CTRL+Q
   * [DIRSTUDIO-349] - Unable to enter large values for uid
   * [DIRSTUDIO-350] - DS is not properly displaying case of group DN
+  * [DIRSTUDIO-360] - cannot read attribute from items with a / in the dn
+  * [DIRSTUDIO-364] - Installing in Eclipse fails
+  * [DIRSTUDIO-365] - Can't delete entry with studio 1.1.0. works with 1.0.1
 
 Improvement
   * [DIRSTUDIO-46] - Add connections import/export
@@ -49,6 +101,7 @@ Improvement
 New Feature
   * [DIRSTUDIO-321] - Need to be able to set SOCKS proxy in the RCP version
   * [DIRSTUDIO-328] - Search Logs View
+  * [DIRSTUDIO-361] - Auto-activate 'show operational attributes' when adding an operational attribute
 
 Task
   * [DIRSTUDIO-128] - Replace internal schema parser with the schema parser in shared-ldap.
@@ -58,7 +111,7 @@ Task
   * [DIRSTUDIO-339] - Add the 'org.eclipse.ui.carbon' Eclipse plugin to the Mac OS X distribution
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory Studio 1.1.0
 
@@ -173,7 +226,7 @@ Task
   * [DIRSTUDIO-290] - Check creation and proper disposal of SWT Graphics objects
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory Studio 1.0.1
 
@@ -192,7 +245,7 @@ Task
   * [DIRSTUDIO-188] - Move LDIF Editor help to its own help plugin
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory Studio 1.0.0
 
@@ -249,7 +302,7 @@ Wish
   * [DIRSTUDIO-100] - Interface IRootDSE does not sufficiently define return values of methods
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory LDAP Studio 0.8.1
 
@@ -258,7 +311,7 @@ Bug
   * [DIRSTUDIO-144] - Unable to install plugins from updatesite on x86_64 architecture
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory LDAP Studio 0.8.0
 
@@ -281,7 +334,7 @@ New Feature
   * [DIRSTUDIO-91] - Add a new plugin for handling the Apache DS server configuration file
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory LDAP Studio 0.7.0
 
@@ -316,6 +369,6 @@ New Feature
   * [DIRSTUDIO-41] - Add an Overview page on the Schema Editor that displays all ATs and OCs of the schema 
 
 
----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 Apache Directory LDAP Studio 0.6.0 - Initial release
