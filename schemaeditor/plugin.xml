@@ -278,7 +278,7 @@
              </or>
           </enablement>
           <description>
-             %Decorator_SchemaEditorTypeDecorator_description
+             %Decorator_SchemaEditorSchemaCheckerDecorator_description
           </description>
        </decorator>
     </extension>
