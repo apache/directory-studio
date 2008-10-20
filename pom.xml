@@ -175,7 +175,15 @@
       of at least 1 iteration because the dist modules would be
       built before the help modules ...
     -->
-    <profile>
+    <!--
+      NOTE:
+      This profile has been disabled for the release, and needs to be 
+      enabled again after the release is over.
+      We are disabling the build of 'updatesite' and 'studio' because we don't 
+      want to overload the maven repository with useless (heavy) packages and 
+      distributions
+    -->
+    <!--<profile>
       <id>build-dist-modules</id>
       <activation>
         <file>
@@ -186,7 +194,7 @@
         <module>updatesite</module>
         <module>studio</module>
       </modules>
-    </profile>
+    </profile>-->
   </profiles>
 
   <dependencyManagement>
@@ -195,7 +203,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>studio-dsml-parser</artifactId>
-        <version>0.4.4-SNAPSHOT</version>
+        <version>${studio.dsml.parser.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
@@ -260,7 +268,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>apacheds-launcher</artifactId>
-        <version>1.2.1-SNAPSHOT</version>
+        <version>${apacheds.launcher.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
