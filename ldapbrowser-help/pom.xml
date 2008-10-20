@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>ldapbrowser.help</artifactId>
-  <version>${ldapbrowser.help.version}</version>
+  <version>1.3.0.v20081020</version>
   <name>Apache Directory Studio LDAP Browser Help</name>
   <packaging>jar</packaging>
 
@@ -57,4 +57,10 @@
       </plugin>
     </plugins>
   </build>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.3.0.v20081020parent-help/ldapbrowser.help</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.3.0.v20081020parent-help/ldapbrowser.help</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/studio/tags/1.3.0.v20081020parent-help/ldapbrowser.help</url>
+  </scm>
 </project>
