@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.3.0.v20081020</version>
+    <version>1.3.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>valueeditors</artifactId>
-  <version>1.3.0.v20081020</version>
+  <version>1.3.1-SNAPSHOT</version>
   <name>Apache Directory Studio Value Editors</name>
   <packaging>jar</packaging>
 
