@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Eclipse-AutoStart: true
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-ManifestVersion: 2
+Bundle-Localization: plugin
+Bundle-SymbolicName: org.eclipse.sdk; singleton:=true
+Require-Bundle: org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",org.ecli
+ pse.help.ui;bundle-version="[3.2.0,4.0.0)",org.eclipse.help.base;bund
+ le-version="[3.1.0,4.0.0)",org.eclipse.ui.cheatsheets;bundle-version=
+ "[3.2.0,4.0.0)"
+Bundle-Version: 3.2.1.r321_v20060705
+

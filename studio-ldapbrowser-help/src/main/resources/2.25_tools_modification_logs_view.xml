@@ -1,0 +1,139 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_modification_logs_view">
+	<title>Modification Logs view</title>
+	<para>
+		The Modification Logs view shows all sucessful and failed modifications. 
+	</para>
+	
+	<simplesect id="tools_modification_logs_view_concept">
+		<title>Concept</title>
+		<para>
+			All modify operations are logged to a logfile in LDIF format. Additionally 
+			the result (OK or ERROR) is prepended as LDIF comment to every log record.
+		</para>	
+		<para>
+			Example log of a sucessfully performed modification:
+			<code language="LDIF">
+				<sbr />
+				#!RESULT OK
+				<sbr />
+				#!CONNECTION ldap://localhost:389
+				<sbr />
+				#!DATE 2006-11-04T21:32:40.134
+				<sbr />
+				dn: cn=Ted Geisel,ou=People,o=JNDITutorial
+				<sbr />
+				changetype: modify
+				<sbr />
+				add: mail
+				<sbr />
+				mail: Ted.Geisel@JNDITutorial.com
+				<sbr />
+				-
+				<sbr />
+			</code>
+			
+		</para>
+		<para>
+			Example log of a failed modification:
+			<code language="LDIF">
+				<sbr />
+				#!RESULT ERROR
+				<sbr />
+				#!CONNECTION ldap://localhost:389
+				<sbr />
+				#!DATE 2006-11-04T21:33:05.739
+				<sbr />
+				#!ERROR [LDAP: error code 20 - modify/add: mail: value #0 already exists]
+				<sbr />
+				dn: cn=Ted Geisel,ou=People,o=JNDITutorial
+				<sbr />
+				changetype: modify
+				<sbr />
+				add: mail
+				<sbr />
+				mail: Ted.Geisel@JNDITutorial.com
+				<sbr />
+				-
+				<sbr />
+			</code>
+		</para>	
+		<para>
+			The modification logging mechanism works with logfile rotation. 
+			It uses 10 logfiles each with 100KB per connection. 
+		</para>
+	</simplesect>
+			
+	<simplesect id="tools_modification_logs_view_screenshot">
+		<title>Example screenshot</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata width="15cm"
+							fileref="images/tools_modification_logs_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_modification_logs_view_toolbar">
+		<title>Toolbar</title>
+		<informaltable frame='all' >
+			<tgroup cols='3'>
+				<colspec colname="Icon" align="center" colwidth="1*" />
+				<colspec colname="Action" colwidth="2*" />
+				<colspec colname="Description" colwidth="4*" />
+				<thead>
+					<row>
+					  <entry>Icon</entry>
+					  <entry>Action</entry>
+					  <entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/refresh.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Refresh</entry>
+					  <entry>Reloads the current modification logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/previous.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Older</entry>
+					  <entry>Loads an older modification logfile.</entry>
+					</row>
+					<row>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/next.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry>Newer</entry>
+					  <entry>Loads a newer modification logfile.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>						
+	</simplesect>
+	
+	<simplesect id="tools_modification_logs_view_rotation">
+	</simplesect>	
+	
+<!-- 
+	Comment format, rotation
+ -->	
+</section>

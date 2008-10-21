@@ -1,0 +1,30 @@
+Apache Directory Studio Update Site:
+------------------------
+The update site is located under https://directory.apache.org/studio/udpate. 
+
+The main update site consists of the following files:
+
+ +--directory.apache.org
+    |
+    +--studio
+       |
+       +--update
+          |
+          +--.htaccess
+          +--site--xml.html
+          +--site--xml.cgi
+
+The update manager of Eclipse and the RCP application automatically tries to 
+access the site.xml to get new updates or features. Our .htacces contains
+a rewrite rule to forward from site.xml to site--xml.cgi. Ensure to rename
+htaccess to .htaccess!
+
+The site--xml.cgi just calls Apache's mirrors.cgi to get a list of available
+mirrors.
+
+The site--xml.html is a template of the real site.xml. The url of the 
+preferred mirror determined by the cgi script is applied to this template.
+
+With this trick the update manager always gets an URL to another mirror.
+The update manager loads the features and plugins from these mirrors. So
+the mirrors must contain the features and the plugins directories.

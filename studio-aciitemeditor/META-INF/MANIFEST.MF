@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio ACI Item Editor
+Bundle-SymbolicName: org.apache.directory.studio.aciitemeditor;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.apache.directory.studio.aciitemeditor.Activator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.core.resources,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.apache.directory.studio.jars,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.valueeditors,
+ org.apache.directory.studio.ldapbrowser.common
+Eclipse-LazyStart: true
+Bundle-ClassPath: .

@@ -1,0 +1,11 @@
+Apache Directory StudioCopyright 2007 The Apache Software FoundationThis product includes software developed atThe Apache Software Foundation (http://www.apache.org/).
+
+This product includes a distribution NLOG4J (http://www.slf4j.org/nlog4j/).
+
+This product includes a distribution DOM4J (http://www.dom4j.org/).
+
+This product includes a distribution XMLPullParser 3 (http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/index.html).
+
+This product uses Ivy (http://www.jayasoft.fr/).
+
+This product uses Ant (http://ant.apache.org/).

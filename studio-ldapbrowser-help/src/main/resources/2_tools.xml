@@ -1,0 +1,82 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<chapter id="tools">
+	<title>Tools</title>
+
+	&tools_ldap_perspective;
+	
+	<section id="tools_viewsandeditors">
+		<title>Views and editors</title>
+	
+		&tools_connections_view;
+		&tools_browser_view;
+		
+		&tools_entry_editor;
+		&tools_search_result_editor;
+		&tools_schema_browser;
+	
+		&tools_modification_logs_view;
+		&tools_progress_view;
+
+		&tools_ldif_editor;
+
+	</section>
+
+	<section  id="tools_wizardsanddialogs">
+		<title>Wizards and dialogs</title>
+		
+		&tools_newconnection_wizard;
+		&tools_newentry_wizard;
+		
+		&tools_attribute_wizard;
+		&tools_search_dialog;
+	
+		&tools_batchoperation_wizard;
+		
+		&tools_ldifimport_wizard;
+		&tools_dsmlimport_wizard;
+		&tools_ldifexport_wizard;
+		&tools_dsmlexport_wizard;
+		&tools_csvexport_wizard;
+		&tools_excelexport_wizard;
+		
+		&tools_referrals_connection_dialog;
+		&tools_filter_editor_dialog;
+		&tools_rename_entry_dialog;
+		&tools_move_entries_dialog;
+
+	</section>
+	
+	&tools_value_editors;
+	
+	<section id="tools_properties">
+		<title>Properties</title>
+		
+		&tools_connection_properties;
+		&tools_entry_properties;
+		&tools_attribute_properties;
+		&tools_value_properties;
+		&tools_search_properties;
+		&tools_bookmark_properties;
+	
+	</section>
+	
+	&tools_preferences;
+
+</chapter>

@@ -1,0 +1,390 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_newconnection_wizard">
+	<title>New Connection wizard</title>
+	<para>
+		This wizard helps you to create a new connection to a LDAP
+		directory.
+	</para>
+
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the Connections view select the
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="icons/connection_add.gif" format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+					<emphasis role="strong">New Connection...</emphasis>
+					button or select
+					<emphasis role="strong">New Connection...</emphasis>
+					from the context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench window's toolbar, activate the
+					drop-down menu on the New Wizard button and select
+					<emphasis role="strong">LDAP Connection</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">
+						File > New > LDAP Connection
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<para>
+		The creation of a new LDAP connection is a tree-step process:
+		<orderedlist numeration="arabic">
+			<listitem>
+				<para>
+					<link linkend="tools_newconnection_wizard_1">
+						Define network parameters.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newconnection_wizard_2">
+						Define authentication parameters.
+					</link>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<link linkend="tools_newconnection_wizard_3">
+						Define additional connection parameters
+						(optional).
+					</link>
+				</para>
+			</listitem>
+		</orderedlist>
+	</para>
+
+	<simplesect id="tools_newconnection_wizard_1">
+		<title>Page 1</title>
+		<para>
+			The first page allows you to enter a connnection name and
+			the network parameters.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_newconnection_wizard_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Connection name</entry>
+							<entry>
+								The name of the connection. In the
+								Connections view the connection is
+								listed with this name. The name must be
+								unique.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Hostname</entry>
+							<entry>
+								The hostname or IP address of the LDAP
+								server. A history of recently used
+								hostnames is available through the
+								drop-down list.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Port</entry>
+							<entry>
+								The port of the LDAP server. The default
+								port for non-encyrpted connections is
+								389. The default port for ldaps://
+								connections is 636. A history of
+								recently used ports is available through
+								the drop-down list.
+							</entry>
+							<entry>389</entry>
+						</row>
+						<row>
+							<entry>Encryption method</entry>
+							<entry>
+								The encryption to use. Possible values
+								are 'No encrypton', 'ldaps://' and
+								'StartTLS extension'. Pay attention for
+								the warning: The current version doesn't
+								support certificate validation!
+							</entry>
+							<entry>No encryption</entry>
+						</row>
+						<row>
+							<entry>Check network parameter</entry>
+							<entry>
+								Use this function if you want to attempt
+								a connection to the host upon completion
+								of the wizard to validate that the
+								entered information is correct.
+							</entry>
+							<entry>-</entry>
+						</row>
+						<row>
+							<entry>Open connection on finish</entry>
+							<entry>
+								If checked the connection is opened when
+								finishing the wizard.
+							</entry>
+							<entry>checked</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_newconnection_wizard_2">
+		<title>Page 2</title>
+		<para>
+			On the second page you could specify the authentication
+			parameters.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_newconnection_wizard_2.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Anonymous Authentication</entry>
+							<entry>
+								Uses anonymous authentication, no
+								authentication parameters required.
+							</entry>
+							<entry>not checked</entry>
+						</row>
+						<row>
+							<entry>Simple Authentication</entry>
+							<entry>
+								Uses simple authentication, requires
+								authenticaton parameters.
+							</entry>
+							<entry>checked</entry>
+						</row>
+						<row>
+							<entry>Bind DN</entry>
+							<entry>
+								The distinguished name used to bind.
+								Previously entered DNs could be selected
+								from drop-down list.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Bind Password</entry>
+							<entry>The password used to bind.</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Save password</entry>
+							<entry>
+								If checked the password will be saved in
+								configuration. If not checked you have
+								to enter the password whenever you
+								connect to the server. Warning: The
+								password is saved as plain text!
+							</entry>
+							<entry>checked</entry>
+						</row>
+						<row>
+							<entry>Check Authentication</entry>
+							<entry>
+								Use this function if you want to attempt
+								a connection plus a bind to the host
+								upon completion of the wizard to
+								validate that the entered information is
+								correct.
+							</entry>
+							<entry>-</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_newconnection_wizard_3">
+		<title>Page 3</title>
+		<para>
+			On the third page you could enter additional connection
+			parameters.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_newconnection_wizard_3.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>Get base DNs from Root DSE</entry>
+							<entry>
+								If checked the base DNs are fetched from
+								namingContexts attribute of the Root
+								DSE.
+							</entry>
+							<entry>checked</entry>
+						</row>
+						<row>
+							<entry>Fetch Base DNs</entry>
+							<entry>
+								Use this function to get the
+								namingContext values from the root DSE.
+								The returned values will appear in the
+								'Base DN' drop-down list.
+							</entry>
+							<entry>-</entry>
+						</row>
+						<row>
+							<entry>Base DN</entry>
+							<entry>
+								The base DN to use. You may enter a DN
+								manually or you may select one from the
+								drop-down list. This field is only
+								enabled if the option 'Get base DNs from
+								root DSE' is off.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Count Limit</entry>
+							<entry>
+								Maximum number of entries returned from
+								server when browsing the directory, it
+								is also used as default value when
+								searching the directory. A value of 0
+								means no count limit. Note that this
+								value is a client-side value, its
+								possible that also a server-side limit
+								is used.
+							</entry>
+							<entry>1000</entry>
+						</row>
+						<row>
+							<entry>Time Limit</entry>
+							<entry>
+								The maximum time in milliseconds the
+								server searches for results. This is
+								used as default value when browsing or
+								searching the directory. A value of 0
+								means no limit. Note that this value is
+								a client-side value, its possible that
+								also a server-side limit is used.
+							</entry>
+							<entry>0</entry>
+						</row>
+						<row>
+							<entry>Alias Dereferencing</entry>
+							<entry>
+								Specifies whether aliases should be
+								derefenced while finding the search base
+								entry or when performing the search or
+								both.
+							</entry>
+							<entry>Both finding and searching</entry>
+						</row>
+						<row>
+							<entry>Referrals Handling</entry>
+							<entry>
+								Specifies the referral handling. Ignore
+								means that referrals returned from
+								server are ignored, Follow means that
+								the LDAP Browser will follow referrals
+								returned from server.
+							</entry>
+							<entry>Follow</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+</section>

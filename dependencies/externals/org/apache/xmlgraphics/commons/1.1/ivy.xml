@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="org.apache.xmlgraphics"
+		module="commons"
+		revision="1.1"
+		status="release"
+		publication="20060519182007"
+	/>
+	<configurations>
+		<conf name="default" visibility="public" />
+	</configurations>
+	<publications>
+		<artifact name="xmlgraphics-commons" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>

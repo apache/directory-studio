@@ -1,0 +1,178 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_dsmlimport_wizard">
+	<title>DSML Import wizard</title>
+	<para>
+		This wizard imports DSMLv2 files into the directory.
+	</para>
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the Connections view select a connection and
+					choose
+					<emphasis role="strong">
+						Import >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="icons/import_dsml.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						DSML Import...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry and choose
+					<emphasis role="strong">
+						Import >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="icons/import_dsml.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						DSML Import...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">File > Import...</emphasis>
+					and choose
+					<emphasis role="strong">
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="icons/import_dsml.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						DSML into LDAP
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<simplesect id="tools_dsmlimport_wizard_logging">
+		
+	</simplesect>
+
+	<simplesect id="tools_dsmlimport_wizard_ui">
+		<title>The wizard</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_dsmlimport_wizard_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>DSML file</entry>
+							<entry>
+								The DSML file to import. Type in the
+								full path or
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								to select the path on the file system.
+								The drop-down list provides a history of
+								recently used files.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Import into</entry>
+							<entry>
+								The connection into which the DSML
+								should be imported. Use the
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								button to select a connection.
+							</entry>
+							<entry>
+								The connection that was selected when
+								the wizard has been started.
+							</entry>
+						</row>
+						<row>
+							<entry>Save response</entry>
+							<entry>
+								When checked the response of the DSML request execution 
+								is saved into a response file.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>Use default response file</entry>
+							<entry>
+								By default the extension ".response.xml" is
+								appended the import filename.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>Use custom response file</entry>
+							<entry>
+								When checked you could specify a custom
+								response file.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>Overwrite existing response file</entry>
+							<entry>
+								If the default or custom response file already
+								exist, you must permit to overwrite the
+								response file.
+							</entry>
+							<entry>off</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+</section>

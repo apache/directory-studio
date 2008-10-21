@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<plugin>
+	<extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.apache.directory.studio.schemaeditor.view.Perspective"
+            icon="resources/icons/schemaeditor_perspective.gif"
+            id="org.apache.directory.studio.schemaeditor.perspective"
+            name="Schema Editor"/>
+   </extension>
+	<extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.apache.directory.studio.schemaeditor.view.category"
+            name="Schema Editor"/>
+      <view
+            allowMultiple="false"
+            category="org.apache.directory.studio.schemaeditor.view.category"
+            class="org.apache.directory.studio.schemaeditor.view.views.SchemaView"
+            icon="resources/icons/schemas_view.png"
+            id="org.apache.directory.studio.schemaeditor.view.SchemaView"
+            name="Schema"/>
+	  <view
+            allowMultiple="false"
+            category="org.apache.directory.studio.schemaeditor.view.category"
+            class="org.apache.directory.studio.schemaeditor.view.views.HierarchyView"
+            icon="resources/icons/hierarchy_view.gif"
+            id="org.apache.directory.studio.schemaeditor.view.HierarchyView"
+            name="Hierarchy"/>
+	  <view
+            allowMultiple="false"
+            category="org.apache.directory.studio.schemaeditor.view.category"
+            class="org.apache.directory.studio.schemaeditor.view.views.ProblemsView"
+            icon="resources/icons/problems_view.gif"
+            id="org.apache.directory.studio.schemaeditor.view.ProblemsView"
+            name="Problems"/>
+	  <view
+            allowMultiple="false"
+            category="org.apache.directory.studio.schemaeditor.view.category"
+            class="org.apache.directory.studio.schemaeditor.view.views.ProjectsView"
+            icon="resources/icons/projects_view.gif"
+            id="org.apache.directory.studio.schemaeditor.view.ProjectsView"
+            name="Projects"/>
+	<view
+            allowMultiple="false"
+            category="org.apache.directory.studio.schemaeditor.view.category"
+            class="org.apache.directory.studio.schemaeditor.view.views.SearchView"
+            icon="resources/icons/search_view.gif"
+            id="org.apache.directory.studio.schemaeditor.view.SearchView"
+            name="Search"/>
+   </extension>
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.apache.directory.studio.schemaeditor.PreferenceInitializer"/>
+ </extension>
+ <extension
+       point="org.eclipse.ui.newWizards">
+    <category
+          id="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          name="Schema Editor"/>
+	<wizard
+          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizard"
+          hasPages="true"
+          icon="resources/icons/project_new.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.NewProjectWizard"
+          name="New Schema Project"
+          project="true"/>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.NewSchemaWizard"
+          hasPages="true"
+          icon="resources/icons/schema_new.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.NewSchemaWizard"
+          name="New Schema"
+          project="false"/>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.NewAttributeTypeWizard"
+          hasPages="true"
+          icon="resources/icons/attribute_type_new.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.NewAttributeTypeWizard"
+          name="New Attribute Type"
+          project="false"/>
+	<wizard
+          category="org.apache.directory.studio.schemaeditor.newWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.NewObjectClassWizard"
+          hasPages="true"
+          icon="resources/icons/object_class_new.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.NewObjectClassWizard"
+          name="New Object Class"
+          project="false"/>
+ </extension>
+ <extension
+		point="org.eclipse.ui.editors">
+	<editor
+		class="org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor"
+		default="false"
+		icon="resources/icons/object_class.gif"
+		id="org.apache.directory.studio.schemaeditor.view.objectClassEditor"
+		name="Object Class Editor"/>
+      <editor
+ 		class="org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor"
+		default="false"
+		icon="resources/icons/attribute_type.gif"
+		id="org.apache.directory.studio.schemaeditor.view.attributeTypeEditor"
+		name="Attribute Type Editor"/>
+      <editor
+		class="org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor"
+		default="false"
+		icon="resources/icons/schema.gif"
+		id="org.apache.directory.studio.schemaeditor.view.schemaEditor"
+		name="Schema Editor"/>
+</extension>
+ <extension
+       point="org.eclipse.ui.exportWizards">
+    <category
+          id="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          name="Schema Editor">
+    </category>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
+          icon="resources/icons/schemas_export.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsXmlWizard"
+          name="Schemas as XML file(s)">
+    </wizard>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
+          icon="resources/icons/schemas_export.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsOpenLdapWizard"
+          name="Schemas as OpenLDAP files">
+    </wizard>
+	<wizard
+          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasForADSWizard"
+          icon="resources/icons/schemas_export_for_ads.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasForADSWizard"
+          name="Schemas for Apache DS">
+    </wizard>
+	<wizard
+          category="org.apache.directory.studio.schemaeditor.exportWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportProjectsWizard"
+          icon="resources/icons/project_export.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ExportProjectsWizard"
+          name="Schema Projects">
+    </wizard>
+ </extension>
+ <extension
+       point="org.eclipse.ui.importWizards">
+    <category
+          id="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          name="Schema Editor">
+    </category>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromXmlWizard"
+          icon="resources/icons/schemas_import.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromXmlWizard"
+          name="Schemas from XML file(s)">
+    </wizard>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
+          icon="resources/icons/schemas_import.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromOpenLdapWizard"
+          name="Schemas from OpenLDAP files">
+    </wizard>
+    <wizard
+          category="org.apache.directory.studio.schemaeditor.importWizardCategory"
+          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportProjectsWizard"
+          icon="resources/icons/project_import.gif"
+          id="org.apache.directory.studio.schemaeditor.wizards.ImportProjectsWizard"
+          name="Schema Projects">
+    </wizard>
+ </extension>
+    <extension
+         point="org.eclipse.ui.preferencePages">
+	  <page
+      		category="org.apache.directory.studio.schemaeditor.preferences.plugin"
+            class="org.apache.directory.studio.schemaeditor.view.preferences.HierarchyViewPreferencePage"
+            id="org.apache.directory.studio.schemaeditor.preferences.hierarchyView"
+            name="Hierarchy View"/>
+      <page
+            class="org.apache.directory.studio.schemaeditor.view.preferences.PluginPreferencePage"
+            id="org.apache.directory.studio.schemaeditor.preferences.plugin"
+            name="Schema Editor"/>
+      <page
+      		category="org.apache.directory.studio.schemaeditor.preferences.plugin"
+            class="org.apache.directory.studio.schemaeditor.view.preferences.SchemaViewPreferencePage"
+            id="org.apache.directory.studio.schemaeditor.preferences.schemaView"
+            name="Schema View"/>
+      <page
+      		category="org.apache.directory.studio.schemaeditor.preferences.plugin"
+            class="org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPreferencePage"
+            id="org.apache.directory.studio.schemaeditor.preferences.searchView"
+            name="Search View"/>
+   </extension>
+    <extension
+          point="org.eclipse.ui.decorators">
+       <decorator
+             adaptable="false"
+             class="org.apache.directory.studio.schemaeditor.view.SchemaEditorTypeLabelDecorator"
+             id="org.apache.directory.studio.schemas.typeDecorator"
+             label="Schema Editor Type Decorator"
+             lightweight="true"
+             location="BOTTOM_RIGHT"
+             state="true">
+          <enablement>
+             <or>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.model.ObjectClassImpl">
+                </objectClass>
+             </or>
+          </enablement>
+          <description>
+             Decorates Schema Editor icons with type information
+          </description>
+       </decorator>
+	   <decorator
+             adaptable="false"
+             class="org.apache.directory.studio.schemaeditor.view.SchemaEditorSchemaCheckerLabelDecorator"
+             id="org.apache.directory.studio.schemas.schemaCheckerDecorator"
+             label="Schema Editor Schema Checker Decorator"
+             lightweight="true"
+             location="BOTTOM_LEFT"
+             state="true">
+          <enablement>
+             <or>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper">
+                </objectClass>
+                <objectClass
+                      name="org.apache.directory.studio.schemaeditor.view.wrappers.Folder">
+                </objectClass>
+             </or>
+          </enablement>
+          <description>
+             Decorates Schema Editor icons with schema checker information
+          </description>
+       </decorator>
+    </extension>
+	<extension
+         point="org.eclipse.search.searchPages">
+		<page
+			class="org.apache.directory.studio.schemaeditor.view.search.SearchPage"
+            enabled="true"
+            icon="resources/icons/search.gif"
+            id="org.apache.directory.studio.schemaeditor.search"
+            label="Schema Editor Search"
+            showScopeSection="false"
+            sizeHint="450,300"/>
+	</extension>
+</plugin>

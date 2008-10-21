@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+		 <key>CFBundleExecutable</key>
+		 <string>ApacheDirectoryStudio</string>
+		 <key>CFBundleIconFile</key>
+		 <string>studio.icns</string>
+		 <key>CFBundleInfoDictionaryVersion</key>
+		 <string>6.0</string>
+		 <key>CFBundleName</key>
+		 <string>Apache Directory Studio</string>
+		 <key>CFBundlePackageType</key>
+		 <string>APPL</string>
+		 <key>CFBundleSignature</key>
+		 <string>????</string>
+		 <key>Eclipse</key>         <array>             <string>-vm</string>             <string>/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java</string>             <string>-startup</string>             <string>$APP_PACKAGE/Contents/Resources/Java/startup.jar</string>             <string>-keyring</string>             <string>~/.eclipse_keyring</string>             <string>-consoleLog</string>             <string>-showlocation</string>         </array>     <key>LSBackgroundOnly</key>     <string>1</string>     <key>WorkingDirectory</key>     <string>$APP_PACKAGE/Contents/Resources/Java</string>
+</dict>
+</plist>

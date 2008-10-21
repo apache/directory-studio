@@ -1,0 +1,887 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="preferences">
+	<title>Preferences</title>
+	<para>
+		
+	</para>
+	
+	<section id="preferences_attributes">
+		<title>Attributes preferences</title>
+		<para>
+			In the Attributes preferences page you can configure general settings
+			for attributes.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_attributes.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			In the 
+			<emphasis role="strong">Attribute Colors and Fonts</emphasis>
+			group you can define the style how attributes
+			and values are displayed within the Entry editor and the Search Result 
+			editor.
+		</para>
+		<para>
+			By default non-text attributes are displayed in a user-friendly way
+			within the Entry editor and the Search Result editor. For example if
+			an attribute contains a timestamp it is displayed in your local
+			date format. When checking the option
+			<emphasis role="strong">Show raw values</emphasis>
+			the values are displayed as returned from directory.
+		</para>
+	</section>	
+	
+	
+	<section id="preferences_value_editors">
+		<title>Value Editors preferences</title>
+		<para>
+			In the Value Editors preferences page you can configure which 
+			value editor to use for an attribute. 
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_value_editors.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			You can specify value editors by attribute type or by syntax.
+			If a value editor is specified by syntax the value editor is used 
+			for all attriutes with this syntax. A value editor specified for an 
+			attributes overwrites the syntax-setting.
+		</para>
+	</section>	
+	
+	
+	<section id="preferences_browser_view">
+		<title>Browser preferences</title>
+		<para>
+			In the Browser preferences page you can configure the layout and
+			behaviour of the 
+			<link linkend="tools_browser_view">LDAP Browser view</link>
+			and the Select DN dialog.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_browser_view.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								Entry label
+							</entry>
+							<entry>
+								Choose one of 
+								<emphasis role="strong">DN</emphasis>,
+								<emphasis role="strong">RDN</emphasis> or
+								<emphasis role="strong">RDN value</emphasis>
+								to be used as 
+								label for entries in the DIT category. 
+								If the checkbox is checked long labels with more
+								than the specified number of characters are
+								abbreviated.
+							</entry>
+							<entry>RDN with limit of 50 characters</entry>
+						</row>
+						<row>
+							<entry>
+								Search Result label
+							</entry>
+							<entry>
+								Choose one of 
+								<emphasis role="strong">DN</emphasis>,
+								<emphasis role="strong">RDN</emphasis> or
+								<emphasis role="strong">RDN value</emphasis>
+								to be used as 
+								label for search results in the DIT category. 
+								If the checkbox is checked long labels with more
+								than the specified number of characters are
+								abbreviated.
+							</entry>
+							<entry>DN with limit of 50 characters</entry>
+						</row>
+						<row>
+							<entry>
+								Folding
+							</entry>
+							<entry>
+								If checked large subtrees and search results are
+								folded into virtual folders each with the given
+								number of entries.
+							</entry>
+							<entry>enabled with folding size 100</entry>
+						</row>
+						<row>
+							<entry>
+								Expand base entries when opening connection
+							</entry>
+							<entry>
+								If checked the base entries are expanded when
+								opening the connection.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>
+								Check for children
+							</entry>
+							<entry>
+								If checked the LDAP Browser tries to find out if
+								the fetched entries have children. Therefore the
+								operational attributes hasSubordinates, numSubordinates
+								and subordinateCount are requested from server.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Show alias and referral objects
+							</entry>
+							<entry>
+								If checked aliases and referrals and their target 
+								entry are explicitly displayed. 
+							</entry>
+							<entry>on</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>		
+	</section>
+
+
+	<section id="preferences_entry_editor">
+		<title>Entry editor preferences</title>
+		<para>
+			In the Entry editor preferences page you can configure the behaviour of the 
+			<link linkend="tools_entry_editor">Entry editor</link>.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_entry_editor.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								Show objectClass attribute
+							</entry>
+							<entry>
+								If checked the objectClass attribute is
+								displayed.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Show must attribute
+							</entry>
+							<entry>
+								If checked the required attributes are
+								displayed.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Show may attribute
+							</entry>
+							<entry>
+								If checked the optional attributes are
+								displayed.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Show operational attribute
+							</entry>
+							<entry>
+								If checked the operational attributes are
+								displayed.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>
+								Enable folding
+							</entry>
+							<entry>
+								If checked attributes with many values are
+								folded. 
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>
+								Folding threshold
+							</entry>
+							<entry>
+								The threshold when folding should be activated.
+							</entry>
+							<entry>10</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</section>
+	
+	
+	<section id="preferences_search_result_editor">
+		<title>Search Result editor preferences</title>
+		<para>
+			In the Search Result editor preferences page you configure the behaviour of the 
+			<link linkend="tools_entry_editor">Search Result editor</link>.
+		</para>	
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_preferences_search_result_editor.png"
+							format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								Show DN as first column
+							</entry>
+							<entry>
+								If checked the distinguished name of each
+								search result entry is displayed as first line.
+							</entry>
+							<entry>on</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</section>
+	
+	
+	<section id="preferences_text_formats">
+		<title>Text Formats preferences</title>
+		<para>
+			In the Text Formats preferences page you configure the text formats
+			of LDIF, CSV and Excel files.
+		</para>	
+		
+		<simplesect id="preferences_text_formats_ldif">
+			<title>LDIF</title>
+			<para>In the LDIF tab you can configure the LDIF format.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_text_formats_ldif.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Line Separator
+								</entry>
+								<entry>
+									Select the line spearator to use for LDIF files. 
+									Possible values are 
+									<emphasis role="strong">Windows</emphasis>,
+									<emphasis role="strong">Mac OS</emphasis> or
+									<emphasis role="strong">Unix</emphasis>
+								</entry>
+								<entry>The platform specific line separator</entry>
+							</row>
+							<row>
+								<entry>
+									Line length
+								</entry>
+								<entry>
+									The line length in LDIF files.
+								</entry>
+								<entry>76</entry>
+							</row>
+							<row>
+								<entry>
+									Space after colon
+								</entry>
+								<entry>
+									If checked a space in inserted between the colon and
+									the value.
+								</entry>
+								<entry>on</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+		
+		<simplesect id="preferences_text_formats_table">
+			<title>CSV Copy</title>
+			<para>In the CSV Copy tab you can configure the format used when
+				copying CSV to clipboard (Copy Entry as CSV, Copy Table).</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_text_formats_table.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Attribute Delimiter
+								</entry>
+								<entry>
+									The character used to separate attributes. 
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Tabulator (ASCII 9)</entry>
+							</row>
+							<row>
+								<entry>
+									Value Delimiter
+								</entry>
+								<entry>
+									The character used to separate values of 
+									multi-valued attributes. 
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Pipe (|)</entry>
+							</row>
+							<row>
+								<entry>
+									Quote Character
+								</entry>
+								<entry>
+									Each attribute is enclosed by this quote character.
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Double Quote (")</entry>
+							</row>
+							<row>
+								<entry>
+									Line Separator
+								</entry>
+								<entry>
+									Select the line spearator to use. 
+									Possible values are 
+									<emphasis role="strong">Windows</emphasis>,
+									<emphasis role="strong">Mac OS</emphasis> or
+									<emphasis role="strong">Unix</emphasis>
+								</entry>
+								<entry>The platform specific line separator</entry>
+							</row>
+							<row>
+								<entry>
+									Binary Encoding
+								</entry>
+								<entry>
+									When copying binary values they must be encoded. Choose 
+									<itemizedlist>
+										<listitem>Ignore: if binary values should not be copied.</listitem>
+										<listitem>BASE-64: to copy the binary values BASE-64 encoded.</listitem>
+										<listitem>HEX: to copy the HEX representation of each byte.</listitem>
+									</itemizedlist>
+								</entry>
+								<entry>Ignore</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+		
+		<simplesect id="preferences_text_formats_csv">
+			<title>CSV Export</title>
+			<para>In the CSV Export tab you can configure the format used when
+				exporting to CSV.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_text_formats_csv.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Attribute Delimiter
+								</entry>
+								<entry>
+									The character used to separate attributes. 
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Comma (,)</entry>
+							</row>
+							<row>
+								<entry>
+									Value Delimiter
+								</entry>
+								<entry>
+									The character used to separate values of 
+									multi-valued attributes. 
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Pipe (|)</entry>
+							</row>
+							<row>
+								<entry>
+									Quote Character
+								</entry>
+								<entry>
+									Each attribute is enclosed by this quote character.
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Double Quote (")</entry>
+							</row>
+							<row>
+								<entry>
+									Line Separator
+								</entry>
+								<entry>
+									Select the line spearator to use. 
+									Possible values are 
+									<emphasis role="strong">Windows</emphasis>,
+									<emphasis role="strong">Mac OS</emphasis> or
+									<emphasis role="strong">Unix</emphasis>
+								</entry>
+								<entry>The platform specific line separator</entry>
+							</row>
+							<row>
+								<entry>
+									Binary Encoding
+								</entry>
+								<entry>
+									When exporting binary values they must be encoded. Choose 
+									<itemizedlist>
+										<listitem>Ignore: if binary values should not be exported.</listitem>
+										<listitem>BASE-64: to export the binary values BASE-64 encoded.</listitem>
+										<listitem>HEX: to export the HEX representation of each byte.</listitem>
+									</itemizedlist>
+								</entry>
+								<entry>Ignore</entry>
+							</row>
+							<row>
+								<entry>
+									File Encoding
+								</entry>
+								<entry>
+									The file encoding used to when exporting to CSV. 
+									Select default or one from the drop-down box.
+								</entry>
+								<entry>The platform specific file encoding</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+
+		<simplesect id="preferences_text_formats_excel">
+			<title>Excel Export</title>
+			<para>In the Excel Export tab you can configure the format used when
+				exporting to Excel.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_text_formats_excel.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Value Delimiter
+								</entry>
+								<entry>
+									The character used to separate values of 
+									multi-valued attributes. 
+									Select default or one from the drop-down box
+									or enter a custom character.
+								</entry>
+								<entry>Pipe (|)</entry>
+							</row>
+							<row>
+								<entry>
+									Binary Encoding
+								</entry>
+								<entry>
+									When exporting binary values they must be encoded. Choose 
+									<itemizedlist>
+										<listitem>Ignore: if binary values should not be exported.</listitem>
+										<listitem>BASE-64: to export the binary values BASE-64 encoded.</listitem>
+										<listitem>HEX: to export the HEX representation of each byte.</listitem>
+									</itemizedlist>
+								</entry>
+								<entry>Ignore</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+				
+	</section>
+	
+	
+	<section id="preferences_ldif_editor">
+		<title>LDIF Editor preferences</title>
+		<para>
+			On the LDIF Editor preference pages you can configure the LDIF editor.
+		</para>
+
+		<simplesect id="preferences_ldif_editor_main">
+			<title>LDIF Editor</title>
+			<para>On the LDIF Editor main preference page you can configure 
+				common settings.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_ldif_editor.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Text Editors
+								</entry>
+								<entry>
+									Opens the general text editor preferences.
+								</entry>
+								<entry>-</entry>
+							</row>
+							<row>
+								<entry>
+									Text Formats
+								</entry>
+								<entry>
+									Opens the LDIF text format preferences.
+								</entry>
+								<entry>-</entry>
+							</row>
+							<row>
+								<entry>
+									Enable Folding
+								</entry>
+								<entry>
+									Enables folding for multi-lined comments,
+									mulit-lined values and records.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Initially fold: Comments
+								</entry>
+								<entry>
+									Folds multi-lined comments when opening
+									the LDIF editor.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Initially fold: Records
+								</entry>
+								<entry>
+									Folds records when opening the LDIF editor.
+								</entry>
+								<entry>off</entry>
+							</row>
+							<row>
+								<entry>
+									Initially fold: Wrapped lines
+								</entry>
+								<entry>
+									Folds multi-lined values when opening
+									the LDIF editor.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Select whole attribute or value on double click
+								</entry>
+								<entry>
+									If checked the whole attribute description or value
+									is selected on double click.
+								</entry>
+								<entry>on</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+
+		<simplesect id="preferences_ldif_editor_content_assistent">
+			<title>Content Assistant</title>
+			<para>On the Content Assistant preference page you can configure 
+				content assistent settings.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_ldif_editor_content_assistant.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				<informaltable frame="all">
+					<tgroup cols="3">
+						<colspec colname="Option" colwidth="1*" />
+						<colspec colname="Description" colwidth="2*" />
+						<colspec colname="Default" colwidth="1*" />
+						<thead>
+							<row>
+								<entry>Option</entry>
+								<entry>Description</entry>
+								<entry>Default</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>
+									Insert single proposal automatically
+								</entry>
+								<entry>
+									If checked single proposals are inserted 
+									automatically when invoking Strg+Space.
+								</entry>
+								<entry>on</entry>
+							</row>
+							<row>
+								<entry>
+									Enable auto activation
+								</entry>
+								<entry>
+									If checked the content assistant is activated
+									after you pause typing for the defined period.
+								</entry>
+								<entry>on and 200ms</entry>
+							</row>
+							<row>
+								<entry>
+									Smart insert attribute name in modification items
+								</entry>
+								<entry>
+									If checked attribute names are inserted in 
+									modification items when a new line is started.
+								</entry>
+								<entry>on</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</informaltable>
+			</para>
+		</simplesect>
+		
+		<simplesect id="preferences_ldif_editor_syntax_coloring">
+			<title>Syntax Coloring</title>
+			<para>On the Syntax Coloring preference page you can configure 
+				fonts and colors.</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_preferences_ldif_editor_syntax_coloring.png"
+								format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				To modify color and font options select a element from the list. The color could be 
+				changed by invoking the color button. The font options could be changed by 
+				toggeling the Bold, Italic, Strikethrough and Underline check boxes.
+			</para>
+			<para>
+				Changes are immediately displayed in the preview.
+			</para>
+		</simplesect>
+		
+	</section>
+	
+</section>

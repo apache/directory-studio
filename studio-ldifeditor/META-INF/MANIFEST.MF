@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Apache Directory Studio LDIF Editor
+Bundle-SymbolicName: org.apache.directory.studio.ldifeditor;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.apache.directory.studio.ldifeditor.LdifEditorActivator
+Bundle-Vendor: Apache Software Foundation
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.filesystem,
+ org.eclipse.search,
+ org.eclipse.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.ui.views,
+ org.eclipse.ui.forms,
+ org.eclipse.jface.text,
+ org.apache.directory.studio.connection.core,
+ org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.ldapbrowser.core,
+ org.apache.directory.studio.ldapbrowser.common
+Eclipse-LazyStart: true
+Export-Package: org.apache.directory.studio.ldifeditor,
+ org.apache.directory.studio.ldifeditor.dialogs,
+ org.apache.directory.studio.ldifeditor.editor,
+ org.apache.directory.studio.ldifeditor.editor.actions,
+ org.apache.directory.studio.ldifeditor.editor.reconciler,
+ org.apache.directory.studio.ldifeditor.editor.text,
+ org.apache.directory.studio.ldifeditor.widgets,
+ org.apache.directory.studio.ldifeditor.wizards

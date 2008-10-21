@@ -1,0 +1,14 @@
+<ivy-module version="1.0">
+	<info organisation="log4j"
+		module="log4j"
+		revision="1.2.13"
+		status="release"
+		publication="20060518222045"
+	/>
+	<configurations>
+		<conf name="default" visibility="public"/>
+	</configurations>
+	<publications>
+		<artifact name="log4j" type="jar" ext="jar" conf="default"/>
+	</publications>
+</ivy-module>

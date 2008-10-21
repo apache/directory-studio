@@ -1,0 +1,432 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<!--   
+	<para>
+	This section describes the main features of the Entry editor.
+	</para>
+	- Options-Suppport (;binary)
+	- Language-Tags support
+	- UTF-8 support
+	
+	Show Schema:
+	- Opens the schema of the 
+	
+	Outline:
+	- Shows attributes and number of values
+	- Interaction with Entry editor
+	
+	Modify Attributes:
+	- New Attribute
+	- New Value
+	- Edit Value: Double-Click, Enter, F7, Context-Menu->Edit Value
+	- Edit Value with
+	- Delete
+	
+-->
+
+<section id="tools_entry_editor_overview">
+	<title>Overview</title>
+	
+	<para>
+		This section describes general aspects of the Entry editor.
+	</para>
+	
+	<simplesect id="tools_entry_editor_screenshot">
+		<title>Example screenshot</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata width="15cm"
+							fileref="images/tools_entry_editor_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_entry_editor_layout">
+		<title>Layout</title>
+		<para>
+			The Entry editor has a two-column layout. The left column
+			contains the attribute descriptions (names), the right
+			column contains the attribute values. Each line represents a
+			name-value pair.
+		</para>
+		<para>
+			The Entry editor has its own toolbar. The left part displays
+			the distinguished name of the current entry. The right part
+			contains the toolbar icons and menu.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_entry_editor_fonts">
+		<title>Fonts and colors</title>
+		<para>
+			To distinguish the different attribute classes the Entry
+			editor uses different fonts. By default the following fonts
+			and colors are used:
+			<informaltable frame="all">
+				<tgroup cols="4">
+					<colspec colname="Attribute class" colwidth="2*" />
+					<colspec colname="Default font" colwidth="1*" />
+					<colspec colname="Default color" colwidth="1*" />
+					<colspec colname="Example" colwidth="5*" />
+					<thead>
+						<row>
+							<entry>Attribute class</entry>
+							<entry>Default font</entry>
+							<entry>Default color</entry>
+							<entry>Example</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>objectClass attribute</entry>
+							<entry>bold and italic</entry>
+							<entry>black</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_entry_editor_3.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>Must attributes</entry>
+							<entry>bold</entry>
+							<entry>black</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_entry_editor_4.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>May attributes</entry>
+							<entry>normal</entry>
+							<entry>black</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_entry_editor_5.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+						<row>
+							<entry>Operational attributes</entry>
+							<entry>italic</entry>
+							<entry>black</entry>
+							<entry>
+								<screenshot>
+									<mediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="images/tools_entry_editor_6.png" format="PNG" />
+										</imageobject>
+									</mediaobject>
+								</screenshot>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+		<para>
+			These fonts and colors could be changed in the
+			<link linkend="preferences_attributes">
+				Attributes preferences
+			</link>
+			.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_entry_editor_toolbar">
+		<title>Toolbar</title>
+		<para>
+			The toolbar contains the following items:
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Icon" align="center" colwidth="1*" />
+					<colspec colname="Action" colwidth="2*" />
+					<colspec colname="Description" colwidth="5*" />
+					<colspec colname="Shortcut" colwidth="2*" />
+					<thead>
+						<row>
+							<entry>Icon</entry>
+							<entry>Action</entry>
+							<entry>Description</entry>
+							<entry>Shortcut</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/value_add.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>New Value</entry>
+							<entry>
+								Adds a new value to the selected
+								attribute and starts the edit mode.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycombo>
+										<keycap>Ctrl</keycap>
+										<keycap>+</keycap>
+									</keycombo>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/attribute_add.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>New Attribute...</entry>
+							<entry>
+								Opens the
+								<link
+									linkend="tools_attribute_wizard">
+									New Attribute wizard
+								</link>
+								. When finishing the wizard a new
+								attribute is created and the edit mode
+								is started to enter a value.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycombo>
+										<keycap>Shift</keycap>
+										<keycap>Ctrl</keycap>
+										<keycap>+</keycap>
+									</keycombo>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/delete.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Delete</entry>
+							<entry>Deletes the selected values.</entry>
+							<entry>
+								<shortcut>
+									<keycap>Delete</keycap>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/delete_all.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Delete Attributes</entry>
+							<entry>
+								Deletes all values of the selected
+								attributes. Applicable to multi-valued
+								attributes, if you want to delete the
+								complete attribute just select one value
+								use this action.
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/refresh.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Reload Attributes</entry>
+							<entry>
+								Reloads the attributes of the current
+								entry.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycap>F5</keycap>
+								</shortcut>
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/expandall.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Expand All</entry>
+							<entry>
+								Expands all folded attributes.
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/collapseall.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Collapse All</entry>
+							<entry>
+								Collapses all folded attributes.
+							</entry>
+						</row>
+						<row>
+							<entry>
+								<guiicon>
+									<inlinemediaobject>
+										<imageobject>
+											<imagedata contentdepth="1em"
+												fileref="icons/filter.gif" format="GIF" />
+										</imageobject>
+									</inlinemediaobject>
+								</guiicon>
+							</entry>
+							<entry>Show Quick Filter</entry>
+							<entry>
+								Shows/Hides the
+								<link
+									linkend="tools_entry_editor_quickfilter">
+									Quick Filter
+								</link>
+								.
+							</entry>
+							<entry>
+								<shortcut>
+									<keycombo>
+										<keycap>Ctrl</keycap>
+										<keycap>F</keycap>
+									</keycombo>
+								</shortcut>
+							</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_entry_editor_drop_down_menu">
+		<title>Drop Down Menu</title>
+		<para>
+			The drop down menu contains the following items:
+			<itemizedlist>
+				<listitem>
+					<para>
+						Sorting...: Opens the
+						<link linkend="tools_entry_editor_sortdialog">
+							Sort Dialog
+						</link>
+						to set default sorting.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Operational Attributes: If checked the
+						operational attributes (e.g. createTimestampe
+						and modifyTimestamp) are fetched and displayed.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Raw Values: If checked the raw values (as
+						stored in directory) are displayed. By default
+						some attributes have a special display value:
+						<itemizedlist>
+							<listitem>
+								Images: Image format, width, height, and
+								size.
+							</listitem>
+							<listitem>Binary data: Data size.</listitem>
+							<listitem>
+								Passwords: Used hash method.
+							</listitem>
+							<listitem>
+								Timestamps: Locale dependent date and
+								time format.
+							</listitem>
+						</itemizedlist>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Preferences...: Opens the
+						<link linkend="preferences_entry_editor">
+							Entry editor preferences
+						</link>
+						dialog.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+</section>

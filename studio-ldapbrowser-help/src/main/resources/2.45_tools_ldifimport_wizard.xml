@@ -1,0 +1,230 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_ldifimport_wizard">
+	<title>LDIF Import wizard</title>
+	<para>
+		This wizard imports LDIF files into the directory. It supports
+		LDIF content files as well as LDIF modification files.
+	</para>
+	<para>
+		To start the wizard choose one of the following options:
+		<itemizedlist>
+			<listitem>
+				<para>
+					In the Connections view select a connection and
+					choose
+					<emphasis role="strong">
+						Import >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="icons/import_ldif.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						LDIF Import...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the LDAP Browser view select an entry and choose
+					<emphasis role="strong">
+						Import >
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="icons/import_ldif.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						LDIF Import...
+					</emphasis>
+					from context menu.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					In the Workbench menu bar select
+					<emphasis role="strong">File > Import...</emphasis>
+					and choose
+					<emphasis role="strong">
+						<inlinemediaobject>
+							<imageobject>
+								<imagedata contentdepth="1em"
+									fileref="icons/import_ldif.gif" format="GIF" />
+							</imageobject>
+						</inlinemediaobject>
+						LDIF into LDAP
+					</emphasis>
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<simplesect id="tools_ldifimport_wizard_logging">
+		<title>Logging</title>
+		<para>
+			When importing LDIF files the import operations could be
+			logged. Every imported record is completely written into
+			logfile and the result (OK or ERROR) is prepended to every
+			log record as LDIF comment.
+		</para>
+		<para>
+			Example log of a sucessfully imported record:
+			<code language="LDIF">
+				<sbr />
+				#!RESULT OK
+				<sbr />
+				#!CONNECTION ldap://localhost:389
+				<sbr />
+				#!DATE 2006-11-03T14:12:21.050
+				<sbr />
+				dn: cn=John Fowler,ou=Testdata,o=JNDITutorial
+				<sbr />
+				...
+				<sbr />
+			</code>
+
+		</para>
+		<para>
+			Example errol log:
+			<code language="LDIF">
+				<sbr />
+				#!RESULT ERROR
+				<sbr />
+				#!CONNECTION ldap://localhost:389
+				<sbr />
+				#!DATE 2006-11-03T14:12:21.050
+				<sbr />
+				#!ERROR [LDAP: error code 21 - telephoneNumber: value #0 invalid per syntax]
+				<sbr />
+				dn: cn=John Fowler,ou=Testdata,o=JNDITutorial
+				<sbr />
+				...
+				<sbr />
+			</code>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_ldifimport_wizard_ui">
+		<title>The wizard</title>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_ldifimport_wizard_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			<informaltable frame="all">
+				<tgroup cols="3">
+					<colspec colname="Option" colwidth="1*" />
+					<colspec colname="Description" colwidth="2*" />
+					<colspec colname="Default" colwidth="1*" />
+					<thead>
+						<row>
+							<entry>Option</entry>
+							<entry>Description</entry>
+							<entry>Default</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>LDIF file</entry>
+							<entry>
+								The LDIF file to import. Type in the
+								full path or
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								to select the path on the file system.
+								The drop-down list provides a history of
+								recently used files.
+							</entry>
+							<entry>empty</entry>
+						</row>
+						<row>
+							<entry>Import into</entry>
+							<entry>
+								The connection into which the LDIF
+								should be imported. Use the
+								<emphasis role="strong">
+									Browse...
+								</emphasis>
+								button to select a connection.
+							</entry>
+							<entry>
+								The connection that was selected when
+								the wizard has been started.
+							</entry>
+						</row>
+						<row>
+							<entry>Enable logging</entry>
+							<entry>
+								When checked every imported LDIF record
+								is logged into a logfile.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>Use default logfile</entry>
+							<entry>
+								By default the extension ".log" is
+								appended the import filename.
+							</entry>
+							<entry>on</entry>
+						</row>
+						<row>
+							<entry>Use custom logfile</entry>
+							<entry>
+								When checked you could specify a custom
+								logfile.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>Overwrite existing logfile</entry>
+							<entry>
+								If the default or custom logfile already
+								exist, you must permit to overwrite the
+								logfile.
+							</entry>
+							<entry>off</entry>
+						</row>
+						<row>
+							<entry>Continue on error</entry>
+							<entry>
+								If checked the import process continues
+								if an error occurs while importing a
+								record. If not checked the import
+								process interrupts.
+							</entry>
+							<entry>on</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</informaltable>
+		</para>
+	</simplesect>
+
+</section>

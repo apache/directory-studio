@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.apache.directory.studio.valueeditors">
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.password.PasswordValueEditor"
+          icon="resources/icons/passwordeditor.gif"
+          name="Password Editor">
+       <attribute attributeType="userPassword"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.image.ImageValueEditor"
+          icon="resources/icons/imageeditor.gif"
+          name="Image Editor">
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.28"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.time.InPlaceGeneralizedTimeValueEditor"
+          icon="resources/icons/generalizedtimeeditor.gif"
+          name="In-Place Generalized Time Editor">
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.24"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.objectclass.ObjectClassValueEditor"
+          icon="resources/icons/objectclasseditor.png"
+          name="Object Class Editor">
+       <attribute attributeType="objectClass"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.dn.DnValueEditor"
+          icon="resources/icons/dneditor.gif"
+          name="DN Editor">
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.12"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.address.AddressValueEditor"
+          icon="resources/icons/addresseditor.gif"
+          name="Address Editor">
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.41"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.integer.IntegerValueEditor"
+          icon="resources/icons/integereditor.gif"
+          name="Integer Editor">
+       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.27"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.administrativerole.AdministrativeRoleValueEditor"
+          icon="resources/icons/administrativeroleeditor.gif"
+          name="Administrative Role Editor">
+       <attribute attributeType="administrativeRole"/>
+    </valueEditor>
+   </extension>
+
+</plugin>

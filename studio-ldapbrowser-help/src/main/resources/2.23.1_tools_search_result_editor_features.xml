@@ -1,0 +1,207 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<section id="tools_search_result_editor_features">
+	<title>Features</title>
+	<para>
+		This section describes the features of the Search Result editor.
+	</para>
+
+	<simplesect id="tools_search_result_editor_features_sorting">
+		<title>Sorting</title>
+		<para>
+			To sort the search results by attributes click the column
+			header. The current sort attribute and direction is
+			indicated by an arrow.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_features_quickfilter">
+		<title>Quick Filter</title>
+		<para>
+			If there are many search results it is difficult to find a
+			specific one. The Quick Filter provides a client-side
+			filter. To show/hide the Quick Filter toggle the
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em" fileref="icons/filter.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			button or press
+			<shortcut>
+				<keycombo>
+					<keycap>Ctrl</keycap>
+					<keycap>F</keycap>
+				</keycombo>
+			</shortcut>
+			. Enter (even parts of) a value into the input field, only
+			matching search results keep displayed. When hiding the
+			filter is removed.
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_search_result_editor_3.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_features_navigation">
+		<title>Navigation</title>
+		<para>
+			The
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em" fileref="icons/locate_dn_in_dit.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">Locate DN in DIT</emphasis>
+			action locates and opens the entry of a selected DN in the
+			DIT.
+		</para>
+		<para>
+			The
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em" fileref="icons/open_searchresult.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">Open Search Result</emphasis>
+			action locates and opens the selected search result.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_features_copytable">
+		<title>Copy Table</title>
+		<para>
+			The
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em" fileref="icons/copy_table.gif"
+							format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">Copy Table</emphasis>
+			action copies attributes as displayed in the table to the
+			system clipboard.
+		</para>
+		<para>
+			By default the tabulator is used as attribute delimiter, a
+			pipe is used as value delimiter and each attribute is
+			wrapped by double-quotes. These settings are suitable to
+			paste the copied data into Excel or OpenOffice, the settings
+			could be changed in
+			<link linkend="preferences_text_formats">
+				Text Formats preferences
+			</link>
+			.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_features_editing">
+		<title>Editing</title>
+		<para>
+			It is possible to add, edit or delete the displayed
+			attributes of the search results in the Search Result
+			editor.
+		</para>
+		<para>
+			To enter the edit mode using the default value editor select
+			a cell and press
+			<emphasis role="strong">Enter</emphasis>
+			or
+			<emphasis role="strong">F7</emphasis>
+			or double-click the cell. If the attribute is a simple
+			string (like givenName or telephoneNumber) the value could
+			be edited in-place, otherwise a specific value editor dialog
+			is opened. To use a specific value editor choose one from
+			<emphasis role="strong">
+				Context Menu -> Edit Value With
+			</emphasis>
+			.
+		</para>
+		<para>
+			To finish editing press Enter or click to another cell or
+			click the OK button in a value editor dialog. To cancel
+			editing press ESC or click the Cancel button in a value
+			editor dialog.
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_search_result_editor_features_mve">
+		<title>Multivalued Editor</title>
+		<para>
+			In LDAP it is possible (and even normal) that an entry has
+			multivalued attributes. To handle this in a spreadsheet-like
+			editor a special editor is necessary:
+			<itemizedlist>
+				<listitem>
+					<para>
+						In the cell a multivalued attribute is displayed
+						as "X values: ..." to show the number of values
+						and a preview
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						When entering edit mode the Multivalued Editor
+						dialog is opened.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The Mulivalued Editor is similar to the Entry editor: you
+			could add, edit and delete values. Of course it is limited
+			to edit only the current attribute, not the whole entry.
+		</para>
+		<para>
+			When editing a multivalued attribute the Multivalued Editor
+			is used as default value editor. When editing a singlevalued
+			attribute you could select
+			<emphasis role="strong">
+				Context Menu -> Edit Value With ->
+				<guiicon>
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata contentdepth="1em"
+								fileref="icons/multivaluededitor.gif" format="GIF" />
+						</imageobject>
+					</inlinemediaobject>
+				</guiicon>
+				Multivalued Editor
+			</emphasis>
+			.
+		</para>
+	</simplesect>
+
+</section>
+
