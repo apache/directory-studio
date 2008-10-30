@@ -23,8 +23,10 @@ package org.apache.directory.studio.test.integration.ui;
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.finder.UIThreadRunnable;
+import net.sf.swtbot.finder.results.VoidResult;
 import net.sf.swtbot.widgets.SWTBotTree;
 import net.sf.swtbot.widgets.SWTBotTreeItem;
+import net.sf.swtbot.widgets.WidgetNotFoundException;
 
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
@@ -88,7 +90,7 @@ public class ReferralDialogTest extends AbstractServerTest
             "ou=system" );
 
         // expand ou=system, that reads the referral and opens the referral dialog
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
             public void run()
             {
@@ -136,7 +138,7 @@ public class ReferralDialogTest extends AbstractServerTest
             "ou=system" );
 
         // expand ou=system, that reads the referral and opens the referral dialog
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
             public void run()
             {
@@ -150,8 +152,15 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is not visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort()
-            + "/ou=users,ou=system" );
+        SWTBotTreeItem referralNode = null;
+        try
+        {
+            referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort() + "/ou=users,ou=system" );
+        }
+        catch ( WidgetNotFoundException wnfe )
+        {
+            // that is expected
+        }
         assertNull( referralNode );
     }
 
@@ -178,10 +187,25 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotTreeItem systemNode = SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral entry is not visible
-        SWTBotTreeItem referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort()
-            + "/ou=users,ou=system" );
+        SWTBotTreeItem referralNode1 = null;
+        try
+        {
+            referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort() + "/ou=users,ou=system" );
+        }
+        catch ( WidgetNotFoundException wnfe )
+        {
+            // that is expected
+        }
         assertNull( referralNode1 );
-        SWTBotTreeItem referralNode2 = systemNode.getNode( "cn=referralDialogTest" );
+        SWTBotTreeItem referralNode2 = null;
+        try
+        {
+            referralNode2 = systemNode.getNode( "cn=referralDialogTest" );
+        }
+        catch ( WidgetNotFoundException wnfe )
+        {
+            // that is expected
+        }
         assertNull( referralNode2 );
     }
 

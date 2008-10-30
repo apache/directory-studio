@@ -23,7 +23,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.finder.UIThreadRunnable;
-import net.sf.swtbot.finder.UIThreadRunnable.IntResult;
+import net.sf.swtbot.finder.results.IntResult;
 import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.widgets.SWTBotCombo;
 import net.sf.swtbot.widgets.SWTBotText;
@@ -113,7 +113,7 @@ public class SwtResourcesTest extends AbstractServerTest
     {
         return UIThreadRunnable.syncExec( bot.getDisplay(), new IntResult()
         {
-            public int run()
+            public Integer run()
             {
                 DeviceData info = bot.getDisplay().getDeviceData();
                 if ( !info.tracking )
@@ -150,7 +150,7 @@ public class SwtResourcesTest extends AbstractServerTest
         bot.button( "Add" ).click();
         bot.button( "Next >" ).click();
 
-        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
+        SWTBotCombo typeCombo = bot.comboBox( "" );
         typeCombo.setText( "o" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( name );

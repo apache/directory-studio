@@ -111,7 +111,7 @@ public class NewConnectionWizardTest extends AbstractServerTest
         assertFalse( finishButton.isEnabled() );
 
         // ensure "Simple Authentication" is the default
-        SWTBotCombo authMethodCombo = bot.comboBoxWithLabel( "Authentication Method" );
+        SWTBotCombo authMethodCombo = bot.comboBoxInGroup( "Authentication Method" );
         assertEquals( "Simple Authentication", authMethodCombo.selection() );
 
         // enter authentication parameters

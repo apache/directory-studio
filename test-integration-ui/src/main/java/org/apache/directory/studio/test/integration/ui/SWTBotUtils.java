@@ -21,16 +21,20 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static net.sf.swtbot.finder.UIThreadRunnable.syncExec;
+import static net.sf.swtbot.matcher.WidgetMatcherFactory.widgetOfType;
+import static org.hamcrest.Matchers.anything;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
 import net.sf.swtbot.eclipse.finder.widgets.SWTBotView;
-import net.sf.swtbot.finder.ControlFinder;
+import net.sf.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart;
 import net.sf.swtbot.finder.UIThreadRunnable;
-import net.sf.swtbot.finder.UIThreadRunnable.VoidResult;
-import net.sf.swtbot.matcher.ClassMatcher;
+import net.sf.swtbot.finder.results.VoidResult;
+import net.sf.swtbot.finder.results.WidgetResult;
 import net.sf.swtbot.wait.DefaultCondition;
 import net.sf.swtbot.wait.ICondition;
 import net.sf.swtbot.widgets.SWTBotButton;
@@ -49,9 +53,14 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -195,12 +204,8 @@ public class SWTBotUtils
         SWTBotView view = bot.view( "Connections" );
         view.show();
 
-        List<Tree> findControls = new ControlFinder().findControls( view.widget, new ClassMatcher( Tree.class ), true );
-        if ( findControls.isEmpty() )
-        {
-            throw new WidgetNotFoundException( "Could not find Connections tree" );
-        }
-        return new SWTBotTree( findControls.get( 0 ) );
+        Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.widget );
+        return new SWTBotTree( tree );
     }
 
 
@@ -218,12 +223,8 @@ public class SWTBotUtils
         SWTBotView view = bot.view( "LDAP Browser" );
         view.show();
 
-        List<Tree> findControls = new ControlFinder().findControls( view.widget, new ClassMatcher( Tree.class ), true );
-        if ( findControls.isEmpty() )
-        {
-            throw new WidgetNotFoundException( "Could not find LDAP Browser tree" );
-        }
-        return new SWTBotTree( findControls.get( 0 ) );
+        Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.widget );
+        return new SWTBotTree( tree );
     }
 
 
@@ -236,34 +237,59 @@ public class SWTBotUtils
      * 
      * @throws Exception the exception
      */
-    public static SWTBotTree getEntryEditorTree( SWTEclipseBot bot ) throws Exception
+    public static SWTBotTree getEntryEditorTree( final SWTEclipseBot bot ) throws Exception
     {
-        List findEditors = SWTBotView.findEditors();
-        for ( Object object : findEditors )
+        Tree tree = UIThreadRunnable.syncExec( new WidgetResult<Tree>()
         {
-            final IEditorReference editorReference = ( IEditorReference ) object;
-            if ( editorReference.getName().equals( "Entry Editor" ) )
+            public Tree run()
             {
-                UIThreadRunnable.syncExec( new VoidResult()
+                IWorkbench workbench = PlatformUI.getWorkbench();
+                IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+                IWorkbenchPage[] pages = activeWorkbenchWindow.getPages();
+                for ( int i = 0; i < pages.length; i++ )
                 {
-                    public void run()
+                    IWorkbenchPage page = pages[i];
+                    IEditorReference[] editorReferences = page.getEditorReferences();
+                    for ( int j = 0; j < editorReferences.length; j++ )
                     {
-                        IEditorPart editor = editorReference.getEditor( true );
-                        editorReference.getPage().activate( editor );
-                    }
-                } );
+                        IEditorReference editorReference = editorReferences[j];
+                        if ( editorReference.getName().equals( "Entry Editor" ) )
+                        {
+                            DummyEditor editor = new DummyEditor( editorReference, bot );
+                            Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), editor.widget );
+                            return tree;
 
-                final SWTBotView editor = new SWTBotView( editorReference );
-                List<Tree> findControls = new ControlFinder().findControls( editor.widget,
-                    new ClassMatcher( Tree.class ), true );
-                if ( findControls.isEmpty() )
-                {
-                    throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
+                        }
+                    }
                 }
-                return new SWTBotTree( findControls.get( 0 ) );
+                throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
             }
+        } );
+        return new SWTBotTree( tree );
+    }
+
+    static class DummyEditor extends SWTBotWorkbenchPart<IEditorReference>
+    {
+        public Widget widget;
+
+
+        public DummyEditor( IEditorReference editorReference, SWTEclipseBot bot )
+        {
+            super( editorReference, bot );
+            widget = findWidget( anything() );
         }
-        throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
+
+
+        public void setFocus()
+        {
+            syncExec( new VoidResult()
+            {
+                public void run()
+                {
+                    ( ( Control ) widget ).setFocus();
+                }
+            } );
+        }
     }
 
 
@@ -294,7 +320,7 @@ public class SWTBotUtils
             }
         } );
 
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
             public void run()
             {
@@ -322,7 +348,7 @@ public class SWTBotUtils
     public static void asyncClick( final SWTEclipseBot bot, final SWTBotMenu menu, final ICondition waitCondition )
         throws TimeoutException
     {
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
             public void run()
             {
@@ -350,7 +376,7 @@ public class SWTBotUtils
     public static void asyncClick( final SWTEclipseBot bot, final SWTBotTreeItem item, final ICondition waitCondition )
         throws TimeoutException
     {
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
             public void run()
             {
@@ -402,7 +428,7 @@ public class SWTBotUtils
             }
 
             final SWTBotTreeItem tempEntry = entry;
-            UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+            UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
             {
                 public void run()
                 {
@@ -439,7 +465,7 @@ public class SWTBotUtils
     public static void expandEntry( final SWTEclipseBot bot, final SWTBotTreeItem entry, final String nextName )
         throws Exception
     {
-        UIThreadRunnable.asyncExec( bot.getDisplay(), new UIThreadRunnable.VoidResult()
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
         {
             public void run()
             {

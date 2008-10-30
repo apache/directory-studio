@@ -117,7 +117,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
+        SWTBotCombo typeCombo = bot.comboBox( "" );
         typeCombo.setText( "o" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry" );
@@ -187,7 +187,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
+        SWTBotCombo typeCombo = bot.comboBox( "" );
         typeCombo.setText( "cn" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreatePersonEntry" );
@@ -268,7 +268,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
+        SWTBotCombo typeCombo = bot.comboBox( "" );
         typeCombo.setText( "O" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry" );
@@ -329,7 +329,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        typeCombo = bot.comboBoxWithLabel( "RDN:" );
+        typeCombo = bot.comboBox( "" );
         typeCombo.setText( "O" );
         valueText = bot.text( "" );
         valueText.setText( "testCreateOrganizationEntry2" );
@@ -408,7 +408,7 @@ public class NewEntryWizardTest extends AbstractServerTest
         bot.button( "Next >" ).click();
 
         // specify DN
-        SWTBotCombo typeCombo = bot.comboBoxWithLabel( "RDN:" );
+        SWTBotCombo typeCombo = bot.comboBox( "" );
         typeCombo.setText( "krb5PrincipalName" );
         SWTBotText valueText = bot.text( "" );
         valueText.setText( "kadmin/changepw@DOMAIN" );
