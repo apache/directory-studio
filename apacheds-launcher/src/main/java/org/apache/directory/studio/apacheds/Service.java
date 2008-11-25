@@ -55,13 +55,13 @@ public class Service implements DaemonApplication
 
         if ( args.length > 0 && new File( args[0] ).exists() ) // hack that takes server.xml file argument
         {
-            LOG.info( "server: loading settings from ", args[0] );
+            LOG.info( Messages.getString("Service.LoadingSettings"), args[0] );
             factory = new FileSystemXmlApplicationContext( new File( args[0] ).toURI().toURL().toString() );
-            apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" );
+            apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" ); //$NON-NLS-1$
         }
         else
         {
-            LOG.info( "server: using default settings ..." );
+            LOG.info( Messages.getString("Service.UsingDefaultSettings") );
             DirectoryService directoryService = new DefaultDirectoryService();
             directoryService.startup();
             SocketAcceptor socketAcceptor = new SocketAcceptor( null );
@@ -86,12 +86,12 @@ public class Service implements DaemonApplication
 
         if ( apacheDS.getSynchPeriodMillis() > 0 )
         {
-            workerThread = new Thread( worker, "SynchWorkerThread" );
+            workerThread = new Thread( worker, "SynchWorkerThread" ); //$NON-NLS-1$
         }
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+            LOG.info( Messages.getString("Service.Started"), ( System.currentTimeMillis() - startTime ) + "" ); //$NON-NLS-2$
         }
     }
 
@@ -129,7 +129,7 @@ public class Service implements DaemonApplication
 
             while ( workerThread.isAlive() )
             {
-                LOG.info( "Waiting for SynchWorkerThread to die." );
+                LOG.info( Messages.getString("Service.WaitingForSynchWorkerThread") );
                 workerThread.join( 500 );
             }
         }
@@ -164,7 +164,7 @@ public class Service implements DaemonApplication
                     }
                     catch ( InterruptedException e )
                     {
-                        LOG.warn( "SynchWorker failed to wait on lock.", e );
+                        LOG.warn( Messages.getString("Service.SynchWorkerFailedToWait"), e );
                     }
                 }
 
@@ -174,7 +174,7 @@ public class Service implements DaemonApplication
                 }
                 catch ( Exception e )
                 {
-                    LOG.error( "SynchWorker failed to synch directory.", e );
+                    LOG.error( Messages.getString("Service.SynchWorkerFailedToSynch"), e );
                 }
             }
         }
