@@ -63,7 +63,7 @@ public class PluginPreferencePage extends PreferencePage implements IWorkbenchPr
     {
         super();
         setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        setDescription( "General settings for the Schema Editor Plugin" );
+        setDescription( Messages.getString("PluginPreferencePage.GeneralSettings") ); //$NON-NLS-1$
     }
 
 

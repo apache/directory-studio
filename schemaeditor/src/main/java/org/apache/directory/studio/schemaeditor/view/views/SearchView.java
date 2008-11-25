@@ -109,7 +109,7 @@ public class SearchView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "search_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "search_view" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         this.parent = parent;
         GridLayout gridLayout = new GridLayout();
@@ -178,7 +178,7 @@ public class SearchView extends ViewPart
 
         // Search Label
         Label searchFieldLabel = new Label( searchFieldInnerComposite, SWT.NONE );
-        searchFieldLabel.setText( "Search:" );
+        searchFieldLabel.setText( Messages.getString("SearchView.SearchColon") ); //$NON-NLS-1$
         searchFieldLabel.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // Search Text Field
@@ -214,7 +214,7 @@ public class SearchView extends ViewPart
         final ToolBar searchToolBar = new ToolBar( searchFieldInnerComposite, SWT.HORIZONTAL | SWT.FLAT );
         // Creating the Search In ToolItem
         final ToolItem searchInToolItem = new ToolItem( searchToolBar, SWT.DROP_DOWN );
-        searchInToolItem.setText( "Search In" );
+        searchInToolItem.setText( Messages.getString("SearchView.SearchIn") ); //$NON-NLS-1$
         // Adding the action to display the Menu when the item is clicked
         searchInToolItem.addSelectionListener( new SelectionAdapter()
         {
@@ -233,7 +233,7 @@ public class SearchView extends ViewPart
         new ToolItem( searchToolBar, SWT.SEPARATOR );
 
         final ToolItem scopeToolItem = new ToolItem( searchToolBar, SWT.DROP_DOWN );
-        scopeToolItem.setText( "Scope" );
+        scopeToolItem.setText( Messages.getString("SearchView.Scope") ); //$NON-NLS-1$
         // Adding the action to display the Menu when the item is clicked
         scopeToolItem.addSelectionListener( new SelectionAdapter()
         {
@@ -254,7 +254,7 @@ public class SearchView extends ViewPart
         searchButton = new Button( searchFieldInnerComposite, SWT.PUSH | SWT.DOWN );
         searchButton.setEnabled( false );
         searchButton.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SEARCH ) );
-        searchButton.setToolTipText( "Search" );
+        searchButton.setToolTipText( Messages.getString("SearchView.Search") ); //$NON-NLS-1$
         searchButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -286,7 +286,7 @@ public class SearchView extends ViewPart
         // Filling the menu
         // Aliases
         final MenuItem aliasesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        aliasesMenuItem.setText( "Aliases" );
+        aliasesMenuItem.setText( Messages.getString("SearchView.Aliases") ); //$NON-NLS-1$
         aliasesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -296,7 +296,7 @@ public class SearchView extends ViewPart
         } );
         // OID
         final MenuItem oidMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        oidMenuItem.setText( "OID" );
+        oidMenuItem.setText( Messages.getString("SearchView.OID") ); //$NON-NLS-1$
         oidMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -306,7 +306,7 @@ public class SearchView extends ViewPart
         } );
         // Description
         final MenuItem descriptionMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        descriptionMenuItem.setText( "Description" );
+        descriptionMenuItem.setText( Messages.getString("SearchView.Description") ); //$NON-NLS-1$
         descriptionMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -319,7 +319,7 @@ public class SearchView extends ViewPart
         new MenuItem( searchInMenu, SWT.SEPARATOR );
         // Superior
         final MenuItem superiorMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        superiorMenuItem.setText( "Superior" );
+        superiorMenuItem.setText( Messages.getString("SearchView.Superior") ); //$NON-NLS-1$
         superiorMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -329,7 +329,7 @@ public class SearchView extends ViewPart
         } );
         // Syntax
         final MenuItem syntaxMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        syntaxMenuItem.setText( "Syntax" );
+        syntaxMenuItem.setText( Messages.getString("SearchView.Syntax") ); //$NON-NLS-1$
         syntaxMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -339,7 +339,7 @@ public class SearchView extends ViewPart
         } );
         // Matching Rules
         final MenuItem matchingRulesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        matchingRulesMenuItem.setText( "Matching Rules" );
+        matchingRulesMenuItem.setText( Messages.getString("SearchView.MatchingRules") ); //$NON-NLS-1$
         matchingRulesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -352,7 +352,7 @@ public class SearchView extends ViewPart
         new MenuItem( searchInMenu, SWT.SEPARATOR );
         // Superiors
         final MenuItem superiorsMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        superiorsMenuItem.setText( "Superiors" );
+        superiorsMenuItem.setText( Messages.getString("SearchView.Superiors") ); //$NON-NLS-1$
         superiorsMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -362,7 +362,7 @@ public class SearchView extends ViewPart
         } );
         // Mandatory Attributes
         final MenuItem mandatoryAttributesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        mandatoryAttributesMenuItem.setText( "Mandatory Attributes" );
+        mandatoryAttributesMenuItem.setText( Messages.getString("SearchView.MandatoryAttributes") ); //$NON-NLS-1$
         mandatoryAttributesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -373,7 +373,7 @@ public class SearchView extends ViewPart
         } );
         // Optional Attributes
         final MenuItem optionalAttributesMenuItem = new MenuItem( searchInMenu, SWT.CHECK );
-        optionalAttributesMenuItem.setText( "Optional Attributes" );
+        optionalAttributesMenuItem.setText( Messages.getString("SearchView.OptionalAttributes") ); //$NON-NLS-1$
         optionalAttributesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -442,7 +442,7 @@ public class SearchView extends ViewPart
         // Filling the menu
         // Attribute Types And Object Classes
         final MenuItem attributeTypesAndObjectClassesMenuItem = new MenuItem( scopeMenu, SWT.RADIO );
-        attributeTypesAndObjectClassesMenuItem.setText( "Attribute Types And Object Classes" );
+        attributeTypesAndObjectClassesMenuItem.setText( Messages.getString("SearchView.TypesAndClasses") ); //$NON-NLS-1$
         attributeTypesAndObjectClassesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -453,7 +453,7 @@ public class SearchView extends ViewPart
         } );
         // Attributes Type Only
         final MenuItem attributesTypesOnlyMenuItem = new MenuItem( scopeMenu, SWT.RADIO );
-        attributesTypesOnlyMenuItem.setText( "Attribute Types Only" );
+        attributesTypesOnlyMenuItem.setText( Messages.getString("SearchView.TypesOnly") ); //$NON-NLS-1$
         attributesTypesOnlyMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -463,7 +463,7 @@ public class SearchView extends ViewPart
         } );
         // Object Classes Only
         final MenuItem objectClassesMenuItem = new MenuItem( scopeMenu, SWT.RADIO );
-        objectClassesMenuItem.setText( "Object Classes Only" );
+        objectClassesMenuItem.setText( Messages.getString("SearchView.ClassesOnly") ); //$NON-NLS-1$
         objectClassesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -519,7 +519,7 @@ public class SearchView extends ViewPart
         {
             public void keyPressed( KeyEvent e )
             {
-                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) // return key
+                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) // return key //$NON-NLS-1$
                 {
                     openEditor();
                 }
@@ -574,8 +574,8 @@ public class SearchView extends ViewPart
                     }
                     catch ( PartInitException exception )
                     {
-                        PluginUtils.logError( "An error occured when opening the editor.", exception );
-                        ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                        PluginUtils.logError( Messages.getString("SearchView.ErrorOpeningEditor"), exception ); //$NON-NLS-1$
+                        ViewUtils.displayErrorMessageBox( Messages.getString("SearchView.Error"), Messages.getString("SearchView.ErrorOpeningEditor") ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
             }
@@ -683,8 +683,8 @@ public class SearchView extends ViewPart
 
         if ( searchString != null )
         {
-            String computedSearchString = searchString.replaceAll( "\\*", "\\\\S*" );
-            computedSearchString = computedSearchString.replaceAll( "\\?", ".*" );
+            String computedSearchString = searchString.replaceAll( "\\*", "\\\\S*" ); //$NON-NLS-1$ //$NON-NLS-2$
+            computedSearchString = computedSearchString.replaceAll( "\\?", ".*" ); //$NON-NLS-1$ //$NON-NLS-2$
 
             Pattern pattern = Pattern.compile( computedSearchString, Pattern.CASE_INSENSITIVE );
 
@@ -914,27 +914,27 @@ public class SearchView extends ViewPart
 
         if ( searchString == null )
         {
-            sb.append( "No search" );
+            sb.append( Messages.getString("SearchView.NoSearch") ); //$NON-NLS-1$
         }
         else
         {
             // Search String
-            sb.append( "'" + searchString + "'" );
-            sb.append( " - " );
+            sb.append( "'" + searchString + "'" ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( " - " ); //$NON-NLS-1$
 
             // Search results count
             sb.append( resultsCount );
-            sb.append( " " );
+            sb.append( " " ); //$NON-NLS-1$
             if ( resultsCount > 1 )
             {
-                sb.append( "matches" );
+                sb.append( Messages.getString("SearchView.Matches") ); //$NON-NLS-1$
             }
             else
             {
-                sb.append( "match" );
+                sb.append( Messages.getString("SearchView.Match") ); //$NON-NLS-1$
             }
 
-            sb.append( " in workspace" );
+            sb.append( Messages.getString("SearchView.InWorkspace") ); //$NON-NLS-1$
         }
 
         searchResultsLabel.setText( sb.toString() );

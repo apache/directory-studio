@@ -44,8 +44,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class HierarchyViewLabelProvider extends LabelProvider
 {
-    private static final String NONE = "(None)";
-
     /** The preferences store */
     private IPreferenceStore store;
 
@@ -94,7 +92,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -106,7 +104,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
@@ -123,7 +121,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
 
@@ -147,7 +145,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -159,7 +157,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
@@ -176,7 +174,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
 
@@ -204,7 +202,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -216,7 +214,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
@@ -237,7 +235,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -249,7 +247,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )

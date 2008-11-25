@@ -111,7 +111,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             {
                 String name = warningWrapper.getSchemaWarning().getSource().getName();
 
-                if ( ( name != null ) && ( !name.equals( "" ) ) )
+                if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
                 {
                     return name;
                 }
@@ -126,11 +126,11 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             Folder folder = ( Folder ) element;
             if ( columnIndex == 0 )
             {
-                return folder.getName() + " (" + folder.getChildren().size() + ")";
+                return folder.getName() + " (" + folder.getChildren().size() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "";
+                return ""; //$NON-NLS-1$
             }
         }
 
@@ -147,73 +147,73 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
         {
             DuplicateAliasError duplicateAliasError = ( DuplicateAliasError ) element;
 
-            message.append( "Alias '" + duplicateAliasError.getAlias() + "' is already used by another item: " );
+            message.append( Messages.getString("ProblemsViewLabelProvider.AliasBegin") + duplicateAliasError.getAlias() + Messages.getString("ProblemsViewLabelProvider.AliasEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
             SchemaObject duplicate = duplicateAliasError.getDuplicate();
             if ( duplicate instanceof AttributeTypeImpl )
             {
-                message.append( "attribute type" );
+                message.append( Messages.getString("ProblemsViewLabelProvider.AttributeTypeSmall") ); //$NON-NLS-1$
             }
             else if ( duplicate instanceof ObjectClassImpl )
             {
-                message.append( "object class" );
+                message.append( Messages.getString("ProblemsViewLabelProvider.ObjectClassSmall") ); //$NON-NLS-1$
             }
-            message.append( " with OID '" + duplicate.getOid() + "'." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.WithOID") + duplicate.getOid() + "'." ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof DuplicateOidError )
         {
             DuplicateOidError duplicateOidError = ( DuplicateOidError ) element;
 
-            message.append( "OID '" + duplicateOidError.getOid() + "' is already used by another item: " );
+            message.append( Messages.getString("ProblemsViewLabelProvider.OIDBegin") + duplicateOidError.getOid() + Messages.getString("ProblemsViewLabelProvider.OIDEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
             SchemaObject duplicate = duplicateOidError.getDuplicate();
             if ( duplicate instanceof AttributeTypeImpl )
             {
-                message.append( "attribute type" );
+                message.append( Messages.getString("ProblemsViewLabelProvider.AttributeTypeSmall") ); //$NON-NLS-1$
             }
             else if ( duplicate instanceof ObjectClassImpl )
             {
-                message.append( "object class" );
+                message.append( Messages.getString("ProblemsViewLabelProvider.ObjectClassSmall") ); //$NON-NLS-1$
             }
-            message.append( " with alias '" + duplicate.getName() + "'." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.WithAlias") + duplicate.getName() + "'." ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof NonExistingATSuperiorError )
         {
             NonExistingATSuperiorError nonExistingATSuperiorError = ( NonExistingATSuperiorError ) element;
 
-            message.append( "Superior attribute type '" + nonExistingATSuperiorError.getSuperiorAlias()
-                + "' does not exist." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.SuperiorAttributeBegin") + nonExistingATSuperiorError.getSuperiorAlias() //$NON-NLS-1$
+                + Messages.getString("ProblemsViewLabelProvider.SuperiorAttributeEnd") ); //$NON-NLS-1$
         }
         else if ( element instanceof NonExistingOCSuperiorError )
         {
             NonExistingOCSuperiorError nonExistingOCSuperiorError = ( NonExistingOCSuperiorError ) element;
 
-            message.append( "Superior object class '" + nonExistingOCSuperiorError.getSuperiorAlias()
-                + "' does not exist." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.SuperiorObjectBegin") + nonExistingOCSuperiorError.getSuperiorAlias() //$NON-NLS-1$
+                + Messages.getString("ProblemsViewLabelProvider.SuperiorObjectEnd") ); //$NON-NLS-1$
         }
         else if ( element instanceof NonExistingMandatoryATError )
         {
             NonExistingMandatoryATError nonExistingMandatoryATError = ( NonExistingMandatoryATError ) element;
 
             message
-                .append( "Mandatory attribute type '" + nonExistingMandatoryATError.getAlias() + "' does not exist." );
+                .append( Messages.getString("ProblemsViewLabelProvider.MandatoryAttributeBegin") + nonExistingMandatoryATError.getAlias() + Messages.getString("ProblemsViewLabelProvider.MandatoryAttributeEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof NonExistingOptionalATError )
         {
             NonExistingOptionalATError nonExistingOptionalATError = ( NonExistingOptionalATError ) element;
 
-            message.append( "Optional attribute type '" + nonExistingOptionalATError.getAlias() + "' does not exist." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.OptionalAttributeBegin") + nonExistingOptionalATError.getAlias() + Messages.getString("ProblemsViewLabelProvider.OptionalAttributeEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof NonExistingSyntaxError )
         {
             NonExistingSyntaxError nonExistingSyntaxError = ( NonExistingSyntaxError ) element;
 
-            message.append( "Syntax with OID '" + nonExistingSyntaxError.getSyntaxOid() + "' does not exist." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.SyntaxOIDBegin") + nonExistingSyntaxError.getSyntaxOid() + Messages.getString("ProblemsViewLabelProvider.SyntaxOIDEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof NonExistingMatchingRuleError )
         {
             NonExistingMatchingRuleError nonExistingMatchingRuleError = ( NonExistingMatchingRuleError ) element;
 
-            message.append( "Matching rule '" + nonExistingMatchingRuleError.getMatchingRuleAlias()
-                + "' does not exist." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.MatchingRuleBegin") + nonExistingMatchingRuleError.getMatchingRuleAlias() //$NON-NLS-1$
+                + Messages.getString("ProblemsViewLabelProvider.MatchingRuleEnd") ); //$NON-NLS-1$
         }
         else if ( element instanceof NoAliasWarning )
         {
@@ -221,13 +221,13 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             SchemaObject source = noAliasWarning.getSource();
             if ( source instanceof AttributeTypeImpl )
             {
-                message.append( "Attribute type" );
+                message.append( Messages.getString("ProblemsViewLabelProvider.AttributeType") ); //$NON-NLS-1$
             }
             else if ( source instanceof ObjectClassImpl )
             {
-                message.append( "Object class" );
+                message.append( Messages.getString("ProblemsViewLabelProvider.ObjectClass") ); //$NON-NLS-1$
             }
-            message.append( " with OID '" + source.getOid() + "' does not have any alias." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.WithOIDBegin") + source.getOid() + Messages.getString("ProblemsViewLabelProvider.WithOIDEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof ClassTypeHierarchyError )
         {
@@ -237,24 +237,24 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
 
             if ( source.getType().equals( ObjectClassTypeEnum.ABSTRACT ) )
             {
-                message.append( "Abstract object class '" + getDisplayName( source ) + "' can not extend " );
+                message.append( Messages.getString("ProblemsViewLabelProvider.AbstractObjectBegin") + getDisplayName( source ) + Messages.getString("ProblemsViewLabelProvider.AbstractObjectEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
 
                 if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
                 {
-                    message.append( "Structural object class :'" + getDisplayName( superior ) + "'." );
+                    message.append( Messages.getString("ProblemsViewLabelProvider.StructuralObject") + getDisplayName( superior ) + "'." ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else if ( superior.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
                 {
-                    message.append( "Auxiliary object class :'" + getDisplayName( superior ) + "'." );
+                    message.append( Messages.getString("ProblemsViewLabelProvider.AuxiliaryObject") + getDisplayName( superior ) + "'." ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else if ( source.getType().equals( ObjectClassTypeEnum.AUXILIARY ) )
             {
-                message.append( "Auxiliary object class '" + getDisplayName( source ) + "' can not extend " );
+                message.append( Messages.getString("ProblemsViewLabelProvider.AuxiliaryObjectBegin") + getDisplayName( source ) + Messages.getString("ProblemsViewLabelProvider.AuxiliaryObjectEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
 
                 if ( superior.getType().equals( ObjectClassTypeEnum.STRUCTURAL ) )
                 {
-                    message.append( "Structural object class :'" + getDisplayName( superior ) + "'." );
+                    message.append( Messages.getString("ProblemsViewLabelProvider.StructuralObject") + getDisplayName( superior ) + "'." ); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
@@ -264,8 +264,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             AttributeTypeImpl source = ( AttributeTypeImpl ) differentUsageAsSuperiorError.getSource();
             AttributeTypeImpl superior = ( AttributeTypeImpl ) differentUsageAsSuperiorError.getSuperior();
 
-            message.append( "Attribute type '" + getDisplayName( source )
-                + "' has a different usage value than its superior '" + getDisplayName( superior ) + "'." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.AttributeTypeBegin") + getDisplayName( source ) //$NON-NLS-1$
+                + Messages.getString("ProblemsViewLabelProvider.AttributeTypeEnd") + getDisplayName( superior ) + "'." ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( element instanceof DifferentCollectiveAsSuperiorError )
         {
@@ -273,8 +273,8 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
             AttributeTypeImpl source = ( AttributeTypeImpl ) differentCollectiveAsSuperiorError.getSource();
             AttributeTypeImpl superior = ( AttributeTypeImpl ) differentCollectiveAsSuperiorError.getSuperior();
 
-            message.append( "Attribute type '" + getDisplayName( source ) + "' must be collective as its superior '"
-                + getDisplayName( superior ) + "'." );
+            message.append( Messages.getString("ProblemsViewLabelProvider.AttributeTypeCollectiveBegin") + getDisplayName( source ) + Messages.getString("ProblemsViewLabelProvider.AttributeTypeCollectiveEnd") //$NON-NLS-1$ //$NON-NLS-2$
+                + getDisplayName( superior ) + "'." ); //$NON-NLS-1$
         }
 
         return message.toString();
@@ -293,7 +293,7 @@ public class ProblemsViewLabelProvider extends LabelProvider implements ITableLa
     {
         String name = so.getName();
 
-        if ( ( name != null ) && ( !name.equals( "" ) ) )
+        if ( ( name != null ) && ( !name.equals( "" ) ) ) //$NON-NLS-1$
         {
             return name;
         }

@@ -39,8 +39,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class SearchViewLabelProvider extends LabelProvider
 {
-    private static final String NONE = "(None)";
-
     /** The preferences store */
     private IPreferenceStore store;
 
@@ -86,7 +84,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -98,7 +96,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )
@@ -115,7 +113,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
 
@@ -139,7 +137,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -151,7 +149,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )
@@ -168,7 +166,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                 }
             }
 
@@ -196,7 +194,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -208,7 +206,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )
@@ -229,7 +227,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -241,7 +239,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )

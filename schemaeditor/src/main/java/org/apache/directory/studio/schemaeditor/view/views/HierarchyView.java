@@ -77,7 +77,7 @@ public class HierarchyView extends ViewPart
 
         // Overview Label
         overviewLabel = new Label( parent, SWT.WRAP );
-        overviewLabel.setText( "" );
+        overviewLabel.setText( "" ); //$NON-NLS-1$
         overviewLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Separator Label
@@ -89,7 +89,7 @@ public class HierarchyView extends ViewPart
         controller = new HierarchyViewController( this );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "hierarchy_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "hierarchy_view" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -147,7 +147,7 @@ public class HierarchyView extends ViewPart
         viewer.expandAll();
         if ( input == null )
         {
-            overviewLabel.setText( "" );
+            overviewLabel.setText( "" ); //$NON-NLS-1$
         }
         else
         {
@@ -161,7 +161,7 @@ public class HierarchyView extends ViewPart
             }
             else
             {
-                overviewLabel.setText( "" );
+                overviewLabel.setText( "" ); //$NON-NLS-1$
             }
         }
     }
@@ -184,11 +184,11 @@ public class HierarchyView extends ViewPart
         }
         else
         {
-            sb.append( "(None)" );
+            sb.append( Messages.getString("HierarchyView.None") ); //$NON-NLS-1$
         }
-        sb.append( " (" );
+        sb.append( " (" ); //$NON-NLS-1$
         sb.append( object.getOid() );
-        sb.append( ")  -  Schema:" );
+        sb.append( Messages.getString("HierarchyView.Schema") ); //$NON-NLS-1$
         sb.append( object.getSchema() );
 
         overviewLabel.setText( sb.toString() );

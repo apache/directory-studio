@@ -72,7 +72,7 @@ public class ProblemsView extends ViewPart
     public void createPartControl( Composite parent )
     {
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "problems_view" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( parent, PluginConstants.PLUGIN_ID + "." + "problems_view" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         GridLayout gridLayout = new GridLayout();
         gridLayout.horizontalSpacing = 0;
@@ -113,10 +113,10 @@ public class ProblemsView extends ViewPart
         tree.setHeaderVisible( true );
         tree.setLinesVisible( true );
         TreeColumn descriptionColumn = new TreeColumn( tree, SWT.LEFT );
-        descriptionColumn.setText( "Description" );
+        descriptionColumn.setText( Messages.getString("ProblemsView.Description") ); //$NON-NLS-1$
         descriptionColumn.setWidth( 500 );
         TreeColumn resourceColumn = new TreeColumn( tree, SWT.LEFT );
-        resourceColumn.setText( "Resource" );
+        resourceColumn.setText( Messages.getString("ProblemsView.Resource") ); //$NON-NLS-1$
         resourceColumn.setWidth( 100 );
         contentProvider = new ProblemsViewContentProvider();
         treeViewer.setContentProvider( contentProvider );
@@ -178,27 +178,27 @@ public class ProblemsView extends ViewPart
         StringBuffer sb = new StringBuffer();
 
         sb.append( errors );
-        sb.append( " " );
+        sb.append( " " ); //$NON-NLS-1$
         if ( errors > 1 )
         {
-            sb.append( "errors" );
+            sb.append( Messages.getString("ProblemsView.Errors") ); //$NON-NLS-1$
         }
         else
         {
-            sb.append( "error" );
+            sb.append( Messages.getString("ProblemsView.Error") ); //$NON-NLS-1$
         }
 
-        sb.append( ", " );
+        sb.append( ", " ); //$NON-NLS-1$
 
         sb.append( warnings );
-        sb.append( " " );
+        sb.append( " " ); //$NON-NLS-1$
         if ( warnings > 1 )
         {
-            sb.append( "warnings" );
+            sb.append( Messages.getString("ProblemsView.Warnings") ); //$NON-NLS-1$
         }
         else
         {
-            sb.append( "warning" );
+            sb.append( Messages.getString("ProblemsView.Warning") ); //$NON-NLS-1$
         }
 
         overviewLabel.setText( sb.toString() );
