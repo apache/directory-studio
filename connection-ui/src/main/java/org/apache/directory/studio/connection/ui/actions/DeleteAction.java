@@ -55,15 +55,15 @@ public class DeleteAction extends StudioAction
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();        
         if ( connections.length > 0 && connectionFolders.length == 0 )
         {
-            return connections.length > 1 ? "Delete Connections" : "Delete Connection";
+            return connections.length > 1 ? Messages.getString("DeleteAction.DeleteConnections") : Messages.getString("DeleteAction.DeleteConnection");
         }
         else if ( connectionFolders.length > 0 && connections.length == 0 )
         {
-            return connectionFolders.length > 1 ? "Delete Connection Folders" : "Delete Connection Folder";
+            return connectionFolders.length > 1 ? Messages.getString("DeleteAction.DeleteConnectionFolders") : Messages.getString("DeleteAction.DeleteConnectionFolder");
         }
         else 
         {
-            return "Delete";
+            return Messages.getString("DeleteAction.Delete");
         }
     }
 
@@ -100,18 +100,18 @@ public class DeleteAction extends StudioAction
         {
             if ( connections.length <= 5 )
             {
-                message.append( connections.length == 1 ? "Are your sure to delete the following connection?"
-                    : "Are your sure to delete the following connections?" );
+                message.append( connections.length == 1 ? Messages.getString("DeleteAction.SureDeleteFollowingConnection")
+                    : Messages.getString("DeleteAction.SureDeleteFollowingConnections") );
                 for ( int i = 0; i < connections.length; i++ )
                 {
                     message.append( ConnectionCoreConstants.LINE_SEPARATOR );
-                    message.append( "  - " );
+                    message.append( "  - " ); //$NON-NLS-1$
                     message.append( connections[i].getName() );
                 }
             }
             else
             {
-                message.append( "Are your sure to delete the selected connections?" );
+                message.append( Messages.getString("DeleteAction.SureDeleteSelectedConnections") );
             }
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
@@ -121,18 +121,18 @@ public class DeleteAction extends StudioAction
         {
             if ( connectionFolders.length <= 5 )
             {
-                message.append( connectionFolders.length == 1 ? "Are your sure to delete the following connection folder including all connections?"
-                    : "Are your sure to delete the following connection folders including all connections?" );
+                message.append( connectionFolders.length == 1 ? Messages.getString("DeleteAction.SureDeleteFollowingFolder")
+                    : Messages.getString("DeleteAction.SureDeleteFollowingFolders") );
                 for ( int i = 0; i < connectionFolders.length; i++ )
                 {
                     message.append( ConnectionCoreConstants.LINE_SEPARATOR );
-                    message.append( "  - " );
+                    message.append( "  - " ); //$NON-NLS-1$
                     message.append( connectionFolders[i].getName() );
                 }
             }
             else
             {
-                message.append( "Are your sure to delete the selected connection folders including all connections?" );
+                message.append( Messages.getString("DeleteAction.SureDeleteSelectedConnectionFolders") );
             }
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );

@@ -74,7 +74,7 @@ public class NewConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return "New Connection...";
+        return Messages.getString("NewConnectionAction.NewConnection");
     }
 
 

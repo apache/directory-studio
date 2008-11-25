@@ -79,7 +79,7 @@ public class SelectReferralConnectionDialog extends Dialog
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.title = "Select Referral Connection";
+        this.title = Messages.getString("SelectReferralConnectionDialog.SelectReferralConenction");
         this.referralUrl = referralUrl;
         this.selectedConnection = null;
     }
@@ -149,7 +149,7 @@ public class SelectReferralConnectionDialog extends Dialog
         gd.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
         composite.setLayoutData( gd );
 
-        BaseWidgetUtils.createWrappedLabeledText( composite, "Please select a connection to handle referral "
+        BaseWidgetUtils.createWrappedLabeledText( composite, Messages.getString("SelectReferralConnectionDialog.SelectConnectionToHandleReferral")
             + referralUrl, 1 );
 
         // create configuration

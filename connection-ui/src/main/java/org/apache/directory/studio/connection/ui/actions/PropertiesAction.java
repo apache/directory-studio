@@ -52,7 +52,7 @@ public class PropertiesAction extends StudioAction
      */
     public String getText()
     {
-        return "Properties";
+        return Messages.getString("PropertiesAction.Properties");
     }
 
 
@@ -97,7 +97,7 @@ public class PropertiesAction extends StudioAction
         if ( getSelectedConnections().length == 1 )
         {
             element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = ConnectionUIPlugin.getDefault().getPluginProperties().getString( "Prop_ConnectionPropertyPage_id" );
+            pageId = ConnectionUIPlugin.getDefault().getPluginProperties().getString( "Prop_ConnectionPropertyPage_id" ); //$NON-NLS-1$
             title = getSelectedConnections()[0].getName();
         }
 
@@ -106,7 +106,7 @@ public class PropertiesAction extends StudioAction
             PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), element, pageId, null, null );
             if ( dialog != null )
                 title = Utils.shorten( title, 30 );
-            dialog.getShell().setText( "Properties for '" + title + "'" );
+            dialog.getShell().setText( Messages.getString("PropertiesAction.PropertiesForStart") + title + Messages.getString("PropertiesAction.PropertiesForEnd") );
             dialog.open();
 
         }

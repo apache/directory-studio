@@ -45,11 +45,11 @@ public class UIAuthHandler implements IAuthHandler
     public ICredentials getCredentials( final ConnectionParameter connectionParameter )
     {
 
-        if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) )
+        if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
         {
-            return new Credentials( "", "", connectionParameter );
+            return new Credentials( "", "", connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        else if ( connectionParameter.getBindPassword() != null && !"".equals( connectionParameter.getBindPassword() ) )
+        else if ( connectionParameter.getBindPassword() != null && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
         {
             return new Credentials( connectionParameter.getBindPrincipal(), connectionParameter.getBindPassword(),
                 connectionParameter );
@@ -62,8 +62,8 @@ public class UIAuthHandler implements IAuthHandler
                 public void run()
                 {
                     CredentialsDialog dialog = new CredentialsDialog( PlatformUI.getWorkbench().getDisplay()
-                        .getActiveShell(), "Enter Password for '" + connectionParameter.getName() + "'",
-                        "Please enter password of user " + connectionParameter.getBindPrincipal() + ":", "", null );
+                        .getActiveShell(), Messages.getString("UIAuthHandler.EnterPasswordForStart") + connectionParameter.getName() + Messages.getString("UIAuthHandler.EnterPasswordForEnd"),
+                        Messages.getString("UIAuthHandler.PleaseEnterPasswordOfUser") + connectionParameter.getBindPrincipal() + ":", "", null ); //$NON-NLS-2$ //$NON-NLS-3$
                     if ( dialog.open() == CredentialsDialog.OK )
                     {
                         pw[0] = dialog.getValue();

@@ -59,7 +59,7 @@ public class OpenConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return getSelectedConnections().length > 1 ? "Open Connections" : "Open Connection";
+        return getSelectedConnections().length > 1 ? Messages.getString("OpenConnectionAction.OpenConnections") : Messages.getString("OpenConnectionAction.OpenConnection");
     }
 
 

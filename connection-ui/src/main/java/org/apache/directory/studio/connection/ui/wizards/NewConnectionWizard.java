@@ -62,7 +62,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public NewConnectionWizard()
     {
-        setWindowTitle( "New LDAP Connection" );
+        setWindowTitle( Messages.getString("NewConnectionWizard.NewLdapConnection") ); //$NON-NLS-1$
         setNeedsProgressMonitor( true );
     }
 
@@ -130,7 +130,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
         for ( NewConnectionWizardPage wizardPage : wizardPages )
         {
             PlatformUI.getWorkbench().getHelpSystem().setHelp( wizardPage.getControl(),
-                ConnectionUIConstants.PLUGIN_ID + "." + "tools_newconnection_wizard" );
+                ConnectionUIConstants.PLUGIN_ID + "." + "tools_newconnection_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

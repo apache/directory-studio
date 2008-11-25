@@ -60,7 +60,7 @@ public class CloseConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return getSelectedConnections().length > 1 ? "Close Connections" : "Close Connection";
+        return getSelectedConnections().length > 1 ? Messages.getString("CloseConnectionAction.CloseConnections") : Messages.getString("CloseConnectionAction.CloseConnection");
     }
 
 

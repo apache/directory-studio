@@ -59,7 +59,7 @@ public class ExceptionHandler
     {
         if ( Thread.currentThread() == Display.getDefault().getThread() )
         {
-            ErrorDialog.openError( Display.getDefault().getActiveShell(), "Error", message, status );
+            ErrorDialog.openError( Display.getDefault().getActiveShell(), Messages.getString("ExceptionHandler.Error"), message, status );
         }
         else
         {
@@ -67,7 +67,7 @@ public class ExceptionHandler
             {
                 public void run()
                 {
-                    ErrorDialog.openError( Display.getDefault().getActiveShell(), "Error", message, status );
+                    ErrorDialog.openError( Display.getDefault().getActiveShell(), Messages.getString("ExceptionHandler.Error"), message, status );
                 }
             };
             Display.getDefault().asyncExec( runnable );

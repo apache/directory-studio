@@ -63,13 +63,13 @@ import org.eclipse.swt.widgets.Text;
 public class NetworkParameterPage extends AbstractConnectionParameterPage
 {
 
-    private static final String X_CONNECTION_NAME = "X-CONNECTION-NAME";
+    private static final String X_CONNECTION_NAME = "X-CONNECTION-NAME"; //$NON-NLS-1$
 
-    private static final String X_ENCRYPTION = "X-ENCRYPTION";
+    private static final String X_ENCRYPTION = "X-ENCRYPTION"; //$NON-NLS-1$
 
-    private static final String X_ENCRYPTION_LDAPS = "ldaps";
+    private static final String X_ENCRYPTION_LDAPS = "ldaps"; //$NON-NLS-1$
 
-    private static final String X_ENCRYPTION_START_TLS = "StartTLS";
+    private static final String X_ENCRYPTION_START_TLS = "StartTLS"; //$NON-NLS-1$
 
     /** The connection name text widget */
     private Text nameText;
@@ -170,34 +170,35 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         Composite nameComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( nameComposite, "Connection name:", 1 );
-        nameText = BaseWidgetUtils.createText( nameComposite, "", 1 );
+        BaseWidgetUtils.createLabel( nameComposite, Messages.getString("NetworkParameterPage.ConnectionName"), 1 );
+        nameText = BaseWidgetUtils.createText( nameComposite, "", 1 ); //$NON-NLS-1$
 
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( composite, "Network Parameter", 1 );
+        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("NetworkParameterPage.NetworkParameter"), 1 );
 
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
-        BaseWidgetUtils.createLabel( groupComposite, "Hostname:", 1 );
+        BaseWidgetUtils.createLabel( groupComposite, "Hostname:", 1 ); //$NON-NLS-1$
         String[] hostHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
         hostCombo = BaseWidgetUtils.createCombo( groupComposite, hostHistory, -1, 2 );
 
-        BaseWidgetUtils.createLabel( groupComposite, "Port:", 1 );
+        BaseWidgetUtils.createLabel( groupComposite, "Port:", 1 ); //$NON-NLS-1$
         String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
         portCombo.setTextLimit( 5 );
-        portCombo.setText( "389" );
+        portCombo.setText( "389" ); //$NON-NLS-1$
 
         String[] encMethods = new String[]
-            { "No encryption", "Use SSL encryption (ldaps://)", "Use StartTLS extension" };
+            { Messages.getString("NetworkParameterPage.NoEncryption"), Messages.getString("NetworkParameterPage.UseSSLEncryption"),
+        		Messages.getString("NetworkParameterPage.UseStartTLS") };
         int index = 0;
-        BaseWidgetUtils.createLabel( groupComposite, "Encryption method:", 1 );
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("NetworkParameterPage.EncryptionMethod"), 1 );
         encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, index, 2 );
         BaseWidgetUtils.createSpacer( groupComposite, 1 );
         BaseWidgetUtils
             .createLabel(
                 groupComposite,
-                "Warning: The current version doesn't support certificate validation, \nbe aware of invalid certificates or man-in-the-middle attacks!",
+                Messages.getString("NetworkParameterPage.WarningCertificateValidation"),
                 2 );
 
         BaseWidgetUtils.createSpacer( groupComposite, 2 );
@@ -206,7 +207,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         gd.horizontalAlignment = SWT.RIGHT;
         gd.verticalAlignment = SWT.BOTTOM;
         checkConnectionButton.setLayoutData( gd );
-        checkConnectionButton.setText( "Check Network Parameter" );
+        checkConnectionButton.setText( Messages.getString("NetworkParameterPage.CheckNetworkParameter") );
 
         nameText.setFocus();
     }
@@ -218,28 +219,28 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     protected void validate()
     {
         // set enabled/disabled state of check connection button
-        checkConnectionButton.setEnabled( !hostCombo.getText().equals( "" ) && !portCombo.getText().equals( "" ) );
+        checkConnectionButton.setEnabled( !hostCombo.getText().equals( "" ) && !portCombo.getText().equals( "" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // validate input fields
         message = null;
         infoMessage = null;
         errorMessage = null;
-        if ( "".equals( portCombo.getText() ) )
+        if ( "".equals( portCombo.getText() ) ) //$NON-NLS-1$
         {
-            message = "Please enter a port. The default LDAP port is 389.";
+            message = Messages.getString("NetworkParameterPage.PleaseEnterPort");
         }
-        if ( "".equals( hostCombo.getText() ) )
+        if ( "".equals( hostCombo.getText() ) ) //$NON-NLS-1$
         {
-            message = "Please enter a hostname.";
+            message = Messages.getString("NetworkParameterPage.PleaseEnterHostname");
         }
-        if ( "".equals( nameText.getText() ) )
+        if ( "".equals( nameText.getText() ) ) //$NON-NLS-1$
         {
-            message = "Please enter a connection name.";
+            message = Messages.getString("NetworkParameterPage.PleaseEnterConnectionName");
         }
         if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( nameText.getText() ) != null
             && ( connectionParameter == null || !nameText.getText().equals( connectionParameter.getName() ) ) )
         {
-            errorMessage = "A connection named '" + nameText.getText() + "' already exists.";
+            errorMessage = Messages.getString("NetworkParameterPage.ConnectionExistsStart") + nameText.getText() + Messages.getString("NetworkParameterPage.ConnectionExistsEnd");
         }
     }
 
@@ -285,7 +286,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         {
             public void verifyText( VerifyEvent event )
             {
-                if ( !event.text.matches( "[0-9]*" ) )
+                if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     event.doit = false;
                 }
@@ -316,8 +317,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
                 if ( status.isOK() )
                 {
-                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Check Network Parameter",
-                        "The connection was established successfully." );
+                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("NetworkParameterPage.CheckNetworkParameter"),
+                        Messages.getString("NetworkParameterPage.ConnectionEstablished") );
                 }
             }
         } );

@@ -187,7 +187,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         Connection connection = getConnection( getElement() );
         if ( connection != null )
         {
-            super.setMessage( "Connection " + Utils.shorten( connection.getName(), 30 ) );
+            super.setMessage( Messages.getString("ConnectionPropertyPage.Connection") + Utils.shorten( connection.getName(), 30 ) ); //$NON-NLS-1$
             
             pages = ConnectionParameterPageManager.getConnectionParameterPages();
             
@@ -210,7 +210,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
             return tabFolder;
         }
         else {
-            Label label = BaseWidgetUtils.createLabel( parent, "No connection", 1 );
+            Label label = BaseWidgetUtils.createLabel( parent, Messages.getString("ConnectionPropertyPage.NoConnection"), 1 ); //$NON-NLS-1$
             return label;
         }
     }

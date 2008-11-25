@@ -53,7 +53,7 @@ public class ConnectionParameterPageManager
     {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint extensionPoint = registry.getExtensionPoint( ConnectionUIPlugin.getDefault()
-            .getPluginProperties().getString( "ExtensionPoint_ConnectionParameterPages_id" ) );
+            .getPluginProperties().getString( "ExtensionPoint_ConnectionParameterPages_id" ) ); //$NON-NLS-1$
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
         final Map<String, ConnectionParameterPage> pageMap = new HashMap<String, ConnectionParameterPage>();
 
@@ -63,18 +63,18 @@ public class ConnectionParameterPageManager
             IConfigurationElement member = members[m];
             try
             {
-                ConnectionParameterPage page = ( ConnectionParameterPage ) member.createExecutableExtension( "class" );
-                page.setPageId( member.getAttribute( "id" ) );
-                page.setPageName( member.getAttribute( "name" ) );
-                page.setPageDescription( member.getAttribute( "description" ) );
-                page.setPageDependsOnId( member.getAttribute( "dependsOnId" ) );
+                ConnectionParameterPage page = ( ConnectionParameterPage ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
+                page.setPageId( member.getAttribute( "id" ) ); //$NON-NLS-1$
+                page.setPageName( member.getAttribute( "name" ) ); //$NON-NLS-1$
+                page.setPageDescription( member.getAttribute( "description" ) ); //$NON-NLS-1$
+                page.setPageDependsOnId( member.getAttribute( "dependsOnId" ) ); //$NON-NLS-1$
                 pageMap.put( page.getPageId(), page );
             }
             catch ( Exception e )
             {
                 ConnectionUIPlugin.getDefault().getLog().log(
                     new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, 1,
-                        "Unable to create connection parameter page " + member.getAttribute( "class" ), e ) );
+                        Messages.getString("ConnectionParameterPageManager.UnableCreateConnectionParamPage") + member.getAttribute( "class" ), e ) ); //$NON-NLS-2$
             }
         }
 
