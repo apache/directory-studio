@@ -57,9 +57,6 @@ public class SchemaEditorSourceCodePage extends FormPage
     /** The page ID */
     public static final String ID = SchemaEditor.ID + "sourceCode"; //$NON-NLS-1$
 
-    /** The page title */
-    public static final String TITLE = "Source Code";
-
     /** The associated schema */
     private Schema schema;
 
@@ -186,7 +183,7 @@ public class SchemaEditorSourceCodePage extends FormPage
      */
     public SchemaEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString("SchemaEditorSourceCodePage.SourceCode") );
     }
 
 
@@ -224,7 +221,7 @@ public class SchemaEditorSourceCodePage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

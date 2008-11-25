@@ -61,9 +61,6 @@ public class AttributeTypeEditorUsedByPage extends FormPage
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "usedByPage"; //$NON-NLS-1$
 
-    /** The page title */
-    public static String TITLE = "Used By";
-
     /** The modified attribute type */
     private AttributeTypeImpl modifiedAttributeType;
 
@@ -212,7 +209,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public AttributeTypeEditorUsedByPage( FormEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString("AttributeTypeEditorUsedByPage.UsedBy") );
         schemaHandler = Activator.getDefault().getSchemaHandler();
         schemaHandler.addListener( schemaHandlerListener );
     }
@@ -246,7 +243,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -266,15 +263,15 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
-            mandatoryAttributeSection.setDescription( "The attribute type" + " '" + ViewUtils.concateAliases( names )
-                + "' " + "is used as a mandatory attribute in the following object classes." );
+            mandatoryAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryBegin") + " '" + ViewUtils.concateAliases( names ) //$NON-NLS-2$
+                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryEnd") ); //$NON-NLS-1$
         }
         else
         {
-            mandatoryAttributeSection.setDescription( "The attribute type" + " '" + modifiedAttributeType.getOid()
-                + "' " + "is used as a mandatory attribute in the following object classes." );
+            mandatoryAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryBegin") + " '" + modifiedAttributeType.getOid() //$NON-NLS-2$
+                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryEnd") ); //$NON-NLS-1$
         }
-        mandatoryAttributeSection.setText( "As Mandatory Attribute" );
+        mandatoryAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.AsMandatoryAttribute") );
 
         // Creating the layout of the section
         Composite mandatoryAttributeSectionClient = toolkit.createComposite( mandatoryAttributeSection );
@@ -309,15 +306,15 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
-            optionalAttributeSection.setDescription( "The attribute type" + " '" + ViewUtils.concateAliases( names )
-                + "' " + "is used as an optional attribute in the following object classes." );
+            optionalAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalBegin") + " '" + ViewUtils.concateAliases( names ) //$NON-NLS-2$
+                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalEnd") ); //$NON-NLS-1$
         }
         else
         {
-            optionalAttributeSection.setDescription( "The attribute type" + " '" + modifiedAttributeType.getOid()
-                + "' " + "is used as an optional attribute in the following object classes." );
+            optionalAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalBegin") + " '" + modifiedAttributeType.getOid() //$NON-NLS-2$
+                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalEnd") ); //$NON-NLS-1$
         }
-        optionalAttributeSection.setText( "As Optional Attribute" );
+        optionalAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.AsOptionalAttribute") );
 
         // Creating the layout of the section
         Composite optionalAttributeSectionClient = toolkit.createComposite( optionalAttributeSection );
@@ -337,7 +334,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
 
 
     /**
-     * Fills in the User Iterface.
+     * Fills in the User Interface.
      */
     private void fillInUiFields()
     {

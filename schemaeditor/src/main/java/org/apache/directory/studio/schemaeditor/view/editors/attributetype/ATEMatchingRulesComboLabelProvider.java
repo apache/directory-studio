@@ -45,11 +45,11 @@ public class ATEMatchingRulesComboLabelProvider extends LabelProvider
             String name = mr.getName();
             if ( name != null )
             {
-                return name + "  -  (" + mr.getOid() + ")";
+                return name + "  -  (" + mr.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + mr.getOid() + ")";
+                return Messages.getString("ATEMatchingRulesComboLabelProvider.None") + mr.getOid() + ")"; //$NON-NLS-2$
             }
         }
         else if ( obj instanceof NonExistingMatchingRule )

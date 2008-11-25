@@ -45,11 +45,11 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
             String name = syntax.getName();
             if ( name != null )
             {
-                return name + "  -  (" + syntax.getOid() + ")";
+                return name + "  -  (" + syntax.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + syntax.getOid() + ")";
+                return Messages.getString("ATESyntaxComboLabelProvider.None") + syntax.getOid() + ")"; //$NON-NLS-2$
             }
         }
         else if ( obj instanceof NonExistingSyntax )

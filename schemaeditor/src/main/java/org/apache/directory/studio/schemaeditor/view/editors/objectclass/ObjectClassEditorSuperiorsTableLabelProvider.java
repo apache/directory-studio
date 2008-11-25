@@ -66,11 +66,11 @@ public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider 
             String[] names = oc.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
-                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
+                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + oc.getOid() + ")";
+                return Messages.getString("ObjectClassEditorSuperiorsTableLabelProvider.2") + oc.getOid() + ")"; //$NON-NLS-2$
             }
         }
         else if ( element instanceof NonExistingObjectClass )

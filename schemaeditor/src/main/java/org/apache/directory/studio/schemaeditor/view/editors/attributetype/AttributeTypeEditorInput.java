@@ -99,7 +99,7 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return getName() + " from the " + attributeType.getSchema() + " schema";
+        return getName() + Messages.getString("AttributeTypeEditorInput.FromSchemaBegin") + attributeType.getSchema() + Messages.getString("AttributeTypeEditorInput.FromSchemaEnd");
     }
 
 

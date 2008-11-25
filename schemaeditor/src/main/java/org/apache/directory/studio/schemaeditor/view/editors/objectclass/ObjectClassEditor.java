@@ -87,7 +87,7 @@ public class ObjectClassEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
+                    notifyError( Messages.getString("ObjectClassEditor.CodeError") );
                     return;
                 }
 
@@ -191,7 +191,7 @@ public class ObjectClassEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( "The editor of the Source Code contains errors, you cannot save the object class until these errors are fixed." );
+            notifyError( Messages.getString("ObjectClassEditor.CodeErrorObject") );
             monitor.setCanceled( true );
             return;
         }

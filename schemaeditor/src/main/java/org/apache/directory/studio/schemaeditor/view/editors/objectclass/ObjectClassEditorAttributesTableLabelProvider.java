@@ -66,11 +66,11 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
             String[] names = at.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
-                return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
+                return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + at.getOid() + ")";
+                return Messages.getString("ObjectClassEditorAttributesTableLabelProvider.none") + at.getOid() + ")"; //$NON-NLS-2$
             }
         }
         else if ( element instanceof NonExistingAttributeType )

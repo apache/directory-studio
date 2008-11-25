@@ -64,9 +64,6 @@ public class SchemaEditorOverviewPage extends FormPage
     /** The page ID */
     public static final String ID = SchemaEditor.ID + "overviewPage"; //$NON-NLS-1$
 
-    /** The page title */
-    public static final String TITLE = "Overview";
-
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
@@ -155,8 +152,8 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    PluginUtils.logError( "An error occured when opening the editor.", exception );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                    PluginUtils.logError( Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor"), exception );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("SchemaEditorOverviewPage.Error"), Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor") );
                 }
             }
         }
@@ -183,8 +180,8 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    PluginUtils.logError( "An error occured when opening the editor.", exception );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                    PluginUtils.logError( Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor"), exception );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("SchemaEditorOverviewPage.Error"), Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor") );
                 }
             }
         }
@@ -199,7 +196,7 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     public SchemaEditorOverviewPage( FormEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString("SchemaEditorOverviewPage.Overview") );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 
@@ -229,7 +226,7 @@ public class SchemaEditorOverviewPage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "schema_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -246,9 +243,9 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( "The schema '" + schema.getName()
-            + "' contains the following attribute types." );
-        attributeTypesSection.setText( "Attribute Types" );
+        attributeTypesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.SchemaAttributeBegin") + schema.getName()
+            + Messages.getString("SchemaEditorOverviewPage.SchemaAttributeEnd") );
+        attributeTypesSection.setText( Messages.getString("SchemaEditorOverviewPage.AttributeTypes") );
 
         // Creating the layout of the section
         Composite attributeTypesSectionClient = toolkit.createComposite( attributeTypesSection );
@@ -278,9 +275,9 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection.setDescription( "The schema '" + schema.getName()
-            + "' contains the following object classes." );
-        objectClassesSection.setText( "Object Classes" );
+        objectClassesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.SchemaObjectClassesBegin") + schema.getName()
+            + Messages.getString("SchemaEditorOverviewPage.SchemaObjectClassesEnd") );
+        objectClassesSection.setText( Messages.getString("SchemaEditorOverviewPage.ObjectClasses") );
 
         // Creating the layout of the section
         Composite objectClassesSectionClient = toolkit.createComposite( objectClassesSection );

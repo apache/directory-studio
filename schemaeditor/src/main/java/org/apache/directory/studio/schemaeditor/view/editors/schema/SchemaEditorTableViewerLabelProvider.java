@@ -70,11 +70,11 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
             String[] names = oc.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
-                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
+                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + oc.getOid() + ")";
+                return Messages.getString("SchemaEditorTableViewerLabelProvider.None") + oc.getOid() + ")"; //$NON-NLS-2$
             }
         }
         else if ( element instanceof AttributeTypeImpl )
@@ -84,11 +84,11 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
             String[] names = at.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
-                return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
+                return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + at.getOid() + ")";
+                return Messages.getString("SchemaEditorTableViewerLabelProvider.None") + at.getOid() + ")"; //$NON-NLS-2$
             }
         }
 

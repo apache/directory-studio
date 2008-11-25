@@ -56,9 +56,6 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
     /** The page ID */
     public static final String ID = AttributeTypeEditor.ID + "sourceCodePage"; //$NON-NLS-1$
 
-    /** The page title */
-    public static String TITLE = "Source Code";
-
     /** The modified attribute type */
     private AttributeTypeImpl modifiedAttributeType;
 
@@ -109,7 +106,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     public AttributeTypeEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString("AttributeTypeEditorSourceCodePage.SourceCode") );
     }
 
 
@@ -150,7 +147,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

@@ -89,9 +89,6 @@ public class ObjectClassEditorOverviewPage extends FormPage
     /** The page ID */
     public static final String ID = ObjectClassEditor.ID + "overviewPage"; //$NON-NLS-1$
 
-    /** The page title*/
-    public static final String TITLE = "Overview";
-
     /** The original object class */
     private ObjectClassImpl originalObjectClass;
 
@@ -281,7 +278,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 }
                 else
                 {
-                    aliasesLabel.setText( "(None)" );
+                    aliasesLabel.setText( Messages.getString("ObjectClassEditorOverviewPage.None") );
                 }
                 setEditorDirty();
             }
@@ -309,13 +306,13 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 else
                 {
                     oidText.setForeground( ViewUtils.COLOR_RED );
-                    oidText.setToolTipText( "An element with same oid already exists." );
+                    oidText.setToolTipText( Messages.getString("ObjectClassEditorOverviewPage.ElementOIDExists") );
                 }
             }
             else
             {
                 oidText.setForeground( ViewUtils.COLOR_RED );
-                oidText.setToolTipText( "Malformed_OID." );
+                oidText.setToolTipText( Messages.getString("ObjectClassEditorOverviewPage.MalformedOID") );
             }
         }
     };
@@ -813,7 +810,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     public ObjectClassEditorOverviewPage( FormEditor editor )
     {
-        super( editor, ID, TITLE );
+        super( editor, ID, Messages.getString("ObjectClassEditorOverviewPage.Overview") );
         schemaHandler = Activator.getDefault().getSchemaHandler();
         schemaHandler.addListener( schemaHandlerListener );
     }
@@ -857,7 +854,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "object_class_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "object_class_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -873,8 +870,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         // General Information Section
         Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section_general_information.setDescription( "Specify general information (aliases, OID, etc.)." );
-        section_general_information.setText( "General information" );
+        section_general_information.setDescription( Messages.getString("ObjectClassEditorOverviewPage.SpecifyGeneralInformation") );
+        section_general_information.setText( Messages.getString("ObjectClassEditorOverviewPage.GeneralInformation") );
         section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true ) );
 
         // Creating the layout of the section
@@ -884,32 +881,32 @@ public class ObjectClassEditorOverviewPage extends FormPage
         section_general_information.setClient( client_general_information );
 
         // ALIASES Button
-        toolkit.createLabel( client_general_information, "Aliases:" );
+        toolkit.createLabel( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.Aliases") );
         aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        aliasesButton = toolkit.createButton( client_general_information, "Edit_Aliases", SWT.PUSH );
+        aliasesButton = toolkit.createButton( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.EditAliases"), SWT.PUSH );
         aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
-        toolkit.createLabel( client_general_information, "OID:" );
+        toolkit.createLabel( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.OID") );
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
         oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // SCHEMA Field
-        schemaLink = toolkit.createHyperlink( client_general_information, "Schema:", SWT.WRAP );
+        schemaLink = toolkit.createHyperlink( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.Schema"), SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // DESCRIPTION Field
-        toolkit.createLabel( client_general_information, "Description:" );
+        toolkit.createLabel( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.Description") );
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
         // SUPERIORS Table
-        toolkit.createLabel( client_general_information, "Superior classes:" );
+        toolkit.createLabel( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.SuperiorClasses") );
         superiorsTable = toolkit.createTable( client_general_information, SWT.SINGLE | SWT.FULL_SELECTION
             | SWT.H_SCROLL | SWT.V_SCROLL );
         GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
@@ -921,20 +918,20 @@ public class ObjectClassEditorOverviewPage extends FormPage
         superiorsTableViewer.setLabelProvider( new ObjectClassEditorSuperiorsTableLabelProvider() );
         Composite superiorsButtonComposite = toolkit.createComposite( client_general_information );
         superiorsButtonComposite.setLayout( new GridLayout() );
-        addButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, "Add...", SWT.PUSH );
+        addButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages.getString("ObjectClassEditorOverviewPage.Add"), SWT.PUSH );
         addButtonSuperiorsTable.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
-        removeButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, "Remove", SWT.PUSH );
+        removeButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages.getString("ObjectClassEditorOverviewPage.Remove"), SWT.PUSH );
         removeButtonSuperiorsTable.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
 
         // CLASS TYPE Combo
-        toolkit.createLabel( client_general_information, "Class type:" );
+        toolkit.createLabel( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.ClassType") );
         classTypeCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         classTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         initClassTypeCombo();
 
         // OBSOLETE Checkbox
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        obsoleteCheckbox = toolkit.createButton( client_general_information, "Obsolete", SWT.CHECK );
+        obsoleteCheckbox = toolkit.createButton( client_general_information, Messages.getString("ObjectClassEditorOverviewPage.Obesolete"), SWT.CHECK );
         obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
@@ -951,8 +948,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         // MANDATORY ATTRIBUTES Section
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section.setText( "Mandatory attributes" );
-        section.setDescription( "Specify the mandatory attribute types." );
+        section.setText( Messages.getString("ObjectClassEditorOverviewPage.MandatoryAttributes") );
+        section.setDescription( Messages.getString("ObjectClassEditorOverviewPage.SpecifyMandatoryAttributes") );
         section.setExpanded( true );
         Composite client = toolkit.createComposite( section );
         section.setClient( client );
@@ -974,8 +971,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         mandatoryAttributesTableViewer.setContentProvider( new ObjectClassEditorAttributesTableContentProvider() );
         mandatoryAttributesTableViewer.setLabelProvider( new ObjectClassEditorAttributesTableLabelProvider() );
 
-        addButtonMandatoryTable = toolkit.createButton( client, "Add...", SWT.PUSH );
-        removeButtonMandatoryTable = toolkit.createButton( client, "Remove", SWT.PUSH );
+        addButtonMandatoryTable = toolkit.createButton( client, Messages.getString("ObjectClassEditorOverviewPage.Add"), SWT.PUSH );
+        removeButtonMandatoryTable = toolkit.createButton( client, Messages.getString("ObjectClassEditorOverviewPage.Remove"), SWT.PUSH );
         gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
         addButtonMandatoryTable.setLayoutData( gd );
         removeButtonMandatoryTable.setLayoutData( gd );
@@ -997,8 +994,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     {
         // OPTIONAL ATTRIBUTES Section
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
-        section.setText( "Optional attributes" );
-        section.setDescription( "Specify the optional attribute types." );
+        section.setText( Messages.getString("ObjectClassEditorOverviewPage.OptionalAttributes") );
+        section.setDescription( Messages.getString("ObjectClassEditorOverviewPage.SpecifyOptionalAttributes") );
         section.setExpanded( true );
         Composite client = toolkit.createComposite( section );
         section.setClient( client );
@@ -1020,8 +1017,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         optionalAttributesTableViewer.setContentProvider( new ObjectClassEditorAttributesTableContentProvider() );
         optionalAttributesTableViewer.setLabelProvider( new ObjectClassEditorAttributesTableLabelProvider() );
 
-        addButtonOptionalTable = toolkit.createButton( client, "Add...", SWT.PUSH );
-        removeButtonOptionalTable = toolkit.createButton( client, "Remove", SWT.PUSH );
+        addButtonOptionalTable = toolkit.createButton( client, Messages.getString("ObjectClassEditorOverviewPage.Add"), SWT.PUSH );
+        removeButtonOptionalTable = toolkit.createButton( client, Messages.getString("ObjectClassEditorOverviewPage.Remove"), SWT.PUSH );
         gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
         addButtonOptionalTable.setLayoutData( gd );
         removeButtonOptionalTable.setLayoutData( gd );
@@ -1043,7 +1040,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         }
         else
         {
-            aliasesLabel.setText( "(None)" );
+            aliasesLabel.setText( Messages.getString("ObjectClassEditorOverviewPage.None") );
         }
 
         // OID Field
@@ -1091,9 +1088,9 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void initClassTypeCombo()
     {
-        classTypeCombo.add( "Abstract", 0 );
-        classTypeCombo.add( "Auxiliary", 1 );
-        classTypeCombo.add( "Structural", 2 );
+        classTypeCombo.add( Messages.getString("ObjectClassEditorOverviewPage.Abstract"), 0 );
+        classTypeCombo.add( Messages.getString("ObjectClassEditorOverviewPage.Auxiliary"), 1 );
+        classTypeCombo.add( Messages.getString("ObjectClassEditorOverviewPage.Structural"), 2 );
     }
 
 

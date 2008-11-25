@@ -97,7 +97,7 @@ public class ObjectClassEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return getName() + " from the " + objectClass.getSchema() + " schema";
+        return getName() + Messages.getString("ObjectClassEditorInput.FromSchemaBegin") + objectClass.getSchema() + Messages.getString("ObjectClassEditorInput.FromSchemaEnd");
     }
 
 

@@ -88,7 +88,7 @@ public class AttributeTypeEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( "The editor of the Source Code contains errors, you cannot return to the Overview page until these errors are fixed." );
+                    notifyError( Messages.getString("AttributeTypeEditor.CodeErrors") );
                     return;
                 }
 
@@ -193,7 +193,7 @@ public class AttributeTypeEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( "The editor of the Source Code contains errors, you cannot save the attribute type until these errors are fixed." );
+            notifyError( Messages.getString("AttributeTypeEditor.AttributeErrors") );
             monitor.setCanceled( true );
             return;
         }
