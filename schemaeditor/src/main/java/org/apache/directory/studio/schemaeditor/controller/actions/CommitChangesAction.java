@@ -46,7 +46,7 @@ public class CommitChangesAction extends Action implements IWorkbenchWindowActio
      */
     public CommitChangesAction()
     {
-        super( "Commit Changes" );
+        super( Messages.getString("CommitChangesAction.CommitChangesAction") );
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COMMIT_CHANGES ) );
         setEnabled( false );

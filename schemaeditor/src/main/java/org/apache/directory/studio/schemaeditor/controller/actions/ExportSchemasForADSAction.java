@@ -57,7 +57,7 @@ public class ExportSchemasForADSAction extends Action implements IWorkbenchWindo
      */
     public ExportSchemasForADSAction( TreeViewer viewer )
     {
-        super( "Schemas for Apache DS" );
+        super( Messages.getString("ExportSchemasForADSAction.SchemaForADSAction") ); //$NON-NLS-1$
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT_FOR_ADS ) );
         setEnabled( true );

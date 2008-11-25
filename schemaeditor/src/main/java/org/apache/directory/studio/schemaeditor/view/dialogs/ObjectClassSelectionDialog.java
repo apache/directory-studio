@@ -93,7 +93,7 @@ public class ObjectClassSelectionDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Object Class Selection" );
+        newShell.setText( Messages.getString("ObjectClassSelectionDialog.ClassSelection") );
     }
 
 
@@ -107,7 +107,7 @@ public class ObjectClassSelectionDialog extends Dialog
         composite.setLayout( layout );
 
         Label chooseLabel = new Label( composite, SWT.NONE );
-        chooseLabel.setText( "Choose an object class" );
+        chooseLabel.setText( Messages.getString("ObjectClassSelectionDialog.ChooseClass") );
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         searchText = new Text( composite, SWT.BORDER );
@@ -131,7 +131,7 @@ public class ObjectClassSelectionDialog extends Dialog
         } );
 
         Label matchingLabel = new Label( composite, SWT.NONE );
-        matchingLabel.setText( "Matching object class(es)" );
+        matchingLabel.setText( Messages.getString("ObjectClassSelectionDialog.MatchingClasses") );
         matchingLabel.setLayoutData( new GridData( SWT.FILL, SWT.None, true, false ) );
 
         objectClassesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
@@ -171,7 +171,7 @@ public class ObjectClassSelectionDialog extends Dialog
                         chooseButton.setEnabled( false );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TRANSPARENT_16X16 ) );
-                    schemaNameLabel.setText( "" );
+                    schemaNameLabel.setText( "" ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -206,7 +206,7 @@ public class ObjectClassSelectionDialog extends Dialog
         // Schema Name Label
         schemaNameLabel = new Label( schemaComposite, SWT.NONE );
         schemaNameLabel.setLayoutData( new GridData( SWT.FILL, SWT.BOTTOM, true, false ) );
-        schemaNameLabel.setText( "" );
+        schemaNameLabel.setText( "" ); //$NON-NLS-1$
 
         // We need to force the input to load the complete list of attribute types
         setSearchInput( "" ); //$NON-NLS-1$
@@ -250,7 +250,7 @@ public class ObjectClassSelectionDialog extends Dialog
 
         if ( selection.isEmpty() )
         {
-            MessageDialog.openError( getShell(), "Invalid Selection", "You have to choose an object class" );
+            MessageDialog.openError( getShell(), Messages.getString("ObjectClassSelectionDialog.InvalidSelection"), Messages.getString("ObjectClassSelectionDialog.MustChooseClass") );
             return;
         }
         else

@@ -93,7 +93,7 @@ public class AttributeTypeSelectionDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Attribute Type Selection" );
+        newShell.setText( Messages.getString("AttributeTypeSelectionDialog.TypeSelection") );
     }
 
 
@@ -107,7 +107,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         composite.setLayout( layout );
 
         Label chooseLabel = new Label( composite, SWT.NONE );
-        chooseLabel.setText( "Choose an attribute type" );
+        chooseLabel.setText( Messages.getString("AttributeTypeSelectionDialog.ChooseAType") );
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         searchText = new Text( composite, SWT.BORDER );
@@ -131,7 +131,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         } );
 
         Label matchingLabel = new Label( composite, SWT.NONE );
-        matchingLabel.setText( "Matching attribute type(s)" );
+        matchingLabel.setText( Messages.getString("AttributeTypeSelectionDialog.MatchingTypes") );
         matchingLabel.setLayoutData( new GridData( SWT.FILL, SWT.None, true, false ) );
 
         attributeTypesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
@@ -171,7 +171,7 @@ public class AttributeTypeSelectionDialog extends Dialog
                         chooseButton.setEnabled( false );
                     }
                     schemaIconLabel.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TRANSPARENT_16X16 ) );
-                    schemaNameLabel.setText( "" );
+                    schemaNameLabel.setText( "" ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -206,7 +206,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         // Schema Name Label
         schemaNameLabel = new Label( schemaComposite, SWT.NONE );
         schemaNameLabel.setLayoutData( new GridData( SWT.FILL, SWT.BOTTOM, true, false ) );
-        schemaNameLabel.setText( "" );
+        schemaNameLabel.setText( "" ); //$NON-NLS-1$
 
         // We need to force the input to load the complete list of attribute types
         setSearchInput( "" ); //$NON-NLS-1$
@@ -249,7 +249,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         StructuredSelection selection = ( StructuredSelection ) attributeTypesTableViewer.getSelection();
         if ( selection.isEmpty() )
         {
-            MessageDialog.openError( getShell(), "Invalid Selection", "You have to choose an attribute type" );
+            MessageDialog.openError( getShell(), Messages.getString("AttributeTypeSelectionDialog.InvalidSelection"), Messages.getString("AttributeTypeSelectionDialog.MustChooseType") );
             return;
         }
         else

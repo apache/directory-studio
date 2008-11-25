@@ -46,14 +46,14 @@ import org.dom4j.io.SAXReader;
 public class ProjectsImporter
 {
     // The tags
-    private static final String PROJECT_TAG = "project";
-    private static final String PROJECTS_TAG = "projects";
-    private static final String NAME_TAG = "name";
-    private static final String SCHEMAS_TAG = "schemas";
-    private static final String TYPE_TAG = "type";
-    private static final String CONNECTION_TAG = "connection";
-    private static final String SCHEMA_CONNECTOR_TAG = "schemaConnector";
-    private static final String SCHEMA_BACKUP_TAG = "schemaBackup";
+    private static final String PROJECT_TAG = "project"; //$NON-NLS-1$
+    private static final String PROJECTS_TAG = "projects"; //$NON-NLS-1$
+    private static final String NAME_TAG = "name"; //$NON-NLS-1$
+    private static final String SCHEMAS_TAG = "schemas"; //$NON-NLS-1$
+    private static final String TYPE_TAG = "type"; //$NON-NLS-1$
+    private static final String CONNECTION_TAG = "connection"; //$NON-NLS-1$
+    private static final String SCHEMA_CONNECTOR_TAG = "schemaConnector"; //$NON-NLS-1$
+    private static final String SCHEMA_BACKUP_TAG = "schemaBackup"; //$NON-NLS-1$
 
 
     /**
@@ -80,13 +80,13 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            throw new ProjectsImportException( "The file '" + path + "' can not be read correctly." );
+            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd") );
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( PROJECT_TAG ) )
         {
-            throw new ProjectsImportException( "The file '" + path + "' does not seem to be a valid project file." );
+            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotValidProjectStart") + path + Messages.getString("ProjectsImporter.NotValidProjectEnd") );
         }
 
         readProject( rootElement, project, path );
@@ -119,14 +119,14 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-        	PluginUtils.logError("The file '" + path + "' can not be read correctly.", e);
-            throw new ProjectsImportException( "The file '" + path + "' can not be read correctly." );
+        	PluginUtils.logError(Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd"), e);
+            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd") );
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( PROJECTS_TAG ) )
         {
-            throw new ProjectsImportException( "The file '" + path + "' does not seem to be a valid project file." );
+            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotValidProjectStart") + path + Messages.getString("ProjectsImporter.NotValidProjectEnd") );
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( PROJECT_TAG ); i.hasNext(); )
@@ -157,14 +157,14 @@ public class ProjectsImporter
     {
         // Name
         Attribute nameAttribute = element.attribute( NAME_TAG );
-        if ( ( nameAttribute != null ) && ( !nameAttribute.getValue().equals( "" ) ) )
+        if ( ( nameAttribute != null ) && ( !nameAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             project.setName( nameAttribute.getValue() );
         }
 
         // Type
         Attribute typeAttribute = element.attribute( TYPE_TAG );
-        if ( ( typeAttribute != null ) && ( !typeAttribute.getValue().equals( "" ) ) )
+        if ( ( typeAttribute != null ) && ( !typeAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             try
             {
@@ -172,7 +172,7 @@ public class ProjectsImporter
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ProjectsImportException( "The parser was not able to convert the type value of the project." );
+                throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotConvertableValue") );
             }
         }
 
@@ -181,14 +181,14 @@ public class ProjectsImporter
         {
             // Connection
             Attribute connectionAttribute = element.attribute( CONNECTION_TAG );
-            if ( ( connectionAttribute != null ) && ( !connectionAttribute.getValue().equals( "" ) ) )
+            if ( ( connectionAttribute != null ) && ( !connectionAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
             {
                 project.setConnection( PluginUtils.getConnection( connectionAttribute.getValue() ) );
             }
 
             // Schema Connector
             Attribute schemaConnectorAttribute = element.attribute( SCHEMA_CONNECTOR_TAG );
-            if ( ( schemaConnectorAttribute != null ) && ( !schemaConnectorAttribute.getValue().equals( "" ) ) )
+            if ( ( schemaConnectorAttribute != null ) && ( !schemaConnectorAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
             {
                 String schemaConnectorId = schemaConnectorAttribute.getValue();
 
@@ -204,8 +204,8 @@ public class ProjectsImporter
 
                 if ( schemaConnector == null )
                 {
-                    throw new ProjectsImportException( "The parser was not able to find the SchemaConnector with ID :"
-                        + schemaConnectorId + "." );
+                    throw new ProjectsImportException( Messages.getString("ProjectsImporter.NoSchemaConnectorIDFound")
+                        + schemaConnectorId + "." ); //$NON-NLS-1$
                 }
 
                 project.setSchemaConnector( schemaConnector );
@@ -226,7 +226,7 @@ public class ProjectsImporter
                     catch ( XMLSchemaFileImportException e )
                     {
                         throw new ProjectsImportException(
-                            "The parser was not able to convert the schemas of the project." );
+                            Messages.getString("ProjectsImporter.NotConvertableSchema") );
                     }
 
                     project.setSchemaBackup( Arrays.asList( schemas ) );
@@ -245,7 +245,7 @@ public class ProjectsImporter
             }
             catch ( XMLSchemaFileImportException e )
             {
-                throw new ProjectsImportException( "The parser was not able to convert the schemas of the project." );
+                throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotConvertableSchema") );
             }
             for ( Schema schema : schemas )
             {
@@ -287,7 +287,7 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            throw new ProjectsImportException( "The file '" + path + "' can not be read correctly." );
+            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd") );
         }
 
         Element rootElement = document.getRootElement();
@@ -301,7 +301,7 @@ public class ProjectsImporter
         }
         else
         {
-            throw new ProjectsImportException( "The file '" + path + "' does not seem to be a valid project file." );
+            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotValidProjectStart") + path + Messages.getString("ProjectsImporter.NotValidProjectEnd") );
         }
     }
 }

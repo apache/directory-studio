@@ -41,8 +41,8 @@ public class OpenHierarchyViewPreferencesAction extends Action
      */
     public OpenHierarchyViewPreferencesAction()
     {
-        super( "&Preferences..." );
-        setToolTipText( "Preferences..." );
+        super( Messages.getString("OpenHierarchyViewPreferencesAction.PreferencesAction") );
+        setToolTipText( Messages.getString("OpenHierarchyViewPreferencesAction.PreferencesToolTip") );
         setEnabled( true );
     }
 

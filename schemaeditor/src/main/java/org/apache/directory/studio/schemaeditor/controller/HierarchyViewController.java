@@ -134,8 +134,8 @@ public class HierarchyViewController
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( "An error occured when opening the editor.", e );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                    PluginUtils.logError( Messages.getString("HierarchyViewController.ErrorOpeningEditor"), e );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("HierarchyViewController.Error"), Messages.getString("HierarchyViewController.ErroropeningEditor") );
                 }
             }
         }

@@ -137,7 +137,7 @@ public class EditAliasesDialog extends Dialog
 
         // Aliases Label
         Label aliasesLabel = new Label( composite, SWT.NONE );
-        aliasesLabel.setText( "Aliases:" );
+        aliasesLabel.setText( Messages.getString("EditAliasesDialog.Aliases") );
         aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true, 2, 1 ) );
 
         // Aliases Table
@@ -158,18 +158,18 @@ public class EditAliasesDialog extends Dialog
 
         // Add Button
         addButton = new Button( composite, SWT.PUSH );
-        addButton.setText( "Add..." );
+        addButton.setText( Messages.getString("EditAliasesDialog.Add") );
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
 
         // Edit Button
         editButton = new Button( composite, SWT.PUSH );
-        editButton.setText( "Edit..." );
+        editButton.setText( Messages.getString("EditAliasesDialog.Edit") );
         editButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         editButton.setEnabled( false );
 
         // Remove Button
         removeButton = new Button( composite, SWT.PUSH );
-        removeButton.setText( "Remove" );
+        removeButton.setText( Messages.getString("EditAliasesDialog.Remove") );
         removeButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         removeButton.setEnabled( false );
 
@@ -188,7 +188,7 @@ public class EditAliasesDialog extends Dialog
         // Error Label
         errorLabel = new Label( errorComposite, SWT.NONE );
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        errorLabel.setText( "An element with the same alias already exists." );
+        errorLabel.setText( Messages.getString("EditAliasesDialog.ElementWithSameAliasExists") ); //$NON-NLS-1$
 
         // Filling the Table with the given aliases
         fillAliasesTable();
@@ -256,7 +256,7 @@ public class EditAliasesDialog extends Dialog
         Menu menu = new Menu( getShell(), SWT.POP_UP );
         aliasesTable.setMenu( menu );
         MenuItem removeMenuItem = new MenuItem( menu, SWT.PUSH );
-        removeMenuItem.setText( "Remove" );
+        removeMenuItem.setText( Messages.getString("EditAliasesDialog.Remove") );
         removeMenuItem.setImage( PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_TOOL_DELETE ) );
         removeMenuItem.addListener( SWT.Selection, new Listener()
         {
@@ -340,7 +340,7 @@ public class EditAliasesDialog extends Dialog
     private void addANewAlias()
     {
         TableItem item = new TableItem( aliasesTable, SWT.NONE );
-        item.setText( "" );
+        item.setText( "" ); //$NON-NLS-1$
         openTableEditor( item );
         dirty = true;
     }
@@ -376,7 +376,7 @@ public class EditAliasesDialog extends Dialog
         {
             public void keyPressed( KeyEvent e )
             {
-                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) )
+                if ( ( e.keyCode == Action.findKeyCode( "RETURN" ) ) || ( e.keyCode == SWT.KEYPAD_CR ) ) //$NON-NLS-1$
                 {
                     closeTableEditor();
                 }
@@ -404,7 +404,7 @@ public class EditAliasesDialog extends Dialog
             {
                 aliases.remove( oldText );
                 lowerCasedAliases.remove( oldText.toLowerCase() );
-                if ( !newText.equals( "" ) )
+                if ( !newText.equals( "" ) ) //$NON-NLS-1$
                 {
                     aliases.add( newText );
                     lowerCasedAliases.add( newText.toLowerCase() );
@@ -445,12 +445,12 @@ public class EditAliasesDialog extends Dialog
                 && ( !initialLowerCasedAliases.contains( alias.toLowerCase() ) ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( "An element with the same alias already exists." );
+                errorLabel.setText( Messages.getString("EditAliasesDialog.ElementWithSameAliasExists") );
             }
             else if ( !PluginUtils.verifyName( alias ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( "The alias '" + alias + "' is invalid." );
+                errorLabel.setText( Messages.getString("EditAliasesDialog.TheAliasBegin") + alias + Messages.getString("EditAliasesDialog.TheAliasEnd") );
             }
         }
     }
@@ -462,7 +462,7 @@ public class EditAliasesDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Edit Aliases" );
+        newShell.setText( Messages.getString("EditAliasesDialog.EditAlias") );
     }
 
 

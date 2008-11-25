@@ -209,14 +209,14 @@ public class PluginUtils
                     }
                     catch ( ProjectsImportException e )
                     {
-                        reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
-                            "An error occured when loading the projects." );
+                        reportError( Messages.getString("PluginUtils.ErrorLoadingProject"), e, Messages.getString("PluginUtils.ProjectsLoadingError"),
+                            Messages.getString("PluginUtils.ErrorLoadingProject") );
                         return;
                     }
                     catch ( FileNotFoundException e )
                     {
-                        reportError( "An error occured when loading the projects.", e, "Projects Loading Error",
-                            "An error occured when loading the projects." );
+                        reportError( Messages.getString("PluginUtils.ErrorLoadingProject"), e, Messages.getString("PluginUtils.ProjectsLoadingError"),
+                            Messages.getString("PluginUtils.ErrorLoadingProject") );
                         return;
                     }
 
@@ -228,8 +228,8 @@ public class PluginUtils
                 }
                 else
                 {
-                    reportError( "An error occured when loading the projects.", null, "Projects Loading Error",
-                        "An error occured when loading the projects." );
+                    reportError( Messages.getString("PluginUtils.ErrorLoadingProject"), null, Messages.getString("PluginUtils.ProjectsLoadingError"),
+                        Messages.getString("PluginUtils.ErrorLoadingProject") );
                 }
 
             }
@@ -246,15 +246,15 @@ public class PluginUtils
         {
             // Saving the projects to the temp projects file
             OutputFormat outformat = OutputFormat.createPrettyPrint();
-            outformat.setEncoding( "UTF-8" );
+            outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
             XMLWriter writer = new XMLWriter( new FileOutputStream( getTempProjectsFile() ), outformat );
             writer.write( ProjectsExporter.toDocument( Activator.getDefault().getProjectsHandler().getProjects()
                 .toArray( new Project[0] ) ) );
             writer.flush();
 
             // Copying the temp projects file to the final location
-            String content = FileUtils.readFileToString( getTempProjectsFile(), "UTF-8" );
-            FileUtils.writeStringToFile( getProjectsFile(), content, "UTF-8" );
+            String content = FileUtils.readFileToString( getTempProjectsFile(), "UTF-8" ); //$NON-NLS-1$
+            FileUtils.writeStringToFile( getProjectsFile(), content, "UTF-8" ); //$NON-NLS-1$
         }
         catch ( IOException e )
         {
@@ -264,7 +264,7 @@ public class PluginUtils
             try
             {
                 OutputFormat outformat = OutputFormat.createPrettyPrint();
-                outformat.setEncoding( "UTF-8" );
+                outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
                 XMLWriter writer = new XMLWriter( new FileOutputStream( getProjectsFile() ), outformat );
                 writer.write( ProjectsExporter.toDocument( Activator.getDefault().getProjectsHandler().getProjects()
                     .toArray( new Project[0] ) ) );
@@ -273,8 +273,8 @@ public class PluginUtils
             catch ( IOException e2 )
             {
                 // If another error occur, we display an error
-                reportError( "An error occured when saving the projects.", e2, "Projects Saving Error",
-                    "An error occured when saving the projects." );
+                reportError( Messages.getString("PluginUtils.ErrorSavingProject"), e2, Messages.getString("PluginUtils.ProjectsSavingError"),
+                    Messages.getString("PluginUtils.ErrorSavingProject") );
             }
         }
     }
@@ -347,8 +347,8 @@ public class PluginUtils
 
             if ( url == null )
             {
-                reportError( "An error occured when loading the schema " + schemaName + ".", null,
-                    "Projects Loafing Error", "An error occured when loading the schema " + schemaName + "." );
+                reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", null, //$NON-NLS-2$
+                    Messages.getString("PluginUtils.ProjectsLoadingError"), Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-3$
             }
             else
             {
@@ -357,18 +357,18 @@ public class PluginUtils
         }
         catch ( XMLSchemaFileImportException e )
         {
-            reportError( "An error occured when loading the schema " + schemaName + ".", e, "Projects Loafing Error",
-                "An error occured when loading the schema " + schemaName + "." );
+            reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", e, Messages.getString("PluginUtils.ProjectsLoadingError"),//$NON-NLS-2$
+                Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-2$
         }
         catch ( FileNotFoundException e )
         {
-            reportError( "An error occured when loading the schema " + schemaName + ".", e, "Projects Loafing Error",
-                "An error occured when loading the schema " + schemaName + "." );
+            reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", e, Messages.getString("PluginUtils.ProjectsLoadingError"), //$NON-NLS-2$
+                Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-2$
         }
         catch ( IOException e )
         {
-            reportError( "An error occured when loading the schema " + schemaName + ".", e, "Projects Loafing Error",
-                "An error occured when loading the schema " + schemaName + "." );
+            reportError( Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + ".", e, Messages.getString("PluginUtils.ProjectsLoadingError"), //$NON-NLS-2$
+                Messages.getString("PluginUtils.SchemaLoadingError") + schemaName + "." ); //$NON-NLS-2$
         }
 
         return schema;
@@ -398,7 +398,7 @@ public class PluginUtils
 
         if ( dialogMessage != null )
         {
-            ViewUtils.displayErrorMessageBox( ( ( dialogTitle == null ) ? "" : dialogTitle ), dialogMessage );
+            ViewUtils.displayErrorMessageBox( ( ( dialogTitle == null ) ? "" : dialogTitle ), dialogMessage ); //$NON-NLS-1$
         }
     }
 
@@ -415,11 +415,11 @@ public class PluginUtils
     {
         if ( ServerTypeEnum.APACHE_DS.equals( serverType ) )
         {
-            return "apacheds";
+            return "apacheds"; //$NON-NLS-1$
         }
         else if ( ServerTypeEnum.OPENLDAP.equals( serverType ) )
         {
-            return "openldap";
+            return "openldap"; //$NON-NLS-1$
         }
 
         // Default
@@ -470,17 +470,17 @@ public class PluginUtils
             {
                 try
                 {
-                    SchemaConnector schemaConnector = ( SchemaConnector ) member.createExecutableExtension( "class" );
-                    schemaConnector.setName( member.getAttribute( "name" ) );
-                    schemaConnector.setId( member.getAttribute( "id" ) );
-                    schemaConnector.setDescription( member.getAttribute( "description" ) );
+                    SchemaConnector schemaConnector = ( SchemaConnector ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
+                    schemaConnector.setName( member.getAttribute( "name" ) ); //$NON-NLS-1$
+                    schemaConnector.setId( member.getAttribute( "id" ) ); //$NON-NLS-1$
+                    schemaConnector.setDescription( member.getAttribute( "description" ) ); //$NON-NLS-1$
 
                     schemaConnectors.add( schemaConnector );
                 }
                 catch ( CoreException e )
                 {
-                    PluginUtils.logError( "An error occured when loading the schema connectors.", e );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when loading the schema connectors." );
+                    PluginUtils.logError( Messages.getString("PluginUtils.ConnectorsLoadingError"), e );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("PluginUtils.Error"), Messages.getString("PluginUtils.ConnectorsLoadingError") );
                 }
             }
         }

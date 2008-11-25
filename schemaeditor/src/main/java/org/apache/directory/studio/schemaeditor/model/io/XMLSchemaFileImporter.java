@@ -50,39 +50,39 @@ import org.dom4j.io.SAXReader;
 public class XMLSchemaFileImporter
 {
     // The Tags
-    private static final String ALIAS_TAG = "alias";
-    private static final String ALIASES_TAG = "aliases";
-    private static final String ATTRIBUTE_TYPE_TAG = "attributetype";
-    private static final String ATTRIBUTE_TYPES_TAG = "attributetypes";
-    private static final String BOOLEAN_FALSE = "false";
-    private static final String BOOLEAN_TRUE = "true";
-    private static final String COLLECTIVE_TAG = "collective";
-    private static final String DESCRIPTION_TAG = "description";
-    private static final String EQUALITY_TAG = "equality";
-    private static final String HUMAN_READABLE_TAG = "humanreadable";
-    private static final String MANDATORY_TAG = "mandatory";
-    private static final String MATCHING_RULE_TAG = "matchingrule";
-    private static final String MATCHING_RULES_TAG = "matchingrules";
-    private static final String NAME_TAG = "name";
-    private static final String NO_USER_MODIFICATION_TAG = "nousermodification";
-    private static final String OBJECT_CLASS_TAG = "objectclass";
-    private static final String OBJECT_CLASSES_TAG = "objectclasses";
-    private static final String OBSOLETE_TAG = "obsolete";
-    private static final String OID_TAG = "oid";
-    private static final String OPTIONAL_TAG = "optional";
-    private static final String ORDERING_TAG = "ordering";
-    private static final String SCHEMA_TAG = "schema";
-    private static final String SCHEMAS_TAG = "schemas";
-    private static final String SINGLE_VALUE_TAG = "singlevalue";
-    private static final String SUBSTRING_TAG = "substring";
-    private static final String SUPERIOR_TAG = "superior";
-    private static final String SUPERIORS_TAG = "superiors";
-    private static final String SYNTAX_LENGTH_TAG = "syntaxlength";
-    private static final String SYNTAX_OID_TAG = "syntaxoid";
-    private static final String SYNTAX_TAG = "syntax";
-    private static final String SYNTAXES_TAG = "syntaxes";
-    private static final String TYPE_TAG = "type";
-    private static final String USAGE_TAG = "usage";
+    private static final String ALIAS_TAG = "alias"; //$NON-NLS-1$
+    private static final String ALIASES_TAG = "aliases"; //$NON-NLS-1$
+    private static final String ATTRIBUTE_TYPE_TAG = "attributetype"; //$NON-NLS-1$
+    private static final String ATTRIBUTE_TYPES_TAG = "attributetypes"; //$NON-NLS-1$
+    private static final String BOOLEAN_FALSE = "false"; //$NON-NLS-1$
+    private static final String BOOLEAN_TRUE = "true"; //$NON-NLS-1$
+    private static final String COLLECTIVE_TAG = "collective"; //$NON-NLS-1$
+    private static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
+    private static final String EQUALITY_TAG = "equality"; //$NON-NLS-1$
+    private static final String HUMAN_READABLE_TAG = "humanreadable"; //$NON-NLS-1$
+    private static final String MANDATORY_TAG = "mandatory"; //$NON-NLS-1$
+    private static final String MATCHING_RULE_TAG = "matchingrule"; //$NON-NLS-1$
+    private static final String MATCHING_RULES_TAG = "matchingrules"; //$NON-NLS-1$
+    private static final String NAME_TAG = "name"; //$NON-NLS-1$
+    private static final String NO_USER_MODIFICATION_TAG = "nousermodification"; //$NON-NLS-1$
+    private static final String OBJECT_CLASS_TAG = "objectclass"; //$NON-NLS-1$
+    private static final String OBJECT_CLASSES_TAG = "objectclasses"; //$NON-NLS-1$
+    private static final String OBSOLETE_TAG = "obsolete"; //$NON-NLS-1$
+    private static final String OID_TAG = "oid"; //$NON-NLS-1$
+    private static final String OPTIONAL_TAG = "optional"; //$NON-NLS-1$
+    private static final String ORDERING_TAG = "ordering"; //$NON-NLS-1$
+    private static final String SCHEMA_TAG = "schema"; //$NON-NLS-1$
+    private static final String SCHEMAS_TAG = "schemas"; //$NON-NLS-1$
+    private static final String SINGLE_VALUE_TAG = "singlevalue"; //$NON-NLS-1$
+    private static final String SUBSTRING_TAG = "substring"; //$NON-NLS-1$
+    private static final String SUPERIOR_TAG = "superior"; //$NON-NLS-1$
+    private static final String SUPERIORS_TAG = "superiors"; //$NON-NLS-1$
+    private static final String SYNTAX_LENGTH_TAG = "syntaxlength"; //$NON-NLS-1$
+    private static final String SYNTAX_OID_TAG = "syntaxoid"; //$NON-NLS-1$
+    private static final String SYNTAX_TAG = "syntax"; //$NON-NLS-1$
+    private static final String SYNTAXES_TAG = "syntaxes"; //$NON-NLS-1$
+    private static final String TYPE_TAG = "type"; //$NON-NLS-1$
+    private static final String USAGE_TAG = "usage"; //$NON-NLS-1$
 
 
     /**
@@ -107,13 +107,13 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( SCHEMAS_TAG ) )
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return readSchemas( rootElement, path );
@@ -142,7 +142,7 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyEnd") );
         }
 
         Element rootElement = document.getRootElement();
@@ -169,7 +169,7 @@ public class XMLSchemaFileImporter
 
         if ( !element.getName().equals( SCHEMAS_TAG ) )
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") );
         }
 
         for ( Iterator<?> i = element.elementIterator( SCHEMA_TAG ); i.hasNext(); )
@@ -234,11 +234,11 @@ public class XMLSchemaFileImporter
     {
         if ( !element.getName().equals( SCHEMA_TAG ) )
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") );
         }
 
         Attribute nameAttribute = element.attribute( NAME_TAG );
-        if ( ( nameAttribute != null ) && ( !nameAttribute.getValue().equals( "" ) ) )
+        if ( ( nameAttribute != null ) && ( !nameAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             return nameAttribute.getValue();
         }
@@ -307,14 +307,14 @@ public class XMLSchemaFileImporter
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
-        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) )
+        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             at = new AttributeTypeImpl( oidAttribute.getValue() );
         }
         else
         {
             throw new XMLSchemaFileImportException(
-                "An attribute type definition must contain an attribute for the OID." );
+                Messages.getString("XMLSchemaFileImporter.NoOIDInAttribute") );
         }
 
         // Schema
@@ -338,21 +338,21 @@ public class XMLSchemaFileImporter
 
         // Description
         Element descriptionElement = element.element( DESCRIPTION_TAG );
-        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) )
+        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setDescription( descriptionElement.getText() );
         }
 
         // Superior
         Element superiorElement = element.element( SUPERIOR_TAG );
-        if ( ( superiorElement != null ) && ( !superiorElement.getText().equals( "" ) ) )
+        if ( ( superiorElement != null ) && ( !superiorElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setSuperiorName( superiorElement.getText() );
         }
 
         // Usage
         Element usageElement = element.element( USAGE_TAG );
-        if ( ( usageElement != null ) && ( !usageElement.getText().equals( "" ) ) )
+        if ( ( usageElement != null ) && ( !usageElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             try
             {
@@ -361,20 +361,20 @@ public class XMLSchemaFileImporter
             catch ( IllegalArgumentException e )
             {
                 throw new XMLSchemaFileImportException(
-                    "The parser was not able to convert the usage value of the attribute type." );
+                    Messages.getString("XMLSchemaFileImporter.UnceonvertableAttribute") );
             }
         }
 
         // Syntax
         Element syntaxElement = element.element( SYNTAX_TAG );
-        if ( ( syntaxElement != null ) && ( !syntaxElement.getText().equals( "" ) ) )
+        if ( ( syntaxElement != null ) && ( !syntaxElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setSyntaxOid( syntaxElement.getText() );
         }
 
         // Syntax Length
         Element syntaxLengthElement = element.element( SYNTAX_LENGTH_TAG );
-        if ( ( syntaxLengthElement != null ) && ( !syntaxLengthElement.getText().equals( "" ) ) )
+        if ( ( syntaxLengthElement != null ) && ( !syntaxLengthElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             try
             {
@@ -383,55 +383,55 @@ public class XMLSchemaFileImporter
             catch ( NumberFormatException e )
             {
                 throw new XMLSchemaFileImportException(
-                    "The parser was not able to convert the syntax length value of the attribute type to an integer." );
+                    Messages.getString("XMLSchemaFileImporter.UnconvertableInteger") );
             }
         }
 
         // Obsolete
         Attribute obsoleteAttribute = element.attribute( OBSOLETE_TAG );
-        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) )
+        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setObsolete( readBoolean( obsoleteAttribute.getValue() ) );
         }
 
         // Single Value
         Attribute singleValueAttribute = element.attribute( SINGLE_VALUE_TAG );
-        if ( ( singleValueAttribute != null ) && ( !singleValueAttribute.getValue().equals( "" ) ) )
+        if ( ( singleValueAttribute != null ) && ( !singleValueAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setSingleValue( readBoolean( singleValueAttribute.getValue() ) );
         }
 
         // Collective
         Attribute collectiveAttribute = element.attribute( COLLECTIVE_TAG );
-        if ( ( collectiveAttribute != null ) && ( !collectiveAttribute.getValue().equals( "" ) ) )
+        if ( ( collectiveAttribute != null ) && ( !collectiveAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setCollective( readBoolean( collectiveAttribute.getValue() ) );
         }
 
         // No User Modification
         Attribute noUserModificationAttribute = element.attribute( NO_USER_MODIFICATION_TAG );
-        if ( ( noUserModificationAttribute != null ) && ( !noUserModificationAttribute.getValue().equals( "" ) ) )
+        if ( ( noUserModificationAttribute != null ) && ( !noUserModificationAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setCanUserModify( !readBoolean( noUserModificationAttribute.getValue() ) );
         }
 
         // Equality
         Element equalityElement = element.element( EQUALITY_TAG );
-        if ( ( equalityElement != null ) && ( !equalityElement.getText().equals( "" ) ) )
+        if ( ( equalityElement != null ) && ( !equalityElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setEqualityName( equalityElement.getText() );
         }
 
         // Ordering
         Element orderingElement = element.element( ORDERING_TAG );
-        if ( ( orderingElement != null ) && ( !orderingElement.getText().equals( "" ) ) )
+        if ( ( orderingElement != null ) && ( !orderingElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setOrderingName( orderingElement.getText() );
         }
 
         // Substring
         Element substringElement = element.element( SUBSTRING_TAG );
-        if ( ( substringElement != null ) && ( !substringElement.getText().equals( "" ) ) )
+        if ( ( substringElement != null ) && ( !substringElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             at.setSubstrName( substringElement.getText() );
         }
@@ -478,13 +478,13 @@ public class XMLSchemaFileImporter
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
-        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) )
+        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             oc = new ObjectClassImpl( oidAttribute.getValue() );
         }
         else
         {
-            throw new XMLSchemaFileImportException( "An object class definition must contain an attribute for the OID." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NoOIDInClass") );
         }
 
         // Schema
@@ -508,7 +508,7 @@ public class XMLSchemaFileImporter
 
         // Description
         Element descriptionElement = element.element( DESCRIPTION_TAG );
-        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) )
+        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             oc.setDescription( descriptionElement.getText() );
         }
@@ -531,7 +531,7 @@ public class XMLSchemaFileImporter
 
         // Class Type
         Element classTypeElement = element.element( TYPE_TAG );
-        if ( ( classTypeElement != null ) && ( !classTypeElement.getText().equals( "" ) ) )
+        if ( ( classTypeElement != null ) && ( !classTypeElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             try
             {
@@ -540,13 +540,13 @@ public class XMLSchemaFileImporter
             catch ( IllegalArgumentException e )
             {
                 throw new XMLSchemaFileImportException(
-                    "The parser was not able to convert the usage value of the attribute type." );
+                    Messages.getString("XMLSchemaFileImporter.UnconvertableValue") ); //$NON-NLS-1$
             }
         }
 
         // Obsolete
         Attribute obsoleteAttribute = element.attribute( OBSOLETE_TAG );
-        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) )
+        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             oc.setObsolete( readBoolean( obsoleteAttribute.getValue() ) );
         }
@@ -625,13 +625,13 @@ public class XMLSchemaFileImporter
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
-        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) )
+        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             mr = new MatchingRuleImpl( oidAttribute.getValue() );
         }
         else
         {
-            throw new XMLSchemaFileImportException( "A matching rule definition must contain an attribute for the OID." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NoMatchingRuleForOID") );
         }
 
         // Schema
@@ -655,21 +655,21 @@ public class XMLSchemaFileImporter
 
         // Description
         Element descriptionElement = element.element( DESCRIPTION_TAG );
-        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) )
+        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             mr.setDescription( descriptionElement.getText() );
         }
 
         // Obsolete
         Attribute obsoleteAttribute = element.attribute( OBSOLETE_TAG );
-        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) )
+        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             mr.setObsolete( readBoolean( obsoleteAttribute.getValue() ) );
         }
 
         // Syntax OID
         Element syntaxOidElement = element.element( SYNTAX_OID_TAG );
-        if ( ( syntaxOidElement != null ) && ( !syntaxOidElement.getText().equals( "" ) ) )
+        if ( ( syntaxOidElement != null ) && ( !syntaxOidElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             mr.setSyntaxOid( syntaxOidElement.getText() );
         }
@@ -716,13 +716,13 @@ public class XMLSchemaFileImporter
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
-        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) )
+        if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             syntax = new SyntaxImpl( oidAttribute.getValue() );
         }
         else
         {
-            throw new XMLSchemaFileImportException( "A syntax definition must contain an attribute for the OID." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.InvalidSyntaxForOID") );
         }
 
         // Schema
@@ -746,21 +746,21 @@ public class XMLSchemaFileImporter
 
         // Description
         Element descriptionElement = element.element( DESCRIPTION_TAG );
-        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) )
+        if ( ( descriptionElement != null ) && ( !descriptionElement.getText().equals( "" ) ) ) //$NON-NLS-1$
         {
             syntax.setDescription( descriptionElement.getText() );
         }
 
         // Obsolete
         Attribute obsoleteAttribute = element.attribute( OBSOLETE_TAG );
-        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) )
+        if ( ( obsoleteAttribute != null ) && ( !obsoleteAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             syntax.setObsolete( readBoolean( obsoleteAttribute.getValue() ) );
         }
 
         // Human Readible
         Attribute humanReadibleAttribute = element.attribute( HUMAN_READABLE_TAG );
-        if ( ( humanReadibleAttribute != null ) && ( !humanReadibleAttribute.getValue().equals( "" ) ) )
+        if ( ( humanReadibleAttribute != null ) && ( !humanReadibleAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
             syntax.setHumanReadable( readBoolean( humanReadibleAttribute.getValue() ) );
         }
@@ -792,7 +792,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( "The parser was not able to convert a boolean value." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.76") ); //$NON-NLS-1$
         }
     }
 
@@ -827,7 +827,7 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyEnd") );
         }
 
         Element rootElement = document.getRootElement();
@@ -841,7 +841,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( "The file '" + path + "' does not seem to be a valid Schema file." );
+            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") );
         }
     }
 }

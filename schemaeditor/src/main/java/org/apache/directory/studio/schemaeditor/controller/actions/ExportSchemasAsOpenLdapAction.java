@@ -57,7 +57,7 @@ public class ExportSchemasAsOpenLdapAction extends Action implements IWorkbenchW
      */
     public ExportSchemasAsOpenLdapAction( TreeViewer viewer )
     {
-        super( "Schemas as OpenLDAP files" );
+        super( Messages.getString("ExportSchemasAsOpenLdapAction.SchemaAsOpenLDAPFilesAction") );
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT ) );
         setEnabled( true );

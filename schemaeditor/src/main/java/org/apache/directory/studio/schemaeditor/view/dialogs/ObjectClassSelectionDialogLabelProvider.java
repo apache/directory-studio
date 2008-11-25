@@ -64,11 +64,11 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
             String[] names = oc.getNamesRef();
             if ( ( names != null ) && ( names.length > 0 ) )
             {
-                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
+                return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")"; //$NON-NLS-2$
             }
             else
             {
-                return "(None)  -  (" + oc.getOid() + ")";
+                return Messages.getString("ObjectClassSelectionDialogLabelProvider.None") + oc.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

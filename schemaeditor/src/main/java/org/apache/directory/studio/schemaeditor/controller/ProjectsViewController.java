@@ -147,8 +147,8 @@ public class ProjectsViewController
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager importManager = new MenuManager( "&Import..." );
-                MenuManager exportManager = new MenuManager( "Exp&ort..." );
+                MenuManager importManager = new MenuManager( Messages.getString("ProjectsViewController.ImportAction") );
+                MenuManager exportManager = new MenuManager( Messages.getString("ProjectsViewController.ExportAction") );
                 manager.add( newProject );
                 manager.add( new Separator() );
                 manager.add( openProject );
@@ -185,8 +185,8 @@ public class ProjectsViewController
         {
             public void keyReleased( KeyEvent e )
             {
-                if ( ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) )
-                    || ( e.keyCode == Action.findKeyCode( "DELETE" ) ) )
+                if ( ( e.keyCode == Action.findKeyCode( "BACKSPACE" ) ) //$NON-NLS-1$
+                    || ( e.keyCode == Action.findKeyCode( "DELETE" ) ) ) //$NON-NLS-1$
                 {
                     deleteProject.run();
                 }

@@ -62,8 +62,8 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
      */
     public DeleteProjectAction( TableViewer viewer )
     {
-        super( "&Delete Project" );
-        setToolTipText( "Delete Project" );
+        super( Messages.getString("DeleteProjectAction.DeleteProjectAction") );
+        setToolTipText( Messages.getString("DeleteProjectAction.DeleteProjectToolTip") );
         setId( PluginConstants.CMD_DELETE_PROJECT );
         setActionDefinitionId( PluginConstants.CMD_DELETE_PROJECT );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_DELETE ) );
@@ -76,17 +76,17 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
                 if ( selection.size() == 1 )
                 {
-                    setText( "&Delete Project" );
+                    setText( Messages.getString("DeleteProjectAction.DeleteProjectAction") );
                     setEnabled( true );
                 }
                 else if ( selection.size() > 1 )
                 {
-                    setText( "&Delete Projects" );
+                    setText( Messages.getString("DeleteProjectAction.DeleteProjectsAction") );
                     setEnabled( true );
                 }
                 else
                 {
-                    setText( "&Delete Project" );
+                    setText( Messages.getString("DeleteProjectAction.DeleteProjectAction") );
                     setEnabled( false );
                 }
             }
@@ -110,12 +110,12 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
             if ( count == 1 )
             {
                 ProjectWrapper wrapper = ( ProjectWrapper ) selection.getFirstElement();
-                messageBox.setMessage( "Are you sure you want to delete project '" + wrapper.getProject().getName()
-                    + "'?" );
+                messageBox.setMessage( Messages.getString("DeleteProjectAction.SureToDeleteProjectBegin") + wrapper.getProject().getName()
+                    + Messages.getString("DeleteProjectAction.SureToDeleteProjectEnd") );
             }
             else
             {
-                messageBox.setMessage( "Are you sure you want to delete these " + count + " projects?" );
+                messageBox.setMessage( Messages.getString("DeleteProjectAction.SureToDeleteProjectsBegin") + count + Messages.getString("DeleteProjectAction.SureToDeleteProjectsEnd") );
             }
             if ( messageBox.open() == SWT.YES )
             {

@@ -60,8 +60,8 @@ public class CloseProjectAction extends Action implements IWorkbenchWindowAction
      */
     public CloseProjectAction( TableViewer viewer )
     {
-        super( "Clo&se Project" );
-        setToolTipText( "Close Project" );
+        super( Messages.getString("CloseProjectAction.CloseProjectAction") );
+        setToolTipText( Messages.getString("CloseProjectAction.CloseProjectToolTip") );
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

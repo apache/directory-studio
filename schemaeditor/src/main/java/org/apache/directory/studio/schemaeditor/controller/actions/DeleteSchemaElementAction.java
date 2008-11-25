@@ -67,8 +67,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
      */
     public DeleteSchemaElementAction( TreeViewer viewer )
     {
-        super( "&Delete" );
-        setToolTipText( "Delete" );
+        super( Messages.getString("DeleteSchemaElementAction.DeleteAction") );
+        setToolTipText( Messages.getString("DeleteSchemaElementAction.DeleteToolTip") );
         setId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_DELETE ) );
@@ -128,25 +128,25 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                 Object firstElement = selection.getFirstElement();
                 if ( firstElement instanceof AttributeTypeWrapper )
                 {
-                    messageBox.setMessage( "Are you sure you want to delete this attribute type?" );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteAttributeType") );
                 }
                 else if ( firstElement instanceof ObjectClassWrapper )
                 {
-                    messageBox.setMessage( "Are you sure you want to delete this object class?" );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteObjectClass") );
                 }
                 else if ( firstElement instanceof SchemaWrapper )
                 {
-                    messageBox.setMessage( "Are you sure you want to delete this schema?" );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteSchema") );
                 }
                 else
                 {
-                    messageBox.setMessage( "Are you sure you want to delete this item?" );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteItem") );
                 }
 
             }
             else
             {
-                messageBox.setMessage( "Are you sure you want to delete these " + count + " items?" );
+                messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteItemsBegin") + count + Messages.getString("DeleteSchemaElementAction.SureToDeleteItemsEnd") );
             }
             if ( messageBox.open() == SWT.YES )
             {

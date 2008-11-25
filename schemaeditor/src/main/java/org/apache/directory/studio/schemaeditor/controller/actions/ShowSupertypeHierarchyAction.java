@@ -43,8 +43,8 @@ public class ShowSupertypeHierarchyAction extends Action
      */
     public ShowSupertypeHierarchyAction( HierarchyView view )
     {
-        super( "Su&pertype Hierarchy", AS_RADIO_BUTTON );
-        setToolTipText( "Show the Supertype Hierarchy" );
+        super( Messages.getString("ShowSupertypeHierarchyAction.SupertypeAction"), AS_RADIO_BUTTON );
+        setToolTipText( Messages.getString("ShowSupertypeHierarchyAction.SupertypeToolTip") );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_SUPERTYPE_HIERARCHY ) );
         setEnabled( true );
         this.view = view;

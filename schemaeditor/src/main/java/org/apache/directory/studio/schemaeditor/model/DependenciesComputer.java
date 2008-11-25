@@ -128,8 +128,8 @@ public class DependenciesComputer
             AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
             if ( superiorAT == null )
             {
-                throw new DependencyComputerException( "The superior attribute type '" + superior
-                    + "' does not exists in the Schema." );
+                throw new DependencyComputerException( Messages.getString("DependenciesComputer.SuperiorAttributeBegin") + superior //$NON-NLS-1$
+                    + Messages.getString("DependenciesComputer.SuperiorAttributeEnd") ); //$NON-NLS-1$
             }
             else
             {
@@ -148,8 +148,8 @@ public class DependenciesComputer
             SyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax == null )
             {
-                throw new DependencyComputerException( "The syntax with OID '" + syntaxOID
-                    + "' does not exists in the Schema." );
+                throw new DependencyComputerException( Messages.getString("DependenciesComputer.SyntaxOIDBegin") + syntaxOID //$NON-NLS-1$
+                    + Messages.getString("DependenciesComputer.SyntaxOIDEnd") ); //$NON-NLS-1$
             }
             else
             {
@@ -168,8 +168,8 @@ public class DependenciesComputer
             MatchingRuleImpl equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( equalityMatchingRule == null )
             {
-                throw new DependencyComputerException( "The equality matching rule '" + equalityName
-                    + "' does not exists in the Schema." );
+                throw new DependencyComputerException( Messages.getString("DependenciesComputer.EqualityBegin") + equalityName //$NON-NLS-1$
+                    + Messages.getString("DependenciesComputer.EqualityEnd") ); //$NON-NLS-1$
             }
             else
             {
@@ -188,8 +188,8 @@ public class DependenciesComputer
             MatchingRuleImpl orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( orderingMatchingRule == null )
             {
-                throw new DependencyComputerException( "The ordering matching rule '" + orderingName
-                    + "' does not exists in the Schema." );
+                throw new DependencyComputerException( Messages.getString("DependenciesComputer.OrderingBegin") + orderingName //$NON-NLS-1$
+                    + Messages.getString("DependenciesComputer.OrderingEnd") ); //$NON-NLS-1$
             }
             else
             {
@@ -208,8 +208,8 @@ public class DependenciesComputer
             MatchingRuleImpl substringMatchingRule = schemaHandler.getMatchingRule( substringName );
             if ( substringMatchingRule == null )
             {
-                throw new DependencyComputerException( "The substring matching rule '" + substringName
-                    + "' does not exists in the Schema." );
+                throw new DependencyComputerException( Messages.getString("DependenciesComputer.SubstringBegin") + substringName //$NON-NLS-1$
+                    + Messages.getString("DependenciesComputer.SubstringEnd") ); //$NON-NLS-1$
             }
             else
             {
@@ -243,8 +243,8 @@ public class DependenciesComputer
                 ObjectClassImpl superObjectClass = schemaHandler.getObjectClass( superClassName );
                 if ( superObjectClass == null )
                 {
-                    throw new DependencyComputerException( "The superior object class '" + superClassName
-                        + "' does not exists in the Schema." );
+                    throw new DependencyComputerException( Messages.getString("DependenciesComputer.SuperiorObjectBegin") + superClassName //$NON-NLS-1$
+                        + Messages.getString("DependenciesComputer.SuperiorObjectEnd") ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -266,8 +266,8 @@ public class DependenciesComputer
                 AttributeTypeImpl optionalAttributeType = schemaHandler.getAttributeType( optionalAttributeTypeName );
                 if ( optionalAttributeType == null )
                 {
-                    throw new DependencyComputerException( "The optional attribute type '" + optionalAttributeType
-                        + "' does not exists in the Schema." );
+                    throw new DependencyComputerException( Messages.getString("DependenciesComputer.OptionalBegin") + optionalAttributeType //$NON-NLS-1$
+                        + Messages.getString("DependenciesComputer.OptionalEnd") ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -289,8 +289,8 @@ public class DependenciesComputer
                 AttributeTypeImpl mandatoryAttributeType = schemaHandler.getAttributeType( mandatoryAttributeTypeName );
                 if ( mandatoryAttributeType == null )
                 {
-                    throw new DependencyComputerException( "The mandatory attribute type '"
-                        + mandatoryAttributeTypeName + "' does not exists in the Schema." );
+                    throw new DependencyComputerException( Messages.getString("DependenciesComputer.MandatoryBegin") //$NON-NLS-1$
+                        + mandatoryAttributeTypeName + Messages.getString("DependenciesComputer.MandatoryEnd") ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -322,7 +322,7 @@ public class DependenciesComputer
             Schema schemaFromSuperiorAT = schemaHandler.getSchema( schemaName );
             if ( schemaFromSuperiorAT == null )
             {
-                throw new DependencyComputerException( "The schema '" + schemaName + "' does not exists in the Schema." );
+                throw new DependencyComputerException( Messages.getString("DependenciesComputer.SchemaBegin") + schemaName + Messages.getString("DependenciesComputer.SchemaEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {

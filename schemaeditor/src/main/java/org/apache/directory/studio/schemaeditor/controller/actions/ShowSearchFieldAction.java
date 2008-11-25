@@ -50,7 +50,7 @@ public class ShowSearchFieldAction extends Action implements IWorkbenchWindowAct
      */
     public ShowSearchFieldAction( SearchView view )
     {
-        super( "Show Search Field", AS_CHECK_BOX );
+        super( Messages.getString("ShowSearchFieldAction.ShowSearchFieldAction"), AS_CHECK_BOX );
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_SEARCH_FIELD ) );
         setEnabled( true );

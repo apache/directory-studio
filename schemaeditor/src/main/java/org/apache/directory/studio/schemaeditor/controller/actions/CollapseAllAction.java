@@ -50,7 +50,7 @@ public class CollapseAllAction extends Action implements IWorkbenchWindowActionD
      */
     public CollapseAllAction( TreeViewer viewer )
     {
-        super( "Collapse All" );
+        super( Messages.getString("CollapseAllAction.CollapseAllAction") );
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COLLAPSE_ALL ) );
         setEnabled( false );

@@ -44,8 +44,8 @@ public class OpenSearchViewPreferenceAction extends Action implements IWorkbench
      */
     public OpenSearchViewPreferenceAction()
     {
-        super( "&Preferences..." );
-        setToolTipText( "Preferences..." );
+        super( Messages.getString("OpenSearchViewPreferenceAction.PreferencesAction") );
+        setToolTipText( Messages.getString("OpenSearchViewPreferenceAction.PreferencesToolTip") );
         setEnabled( true );
     }
 

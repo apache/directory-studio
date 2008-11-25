@@ -43,8 +43,8 @@ public class ShowTypeHierarchyAction extends Action
      */
     public ShowTypeHierarchyAction( HierarchyView view )
     {
-        super( "&Type Hierarchy", AS_RADIO_BUTTON );
-        setToolTipText( "Show the Type Hierarchy" );
+        super( Messages.getString("ShowTypeHierarchyAction.TypeAction"), AS_RADIO_BUTTON ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("ShowTypeHierarchyAction.TypeToolTip") ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_TYPE_HIERARCHY ) );
         setEnabled( true );
         this.view = view;

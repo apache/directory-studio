@@ -63,8 +63,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
      */
     public OpenElementAction( TreeViewer viewer )
     {
-        super( "&Open" );
-        setToolTipText( "Open" );
+        super( Messages.getString("OpenElementAction.OpenAction") );
+        setToolTipText( Messages.getString("OpenElementAction.OpenToolTip") );
         setId( PluginConstants.CMD_OPEN_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_OPEN_ELEMENT );
         setEnabled( true );
@@ -91,8 +91,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( "An error occured when opening the editor.", e );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                    PluginUtils.logError( Messages.getString("OpenElementAction.ErrorOpeningEditor"), e );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") );
                 }
             }
             else if ( selectedItem instanceof ObjectClassWrapper )
@@ -105,8 +105,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( "An error occured when opening the editor.", e );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                    PluginUtils.logError( Messages.getString("OpenElementAction.ErroropeningEditor"), e );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") );
                 }
             }
             else if ( selectedItem instanceof SchemaWrapper )
@@ -118,8 +118,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( "An error occured when opening the editor.", e );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                    PluginUtils.logError( Messages.getString("OpenElementAction.ErroropeningEditor"), e );
+                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") );
                 }
             }
             else if ( selectedItem instanceof Folder )

@@ -67,7 +67,7 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         try
@@ -76,16 +76,16 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new OpenLdapSchemaFileImportException( "The file '" + path + "' can not be read correctly." );
+            throw new OpenLdapSchemaFileImportException( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch ( ParseException e )
         {
             ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
-            throw new OpenLdapSchemaFileImportException( "The file '"
+            throw new OpenLdapSchemaFileImportException( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin") //$NON-NLS-1$
                 + path
-                + "' can not be read correctly."
-                + ( exceptionMessage == null ? "" : "\nLine: " + exceptionMessage.lineNumber + ", Column: "
-                    + exceptionMessage.columnNumber + ", Cause: " + exceptionMessage.cause ) );
+                + Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyEnd") //$NON-NLS-1$
+                + ( exceptionMessage == null ? "" : Messages.getString("OpenLdapSchemaFileImporter.Line") + exceptionMessage.lineNumber + Messages.getString("OpenLdapSchemaFileImporter.Column") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    + exceptionMessage.columnNumber + Messages.getString("OpenLdapSchemaFileImporter.Cause") + exceptionMessage.cause ) ); //$NON-NLS-1$
         }
 
         String schemaName = getNameFromPath( path );
@@ -197,7 +197,7 @@ public class OpenLdapSchemaFileImporter
     private static ExceptionMessage parseExceptionMessage( String message )
     {
         Scanner scanner = new Scanner( new ByteArrayInputStream( message.getBytes() ) );
-        String foundString = scanner.findWithinHorizon( ".*line (\\d+):(\\d+): *([^\\n]*).*", message.length() );
+        String foundString = scanner.findWithinHorizon( ".*line (\\d+):(\\d+): *([^\\n]*).*", message.length() ); //$NON-NLS-1$
         if ( foundString != null )
         {
             MatchResult result = scanner.match();

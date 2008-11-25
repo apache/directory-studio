@@ -61,8 +61,8 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
      */
     public OpenTypeHierarchyAction( TreeViewer viewer )
     {
-        super( "Ope&n Type Hierarchy" );
-        setToolTipText( "Open Type Hierarchy" );
+        super( Messages.getString("OpenTypeHierarchyAction.OpenTypeAction") );
+        setToolTipText( Messages.getString("OpenTypeHierarchyAction.OpenTypeToolTip") );
         setId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setActionDefinitionId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setEnabled( true );
@@ -166,8 +166,8 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
             }
             catch ( PartInitException e )
             {
-                PluginUtils.logError( "An error occured when opening the view.", e );
-                ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the view." );
+                PluginUtils.logError( Messages.getString("OpenTypeHierarchyAction.ErrorOpeningView"), e );
+                ViewUtils.displayErrorMessageBox( Messages.getString("OpenTypeHierarchyAction.Error"), Messages.getString("OpenTypeHierarchyAction.ErrorOpeningView") );
             }
         }
 

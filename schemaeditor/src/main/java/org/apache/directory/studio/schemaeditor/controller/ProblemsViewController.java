@@ -222,8 +222,8 @@ public class ProblemsViewController
                     }
                     catch ( PartInitException e )
                     {
-                        PluginUtils.logError( "An error occured when opening the editor.", e );
-                        ViewUtils.displayErrorMessageBox( "Error", "An error occured when opening the editor." );
+                        PluginUtils.logError( Messages.getString("ProblemsViewController.ErrorOpeningEditor"), e );
+                        ViewUtils.displayErrorMessageBox( Messages.getString("ProblemsViewController.Error"), Messages.getString("ProblemsViewController.ErrorOpeningEditor") );
                     }
                 }
             }

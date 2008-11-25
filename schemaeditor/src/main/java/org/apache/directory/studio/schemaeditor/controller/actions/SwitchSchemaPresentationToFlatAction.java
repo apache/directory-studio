@@ -42,8 +42,8 @@ public class SwitchSchemaPresentationToFlatAction extends Action implements IWor
      */
     public SwitchSchemaPresentationToFlatAction()
     {
-        super( "&Flat", AS_RADIO_BUTTON );
-        setToolTipText( "Flat" );
+        super( Messages.getString("SwitchSchemaPresentationToFlatAction.FlatAction"), AS_RADIO_BUTTON ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("SwitchSchemaPresentationToFlatAction.FlatToolTip") ); //$NON-NLS-1$
         setEnabled( false );
 
         // Setting up the state of the action

@@ -60,8 +60,8 @@ public class OpenProjectAction extends Action implements IWorkbenchWindowActionD
      */
     public OpenProjectAction( TableViewer viewer )
     {
-        super( "Op&en Project" );
-        setToolTipText( "Open Project" );
+        super( Messages.getString("OpenProjectAction.OpenProjectAction") );
+        setToolTipText( Messages.getString("OpenProjectAction.OpenProjectToolTip") );
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

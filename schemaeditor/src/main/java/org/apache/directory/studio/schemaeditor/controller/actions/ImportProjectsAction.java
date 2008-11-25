@@ -46,7 +46,7 @@ public class ImportProjectsAction extends Action implements IWorkbenchWindowActi
      */
     public ImportProjectsAction()
     {
-        super( "Schema Projects" );
+        super( Messages.getString("ImportProjectsAction.SchemaProjectsAction") );
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_IMPORT ) );
         setEnabled( true );

@@ -86,7 +86,7 @@ public class RenameProjectDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Rename Schema Project" );
+        newShell.setText( Messages.getString("RenameProjectDialog.Rename") );
     }
 
 
@@ -101,7 +101,7 @@ public class RenameProjectDialog extends Dialog
 
         // New Name
         Label newNameLabel = new Label( composite, SWT.NONE );
-        newNameLabel.setText( "New name:" );
+        newNameLabel.setText( Messages.getString("RenameProjectDialog.NewName") );
         newNameText = new Text( composite, SWT.BORDER );
         newNameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         newNameText.setText( originalName );
@@ -142,7 +142,7 @@ public class RenameProjectDialog extends Dialog
         // Error Label
         errorLabel = new Label( errorComposite, SWT.NONE );
         errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        errorLabel.setText( "A project with the same name already exists." );
+        errorLabel.setText( Messages.getString("RenameProjectDialog.NameExists") );
 
         newNameText.setFocus();
         newNameText.selectAll();
