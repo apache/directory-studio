@@ -39,7 +39,7 @@
         <directory>.</directory>
         <includes>
           <include>about.ini</include>
-          <include>plugin.properties</include>
+          <include>plugin*.properties</include>
           <include>plugin.xml</include>
           <include>studio.png</include>
         </includes>
