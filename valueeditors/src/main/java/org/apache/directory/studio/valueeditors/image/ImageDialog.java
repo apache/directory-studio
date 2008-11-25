@@ -77,7 +77,7 @@ public class ImageDialog extends Dialog
 
     private static final int NEW_TAB = 1;
 
-    private static final String SELECTED_TAB_DIALOGSETTINGS_KEY = ImageDialog.class.getName() + ".tab";
+    private static final String SELECTED_TAB_DIALOGSETTINGS_KEY = ImageDialog.class.getName() + ".tab"; //$NON-NLS-1$
 
     private TabFolder tabFolder;
 
@@ -217,7 +217,7 @@ public class ImageDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "Image Editor" );
+        shell.setText( Messages.getString("ImageDialog.ImageEditor") );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_IMAGEEDITOR ) );
     }
 
@@ -286,24 +286,24 @@ public class ImageDialog extends Dialog
             currentImageLabel = createImageLabel( currentImageContainer );
 
             Composite currentImageInfoContainer = createImageInfoContainer( currentImageContainer );
-            currentImageTypeText = createImageInfo( currentImageInfoContainer, "Image Type:" );
-            currentImageSizeText = createImageInfo( currentImageInfoContainer, "Image Size:" );
-            currentImageWidthText = createImageInfo( currentImageInfoContainer, "Image Width:" );
-            currentImageHeightText = createImageInfo( currentImageInfoContainer, "Image Height:" );
+            currentImageTypeText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageType") );
+            currentImageSizeText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageSize") );
+            currentImageWidthText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageWidth") );
+            currentImageHeightText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageHeight") );
 
             Composite currentImageSaveContainer = createImageInfoContainer( currentImageContainer );
-            Label dummyLabel = BaseWidgetUtils.createLabel( currentImageSaveContainer, "", 1 );
+            Label dummyLabel = BaseWidgetUtils.createLabel( currentImageSaveContainer, "", 1 ); //$NON-NLS-1$
             GridData gd = new GridData( GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL );
             dummyLabel.setLayoutData( gd );
-            currentImageSaveButton = createButton( currentImageSaveContainer, "Save..." );
+            currentImageSaveButton = createButton( currentImageSaveContainer, Messages.getString("ImageDialog.Save") );
             currentImageSaveButton.addSelectionListener( new SelectionAdapter()
             {
                 public void widgetSelected( SelectionEvent event )
                 {
                     FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.SAVE );
-                    fileDialog.setText( "Save Image" );
+                    fileDialog.setText( Messages.getString("ImageDialog.SaveImage") );
                     fileDialog.setFilterExtensions( new String[]
-                        { "*.jpg" } );
+                        { "*.jpg" } ); //$NON-NLS-1$
                     String returnedFileName = fileDialog.open();
                     if ( returnedFileName != null )
                     {
@@ -320,20 +320,20 @@ public class ImageDialog extends Dialog
 
                             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                                 new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR,
-                                    "Can't write to file", e ) );
+                                    Messages.getString("ImageDialog.CantWriteFile"), e ) );
                         }
                         catch ( IOException e )
                         {
                             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                                 new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR,
-                                    "Can't write to file", e ) );
+                                    Messages.getString("ImageDialog.CantWriteFile"), e ) );
                         }
                     }
                 }
             } );
 
             currentTab = new TabItem( tabFolder, SWT.NONE );
-            currentTab.setText( "Current Image" );
+            currentTab.setText( Messages.getString("ImageDialog.CurrentImage") );
             currentTab.setControl( currentImageContainer );
         }
 
@@ -350,10 +350,10 @@ public class ImageDialog extends Dialog
         newImageLabel = createImageLabel( newImageContainer );
 
         Composite newImageInfoContainer = createImageInfoContainer( newImageContainer );
-        newImageTypeText = createImageInfo( newImageInfoContainer, "Image Type:" );
-        newImageSizeText = createImageInfo( newImageInfoContainer, "Image Size:" );
-        newImageWidthText = createImageInfo( newImageInfoContainer, "Image Width:" );
-        newImageHeightText = createImageInfo( newImageInfoContainer, "Image Height:" );
+        newImageTypeText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageType") );
+        newImageSizeText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageSize") );
+        newImageWidthText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageWidth") );
+        newImageHeightText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageHeight") );
 
         Composite newImageSelectContainer = createImageInfoContainer( newImageContainer );
         newImageFilenameText = new Text( newImageSelectContainer, SWT.SINGLE | SWT.BORDER );
@@ -366,13 +366,13 @@ public class ImageDialog extends Dialog
                 updateNewImageGroup();
             }
         } );
-        newImageBrowseButton = createButton( newImageSelectContainer, "Browse..." );
+        newImageBrowseButton = createButton( newImageSelectContainer, Messages.getString("ImageDialog.Browse") );
         newImageBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
                 FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.OPEN );
-                fileDialog.setText( "Select Image" );
+                fileDialog.setText( Messages.getString("ImageDialog.SelectImage") );
                 // fileDialog.setFilterExtensions(IMAGE_FILE_EXTENSIONS);
                 fileDialog.setFileName( new File( newImageFilenameText.getText() ).getName() );
                 fileDialog.setFilterPath( new File( newImageFilenameText.getText() ).getParent() );
@@ -385,7 +385,7 @@ public class ImageDialog extends Dialog
         } );
 
         newTab = new TabItem( tabFolder, SWT.NONE );
-        newTab.setText( "New Image" );
+        newTab.setText( Messages.getString("ImageDialog.NewImage") );
         newTab.setControl( newImageContainer );
 
         applyDialogFont( composite );
@@ -412,31 +412,31 @@ public class ImageDialog extends Dialog
                 {
                     ImageData imageData = new ImageData( new ByteArrayInputStream( currentImageRawData ) );
                     currentImage = new Image( getShell().getDisplay(), resizeImage( imageData ) );
-                    currentImageLabel.setText( "" );
+                    currentImageLabel.setText( "" ); //$NON-NLS-1$
                     currentImageLabel.setImage( currentImage );
                     currentImageTypeText.setText( getImageType( imageData.type ) );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
-                    currentImageWidthText.setText( imageData.width + " Pixel" );
-                    currentImageHeightText.setText( imageData.height + " Pixel" );
+                    currentImageWidthText.setText( imageData.width + Messages.getString("ImageDialog.Pixel") );
+                    currentImageHeightText.setText( imageData.height + Messages.getString("ImageDialog.Pixel") );
                 }
                 catch ( SWTException swte )
                 {
                     currentImageLabel.setImage( null );
-                    currentImageLabel.setText( " Unsupported format " );
-                    currentImageTypeText.setText( "Unsupported format" );
+                    currentImageLabel.setText( Messages.getString("ImageDialog.UsupportedFormatSpaces") );
+                    currentImageTypeText.setText( Messages.getString("ImageDialog.UnsupportedFormat") );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
-                    currentImageWidthText.setText( "-" );
-                    currentImageHeightText.setText( "-" );
+                    currentImageWidthText.setText( "-" ); //$NON-NLS-1$
+                    currentImageHeightText.setText( "-" ); //$NON-NLS-1$
                 }
             }
             else
             {
                 currentImageLabel.setImage( null );
-                currentImageLabel.setText( " No Image " );
-                currentImageTypeText.setText( "No Image" );
-                currentImageSizeText.setText( "-" );
-                currentImageWidthText.setText( "-" );
-                currentImageHeightText.setText( "-" );
+                currentImageLabel.setText( Messages.getString("ImageDialog.NoImageSpaces") );
+                currentImageTypeText.setText( Messages.getString("ImageDialog.NoImage") );
+                currentImageSizeText.setText( "-" ); //$NON-NLS-1$
+                currentImageWidthText.setText( "-" ); //$NON-NLS-1$
+                currentImageHeightText.setText( "-" ); //$NON-NLS-1$
             }
 
             currentImageSaveButton.setEnabled( currentImageRawData != null && currentImageRawData.length > 0 );
@@ -455,7 +455,7 @@ public class ImageDialog extends Dialog
             newImage = null;
         }
 
-        if ( !"".equals( newImageFilenameText.getText() ) )
+        if ( !"".equals( newImageFilenameText.getText() ) ) //$NON-NLS-1$
         {
             try
             {
@@ -476,32 +476,32 @@ public class ImageDialog extends Dialog
             {
                 newImageRawData = null;
                 newImageLabel.setImage( null );
-                newImageLabel.setText( " Error: File not found " );
-                newImageTypeText.setText( "-" );
-                newImageSizeText.setText( "-" );
-                newImageWidthText.setText( "-" );
-                newImageHeightText.setText( "-" );
+                newImageLabel.setText( Messages.getString("ImageDialog.ErrorFileNotFound") );
+                newImageTypeText.setText( "-" ); //$NON-NLS-1$
+                newImageSizeText.setText( "-" ); //$NON-NLS-1$
+                newImageWidthText.setText( "-" ); //$NON-NLS-1$
+                newImageHeightText.setText( "-" ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 newImageRawData = null;
                 newImageLabel.setImage( null );
-                newImageLabel.setText( " Error: Can't read file (" + e.getMessage() + ") " );
-                newImageTypeText.setText( "-" );
-                newImageSizeText.setText( "-" );
-                newImageWidthText.setText( "-" );
-                newImageHeightText.setText( "-" );
+                newImageLabel.setText( Messages.getString("ImageDialog.CantReadFileBegin") + e.getMessage() + Messages.getString("ImageDialog.CantReadFileEnd") );
+                newImageTypeText.setText( "-" ); //$NON-NLS-1$
+                newImageSizeText.setText( "-" ); //$NON-NLS-1$
+                newImageWidthText.setText( "-" ); //$NON-NLS-1$
+                newImageHeightText.setText( "-" ); //$NON-NLS-1$
             }
         }
         else
         {
             newImageRawData = null;
             newImageLabel.setImage( null );
-            newImageLabel.setText( " No image selected " );
-            newImageTypeText.setText( "-" );
-            newImageSizeText.setText( "-" );
-            newImageWidthText.setText( "-" );
-            newImageHeightText.setText( "-" );
+            newImageLabel.setText( Messages.getString("ImageDialog.NoImageSelected") );
+            newImageTypeText.setText( "-" ); //$NON-NLS-1$
+            newImageSizeText.setText( "-" ); //$NON-NLS-1$
+            newImageWidthText.setText( "-" ); //$NON-NLS-1$
+            newImageHeightText.setText( "-" ); //$NON-NLS-1$
         }
 
         if ( newImageRawData != null && newImageRawData.length > 0 )
@@ -514,21 +514,21 @@ public class ImageDialog extends Dialog
                 newImageTypeText.setText( getImageType( imageData.type ) );
                 if ( imageData.type != requiredImageType )
                 {
-                    newImageTypeText.setText( newImageTypeText.getText() + " (will be converted to "
-                        + getImageType( requiredImageType ) + ")" );
+                    newImageTypeText.setText( newImageTypeText.getText() + Messages.getString("ImageDialog.WillBeConvertedStart")
+                        + getImageType( requiredImageType ) + Messages.getString("ImageDialog.WillBeConvertedEnd") );
                 }
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
-                newImageWidthText.setText( imageData.width + " Pixel" );
-                newImageHeightText.setText( imageData.height + " Pixel" );
+                newImageWidthText.setText( imageData.width + Messages.getString("ImageDialog.Pixel") );
+                newImageHeightText.setText( imageData.height + Messages.getString("ImageDialog.Pixel") );
             }
             catch ( SWTException swte )
             {
                 newImageLabel.setImage( null );
-                newImageLabel.setText( " Unsupported format " );
-                newImageTypeText.setText( "Unsupported format" );
+                newImageLabel.setText( Messages.getString("ImageDialog.UnsupportedFormatSpaces") );
+                newImageTypeText.setText( Messages.getString("ImageDialog.UnsupportedFormat") );
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
-                newImageWidthText.setText( "-" );
-                newImageHeightText.setText( "-" );
+                newImageWidthText.setText( "-" ); //$NON-NLS-1$
+                newImageHeightText.setText( "-" ); //$NON-NLS-1$
             }
         }
 
@@ -658,7 +658,7 @@ public class ImageDialog extends Dialog
     private Text createImageInfo( Composite parent, String label )
     {
         BaseWidgetUtils.createLabel( parent, label, 1 );
-        Text text = BaseWidgetUtils.createLabeledText( parent, "", 1 );
+        Text text = BaseWidgetUtils.createLabeledText( parent, "", 1 ); //$NON-NLS-1$
         return text;
     }
 
@@ -689,15 +689,15 @@ public class ImageDialog extends Dialog
     {
         if ( length > 1000000 )
         {
-            return ( length / 1000000 ) + " MB (" + length + " bytes)";
+            return ( length / 1000000 ) + Messages.getString("ImageDialog.MBStart") + length + Messages.getString("ImageDialog.MDEnd");
         }
         else if ( length > 1000 )
         {
-            return ( length / 1000 ) + " KB (" + length + " bytes)";
+            return ( length / 1000 ) + Messages.getString("ImageDialog.KBStart") + length + Messages.getString("ImageDialog.KBEnd");
         }
         else
         {
-            return length + " bytes";
+            return length + Messages.getString("ImageDialog.Bytes");
         }
     }
 
@@ -714,25 +714,25 @@ public class ImageDialog extends Dialog
 
         if ( imageRawData == null )
         {
-            return "NULL";
+            return "NULL"; //$NON-NLS-1$
         }
 
-        String text = "Image (" + imageRawData.length + " Bytes)";
+        String text = Messages.getString("ImageDialog.ImageStart") + imageRawData.length + Messages.getString("ImageDialog.ImageEnd");
         try
         {
             ByteArrayInputStream bais = new ByteArrayInputStream( imageRawData );
             ImageData imageData = new ImageData( bais );
 
             String typePrefix = getImageType( imageData.type );
-            if ( !"".equals( typePrefix ) )
-                typePrefix += "-";
+            if ( !"".equals( typePrefix ) ) //$NON-NLS-1$
+                typePrefix += "-"; //$NON-NLS-1$
 
-            text = typePrefix + "Image (" + imageData.width + "x" + imageData.height + " Pixel, " + imageRawData.length
-                + " Bytes)";
+            text = typePrefix + Messages.getString("ImageDialog.ImageStart") + imageData.width + "x" + imageData.height + Messages.getString("ImageDialog.ComaPixel") + imageRawData.length //$NON-NLS-2$
+                + Messages.getString("ImageDialog.ImageEnd");
         }
         catch ( SWTException swte )
         {
-            text = "Invalid Image (" + imageRawData.length + " Bytes)";
+            text = Messages.getString("ImageDialog.InvalidImageBegin") + imageRawData.length + Messages.getString("ImageDialog.InvalidImageEnd");
         }
         return text;
     }
@@ -747,23 +747,23 @@ public class ImageDialog extends Dialog
      */
     private static String getImageType( int swtCode )
     {
-        String type = "";
+        String type = ""; //$NON-NLS-1$
 
         if ( swtCode == SWT.IMAGE_JPEG )
         {
-            type = "JPEG";
+            type = "JPEG"; //$NON-NLS-1$
         }
         else if ( swtCode == SWT.IMAGE_GIF )
         {
-            type = "GIF";
+            type = "GIF"; //$NON-NLS-1$
         }
         else if ( swtCode == SWT.IMAGE_PNG )
         {
-            type = "PNG";
+            type = "PNG"; //$NON-NLS-1$
         }
         else if ( swtCode == SWT.IMAGE_BMP || swtCode == SWT.IMAGE_BMP_RLE )
         {
-            type = "BMP";
+            type = "BMP"; //$NON-NLS-1$
         }
 
         return type;

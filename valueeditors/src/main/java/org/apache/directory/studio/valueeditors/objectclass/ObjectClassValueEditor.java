@@ -52,7 +52,7 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
         {
             ObjectClassValueEditorRawValueWrapper wrapper = ( ObjectClassValueEditorRawValueWrapper ) value;
             ObjectClassDialog dialog = new ObjectClassDialog( shell, wrapper.schema, wrapper.objectClass );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getObjectClass() ) )
+            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getObjectClass() ) ) //$NON-NLS-1$
             {
                 setValue( dialog.getObjectClass() );
                 return true;
@@ -72,30 +72,30 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     {
         if ( getRawValue( value ) == null )
         {
-            return "NULL";
+            return "NULL"; //$NON-NLS-1$
         }
 
         String displayValue = value.getStringValue();
 
-        if ( !showRawValues() && !"".equals( displayValue ) )
+        if ( !showRawValues() && !"".equals( displayValue ) ) //$NON-NLS-1$
         {
             Schema schema = value.getAttribute().getEntry().getBrowserConnection().getSchema();
             ObjectClassDescription ocd = schema.getObjectClassDescription( displayValue );
             switch ( ocd.getKind() )
             {
                 case STRUCTURAL:
-                    displayValue = displayValue + " (structural)";
+                    displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Structural");
                     break;
                 case ABSTRACT:
-                    displayValue = displayValue + " (abstract)";
+                    displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Abstract");
                     break;
                 case AUXILIARY:
-                    displayValue = displayValue + " (auxiliary)";
+                    displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Auxiliary");
                     break;
             }
             if ( ocd.isObsolete() )
             {
-                displayValue = displayValue + " (obsolete)";
+                displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Obsolete");
             }
         }
 

@@ -78,7 +78,7 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return "NULL";
+                return "NULL"; //$NON-NLS-1$
             }
             else if ( value.isBinary() )
             {
@@ -88,7 +88,7 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
             }
             else
             {
-                return "Invalid Image Data";
+                return Messages.getString("ImageValueEditor.InvalidImageData");
             }
         }
     }

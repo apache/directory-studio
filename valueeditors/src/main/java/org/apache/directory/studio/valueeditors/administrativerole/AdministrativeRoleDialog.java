@@ -46,14 +46,11 @@ import org.eclipse.swt.widgets.Shell;
 public class AdministrativeRoleDialog extends Dialog
 {
 
-    /** The dialog title */
-    public static final String DIALOG_TITLE = "Administrative Role Editor";
-
     /** The possible administrative role values. */
     private static final String[] administrativeRoleValues = new String[]
-        { "autonomousArea", "accessControlSpecificArea", "accessControlInnerArea", "subschemaAdminSpecificArea",
-            "collectiveAttributeSpecificArea", "collectiveAttributeInnerArea", "triggerExecutionSpecificArea",
-            "triggerExecutionInnerArea" };
+        { "autonomousArea", "accessControlSpecificArea", "accessControlInnerArea", "subschemaAdminSpecificArea", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "collectiveAttributeSpecificArea", "collectiveAttributeInnerArea", "triggerExecutionSpecificArea", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "triggerExecutionInnerArea" }; //$NON-NLS-1$
 
     /** The initial value. */
     private String initialValue;
@@ -86,7 +83,7 @@ public class AdministrativeRoleDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( Messages.getString("AdministrativeRoleDialog.AdministrativeRoleEditor") );
         shell.setImage( ValueEditorsActivator.getDefault()
             .getImage( ValueEditorsConstants.IMG_ADMINISTRATIVEROLEEDITOR ) );
     }

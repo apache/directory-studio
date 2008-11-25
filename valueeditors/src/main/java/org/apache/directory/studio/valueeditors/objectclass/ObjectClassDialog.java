@@ -50,9 +50,6 @@ import org.eclipse.swt.widgets.Shell;
 public class ObjectClassDialog extends Dialog
 {
 
-    /** The dialog title */
-    public static final String DIALOG_TITLE = "Object Class Editor";
-
     /** The schema. */
     private Schema schema;
 
@@ -89,7 +86,7 @@ public class ObjectClassDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( Messages.getString("ObjectClassDialog.ObjectClassEditor") );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_OCDEDITOR ) );
     }
 

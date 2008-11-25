@@ -74,7 +74,7 @@ public class AddressDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "Address Editor" );
+        shell.setText( Messages.getString("AddressDialog.AddressEditor") );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_ADDRESSEDITOR ) );
     }
 
@@ -95,9 +95,9 @@ public class AddressDialog extends Dialog
     protected void okPressed()
     {
         returnAddress = text.getText();
-        returnAddress = returnAddress.replaceAll( "\n", "\\$" );
-        returnAddress = returnAddress.replaceAll( "\r", "\\$" );
-        returnAddress = returnAddress.replaceAll( "\\$\\$", "\\$" );
+        returnAddress = returnAddress.replaceAll( "\n", "\\$" ); //$NON-NLS-1$ //$NON-NLS-2$
+        returnAddress = returnAddress.replaceAll( "\r", "\\$" ); //$NON-NLS-1$ //$NON-NLS-2$
+        returnAddress = returnAddress.replaceAll( "\\$\\$", "\\$" ); //$NON-NLS-1$ //$NON-NLS-2$
         super.okPressed();
     }
 
@@ -114,7 +114,7 @@ public class AddressDialog extends Dialog
 
         // text widget
         text = new Text( composite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
-        text.setText( initialAddress.replaceAll( "\\$", BrowserCoreConstants.LINE_SEPARATOR ) );
+        text.setText( initialAddress.replaceAll( "\\$", BrowserCoreConstants.LINE_SEPARATOR ) ); //$NON-NLS-1$
         // GridData gd = new GridData(GridData.GRAB_HORIZONTAL |
         // GridData.HORIZONTAL_ALIGN_FILL);
         gd = new GridData( GridData.FILL_BOTH );

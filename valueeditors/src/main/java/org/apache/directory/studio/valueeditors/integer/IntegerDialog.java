@@ -43,9 +43,6 @@ import org.eclipse.swt.widgets.Spinner;
 public class IntegerDialog extends Dialog
 {
 
-    /** The dialog title */
-    public static final String DIALOG_TITLE = "Integer Editor";
-
     /** The initial value. */
     private int initialValue;
 
@@ -77,7 +74,7 @@ public class IntegerDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( Messages.getString("IntegerDialog.IntegerEditor") );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_INTEGEREDITOR ) );
     }
 
