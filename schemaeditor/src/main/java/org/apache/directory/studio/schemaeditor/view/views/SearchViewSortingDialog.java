@@ -73,7 +73,7 @@ public class SearchViewSortingDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("SearchViewSortingDialog.ViewSorting") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "SearchViewSortingDialog.ViewSorting" ) ); //$NON-NLS-1$
     }
 
 
@@ -89,28 +89,28 @@ public class SearchViewSortingDialog extends Dialog
         // Grouping Group
         Group groupingGroup = new Group( composite, SWT.NONE );
         groupingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        groupingGroup.setText( Messages.getString("SearchViewSortingDialog.Grouping") ); //$NON-NLS-1$
+        groupingGroup.setText( Messages.getString( "SearchViewSortingDialog.Grouping" ) ); //$NON-NLS-1$
         groupingGroup.setLayout( new GridLayout() );
 
         // Attribute Types first Button
         attributeTypesFirst = new Button( groupingGroup, SWT.RADIO );
-        attributeTypesFirst.setText( Messages.getString("SearchViewSortingDialog.TypesFirst") ); //$NON-NLS-1$
+        attributeTypesFirst.setText( Messages.getString( "SearchViewSortingDialog.TypesFirst" ) ); //$NON-NLS-1$
         attributeTypesFirst.setEnabled( true );
 
         // Object Classes first Button
         objectClassesFirst = new Button( groupingGroup, SWT.RADIO );
-        objectClassesFirst.setText( Messages.getString("SearchViewSortingDialog.ClassesFirst") ); //$NON-NLS-1$
+        objectClassesFirst.setText( Messages.getString( "SearchViewSortingDialog.ClassesFirst" ) ); //$NON-NLS-1$
         objectClassesFirst.setEnabled( true );
 
         // Mixed Button
         mixedButton = new Button( groupingGroup, SWT.RADIO );
-        mixedButton.setText( Messages.getString("SearchViewSortingDialog.Mixed") ); //$NON-NLS-1$
+        mixedButton.setText( Messages.getString( "SearchViewSortingDialog.Mixed" ) ); //$NON-NLS-1$
         mixedButton.setEnabled( true );
 
         // Sorting Group
         Group sortingGroup = new Group( composite, SWT.NONE );
         sortingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        sortingGroup.setText( Messages.getString("SearchViewSortingDialog.Sorting") ); //$NON-NLS-1$
+        sortingGroup.setText( Messages.getString( "SearchViewSortingDialog.Sorting" ) ); //$NON-NLS-1$
         sortingGroup.setLayout( new GridLayout() );
         Composite sortingGroupComposite = new Composite( sortingGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 4, false );
@@ -120,23 +120,25 @@ public class SearchViewSortingDialog extends Dialog
 
         // Sort by Label
         Label sortByLabel = new Label( sortingGroupComposite, SWT.NONE );
-        sortByLabel.setText( Messages.getString("SearchViewSortingDialog.SortBy") ); //$NON-NLS-1$
+        sortByLabel.setText( Messages.getString( "SearchViewSortingDialog.SortBy" ) ); //$NON-NLS-1$
 
         // Sorting Combo
         sortingCombo = new Combo( sortingGroupComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
         sortingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        sortingCombo.setItems( new String[]
-            { Messages.getString("SearchViewSortingDialog.FirstName"), Messages.getString("SearchViewSortingDialog.OID") } ); //$NON-NLS-1$ //$NON-NLS-2$
+        sortingCombo
+            .setItems( new String[]
+                {
+                    Messages.getString( "SearchViewSortingDialog.FirstName" ), Messages.getString( "SearchViewSortingDialog.OID" ) } ); //$NON-NLS-1$ //$NON-NLS-2$
         sortingCombo.setEnabled( true );
 
         // Ascending Button
         ascendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        ascendingButton.setText( Messages.getString("SearchViewSortingDialog.Ascending") ); //$NON-NLS-1$
+        ascendingButton.setText( Messages.getString( "SearchViewSortingDialog.Ascending" ) ); //$NON-NLS-1$
         ascendingButton.setEnabled( true );
 
         // Descending Button
         descendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        descendingButton.setText( Messages.getString("SearchViewSortingDialog.Descending") ); //$NON-NLS-1$
+        descendingButton.setText( Messages.getString( "SearchViewSortingDialog.Descending" ) ); //$NON-NLS-1$
         descendingButton.setEnabled( true );
 
         initFieldsFromPreferences();
@@ -217,12 +219,14 @@ public class SearchViewSortingDialog extends Dialog
                     PluginConstants.PREFS_SEARCH_VIEW_GROUPING_MIXED );
             }
 
-            if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( Messages.getString("SearchViewSortingDialog.FirstName") ) ) //$NON-NLS-1$
+            if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals(
+                Messages.getString( "SearchViewSortingDialog.FirstName" ) ) ) //$NON-NLS-1$
             {
                 store.setValue( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY,
                     PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_FIRSTNAME );
             }
-            else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( Messages.getString("SearchViewSortingDialog.OID") ) ) //$NON-NLS-1$
+            else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals(
+                Messages.getString( "SearchViewSortingDialog.OID" ) ) ) //$NON-NLS-1$
             {
                 store.setValue( PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY,
                     PluginConstants.PREFS_SEARCH_VIEW_SORTING_BY_OID );

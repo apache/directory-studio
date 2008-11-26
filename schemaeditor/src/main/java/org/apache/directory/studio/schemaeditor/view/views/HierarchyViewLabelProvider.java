@@ -92,7 +92,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -104,7 +104,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
@@ -121,7 +121,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -145,7 +145,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -157,7 +157,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
@@ -174,7 +174,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -202,7 +202,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -214,7 +214,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )
@@ -235,7 +235,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES )
@@ -247,7 +247,7 @@ public class HierarchyViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("HierarchyViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "HierarchyViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID )

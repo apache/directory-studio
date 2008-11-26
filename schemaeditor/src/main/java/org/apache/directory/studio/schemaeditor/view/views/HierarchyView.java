@@ -185,9 +185,10 @@ public class HierarchyView extends ViewPart
         }
         else
         {
-            sb.append( Messages.getString("HierarchyView.None") ); //$NON-NLS-1$
+            sb.append( Messages.getString( "HierarchyView.None" ) ); //$NON-NLS-1$
         }
-        sb.append( NLS.bind( Messages.getString("HierarchyView.Schema"), new String[]{object.getOid(), object.getSchema()}) ); //$NON-NLS-1$
+        sb.append( NLS.bind(
+            Messages.getString( "HierarchyView.Schema" ), new String[] { object.getOid(), object.getSchema() } ) ); //$NON-NLS-1$
 
         overviewLabel.setText( sb.toString() );
     }

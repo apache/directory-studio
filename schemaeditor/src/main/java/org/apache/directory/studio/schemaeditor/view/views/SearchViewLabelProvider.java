@@ -84,7 +84,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -96,7 +96,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )
@@ -113,7 +113,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -137,7 +137,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -149,7 +149,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )
@@ -166,7 +166,7 @@ public class SearchViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -194,7 +194,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -206,7 +206,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )
@@ -227,7 +227,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_ALL_ALIASES )
@@ -239,7 +239,7 @@ public class SearchViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SearchViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SearchViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SEARCH_VIEW_LABEL_OID )

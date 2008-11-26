@@ -72,7 +72,7 @@ public class SchemaViewSortingDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("SchemaViewSortingDialog.ViewSorting") ); //$NON-NLS-1$
+        newShell.setText( Messages.getString( "SchemaViewSortingDialog.ViewSorting" ) ); //$NON-NLS-1$
     }
 
 
@@ -87,23 +87,23 @@ public class SchemaViewSortingDialog extends Dialog
         // Grouping Group
         Group groupingGroup = new Group( composite, SWT.NONE );
         groupingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        groupingGroup.setText( Messages.getString("SchemaViewSortingDialog.Grouping") ); //$NON-NLS-1$
+        groupingGroup.setText( Messages.getString( "SchemaViewSortingDialog.Grouping" ) ); //$NON-NLS-1$
         groupingGroup.setLayout( new GridLayout() );
 
         // Attribute Types first Button
         inFoldersButton = new Button( groupingGroup, SWT.RADIO );
-        inFoldersButton.setText( Messages.getString("SchemaViewSortingDialog.GroupTypesAndClasses") ); //$NON-NLS-1$
+        inFoldersButton.setText( Messages.getString( "SchemaViewSortingDialog.GroupTypesAndClasses" ) ); //$NON-NLS-1$
         inFoldersButton.setEnabled( true );
 
         // Mixed Button
         mixedButton = new Button( groupingGroup, SWT.RADIO );
-        mixedButton.setText( Messages.getString("SchemaViewSortingDialog.Mixed") ); //$NON-NLS-1$
+        mixedButton.setText( Messages.getString( "SchemaViewSortingDialog.Mixed" ) ); //$NON-NLS-1$
         mixedButton.setEnabled( true );
 
         // Sorting Group
         Group sortingGroup = new Group( composite, SWT.NONE );
         sortingGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
-        sortingGroup.setText( Messages.getString("SchemaViewSortingDialog.Sorting") ); //$NON-NLS-1$
+        sortingGroup.setText( Messages.getString( "SchemaViewSortingDialog.Sorting" ) ); //$NON-NLS-1$
         sortingGroup.setLayout( new GridLayout() );
         Composite sortingGroupComposite = new Composite( sortingGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 4, false );
@@ -113,23 +113,25 @@ public class SchemaViewSortingDialog extends Dialog
 
         // Sort by Label
         Label sortByLabel = new Label( sortingGroupComposite, SWT.NONE );
-        sortByLabel.setText( Messages.getString("SchemaViewSortingDialog.SortBy") ); //$NON-NLS-1$
+        sortByLabel.setText( Messages.getString( "SchemaViewSortingDialog.SortBy" ) ); //$NON-NLS-1$
 
         // Sorting Combo
         sortingCombo = new Combo( sortingGroupComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
         sortingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        sortingCombo.setItems( new String[]
-            { Messages.getString("SchemaViewSortingDialog.FirstName"), Messages.getString("SchemaViewSortingDialog.OID") } ); //$NON-NLS-1$ //$NON-NLS-2$
+        sortingCombo
+            .setItems( new String[]
+                {
+                    Messages.getString( "SchemaViewSortingDialog.FirstName" ), Messages.getString( "SchemaViewSortingDialog.OID" ) } ); //$NON-NLS-1$ //$NON-NLS-2$
         sortingCombo.setEnabled( true );
 
         // Ascending Button
         ascendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        ascendingButton.setText( Messages.getString("SchemaViewSortingDialog.Ascending") ); //$NON-NLS-1$
+        ascendingButton.setText( Messages.getString( "SchemaViewSortingDialog.Ascending" ) ); //$NON-NLS-1$
         ascendingButton.setEnabled( true );
 
         // Descending Button
         descendingButton = new Button( sortingGroupComposite, SWT.RADIO );
-        descendingButton.setText( Messages.getString("SchemaViewSortingDialog.Descending") ); //$NON-NLS-1$
+        descendingButton.setText( Messages.getString( "SchemaViewSortingDialog.Descending" ) ); //$NON-NLS-1$
         descendingButton.setEnabled( true );
 
         initFieldsFromPreferences();
@@ -198,12 +200,14 @@ public class SchemaViewSortingDialog extends Dialog
                     PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED );
             }
 
-            if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( Messages.getString("SchemaViewSortingDialog.FirstName") ) ) //$NON-NLS-1$
+            if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals(
+                Messages.getString( "SchemaViewSortingDialog.FirstName" ) ) ) //$NON-NLS-1$
             {
                 store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY,
                     PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_FIRSTNAME );
             }
-            else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals( Messages.getString("SchemaViewSortingDialog.OID") ) ) //$NON-NLS-1$
+            else if ( sortingCombo.getItem( sortingCombo.getSelectionIndex() ).equals(
+                Messages.getString( "SchemaViewSortingDialog.OID" ) ) ) //$NON-NLS-1$
             {
                 store.setValue( PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY,
                     PluginConstants.PREFS_SCHEMA_VIEW_SORTING_BY_OID );

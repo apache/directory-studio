@@ -97,7 +97,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -109,7 +109,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
@@ -126,7 +126,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -150,7 +150,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -162,7 +162,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
@@ -179,7 +179,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                    label = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -220,7 +220,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -232,7 +232,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
@@ -253,7 +253,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -265,7 +265,7 @@ public class SchemaViewLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = Messages.getString("SchemaViewLabelProvider.None"); //$NON-NLS-1$
+                        secondaryLabel = Messages.getString( "SchemaViewLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
