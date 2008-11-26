@@ -35,6 +35,7 @@ import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectC
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -263,13 +264,11 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
-            mandatoryAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryBegin") + " '" + ViewUtils.concateAliases( names ) //$NON-NLS-2$
-                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryEnd") ); //$NON-NLS-1$
+            mandatoryAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatory"), new String[]{ ViewUtils.concateAliases( names )}) ); //$NON-NLS-1$
         }
         else
         {
-            mandatoryAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryBegin") + " '" + modifiedAttributeType.getOid() //$NON-NLS-2$
-                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatoryEnd") ); //$NON-NLS-1$
+            mandatoryAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatory"), new String[]{modifiedAttributeType.getOid()}) ); //$NON-NLS-1$
         }
         mandatoryAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.AsMandatoryAttribute") );
 
@@ -306,13 +305,11 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
-            optionalAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalBegin") + " '" + ViewUtils.concateAliases( names ) //$NON-NLS-2$
-                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalEnd") ); //$NON-NLS-1$
+            optionalAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptional"),new String[]{ViewUtils.concateAliases( names )}) ); //$NON-NLS-1$
         }
         else
         {
-            optionalAttributeSection.setDescription( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalBegin") + " '" + modifiedAttributeType.getOid() //$NON-NLS-2$
-                + "' " + Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptionalEnd") ); //$NON-NLS-1$
+            optionalAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptional"), new String[]{modifiedAttributeType.getOid()}) ); //$NON-NLS-1$
         }
         optionalAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.AsOptionalAttribute") );
 

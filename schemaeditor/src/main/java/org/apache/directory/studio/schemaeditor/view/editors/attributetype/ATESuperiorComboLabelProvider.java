@@ -24,6 +24,7 @@ import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -50,7 +51,7 @@ public class ATESuperiorComboLabelProvider extends LabelProvider
             }
             else
             {
-                return Messages.getString("ATESuperiorComboLabelProvider.None") + at.getOid() + ")"; //$NON-NLS-2$
+                return NLS.bind( Messages.getString("ATESuperiorComboLabelProvider.None"),new String[]{ at.getOid()}); //$NON-NLS-1$
             }
         }
         else if ( obj instanceof NonExistingAttributeType )

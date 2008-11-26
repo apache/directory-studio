@@ -23,6 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatchingRule;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -49,7 +50,7 @@ public class ATEMatchingRulesComboLabelProvider extends LabelProvider
             }
             else
             {
-                return Messages.getString("ATEMatchingRulesComboLabelProvider.None") + mr.getOid() + ")"; //$NON-NLS-2$
+                return NLS.bind( Messages.getString("ATEMatchingRulesComboLabelProvider.None"), new String[]{mr.getOid()}); //$NON-NLS-1$
             }
         }
         else if ( obj instanceof NonExistingMatchingRule )

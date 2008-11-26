@@ -23,6 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -49,7 +50,7 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
             }
             else
             {
-                return Messages.getString("ATESyntaxComboLabelProvider.None") + syntax.getOid() + ")"; //$NON-NLS-2$
+                return NLS.bind( Messages.getString("ATESyntaxComboLabelProvider.None"), new String[]{ syntax.getOid()}); //$NON-NLS-1$
             }
         }
         else if ( obj instanceof NonExistingSyntax )

@@ -23,6 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
@@ -99,7 +100,7 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return getName() + Messages.getString("AttributeTypeEditorInput.FromSchemaBegin") + attributeType.getSchema() + Messages.getString("AttributeTypeEditorInput.FromSchemaEnd");
+        return NLS.bind( Messages.getString("AttributeTypeEditorInput.FromSchema"),new String[]{ getName(), attributeType.getSchema()});
     }
 
 
