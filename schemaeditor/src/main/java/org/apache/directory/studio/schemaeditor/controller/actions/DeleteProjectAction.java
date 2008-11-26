@@ -63,8 +63,8 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
      */
     public DeleteProjectAction( TableViewer viewer )
     {
-        super( Messages.getString("DeleteProjectAction.DeleteProjectAction") ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("DeleteProjectAction.DeleteProjectToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "DeleteProjectAction.DeleteProjectAction" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "DeleteProjectAction.DeleteProjectToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_DELETE_PROJECT );
         setActionDefinitionId( PluginConstants.CMD_DELETE_PROJECT );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_DELETE ) );
@@ -77,17 +77,17 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
                 StructuredSelection selection = ( StructuredSelection ) event.getSelection();
                 if ( selection.size() == 1 )
                 {
-                    setText( Messages.getString("DeleteProjectAction.DeleteProjectAction") ); //$NON-NLS-1$
+                    setText( Messages.getString( "DeleteProjectAction.DeleteProjectAction" ) ); //$NON-NLS-1$
                     setEnabled( true );
                 }
                 else if ( selection.size() > 1 )
                 {
-                    setText( Messages.getString("DeleteProjectAction.DeleteProjectsAction") ); //$NON-NLS-1$
+                    setText( Messages.getString( "DeleteProjectAction.DeleteProjectsAction" ) ); //$NON-NLS-1$
                     setEnabled( true );
                 }
                 else
                 {
-                    setText( Messages.getString("DeleteProjectAction.DeleteProjectAction") ); //$NON-NLS-1$
+                    setText( Messages.getString( "DeleteProjectAction.DeleteProjectAction" ) ); //$NON-NLS-1$
                     setEnabled( false );
                 }
             }
@@ -111,11 +111,15 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
             if ( count == 1 )
             {
                 ProjectWrapper wrapper = ( ProjectWrapper ) selection.getFirstElement();
-                messageBox.setMessage( NLS.bind( Messages.getString("DeleteProjectAction.SureToDeleteProject"), new String[]{ wrapper.getProject().getName()}) ); //$NON-NLS-1$
+                messageBox
+                    .setMessage( NLS
+                        .bind(
+                            Messages.getString( "DeleteProjectAction.SureToDeleteProject" ), new String[] { wrapper.getProject().getName() } ) ); //$NON-NLS-1$
             }
             else
             {
-                messageBox.setMessage( NLS.bind( Messages.getString("DeleteProjectAction.SureToDeleteProjects"), new int[]{ count })); //$NON-NLS-1$
+                messageBox.setMessage( NLS.bind(
+                    Messages.getString( "DeleteProjectAction.SureToDeleteProjects" ), new int[] { count } ) ); //$NON-NLS-1$
             }
             if ( messageBox.open() == SWT.YES )
             {

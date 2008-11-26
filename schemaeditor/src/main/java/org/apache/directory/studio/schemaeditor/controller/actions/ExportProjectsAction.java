@@ -57,7 +57,7 @@ public class ExportProjectsAction extends Action implements IWorkbenchWindowActi
      */
     public ExportProjectsAction( TableViewer viewer )
     {
-        super( Messages.getString("ExportProjectsAction.SchemaProjectsAction") ); //$NON-NLS-1$
+        super( Messages.getString( "ExportProjectsAction.SchemaProjectsAction" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_EXPORT ) );
         setEnabled( true );

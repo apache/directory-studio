@@ -46,7 +46,7 @@ public class ImportCoreSchemasAction extends Action implements IWorkbenchWindowA
      */
     public ImportCoreSchemasAction()
     {
-        super( Messages.getString("ImportCoreSchemasAction.CoreSchemaFilesAction") ); //$NON-NLS-1$
+        super( Messages.getString( "ImportCoreSchemasAction.CoreSchemaFilesAction" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT ) );
         setEnabled( true );

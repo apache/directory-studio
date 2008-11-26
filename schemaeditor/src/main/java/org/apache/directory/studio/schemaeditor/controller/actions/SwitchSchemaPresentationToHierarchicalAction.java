@@ -42,8 +42,8 @@ public class SwitchSchemaPresentationToHierarchicalAction extends Action impleme
      */
     public SwitchSchemaPresentationToHierarchicalAction()
     {
-        super( Messages.getString("SwitchSchemaPresentationToHierarchicalAction.HierarchicalAction"), AS_RADIO_BUTTON ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("SwitchSchemaPresentationToHierarchicalAction.HierarchicalToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "SwitchSchemaPresentationToHierarchicalAction.HierarchicalAction" ), AS_RADIO_BUTTON ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "SwitchSchemaPresentationToHierarchicalAction.HierarchicalToolTip" ) ); //$NON-NLS-1$
         setEnabled( false );
 
         // Setting up the state of the action

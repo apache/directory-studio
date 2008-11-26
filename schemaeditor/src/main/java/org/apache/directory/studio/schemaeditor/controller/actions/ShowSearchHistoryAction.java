@@ -57,7 +57,7 @@ public class ShowSearchHistoryAction extends Action implements IWorkbenchWindowA
      */
     public ShowSearchHistoryAction( SearchView view )
     {
-        super( Messages.getString("ShowSearchHistoryAction.SearchHistoryAction"), AS_DROP_DOWN_MENU ); //$NON-NLS-1$
+        super( Messages.getString( "ShowSearchHistoryAction.SearchHistoryAction" ), AS_DROP_DOWN_MENU ); //$NON-NLS-1$
         this.view = view;
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SHOW_SEARCH_HISTORY ) );
@@ -180,7 +180,7 @@ class MenuCreator implements IMenuCreator
         if ( previousSearches.length == 0 )
         {
             MenuItem item = new MenuItem( menu, SWT.RADIO );
-            item.setText( Messages.getString("ShowSearchHistoryAction.None") ); //$NON-NLS-1$
+            item.setText( Messages.getString( "ShowSearchHistoryAction.None" ) ); //$NON-NLS-1$
             item.setEnabled( false );
             item.setSelection( true );
         }
@@ -189,7 +189,7 @@ class MenuCreator implements IMenuCreator
         new MenuItem( menu, SWT.SEPARATOR );
 
         MenuItem item = new MenuItem( menu, SWT.PUSH );
-        item.setText( Messages.getString("ShowSearchHistoryAction.History") ); //$NON-NLS-1$
+        item.setText( Messages.getString( "ShowSearchHistoryAction.History" ) ); //$NON-NLS-1$
         item.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -199,7 +199,7 @@ class MenuCreator implements IMenuCreator
             }
         } );
         item = new MenuItem( menu, SWT.PUSH );
-        item.setText( Messages.getString("ShowSearchHistoryAction.ClearHistory") ); //$NON-NLS-1$
+        item.setText( Messages.getString( "ShowSearchHistoryAction.ClearHistory" ) ); //$NON-NLS-1$
         item.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

@@ -57,8 +57,8 @@ public class NewAttributeTypeAction extends Action implements IWorkbenchWindowAc
      */
     public NewAttributeTypeAction( TreeViewer viewer )
     {
-        super( Messages.getString("NewAttributeTypeAction.NewAttributeTypeAction") ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("NewAttributeTypeAction.NewAttributeTypeToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "NewAttributeTypeAction.NewAttributeTypeAction" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "NewAttributeTypeAction.NewAttributeTypeToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_NEW_ATTRIBUTE_TYPE );
         setActionDefinitionId( PluginConstants.CMD_NEW_ATTRIBUTE_TYPE );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW ) );

@@ -61,7 +61,7 @@ public class RenameProjectAction extends Action implements IWorkbenchWindowActio
      */
     public RenameProjectAction( TableViewer viewer )
     {
-        super( Messages.getString("RenameProjectAction.RenameProjectAction") ); //$NON-NLS-1$
+        super( Messages.getString( "RenameProjectAction.RenameProjectAction" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setId( PluginConstants.CMD_RENAME_PROJECT );
         setActionDefinitionId( PluginConstants.CMD_RENAME_PROJECT );

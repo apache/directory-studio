@@ -41,8 +41,8 @@ public class OpenHierarchyViewPreferencesAction extends Action
      */
     public OpenHierarchyViewPreferencesAction()
     {
-        super( Messages.getString("OpenHierarchyViewPreferencesAction.PreferencesAction") ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("OpenHierarchyViewPreferencesAction.PreferencesToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenHierarchyViewPreferencesAction.PreferencesAction" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenHierarchyViewPreferencesAction.PreferencesToolTip" ) ); //$NON-NLS-1$
         setEnabled( true );
     }
 

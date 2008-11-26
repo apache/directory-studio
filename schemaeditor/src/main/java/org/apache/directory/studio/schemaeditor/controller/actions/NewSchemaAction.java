@@ -46,8 +46,8 @@ public class NewSchemaAction extends Action implements IWorkbenchWindowActionDel
      */
     public NewSchemaAction()
     {
-        super( Messages.getString("NewSchemaAction.NewSchemaAction") ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("NewSchemaAction.NewSchemaToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "NewSchemaAction.NewSchemaAction" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "NewSchemaAction.NewSchemaToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_NEW_SCHEMA );
         setActionDefinitionId( PluginConstants.CMD_NEW_SCHEMA );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMA_NEW ) );

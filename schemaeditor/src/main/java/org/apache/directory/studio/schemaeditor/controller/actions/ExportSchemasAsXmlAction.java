@@ -57,7 +57,7 @@ public class ExportSchemasAsXmlAction extends Action implements IWorkbenchWindow
      */
     public ExportSchemasAsXmlAction( TreeViewer viewer )
     {
-        super( Messages.getString("ExportSchemasAsXmlAction.SchemaAsXMLFileAction") ); //$NON-NLS-1$
+        super( Messages.getString( "ExportSchemasAsXmlAction.SchemaAsXMLFileAction" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT ) );
         setEnabled( true );

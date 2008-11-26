@@ -194,8 +194,8 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
      */
     public LinkWithEditorSchemaViewAction( SchemaView view )
     {
-        super( Messages.getString("LinkWithEditorSchemaViewAction.LinkEditorAction"), AS_CHECK_BOX ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("LinkWithEditorSchemaViewAction.LinkEditorToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "LinkWithEditorSchemaViewAction.LinkEditorAction" ), AS_CHECK_BOX ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "LinkWithEditorSchemaViewAction.LinkEditorToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( false );
         this.view = view;

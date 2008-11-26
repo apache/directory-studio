@@ -47,7 +47,7 @@ public class RunCurrentSearchAgainAction extends Action implements IWorkbenchWin
      */
     public RunCurrentSearchAgainAction( SearchView view )
     {
-        super( Messages.getString("RunCurrentSearchAgainAction.RerunSearchAction") ); //$NON-NLS-1$
+        super( Messages.getString( "RunCurrentSearchAgainAction.RerunSearchAction" ) ); //$NON-NLS-1$
         setToolTipText( getText() );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_RUN_CURRENT_SEARCH_AGAIN ) );
         setEnabled( true );

@@ -61,8 +61,8 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
      */
     public OpenTypeHierarchyAction( TreeViewer viewer )
     {
-        super( Messages.getString("OpenTypeHierarchyAction.OpenTypeAction") ); //$NON-NLS-1$
-        setToolTipText( Messages.getString("OpenTypeHierarchyAction.OpenTypeToolTip") ); //$NON-NLS-1$
+        super( Messages.getString( "OpenTypeHierarchyAction.OpenTypeAction" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenTypeHierarchyAction.OpenTypeToolTip" ) ); //$NON-NLS-1$
         setId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setActionDefinitionId( PluginConstants.CMD_OPEN_TYPE_HIERARCHY );
         setEnabled( true );
@@ -166,8 +166,10 @@ public class OpenTypeHierarchyAction extends Action implements IWorkbenchWindowA
             }
             catch ( PartInitException e )
             {
-                PluginUtils.logError( Messages.getString("OpenTypeHierarchyAction.ErrorOpeningView"), e ); //$NON-NLS-1$
-                ViewUtils.displayErrorMessageBox( Messages.getString("OpenTypeHierarchyAction.Error"), Messages.getString("OpenTypeHierarchyAction.ErrorOpeningView") ); //$NON-NLS-1$
+                PluginUtils.logError( Messages.getString( "OpenTypeHierarchyAction.ErrorOpeningView" ), e ); //$NON-NLS-1$
+                ViewUtils
+                    .displayErrorMessageBox(
+                        Messages.getString( "OpenTypeHierarchyAction.Error" ), Messages.getString( "OpenTypeHierarchyAction.ErrorOpeningView" ) ); //$NON-NLS-1$
             }
         }
 
