@@ -29,6 +29,7 @@ import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -186,10 +187,7 @@ public class HierarchyView extends ViewPart
         {
             sb.append( Messages.getString("HierarchyView.None") ); //$NON-NLS-1$
         }
-        sb.append( " (" ); //$NON-NLS-1$
-        sb.append( object.getOid() );
-        sb.append( Messages.getString("HierarchyView.Schema") ); //$NON-NLS-1$
-        sb.append( object.getSchema() );
+        sb.append( NLS.bind( Messages.getString("HierarchyView.Schema"), new String[]{object.getOid(), object.getSchema()}) ); //$NON-NLS-1$
 
         overviewLabel.setText( sb.toString() );
     }
