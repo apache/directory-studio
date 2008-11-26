@@ -28,6 +28,7 @@ import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -70,7 +71,7 @@ public class ObjectClassEditorAttributesTableLabelProvider extends LabelProvider
             }
             else
             {
-                return Messages.getString("ObjectClassEditorAttributesTableLabelProvider.none") + at.getOid() + ")"; //$NON-NLS-2$
+                return NLS.bind( Messages.getString("ObjectClassEditorAttributesTableLabelProvider.none"), new String[]{at.getOid()}); //$NON-NLS-1$
             }
         }
         else if ( element instanceof NonExistingAttributeType )

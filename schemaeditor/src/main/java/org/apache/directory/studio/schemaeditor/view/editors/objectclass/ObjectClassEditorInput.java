@@ -23,6 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
@@ -97,7 +98,7 @@ public class ObjectClassEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return getName() + Messages.getString("ObjectClassEditorInput.FromSchemaBegin") + objectClass.getSchema() + Messages.getString("ObjectClassEditorInput.FromSchemaEnd");
+        return NLS.bind( Messages.getString("ObjectClassEditorInput.FromSchema"), new String[]{getName(), objectClass.getSchema()});
     }
 
 
