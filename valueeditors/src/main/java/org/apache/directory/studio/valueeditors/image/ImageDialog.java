@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ModifyEvent;
@@ -217,7 +218,7 @@ public class ImageDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("ImageDialog.ImageEditor") );
+        shell.setText( Messages.getString( "ImageDialog.ImageEditor" ) );
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_IMAGEEDITOR ) );
     }
 
@@ -286,22 +287,26 @@ public class ImageDialog extends Dialog
             currentImageLabel = createImageLabel( currentImageContainer );
 
             Composite currentImageInfoContainer = createImageInfoContainer( currentImageContainer );
-            currentImageTypeText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageType") );
-            currentImageSizeText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageSize") );
-            currentImageWidthText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageWidth") );
-            currentImageHeightText = createImageInfo( currentImageInfoContainer, Messages.getString("ImageDialog.ImageHeight") );
+            currentImageTypeText = createImageInfo( currentImageInfoContainer, Messages
+                .getString( "ImageDialog.ImageType" ) );
+            currentImageSizeText = createImageInfo( currentImageInfoContainer, Messages
+                .getString( "ImageDialog.ImageSize" ) );
+            currentImageWidthText = createImageInfo( currentImageInfoContainer, Messages
+                .getString( "ImageDialog.ImageWidth" ) );
+            currentImageHeightText = createImageInfo( currentImageInfoContainer, Messages
+                .getString( "ImageDialog.ImageHeight" ) );
 
             Composite currentImageSaveContainer = createImageInfoContainer( currentImageContainer );
             Label dummyLabel = BaseWidgetUtils.createLabel( currentImageSaveContainer, "", 1 ); //$NON-NLS-1$
             GridData gd = new GridData( GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL );
             dummyLabel.setLayoutData( gd );
-            currentImageSaveButton = createButton( currentImageSaveContainer, Messages.getString("ImageDialog.Save") );
+            currentImageSaveButton = createButton( currentImageSaveContainer, Messages.getString( "ImageDialog.Save" ) );
             currentImageSaveButton.addSelectionListener( new SelectionAdapter()
             {
                 public void widgetSelected( SelectionEvent event )
                 {
                     FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.SAVE );
-                    fileDialog.setText( Messages.getString("ImageDialog.SaveImage") );
+                    fileDialog.setText( Messages.getString( "ImageDialog.SaveImage" ) );
                     fileDialog.setFilterExtensions( new String[]
                         { "*.jpg" } ); //$NON-NLS-1$
                     String returnedFileName = fileDialog.open();
@@ -319,21 +324,21 @@ public class ImageDialog extends Dialog
                         {
 
                             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR,
-                                    Messages.getString("ImageDialog.CantWriteFile"), e ) );
+                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                                    .getString( "ImageDialog.CantWriteFile" ), e ) );
                         }
                         catch ( IOException e )
                         {
                             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR,
-                                    Messages.getString("ImageDialog.CantWriteFile"), e ) );
+                                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                                    .getString( "ImageDialog.CantWriteFile" ), e ) );
                         }
                     }
                 }
             } );
 
             currentTab = new TabItem( tabFolder, SWT.NONE );
-            currentTab.setText( Messages.getString("ImageDialog.CurrentImage") );
+            currentTab.setText( Messages.getString( "ImageDialog.CurrentImage" ) );
             currentTab.setControl( currentImageContainer );
         }
 
@@ -350,10 +355,10 @@ public class ImageDialog extends Dialog
         newImageLabel = createImageLabel( newImageContainer );
 
         Composite newImageInfoContainer = createImageInfoContainer( newImageContainer );
-        newImageTypeText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageType") );
-        newImageSizeText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageSize") );
-        newImageWidthText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageWidth") );
-        newImageHeightText = createImageInfo( newImageInfoContainer, Messages.getString("ImageDialog.ImageHeight") );
+        newImageTypeText = createImageInfo( newImageInfoContainer, Messages.getString( "ImageDialog.ImageType" ) );
+        newImageSizeText = createImageInfo( newImageInfoContainer, Messages.getString( "ImageDialog.ImageSize" ) );
+        newImageWidthText = createImageInfo( newImageInfoContainer, Messages.getString( "ImageDialog.ImageWidth" ) );
+        newImageHeightText = createImageInfo( newImageInfoContainer, Messages.getString( "ImageDialog.ImageHeight" ) );
 
         Composite newImageSelectContainer = createImageInfoContainer( newImageContainer );
         newImageFilenameText = new Text( newImageSelectContainer, SWT.SINGLE | SWT.BORDER );
@@ -366,13 +371,13 @@ public class ImageDialog extends Dialog
                 updateNewImageGroup();
             }
         } );
-        newImageBrowseButton = createButton( newImageSelectContainer, Messages.getString("ImageDialog.Browse") );
+        newImageBrowseButton = createButton( newImageSelectContainer, Messages.getString( "ImageDialog.Browse" ) );
         newImageBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
                 FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.OPEN );
-                fileDialog.setText( Messages.getString("ImageDialog.SelectImage") );
+                fileDialog.setText( Messages.getString( "ImageDialog.SelectImage" ) );
                 // fileDialog.setFilterExtensions(IMAGE_FILE_EXTENSIONS);
                 fileDialog.setFileName( new File( newImageFilenameText.getText() ).getName() );
                 fileDialog.setFilterPath( new File( newImageFilenameText.getText() ).getParent() );
@@ -385,7 +390,7 @@ public class ImageDialog extends Dialog
         } );
 
         newTab = new TabItem( tabFolder, SWT.NONE );
-        newTab.setText( Messages.getString("ImageDialog.NewImage") );
+        newTab.setText( Messages.getString( "ImageDialog.NewImage" ) );
         newTab.setControl( newImageContainer );
 
         applyDialogFont( composite );
@@ -416,14 +421,14 @@ public class ImageDialog extends Dialog
                     currentImageLabel.setImage( currentImage );
                     currentImageTypeText.setText( getImageType( imageData.type ) );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
-                    currentImageWidthText.setText( imageData.width + Messages.getString("ImageDialog.Pixel") );
-                    currentImageHeightText.setText( imageData.height + Messages.getString("ImageDialog.Pixel") );
+                    currentImageWidthText.setText( imageData.width + Messages.getString( "ImageDialog.Pixel" ) );
+                    currentImageHeightText.setText( imageData.height + Messages.getString( "ImageDialog.Pixel" ) );
                 }
                 catch ( SWTException swte )
                 {
                     currentImageLabel.setImage( null );
-                    currentImageLabel.setText( Messages.getString("ImageDialog.UsupportedFormatSpaces") );
-                    currentImageTypeText.setText( Messages.getString("ImageDialog.UnsupportedFormat") );
+                    currentImageLabel.setText( Messages.getString( "ImageDialog.UnsupportedFormatSpaces" ) );
+                    currentImageTypeText.setText( Messages.getString( "ImageDialog.UnsupportedFormat" ) );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
                     currentImageWidthText.setText( "-" ); //$NON-NLS-1$
                     currentImageHeightText.setText( "-" ); //$NON-NLS-1$
@@ -432,8 +437,8 @@ public class ImageDialog extends Dialog
             else
             {
                 currentImageLabel.setImage( null );
-                currentImageLabel.setText( Messages.getString("ImageDialog.NoImageSpaces") );
-                currentImageTypeText.setText( Messages.getString("ImageDialog.NoImage") );
+                currentImageLabel.setText( Messages.getString( "ImageDialog.NoImageSpaces" ) );
+                currentImageTypeText.setText( Messages.getString( "ImageDialog.NoImage" ) );
                 currentImageSizeText.setText( "-" ); //$NON-NLS-1$
                 currentImageWidthText.setText( "-" ); //$NON-NLS-1$
                 currentImageHeightText.setText( "-" ); //$NON-NLS-1$
@@ -476,7 +481,7 @@ public class ImageDialog extends Dialog
             {
                 newImageRawData = null;
                 newImageLabel.setImage( null );
-                newImageLabel.setText( Messages.getString("ImageDialog.ErrorFileNotFound") );
+                newImageLabel.setText( Messages.getString( "ImageDialog.ErrorFileNotFound" ) );
                 newImageTypeText.setText( "-" ); //$NON-NLS-1$
                 newImageSizeText.setText( "-" ); //$NON-NLS-1$
                 newImageWidthText.setText( "-" ); //$NON-NLS-1$
@@ -486,7 +491,8 @@ public class ImageDialog extends Dialog
             {
                 newImageRawData = null;
                 newImageLabel.setImage( null );
-                newImageLabel.setText( Messages.getString("ImageDialog.CantReadFileBegin") + e.getMessage() + Messages.getString("ImageDialog.CantReadFileEnd") );
+                newImageLabel.setText( NLS.bind(
+                    Messages.getString( "ImageDialog.CantReadFile" ), new String[] { e.getMessage() } ) ); //$NON-NLS-1$
                 newImageTypeText.setText( "-" ); //$NON-NLS-1$
                 newImageSizeText.setText( "-" ); //$NON-NLS-1$
                 newImageWidthText.setText( "-" ); //$NON-NLS-1$
@@ -497,7 +503,7 @@ public class ImageDialog extends Dialog
         {
             newImageRawData = null;
             newImageLabel.setImage( null );
-            newImageLabel.setText( Messages.getString("ImageDialog.NoImageSelected") );
+            newImageLabel.setText( Messages.getString( "ImageDialog.NoImageSelected" ) );
             newImageTypeText.setText( "-" ); //$NON-NLS-1$
             newImageSizeText.setText( "-" ); //$NON-NLS-1$
             newImageWidthText.setText( "-" ); //$NON-NLS-1$
@@ -514,18 +520,21 @@ public class ImageDialog extends Dialog
                 newImageTypeText.setText( getImageType( imageData.type ) );
                 if ( imageData.type != requiredImageType )
                 {
-                    newImageTypeText.setText( newImageTypeText.getText() + Messages.getString("ImageDialog.WillBeConvertedStart")
-                        + getImageType( requiredImageType ) + Messages.getString("ImageDialog.WillBeConvertedEnd") );
+                    newImageTypeText
+                        .setText( newImageTypeText.getText()
+                            + NLS
+                                .bind(
+                                    Messages.getString( "ImageDialog.WillBeConverted" ), new String[] { getImageType( requiredImageType ) } ) ); //$NON-NLS-1$
                 }
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
-                newImageWidthText.setText( imageData.width + Messages.getString("ImageDialog.Pixel") );
-                newImageHeightText.setText( imageData.height + Messages.getString("ImageDialog.Pixel") );
+                newImageWidthText.setText( imageData.width + Messages.getString( "ImageDialog.Pixel" ) );
+                newImageHeightText.setText( imageData.height + Messages.getString( "ImageDialog.Pixel" ) );
             }
             catch ( SWTException swte )
             {
                 newImageLabel.setImage( null );
-                newImageLabel.setText( Messages.getString("ImageDialog.UnsupportedFormatSpaces") );
-                newImageTypeText.setText( Messages.getString("ImageDialog.UnsupportedFormat") );
+                newImageLabel.setText( Messages.getString( "ImageDialog.UnsupportedFormatSpaces" ) );
+                newImageTypeText.setText( Messages.getString( "ImageDialog.UnsupportedFormat" ) );
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
                 newImageWidthText.setText( "-" ); //$NON-NLS-1$
                 newImageHeightText.setText( "-" ); //$NON-NLS-1$
@@ -689,15 +698,17 @@ public class ImageDialog extends Dialog
     {
         if ( length > 1000000 )
         {
-            return ( length / 1000000 ) + Messages.getString("ImageDialog.MBStart") + length + Messages.getString("ImageDialog.MDEnd");
+            return ( length / 1000000 ) + NLS.bind( Messages.getString( "ImageDialog.MB" ), new int[]
+                { length } ); //$NON-NLS-1$
         }
         else if ( length > 1000 )
         {
-            return ( length / 1000 ) + Messages.getString("ImageDialog.KBStart") + length + Messages.getString("ImageDialog.KBEnd");
+            return ( length / 1000 ) + NLS.bind( Messages.getString( "ImageDialog.KB" ), new int[]
+                { length } ); //$NON-NLS-1$
         }
         else
         {
-            return length + Messages.getString("ImageDialog.Bytes");
+            return length + Messages.getString( "ImageDialog.Bytes" );
         }
     }
 
@@ -717,7 +728,7 @@ public class ImageDialog extends Dialog
             return "NULL"; //$NON-NLS-1$
         }
 
-        String text = Messages.getString("ImageDialog.ImageStart") + imageRawData.length + Messages.getString("ImageDialog.ImageEnd");
+        String text = NLS.bind( Messages.getString( "ImageDialog.Image" ), new int[] { imageRawData.length } ); //$NON-NLS-1$
         try
         {
             ByteArrayInputStream bais = new ByteArrayInputStream( imageRawData );
@@ -727,12 +738,14 @@ public class ImageDialog extends Dialog
             if ( !"".equals( typePrefix ) ) //$NON-NLS-1$
                 typePrefix += "-"; //$NON-NLS-1$
 
-            text = typePrefix + Messages.getString("ImageDialog.ImageStart") + imageData.width + "x" + imageData.height + Messages.getString("ImageDialog.ComaPixel") + imageRawData.length //$NON-NLS-2$
-                + Messages.getString("ImageDialog.ImageEnd");
+            text = typePrefix
+                + NLS
+                    .bind(
+                        Messages.getString( "ImageDialog.Pixel" ), new int[] { imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-2$
         }
         catch ( SWTException swte )
         {
-            text = Messages.getString("ImageDialog.InvalidImageBegin") + imageRawData.length + Messages.getString("ImageDialog.InvalidImageEnd");
+            text = NLS.bind( Messages.getString( "ImageDialog.InvalidImage" ), new int[] { imageRawData.length } ); //$NON-NLS-1$
         }
         return text;
     }
