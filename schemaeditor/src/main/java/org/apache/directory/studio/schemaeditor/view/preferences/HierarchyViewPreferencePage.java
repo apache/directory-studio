@@ -71,7 +71,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         super();
         super.setPreferenceStore( Activator.getDefault().getPreferenceStore() );
-        super.setDescription( Messages.getString("HierarchyViewPreferencePage.GeneralSettings") ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "HierarchyViewPreferencePage.GeneralSettings" ) ); //$NON-NLS-1$
     }
 
 
@@ -87,7 +87,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         // Label Group
         Group labelGroup = new Group( composite, SWT.NONE );
         labelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        labelGroup.setText( Messages.getString("HierarchyViewPreferencePage.Label") ); //$NON-NLS-1$
+        labelGroup.setText( Messages.getString( "HierarchyViewPreferencePage.Label" ) ); //$NON-NLS-1$
         labelGroup.setLayout( new GridLayout() );
         Composite labelGroupComposite = new Composite( labelGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 1, false );
@@ -106,18 +106,20 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Use Label
         Label useLabel = new Label( labelComposite, SWT.NONE );
-        useLabel.setText( Messages.getString("HierarchyViewPreferencePage.Use") ); //$NON-NLS-1$
+        useLabel.setText( Messages.getString( "HierarchyViewPreferencePage.Use" ) ); //$NON-NLS-1$
 
         // Label Combo
         labelCombo = new Combo( labelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
         labelCombo.setLayoutData( new GridData() );
-        labelCombo.setItems( new String[]
-            { Messages.getString("HierarchyViewPreferencePage.FirstName"), Messages.getString("HierarchyViewPreferencePage.AllAliases"), Messages.getString("HierarchyViewPreferencePage.OID") } ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        labelCombo
+            .setItems( new String[]
+                {
+                    Messages.getString( "HierarchyViewPreferencePage.FirstName" ), Messages.getString( "HierarchyViewPreferencePage.AllAliases" ), Messages.getString( "HierarchyViewPreferencePage.OID" ) } ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         labelCombo.setEnabled( true );
 
         // As label Label
         Label asLabel = new Label( labelComposite, SWT.NONE );
-        asLabel.setText( Messages.getString("HierarchyViewPreferencePage.AsLabel") ); //$NON-NLS-1$
+        asLabel.setText( Messages.getString( "HierarchyViewPreferencePage.AsLabel" ) ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite = new Composite( labelGroupComposite, SWT.NONE );
@@ -130,7 +132,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Limit label lenght to Label
         limitButton = new Button( abbreviateComposite, SWT.CHECK );
-        limitButton.setText( Messages.getString("HierarchyViewPreferencePage.LimitLabel") ); //$NON-NLS-1$
+        limitButton.setText( Messages.getString( "HierarchyViewPreferencePage.LimitLabel" ) ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         limitButton.setLayoutData( gd );
@@ -159,12 +161,12 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Characters Label
         Label charactersLabel = new Label( abbreviateComposite, SWT.NONE );
-        charactersLabel.setText( Messages.getString("HierarchyViewPreferencePage.Characters") ); //$NON-NLS-1$
+        charactersLabel.setText( Messages.getString( "HierarchyViewPreferencePage.Characters" ) ); //$NON-NLS-1$
 
         // Secondary Label Group
         Group secondaryLabelGroup = new Group( composite, SWT.NONE );
         secondaryLabelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        secondaryLabelGroup.setText( Messages.getString("HierarchyViewPreferencePage.SecondaryLabel") ); //$NON-NLS-1$
+        secondaryLabelGroup.setText( Messages.getString( "HierarchyViewPreferencePage.SecondaryLabel" ) ); //$NON-NLS-1$
         secondaryLabelGroup.setLayout( new GridLayout() );
         Composite secondaryLabelGroupComposite = new Composite( secondaryLabelGroup, SWT.NONE );
         gl = new GridLayout( 1, false );
@@ -173,7 +175,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
         secondaryLabelGroupComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         secondaryLabelButtonDisplay = new Button( secondaryLabelGroupComposite, SWT.CHECK );
-        secondaryLabelButtonDisplay.setText( Messages.getString("HierarchyViewPreferencePage.DisplaySecondaryLabel") ); //$NON-NLS-1$
+        secondaryLabelButtonDisplay.setText( Messages.getString( "HierarchyViewPreferencePage.DisplaySecondaryLabel" ) ); //$NON-NLS-1$
 
         // Label row composite
         Composite secondaryLabelComposite = new Composite( secondaryLabelGroupComposite, SWT.NONE );
@@ -186,18 +188,20 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Use Label
         Label useLabel2 = new Label( secondaryLabelComposite, SWT.NONE );
-        useLabel2.setText( Messages.getString("HierarchyViewPreferencePage.Use") ); //$NON-NLS-1$
+        useLabel2.setText( Messages.getString( "HierarchyViewPreferencePage.Use" ) ); //$NON-NLS-1$
 
         // Label Combo
         secondaryLabelCombo = new Combo( secondaryLabelComposite, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
         secondaryLabelCombo.setLayoutData( new GridData() );
-        secondaryLabelCombo.setItems( new String[]
-            { Messages.getString("HierarchyViewPreferencePage.FirstName"), Messages.getString("HierarchyViewPreferencePage.AllAliases"), Messages.getString("HierarchyViewPreferencePage.OID") } ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        secondaryLabelCombo
+            .setItems( new String[]
+                {
+                    Messages.getString( "HierarchyViewPreferencePage.FirstName" ), Messages.getString( "HierarchyViewPreferencePage.AllAliases" ), Messages.getString( "HierarchyViewPreferencePage.OID" ) } ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         secondaryLabelCombo.setEnabled( true );
 
         // As label Label
         Label asLabel2 = new Label( secondaryLabelComposite, SWT.NONE );
-        asLabel2.setText( Messages.getString("HierarchyViewPreferencePage.AsSecondaryLabel") ); //$NON-NLS-1$
+        asLabel2.setText( Messages.getString( "HierarchyViewPreferencePage.AsSecondaryLabel" ) ); //$NON-NLS-1$
 
         // Abbreviate row composite
         Composite abbreviateComposite2 = new Composite( secondaryLabelGroup, SWT.NONE );
@@ -210,7 +214,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Limit label length to Label
         secondaryLabelLimitButton = new Button( abbreviateComposite2, SWT.CHECK );
-        secondaryLabelLimitButton.setText( Messages.getString("HierarchyViewPreferencePage.LimitSecondaryLabel") ); //$NON-NLS-1$
+        secondaryLabelLimitButton.setText( Messages.getString( "HierarchyViewPreferencePage.LimitSecondaryLabel" ) ); //$NON-NLS-1$
         gd = new GridData();
         gd.horizontalSpan = 1;
         secondaryLabelLimitButton.setLayoutData( gd );
@@ -239,7 +243,7 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         // Characters Label
         Label secondaryLabelcharactersLabel = new Label( abbreviateComposite2, SWT.NONE );
-        secondaryLabelcharactersLabel.setText( Messages.getString("HierarchyViewPreferencePage.Characters") ); //$NON-NLS-1$
+        secondaryLabelcharactersLabel.setText( Messages.getString( "HierarchyViewPreferencePage.Characters" ) ); //$NON-NLS-1$
 
         initFieldsFromPreferences();
 
@@ -371,17 +375,20 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
     {
         IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
-        if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( Messages.getString("HierarchyViewPreferencePage.FirstName") ) ) //$NON-NLS-1$
+        if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals(
+            Messages.getString( "HierarchyViewPreferencePage.FirstName" ) ) ) //$NON-NLS-1$
         {
             store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL,
                 PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
         }
-        else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( Messages.getString("HierarchyViewPreferencePage.AllAliases") ) ) //$NON-NLS-1$
+        else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals(
+            Messages.getString( "HierarchyViewPreferencePage.AllAliases" ) ) ) //$NON-NLS-1$
         {
             store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL,
                 PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         }
-        else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals( Messages.getString("HierarchyViewPreferencePage.OID") ) ) //$NON-NLS-1$
+        else if ( labelCombo.getItem( labelCombo.getSelectionIndex() ).equals(
+            Messages.getString( "HierarchyViewPreferencePage.OID" ) ) ) //$NON-NLS-1$
         {
             store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_LABEL, PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
         }
@@ -390,17 +397,20 @@ public class HierarchyViewPreferencePage extends PreferencePage implements IWork
 
         store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL_DISPLAY, secondaryLabelButtonDisplay
             .getSelection() );
-        if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( Messages.getString("HierarchyViewPreferencePage.FirstName") ) ) //$NON-NLS-1$
+        if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals(
+            Messages.getString( "HierarchyViewPreferencePage.FirstName" ) ) ) //$NON-NLS-1$
         {
             store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
                 PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_FIRST_NAME );
         }
-        else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( Messages.getString("HierarchyViewPreferencePage.AllAliases") ) ) //$NON-NLS-1$
+        else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals(
+            Messages.getString( "HierarchyViewPreferencePage.AllAliases" ) ) ) //$NON-NLS-1$
         {
             store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
                 PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_ALL_ALIASES );
         }
-        else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals( Messages.getString("HierarchyViewPreferencePage.OID") ) ) //$NON-NLS-1$
+        else if ( secondaryLabelCombo.getItem( secondaryLabelCombo.getSelectionIndex() ).equals(
+            Messages.getString( "HierarchyViewPreferencePage.OID" ) ) ) //$NON-NLS-1$
         {
             store.setValue( PluginConstants.PREFS_HIERARCHY_VIEW_SECONDARY_LABEL,
                 PluginConstants.PREFS_HIERARCHY_VIEW_LABEL_OID );
