@@ -51,7 +51,8 @@ public class ATESuperiorComboLabelProvider extends LabelProvider
             }
             else
             {
-                return NLS.bind( Messages.getString("ATESuperiorComboLabelProvider.None"),new String[]{ at.getOid()}); //$NON-NLS-1$
+                return NLS.bind(
+                    Messages.getString( "ATESuperiorComboLabelProvider.None" ), new String[] { at.getOid() } ); //$NON-NLS-1$
             }
         }
         else if ( obj instanceof NonExistingAttributeType )

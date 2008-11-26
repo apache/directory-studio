@@ -88,7 +88,7 @@ public class AttributeTypeEditor extends FormEditor
             {
                 if ( !sourceCode.canLeaveThePage() )
                 {
-                    notifyError( Messages.getString("AttributeTypeEditor.CodeErrors") );
+                    notifyError( Messages.getString( "AttributeTypeEditor.CodeErrors" ) );
                     return;
                 }
 
@@ -193,7 +193,7 @@ public class AttributeTypeEditor extends FormEditor
         // Verifying if there is an error on the source code page
         if ( !sourceCode.canLeaveThePage() )
         {
-            notifyError( Messages.getString("AttributeTypeEditor.AttributeErrors") );
+            notifyError( Messages.getString( "AttributeTypeEditor.AttributeErrors" ) );
             monitor.setCanceled( true );
             return;
         }

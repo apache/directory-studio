@@ -106,7 +106,7 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
      */
     public AttributeTypeEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString("AttributeTypeEditorSourceCodePage.SourceCode") );
+        super( editor, ID, Messages.getString( "AttributeTypeEditorSourceCodePage.SourceCode" ) );
     }
 
 
@@ -147,7 +147,8 @@ public class AttributeTypeEditorSourceCodePage extends FormPage
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
+            PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

@@ -100,7 +100,8 @@ public class AttributeTypeEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return NLS.bind( Messages.getString("AttributeTypeEditorInput.FromSchema"),new String[]{ getName(), attributeType.getSchema()});
+        return NLS.bind( Messages.getString( "AttributeTypeEditorInput.FromSchema" ), new String[]
+            { getName(), attributeType.getSchema() } );
     }
 
 

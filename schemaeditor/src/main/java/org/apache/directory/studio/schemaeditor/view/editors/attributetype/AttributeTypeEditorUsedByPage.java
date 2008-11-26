@@ -210,7 +210,7 @@ public class AttributeTypeEditorUsedByPage extends FormPage
      */
     public AttributeTypeEditorUsedByPage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString("AttributeTypeEditorUsedByPage.UsedBy") );
+        super( editor, ID, Messages.getString( "AttributeTypeEditorUsedByPage.UsedBy" ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
         schemaHandler.addListener( schemaHandlerListener );
     }
@@ -244,7 +244,8 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         addListeners();
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
+            PluginConstants.PLUGIN_ID + "." + "attribute_type_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -264,13 +265,19 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
-            mandatoryAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatory"), new String[]{ ViewUtils.concateAliases( names )}) ); //$NON-NLS-1$
+            mandatoryAttributeSection
+                .setDescription( NLS
+                    .bind(
+                        Messages.getString( "AttributeTypeEditorUsedByPage.AttributeTypeMandatory" ), new String[] { ViewUtils.concateAliases( names ) } ) ); //$NON-NLS-1$
         }
         else
         {
-            mandatoryAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeMandatory"), new String[]{modifiedAttributeType.getOid()}) ); //$NON-NLS-1$
+            mandatoryAttributeSection
+                .setDescription( NLS
+                    .bind(
+                        Messages.getString( "AttributeTypeEditorUsedByPage.AttributeTypeMandatory" ), new String[] { modifiedAttributeType.getOid() } ) ); //$NON-NLS-1$
         }
-        mandatoryAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.AsMandatoryAttribute") );
+        mandatoryAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.AsMandatoryAttribute" ) );
 
         // Creating the layout of the section
         Composite mandatoryAttributeSectionClient = toolkit.createComposite( mandatoryAttributeSection );
@@ -305,13 +312,19 @@ public class AttributeTypeEditorUsedByPage extends FormPage
         String names[] = modifiedAttributeType.getNamesRef();
         if ( ( names != null ) && ( names.length > 0 ) )
         {
-            optionalAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptional"),new String[]{ViewUtils.concateAliases( names )}) ); //$NON-NLS-1$
+            optionalAttributeSection
+                .setDescription( NLS
+                    .bind(
+                        Messages.getString( "AttributeTypeEditorUsedByPage.AttributeTypeOptional" ), new String[] { ViewUtils.concateAliases( names ) } ) ); //$NON-NLS-1$
         }
         else
         {
-            optionalAttributeSection.setDescription( NLS.bind( Messages.getString("AttributeTypeEditorUsedByPage.AttributeTypeOptional"), new String[]{modifiedAttributeType.getOid()}) ); //$NON-NLS-1$
+            optionalAttributeSection
+                .setDescription( NLS
+                    .bind(
+                        Messages.getString( "AttributeTypeEditorUsedByPage.AttributeTypeOptional" ), new String[] { modifiedAttributeType.getOid() } ) ); //$NON-NLS-1$
         }
-        optionalAttributeSection.setText( Messages.getString("AttributeTypeEditorUsedByPage.AsOptionalAttribute") );
+        optionalAttributeSection.setText( Messages.getString( "AttributeTypeEditorUsedByPage.AsOptionalAttribute" ) );
 
         // Creating the layout of the section
         Composite optionalAttributeSectionClient = toolkit.createComposite( optionalAttributeSection );

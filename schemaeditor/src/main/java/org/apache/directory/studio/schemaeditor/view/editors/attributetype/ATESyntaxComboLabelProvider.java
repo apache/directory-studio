@@ -50,7 +50,8 @@ public class ATESyntaxComboLabelProvider extends LabelProvider
             }
             else
             {
-                return NLS.bind( Messages.getString("ATESyntaxComboLabelProvider.None"), new String[]{ syntax.getOid()}); //$NON-NLS-1$
+                return NLS.bind(
+                    Messages.getString( "ATESyntaxComboLabelProvider.None" ), new String[] { syntax.getOid() } ); //$NON-NLS-1$
             }
         }
         else if ( obj instanceof NonExistingSyntax )
