@@ -63,13 +63,13 @@ public class CoreSchemasSelectionWidget
 
     /** The array containing the 'core' from Apache DS */
     private static final String[] coreSchemasFromApacheDS = new String[]
-        { "apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp",
-            "inetorgperson", "java", "krb5kdc", "mozilla", "nis", "samba", "system" };
+        { "apache", "apachedns", "apachemeta", "autofs", "collective", "corba", "core", "cosine", "dhcp", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+            "inetorgperson", "java", "krb5kdc", "mozilla", "nis", "samba", "system" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
     /** The array containing the 'core' from OpenLDAP */
     private static final String[] coreSchemasFromOpenLdap = new String[]
-        { "corba", "core", "cosine", "dyngroup", "inetorgperson", "java", "misc", "nis", "openldap", "ppolicy",
-            "system" };
+        { "corba", "core", "cosine", "dyngroup", "inetorgperson", "java", "misc", "nis", "openldap", "ppolicy", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+            "system" }; //$NON-NLS-1$
 
     // UI Fields
     private Button typeApacheDSButton;
@@ -93,13 +93,13 @@ public class CoreSchemasSelectionWidget
 
         // Server Type Group
         Group serverTypeGroup = new Group( composite, SWT.NONE );
-        serverTypeGroup.setText( "Server Type" );
+        serverTypeGroup.setText( Messages.getString( "CoreSchemasSelectionWidget.ServerType" ) ); //$NON-NLS-1$
         serverTypeGroup.setLayout( new GridLayout( 2, false ) );
         serverTypeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Type Apache DS Button
         typeApacheDSButton = new Button( serverTypeGroup, SWT.RADIO );
-        typeApacheDSButton.setText( "Apache DS" );
+        typeApacheDSButton.setText( Messages.getString( "CoreSchemasSelectionWidget.ApacheDS" ) ); //$NON-NLS-1$
         typeApacheDSButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -110,7 +110,7 @@ public class CoreSchemasSelectionWidget
 
         // Type OpenLDAP Button
         typeOpenLDAPButton = new Button( serverTypeGroup, SWT.RADIO );
-        typeOpenLDAPButton.setText( "OpenLDAP" );
+        typeOpenLDAPButton.setText( Messages.getString( "CoreSchemasSelectionWidget.OpenLDAP" ) ); //$NON-NLS-1$
         typeOpenLDAPButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -121,7 +121,7 @@ public class CoreSchemasSelectionWidget
 
         // Core Schemas Label
         Label coreSchemaslabel = new Label( composite, SWT.NONE );
-        coreSchemaslabel.setText( "Choose the 'core' schemas to include:" );
+        coreSchemaslabel.setText( Messages.getString( "CoreSchemasSelectionWidget.ChooseCoreSchemas" ) ); //$NON-NLS-1$
         coreSchemaslabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Core Schemas TableViewer
@@ -140,7 +140,7 @@ public class CoreSchemasSelectionWidget
         } );
 
         Button coreSchemasTableSelectAllButton = new Button( composite, SWT.PUSH );
-        coreSchemasTableSelectAllButton.setText( "Select All" );
+        coreSchemasTableSelectAllButton.setText( Messages.getString( "CoreSchemasSelectionWidget.SelectAll" ) ); //$NON-NLS-1$
         coreSchemasTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         coreSchemasTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -151,7 +151,7 @@ public class CoreSchemasSelectionWidget
         } );
 
         Button coreSchemasTableDeselectAllButton = new Button( composite, SWT.PUSH );
-        coreSchemasTableDeselectAllButton.setText( "Deselect All" );
+        coreSchemasTableDeselectAllButton.setText( Messages.getString( "CoreSchemasSelectionWidget.DeselectAll" ) ); //$NON-NLS-1$
         coreSchemasTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         coreSchemasTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {

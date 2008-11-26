@@ -42,8 +42,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
 {
-    private static final String NONE = "(None)";
-
     /** The preferences store */
     private IPreferenceStore store;
 
@@ -122,7 +120,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -134,7 +132,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
@@ -151,7 +149,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -193,7 +191,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -205,7 +203,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
             else if ( labelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
@@ -222,7 +220,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                 }
                 else
                 {
-                    label = NONE;
+                    label = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                 }
             }
 
@@ -236,7 +234,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
         {
             Folder folder = ( Folder ) element;
 
-            return folder.getName() + " (" + folder.getChildren().size() + ")";
+            return folder.getName() + " (" + folder.getChildren().size() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Secondary Label
@@ -274,7 +272,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -286,7 +284,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )
@@ -325,7 +323,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_ALL_ALIASES )
@@ -337,7 +335,7 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                     }
                     else
                     {
-                        secondaryLabel = NONE;
+                        secondaryLabel = Messages.getString( "DifferencesWidgetSchemaLabelProvider.None" ); //$NON-NLS-1$
                     }
                 }
                 else if ( secondaryLabelValue == PluginConstants.PREFS_SCHEMA_VIEW_LABEL_OID )

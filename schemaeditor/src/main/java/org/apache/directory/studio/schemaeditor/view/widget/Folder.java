@@ -54,10 +54,7 @@ public class Folder
     private FolderType type = FolderType.NONE;
 
     /** The name of the Folder */
-    private String name = "";
-
-    private static final String NAME_AT = "Attribute Types";
-    private static final String NAME_OC = "Object Classes";
+    private String name = ""; //$NON-NLS-1$
 
 
     /**
@@ -75,10 +72,10 @@ public class Folder
         switch ( type )
         {
             case ATTRIBUTE_TYPE:
-                name = NAME_AT;
+                name = Messages.getString( "Folder.AttributeTypes" ); //$NON-NLS-1$
                 break;
             case OBJECT_CLASS:
-                name = NAME_OC;
+                name = Messages.getString( "Folder.ObjectClasses" ); //$NON-NLS-1$
                 break;
         }
     }

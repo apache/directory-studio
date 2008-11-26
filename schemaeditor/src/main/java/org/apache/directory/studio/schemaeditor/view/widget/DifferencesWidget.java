@@ -143,7 +143,7 @@ public class DifferencesWidget
         // Creating the 'Menu' ToolBar item
         final ToolItem leftMenuToolItem = new ToolItem( leftToolBar, SWT.PUSH );
         leftMenuToolItem.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TOOLBAR_MENU ) );
-        leftMenuToolItem.setToolTipText( "Menu" );
+        leftMenuToolItem.setToolTipText( Messages.getString( "DifferencesWidget.MenuToolTip" ) ); //$NON-NLS-1$
         // Creating the associated Menu
         final Menu leftMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
         // Adding the action to display the Menu when the item is clicked
@@ -160,7 +160,7 @@ public class DifferencesWidget
         } );
         // Adding the 'Sorting...' MenuItem
         MenuItem sortingMenuItem = new MenuItem( leftMenu, SWT.PUSH );
-        sortingMenuItem.setText( "Sorting..." );
+        sortingMenuItem.setText( Messages.getString( "DifferencesWidget.Sorting" ) ); //$NON-NLS-1$
         sortingMenuItem.setImage( Activator.getDefault().getImage( PluginConstants.IMG_SORTING ) );
         sortingMenuItem.addSelectionListener( new SelectionAdapter()
         {
@@ -173,7 +173,7 @@ public class DifferencesWidget
         new MenuItem( leftMenu, SWT.SEPARATOR );
         // Adding the 'Preferences...' MenuItem
         MenuItem preferencesMenuItem = new MenuItem( leftMenu, SWT.PUSH );
-        preferencesMenuItem.setText( "Preferences..." );
+        preferencesMenuItem.setText( Messages.getString( "DifferencesWidget.Preferences" ) ); //$NON-NLS-1$
         preferencesMenuItem.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent arg0 )
@@ -249,7 +249,7 @@ public class DifferencesWidget
         // Creating the 'Menu' ToolBar item
         final ToolItem rightMenuToolItem = new ToolItem( rightToolBar, SWT.PUSH );
         rightMenuToolItem.setImage( Activator.getDefault().getImage( PluginConstants.IMG_TOOLBAR_MENU ) );
-        rightMenuToolItem.setToolTipText( "Menu" );
+        rightMenuToolItem.setToolTipText( Messages.getString( "DifferencesWidget.MenuToolTip" ) ); //$NON-NLS-1$
         // Creating the associated Menu
         final Menu rightMenu = new Menu( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.POP_UP );
         // Adding the action to display the Menu when the item is clicked
@@ -266,7 +266,7 @@ public class DifferencesWidget
         } );
         // Adding the 'Group By Property' MenuItem
         groupByProperty = new MenuItem( rightMenu, SWT.CHECK );
-        groupByProperty.setText( "Group By Property" );
+        groupByProperty.setText( Messages.getString( "DifferencesWidget.GroupByProperty" ) ); //$NON-NLS-1$
         groupByProperty.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent arg0 )
@@ -276,7 +276,7 @@ public class DifferencesWidget
         } );
         // Adding the 'Group By Type' MenuItem
         groupByType = new MenuItem( rightMenu, SWT.CHECK );
-        groupByType.setText( "Group By Type" );
+        groupByType.setText( Messages.getString( "DifferencesWidget.GroupByType" ) ); //$NON-NLS-1$
         groupByType.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent arg0 )
