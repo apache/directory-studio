@@ -26,6 +26,7 @@ import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
@@ -52,7 +53,7 @@ public class PropertiesAction extends StudioAction
      */
     public String getText()
     {
-        return Messages.getString("PropertiesAction.Properties");
+        return Messages.getString( "PropertiesAction.Properties" );
     }
 
 
@@ -106,7 +107,8 @@ public class PropertiesAction extends StudioAction
             PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), element, pageId, null, null );
             if ( dialog != null )
                 title = Utils.shorten( title, 30 );
-            dialog.getShell().setText( Messages.getString("PropertiesAction.PropertiesForStart") + title + Messages.getString("PropertiesAction.PropertiesForEnd") );
+            dialog.getShell().setText(
+                NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), new String[] { title } ) ); //$NON-NLS-1$
             dialog.open();
 
         }

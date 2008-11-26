@@ -26,6 +26,7 @@ import org.apache.directory.studio.connection.core.Credentials;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.ui.dialogs.CredentialsDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -61,9 +62,12 @@ public class UIAuthHandler implements IAuthHandler
             {
                 public void run()
                 {
-                    CredentialsDialog dialog = new CredentialsDialog( PlatformUI.getWorkbench().getDisplay()
-                        .getActiveShell(), Messages.getString("UIAuthHandler.EnterPasswordForStart") + connectionParameter.getName() + Messages.getString("UIAuthHandler.EnterPasswordForEnd"),
-                        Messages.getString("UIAuthHandler.PleaseEnterPasswordOfUser") + connectionParameter.getBindPrincipal() + ":", "", null ); //$NON-NLS-2$ //$NON-NLS-3$
+                    CredentialsDialog dialog = new CredentialsDialog(
+                        PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+                        NLS
+                            .bind(
+                                Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
+                        Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ) + connectionParameter.getBindPrincipal() + ":", "", null ); //$NON-NLS-2$ //$NON-NLS-3$
                     if ( dialog.open() == CredentialsDialog.OK )
                     {
                         pw[0] = dialog.getValue();
