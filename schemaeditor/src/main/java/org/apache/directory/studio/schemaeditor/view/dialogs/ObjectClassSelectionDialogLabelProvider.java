@@ -26,6 +26,7 @@ import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -68,7 +69,7 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
             }
             else
             {
-                return Messages.getString("ObjectClassSelectionDialogLabelProvider.None") + oc.getOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                return NLS.bind( Messages.getString("ObjectClassSelectionDialogLabelProvider.None"), new String[]{oc.getOid()}); //$NON-NLS-1$
             }
         }
 

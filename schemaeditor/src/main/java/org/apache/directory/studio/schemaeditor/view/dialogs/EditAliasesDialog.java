@@ -28,6 +28,7 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
@@ -450,7 +451,7 @@ public class EditAliasesDialog extends Dialog
             else if ( !PluginUtils.verifyName( alias ) )
             {
                 errorComposite.setVisible( true );
-                errorLabel.setText( Messages.getString("EditAliasesDialog.TheAliasBegin") + alias + Messages.getString("EditAliasesDialog.TheAliasEnd") );
+                errorLabel.setText( NLS.bind( Messages.getString("EditAliasesDialog.TheAliasBegin"), new String[]{ alias}) );
             }
         }
     }
