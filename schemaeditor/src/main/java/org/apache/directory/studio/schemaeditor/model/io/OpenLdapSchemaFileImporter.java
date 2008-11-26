@@ -85,7 +85,7 @@ public class OpenLdapSchemaFileImporter
         {
             ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
             throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
-                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectlyBegin" ), new String[]
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[]
                 { path } ) //$NON-NLS-1$
                 + ( exceptionMessage == null ? "" : NLS.bind( Messages
                     .getString( "OpenLdapSchemaFileImporter.ErrorMessage" ), new String[]
