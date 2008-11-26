@@ -69,7 +69,8 @@ public class ObjectClassSelectionDialogLabelProvider extends LabelProvider
             }
             else
             {
-                return NLS.bind( Messages.getString("ObjectClassSelectionDialogLabelProvider.None"), new String[]{oc.getOid()}); //$NON-NLS-1$
+                return NLS.bind(
+                    Messages.getString( "ObjectClassSelectionDialogLabelProvider.None" ), new String[] { oc.getOid() } ); //$NON-NLS-1$
             }
         }
 

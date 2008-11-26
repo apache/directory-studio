@@ -69,7 +69,9 @@ public class AttributeTypeSelectionDialogLabelProvider extends LabelProvider
             }
             else
             {
-                return NLS.bind( Messages.getString("AttributeTypeSelectionDialogLabelProvider.None"), new String[]{at.getOid()}); //$NON-NLS-1$
+                return NLS
+                    .bind(
+                        Messages.getString( "AttributeTypeSelectionDialogLabelProvider.None" ), new String[] { at.getOid() } ); //$NON-NLS-1$
             }
         }
 

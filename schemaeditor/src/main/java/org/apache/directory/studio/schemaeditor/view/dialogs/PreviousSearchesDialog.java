@@ -82,7 +82,7 @@ public class PreviousSearchesDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("PreviousSearchesDialog.Previous") );
+        newShell.setText( Messages.getString( "PreviousSearchesDialog.Previous" ) );
     }
 
 
@@ -96,7 +96,7 @@ public class PreviousSearchesDialog extends Dialog
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         Label label = new Label( composite, SWT.NONE );
-        label.setText( Messages.getString("PreviousSearchesDialog.ShowResultsInView") );
+        label.setText( Messages.getString( "PreviousSearchesDialog.ShowResultsInView" ) );
         label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         tableViewer = new TableViewer( composite, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE );
@@ -129,7 +129,7 @@ public class PreviousSearchesDialog extends Dialog
         } );
 
         removeButton = new Button( composite, SWT.NONE );
-        removeButton.setText( Messages.getString("PreviousSearchesDialog.Remove") );
+        removeButton.setText( Messages.getString( "PreviousSearchesDialog.Remove" ) );
         removeButton.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false ) );
         removeButton.setEnabled( false );
         removeButton.addSelectionListener( new SelectionAdapter()
@@ -164,7 +164,8 @@ public class PreviousSearchesDialog extends Dialog
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
-        openButton = createButton( parent, IDialogConstants.OK_ID, Messages.getString("PreviousSearchesDialog.Open"), true );
+        openButton = createButton( parent, IDialogConstants.OK_ID, Messages.getString( "PreviousSearchesDialog.Open" ),
+            true );
         openButton.setEnabled( false );
     }
 

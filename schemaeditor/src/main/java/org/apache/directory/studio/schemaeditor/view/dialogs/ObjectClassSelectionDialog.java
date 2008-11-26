@@ -93,7 +93,7 @@ public class ObjectClassSelectionDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("ObjectClassSelectionDialog.ClassSelection") );
+        newShell.setText( Messages.getString( "ObjectClassSelectionDialog.ClassSelection" ) );
     }
 
 
@@ -107,7 +107,7 @@ public class ObjectClassSelectionDialog extends Dialog
         composite.setLayout( layout );
 
         Label chooseLabel = new Label( composite, SWT.NONE );
-        chooseLabel.setText( Messages.getString("ObjectClassSelectionDialog.ChooseClass") );
+        chooseLabel.setText( Messages.getString( "ObjectClassSelectionDialog.ChooseClass" ) );
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         searchText = new Text( composite, SWT.BORDER );
@@ -131,7 +131,7 @@ public class ObjectClassSelectionDialog extends Dialog
         } );
 
         Label matchingLabel = new Label( composite, SWT.NONE );
-        matchingLabel.setText( Messages.getString("ObjectClassSelectionDialog.MatchingClasses") );
+        matchingLabel.setText( Messages.getString( "ObjectClassSelectionDialog.MatchingClasses" ) );
         matchingLabel.setLayoutData( new GridData( SWT.FILL, SWT.None, true, false ) );
 
         objectClassesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
@@ -250,7 +250,8 @@ public class ObjectClassSelectionDialog extends Dialog
 
         if ( selection.isEmpty() )
         {
-            MessageDialog.openError( getShell(), Messages.getString("ObjectClassSelectionDialog.InvalidSelection"), Messages.getString("ObjectClassSelectionDialog.MustChooseClass") );
+            MessageDialog.openError( getShell(), Messages.getString( "ObjectClassSelectionDialog.InvalidSelection" ),
+                Messages.getString( "ObjectClassSelectionDialog.MustChooseClass" ) );
             return;
         }
         else

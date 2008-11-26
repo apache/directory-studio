@@ -93,7 +93,7 @@ public class AttributeTypeSelectionDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( Messages.getString("AttributeTypeSelectionDialog.TypeSelection") );
+        newShell.setText( Messages.getString( "AttributeTypeSelectionDialog.TypeSelection" ) );
     }
 
 
@@ -107,7 +107,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         composite.setLayout( layout );
 
         Label chooseLabel = new Label( composite, SWT.NONE );
-        chooseLabel.setText( Messages.getString("AttributeTypeSelectionDialog.ChooseAType") );
+        chooseLabel.setText( Messages.getString( "AttributeTypeSelectionDialog.ChooseAType" ) );
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         searchText = new Text( composite, SWT.BORDER );
@@ -131,7 +131,7 @@ public class AttributeTypeSelectionDialog extends Dialog
         } );
 
         Label matchingLabel = new Label( composite, SWT.NONE );
-        matchingLabel.setText( Messages.getString("AttributeTypeSelectionDialog.MatchingTypes") );
+        matchingLabel.setText( Messages.getString( "AttributeTypeSelectionDialog.MatchingTypes" ) );
         matchingLabel.setLayoutData( new GridData( SWT.FILL, SWT.None, true, false ) );
 
         attributeTypesTable = new Table( composite, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL
@@ -249,7 +249,8 @@ public class AttributeTypeSelectionDialog extends Dialog
         StructuredSelection selection = ( StructuredSelection ) attributeTypesTableViewer.getSelection();
         if ( selection.isEmpty() )
         {
-            MessageDialog.openError( getShell(), Messages.getString("AttributeTypeSelectionDialog.InvalidSelection"), Messages.getString("AttributeTypeSelectionDialog.MustChooseType") );
+            MessageDialog.openError( getShell(), Messages.getString( "AttributeTypeSelectionDialog.InvalidSelection" ),
+                Messages.getString( "AttributeTypeSelectionDialog.MustChooseType" ) );
             return;
         }
         else
