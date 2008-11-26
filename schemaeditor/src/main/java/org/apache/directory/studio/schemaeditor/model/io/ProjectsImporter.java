@@ -35,6 +35,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -80,13 +81,13 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd") );
+            throw new ProjectsImportException( NLS.bind( Messages.getString("ProjectsImporter.NotReadCorrectly"), new String[]{path}) );
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( PROJECT_TAG ) )
         {
-            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotValidProjectStart") + path + Messages.getString("ProjectsImporter.NotValidProjectEnd") );
+            throw new ProjectsImportException( NLS.bind( Messages.getString("ProjectsImporter.NotValidProject"), new String[]{ path }) );
         }
 
         readProject( rootElement, project, path );
@@ -119,14 +120,14 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-        	PluginUtils.logError(Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd"), e);
-            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd") );
+        	PluginUtils.logError(NLS.bind( Messages.getString("ProjectsImporter.NotReadCorrectly"), new String[]{path}) , e);
+            throw new ProjectsImportException(NLS.bind( Messages.getString("ProjectsImporter.NotReadCorrectly"), new String[]{path}) );
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( PROJECTS_TAG ) )
         {
-            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotValidProjectStart") + path + Messages.getString("ProjectsImporter.NotValidProjectEnd") );
+            throw new ProjectsImportException( NLS.bind( Messages.getString("ProjectsImporter.NotValidProject"), new String[]{ path }) );
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( PROJECT_TAG ); i.hasNext(); )
@@ -204,8 +205,8 @@ public class ProjectsImporter
 
                 if ( schemaConnector == null )
                 {
-                    throw new ProjectsImportException( Messages.getString("ProjectsImporter.NoSchemaConnectorIDFound")
-                        + schemaConnectorId + "." ); //$NON-NLS-1$
+                    throw new ProjectsImportException( NLS.bind( Messages.getString("ProjectsImporter.NoSchemaConnectorIDFound"),
+                        new String[]{ schemaConnectorId})); //$NON-NLS-1$
                 }
 
                 project.setSchemaConnector( schemaConnector );
@@ -287,7 +288,7 @@ public class ProjectsImporter
         }
         catch ( DocumentException e )
         {
-            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotReadCorrectlyStart") + path + Messages.getString("ProjectsImporter.NotReadCorrectlyEnd") );
+            throw new ProjectsImportException( NLS.bind( Messages.getString("ProjectsImporter.NotReadCorrectly"), new String[]{path}) );
         }
 
         Element rootElement = document.getRootElement();
@@ -301,7 +302,7 @@ public class ProjectsImporter
         }
         else
         {
-            throw new ProjectsImportException( Messages.getString("ProjectsImporter.NotValidProjectStart") + path + Messages.getString("ProjectsImporter.NotValidProjectEnd") );
+            throw new ProjectsImportException( NLS.bind( Messages.getString("ProjectsImporter.NotValidProject"), new String[]{ path }) );
         }
     }
 }

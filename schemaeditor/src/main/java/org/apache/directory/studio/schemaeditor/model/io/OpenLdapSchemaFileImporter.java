@@ -36,6 +36,7 @@ import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SchemaImpl;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -67,7 +68,7 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new OpenLdapSchemaFileImportException( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         try
@@ -76,16 +77,15 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new OpenLdapSchemaFileImportException( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
         }
         catch ( ParseException e )
         {
             ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
-            throw new OpenLdapSchemaFileImportException( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin") //$NON-NLS-1$
-                + path
-                + Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyEnd") //$NON-NLS-1$
-                + ( exceptionMessage == null ? "" : Messages.getString("OpenLdapSchemaFileImporter.Line") + exceptionMessage.lineNumber + Messages.getString("OpenLdapSchemaFileImporter.Column") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    + exceptionMessage.columnNumber + Messages.getString("OpenLdapSchemaFileImporter.Cause") + exceptionMessage.cause ) ); //$NON-NLS-1$
+            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin"), new String[]{
+                path}) //$NON-NLS-1$
+                + ( exceptionMessage == null ? "" : NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.ErrorMessage"), new String[]{exceptionMessage.lineNumber,
+                    exceptionMessage.columnNumber,  exceptionMessage.cause}) ) ); //$NON-NLS-1$
         }
 
         String schemaName = getNameFromPath( path );

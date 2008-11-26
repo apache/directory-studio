@@ -39,6 +39,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -107,13 +108,13 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( SCHEMAS_TAG ) )
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") ); //$NON-NLS-1$ //$NON-NLS-2$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         return readSchemas( rootElement, path );
@@ -142,7 +143,7 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyEnd") );
+            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
@@ -169,7 +170,7 @@ public class XMLSchemaFileImporter
 
         if ( !element.getName().equals( SCHEMAS_TAG ) )
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") );
+            throw new XMLSchemaFileImportException(NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         for ( Iterator<?> i = element.elementIterator( SCHEMA_TAG ); i.hasNext(); )
@@ -234,7 +235,7 @@ public class XMLSchemaFileImporter
     {
         if ( !element.getName().equals( SCHEMA_TAG ) )
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") );
+            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         Attribute nameAttribute = element.attribute( NAME_TAG );
@@ -827,7 +828,7 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyBegin") + path + Messages.getString("XMLSchemaFileImporter.NotReadCorrectlyEnd") );
+            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
@@ -841,7 +842,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NotValidSchemaBegin") + path + Messages.getString("XMLSchemaFileImporter.NotValidSchemaEnd") );
+            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
         }
     }
 }
