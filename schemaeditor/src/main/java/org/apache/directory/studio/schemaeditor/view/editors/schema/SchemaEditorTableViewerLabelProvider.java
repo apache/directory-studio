@@ -28,6 +28,7 @@ import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -74,7 +75,7 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
             }
             else
             {
-                return Messages.getString("SchemaEditorTableViewerLabelProvider.None") + oc.getOid() + ")"; //$NON-NLS-2$
+                return NLS.bind( Messages.getString("SchemaEditorTableViewerLabelProvider.None"),new String[]{oc.getOid()}); //$NON-NLS-1$
             }
         }
         else if ( element instanceof AttributeTypeImpl )
@@ -88,7 +89,7 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
             }
             else
             {
-                return Messages.getString("SchemaEditorTableViewerLabelProvider.None") + at.getOid() + ")"; //$NON-NLS-2$
+                return NLS.bind( Messages.getString("SchemaEditorTableViewerLabelProvider.None"), new String[]{ at.getOid()}); //$NON-NLS-1$
             }
         }
 

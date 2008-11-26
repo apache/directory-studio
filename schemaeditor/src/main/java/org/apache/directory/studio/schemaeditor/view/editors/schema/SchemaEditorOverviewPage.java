@@ -39,6 +39,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -243,8 +244,7 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.SchemaAttributeBegin") + schema.getName()
-            + Messages.getString("SchemaEditorOverviewPage.SchemaAttributeEnd") );
+        attributeTypesSection.setDescription( NLS.bind( Messages.getString("SchemaEditorOverviewPage.SchemaAttribute"), new String[]{ schema.getName()}) );
         attributeTypesSection.setText( Messages.getString("SchemaEditorOverviewPage.AttributeTypes") );
 
         // Creating the layout of the section
@@ -275,8 +275,7 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection.setDescription( Messages.getString("SchemaEditorOverviewPage.SchemaObjectClassesBegin") + schema.getName()
-            + Messages.getString("SchemaEditorOverviewPage.SchemaObjectClassesEnd") );
+        objectClassesSection.setDescription( NLS.bind( Messages.getString("SchemaEditorOverviewPage.SchemaObjectClasses"),new String[]{ schema.getName()}) );
         objectClassesSection.setText( Messages.getString("SchemaEditorOverviewPage.ObjectClasses") );
 
         // Creating the layout of the section
