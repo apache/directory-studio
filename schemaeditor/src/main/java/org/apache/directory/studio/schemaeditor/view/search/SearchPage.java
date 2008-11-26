@@ -94,7 +94,7 @@ public class SearchPage extends DialogPage implements ISearchPage
 
         // Search String Label
         Label searchStringLabel = new Label( parent, SWT.NONE );
-        searchStringLabel.setText( Messages.getString("SearchPage.SearchString") ); //$NON-NLS-1$
+        searchStringLabel.setText( Messages.getString( "SearchPage.SearchString" ) ); //$NON-NLS-1$
         searchStringLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Search Combo
@@ -123,74 +123,74 @@ public class SearchPage extends DialogPage implements ISearchPage
         // Search In Group
         Group searchInGroup = new Group( searchInComposite, SWT.NONE );
         searchInGroup.setLayout( new GridLayout() );
-        searchInGroup.setText( Messages.getString("SearchPage.SearchIn") ); //$NON-NLS-1$
+        searchInGroup.setText( Messages.getString( "SearchPage.SearchIn" ) ); //$NON-NLS-1$
         searchInGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Aliases Button
         aliasesButton = new Button( searchInGroup, SWT.CHECK );
-        aliasesButton.setText( Messages.getString("SearchPage.Aliases") ); //$NON-NLS-1$
+        aliasesButton.setText( Messages.getString( "SearchPage.Aliases" ) ); //$NON-NLS-1$
 
         // OID Button
         oidButton = new Button( searchInGroup, SWT.CHECK );
-        oidButton.setText( Messages.getString("SearchPage.OID") ); //$NON-NLS-1$
+        oidButton.setText( Messages.getString( "SearchPage.OID" ) ); //$NON-NLS-1$
 
         // Description Button
         descriptionButon = new Button( searchInGroup, SWT.CHECK );
-        descriptionButon.setText( Messages.getString("SearchPage.Description") ); //$NON-NLS-1$
+        descriptionButon.setText( Messages.getString( "SearchPage.Description" ) ); //$NON-NLS-1$
 
         // Attribute Types Group
         Group attributeTypesSearchInGroup = new Group( searchInComposite, SWT.NONE );
-        attributeTypesSearchInGroup.setText( Messages.getString("SearchPage.SearchInForAttribute") ); //$NON-NLS-1$
+        attributeTypesSearchInGroup.setText( Messages.getString( "SearchPage.SearchInForAttribute" ) ); //$NON-NLS-1$
         attributeTypesSearchInGroup.setLayout( new GridLayout() );
         attributeTypesSearchInGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Superior Button
         superiorButton = new Button( attributeTypesSearchInGroup, SWT.CHECK );
-        superiorButton.setText( Messages.getString("SearchPage.Superior") ); //$NON-NLS-1$
+        superiorButton.setText( Messages.getString( "SearchPage.Superior" ) ); //$NON-NLS-1$
 
         // Syntax Button
         syntaxButton = new Button( attributeTypesSearchInGroup, SWT.CHECK );
-        syntaxButton.setText( Messages.getString("SearchPage.Syntax") ); //$NON-NLS-1$
+        syntaxButton.setText( Messages.getString( "SearchPage.Syntax" ) ); //$NON-NLS-1$
 
         // Matching Rules Button
         matchingRulesButton = new Button( attributeTypesSearchInGroup, SWT.CHECK );
-        matchingRulesButton.setText( Messages.getString("SearchPage.MatchingRules") ); //$NON-NLS-1$
+        matchingRulesButton.setText( Messages.getString( "SearchPage.MatchingRules" ) ); //$NON-NLS-1$
 
         // Object Classes Group
         Group objectClassesSearchInGroup = new Group( searchInComposite, SWT.NONE );
-        objectClassesSearchInGroup.setText( Messages.getString("SearchPage.SearchInObject") ); //$NON-NLS-1$
+        objectClassesSearchInGroup.setText( Messages.getString( "SearchPage.SearchInObject" ) ); //$NON-NLS-1$
         objectClassesSearchInGroup.setLayout( new GridLayout() );
         objectClassesSearchInGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Superiors Button
         superiorsButton = new Button( objectClassesSearchInGroup, SWT.CHECK );
-        superiorsButton.setText( Messages.getString("SearchPage.Superiors") ); //$NON-NLS-1$
+        superiorsButton.setText( Messages.getString( "SearchPage.Superiors" ) ); //$NON-NLS-1$
 
         // Mandatory Attributes Button
         mandatoryAttributesButton = new Button( objectClassesSearchInGroup, SWT.CHECK );
-        mandatoryAttributesButton.setText( Messages.getString("SearchPage.MandatoryAttributes") ); //$NON-NLS-1$
+        mandatoryAttributesButton.setText( Messages.getString( "SearchPage.MandatoryAttributes" ) ); //$NON-NLS-1$
 
         // Optional Attributes Button
         optionalAttributesButton = new Button( objectClassesSearchInGroup, SWT.CHECK );
-        optionalAttributesButton.setText( Messages.getString("SearchPage.OptionalAttributes") ); //$NON-NLS-1$
+        optionalAttributesButton.setText( Messages.getString( "SearchPage.OptionalAttributes" ) ); //$NON-NLS-1$
 
         // Scope Group
         Group scopeGroup = new Group( parent, SWT.NONE );
-        scopeGroup.setText( Messages.getString("SearchPage.Scope") ); //$NON-NLS-1$
+        scopeGroup.setText( Messages.getString( "SearchPage.Scope" ) ); //$NON-NLS-1$
         scopeGroup.setLayout( new GridLayout() );
         scopeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Attribute Types and Object Classes
         attributeTypesAndObjectClassesButton = new Button( scopeGroup, SWT.RADIO );
-        attributeTypesAndObjectClassesButton.setText( Messages.getString("SearchPage.TypesAndClasses") ); //$NON-NLS-1$
+        attributeTypesAndObjectClassesButton.setText( Messages.getString( "SearchPage.TypesAndClasses" ) ); //$NON-NLS-1$
 
         // Attribute Types Only
         attributeTypesOnlyButton = new Button( scopeGroup, SWT.RADIO );
-        attributeTypesOnlyButton.setText( Messages.getString("SearchPage.TypesOnly") ); //$NON-NLS-1$
+        attributeTypesOnlyButton.setText( Messages.getString( "SearchPage.TypesOnly" ) ); //$NON-NLS-1$
 
         // Object Classes Only
         objectClassesOnly = new Button( scopeGroup, SWT.RADIO );
-        objectClassesOnly.setText( Messages.getString("SearchPage.ClassesOnly") ); //$NON-NLS-1$
+        objectClassesOnly.setText( Messages.getString( "SearchPage.ClassesOnly" ) ); //$NON-NLS-1$
 
         initSearchStringHistory();
 
@@ -356,8 +356,9 @@ public class SearchPage extends DialogPage implements ISearchPage
         }
         catch ( PartInitException e )
         {
-            PluginUtils.logError( Messages.getString("SearchPage.ErrorOpeningView"), e ); //$NON-NLS-1$
-            ViewUtils.displayErrorMessageBox( Messages.getString("SearchPage.Error"), Messages.getString("SearchPage.ErrorOpeningView") ); //$NON-NLS-1$ //$NON-NLS-2$
+            PluginUtils.logError( Messages.getString( "SearchPage.ErrorOpeningView" ), e ); //$NON-NLS-1$
+            ViewUtils.displayErrorMessageBox(
+                Messages.getString( "SearchPage.Error" ), Messages.getString( "SearchPage.ErrorOpeningView" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return true;
@@ -561,7 +562,7 @@ public class SearchPage extends DialogPage implements ISearchPage
     public static int loadScope()
     {
         IDialogSettings settings = Activator.getDefault().getDialogSettings();
-        
+
         if ( settings.get( PluginConstants.PREFS_SEARCH_PAGE_SCOPE ) == null )
         {
             return PluginConstants.PREFS_SEARCH_PAGE_SCOPE_AT_AND_OC;
