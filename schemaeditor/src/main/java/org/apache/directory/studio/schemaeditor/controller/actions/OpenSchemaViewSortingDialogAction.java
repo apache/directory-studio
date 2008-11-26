@@ -44,8 +44,8 @@ public class OpenSchemaViewSortingDialogAction extends Action implements IWorkbe
      */
     public OpenSchemaViewSortingDialogAction()
     {
-        super( Messages.getString("OpenSchemaViewSortingDialogAction.SortingAction") );
-        setToolTipText( Messages.getString("OpenSchemaViewSortingDialogAction.SortingToolTip") );
+        super( Messages.getString("OpenSchemaViewSortingDialogAction.SortingAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("OpenSchemaViewSortingDialogAction.SortingToolTip") ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SORTING ) );
         setEnabled( false );
     }

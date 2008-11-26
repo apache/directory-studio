@@ -63,8 +63,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
      */
     public OpenElementAction( TreeViewer viewer )
     {
-        super( Messages.getString("OpenElementAction.OpenAction") );
-        setToolTipText( Messages.getString("OpenElementAction.OpenToolTip") );
+        super( Messages.getString("OpenElementAction.OpenAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("OpenElementAction.OpenToolTip") ); //$NON-NLS-1$
         setId( PluginConstants.CMD_OPEN_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_OPEN_ELEMENT );
         setEnabled( true );
@@ -91,8 +91,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( Messages.getString("OpenElementAction.ErrorOpeningEditor"), e );
-                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") );
+                    PluginUtils.logError( Messages.getString("OpenElementAction.ErrorOpeningEditor"), e ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") ); //$NON-NLS-1$
                 }
             }
             else if ( selectedItem instanceof ObjectClassWrapper )
@@ -105,8 +105,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( Messages.getString("OpenElementAction.ErroropeningEditor"), e );
-                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") );
+                    PluginUtils.logError( Messages.getString("OpenElementAction.ErrorOpeningEditor"), e ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") ); //$NON-NLS-1$
                 }
             }
             else if ( selectedItem instanceof SchemaWrapper )
@@ -118,8 +118,8 @@ public class OpenElementAction extends Action implements IWorkbenchWindowActionD
                 }
                 catch ( PartInitException e )
                 {
-                    PluginUtils.logError( Messages.getString("OpenElementAction.ErroropeningEditor"), e );
-                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") );
+                    PluginUtils.logError( Messages.getString("OpenElementAction.ErrorOpeningEditor"), e ); //$NON-NLS-1$
+                    ViewUtils.displayErrorMessageBox( Messages.getString("OpenElementAction.Error"), Messages.getString("OpenElementAction.ErrorOpeningEditor") ); //$NON-NLS-1$
                 }
             }
             else if ( selectedItem instanceof Folder )

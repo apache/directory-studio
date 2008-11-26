@@ -44,8 +44,8 @@ public class OpenSearchViewSortingDialogAction extends Action implements IWorkbe
      */
     public OpenSearchViewSortingDialogAction()
     {
-        super( Messages.getString("OpenSearchViewSortingDialogAction.SortingAction") );
-        setToolTipText( Messages.getString("OpenSearchViewSortingDialogAction.SortingToolTip") );
+        super( Messages.getString("OpenSearchViewSortingDialogAction.SortingAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("OpenSearchViewSortingDialogAction.SortingToolTip") ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SORTING ) );
         setEnabled( true );
     }

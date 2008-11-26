@@ -60,8 +60,8 @@ public class OpenProjectAction extends Action implements IWorkbenchWindowActionD
      */
     public OpenProjectAction( TableViewer viewer )
     {
-        super( Messages.getString("OpenProjectAction.OpenProjectAction") );
-        setToolTipText( Messages.getString("OpenProjectAction.OpenProjectToolTip") );
+        super( Messages.getString("OpenProjectAction.OpenProjectAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("OpenProjectAction.OpenProjectToolTip") ); //$NON-NLS-1$
         setEnabled( false );
         this.viewer = viewer;
         this.viewer.addSelectionChangedListener( new ISelectionChangedListener()

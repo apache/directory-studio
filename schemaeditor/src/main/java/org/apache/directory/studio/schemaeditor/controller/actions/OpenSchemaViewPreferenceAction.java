@@ -44,8 +44,8 @@ public class OpenSchemaViewPreferenceAction extends Action implements IWorkbench
      */
     public OpenSchemaViewPreferenceAction()
     {
-        super( Messages.getString("OpenSchemaViewPreferenceAction.PreferencesAction") );
-        setToolTipText( Messages.getString("OpenSchemaViewPreferenceAction.PreferencesToolTip") );
+        super( Messages.getString("OpenSchemaViewPreferenceAction.PreferencesAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("OpenSchemaViewPreferenceAction.PreferencesToolTip") ); //$NON-NLS-1$
         setEnabled( false );
     }
 

@@ -46,8 +46,8 @@ public class NewProjectAction extends Action implements IWorkbenchWindowActionDe
      */
     public NewProjectAction()
     {
-        super( Messages.getString("NewProjectAction.NewSchemaProjectAction") );
-        setToolTipText( Messages.getString("NewProjectAction.NewSchemaProjectToolTip") );
+        super( Messages.getString("NewProjectAction.NewSchemaProjectAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("NewProjectAction.NewSchemaProjectToolTip") ); //$NON-NLS-1$
         setId( PluginConstants.CMD_NEW_PROJECT );
         setActionDefinitionId( PluginConstants.CMD_NEW_PROJECT );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW ) );

@@ -43,6 +43,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -67,8 +68,8 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
      */
     public DeleteSchemaElementAction( TreeViewer viewer )
     {
-        super( Messages.getString("DeleteSchemaElementAction.DeleteAction") );
-        setToolTipText( Messages.getString("DeleteSchemaElementAction.DeleteToolTip") );
+        super( Messages.getString("DeleteSchemaElementAction.DeleteAction") ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("DeleteSchemaElementAction.DeleteToolTip") ); //$NON-NLS-1$
         setId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setActionDefinitionId( PluginConstants.CMD_DELETE_SCHEMA_ELEMENT );
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_DELETE ) );
@@ -128,25 +129,25 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
                 Object firstElement = selection.getFirstElement();
                 if ( firstElement instanceof AttributeTypeWrapper )
                 {
-                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteAttributeType") );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteAttributeType") ); //$NON-NLS-1$
                 }
                 else if ( firstElement instanceof ObjectClassWrapper )
                 {
-                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteObjectClass") );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteObjectClass") ); //$NON-NLS-1$
                 }
                 else if ( firstElement instanceof SchemaWrapper )
                 {
-                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteSchema") );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteSchema") ); //$NON-NLS-1$
                 }
                 else
                 {
-                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteItem") );
+                    messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteItem") ); //$NON-NLS-1$
                 }
 
             }
             else
             {
-                messageBox.setMessage( Messages.getString("DeleteSchemaElementAction.SureToDeleteItemsBegin") + count + Messages.getString("DeleteSchemaElementAction.SureToDeleteItemsEnd") );
+                messageBox.setMessage( NLS.bind( Messages.getString("DeleteSchemaElementAction.SureToDeleteItems"), new int[]{ count }) ); //$NON-NLS-1$
             }
             if ( messageBox.open() == SWT.YES )
             {

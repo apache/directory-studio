@@ -138,8 +138,8 @@ public class LinkWithEditorHierarchyViewAction extends Action
      */
     public LinkWithEditorHierarchyViewAction( HierarchyView view )
     {
-        super( Messages.getString("LinkWithEditorHierarchyViewAction.LinkEditorAction"), AS_CHECK_BOX );
-        setToolTipText( Messages.getString("LinkWithEditorHierarchyViewAction.LinkEditorToolTip") );
+        super( Messages.getString("LinkWithEditorHierarchyViewAction.LinkEditorAction"), AS_CHECK_BOX ); //$NON-NLS-1$
+        setToolTipText( Messages.getString("LinkWithEditorHierarchyViewAction.LinkEditorToolTip") ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         this.view = view;
