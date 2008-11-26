@@ -75,7 +75,8 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
             }
             else
             {
-                return NLS.bind( Messages.getString("SchemaEditorTableViewerLabelProvider.None"),new String[]{oc.getOid()}); //$NON-NLS-1$
+                return NLS.bind(
+                    Messages.getString( "SchemaEditorTableViewerLabelProvider.None" ), new String[] { oc.getOid() } ); //$NON-NLS-1$
             }
         }
         else if ( element instanceof AttributeTypeImpl )
@@ -89,7 +90,8 @@ public class SchemaEditorTableViewerLabelProvider extends LabelProvider implemen
             }
             else
             {
-                return NLS.bind( Messages.getString("SchemaEditorTableViewerLabelProvider.None"), new String[]{ at.getOid()}); //$NON-NLS-1$
+                return NLS.bind(
+                    Messages.getString( "SchemaEditorTableViewerLabelProvider.None" ), new String[] { at.getOid() } ); //$NON-NLS-1$
             }
         }
 

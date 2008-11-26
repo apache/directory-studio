@@ -153,8 +153,9 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    PluginUtils.logError( Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor"), exception );
-                    ViewUtils.displayErrorMessageBox( Messages.getString("SchemaEditorOverviewPage.Error"), Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor") );
+                    PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception );
+                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages
+                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) );
                 }
             }
         }
@@ -181,8 +182,9 @@ public class SchemaEditorOverviewPage extends FormPage
                 }
                 catch ( PartInitException exception )
                 {
-                    PluginUtils.logError( Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor"), exception );
-                    ViewUtils.displayErrorMessageBox( Messages.getString("SchemaEditorOverviewPage.Error"), Messages.getString("SchemaEditorOverviewPage.ErrorOpenEditor") );
+                    PluginUtils.logError( Messages.getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ), exception );
+                    ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaEditorOverviewPage.Error" ), Messages
+                        .getString( "SchemaEditorOverviewPage.ErrorOpenEditor" ) );
                 }
             }
         }
@@ -197,7 +199,7 @@ public class SchemaEditorOverviewPage extends FormPage
      */
     public SchemaEditorOverviewPage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString("SchemaEditorOverviewPage.Overview") );
+        super( editor, ID, Messages.getString( "SchemaEditorOverviewPage.Overview" ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
 
@@ -244,8 +246,10 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section attributeTypesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        attributeTypesSection.setDescription( NLS.bind( Messages.getString("SchemaEditorOverviewPage.SchemaAttribute"), new String[]{ schema.getName()}) );
-        attributeTypesSection.setText( Messages.getString("SchemaEditorOverviewPage.AttributeTypes") );
+        attributeTypesSection.setDescription( NLS.bind(
+            Messages.getString( "SchemaEditorOverviewPage.SchemaAttribute" ), new String[]
+                { schema.getName() } ) );
+        attributeTypesSection.setText( Messages.getString( "SchemaEditorOverviewPage.AttributeTypes" ) );
 
         // Creating the layout of the section
         Composite attributeTypesSectionClient = toolkit.createComposite( attributeTypesSection );
@@ -275,8 +279,10 @@ public class SchemaEditorOverviewPage extends FormPage
         // Attribute Types Section
         Section objectClassesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
             | Section.TITLE_BAR );
-        objectClassesSection.setDescription( NLS.bind( Messages.getString("SchemaEditorOverviewPage.SchemaObjectClasses"),new String[]{ schema.getName()}) );
-        objectClassesSection.setText( Messages.getString("SchemaEditorOverviewPage.ObjectClasses") );
+        objectClassesSection.setDescription( NLS.bind( Messages
+            .getString( "SchemaEditorOverviewPage.SchemaObjectClasses" ), new String[]
+            { schema.getName() } ) );
+        objectClassesSection.setText( Messages.getString( "SchemaEditorOverviewPage.ObjectClasses" ) );
 
         // Creating the layout of the section
         Composite objectClassesSectionClient = toolkit.createComposite( objectClassesSection );

@@ -183,7 +183,7 @@ public class SchemaEditorSourceCodePage extends FormPage
      */
     public SchemaEditorSourceCodePage( FormEditor editor )
     {
-        super( editor, ID, Messages.getString("SchemaEditorSourceCodePage.SourceCode") );
+        super( editor, ID, Messages.getString( "SchemaEditorSourceCodePage.SourceCode" ) );
     }
 
 
