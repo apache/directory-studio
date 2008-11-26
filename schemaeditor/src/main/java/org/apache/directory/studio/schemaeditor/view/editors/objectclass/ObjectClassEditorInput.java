@@ -98,7 +98,8 @@ public class ObjectClassEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return NLS.bind( Messages.getString("ObjectClassEditorInput.FromSchema"), new String[]{getName(), objectClass.getSchema()});
+        return NLS.bind( Messages.getString( "ObjectClassEditorInput.FromSchema" ), new String[]
+            { getName(), objectClass.getSchema() } );
     }
 
 

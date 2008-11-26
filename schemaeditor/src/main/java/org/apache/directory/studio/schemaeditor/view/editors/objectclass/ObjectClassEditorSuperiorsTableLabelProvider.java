@@ -71,7 +71,9 @@ public class ObjectClassEditorSuperiorsTableLabelProvider extends LabelProvider 
             }
             else
             {
-                return NLS.bind( Messages.getString("ObjectClassEditorSuperiorsTableLabelProvider.None"), new String[]{oc.getOid()}); //$NON-NLS-1$
+                return NLS
+                    .bind(
+                        Messages.getString( "ObjectClassEditorSuperiorsTableLabelProvider.None" ), new String[] { oc.getOid() } ); //$NON-NLS-1$
             }
         }
         else if ( element instanceof NonExistingObjectClass )
