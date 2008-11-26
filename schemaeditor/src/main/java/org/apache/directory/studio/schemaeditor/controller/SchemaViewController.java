@@ -319,7 +319,8 @@ public class SchemaViewController
         IMenuManager menu = view.getViewSite().getActionBars().getMenuManager();
         menu.add( openSchemaViewSortingDialog );
         menu.add( new Separator() );
-        IMenuManager schemaPresentationMenu = new MenuManager( Messages.getString("SchemaViewController.SchemaPresentationAction") );
+        IMenuManager schemaPresentationMenu = new MenuManager( Messages
+            .getString( "SchemaViewController.SchemaPresentationAction" ) );
         schemaPresentationMenu.add( switchSchemaPresentationToFlat );
         schemaPresentationMenu.add( switchSchemaPresentationToHierarchical );
         menu.add( schemaPresentationMenu );
@@ -341,9 +342,9 @@ public class SchemaViewController
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                MenuManager newManager = new MenuManager( Messages.getString("SchemaViewController.NewAction") );
-                MenuManager importManager = new MenuManager( Messages.getString("SchemaViewController.ImportAction") );
-                MenuManager exportManager = new MenuManager( Messages.getString("SchemaViewController.ExportAction") );
+                MenuManager newManager = new MenuManager( Messages.getString( "SchemaViewController.NewAction" ) );
+                MenuManager importManager = new MenuManager( Messages.getString( "SchemaViewController.ImportAction" ) );
+                MenuManager exportManager = new MenuManager( Messages.getString( "SchemaViewController.ExportAction" ) );
                 manager.add( newManager );
                 newManager.add( newSchema );
                 newManager.add( newAttributeType );
@@ -508,8 +509,9 @@ public class SchemaViewController
                     }
                     catch ( PartInitException e )
                     {
-                        PluginUtils.logError( Messages.getString("SchemaViewController.ErrorOpeningEditor"), e );
-                        ViewUtils.displayErrorMessageBox( Messages.getString("SchemaViewController.error"), Messages.getString("SchemaViewController.ErrorOpeningEditor") );
+                        PluginUtils.logError( Messages.getString( "SchemaViewController.ErrorOpeningEditor" ), e );
+                        ViewUtils.displayErrorMessageBox( Messages.getString( "SchemaViewController.error" ), Messages
+                            .getString( "SchemaViewController.ErrorOpeningEditor" ) );
                     }
                 }
             }

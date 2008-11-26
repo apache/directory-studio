@@ -222,8 +222,9 @@ public class ProblemsViewController
                     }
                     catch ( PartInitException e )
                     {
-                        PluginUtils.logError( Messages.getString("ProblemsViewController.ErrorOpeningEditor"), e );
-                        ViewUtils.displayErrorMessageBox( Messages.getString("ProblemsViewController.Error"), Messages.getString("ProblemsViewController.ErrorOpeningEditor") );
+                        PluginUtils.logError( Messages.getString( "ProblemsViewController.ErrorOpeningEditor" ), e );
+                        ViewUtils.displayErrorMessageBox( Messages.getString( "ProblemsViewController.Error" ),
+                            Messages.getString( "ProblemsViewController.ErrorOpeningEditor" ) );
                     }
                 }
             }
