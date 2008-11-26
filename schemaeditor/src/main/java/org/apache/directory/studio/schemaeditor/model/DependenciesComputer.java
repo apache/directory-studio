@@ -129,7 +129,8 @@ public class DependenciesComputer
             AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
             if ( superiorAT == null )
             {
-                throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.SuperiorAttribute"), new String[]{superior}) ); //$NON-NLS-1$
+                throw new DependencyComputerException( NLS.bind( Messages
+                    .getString( "DependenciesComputer.SuperiorAttribute" ), new String[] { superior } ) ); //$NON-NLS-1$
             }
             else
             {
@@ -148,7 +149,8 @@ public class DependenciesComputer
             SyntaxImpl syntax = schemaHandler.getSyntax( syntaxOID );
             if ( syntax == null )
             {
-                throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.SyntaxOID"), new String[]{syntaxOID}) ); //$NON-NLS-1$
+                throw new DependencyComputerException( NLS.bind(
+                    Messages.getString( "DependenciesComputer.SyntaxOID" ), new String[] { syntaxOID } ) ); //$NON-NLS-1$
             }
             else
             {
@@ -167,7 +169,8 @@ public class DependenciesComputer
             MatchingRuleImpl equalityMatchingRule = schemaHandler.getMatchingRule( equalityName );
             if ( equalityMatchingRule == null )
             {
-                throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.Equality"), new String[]{ equalityName}) ); //$NON-NLS-1$
+                throw new DependencyComputerException( NLS.bind(
+                    Messages.getString( "DependenciesComputer.Equality" ), new String[] { equalityName } ) ); //$NON-NLS-1$
             }
             else
             {
@@ -186,7 +189,8 @@ public class DependenciesComputer
             MatchingRuleImpl orderingMatchingRule = schemaHandler.getMatchingRule( orderingName );
             if ( orderingMatchingRule == null )
             {
-                throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.Ordering"), new String[]{ orderingName}) ); //$NON-NLS-1$
+                throw new DependencyComputerException( NLS.bind(
+                    Messages.getString( "DependenciesComputer.Ordering" ), new String[] { orderingName } ) ); //$NON-NLS-1$
             }
             else
             {
@@ -205,7 +209,8 @@ public class DependenciesComputer
             MatchingRuleImpl substringMatchingRule = schemaHandler.getMatchingRule( substringName );
             if ( substringMatchingRule == null )
             {
-                throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.Substring"),new String[]{substringName}) ); //$NON-NLS-1$
+                throw new DependencyComputerException( NLS.bind(
+                    Messages.getString( "DependenciesComputer.Substring" ), new String[] { substringName } ) ); //$NON-NLS-1$
             }
             else
             {
@@ -239,7 +244,8 @@ public class DependenciesComputer
                 ObjectClassImpl superObjectClass = schemaHandler.getObjectClass( superClassName );
                 if ( superObjectClass == null )
                 {
-                    throw new DependencyComputerException(NLS.bind( Messages.getString("DependenciesComputer.SuperiorObject"),new String[]{ superClassName}) ); //$NON-NLS-1$
+                    throw new DependencyComputerException( NLS.bind( Messages
+                        .getString( "DependenciesComputer.SuperiorObject" ), new String[] { superClassName } ) ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -261,7 +267,8 @@ public class DependenciesComputer
                 AttributeTypeImpl optionalAttributeType = schemaHandler.getAttributeType( optionalAttributeTypeName );
                 if ( optionalAttributeType == null )
                 {
-                    throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.Optional"), new Object[]{ optionalAttributeType}) ); //$NON-NLS-1$
+                    throw new DependencyComputerException( NLS.bind( Messages
+                        .getString( "DependenciesComputer.Optional" ), new Object[] { optionalAttributeType } ) ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -283,8 +290,9 @@ public class DependenciesComputer
                 AttributeTypeImpl mandatoryAttributeType = schemaHandler.getAttributeType( mandatoryAttributeTypeName );
                 if ( mandatoryAttributeType == null )
                 {
-                    throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.Mandatory"), 
-                        new String[]{ mandatoryAttributeTypeName}) ); //$NON-NLS-1$
+                    throw new DependencyComputerException( NLS.bind( Messages
+                        .getString( "DependenciesComputer.Mandatory" ), new String[]
+                        { mandatoryAttributeTypeName } ) ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -316,7 +324,8 @@ public class DependenciesComputer
             Schema schemaFromSuperiorAT = schemaHandler.getSchema( schemaName );
             if ( schemaFromSuperiorAT == null )
             {
-                throw new DependencyComputerException( NLS.bind( Messages.getString("DependenciesComputer.Schema"), new String[]{ schemaName }) ); //$NON-NLS-1$ //$NON-NLS-2$
+                throw new DependencyComputerException( NLS.bind(
+                    Messages.getString( "DependenciesComputer.Schema" ), new String[] { schemaName } ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
