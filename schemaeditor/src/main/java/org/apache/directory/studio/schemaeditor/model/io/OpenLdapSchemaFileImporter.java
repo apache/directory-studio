@@ -68,7 +68,8 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         try
@@ -77,15 +78,18 @@ public class OpenLdapSchemaFileImporter
         }
         catch ( IOException e )
         {
-            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
         }
         catch ( ParseException e )
         {
             ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
-            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.NotReadCorrectlyBegin"), new String[]{
-                path}) //$NON-NLS-1$
-                + ( exceptionMessage == null ? "" : NLS.bind( Messages.getString("OpenLdapSchemaFileImporter.ErrorMessage"), new String[]{exceptionMessage.lineNumber,
-                    exceptionMessage.columnNumber,  exceptionMessage.cause}) ) ); //$NON-NLS-1$
+            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectlyBegin" ), new String[]
+                { path } ) //$NON-NLS-1$
+                + ( exceptionMessage == null ? "" : NLS.bind( Messages
+                    .getString( "OpenLdapSchemaFileImporter.ErrorMessage" ), new String[]
+                    { exceptionMessage.lineNumber, exceptionMessage.columnNumber, exceptionMessage.cause } ) ) ); //$NON-NLS-1$
         }
 
         String schemaName = getNameFromPath( path );

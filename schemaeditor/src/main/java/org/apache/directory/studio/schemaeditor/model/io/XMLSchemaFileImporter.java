@@ -98,7 +98,7 @@ public class XMLSchemaFileImporter
      * @throws XMLSchemaFileImportException
      *      if an error occurs when importing the schema
      */
-    public static Schema[] getSchemas(InputStream inputStream, String path ) throws XMLSchemaFileImportException
+    public static Schema[] getSchemas( InputStream inputStream, String path ) throws XMLSchemaFileImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
@@ -108,13 +108,15 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( SCHEMAS_TAG ) )
         {
-            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotValidSchema" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         return readSchemas( rootElement, path );
@@ -133,7 +135,7 @@ public class XMLSchemaFileImporter
      * @throws XMLSchemaFileImportException
      *      if an error occurs when importing the schema
      */
-    public static Schema getSchema(InputStream inputStream, String path ) throws XMLSchemaFileImportException
+    public static Schema getSchema( InputStream inputStream, String path ) throws XMLSchemaFileImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
@@ -143,7 +145,8 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
@@ -170,7 +173,8 @@ public class XMLSchemaFileImporter
 
         if ( !element.getName().equals( SCHEMAS_TAG ) )
         {
-            throw new XMLSchemaFileImportException(NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotValidSchema" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         for ( Iterator<?> i = element.elementIterator( SCHEMA_TAG ); i.hasNext(); )
@@ -235,7 +239,8 @@ public class XMLSchemaFileImporter
     {
         if ( !element.getName().equals( SCHEMA_TAG ) )
         {
-            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotValidSchema" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         Attribute nameAttribute = element.attribute( NAME_TAG );
@@ -314,8 +319,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException(
-                Messages.getString("XMLSchemaFileImporter.NoOIDInAttribute") );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoOIDInAttribute" ) );
         }
 
         // Schema
@@ -361,8 +365,8 @@ public class XMLSchemaFileImporter
             }
             catch ( IllegalArgumentException e )
             {
-                throw new XMLSchemaFileImportException(
-                    Messages.getString("XMLSchemaFileImporter.UnceonvertableAttribute") );
+                throw new XMLSchemaFileImportException( Messages
+                    .getString( "XMLSchemaFileImporter.UnceonvertableAttribute" ) );
             }
         }
 
@@ -383,8 +387,8 @@ public class XMLSchemaFileImporter
             }
             catch ( NumberFormatException e )
             {
-                throw new XMLSchemaFileImportException(
-                    Messages.getString("XMLSchemaFileImporter.UnconvertableInteger") );
+                throw new XMLSchemaFileImportException( Messages
+                    .getString( "XMLSchemaFileImporter.UnconvertableInteger" ) );
             }
         }
 
@@ -485,7 +489,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NoOIDInClass") );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoOIDInClass" ) );
         }
 
         // Schema
@@ -540,8 +544,7 @@ public class XMLSchemaFileImporter
             }
             catch ( IllegalArgumentException e )
             {
-                throw new XMLSchemaFileImportException(
-                    Messages.getString("XMLSchemaFileImporter.UnconvertableValue") ); //$NON-NLS-1$
+                throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.UnconvertableValue" ) ); //$NON-NLS-1$
             }
         }
 
@@ -632,7 +635,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.NoMatchingRuleForOID") );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.NoMatchingRuleForOID" ) );
         }
 
         // Schema
@@ -723,7 +726,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.InvalidSyntaxForOID") );
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.InvalidSyntaxForOID" ) );
         }
 
         // Schema
@@ -793,7 +796,7 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( Messages.getString("XMLSchemaFileImporter.76") ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.76" ) ); //$NON-NLS-1$
         }
     }
 
@@ -818,7 +821,8 @@ public class XMLSchemaFileImporter
      *      the type of the file
      * @throws XMLSchemaFileImportException
      */
-    public static SchemaFileType getSchemaFileType( InputStream inputStream, String path ) throws XMLSchemaFileImportException
+    public static SchemaFileType getSchemaFileType( InputStream inputStream, String path )
+        throws XMLSchemaFileImportException
     {
         SAXReader reader = new SAXReader();
         Document document = null;
@@ -828,7 +832,8 @@ public class XMLSchemaFileImporter
         }
         catch ( DocumentException e )
         {
-            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotReadCorrectly"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
@@ -842,7 +847,8 @@ public class XMLSchemaFileImporter
         }
         else
         {
-            throw new XMLSchemaFileImportException( NLS.bind( Messages.getString("XMLSchemaFileImporter.NotValidSchema"), new String[]{ path}) ); //$NON-NLS-1$
+            throw new XMLSchemaFileImportException( NLS.bind( Messages
+                .getString( "XMLSchemaFileImporter.NotValidSchema" ), new String[] { path } ) ); //$NON-NLS-1$
         }
     }
 }
