@@ -45,7 +45,7 @@ public class BrowserUIPlugin extends AbstractUIPlugin
     /** The plugin properties */
     private PropertyResourceBundle properties;
 
-    
+
     /**
      * The constructor.
      */
@@ -83,19 +83,18 @@ public class BrowserUIPlugin extends AbstractUIPlugin
     }
 
 
-//    public static String getResourceString( String key )
-//    {
-//        ResourceBundle bundle = getDefault().getResourceBundle();
-//        try
-//        {
-//            return ( bundle != null ) ? bundle.getString( key ) : key;
-//        }
-//        catch ( MissingResourceException e )
-//        {
-//            return key;
-//        }
-//    }
-
+    //    public static String getResourceString( String key )
+    //    {
+    //        ResourceBundle bundle = getDefault().getResourceBundle();
+    //        try
+    //        {
+    //            return ( bundle != null ) ? bundle.getString( key ) : key;
+    //        }
+    //        catch ( MissingResourceException e )
+    //        {
+    //            return key;
+    //        }
+    //    }
 
     /**
      * Use this method to get SWT images. Use the IMG_ constants from
@@ -164,15 +163,14 @@ public class BrowserUIPlugin extends AbstractUIPlugin
             try
             {
                 properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
-                    "plugin.properties" ), false ) );
+                    "plugin.properties" ), false ) ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
-                getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.ui", Status.OK,
-                        "Unable to get the plugin properties.", e ) );
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.ui", Status.OK, //$NON-NLS-1$
+                    Messages.getString( "BrowserUIPlugin.UnableGetPluginProperties" ), e ) ); //$NON-NLS-1$
             }
         }
 
