@@ -40,7 +40,7 @@ public class EnableModificationLogsAction extends Action
      */
     public EnableModificationLogsAction()
     {
-        super( "Enable Modification Logs", AS_CHECK_BOX );
+        super( Messages.getString( "EnableModificationLogsAction.EnableModificationLogs" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setEnabled( true );
         setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(

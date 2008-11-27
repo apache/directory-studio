@@ -82,7 +82,7 @@ public class OlderAction extends BrowserAction
      */
     public String getText()
     {
-        return "Older";
+        return Messages.getString( "OlderAction.Older" ); //$NON-NLS-1$
     }
 
 

@@ -42,8 +42,8 @@ public class OpenModificationLogsPreferencePageAction extends Action
      */
     public OpenModificationLogsPreferencePageAction()
     {
-        setText( "Preferences..." );
-        setToolTipText( "Preferences..." );
+        setText( Messages.getString( "OpenModificationLogsPreferencePageAction.Preferences" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenModificationLogsPreferencePageAction.PreferencesToolTip" ) ); //$NON-NLS-1$
         setEnabled( true );
     }
 
