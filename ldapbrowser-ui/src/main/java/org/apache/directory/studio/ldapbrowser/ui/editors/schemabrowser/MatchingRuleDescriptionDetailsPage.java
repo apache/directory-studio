@@ -306,7 +306,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
                 usedFromSection
                     .setText( NLS
                         .bind(
-                            Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new int[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
+                            Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new Object[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
                 for ( AttributeTypeDescription atd : usedFromATDs )
                 {
                     Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
@@ -321,7 +321,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 usedFromSection.setText( NLS.bind( Messages
-                    .getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text usedFromText = toolkit.createText( usedFromClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );

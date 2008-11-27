@@ -249,7 +249,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             if ( names != null && !names.isEmpty() )
             {
                 appliesSection.setText( NLS.bind( Messages
-                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new int[] { names.size() } ) ); //$NON-NLS-1$
+                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
                 Schema schema = getSchema();
                 for ( String name : names )
                 {
@@ -276,7 +276,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 appliesSection.setText( NLS.bind( Messages
-                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text usedFromText = toolkit.createText( appliesClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );

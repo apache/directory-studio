@@ -528,7 +528,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 otherMatchSection
                     .setText( NLS
                         .bind(
-                            Messages.getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRulesCount" ), new int[] { otherMrdNames.size() } ) ); //$NON-NLS-1$
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRulesCount" ), new Object[] { otherMrdNames.size() } ) ); //$NON-NLS-1$
                 for ( String mrdName : otherMrdNames )
                 {
                     if ( getSchema().hasMatchingRuleDescription( mrdName ) )
@@ -554,7 +554,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 otherMatchSection.setText( NLS.bind( Messages
-                    .getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRulesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRulesCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text otherText = toolkit.createText( otherMatchClient, getNonNullString( null ), SWT.NONE );
                 otherText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 otherText.setEditable( false );
@@ -597,7 +597,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             if ( superType != null )
             {
                 supertypeSection.setText( NLS.bind( Messages
-                    .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new int[] { 1 } ) ); //$NON-NLS-1$
+                    .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new Object[] { 1 } ) ); //$NON-NLS-1$
                 if ( getSchema().hasAttributeTypeDescription( superType ) )
                 {
                     AttributeTypeDescription supAtd = getSchema().getAttributeTypeDescription( superType );
@@ -620,7 +620,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 supertypeSection.setText( NLS.bind( Messages
-                    .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text supText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 supText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 supText.setEditable( false );
@@ -665,7 +665,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 subtypesSection
                     .setText( NLS
                         .bind(
-                            Messages.getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new int[] { derivedAtds.size() } ) ); //$NON-NLS-1$
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new Object[] { derivedAtds.size() } ) ); //$NON-NLS-1$
                 for ( AttributeTypeDescription derivedAtd : derivedAtds )
                 {
                     Hyperlink subAttributeTypeLink = toolkit.createHyperlink( subClient, SchemaUtils
@@ -680,7 +680,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 subtypesSection.setText( NLS.bind( Messages
-                    .getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text subText = toolkit.createText( subClient, getNonNullString( null ), SWT.NONE );
                 subText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 subText.setEditable( false );
@@ -725,7 +725,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 usedAsMustSection
                     .setText( NLS
                         .bind(
-                            Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new int[] { usedAsMusts.size() } ) ); //$NON-NLS-1$
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new Object[] { usedAsMusts.size() } ) ); //$NON-NLS-1$
                 for ( ObjectClassDescription ocd : usedAsMusts )
                 {
                     Hyperlink usedAsMustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( ocd ),
@@ -740,7 +740,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 usedAsMustSection.setText( NLS.bind( Messages
-                    .getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text mustText = toolkit.createText( mustClient, getNonNullString( null ), SWT.NONE );
                 mustText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mustText.setEditable( false );
@@ -785,7 +785,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 usedAsMaySection
                     .setText( NLS
                         .bind(
-                            Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new int[] { usedAsMays.size() } ) ); //$NON-NLS-1$
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new Object[] { usedAsMays.size() } ) ); //$NON-NLS-1$
                 for ( ObjectClassDescription ocd : usedAsMays )
                 {
                     Hyperlink usedAsMayLink = toolkit
@@ -800,7 +800,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             else
             {
                 usedAsMaySection.setText( NLS.bind( Messages
-                    .getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
+                    .getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new Object[] { 0 } ) ); //$NON-NLS-1$
                 Text mayText = toolkit.createText( mayClient, getNonNullString( null ), SWT.NONE );
                 mayText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mayText.setEditable( false );
