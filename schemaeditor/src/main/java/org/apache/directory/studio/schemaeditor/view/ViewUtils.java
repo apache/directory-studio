@@ -79,7 +79,7 @@ public class ViewUtils
      */
     public static boolean verifyName( String name )
     {
-        return name.matches( "[a-zA-Z]+[a-zA-Z0-9;-]*" ); //$NON-NLS-1$
+        return name.matches( Messages.getString( "ViewUtils.AllowedCharacters" ) ); //$NON-NLS-1$
     }
 
 
