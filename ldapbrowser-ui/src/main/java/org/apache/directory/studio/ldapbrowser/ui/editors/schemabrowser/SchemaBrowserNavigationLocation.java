@@ -67,23 +67,23 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
             if ( schemaElement instanceof ObjectClassDescription )
             {
 
-                return "Object Class " + SchemaUtils.toString( schemaElement );
+                return Messages.getString( "SchemaBrowserNavigationLocation.ObjectClass" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
             else if ( schemaElement instanceof AttributeTypeDescription )
             {
-                return "Attribute Type " + SchemaUtils.toString( schemaElement );
+                return Messages.getString( "SchemaBrowserNavigationLocation.AttributeType" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
             else if ( schemaElement instanceof LdapSyntaxDescription )
             {
-                return "Syntax " + SchemaUtils.toString( schemaElement );
+                return Messages.getString( "SchemaBrowserNavigationLocation.Syntax" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
             else if ( schemaElement instanceof MatchingRuleDescription )
             {
-                return "Matching Rule " + SchemaUtils.toString( schemaElement );
+                return Messages.getString( "SchemaBrowserNavigationLocation.MatchingRule" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
             else if ( schemaElement instanceof MatchingRuleUseDescription )
             {
-                return "Matching Rule Use " + SchemaUtils.toString( schemaElement );
+                return Messages.getString( "SchemaBrowserNavigationLocation.MatchingRuleUse" ) + SchemaUtils.toString( schemaElement ); //$NON-NLS-1$
             }
             else
             {
@@ -104,9 +104,9 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     {
         IBrowserConnection connection = getConnection();
         AbstractSchemaDescription schemaElement = getSchemElement();
-        memento.putString( "CONNECTION", connection.getConnection().getId() );
-        memento.putString( "SCHEMAELEMENTYPE", schemaElement.getClass().getName() );
-        memento.putString( "SCHEMAELEMENTOID", schemaElement.getNumericOid() );
+        memento.putString( "CONNECTION", connection.getConnection().getId() ); //$NON-NLS-1$
+        memento.putString( "SCHEMAELEMENTYPE", schemaElement.getClass().getName() ); //$NON-NLS-1$
+        memento.putString( "SCHEMAELEMENTOID", schemaElement.getNumericOid() ); //$NON-NLS-1$
     }
 
 
@@ -116,9 +116,9 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     public void restoreState( IMemento memento )
     {
         IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-            memento.getString( "CONNECTION" ) );
-        String schemaElementType = memento.getString( "SCHEMAELEMENTYPE" );
-        String schemaElementOid = memento.getString( "SCHEMAELEMENTOID" );
+            memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
+        String schemaElementType = memento.getString( "SCHEMAELEMENTYPE" ); //$NON-NLS-1$
+        String schemaElementOid = memento.getString( "SCHEMAELEMENTOID" ); //$NON-NLS-1$
         AbstractSchemaDescription schemaElement = null;
         if ( ObjectClassDescription.class.getName().equals( schemaElementType ) )
         {
@@ -256,7 +256,7 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     public String toString()
     {
-        return "" + getSchemElement();
+        return "" + getSchemElement(); //$NON-NLS-1$
     }
 
 }

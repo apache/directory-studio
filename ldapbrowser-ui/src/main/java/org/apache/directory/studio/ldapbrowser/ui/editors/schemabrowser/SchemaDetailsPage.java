@@ -138,7 +138,7 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     protected void createRawSection()
     {
         rawSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        rawSection.setText( "Raw Schema Definition" );
+        rawSection.setText( Messages.getString( "SchemaDetailsPage.RawSchemaDefinition" ) ); //$NON-NLS-1$
         rawSection.marginWidth = 0;
         rawSection.marginHeight = 0;
         rawSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -206,7 +206,7 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
      */
     protected String getNonNullString( String s )
     {
-        return s == null ? "-" : s;
+        return s == null ? "-" : s; //$NON-NLS-1$
     }
 
 
@@ -220,7 +220,7 @@ public abstract class SchemaDetailsPage implements IHyperlinkListener
     {
         if ( s == null || s.isEmpty() )
         {
-            return "-";
+            return "-"; //$NON-NLS-1$
         }
 
         return s.get( 0 );

@@ -59,7 +59,7 @@ public class ObjectClassDescriptionPage extends SchemaPage
      */
     protected String getTitle()
     {
-        return "Object Classes";
+        return Messages.getString( "ObjectClassDescriptionPage.ObjectClasses" ); //$NON-NLS-1$
     }
 
 
@@ -68,7 +68,7 @@ public class ObjectClassDescriptionPage extends SchemaPage
      */
     protected String getFilterDescription()
     {
-        return "Please select an object class. Enter a filter to restrict the list.";
+        return Messages.getString( "ObjectClassDescriptionPage.SelectObjectClass" ); //$NON-NLS-1$
     }
 
 

@@ -49,8 +49,8 @@ public class ReloadSchemaAction extends Action
      */
     public ReloadSchemaAction( SchemaPage schemaPage )
     {
-        super( "Reload Schema" );
-        super.setToolTipText( "Reload Schema" );
+        super( Messages.getString( "ReloadSchemaAction.ReloadSchema" ) ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "ReloadSchemaAction.ReloadSchemaToolTip" ) ); //$NON-NLS-1$
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_REFRESH ) );
         super.setEnabled( true );
 

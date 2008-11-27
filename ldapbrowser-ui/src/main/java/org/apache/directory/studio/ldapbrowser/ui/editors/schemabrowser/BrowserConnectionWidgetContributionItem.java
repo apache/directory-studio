@@ -142,7 +142,7 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem im
      */
     public final void fill( Menu parent, int index )
     {
-        Assert.isTrue( false, "Can't add a control to a menu" );//$NON-NLS-1$
+        Assert.isTrue( false, Messages.getString( "BrowserConnectionWidgetContributionItem.CantAddControl" ) );//$NON-NLS-1$
     }
 
 

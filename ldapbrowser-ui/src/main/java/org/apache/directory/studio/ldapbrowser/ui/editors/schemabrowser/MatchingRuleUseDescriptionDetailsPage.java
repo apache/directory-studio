@@ -28,6 +28,7 @@ import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -90,7 +91,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
 
         // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        mainSection.setText( "Details" );
+        mainSection.setText( Messages.getString( "MatchingRuleUseDescriptionDetailsPage.Details" ) ); //$NON-NLS-1$
         mainSection.marginWidth = 0;
         mainSection.marginHeight = 0;
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -98,7 +99,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
 
         // create flag section
         flagSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        flagSection.setText( "Flags" );
+        flagSection.setText( Messages.getString( "MatchingRuleUseDescriptionDetailsPage.Flags" ) ); //$NON-NLS-1$
         flagSection.marginWidth = 0;
         flagSection.marginHeight = 0;
         flagSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -113,13 +114,14 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         flagClient.setLayout( flagLayout );
         flagSection.setClient( flagClient );
 
-        isObsoleteText = toolkit.createLabel( flagClient, "Obsolete", SWT.CHECK );
+        isObsoleteText = toolkit.createLabel( flagClient, Messages
+            .getString( "MatchingRuleUseDescriptionDetailsPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
         isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         isObsoleteText.setEnabled( false );
 
         // create applies section
         appliesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        appliesSection.setText( "Applies" );
+        appliesSection.setText( Messages.getString( "MatchingRuleUseDescriptionDetailsPage.Applies" ) ); //$NON-NLS-1$
         appliesSection.marginWidth = 0;
         appliesSection.marginHeight = 0;
         appliesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -186,13 +188,15 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( mrud != null )
         {
-            toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "MatchingRuleUseDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
             numericOidText = toolkit.createText( mainClient, getNonNullString( mrud.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Matching rule names:", SWT.NONE );
-            nameLink = toolkit.createHyperlink( mainClient, "", SWT.WRAP );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "MatchingRuleUseDescriptionDetailsPage.MatchingRules" ), SWT.NONE ); //$NON-NLS-1$
+            nameLink = toolkit.createHyperlink( mainClient, "", SWT.WRAP ); //$NON-NLS-1$
             nameLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             nameLink.addHyperlinkListener( this );
 
@@ -205,7 +209,8 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             nameLink.setUnderlined( mrd != null );
             nameLink.setEnabled( mrd != null );
 
-            toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "MatchingRuleUseDescriptionDetailsPage.Description" ), SWT.NONE ); //$NON-NLS-1$
             descText = toolkit.createText( mainClient, getNonNullString( mrud.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
@@ -243,7 +248,8 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             List<String> names = mrud.getApplicableAttributes();
             if ( names != null && !names.isEmpty() )
             {
-                appliesSection.setText( "Applies (" + names.size() + ")" );
+                appliesSection.setText( NLS.bind( Messages
+                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new int[] { names.size() } ) ); //$NON-NLS-1$
                 Schema schema = getSchema();
                 for ( String name : names )
                 {
@@ -269,7 +275,8 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                appliesSection.setText( "Applies (0)" );
+                appliesSection.setText( NLS.bind( Messages
+                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text usedFromText = toolkit.createText( appliesClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );
@@ -277,7 +284,7 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            appliesSection.setText( "Applies" );
+            appliesSection.setText( Messages.getString( "MatchingRuleUseDescriptionDetailsPage.Applies" ) ); //$NON-NLS-1$
         }
 
         appliesSection.layout();

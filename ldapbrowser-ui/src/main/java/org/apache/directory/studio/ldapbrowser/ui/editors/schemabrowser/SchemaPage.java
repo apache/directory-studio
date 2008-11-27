@@ -224,8 +224,8 @@ public abstract class SchemaPage
         section.setClient( client );
 
         // create filter field
-        toolkit.createLabel( client, "Filter:" );
-        this.filterText = toolkit.createText( client, "", SWT.NONE );
+        toolkit.createLabel( client, Messages.getString( "SchemaPage.Filter" ) ); //$NON-NLS-1$
+        this.filterText = toolkit.createText( client, "", SWT.NONE ); //$NON-NLS-1$
         this.filterText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         this.filterText.setData( FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER );
         this.filterText.addModifyListener( new ModifyListener()
@@ -283,7 +283,7 @@ public abstract class SchemaPage
             this.viewer.setSelection( newSelection, true );
             if ( this.viewer.getSelection().isEmpty() )
             {
-                this.filterText.setText( "" );
+                this.filterText.setText( "" ); //$NON-NLS-1$
                 this.viewer.setSelection( newSelection, true );
             }
             inChange = false;
@@ -352,7 +352,8 @@ public abstract class SchemaPage
                     // the selection was changed programatically.
                     if ( !inChange && obj instanceof AbstractSchemaDescription )
                     {
-                        schemaBrowser.setInput( new SchemaBrowserInput( getConnection(), ( AbstractSchemaDescription ) obj ) );
+                        schemaBrowser.setInput( new SchemaBrowserInput( getConnection(),
+                            ( AbstractSchemaDescription ) obj ) );
                     }
                 }
             }

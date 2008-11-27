@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -100,7 +101,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
         // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        mainSection.setText( "Details" );
+        mainSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.Details" ) ); //$NON-NLS-1$
         mainSection.marginWidth = 0;
         mainSection.marginHeight = 0;
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -108,7 +109,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
         // create must section
         mustSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        mustSection.setText( "MUST Attributes" );
+        mustSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.MustAttributes" ) ); //$NON-NLS-1$
         mustSection.marginWidth = 0;
         mustSection.marginHeight = 0;
         mustSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -123,7 +124,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
         // create may section
         maySection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        maySection.setText( "MAY Attributes" );
+        maySection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.MayAttributes" ) ); //$NON-NLS-1$
         maySection.marginWidth = 0;
         maySection.marginHeight = 0;
         maySection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -138,7 +139,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
         // create superior section
         superclassesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        superclassesSection.setText( "Superclasses" );
+        superclassesSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.Superclasses" ) ); //$NON-NLS-1$
         superclassesSection.marginWidth = 0;
         superclassesSection.marginHeight = 0;
         superclassesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -153,7 +154,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
 
         // create subclasses section
         subclassesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        subclassesSection.setText( "Subclasses" );
+        subclassesSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.Subclasses" ) ); //$NON-NLS-1$
         subclassesSection.marginWidth = 0;
         subclassesSection.marginHeight = 0;
         subclassesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -220,41 +221,45 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( ocd != null )
         {
-            toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "ObjectClassDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
             numericOidText = toolkit.createText( mainClient, getNonNullString( ocd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Objectclass names:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "ObjectClassDescriptionDetailsPage.ObjectclassNames" ), SWT.NONE ); //$NON-NLS-1$
             namesText = toolkit.createText( mainClient, getNonNullString( SchemaUtils.toString( ocd ) ), SWT.NONE );
             namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             namesText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "ObjectClassDescriptionDetailsPage.Description" ), SWT.NONE ); //$NON-NLS-1$
             descText = toolkit.createText( mainClient, getNonNullString( ocd.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
 
-            String kind = "";
+            String kind = ""; //$NON-NLS-1$
             switch ( ocd.getKind() )
             {
                 case STRUCTURAL:
-                    kind = "structural";
+                    kind = Messages.getString( "ObjectClassDescriptionDetailsPage.Structural" ); //$NON-NLS-1$
                     break;
                 case ABSTRACT:
-                    kind = "abstract";
+                    kind = Messages.getString( "ObjectClassDescriptionDetailsPage.Abstract" ); //$NON-NLS-1$
                     break;
                 case AUXILIARY:
-                    kind = "auxiliary";
+                    kind = Messages.getString( "ObjectClassDescriptionDetailsPage.Auxiliary" ); //$NON-NLS-1$
                     break;
             }
             if ( ocd.isObsolete() )
             {
-                kind += " (obsolete)";
+                kind += Messages.getString( "ObjectClassDescriptionDetailsPage.Obsolete" ); //$NON-NLS-1$
             }
-            toolkit.createLabel( mainClient, "Objectclass kind:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "ObjectClassDescriptionDetailsPage.ObjectclassKind" ), SWT.NONE ); //$NON-NLS-1$
             kindText = toolkit.createText( mainClient, getNonNullString( kind ), SWT.NONE );
             kindText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             kindText.setEditable( false );
@@ -290,13 +295,17 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             Collection<String> names = SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd, getSchema() );
             if ( names != null && names.size() > 0 )
             {
-                mustSection.setText( "MUST Attributes (" + names.size() + ")" );
+                mustSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "ObjectClassDescriptionDetailsPage.MustAttributesCount" ), new int[] { names.size() } ) ); //$NON-NLS-1$
                 for ( String name : names )
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
                         AttributeTypeDescription mustAtd = getSchema().getAttributeTypeDescription( name );
-                        Hyperlink mustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( mustAtd ), SWT.WRAP );
+                        Hyperlink mustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( mustAtd ),
+                            SWT.WRAP );
                         mustLink.setHref( mustAtd );
                         mustLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         mustLink.setUnderlined( true );
@@ -314,7 +323,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                mustSection.setText( "MUST Attributes (0)" );
+                mustSection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.MustAttributesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text mustText = toolkit.createText( mustClient, getNonNullString( null ), SWT.NONE );
                 mustText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mustText.setEditable( false );
@@ -322,7 +332,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            mustSection.setText( "MUST Attributes" );
+            mustSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.MustAttributes" ) ); //$NON-NLS-1$
         }
 
         mustSection.layout();
@@ -355,13 +365,15 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             Collection<String> names = SchemaUtils.getMayAttributeTypeDescriptionNamesTransitive( ocd, getSchema() );
             if ( names != null && names.size() > 0 )
             {
-                maySection.setText( "MAY Attributes (" + names.size() + ")" );
+                maySection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.MayAttributesCount" ), new int[] { names.size() } ) ); //$NON-NLS-1$
                 for ( String name : names )
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
                     {
                         AttributeTypeDescription mayAtd = getSchema().getAttributeTypeDescription( name );
-                        Hyperlink mayLink = toolkit.createHyperlink( mayClient, SchemaUtils.toString( mayAtd ), SWT.WRAP );
+                        Hyperlink mayLink = toolkit.createHyperlink( mayClient, SchemaUtils.toString( mayAtd ),
+                            SWT.WRAP );
                         mayLink.setHref( mayAtd );
                         mayLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         mayLink.setUnderlined( true );
@@ -379,7 +391,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                maySection.setText( "MAY Attributes (0)" );
+                maySection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.MayAttributesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text mayText = toolkit.createText( mayClient, getNonNullString( null ), SWT.NONE );
                 mayText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mayText.setEditable( false );
@@ -387,7 +400,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            maySection.setText( "MAY Attributes" );
+            maySection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.MayAttributes" ) ); //$NON-NLS-1$
         }
         maySection.layout();
     }
@@ -419,7 +432,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             List<ObjectClassDescription> subOcds = SchemaUtils.getSubObjectClassDescriptions( ocd, getSchema() );
             if ( subOcds != null && subOcds.size() > 0 )
             {
-                subclassesSection.setText( "Subclasses (" + subOcds.size() + ")" );
+                subclassesSection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.SubclassesCount" ), new int[] { subOcds.size() } ) ); //$NON-NLS-1$
                 for ( ObjectClassDescription subOcd : subOcds )
                 {
                     Hyperlink subLink = toolkit.createHyperlink( subClient, SchemaUtils.toString( subOcd ), SWT.WRAP );
@@ -432,7 +446,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                subclassesSection.setText( "Subclasses (0)" );
+                subclassesSection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.SubclassesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text derivedText = toolkit.createText( subClient, getNonNullString( null ), SWT.NONE );
                 derivedText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 derivedText.setEditable( false );
@@ -440,7 +455,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            subclassesSection.setText( "Subclasses" );
+            subclassesSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.Subclasses" ) ); //$NON-NLS-1$
         }
 
         subclassesSection.layout();
@@ -473,7 +488,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             List<String> names = ocd.getSuperiorObjectClasses();
             if ( names != null && names.size() > 0 )
             {
-                superclassesSection.setText( "Superclasses (" + names.size() + ")" );
+                superclassesSection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.SuperclassesCount" ), new int[] { names.size() } ) ); //$NON-NLS-1$
                 Composite supClient = toolkit.createComposite( superClient, SWT.WRAP );
                 GridLayout gl = new GridLayout();
                 gl.marginWidth = 0;
@@ -484,7 +500,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
                     if ( getSchema().hasObjectClassDescription( name ) )
                     {
                         ObjectClassDescription supOcd = getSchema().getObjectClassDescription( name );
-                        Hyperlink superLink = toolkit.createHyperlink( supClient, SchemaUtils.toString( supOcd ), SWT.WRAP );
+                        Hyperlink superLink = toolkit.createHyperlink( supClient, SchemaUtils.toString( supOcd ),
+                            SWT.WRAP );
                         superLink.setHref( supOcd );
                         superLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                         superLink.setUnderlined( true );
@@ -502,7 +519,8 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                superclassesSection.setText( "Superclasses (0)" );
+                superclassesSection.setText( NLS.bind( Messages
+                    .getString( "ObjectClassDescriptionDetailsPage.SuperclassesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text superText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 superText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 superText.setEditable( false );
@@ -510,7 +528,7 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            superclassesSection.setText( "Superclasses" );
+            superclassesSection.setText( Messages.getString( "ObjectClassDescriptionDetailsPage.Superclasses" ) ); //$NON-NLS-1$
         }
 
         superclassesSection.layout();

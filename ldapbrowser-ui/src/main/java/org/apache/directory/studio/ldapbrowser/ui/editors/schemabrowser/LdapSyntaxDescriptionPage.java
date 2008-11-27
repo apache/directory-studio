@@ -59,7 +59,7 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
      */
     protected String getTitle()
     {
-        return "Syntaxes";
+        return Messages.getString( "LdapSyntaxDescriptionPage.Syntaxes" ); //$NON-NLS-1$
     }
 
 
@@ -68,7 +68,7 @@ public class LdapSyntaxDescriptionPage extends SchemaPage
      */
     protected String getFilterDescription()
     {
-        return "Please select a syntax. Enter a filter to restrict the list.";
+        return Messages.getString( "LdapSyntaxDescriptionPage.SelectASyntax" ); //$NON-NLS-1$
     }
 
 

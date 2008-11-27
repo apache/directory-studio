@@ -45,8 +45,8 @@ public class ShowDefaultSchemaAction extends Action
      */
     public ShowDefaultSchemaAction( SchemaBrowser schemaBrowser )
     {
-        super( "Show Default Schema", Action.AS_CHECK_BOX );
-        super.setToolTipText( "Show Default Schema" );
+        super( Messages.getString( "ShowDefaultSchemaAction.ShowDefaultSchema" ), Action.AS_CHECK_BOX ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "ShowDefaultSchemaAction.ShowDefaultSchemaToolTip" ) ); //$NON-NLS-1$
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_DEFAULT_SCHEMA ) );
         super.setEnabled( true );

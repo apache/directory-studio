@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -146,7 +147,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        mainSection.setText( "Details" );
+        mainSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Details" ) ); //$NON-NLS-1$
         mainSection.marginWidth = 0;
         mainSection.marginHeight = 0;
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -154,7 +155,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // create flag section
         flagSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        flagSection.setText( "Flags" );
+        flagSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Flags" ) ); //$NON-NLS-1$
         flagSection.marginWidth = 0;
         flagSection.marginHeight = 0;
         flagSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -169,25 +170,29 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         flagClient.setLayout( flagLayout );
         flagSection.setClient( flagClient );
 
-        singleValuedText = toolkit.createLabel( flagClient, "Single valued", SWT.CHECK );
+        singleValuedText = toolkit.createLabel( flagClient, Messages
+            .getString( "AttributeTypeDescriptionDetailsPage.SingleValued" ), SWT.CHECK ); //$NON-NLS-1$
         singleValuedText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         singleValuedText.setEnabled( false );
 
-        noUserModificationText = toolkit.createLabel( flagClient, "Read only", SWT.CHECK );
+        noUserModificationText = toolkit.createLabel( flagClient, Messages
+            .getString( "AttributeTypeDescriptionDetailsPage.ReadOnly" ), SWT.CHECK ); //$NON-NLS-1$
         noUserModificationText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         noUserModificationText.setEnabled( false );
 
-        collectiveText = toolkit.createLabel( flagClient, "Collective", SWT.CHECK );
+        collectiveText = toolkit.createLabel( flagClient, Messages
+            .getString( "AttributeTypeDescriptionDetailsPage.Collective" ), SWT.CHECK ); //$NON-NLS-1$
         collectiveText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         collectiveText.setEnabled( false );
 
-        isObsoleteText = toolkit.createLabel( flagClient, "Obsolete", SWT.CHECK );
+        isObsoleteText = toolkit.createLabel( flagClient, Messages
+            .getString( "AttributeTypeDescriptionDetailsPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
         isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         isObsoleteText.setEnabled( false );
 
         // create syntax section
         syntaxSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        syntaxSection.setText( "Syntax" );
+        syntaxSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Syntax" ) ); //$NON-NLS-1$
         syntaxSection.marginWidth = 0;
         syntaxSection.marginHeight = 0;
         syntaxSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -202,24 +207,27 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         syntaxClient.setLayout( syntaxLayout );
         syntaxSection.setClient( syntaxClient );
 
-        toolkit.createLabel( syntaxClient, "Syntax OID:", SWT.NONE );
-        syntaxLink = toolkit.createHyperlink( syntaxClient, "", SWT.WRAP );
+        toolkit.createLabel( syntaxClient,
+            Messages.getString( "AttributeTypeDescriptionDetailsPage.SyntaxOID" ), SWT.NONE ); //$NON-NLS-1$
+        syntaxLink = toolkit.createHyperlink( syntaxClient, "", SWT.WRAP ); //$NON-NLS-1$
         syntaxLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         syntaxLink.addHyperlinkListener( this );
 
-        toolkit.createLabel( syntaxClient, "Syntax Description:", SWT.NONE );
-        syntaxDescText = toolkit.createText( syntaxClient, "", SWT.NONE );
+        toolkit.createLabel( syntaxClient,
+            Messages.getString( "AttributeTypeDescriptionDetailsPage.SyntaxDescription" ), SWT.NONE ); //$NON-NLS-1$
+        syntaxDescText = toolkit.createText( syntaxClient, "", SWT.NONE ); //$NON-NLS-1$
         syntaxDescText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         syntaxDescText.setEditable( false );
 
-        toolkit.createLabel( syntaxClient, "Length:", SWT.NONE );
-        lengthText = toolkit.createText( syntaxClient, "", SWT.NONE );
+        toolkit
+            .createLabel( syntaxClient, Messages.getString( "AttributeTypeDescriptionDetailsPage.Length" ), SWT.NONE ); //$NON-NLS-1$
+        lengthText = toolkit.createText( syntaxClient, "", SWT.NONE ); //$NON-NLS-1$
         lengthText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         lengthText.setEditable( false );
 
         // create matching rules section
         matchingRulesSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        matchingRulesSection.setText( "Matching Rules" );
+        matchingRulesSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.MatchingRules" ) ); //$NON-NLS-1$
         matchingRulesSection.marginWidth = 0;
         matchingRulesSection.marginHeight = 0;
         matchingRulesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -234,24 +242,27 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         matchClient.setLayout( matchLayout );
         matchingRulesSection.setClient( matchClient );
 
-        toolkit.createLabel( matchClient, "Equality match:", SWT.NONE );
-        equalityLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP );
+        toolkit.createLabel( matchClient,
+            Messages.getString( "AttributeTypeDescriptionDetailsPage.EqualityMatch" ), SWT.NONE ); //$NON-NLS-1$
+        equalityLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP ); //$NON-NLS-1$
         equalityLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         equalityLink.addHyperlinkListener( this );
 
-        toolkit.createLabel( matchClient, "Substring match:", SWT.NONE );
-        substringLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP );
+        toolkit.createLabel( matchClient,
+            Messages.getString( "AttributeTypeDescriptionDetailsPage.SubstringMatch" ), SWT.NONE ); //$NON-NLS-1$
+        substringLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP ); //$NON-NLS-1$
         substringLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         substringLink.addHyperlinkListener( this );
 
-        toolkit.createLabel( matchClient, "Ordering match:", SWT.NONE );
-        orderingLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP );
+        toolkit.createLabel( matchClient,
+            Messages.getString( "AttributeTypeDescriptionDetailsPage.OrderingMatch" ), SWT.NONE ); //$NON-NLS-1$
+        orderingLink = toolkit.createHyperlink( matchClient, "", SWT.WRAP ); //$NON-NLS-1$
         orderingLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         orderingLink.addHyperlinkListener( this );
 
         // create other matching rules section
         otherMatchSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        otherMatchSection.setText( "Other Matching Rules" );
+        otherMatchSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRules" ) ); //$NON-NLS-1$
         otherMatchSection.marginWidth = 0;
         otherMatchSection.marginHeight = 0;
         otherMatchSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -266,7 +277,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // create used as must section
         usedAsMustSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        usedAsMustSection.setText( "Used as MUST" );
+        usedAsMustSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMust" ) ); //$NON-NLS-1$
         usedAsMustSection.marginWidth = 0;
         usedAsMustSection.marginHeight = 0;
         usedAsMustSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -281,7 +292,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // create used as may section
         usedAsMaySection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        usedAsMaySection.setText( "Used as MAY" );
+        usedAsMaySection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMay" ) ); //$NON-NLS-1$
         usedAsMaySection.marginWidth = 0;
         usedAsMaySection.marginHeight = 0;
         usedAsMaySection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -296,7 +307,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // create supertype section
         supertypeSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        supertypeSection.setText( "Supertype" );
+        supertypeSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Supertype" ) ); //$NON-NLS-1$
         supertypeSection.marginWidth = 0;
         supertypeSection.marginHeight = 0;
         supertypeSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -311,7 +322,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         // create subtypes section
         subtypesSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        subtypesSection.setText( "Subtypes" );
+        subtypesSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Subtypes" ) ); //$NON-NLS-1$
         subtypesSection.marginWidth = 0;
         subtypesSection.marginHeight = 0;
         subtypesSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -454,24 +465,28 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( atd != null )
         {
-            toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "AttributeTypeDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
             numericOidText = toolkit.createText( mainClient, getNonNullString( atd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Attribute names:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "AttributeTypeDescriptionDetailsPage.AttributeNames" ), SWT.NONE ); //$NON-NLS-1$
             namesText = toolkit.createText( mainClient, getNonNullString( SchemaUtils.toString( atd ) ), SWT.NONE );
             namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             namesText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Descripton:", SWT.WRAP );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "AttributeTypeDescriptionDetailsPage.Description" ), SWT.WRAP ); //$NON-NLS-1$
             descText = toolkit.createText( mainClient, getNonNullString( atd.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
             descText.setLayoutData( gd );
             descText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Usage:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "AttributeTypeDescriptionDetailsPage.Usage" ), SWT.NONE ); //$NON-NLS-1$
             usageText = toolkit.createText( mainClient, getNonNullString( UsageEnum.render( atd.getUsage() ) ),
                 SWT.NONE );
             usageText.setLayoutData( new GridData( GridData.GRAB_HORIZONTAL ) );
@@ -510,7 +525,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             Collection<String> otherMrdNames = SchemaUtils.getOtherMatchingRuleDescriptionNames( atd, getSchema() );
             if ( otherMrdNames != null && otherMrdNames.size() > 0 )
             {
-                otherMatchSection.setText( "Other Matching Rules (" + otherMrdNames.size() + ")" );
+                otherMatchSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRulesCount" ), new int[] { otherMrdNames.size() } ) ); //$NON-NLS-1$
                 for ( String mrdName : otherMrdNames )
                 {
                     if ( getSchema().hasMatchingRuleDescription( mrdName ) )
@@ -535,7 +553,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                otherMatchSection.setText( "Other Matching Rules (0)" );
+                otherMatchSection.setText( NLS.bind( Messages
+                    .getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRulesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text otherText = toolkit.createText( otherMatchClient, getNonNullString( null ), SWT.NONE );
                 otherText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 otherText.setEditable( false );
@@ -543,7 +562,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            otherMatchSection.setText( "Other Matching Rules" );
+            otherMatchSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.OtherMatchingRules" ) ); //$NON-NLS-1$
         }
 
         otherMatchSection.layout();
@@ -577,7 +596,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             String superType = atd.getSuperType();
             if ( superType != null )
             {
-                supertypeSection.setText( "Supertype (" + "1" + ")" );
+                supertypeSection.setText( NLS.bind( Messages
+                    .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new int[] { 1 } ) ); //$NON-NLS-1$
                 if ( getSchema().hasAttributeTypeDescription( superType ) )
                 {
                     AttributeTypeDescription supAtd = getSchema().getAttributeTypeDescription( superType );
@@ -599,7 +619,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                supertypeSection.setText( "Supertype (0)" );
+                supertypeSection.setText( NLS.bind( Messages
+                    .getString( "AttributeTypeDescriptionDetailsPage.SupertypeCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text supText = toolkit.createText( superClient, getNonNullString( null ), SWT.NONE );
                 supText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 supText.setEditable( false );
@@ -607,7 +628,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            supertypeSection.setText( "Supertype" );
+            supertypeSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Supertype" ) ); //$NON-NLS-1$
         }
 
         supertypeSection.layout();
@@ -641,7 +662,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
                 getSchema() );
             if ( derivedAtds != null && derivedAtds.size() > 0 )
             {
-                subtypesSection.setText( "Subtypes (" + derivedAtds.size() + ")" );
+                subtypesSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new int[] { derivedAtds.size() } ) ); //$NON-NLS-1$
                 for ( AttributeTypeDescription derivedAtd : derivedAtds )
                 {
                     Hyperlink subAttributeTypeLink = toolkit.createHyperlink( subClient, SchemaUtils
@@ -655,7 +679,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                subtypesSection.setText( "Subtypes (0)" );
+                subtypesSection.setText( NLS.bind( Messages
+                    .getString( "AttributeTypeDescriptionDetailsPage.SubtypesCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text subText = toolkit.createText( subClient, getNonNullString( null ), SWT.NONE );
                 subText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 subText.setEditable( false );
@@ -663,7 +688,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            subtypesSection.setText( "Subtypes" );
+            subtypesSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.Subtypes" ) ); //$NON-NLS-1$
         }
 
         subtypesSection.layout();
@@ -697,7 +722,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             Collection<ObjectClassDescription> usedAsMusts = SchemaUtils.getUsedAsMust( atd, getSchema() );
             if ( usedAsMusts != null && usedAsMusts.size() > 0 )
             {
-                usedAsMustSection.setText( "Used as MUST (" + usedAsMusts.size() + ")" );
+                usedAsMustSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new int[] { usedAsMusts.size() } ) ); //$NON-NLS-1$
                 for ( ObjectClassDescription ocd : usedAsMusts )
                 {
                     Hyperlink usedAsMustLink = toolkit.createHyperlink( mustClient, SchemaUtils.toString( ocd ),
@@ -711,7 +739,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                usedAsMustSection.setText( "Used as MUST (0)" );
+                usedAsMustSection.setText( NLS.bind( Messages
+                    .getString( "AttributeTypeDescriptionDetailsPage.UsedAsMustCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text mustText = toolkit.createText( mustClient, getNonNullString( null ), SWT.NONE );
                 mustText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mustText.setEditable( false );
@@ -719,7 +748,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            usedAsMustSection.setText( "Used as MUST" );
+            usedAsMustSection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMust" ) ); //$NON-NLS-1$
         }
 
         usedAsMustSection.layout();
@@ -753,7 +782,10 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             Collection<ObjectClassDescription> usedAsMays = SchemaUtils.getUsedAsMay( atd, getSchema() );
             if ( usedAsMays != null && usedAsMays.size() > 0 )
             {
-                usedAsMaySection.setText( "Used as MAY (" + usedAsMays.size() + ")" );
+                usedAsMaySection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new int[] { usedAsMays.size() } ) ); //$NON-NLS-1$
                 for ( ObjectClassDescription ocd : usedAsMays )
                 {
                     Hyperlink usedAsMayLink = toolkit
@@ -767,7 +799,8 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                usedAsMaySection.setText( "Used as MAY (0)" );
+                usedAsMaySection.setText( NLS.bind( Messages
+                    .getString( "AttributeTypeDescriptionDetailsPage.UsedAsMayCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text mayText = toolkit.createText( mayClient, getNonNullString( null ), SWT.NONE );
                 mayText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 mayText.setEditable( false );
@@ -775,7 +808,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            usedAsMaySection.setText( "Used as MAY" );
+            usedAsMaySection.setText( Messages.getString( "AttributeTypeDescriptionDetailsPage.UsedAsMay" ) ); //$NON-NLS-1$
         }
 
         usedAsMaySection.layout();

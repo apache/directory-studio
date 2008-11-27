@@ -60,7 +60,7 @@ public class AttributeTypeDescriptionPage extends SchemaPage
      */
     protected String getTitle()
     {
-        return "Attribute Types";
+        return Messages.getString( "AttributeTypeDescriptionPage.AttributeTypes" ); //$NON-NLS-1$
     }
 
 
@@ -69,7 +69,7 @@ public class AttributeTypeDescriptionPage extends SchemaPage
      */
     protected String getFilterDescription()
     {
-        return "Please select an attribute type. Enter a filter to restrict the list.";
+        return Messages.getString( "AttributeTypeDescriptionPage.SelectAttributeType" ); //$NON-NLS-1$
     }
 
 

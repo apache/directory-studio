@@ -53,10 +53,10 @@ public class SchemaBrowserInput implements IEditorInput
 
     /** The connection */
     private IBrowserConnection connection;
-    
+
     /** The schema element */
     private AbstractSchemaDescription schemaElement;
-    
+
     /** One instance hack flag */
     private static boolean oneInstanceHackEnabled = true;
 
@@ -72,21 +72,20 @@ public class SchemaBrowserInput implements IEditorInput
         this.connection = connection;
         this.schemaElement = schemaElement;
     }
-    
 
-//    /**
-//     * Creates a new instance of SchemaBrowserInput.
-//     *
-//     *@param connection the connection
-//     * @param schemaElement the schema element input
-//     */
-//    public SchemaBrowserInput( Connection connection, SchemaPart schemaElement )
-//    {
-//        this.connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( connection );
-//        this.schemaElement = schemaElement;
-//    }
-    
-    
+
+    //    /**
+    //     * Creates a new instance of SchemaBrowserInput.
+    //     *
+    //     *@param connection the connection
+    //     * @param schemaElement the schema element input
+    //     */
+    //    public SchemaBrowserInput( Connection connection, SchemaPart schemaElement )
+    //    {
+    //        this.connection = BrowserCorePlugin.getDefault().getConnectionManager().getConnection( connection );
+    //        this.schemaElement = schemaElement;
+    //    }
+
     /**
      * This implementation always return false because
      * a schema element should not be visible in the 
@@ -114,7 +113,7 @@ public class SchemaBrowserInput implements IEditorInput
      */
     public String getName()
     {
-        return "Schema Browser";
+        return Messages.getString( "SchemaBrowserInput.SchemaBrowser" ); //$NON-NLS-1$
     }
 
 
@@ -134,7 +133,7 @@ public class SchemaBrowserInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 
@@ -145,7 +144,7 @@ public class SchemaBrowserInput implements IEditorInput
     {
         return null;
     }
-    
+
 
     /**
      * Gets the connection.
@@ -156,8 +155,8 @@ public class SchemaBrowserInput implements IEditorInput
     {
         return connection;
     }
-    
-    
+
+
     /**
     /**
      * Gets the schema element, may be null.
@@ -168,8 +167,8 @@ public class SchemaBrowserInput implements IEditorInput
     {
         return schemaElement;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -196,15 +195,15 @@ public class SchemaBrowserInput implements IEditorInput
             if ( obj instanceof SchemaBrowserInput )
             {
                 SchemaBrowserInput other = ( SchemaBrowserInput ) obj;
-                if ( this.connection == null && other.connection == null)
+                if ( this.connection == null && other.connection == null )
                 {
                     return true;
                 }
-                else if ( this.connection == null || other.connection == null)
+                else if ( this.connection == null || other.connection == null )
                 {
                     return false;
                 }
-                else if ( !this.connection.equals( other.connection ))
+                else if ( !this.connection.equals( other.connection ) )
                 {
                     return false;
                 }

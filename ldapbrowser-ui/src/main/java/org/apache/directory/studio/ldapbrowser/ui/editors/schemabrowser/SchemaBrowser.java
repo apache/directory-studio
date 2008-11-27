@@ -141,21 +141,21 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
         tabFolder = new CTabFolder( parent, SWT.BOTTOM );
 
         ocdTab = new CTabItem( tabFolder, SWT.NONE );
-        ocdTab.setText( "Object Classes" );
+        ocdTab.setText( Messages.getString( "SchemaBrowser.ObjectClasses" ) ); //$NON-NLS-1$
         ocdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_OCD ) );
         ocdPage = new ObjectClassDescriptionPage( this );
         Control ocdPageControl = ocdPage.createControl( tabFolder );
         ocdTab.setControl( ocdPageControl );
 
         atdTab = new CTabItem( tabFolder, SWT.NONE );
-        atdTab.setText( "Attribute Types" );
+        atdTab.setText( Messages.getString( "SchemaBrowser.AttributeTypes" ) ); //$NON-NLS-1$
         atdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_ATD ) );
         atdPage = new AttributeTypeDescriptionPage( this );
         Control atdPageControl = atdPage.createControl( tabFolder );
         atdTab.setControl( atdPageControl );
 
         mrdTab = new CTabItem( tabFolder, SWT.NONE );
-        mrdTab.setText( "Matching Rules" );
+        mrdTab.setText( Messages.getString( "SchemaBrowser.MatchingRules" ) ); //$NON-NLS-1$
         mrdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_MRD ) );
         mrdPage = new MatchingRuleDescriptionPage( this );
         Control mrdPageControl = mrdPage.createControl( tabFolder );
@@ -163,14 +163,14 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
 
         mrudTab = new CTabItem( tabFolder, SWT.NONE );
         mrudTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_MRUD ) );
-        mrudTab.setText( "Matching Rule Use" );
+        mrudTab.setText( Messages.getString( "SchemaBrowser.MatchingRulesUse" ) ); //$NON-NLS-1$
         mrudPage = new MatchingRuleUseDescriptionPage( this );
         Control mrudPageControl = mrudPage.createControl( tabFolder );
         mrudTab.setControl( mrudPageControl );
 
         lsdTab = new CTabItem( tabFolder, SWT.NONE );
         lsdTab.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_LSD ) );
-        lsdTab.setText( "Syntaxes" );
+        lsdTab.setText( Messages.getString( "SchemaBrowser.Syntaxes" ) ); //$NON-NLS-1$
         lsdPage = new LdapSyntaxDescriptionPage( this );
         Control lsdPageControl = lsdPage.createControl( tabFolder );
         lsdTab.setControl( lsdPageControl );
@@ -180,11 +180,11 @@ public class SchemaBrowser extends EditorPart implements INavigationLocationProv
 
         // init help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( tabFolder,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( ocdPageControl,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_schema_browser" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

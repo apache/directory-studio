@@ -26,6 +26,7 @@ import java.util.Collection;
 import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -79,7 +80,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
 
         // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        mainSection.setText( "Details" );
+        mainSection.setText( Messages.getString( "LdapSyntaxDescriptionDetailsPage.Details" ) ); //$NON-NLS-1$
         mainSection.marginWidth = 0;
         mainSection.marginHeight = 0;
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -87,7 +88,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
 
         // create used from section
         usedFromSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        usedFromSection.setText( "Used from" );
+        usedFromSection.setText( Messages.getString( "LdapSyntaxDescriptionDetailsPage.UsedFrom" ) ); //$NON-NLS-1$
         usedFromSection.marginWidth = 0;
         usedFromSection.marginHeight = 0;
         usedFromSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -148,12 +149,14 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( lsd != null )
         {
-            toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "LdapSyntaxDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
             Text numericOidText = toolkit.createText( mainClient, getNonNullString( lsd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "LdapSyntaxDescriptionDetailsPage.Description" ), SWT.NONE ); //$NON-NLS-1$
             Text descText = toolkit.createText( mainClient, getNonNullString( lsd.getDescription() ), SWT.WRAP
                 | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
@@ -193,10 +196,14 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
                 getSchema() );
             if ( usedFromATDs != null && !usedFromATDs.isEmpty() )
             {
-                usedFromSection.setText( "Used from (" + usedFromATDs.size() + ")" );
+                usedFromSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "LdapSyntaxDescriptionDetailsPage.UsedFromCount" ), new int[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
                 for ( AttributeTypeDescription atd : usedFromATDs )
                 {
-                    Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ), SWT.WRAP );
+                    Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
+                        SWT.WRAP );
                     usedFromLink.setHref( atd );
                     usedFromLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     usedFromLink.setUnderlined( true );
@@ -206,7 +213,8 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                usedFromSection.setText( "Used from (0)" );
+                usedFromSection.setText( NLS.bind( Messages
+                    .getString( "LdapSyntaxDescriptionDetailsPage.UsedFromCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text usedFromText = toolkit.createText( usedFromClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );
@@ -214,7 +222,7 @@ public class LdapSyntaxDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            usedFromSection.setText( "Used from" );
+            usedFromSection.setText( Messages.getString( "LdapSyntaxDescriptionDetailsPage.UsedFrom" ) ); //$NON-NLS-1$
         }
 
         usedFromSection.layout();

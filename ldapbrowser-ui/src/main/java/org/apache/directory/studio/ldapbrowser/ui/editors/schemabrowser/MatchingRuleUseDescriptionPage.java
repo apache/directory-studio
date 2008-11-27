@@ -60,7 +60,7 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
      */
     protected String getTitle()
     {
-        return "Matching Rule Use";
+        return Messages.getString( "MatchingRuleUseDescriptionPage.MatchingRule" ); //$NON-NLS-1$
     }
 
 
@@ -69,7 +69,7 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
      */
     protected String getFilterDescription()
     {
-        return "Please select a matching rule. Enter a filter to restrict the list.";
+        return Messages.getString( "MatchingRuleUseDescriptionPage.SelectMatchingRule" ); //$NON-NLS-1$
     }
 
 
@@ -229,7 +229,8 @@ public class MatchingRuleUseDescriptionPage extends SchemaPage
             if ( element instanceof MatchingRuleUseDescription )
             {
                 MatchingRuleUseDescription mrud = ( MatchingRuleUseDescription ) element;
-                boolean matched = SchemaUtils.toString( mrud ).toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1
+                boolean matched = SchemaUtils.toString( mrud ).toLowerCase().indexOf(
+                    filterText.getText().toLowerCase() ) != -1
                     || mrud.getNumericOid().toLowerCase().indexOf( filterText.getText().toLowerCase() ) != -1;
                 return matched;
             }

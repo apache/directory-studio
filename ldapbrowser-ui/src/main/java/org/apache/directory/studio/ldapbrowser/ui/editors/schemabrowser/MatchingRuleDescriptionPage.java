@@ -59,7 +59,7 @@ public class MatchingRuleDescriptionPage extends SchemaPage
      */
     protected String getTitle()
     {
-        return "Matching Rules";
+        return Messages.getString( "MatchingRuleDescriptionPage.MatchingRules" ); //$NON-NLS-1$
     }
 
 
@@ -68,7 +68,7 @@ public class MatchingRuleDescriptionPage extends SchemaPage
      */
     protected String getFilterDescription()
     {
-        return "Please select a matching rule. Enter a filter to restrict the list.";
+        return Messages.getString( "MatchingRuleDescriptionPage.SelectMatchingRule" ); //$NON-NLS-1$
     }
 
 

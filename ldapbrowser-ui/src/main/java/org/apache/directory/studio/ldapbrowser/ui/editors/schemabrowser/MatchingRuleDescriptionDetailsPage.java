@@ -28,6 +28,7 @@ import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
 import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -105,7 +106,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 
         // create main section
         mainSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        mainSection.setText( "Details" );
+        mainSection.setText( Messages.getString( "MatchingRuleDescriptionDetailsPage.Details" ) ); //$NON-NLS-1$
         mainSection.marginWidth = 0;
         mainSection.marginHeight = 0;
         mainSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -113,7 +114,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
 
         // create flag section
         flagSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        flagSection.setText( "Flags" );
+        flagSection.setText( Messages.getString( "MatchingRuleDescriptionDetailsPage.Flags" ) ); //$NON-NLS-1$
         flagSection.marginWidth = 0;
         flagSection.marginHeight = 0;
         flagSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -128,13 +129,14 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         flagClient.setLayout( flagLayout );
         flagSection.setClient( flagClient );
 
-        isObsoleteText = toolkit.createLabel( flagClient, "Obsolete", SWT.CHECK );
+        isObsoleteText = toolkit.createLabel( flagClient, Messages
+            .getString( "MatchingRuleDescriptionDetailsPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
         isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         isObsoleteText.setEnabled( false );
 
         // create syntax section
         syntaxSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
-        syntaxSection.setText( "Syntax" );
+        syntaxSection.setText( Messages.getString( "MatchingRuleDescriptionDetailsPage.Syntax" ) ); //$NON-NLS-1$
         syntaxSection.marginWidth = 0;
         syntaxSection.marginHeight = 0;
         syntaxSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -149,19 +151,21 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         syntaxClient.setLayout( syntaxLayout );
         syntaxSection.setClient( syntaxClient );
 
-        toolkit.createLabel( syntaxClient, "Syntax OID:", SWT.NONE );
-        syntaxLink = toolkit.createHyperlink( syntaxClient, "", SWT.WRAP );
+        toolkit.createLabel( syntaxClient,
+            Messages.getString( "MatchingRuleDescriptionDetailsPage.SyntaxOID" ), SWT.NONE ); //$NON-NLS-1$
+        syntaxLink = toolkit.createHyperlink( syntaxClient, "", SWT.WRAP ); //$NON-NLS-1$
         syntaxLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         syntaxLink.addHyperlinkListener( this );
 
-        toolkit.createLabel( syntaxClient, "Syntax Description:", SWT.NONE );
-        syntaxDescText = toolkit.createText( syntaxClient, "", SWT.NONE );
+        toolkit.createLabel( syntaxClient,
+            Messages.getString( "MatchingRuleDescriptionDetailsPage.SyntaxDescription" ), SWT.NONE ); //$NON-NLS-1$
+        syntaxDescText = toolkit.createText( syntaxClient, "", SWT.NONE ); //$NON-NLS-1$
         syntaxDescText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         syntaxDescText.setEditable( false );
 
         // create used from section
         usedFromSection = toolkit.createSection( detailForm.getBody(), Section.TWISTIE );
-        usedFromSection.setText( "Used from" );
+        usedFromSection.setText( Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFrom" ) ); //$NON-NLS-1$
         usedFromSection.marginWidth = 0;
         usedFromSection.marginHeight = 0;
         usedFromSection.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
@@ -247,17 +251,20 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( mrd != null )
         {
-            toolkit.createLabel( mainClient, "Numeric OID:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "MatchingRuleDescriptionDetailsPage.NumericOID" ), SWT.NONE ); //$NON-NLS-1$
             numericOidText = toolkit.createText( mainClient, getNonNullString( mrd.getNumericOid() ), SWT.NONE );
             numericOidText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             numericOidText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Matching rule names:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "MatchingRuleDescriptionDetailsPage.MatchingRule" ), SWT.NONE ); //$NON-NLS-1$
             namesText = toolkit.createText( mainClient, getNonNullString( SchemaUtils.toString( mrd ) ), SWT.NONE );
             namesText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             namesText.setEditable( false );
 
-            toolkit.createLabel( mainClient, "Descripton:", SWT.NONE );
+            toolkit.createLabel( mainClient,
+                Messages.getString( "MatchingRuleDescriptionDetailsPage.Description" ), SWT.NONE ); //$NON-NLS-1$
             descText = toolkit.createText( mainClient, getNonNullString( mrd.getDescription() ), SWT.WRAP | SWT.MULTI );
             GridData gd = new GridData( GridData.FILL_HORIZONTAL );
             gd.widthHint = detailForm.getForm().getSize().x - 100 - 60;
@@ -292,13 +299,18 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         // create new content
         if ( mrd != null )
         {
-            Collection<AttributeTypeDescription> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd, getSchema() );
+            Collection<AttributeTypeDescription> usedFromATDs = SchemaUtils.getUsedFromAttributeTypeDescriptions( mrd,
+                getSchema() );
             if ( usedFromATDs != null && usedFromATDs.size() > 0 )
             {
-                usedFromSection.setText( "Used from (" + usedFromATDs.size() + ")" );
+                usedFromSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new int[] { usedFromATDs.size() } ) ); //$NON-NLS-1$
                 for ( AttributeTypeDescription atd : usedFromATDs )
                 {
-                    Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ), SWT.WRAP );
+                    Hyperlink usedFromLink = toolkit.createHyperlink( usedFromClient, SchemaUtils.toString( atd ),
+                        SWT.WRAP );
                     usedFromLink.setHref( atd );
                     usedFromLink.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                     usedFromLink.setUnderlined( true );
@@ -308,7 +320,8 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
             }
             else
             {
-                usedFromSection.setText( "Used from (0)" );
+                usedFromSection.setText( NLS.bind( Messages
+                    .getString( "MatchingRuleDescriptionDetailsPage.UsedFromCount" ), new int[] { 0 } ) ); //$NON-NLS-1$
                 Text usedFromText = toolkit.createText( usedFromClient, getNonNullString( null ), SWT.NONE );
                 usedFromText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
                 usedFromText.setEditable( false );
@@ -316,7 +329,7 @@ public class MatchingRuleDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            usedFromSection.setText( "Used from" );
+            usedFromSection.setText( Messages.getString( "MatchingRuleDescriptionDetailsPage.UsedFrom" ) ); //$NON-NLS-1$
         }
 
         usedFromSection.layout();
