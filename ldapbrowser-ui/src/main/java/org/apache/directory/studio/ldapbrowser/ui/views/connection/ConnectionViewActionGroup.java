@@ -51,31 +51,31 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     private LinkWithEditorAction linkWithEditorAction;
 
     /** The Constant importDsmlAction. */
-    private static final String importDsmlAction = "importDsmlAction";
+    private static final String importDsmlAction = "importDsmlAction"; //$NON-NLS-1$
 
     /** The Constant exportDsmlAction. */
-    private static final String exportDsmlAction = "exportDsmlAction";
+    private static final String exportDsmlAction = "exportDsmlAction"; //$NON-NLS-1$
 
     /** The Constant importLdifAction. */
-    private static final String importLdifAction = "importLdifAction";
+    private static final String importLdifAction = "importLdifAction"; //$NON-NLS-1$
 
     /** The Constant exportLdifAction. */
-    private static final String exportLdifAction = "exportLdifAction";
+    private static final String exportLdifAction = "exportLdifAction"; //$NON-NLS-1$
 
     /** The Constant exportCsvAction. */
-    private static final String exportCsvAction = "exportCsvAction";
+    private static final String exportCsvAction = "exportCsvAction"; //$NON-NLS-1$
 
     /** The Constant exportExcelAction. */
-    private static final String exportExcelAction = "exportExcelAction";
+    private static final String exportExcelAction = "exportExcelAction"; //$NON-NLS-1$
 
     /** The Constant importConnectionsAction. */
-    private static final String importConnectionsAction = "importConnectionsAction";
+    private static final String importConnectionsAction = "importConnectionsAction"; //$NON-NLS-1$
 
     /** The Constant importConnectionsAction. */
-    private static final String exportConnectionsAction = "exportConnectionsAction";
+    private static final String exportConnectionsAction = "exportConnectionsAction"; //$NON-NLS-1$
 
     /** The Constant openSchemaBrowserAction. */
-    private static final String openSchemaBrowserAction = "openSchemaBrowserAction";
+    private static final String openSchemaBrowserAction = "openSchemaBrowserAction"; //$NON-NLS-1$
 
 
     /**
@@ -161,14 +161,14 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( new Separator() );
 
         // import/export
-        MenuManager importMenuManager = new MenuManager( "Import" );
+        MenuManager importMenuManager = new MenuManager( Messages.getString( "ConnectionViewActionGroup.Import" ) ); //$NON-NLS-1$
         importMenuManager.add( ( IAction ) connectionActionMap.get( importLdifAction ) );
         importMenuManager.add( ( IAction ) connectionActionMap.get( importDsmlAction ) );
         importMenuManager.add( new Separator() );
         importMenuManager.add( ( IAction ) connectionActionMap.get( importConnectionsAction ) );
         importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
-        MenuManager exportMenuManager = new MenuManager( "Export" );
+        MenuManager exportMenuManager = new MenuManager( Messages.getString( "ConnectionViewActionGroup.Export" ) ); //$NON-NLS-1$
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportLdifAction ) );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );

@@ -17,6 +17,7 @@
  *  under the License. 
  *  
  */
+
 package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 
 
@@ -146,7 +147,7 @@ public class LinkWithEditorAction extends Action
      */
     public LinkWithEditorAction( ConnectionView connectionView )
     {
-        super( "Link with editor", AS_CHECK_BOX );
+        super( Messages.getString( "LinkWithEditorAction.LinkWithEditor" ), AS_CHECK_BOX ); //$NON-NLS-1$
 
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_LINK_WITH_EDITOR ) );
