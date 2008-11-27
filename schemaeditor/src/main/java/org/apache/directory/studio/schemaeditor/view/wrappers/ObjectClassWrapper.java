@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -121,6 +122,7 @@ public class ObjectClassWrapper extends AbstractTreeNode
      */
     public String toString()
     {
-        return "ObjectClassWrapper: " + objectClass + " - parent: " + fParent;
+        return NLS.bind(
+            Messages.getString( "ObjectClassWrapper.ObjectWrapperClass" ), new Object[] { objectClass, fParent } ); //$NON-NLS-1$
     }
 }

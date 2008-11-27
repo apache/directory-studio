@@ -20,6 +20,9 @@
 package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
+import org.eclipse.osgi.util.NLS;
+
+
 /**
  * This used to represent a folder in a TreeViewer.
  *
@@ -43,12 +46,7 @@ public class Folder extends AbstractTreeNode
     private FolderType type = FolderType.NONE;
 
     /** The name of the Folder */
-    private String name = "";
-
-    private static final String NAME_AT = "Attribute Types";
-    private static final String NAME_OC = "Object Classes";
-    private static final String NAME_ERROR = "Errors";
-    private static final String NAME_WARNING = "Warnings";
+    private String name = ""; //$NON-NLS-1$
 
 
     /**
@@ -67,16 +65,16 @@ public class Folder extends AbstractTreeNode
         switch ( type )
         {
             case ATTRIBUTE_TYPE:
-                name = NAME_AT;
+                name = Messages.getString( "Folder.AttributeTypes" ); //$NON-NLS-1$
                 break;
             case OBJECT_CLASS:
-                name = NAME_OC;
+                name = Messages.getString( "Folder.ObjectClasses" ); //$NON-NLS-1$
                 break;
             case ERROR:
-                name = NAME_ERROR;
+                name = Messages.getString( "Folder.Errors" ); //$NON-NLS-1$
                 break;
             case WARNING:
-                name = NAME_WARNING;
+                name = Messages.getString( "Folder.Warnings" ); //$NON-NLS-1$
                 break;
         }
     }
@@ -174,7 +172,6 @@ public class Folder extends AbstractTreeNode
 
         return result;
     }
-    
 
 
     /* (non-Javadoc)
@@ -182,6 +179,6 @@ public class Folder extends AbstractTreeNode
      */
     public String toString()
     {
-        return "Folder: " + type + " - parent: " + fParent;
+        return NLS.bind( Messages.getString( "Folder.Folder" ), new Object[] { type, fParent } ); //$NON-NLS-1$
     }
 }

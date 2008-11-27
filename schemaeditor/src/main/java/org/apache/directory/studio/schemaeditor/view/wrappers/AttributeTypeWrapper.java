@@ -21,6 +21,7 @@ package org.apache.directory.studio.schemaeditor.view.wrappers;
 
 
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -121,6 +122,7 @@ public class AttributeTypeWrapper extends AbstractTreeNode
      */
     public String toString()
     {
-        return "AttributeTypeWrapper: " + attributeType + " - parent: " + fParent;
+        return NLS.bind(
+            Messages.getString( "AttributeTypeWrapper.AttributeTypeWrapper" ), new Object[] { attributeType, fParent } ); //$NON-NLS-1$
     }
 }
