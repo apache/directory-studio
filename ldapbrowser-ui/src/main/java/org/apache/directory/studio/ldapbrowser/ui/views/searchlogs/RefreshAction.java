@@ -77,7 +77,7 @@ public class RefreshAction extends BrowserAction
      */
     public String getText()
     {
-        return "Refresh";
+        return Messages.getString( "RefreshAction.Refresh" ); //$NON-NLS-1$
     }
 
 

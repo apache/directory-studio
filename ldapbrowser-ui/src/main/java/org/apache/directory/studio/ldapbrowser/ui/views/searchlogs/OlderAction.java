@@ -70,8 +70,8 @@ public class OlderAction extends BrowserAction
     public void run()
     {
         SearchLogsViewInput oldInput = ( SearchLogsViewInput ) getInput();
-        SearchLogsViewInput newInput = new SearchLogsViewInput( oldInput.getBrowserConnection(), oldInput
-            .getIndex() + 1 );
+        SearchLogsViewInput newInput = new SearchLogsViewInput( oldInput.getBrowserConnection(),
+            oldInput.getIndex() + 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToNewest();
     }
@@ -82,7 +82,7 @@ public class OlderAction extends BrowserAction
      */
     public String getText()
     {
-        return "Older";
+        return Messages.getString( "OlderAction.Older" ); //$NON-NLS-1$
     }
 
 

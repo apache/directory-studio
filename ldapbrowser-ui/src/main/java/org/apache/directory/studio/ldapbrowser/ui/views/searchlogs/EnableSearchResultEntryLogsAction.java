@@ -40,7 +40,7 @@ public class EnableSearchResultEntryLogsAction extends Action
      */
     public EnableSearchResultEntryLogsAction()
     {
-        super( "Enable Search Result Entry Logs (!)", AS_CHECK_BOX );
+        super( Messages.getString( "EnableSearchResultEntryLogsAction.EnableSearchResultLogs" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setEnabled( true );
         setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(

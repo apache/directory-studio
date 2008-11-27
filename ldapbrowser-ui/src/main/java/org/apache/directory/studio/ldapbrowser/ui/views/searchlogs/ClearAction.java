@@ -17,6 +17,8 @@
  *  under the License.
  *
  */
+
+
 package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 
 
@@ -75,7 +77,7 @@ public class ClearAction extends BrowserAction
      */
     public String getText()
     {
-        return "Clear";
+        return Messages.getString( "ClearAction.Clear" ); //$NON-NLS-1$
     }
 
 
@@ -93,7 +95,8 @@ public class ClearAction extends BrowserAction
      */
     public void run()
     {
-        if ( MessageDialog.openConfirm( this.getShell(), "Delete", "Delete all log files?" ) )
+        if ( MessageDialog.openConfirm( this.getShell(),
+            Messages.getString( "ClearAction.Delete" ), Messages.getString( "ClearAction.DeleteAllLogFiles" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
         {
             view.getUniversalListener().clearInput();
         }

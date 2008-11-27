@@ -42,8 +42,8 @@ public class OpenSearchLogsPreferencePageAction extends Action
      */
     public OpenSearchLogsPreferencePageAction()
     {
-        setText( "Preferences..." );
-        setToolTipText( "Preferences..." );
+        setText( Messages.getString( "OpenSearchLogsPreferencePageAction.Preferences" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenSearchLogsPreferencePageAction.PreferencesToolTip" ) ); //$NON-NLS-1$
         setEnabled( true );
     }
 

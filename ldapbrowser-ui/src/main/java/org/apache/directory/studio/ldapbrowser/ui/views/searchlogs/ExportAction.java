@@ -17,6 +17,8 @@
  *  under the License.
  *
  */
+
+
 package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 
 
@@ -68,7 +70,7 @@ public class ExportAction extends BrowserAction
      */
     public String getText()
     {
-        return "Export Search Logs...";
+        return Messages.getString( "ExportAction.ExportSearchLogs" ); //$NON-NLS-1$
     }
 
 

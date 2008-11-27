@@ -35,7 +35,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  */
 public class NewerAction extends BrowserAction
 {
-    
+
     /** The search logs view. */
     private SearchLogsView view;
 
@@ -66,7 +66,8 @@ public class NewerAction extends BrowserAction
     public void run()
     {
         SearchLogsViewInput oldInput = ( SearchLogsViewInput ) getInput();
-        SearchLogsViewInput newInput = new SearchLogsViewInput( oldInput.getBrowserConnection(), oldInput.getIndex() - 1 );
+        SearchLogsViewInput newInput = new SearchLogsViewInput( oldInput.getBrowserConnection(),
+            oldInput.getIndex() - 1 );
         view.getUniversalListener().setInput( newInput );
         view.getUniversalListener().scrollToOldest();
 
@@ -80,7 +81,7 @@ public class NewerAction extends BrowserAction
      */
     public String getText()
     {
-        return "Newer";
+        return Messages.getString( "NewerAction.Newer" ); //$NON-NLS-1$
     }
 
 
