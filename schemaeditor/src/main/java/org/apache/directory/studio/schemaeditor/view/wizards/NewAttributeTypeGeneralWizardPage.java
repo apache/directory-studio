@@ -43,6 +43,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -93,9 +94,9 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
      */
     protected NewAttributeTypeGeneralWizardPage()
     {
-        super( "NewAttributeTypeGeneralWizardPage" );
-        setTitle( "Attribute Type" );
-        setDescription( "Create a new attribute type." );
+        super( "NewAttributeTypeGeneralWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewAttributeTypeGeneralWizardPage.AttributeType" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewAttributeTypeGeneralWizardPage.CreateNewAttributeType" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
 
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -114,13 +115,13 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
 
         // Schema Group
         Group schemaGroup = new Group( composite, SWT.NONE );
-        schemaGroup.setText( "Schema" );
+        schemaGroup.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.Schema" ) ); //$NON-NLS-1$
         schemaGroup.setLayout( new GridLayout( 2, false ) );
         schemaGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Schema
         Label schemaLabel = new Label( schemaGroup, SWT.NONE );
-        schemaLabel.setText( "Schema:" );
+        schemaLabel.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.SchemaColon" ) ); //$NON-NLS-1$
         Combo schemaCombo = new Combo( schemaGroup, SWT.READ_ONLY );
         schemaCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         schemaComboViewer = new ComboViewer( schemaCombo );
@@ -154,13 +155,13 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
 
         // Naming and Description Group
         Group namingDescriptionGroup = new Group( composite, SWT.NONE );
-        namingDescriptionGroup.setText( "Naming and Description" );
+        namingDescriptionGroup.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.NamingAndDescription" ) ); //$NON-NLS-1$
         namingDescriptionGroup.setLayout( new GridLayout( 3, false ) );
         namingDescriptionGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // OID
         Label oidLabel = new Label( namingDescriptionGroup, SWT.NONE );
-        oidLabel.setText( "OID:" );
+        oidLabel.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.OID" ) ); //$NON-NLS-1$
         oidCombo = new Combo( namingDescriptionGroup, SWT.DROP_DOWN | SWT.BORDER );
         oidCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         oidCombo.addModifyListener( new ModifyListener()
@@ -190,7 +191,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
 
         // Aliases
         Label aliasesLabel = new Label( namingDescriptionGroup, SWT.NONE );
-        aliasesLabel.setText( "Aliases:" );
+        aliasesLabel.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.Aliases" ) ); //$NON-NLS-1$
         aliasesText = new Text( namingDescriptionGroup, SWT.BORDER );
         aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         aliasesText.addModifyListener( new ModifyListener()
@@ -210,7 +211,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             }
         } );
         aliasesButton = new Button( namingDescriptionGroup, SWT.PUSH );
-        aliasesButton.setText( "Edit..." );
+        aliasesButton.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.Edit" ) ); //$NON-NLS-1$
         aliasesButton.addSelectionListener( new SelectionAdapter()
         {
             /* (non-Javadoc)
@@ -228,7 +229,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
                     for ( String newAlias : newAliases )
                     {
                         sb.append( newAlias );
-                        sb.append( ", " );
+                        sb.append( ", " ); //$NON-NLS-1$
                     }
                     sb.deleteCharAt( sb.length() - 1 );
                     sb.deleteCharAt( sb.length() - 1 );
@@ -250,7 +251,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
 
         // Description
         Label descriptionLabel = new Label( namingDescriptionGroup, SWT.NONE );
-        descriptionLabel.setText( "Description:" );
+        descriptionLabel.setText( Messages.getString( "NewAttributeTypeGeneralWizardPage.Description" ) ); //$NON-NLS-1$
         descriptionText = new Text( namingDescriptionGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL );
         GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         descriptionGridData.heightHint = 67;
@@ -285,7 +286,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             aliasesButton.setEnabled( false );
             descriptionText.setEnabled( false );
 
-            displayErrorMessage( "A schema project must be opened before adding a new attribute type." );
+            displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorNoSchemaProjectOpen" ) ); //$NON-NLS-1$
         }
         else
         {
@@ -322,28 +323,28 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
     {
         if ( schemaComboViewer.getSelection().isEmpty() )
         {
-            displayErrorMessage( "A Schema must be specified." );
+            displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorNoSchemaSpecified" ) ); //$NON-NLS-1$
             return;
         }
-        if ( oidCombo.getText().equals( "" ) )
+        if ( oidCombo.getText().equals( "" ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "An OID must be specified." );
+            displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorNoOIDSpecified" ) ); //$NON-NLS-1$
             return;
         }
-        if ( ( !oidCombo.getText().equals( "" ) ) && ( !OID.isOID( oidCombo.getText() ) ) )
+        if ( ( !oidCombo.getText().equals( "" ) ) && ( !OID.isOID( oidCombo.getText() ) ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "Incorrect OID." );
+            displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorIncorrectOID" ) ); //$NON-NLS-1$
             return;
         }
-        if ( ( !oidCombo.getText().equals( "" ) ) && ( OID.isOID( oidCombo.getText() ) )
+        if ( ( !oidCombo.getText().equals( "" ) ) && ( OID.isOID( oidCombo.getText() ) ) //$NON-NLS-1$
             && ( schemaHandler.isAliasOrOidAlreadyTaken( oidCombo.getText() ) ) )
         {
-            displayErrorMessage( "An object with this OID already exists." );
+            displayErrorMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorObjectOIDExists" ) ); //$NON-NLS-1$
             return;
         }
         if ( aliases.size() == 0 )
         {
-            displayWarningMessage( "The attribute type does not have any name. It is recommanded to add at least one name." );
+            displayWarningMessage( Messages.getString( "NewAttributeTypeGeneralWizardPage.ErrorAttributeTypeNoName" ) ); //$NON-NLS-1$
             return;
         }
         else
@@ -352,14 +353,16 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
             {
                 if ( alias instanceof AliasWithStartError )
                 {
-                    displayErrorMessage( "The alias '" + alias + "' is invalid. Character '"
-                        + ( ( AliasWithStartError ) alias ).getErrorChar() + "' is not allowed to start an alias." );
+                    displayErrorMessage( NLS
+                        .bind(
+                            Messages.getString( "NewAttributeTypeGeneralWizardPage.AliasStartInvalid" ), new Object[] { alias, ( ( AliasWithStartError ) alias ).getErrorChar() } ) ); //$NON-NLS-1$
                     return;
                 }
                 else if ( alias instanceof AliasWithPartError )
                 {
-                    displayErrorMessage( "The alias '" + alias + "' is invalid. Character '"
-                        + ( ( AliasWithPartError ) alias ).getErrorChar() + "' is not allowed as part of an alias." );
+                    displayErrorMessage( NLS
+                        .bind(
+                            Messages.getString( "NewAttributeTypeGeneralWizardPage.AliasPartInvalid" ), new Object[] { alias, ( ( AliasWithPartError ) alias ).getErrorChar() } ) ); //$NON-NLS-1$
                     return;
                 }
             }
@@ -379,7 +382,7 @@ public class NewAttributeTypeGeneralWizardPage extends AbstractWizardPage
         for ( Alias alias : aliases )
         {
             sb.append( alias );
-            sb.append( ", " );
+            sb.append( ", " ); //$NON-NLS-1$
         }
 
         sb.deleteCharAt( sb.length() - 1 );

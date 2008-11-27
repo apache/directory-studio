@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -86,7 +87,8 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    monitor.beginTask( "Exporting project: ", selectedProjects.length );
+                    monitor.beginTask(
+                        Messages.getString( "ExportProjectsWizard.ExportingProject" ), selectedProjects.length ); //$NON-NLS-1$
                     for ( Project project : selectedProjects )
                     {
                         monitor.subTask( project.getName() );
@@ -94,32 +96,44 @@ public class ExportProjectsWizard extends Wizard implements IExportWizard
                         try
                         {
                             OutputFormat outformat = OutputFormat.createPrettyPrint();
-                            outformat.setEncoding( "UTF-8" );
-                            XMLWriter writer = new XMLWriter( new FileOutputStream( exportDirectory + "/"
-                                + project.getName() + ".schemaproject" ), outformat );
+                            outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
+                            XMLWriter writer = new XMLWriter( new FileOutputStream( exportDirectory + "/" //$NON-NLS-1$
+                                + project.getName() + ".schemaproject" ), outformat ); //$NON-NLS-1$
                             writer.write( ProjectsExporter.toDocument( project ) );
                             writer.flush();
                         }
                         catch ( UnsupportedEncodingException e )
                         {
-                            PluginUtils.logError(
-                                "An error occured when saving the project " + project.getName() + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the project "
-                                + project.getName() + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ExportProjectsWizard.Error" ), NLS.bind( Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ) ); //$NON-NLS-1$
                         }
                         catch ( FileNotFoundException e )
                         {
-                            PluginUtils.logError(
-                                "An error occured when saving the project " + project.getName() + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the project "
-                                + project.getName() + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ExportProjectsWizard.Error" ), NLS.bind( Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ) ); //$NON-NLS-1$
                         }
                         catch ( IOException e )
                         {
-                            PluginUtils.logError(
-                                "An error occured when saving the project " + project.getName() + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the project "
-                                + project.getName() + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ExportProjectsWizard.Error" ), NLS.bind( Messages.getString( "ExportProjectsWizard.ErrorWhenSavingProject" ), new String[] { project.getName() } ) ); //$NON-NLS-1$
                         }
                         monitor.worked( 1 );
                     }

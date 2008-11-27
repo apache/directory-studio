@@ -73,9 +73,9 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
      */
     protected ImportProjectsWizardPage()
     {
-        super( "ImportProjectsWizardPage" );
-        setTitle( "Import schema projects" );
-        setDescription( "Please select the schema project to import." );
+        super( "ImportProjectsWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ImportProjectsWizardPage.ImportSchemaProjects" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ImportProjectsWizardPage.SelechtSchemaProject" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_IMPORT_WIZARD ) );
     }
 
@@ -91,13 +91,13 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
 
         // From Directory Group
         Group fromDirectoryGroup = new Group( composite, SWT.NONE );
-        fromDirectoryGroup.setText( "From directory" );
+        fromDirectoryGroup.setText( Messages.getString( "ImportProjectsWizardPage.FromDirectory" ) ); //$NON-NLS-1$
         fromDirectoryGroup.setLayout( new GridLayout( 3, false ) );
         fromDirectoryGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // From Directory
         Label fromDirectoryLabel = new Label( fromDirectoryGroup, SWT.NONE );
-        fromDirectoryLabel.setText( "From directory:" );
+        fromDirectoryLabel.setText( Messages.getString( "ImportProjectsWizardPage.FromDirectoryColon" ) ); //$NON-NLS-1$
         fromDirectoryText = new Text( fromDirectoryGroup, SWT.BORDER );
         fromDirectoryText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         fromDirectoryText.addModifyListener( new ModifyListener()
@@ -108,7 +108,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
             }
         } );
         fromDirectoryButton = new Button( fromDirectoryGroup, SWT.PUSH );
-        fromDirectoryButton.setText( "Browse..." );
+        fromDirectoryButton.setText( Messages.getString( "ImportProjectsWizardPage.Browse" ) ); //$NON-NLS-1$
         fromDirectoryButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -119,7 +119,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
 
         // Schema Files Group
         Group schemaFilesGroup = new Group( composite, SWT.NONE );
-        schemaFilesGroup.setText( "Schema project files" );
+        schemaFilesGroup.setText( Messages.getString( "ImportProjectsWizardPage.SchemaProjectFiles" ) ); //$NON-NLS-1$
         schemaFilesGroup.setLayout( new GridLayout( 2, false ) );
         schemaFilesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
@@ -169,7 +169,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
             }
         } );
         projectFilesTableSelectAllButton = new Button( schemaFilesGroup, SWT.PUSH );
-        projectFilesTableSelectAllButton.setText( "Select All" );
+        projectFilesTableSelectAllButton.setText( Messages.getString( "ImportProjectsWizardPage.SelectAll" ) ); //$NON-NLS-1$
         projectFilesTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         projectFilesTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -180,7 +180,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
             }
         } );
         projectFilesTableDeselectAllButton = new Button( schemaFilesGroup, SWT.PUSH );
-        projectFilesTableDeselectAllButton.setText( "Deselect All" );
+        projectFilesTableDeselectAllButton.setText( Messages.getString( "ImportProjectsWizardPage.DeselectAll" ) ); //$NON-NLS-1$
         projectFilesTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         projectFilesTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -213,9 +213,9 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
     private void chooseFromDirectory()
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder from which import the files." );
-        if ( "".equals( fromDirectoryText.getText() ) )
+        dialog.setText( Messages.getString( "ImportProjectsWizardPage.ChooseFolder" ) ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "ImportProjectsWizardPage.SelectFoldertoImportFrom" ) ); //$NON-NLS-1$
+        if ( "".equals( fromDirectoryText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_IMPORT_PROJECTS ) );
@@ -249,7 +249,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
             for ( File file : selectedDirectory.listFiles() )
             {
                 String fileName = file.getName();
-                if ( fileName.endsWith( ".schemaproject" ) )
+                if ( fileName.endsWith( ".schemaproject" ) ) //$NON-NLS-1$
                 {
                     schemaFiles.add( file );
                 }
@@ -267,9 +267,9 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
     {
         // Export Directory
         String directory = fromDirectoryText.getText();
-        if ( ( directory == null ) || ( directory.equals( "" ) ) )
+        if ( ( directory == null ) || ( directory.equals( "" ) ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A directory must be selected." );
+            displayErrorMessage( Messages.getString( "ImportProjectsWizardPage.ErrorNoDirectorySelected" ) ); //$NON-NLS-1$
             return;
         }
         else
@@ -277,17 +277,17 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
             File directoryFile = new File( directory );
             if ( !directoryFile.exists() )
             {
-                displayErrorMessage( "The selected directory does not exist." );
+                displayErrorMessage( Messages.getString( "ImportProjectsWizardPage.ErrorSelectedDirectoryNotExists" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.isDirectory() )
             {
-                displayErrorMessage( "The selected directory is not a directory." );
+                displayErrorMessage( Messages.getString( "ImportProjectsWizardPage.ErrorSelectedDirectoryNotDirectory" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.canRead() )
             {
-                displayErrorMessage( "The selected directory is not readable." );
+                displayErrorMessage( Messages.getString( "ImportProjectsWizardPage.ErrorSelectedDirectoryNotReadable" ) ); //$NON-NLS-1$
                 return;
             }
         }
@@ -295,7 +295,7 @@ public class ImportProjectsWizardPage extends AbstractWizardPage
         // Schemas table
         if ( projectFilesTableViewer.getCheckedElements().length == 0 )
         {
-            displayErrorMessage( "One or several schema project files must be selected." );
+            displayErrorMessage( Messages.getString( "ImportProjectsWizardPage.ErrorNoSchemaProjectSelected" ) ); //$NON-NLS-1$
             return;
         }
 

@@ -73,9 +73,9 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
      */
     protected ImportSchemasFromOpenLdapWizardPage()
     {
-        super( "ImportSchemasFromOpenLdapWizardPage" );
-        setTitle( "Import schemas from OpenLdap files" );
-        setDescription( "Please select the OpenLdap schema files to import." );
+        super( "ImportSchemasFromOpenLdapWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.ImportSchemaFromOpenLDAP" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.SelectOpenLDAPSchema" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
     }
 
@@ -91,13 +91,13 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
 
         // From Directory Group
         Group fromDirectoryGroup = new Group( composite, SWT.NONE );
-        fromDirectoryGroup.setText( "From directory" );
+        fromDirectoryGroup.setText( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.FromDirectory" ) ); //$NON-NLS-1$
         fromDirectoryGroup.setLayout( new GridLayout( 3, false ) );
         fromDirectoryGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // From Directory
         Label fromDirectoryLabel = new Label( fromDirectoryGroup, SWT.NONE );
-        fromDirectoryLabel.setText( "From directory:" );
+        fromDirectoryLabel.setText( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.FromDirectoryColon" ) ); //$NON-NLS-1$
         fromDirectoryText = new Text( fromDirectoryGroup, SWT.BORDER );
         fromDirectoryText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         fromDirectoryText.addModifyListener( new ModifyListener()
@@ -108,7 +108,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
             }
         } );
         fromDirectoryButton = new Button( fromDirectoryGroup, SWT.PUSH );
-        fromDirectoryButton.setText( "Browse..." );
+        fromDirectoryButton.setText( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.Browse" ) ); //$NON-NLS-1$
         fromDirectoryButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -119,7 +119,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
 
         // Schema Files Group
         Group schemaFilesGroup = new Group( composite, SWT.NONE );
-        schemaFilesGroup.setText( "Schema files" );
+        schemaFilesGroup.setText( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.SchemaFiles" ) ); //$NON-NLS-1$
         schemaFilesGroup.setLayout( new GridLayout( 2, false ) );
         schemaFilesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
@@ -169,7 +169,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
             }
         } );
         schemaFilesTableSelectAllButton = new Button( schemaFilesGroup, SWT.PUSH );
-        schemaFilesTableSelectAllButton.setText( "Select All" );
+        schemaFilesTableSelectAllButton.setText( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.SelectAll" ) ); //$NON-NLS-1$
         schemaFilesTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemaFilesTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -180,7 +180,8 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
             }
         } );
         schemaFilesTableDeselectAllButton = new Button( schemaFilesGroup, SWT.PUSH );
-        schemaFilesTableDeselectAllButton.setText( "Deselect All" );
+        schemaFilesTableDeselectAllButton.setText( Messages
+            .getString( "ImportSchemasFromOpenLdapWizardPage.DeselectAll" ) ); //$NON-NLS-1$
         schemaFilesTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemaFilesTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -214,9 +215,9 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
     private void chooseFromDirectory()
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder from which import the files." );
-        if ( "".equals( fromDirectoryText.getText() ) )
+        dialog.setText( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.ChooseFolder" ) ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.SelectFolderToImportFrom" ) ); //$NON-NLS-1$
+        if ( "".equals( fromDirectoryText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_IMPORT_SCHEMAS_OPENLDAP ) );
@@ -250,7 +251,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
             for ( File file : selectedDirectory.listFiles() )
             {
                 String fileName = file.getName();
-                if ( fileName.endsWith( ".schema" ) )
+                if ( fileName.endsWith( ".schema" ) ) //$NON-NLS-1$
                 {
                     schemaFiles.add( file );
                 }
@@ -269,15 +270,15 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
         // Checking if a Schema Project is open
         if ( Activator.getDefault().getSchemaHandler() == null )
         {
-            displayErrorMessage( "A Schema Project must be open to import schemas from OpenLDAP files." );
+            displayErrorMessage( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.ErrorNotSchemaProjectOpen" ) ); //$NON-NLS-1$
             return;
         }
 
         // Import Directory
         String directory = fromDirectoryText.getText();
-        if ( ( directory == null ) || ( directory.equals( "" ) ) )
+        if ( ( directory == null ) || ( directory.equals( "" ) ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A directory must be selected." );
+            displayErrorMessage( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.ErrorNoDirectorySelected" ) ); //$NON-NLS-1$
             return;
         }
         else
@@ -285,17 +286,20 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
             File directoryFile = new File( directory );
             if ( !directoryFile.exists() )
             {
-                displayErrorMessage( "The selected directory does not exist." );
+                displayErrorMessage( Messages
+                    .getString( "ImportSchemasFromOpenLdapWizardPage.ErrorSelectedDirectoryNotExists" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.isDirectory() )
             {
-                displayErrorMessage( "The selected directory is not a directory." );
+                displayErrorMessage( Messages
+                    .getString( "ImportSchemasFromOpenLdapWizardPage.ErrorSelectedDirectoryNotDirectory" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.canRead() )
             {
-                displayErrorMessage( "The selected directory is not readable." );
+                displayErrorMessage( Messages
+                    .getString( "ImportSchemasFromOpenLdapWizardPage.ErrorSelectedDirectoryNotReadable" ) ); //$NON-NLS-1$
                 return;
             }
         }
@@ -303,7 +307,7 @@ public class ImportSchemasFromOpenLdapWizardPage extends AbstractWizardPage
         // Schemas table
         if ( schemaFilesTableViewer.getCheckedElements().length == 0 )
         {
-            displayErrorMessage( "One or several schema files must be selected." );
+            displayErrorMessage( Messages.getString( "ImportSchemasFromOpenLdapWizardPage.ErrorNoSchemaSelected" ) ); //$NON-NLS-1$
             return;
         }
 

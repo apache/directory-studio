@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -74,9 +75,10 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
      */
     protected NewObjectClassMandatoryAttributesPage()
     {
-        super( "NewObjectClassMandatoryAttributesPage" );
-        setTitle( "Mandatory Attribute Types" );
-        setDescription( "Please specify the mandatory attribute types for the object class." );
+        super( "NewObjectClassMandatoryAttributesPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewObjectClassMandatoryAttributesPage.MandatoryAttributeTypes" ) ); //$NON-NLS-1$
+        setDescription( Messages
+            .getString( "NewObjectClassMandatoryAttributesPage.SpecifiyMandatoryAttributeTypeForObjectClass" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
         mandatoryAttributeTypesList = new ArrayList<AttributeTypeImpl>();
     }
@@ -93,7 +95,8 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
 
         // Mandatory Attribute Types Group
         Group mandatoryAttributeTypesGroup = new Group( composite, SWT.NONE );
-        mandatoryAttributeTypesGroup.setText( "Mandatory Attribute Types" );
+        mandatoryAttributeTypesGroup.setText( Messages
+            .getString( "NewObjectClassMandatoryAttributesPage.MandatoryAttributeTypes" ) ); //$NON-NLS-1$
         mandatoryAttributeTypesGroup.setLayout( new GridLayout( 2, false ) );
         mandatoryAttributeTypesGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
@@ -127,11 +130,15 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
                     String[] names = at.getNamesRef();
                     if ( ( names != null ) && ( names.length > 0 ) )
                     {
-                        return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
+                        return NLS
+                            .bind(
+                                Messages.getString( "NewObjectClassMandatoryAttributesPage.AliasOID" ), new String[] { ViewUtils.concateAliases( names ), at.getOid() } ); //$NON-NLS-1$
                     }
                     else
                     {
-                        return "(None)  -  (" + at.getOid() + ")";
+                        return NLS
+                            .bind(
+                                Messages.getString( "NewObjectClassMandatoryAttributesPage.NoneOID" ), new String[] { at.getOid() } ); //$NON-NLS-1$
                     }
                 }
                 // Default
@@ -147,7 +154,7 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
             }
         } );
         mandatoryAttributeTypesAddButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
-        mandatoryAttributeTypesAddButton.setText( "Add..." );
+        mandatoryAttributeTypesAddButton.setText( Messages.getString( "NewObjectClassMandatoryAttributesPage.Add" ) ); //$NON-NLS-1$
         mandatoryAttributeTypesAddButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         mandatoryAttributeTypesAddButton.addSelectionListener( new SelectionAdapter()
         {
@@ -157,7 +164,8 @@ public class NewObjectClassMandatoryAttributesPage extends WizardPage
             }
         } );
         mandatoryAttributeTypesRemoveButton = new Button( mandatoryAttributeTypesGroup, SWT.PUSH );
-        mandatoryAttributeTypesRemoveButton.setText( "Remove" );
+        mandatoryAttributeTypesRemoveButton.setText( Messages
+            .getString( "NewObjectClassMandatoryAttributesPage.Remove" ) ); //$NON-NLS-1$
         mandatoryAttributeTypesRemoveButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         mandatoryAttributeTypesRemoveButton.addSelectionListener( new SelectionAdapter()
         {

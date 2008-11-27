@@ -52,9 +52,9 @@ public class ImportCoreSchemasWizardPage extends AbstractWizardPage
      */
     protected ImportCoreSchemasWizardPage()
     {
-        super( "ImportCoreSchemasWizardPage" );
-        setTitle( "Import core schemas" );
-        setDescription( "Please select the 'core' schemas to import." );
+        super( "ImportCoreSchemasWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ImportCoreSchemasWizardPage.ImportCoreSchemas" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ImportCoreSchemasWizardPage.PleaseSelectCoreSchemas" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
     }
 
@@ -95,7 +95,7 @@ public class ImportCoreSchemasWizardPage extends AbstractWizardPage
         // Checking if a Schema Project is open
         if ( Activator.getDefault().getSchemaHandler() == null )
         {
-            displayErrorMessage( "A Schema Project must be open to import core schemas files." );
+            displayErrorMessage( Messages.getString( "ImportCoreSchemasWizardPage.ErrorNoSchemaProjectOpen" ) ); //$NON-NLS-1$
             return;
         }
 

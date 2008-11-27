@@ -73,9 +73,9 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
      */
     protected ImportSchemasFromXmlWizardPage()
     {
-        super( "ImportSchemasFromXmlWizardPage" );
-        setTitle( "Import schemas from XML file(s)" );
-        setDescription( "Please select the XML schema files to import." );
+        super( "ImportSchemasFromXmlWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ImportSchemasFromXmlWizardPage.ImportSchemasFromXML" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ImportSchemasFromXmlWizardPage.SelectXMLSchemaToImport" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_IMPORT_WIZARD ) );
     }
 
@@ -91,13 +91,13 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
 
         // From Directory Group
         Group fromDirectoryGroup = new Group( composite, SWT.NONE );
-        fromDirectoryGroup.setText( "From directory" );
+        fromDirectoryGroup.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.FromDirectory" ) ); //$NON-NLS-1$
         fromDirectoryGroup.setLayout( new GridLayout( 3, false ) );
         fromDirectoryGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // From Directory
         Label fromDirectoryLabel = new Label( fromDirectoryGroup, SWT.NONE );
-        fromDirectoryLabel.setText( "From directory:" );
+        fromDirectoryLabel.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.FromDirectoryColon" ) ); //$NON-NLS-1$
         fromDirectoryText = new Text( fromDirectoryGroup, SWT.BORDER );
         fromDirectoryText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         fromDirectoryText.addModifyListener( new ModifyListener()
@@ -108,7 +108,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             }
         } );
         fromDirectoryButton = new Button( fromDirectoryGroup, SWT.PUSH );
-        fromDirectoryButton.setText( "Browse..." );
+        fromDirectoryButton.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.Browse" ) ); //$NON-NLS-1$
         fromDirectoryButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -119,7 +119,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
 
         // Schema Files Group
         Group schemaFilesGroup = new Group( composite, SWT.NONE );
-        schemaFilesGroup.setText( "Schema files" );
+        schemaFilesGroup.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.SchemaFiles" ) ); //$NON-NLS-1$
         schemaFilesGroup.setLayout( new GridLayout( 2, false ) );
         schemaFilesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
@@ -169,7 +169,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             }
         } );
         schemaFilesTableSelectAllButton = new Button( schemaFilesGroup, SWT.PUSH );
-        schemaFilesTableSelectAllButton.setText( "Select All" );
+        schemaFilesTableSelectAllButton.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.SelectAll" ) ); //$NON-NLS-1$
         schemaFilesTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemaFilesTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -180,7 +180,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             }
         } );
         schemaFilesTableDeselectAllButton = new Button( schemaFilesGroup, SWT.PUSH );
-        schemaFilesTableDeselectAllButton.setText( "Deselect All" );
+        schemaFilesTableDeselectAllButton.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.DeselectAll" ) ); //$NON-NLS-1$
         schemaFilesTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemaFilesTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -214,9 +214,9 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
     private void chooseFromDirectory()
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder from which import the files." );
-        if ( "".equals( fromDirectoryText.getText() ) )
+        dialog.setText( Messages.getString( "ImportSchemasFromXmlWizardPage.ChooseFolder" ) ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "ImportSchemasFromXmlWizardPage.SelectFolderToImportFrom" ) ); //$NON-NLS-1$
+        if ( "".equals( fromDirectoryText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_IMPORT_SCHEMAS_XML ) );
@@ -250,7 +250,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             for ( File file : selectedDirectory.listFiles() )
             {
                 String fileName = file.getName();
-                if ( fileName.endsWith( ".xml" ) )
+                if ( fileName.endsWith( ".xml" ) ) //$NON-NLS-1$
                 {
                     schemaFiles.add( file );
                 }
@@ -269,15 +269,15 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
         // Checking if a Schema Project is open
         if ( Activator.getDefault().getSchemaHandler() == null )
         {
-            displayErrorMessage( "A Schema Project must be open to import schemas from XML files." );
+            displayErrorMessage( Messages.getString( "ImportSchemasFromXmlWizardPage.ErrorNoSchemaProjectOpen" ) ); //$NON-NLS-1$
             return;
         }
 
         // Export Directory
         String directory = fromDirectoryText.getText();
-        if ( ( directory == null ) || ( directory.equals( "" ) ) )
+        if ( ( directory == null ) || ( directory.equals( "" ) ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A directory must be selected." );
+            displayErrorMessage( Messages.getString( "ImportSchemasFromXmlWizardPage.ErrorNoDirectorySelected" ) ); //$NON-NLS-1$
             return;
         }
         else
@@ -285,17 +285,20 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
             File directoryFile = new File( directory );
             if ( !directoryFile.exists() )
             {
-                displayErrorMessage( "The selected directory does not exist." );
+                displayErrorMessage( Messages
+                    .getString( "ImportSchemasFromXmlWizardPage.ErrorSelectedDirectoryNotExists" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.isDirectory() )
             {
-                displayErrorMessage( "The selected directory is not a directory." );
+                displayErrorMessage( Messages
+                    .getString( "ImportSchemasFromXmlWizardPage.ErrorSelectedDirectoryNotDirectory" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.canRead() )
             {
-                displayErrorMessage( "The selected directory is not readable." );
+                displayErrorMessage( Messages
+                    .getString( "ImportSchemasFromXmlWizardPage.ErrorSelectedDirectoryNotReadable" ) ); //$NON-NLS-1$
                 return;
             }
         }
@@ -303,7 +306,7 @@ public class ImportSchemasFromXmlWizardPage extends AbstractWizardPage
         // Schemas table
         if ( schemaFilesTableViewer.getCheckedElements().length == 0 )
         {
-            displayErrorMessage( "One or several schema files must be selected." );
+            displayErrorMessage( Messages.getString( "ImportSchemasFromXmlWizardPage.ErrorNoSchemaSelected" ) ); //$NON-NLS-1$
             return;
         }
 

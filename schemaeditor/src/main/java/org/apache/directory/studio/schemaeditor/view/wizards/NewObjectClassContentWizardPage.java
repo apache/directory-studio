@@ -39,6 +39,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -84,9 +85,9 @@ public class NewObjectClassContentWizardPage extends WizardPage
      */
     protected NewObjectClassContentWizardPage()
     {
-        super( "NewObjectClassContentWizardPage" );
-        setTitle( "Object Class Content" );
-        setDescription( "Please enter the superiors, class type  and properties for the object class." );
+        super( "NewObjectClassContentWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewObjectClassContentWizardPage.ObjectClassContent" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewObjectClassContentWizardPage.EnterObjectClassContent" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
         superiorsList = new ArrayList<ObjectClassImpl>();
     }
@@ -103,7 +104,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
 
         // Superiors
         Group superiorsGroup = new Group( composite, SWT.NONE );
-        superiorsGroup.setText( "Superiors" );
+        superiorsGroup.setText( Messages.getString( "NewObjectClassContentWizardPage.3" ) ); //$NON-NLS-1$
         superiorsGroup.setLayout( new GridLayout( 2, false ) );
         superiorsGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
@@ -136,11 +137,15 @@ public class NewObjectClassContentWizardPage extends WizardPage
                     String[] names = oc.getNamesRef();
                     if ( ( names != null ) && ( names.length > 0 ) )
                     {
-                        return ViewUtils.concateAliases( names ) + "  -  (" + oc.getOid() + ")";
+                        return NLS
+                            .bind(
+                                Messages.getString( "NewObjectClassContentWizardPage.AliasOID" ), new String[] { ViewUtils.concateAliases( names ), oc.getOid() } ); //$NON-NLS-1$
                     }
                     else
                     {
-                        return "(None)  -  (" + oc.getOid() + ")";
+                        return NLS
+                            .bind(
+                                Messages.getString( "NewObjectClassContentWizardPage.NoneOID" ), new String[] { oc.getOid() } ); //$NON-NLS-1$
                     }
                 }
                 // Default
@@ -157,7 +162,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
             }
         } );
         superiorsAddButton = new Button( superiorsGroup, SWT.PUSH );
-        superiorsAddButton.setText( "Add..." );
+        superiorsAddButton.setText( Messages.getString( "NewObjectClassContentWizardPage.Add" ) ); //$NON-NLS-1$
         superiorsAddButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         superiorsAddButton.addSelectionListener( new SelectionAdapter()
         {
@@ -167,7 +172,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
             }
         } );
         superiorsRemoveButton = new Button( superiorsGroup, SWT.PUSH );
-        superiorsRemoveButton.setText( "Remove" );
+        superiorsRemoveButton.setText( Messages.getString( "NewObjectClassContentWizardPage.Remove" ) ); //$NON-NLS-1$
         superiorsRemoveButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         superiorsRemoveButton.setEnabled( false );
         superiorsRemoveButton.addSelectionListener( new SelectionAdapter()
@@ -180,16 +185,16 @@ public class NewObjectClassContentWizardPage extends WizardPage
 
         // Class Type Group
         Group classTypeGroup = new Group( composite, SWT.NONE );
-        classTypeGroup.setText( "Class Type" );
+        classTypeGroup.setText( Messages.getString( "NewObjectClassContentWizardPage.ClassType" ) ); //$NON-NLS-1$
         classTypeGroup.setLayout( new GridLayout( 5, false ) );
         classTypeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Class Type
         Label classTypeLable = new Label( classTypeGroup, SWT.NONE );
-        classTypeLable.setText( "Class Type:" );
-        new Label( classTypeGroup, SWT.NONE ).setText( "          " );
+        classTypeLable.setText( Messages.getString( "NewObjectClassContentWizardPage.ClassTypeColon" ) ); //$NON-NLS-1$
+        new Label( classTypeGroup, SWT.NONE ).setText( "          " ); //$NON-NLS-1$
         structuralRadio = new Button( classTypeGroup, SWT.RADIO );
-        structuralRadio.setText( "Structural" );
+        structuralRadio.setText( Messages.getString( "NewObjectClassContentWizardPage.Structural" ) ); //$NON-NLS-1$
         GridData structuralRadioGridData = new GridData( SWT.LEFT, SWT.NONE, false, false );
         structuralRadioGridData.widthHint = 115;
         structuralRadio.setLayoutData( structuralRadioGridData );
@@ -202,7 +207,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
         } );
         structuralRadio.setSelection( true );
         abstractRadio = new Button( classTypeGroup, SWT.RADIO );
-        abstractRadio.setText( "Abstract" );
+        abstractRadio.setText( Messages.getString( "NewObjectClassContentWizardPage.Abstract" ) ); //$NON-NLS-1$
         GridData abstractRadioGridData = new GridData( SWT.LEFT, SWT.NONE, false, false );
         abstractRadioGridData.widthHint = 115;
         abstractRadio.setLayoutData( structuralRadioGridData );
@@ -214,7 +219,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
             }
         } );
         auxiliaryRadio = new Button( classTypeGroup, SWT.RADIO );
-        auxiliaryRadio.setText( "Auxiliary" );
+        auxiliaryRadio.setText( Messages.getString( "NewObjectClassContentWizardPage.Auxiliary" ) ); //$NON-NLS-1$
         GridData auxiliaryRadioGridData = new GridData( SWT.LEFT, SWT.NONE, false, false );
         auxiliaryRadioGridData.widthHint = 115;
         auxiliaryRadio.setLayoutData( structuralRadioGridData );
@@ -228,13 +233,13 @@ public class NewObjectClassContentWizardPage extends WizardPage
 
         // Properties Group
         Group propertiesGroup = new Group( composite, SWT.NONE );
-        propertiesGroup.setText( "Properties" );
+        propertiesGroup.setText( Messages.getString( "NewObjectClassContentWizardPage.Properties" ) ); //$NON-NLS-1$
         propertiesGroup.setLayout( new GridLayout() );
         propertiesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Obsolete
         obsoleteCheckbox = new Button( propertiesGroup, SWT.CHECK );
-        obsoleteCheckbox.setText( "Obsolete" );
+        obsoleteCheckbox.setText( Messages.getString( "NewObjectClassContentWizardPage.Obsolete" ) ); //$NON-NLS-1$
 
         setControl( composite );
     }

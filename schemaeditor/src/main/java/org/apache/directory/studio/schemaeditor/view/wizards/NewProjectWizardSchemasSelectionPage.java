@@ -47,9 +47,9 @@ public class NewProjectWizardSchemasSelectionPage extends WizardPage
      */
     protected NewProjectWizardSchemasSelectionPage()
     {
-        super( "NewProjectWizardSchemasSelectionPage" );
-        setTitle( "Create a Schema project." );
-        setDescription( "Please select the 'core' schemas to include in the project." );
+        super( "NewProjectWizardSchemasSelectionPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewProjectWizardSchemasSelectionPage.CreateSchemaProject" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewProjectWizardSchemasSelectionPage.PleaseSelectCoreSchemaForInclude" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
     }
 

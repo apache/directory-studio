@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -90,25 +91,27 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    monitor.beginTask( "Importing schemas: ", selectedSchemasFiles.length );
+                    monitor
+                        .beginTask(
+                            Messages.getString( "ImportSchemasFromXmlWizard.ImportingSchemas" ), selectedSchemasFiles.length ); //$NON-NLS-1$
 
                     for ( File schemaFile : selectedSchemasFiles )
                     {
                         monitor.subTask( schemaFile.getName() );
                         try
                         {
-                            SchemaFileType schemaFileType = XMLSchemaFileImporter.getSchemaFileType( new FileInputStream( schemaFile ),
-                                schemaFile.getAbsolutePath() );
+                            SchemaFileType schemaFileType = XMLSchemaFileImporter.getSchemaFileType(
+                                new FileInputStream( schemaFile ), schemaFile.getAbsolutePath() );
                             switch ( schemaFileType )
                             {
                                 case SINGLE:
-                                    Schema importedSchema = XMLSchemaFileImporter.getSchema( new FileInputStream( schemaFile ),
-                                        schemaFile.getAbsolutePath() );
+                                    Schema importedSchema = XMLSchemaFileImporter.getSchema( new FileInputStream(
+                                        schemaFile ), schemaFile.getAbsolutePath() );
                                     schemaHandler.addSchema( importedSchema );
                                     break;
                                 case MULTIPLE:
-                                    Schema[] schemas = XMLSchemaFileImporter.getSchemas( new FileInputStream( schemaFile ), schemaFile
-                                        .getAbsolutePath() );
+                                    Schema[] schemas = XMLSchemaFileImporter.getSchemas( new FileInputStream(
+                                        schemaFile ), schemaFile.getAbsolutePath() );
                                     for ( Schema schema : schemas )
                                     {
                                         schemaHandler.addSchema( schema );
@@ -118,15 +121,31 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                         }
                         catch ( XMLSchemaFileImportException e )
                         {
-                            PluginUtils.logError( "An error occured when importing  the schema " + schemaFile + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
-                                + schemaFile + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ImportSchemasFromXmlWizard.Error" ), //$NON-NLS-1$
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorSavingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
                         }
                         catch ( FileNotFoundException e )
                         {
-                            PluginUtils.logError( "An error occured when importing  the schema " + schemaFile + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
-                                + schemaFile + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ImportSchemasFromXmlWizard.Error" ), //$NON-NLS-1$
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorSavingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
                         }
                         monitor.worked( 1 );
                     }

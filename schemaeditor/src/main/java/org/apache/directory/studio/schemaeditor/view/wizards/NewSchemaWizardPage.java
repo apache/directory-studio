@@ -55,9 +55,9 @@ public class NewSchemaWizardPage extends AbstractWizardPage
      */
     protected NewSchemaWizardPage()
     {
-        super( "NewSchemaWizardPage" );
-        setTitle( "Create a Schema" );
-        setDescription( "Please specify a name to create a new schema." );
+        super( "NewSchemaWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewSchemaWizardPage.CreateSchema" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewSchemaWizardPage.PleaseSpecifiyName" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMA_NEW_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
@@ -74,7 +74,7 @@ public class NewSchemaWizardPage extends AbstractWizardPage
 
         // Name
         Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( "Schema name:" );
+        nameLabel.setText( Messages.getString( "NewSchemaWizardPage.SchemaName" ) ); //$NON-NLS-1$
         nameText = new Text( composite, SWT.BORDER );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         nameText.addModifyListener( new ModifyListener()
@@ -99,7 +99,7 @@ public class NewSchemaWizardPage extends AbstractWizardPage
         if ( Activator.getDefault().getSchemaHandler() == null )
         {
             nameText.setEnabled( false );
-            displayErrorMessage( "A schema project must be opened before adding a new schema." );
+            displayErrorMessage( Messages.getString( "NewSchemaWizardPage.ErrorNoSchemaProjectOpen" ) ); //$NON-NLS-1$
         }
         else
         {
@@ -115,14 +115,14 @@ public class NewSchemaWizardPage extends AbstractWizardPage
     private void dialogChanged()
     {
         // Name
-        if ( nameText.getText().equals( "" ) )
+        if ( nameText.getText().equals( "" ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A name must be specified." );
+            displayErrorMessage( Messages.getString( "NewSchemaWizardPage.ErrorNoNameSpecified" ) ); //$NON-NLS-1$
             return;
         }
         else if ( schemaHandler.isSchemaNameAlreadyTaken( nameText.getText() ) )
         {
-            displayErrorMessage( "A schema with this name already exists." );
+            displayErrorMessage( Messages.getString( "NewSchemaWizardPage.ErrorSchemaNameExists" ) ); //$NON-NLS-1$
             return;
         }
 

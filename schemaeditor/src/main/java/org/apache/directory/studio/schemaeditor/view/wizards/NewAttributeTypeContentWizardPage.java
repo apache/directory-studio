@@ -37,6 +37,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -67,12 +68,6 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
-    // The Usage values
-    private static final String DIRECTORY_OPERATION = "Directory Operation";
-    private static final String DISTRIBUTED_OPERATION = "Distributed Operation";
-    private static final String DSA_OPERATION = "DSA Operation";
-    private static final String USER_APPLICATIONS = "User Applications";
-
     // UI Fields
     private Text superiorText;
     private Button superiorButton;
@@ -90,9 +85,9 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
      */
     protected NewAttributeTypeContentWizardPage()
     {
-        super( "NewAttributeTypeContentWizardPage" );
-        setTitle( "Attribute Type Content" );
-        setDescription( "Please enter the superior, usage, syntax and properties for the attribute type." );
+        super( "NewAttributeTypeContentWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewAttributeTypeContentWizardPage.AttributTypeContent" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewAttributeTypeContentWizardPage.EnterAttributeTypeContent" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
@@ -109,13 +104,13 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
 
         // Superior and Usage Group
         Group superiorUsageGroup = new Group( composite, SWT.NONE );
-        superiorUsageGroup.setText( "Superior and Usage" );
+        superiorUsageGroup.setText( Messages.getString( "NewAttributeTypeContentWizardPage.SuperiorAndUsage" ) ); //$NON-NLS-1$
         superiorUsageGroup.setLayout( new GridLayout( 3, false ) );
         superiorUsageGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Superior
         Label superiorLabel = new Label( superiorUsageGroup, SWT.NONE );
-        superiorLabel.setText( "Superior:" );
+        superiorLabel.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Superior" ) ); //$NON-NLS-1$
         superiorText = new Text( superiorUsageGroup, SWT.BORDER );
         superiorText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         superiorText.addModifyListener( new ModifyListener()
@@ -126,7 +121,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
             }
         } );
         superiorButton = new Button( superiorUsageGroup, SWT.PUSH );
-        superiorButton.setText( "Choose..." );
+        superiorButton.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Choose" ) ); //$NON-NLS-1$
         superiorButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false ) );
         superiorButton.addSelectionListener( new SelectionAdapter()
         {
@@ -151,25 +146,28 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
 
         // Usage
         Label usageLabel = new Label( superiorUsageGroup, SWT.NONE );
-        usageLabel.setText( "Usage:" );
+        usageLabel.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Usage" ) ); //$NON-NLS-1$
         Combo usageCombo = new Combo( superiorUsageGroup, SWT.READ_ONLY );
         usageCombo.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
         usageComboViewer = new ComboViewer( usageCombo );
         usageComboViewer.setLabelProvider( new LabelProvider() );
         usageComboViewer.setContentProvider( new ArrayContentProvider() );
-        usageComboViewer.setInput( new String[]
-            { DIRECTORY_OPERATION, DISTRIBUTED_OPERATION, DSA_OPERATION, USER_APPLICATIONS } );
-        usageComboViewer.setSelection( new StructuredSelection( USER_APPLICATIONS ) );
+        usageComboViewer
+            .setInput( new String[]
+                {
+                    Messages.getString( "NewAttributeTypeContentWizardPage.DirectoryOperation" ), Messages.getString( "NewAttributeTypeContentWizardPage.DistributedOperation" ), Messages.getString( "NewAttributeTypeContentWizardPage.DSAOperation" ), Messages.getString( "NewAttributeTypeContentWizardPage.UserApplications" ) } ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        usageComboViewer.setSelection( new StructuredSelection( Messages
+            .getString( "NewAttributeTypeContentWizardPage.UserApplications" ) ) ); //$NON-NLS-1$
 
         // Syntax Group
         Group syntaxGroup = new Group( composite, SWT.NONE );
-        syntaxGroup.setText( "Syntax" );
+        syntaxGroup.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Syntax" ) ); //$NON-NLS-1$
         syntaxGroup.setLayout( new GridLayout( 2, false ) );
         syntaxGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Syntax
         Label syntaxLabel = new Label( syntaxGroup, SWT.NONE );
-        syntaxLabel.setText( "Syntax:" );
+        syntaxLabel.setText( Messages.getString( "NewAttributeTypeContentWizardPage.SyntaxColon" ) ); //$NON-NLS-1$
         Combo syntaxCombo = new Combo( syntaxGroup, SWT.READ_ONLY );
         syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         syntaxComboViewer = new ComboViewer( syntaxCombo );
@@ -185,11 +183,15 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                     String name = syntax.getName();
                     if ( name != null )
                     {
-                        return name + "  -  (" + syntax.getOid() + ")";
+                        return NLS
+                            .bind(
+                                Messages.getString( "NewAttributeTypeContentWizardPage.NameOID" ), new String[] { name, syntax.getOid() } ); //$NON-NLS-1$
                     }
                     else
                     {
-                        return "(None)  -  (" + syntax.getOid() + ")";
+                        return NLS
+                            .bind(
+                                Messages.getString( "NewAttributeTypeContentWizardPage.NoneOID" ), new String[] { syntax.getOid() } ); //$NON-NLS-1$
                     }
                 }
 
@@ -199,7 +201,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
 
         // Syntax Length
         Label lengthLabel = new Label( syntaxGroup, SWT.NONE );
-        lengthLabel.setText( "Length:" );
+        lengthLabel.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Length" ) ); //$NON-NLS-1$
         lengthSpinner = new Spinner( syntaxGroup, SWT.BORDER );
         lengthSpinner.setIncrement( 1 );
         lengthSpinner.setMinimum( 0 );
@@ -210,29 +212,30 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
 
         // Properties Group
         Group propertiesGroup = new Group( composite, SWT.NONE );
-        propertiesGroup.setText( "Properties" );
+        propertiesGroup.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Properties" ) ); //$NON-NLS-1$
         propertiesGroup.setLayout( new GridLayout() );
         propertiesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Obsolete
         new Label( composite, SWT.NONE );
         obsoleteCheckbox = new Button( propertiesGroup, SWT.CHECK );
-        obsoleteCheckbox.setText( "Obsolete" );
+        obsoleteCheckbox.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Obsolete" ) ); //$NON-NLS-1$
 
         // Single value
         new Label( composite, SWT.NONE );
         singleValueCheckbox = new Button( propertiesGroup, SWT.CHECK );
-        singleValueCheckbox.setText( "Single Value" );
+        singleValueCheckbox.setText( Messages.getString( "NewAttributeTypeContentWizardPage.SingleValue" ) ); //$NON-NLS-1$
 
         // Collective
         new Label( composite, SWT.NONE );
         collectiveCheckbox = new Button( propertiesGroup, SWT.CHECK );
-        collectiveCheckbox.setText( "Collective" );
+        collectiveCheckbox.setText( Messages.getString( "NewAttributeTypeContentWizardPage.Collective" ) ); //$NON-NLS-1$
 
         // No User Modification
         new Label( composite, SWT.NONE );
         noUserModificationCheckbox = new Button( propertiesGroup, SWT.CHECK );
-        noUserModificationCheckbox.setText( "No User Modification" );
+        noUserModificationCheckbox
+            .setText( Messages.getString( "NewAttributeTypeContentWizardPage.NoUserModifcation" ) ); //$NON-NLS-1$
 
         initFields();
 
@@ -251,7 +254,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
             // Getting the syntaxes
             List<Object> syntaxes = new ArrayList( schemaHandler.getSyntaxes() );
             // Adding the (None) Syntax
-            String none = "(None)";
+            String none = Messages.getString( "NewAttributeTypeContentWizardPage.None" ); //$NON-NLS-1$
             syntaxes.add( none );
 
             // Sorting the syntaxes
@@ -273,11 +276,11 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                             }
                             else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
                             {
-                                return "".compareToIgnoreCase( o2Names[0] );
+                                return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
                             }
                             else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
                             {
-                                return o1Names[0].compareToIgnoreCase( "" );
+                                return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
                             }
                         }
                     }
@@ -308,11 +311,12 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
     private void verifySuperior()
     {
         String superior = superiorText.getText();
-        if ( ( superior != null ) && ( !superior.equals( "" ) ) )
+        if ( ( superior != null ) && ( !superior.equals( "" ) ) ) //$NON-NLS-1$
         {
             if ( schemaHandler.getAttributeType( superiorText.getText() ) == null )
             {
-                displayErrorMessage( "The superior attribute type does not exist." );
+                displayErrorMessage( Messages
+                    .getString( "NewAttributeTypeContentWizardPage.ErrorSuperiorAttributeTypeNotExists" ) ); //$NON-NLS-1$
                 return;
             }
         }
@@ -330,7 +334,7 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
     public String getSuperiorValue()
     {
         String superior = superiorText.getText();
-        if ( ( superior != null ) && ( !superior.equals( "" ) ) )
+        if ( ( superior != null ) && ( !superior.equals( "" ) ) ) //$NON-NLS-1$
         {
             return superior;
         }
@@ -353,19 +357,20 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
         if ( !selection.isEmpty() )
         {
             String selectedUsage = ( String ) selection.getFirstElement();
-            if ( selectedUsage.equals( DIRECTORY_OPERATION ) )
+            if ( selectedUsage.equals( Messages.getString( "NewAttributeTypeContentWizardPage.DirectoryOperation" ) ) ) //$NON-NLS-1$
             {
                 return UsageEnum.DIRECTORY_OPERATION;
             }
-            else if ( selectedUsage.equals( DISTRIBUTED_OPERATION ) )
+            else if ( selectedUsage.equals( Messages
+                .getString( "NewAttributeTypeContentWizardPage.DistributedOperation" ) ) ) //$NON-NLS-1$
             {
                 return UsageEnum.DISTRIBUTED_OPERATION;
             }
-            else if ( selectedUsage.equals( DSA_OPERATION ) )
+            else if ( selectedUsage.equals( Messages.getString( "NewAttributeTypeContentWizardPage.DSAOperation" ) ) ) //$NON-NLS-1$
             {
                 return UsageEnum.DSA_OPERATION;
             }
-            else if ( selectedUsage.equals( USER_APPLICATIONS ) )
+            else if ( selectedUsage.equals( Messages.getString( "NewAttributeTypeContentWizardPage.UserApplications" ) ) ) //$NON-NLS-1$
             {
                 return UsageEnum.USER_APPLICATIONS;
             }

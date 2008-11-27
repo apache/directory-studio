@@ -48,9 +48,9 @@ public class CommitChangesInformationWizardPage extends WizardPage
      */
     protected CommitChangesInformationWizardPage()
     {
-        super( "CommitChangesInformationWizardPage" );
-        setTitle( "Commit Changes" );
-        setDescription( "Please read the following information before committing the changes made on the schema." );
+        super( "CommitChangesInformationWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "CommitChangesInformationWizardPage.CommitChanges" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "CommitChangesInformationWizardPage.PleaseReadInformationBeforeCommitting" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COMMIT_CHANGES_WIZARD ) );
     }
 
@@ -66,9 +66,7 @@ public class CommitChangesInformationWizardPage extends WizardPage
         composite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Information Label
-        String informationString = "You are about to commit changes to Apache Directory Server." + "\n\n"
-            + "Please carefully review the changes made on the schema on the next page." + "\n\n"
-            + "Commiting changes with an inconsistent schema may corrupt you server.";
+        String informationString = Messages.getString( "CommitChangesInformationWizardPage.YouAreAboutToCommit" ); //$NON-NLS-1$
         Label informationLabel = new Label( composite, SWT.WRAP );
         informationLabel.setText( informationString );
         informationLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, true ) );

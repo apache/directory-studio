@@ -62,9 +62,9 @@ public class NewProjectWizardConnectionSelectionPage extends AbstractWizardPage
      */
     protected NewProjectWizardConnectionSelectionPage()
     {
-        super( "NewProjectWizardConnectionSelectionPage" );
-        setTitle( "Create a Schema project." );
-        setDescription( "Please select a connection." );
+        super( "NewProjectWizardConnectionSelectionPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewProjectWizardConnectionSelectionPage.CreateSchemaProject" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewProjectWizardConnectionSelectionPage.PleaseSelectConnection" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
         setPageComplete( false );
     }
@@ -80,7 +80,7 @@ public class NewProjectWizardConnectionSelectionPage extends AbstractWizardPage
 
         // Choose A Connection Label
         Label label = new Label( composite, SWT.NONE );
-        label.setText( "Choose a connection:" );
+        label.setText( Messages.getString( "NewProjectWizardConnectionSelectionPage.ChooseConnection" ) ); //$NON-NLS-1$
         label.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Creating configuration
@@ -133,7 +133,8 @@ public class NewProjectWizardConnectionSelectionPage extends AbstractWizardPage
         ISelection selection = connectionWidget.getViewer().getSelection();
         if ( selection.isEmpty() )
         {
-            displayErrorMessage( "A connection must be selected." );
+            displayErrorMessage( Messages
+                .getString( "NewProjectWizardConnectionSelectionPage.ErrorNoConnectionSelected" ) ); //$NON-NLS-1$
             return;
         }
 

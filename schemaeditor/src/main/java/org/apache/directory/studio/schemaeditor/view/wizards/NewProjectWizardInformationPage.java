@@ -59,9 +59,9 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
      */
     protected NewProjectWizardInformationPage()
     {
-        super( "NewProjectWizardInformationPage" );
-        setTitle( "Create a Schema project." );
-        setDescription( "Please specify a name and a type to create a new Schema project." );
+        super( "NewProjectWizardInformationPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewProjectWizardInformationPage.CreateSchemaProject" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewProjectWizardInformationPage.SpecifiyNameAndType" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_NEW_WIZARD ) );
         projectsHandler = Activator.getDefault().getProjectsHandler();
     }
@@ -78,7 +78,7 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
 
         // Name
         Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( "Project name:" );
+        nameLabel.setText( Messages.getString( "NewProjectWizardInformationPage.ProejctName" ) ); //$NON-NLS-1$
         nameText = new Text( composite, SWT.BORDER );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         nameText.addModifyListener( new ModifyListener()
@@ -131,14 +131,14 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
     private void dialogChanged()
     {
         // Name
-        if ( nameText.getText().equals( "" ) )
+        if ( nameText.getText().equals( "" ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A name must be specified." );
+            displayErrorMessage( Messages.getString( "NewProjectWizardInformationPage.ErrorNoNameSpecified" ) ); //$NON-NLS-1$
             return;
         }
         else if ( projectsHandler.isProjectNameAlreadyTaken( nameText.getText() ) )
         {
-            displayErrorMessage( "A project with this name already exists." );
+            displayErrorMessage( Messages.getString( "NewProjectWizardInformationPage.ErrorProjectNameExists" ) ); //$NON-NLS-1$
             return;
         }
 

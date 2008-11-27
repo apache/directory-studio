@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -84,7 +85,8 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    monitor.beginTask( "Importing projects: ", selectedProjectFiles.length );
+                    monitor.beginTask(
+                        Messages.getString( "ImportProjectsWizard.ImportingProjects" ), selectedProjectFiles.length ); //$NON-NLS-1$
 
                     for ( File projectFile : selectedProjectFiles )
                     {
@@ -97,17 +99,31 @@ public class ImportProjectsWizard extends Wizard implements IImportWizard
                         }
                         catch ( ProjectsImportException e )
                         {
-                            PluginUtils.logError( "An error occured when importing project " + projectFile.getName()
-                                + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Import Error",
-                                "An error occured when importing project " + projectFile.getName() + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), new String[] { projectFile.getName() } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ImportProjectsWizard.ImportError" ), //$NON-NLS-1$
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), new String[] { projectFile.getName() } ) ); //$NON-NLS-1$
                         }
                         catch ( FileNotFoundException e )
                         {
-                            PluginUtils.logError( "An error occured when importing project " + projectFile.getName()
-                                + ".", e );
-                            ViewUtils.displayErrorMessageBox( "Import Error",
-                                "An error occured when importing project " + projectFile.getName() + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), new String[] { projectFile.getName() } ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ImportProjectsWizard.ImportError" ), //$NON-NLS-1$
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ImportProjectsWizard.ErrorImportingProject" ), new String[] { projectFile.getName() } ) ); //$NON-NLS-1$
                         }
                         monitor.worked( 1 );
                     }

@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -90,7 +91,9 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    monitor.beginTask( "Importing schemas: ", selectedSchemasFiles.length );
+                    monitor
+                        .beginTask(
+                            Messages.getString( "ImportSchemasFromOpenLdapWizard.ImportingSchemas" ), selectedSchemasFiles.length ); //$NON-NLS-1$
 
                     for ( File schemaFile : selectedSchemasFiles )
                     {
@@ -127,9 +130,16 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                 private void reportError( Exception e, File schemaFile )
                 {
                     PluginUtils
-                        .logError( "An error occured when importing the schema " + schemaFile.getName() + ".", e );
-                    ViewUtils.displayErrorMessageBox( "Error", "An error occured when importing the schema "
-                        + schemaFile.getName() + "." + "\n\n" + e.getMessage() );
+                        .logError(
+                            NLS
+                                .bind(
+                                    Messages.getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchema" ), new String[] { schemaFile.getName() } ), e ); //$NON-NLS-1$
+                    ViewUtils
+                        .displayErrorMessageBox(
+                            Messages.getString( "ImportSchemasFromOpenLdapWizard.Error" ), //$NON-NLS-1$
+                            NLS
+                                .bind(
+                                    Messages.getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchemaPlus" ), new String[] { schemaFile.getName(), e.getMessage() } ) ); //$NON-NLS-1$
                 }
             } );
         }

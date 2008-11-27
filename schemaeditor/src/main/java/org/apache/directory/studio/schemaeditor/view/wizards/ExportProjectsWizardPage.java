@@ -81,9 +81,9 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
      */
     protected ExportProjectsWizardPage()
     {
-        super( "ExportProjectsWizardPage" );
-        setTitle( "Export schema projects" );
-        setDescription( "Please select the schema projects to export." );
+        super( "ExportProjectsWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ExportProjectsWizardPage.ExportSchemaProjects" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ExportProjectsWizardPage.PleaseSelectSchemaProjects" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_PROJECT_EXPORT_WIZARD ) );
     }
 
@@ -99,13 +99,13 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
 
         // Projects Group
         Group schemaProjectsGroup = new Group( composite, SWT.NONE );
-        schemaProjectsGroup.setText( "Schema projects" );
+        schemaProjectsGroup.setText( Messages.getString( "ExportProjectsWizardPage.SchemaProjects" ) ); //$NON-NLS-1$
         schemaProjectsGroup.setLayout( new GridLayout( 2, false ) );
         schemaProjectsGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Projects TableViewer
         Label projectsLabel = new Label( schemaProjectsGroup, SWT.NONE );
-        projectsLabel.setText( "Select the schema projects to export:" );
+        projectsLabel.setText( Messages.getString( "ExportProjectsWizardPage.SelectSchemaProjects" ) ); //$NON-NLS-1$
         projectsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         projectsTableViewer = new CheckboxTableViewer( new Table( schemaProjectsGroup, SWT.BORDER | SWT.CHECK
             | SWT.FULL_SELECTION ) );
@@ -159,7 +159,7 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
             }
         } );
         projectsTableSelectAllButton = new Button( schemaProjectsGroup, SWT.PUSH );
-        projectsTableSelectAllButton.setText( "Select All" );
+        projectsTableSelectAllButton.setText( Messages.getString( "ExportProjectsWizardPage.SelectAll" ) ); //$NON-NLS-1$
         projectsTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         projectsTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -170,7 +170,7 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
             }
         } );
         projectsTableDeselectAllButton = new Button( schemaProjectsGroup, SWT.PUSH );
-        projectsTableDeselectAllButton.setText( "Deselect All" );
+        projectsTableDeselectAllButton.setText( Messages.getString( "ExportProjectsWizardPage.DeselectAll" ) ); //$NON-NLS-1$
         projectsTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         projectsTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -183,12 +183,12 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
 
         // Export Destination Group
         Group exportDestinationGroup = new Group( composite, SWT.NULL );
-        exportDestinationGroup.setText( "Export Destination" );
+        exportDestinationGroup.setText( Messages.getString( "ExportProjectsWizardPage.ExportDestination" ) ); //$NON-NLS-1$
         exportDestinationGroup.setLayout( new GridLayout( 3, false ) );
         exportDestinationGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         exportDirectoryLabel = new Label( exportDestinationGroup, SWT.NONE );
-        exportDirectoryLabel.setText( "Directory:" );
+        exportDirectoryLabel.setText( Messages.getString( "ExportProjectsWizardPage.Directory" ) ); //$NON-NLS-1$
         exportDirectoryText = new Text( exportDestinationGroup, SWT.BORDER );
         exportDirectoryText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         exportDirectoryText.addModifyListener( new ModifyListener()
@@ -199,7 +199,7 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
             }
         } );
         exportDirectoryButton = new Button( exportDestinationGroup, SWT.PUSH );
-        exportDirectoryButton.setText( "Browse..." );
+        exportDirectoryButton.setText( Messages.getString( "ExportProjectsWizardPage.Browse" ) ); //$NON-NLS-1$
         exportDirectoryButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -247,9 +247,9 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
     private void chooseExportDirectory()
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder in which export the files." );
-        if ( "".equals( exportDirectoryText.getText() ) )
+        dialog.setText( Messages.getString( "ExportProjectsWizardPage.ChooseFolder" ) ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "ExportProjectsWizardPage.SelectFolderToExportTo" ) ); //$NON-NLS-1$
+        if ( "".equals( exportDirectoryText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_EXPORT_PROJECTS ) );
@@ -275,15 +275,15 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
         // Schemas table
         if ( projectsTableViewer.getCheckedElements().length == 0 )
         {
-            displayErrorMessage( "One or several schema projects must be selected." );
+            displayErrorMessage( Messages.getString( "ExportProjectsWizardPage.ErrorNoSchemaSelected" ) ); //$NON-NLS-1$
             return;
         }
 
         // Export Directory
         String directory = exportDirectoryText.getText();
-        if ( ( directory == null ) || ( directory.equals( "" ) ) )
+        if ( ( directory == null ) || ( directory.equals( "" ) ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A directory must be selected." );
+            displayErrorMessage( Messages.getString( "ExportProjectsWizardPage.ErrorNoDirectorySelected" ) ); //$NON-NLS-1$
             return;
         }
         else
@@ -291,17 +291,17 @@ public class ExportProjectsWizardPage extends AbstractWizardPage
             File directoryFile = new File( directory );
             if ( !directoryFile.exists() )
             {
-                displayErrorMessage( "The selected directory does not exist." );
+                displayErrorMessage( Messages.getString( "ExportProjectsWizardPage.SelectedDirectoryNotExists" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.isDirectory() )
             {
-                displayErrorMessage( "The selected directory is not a directory." );
+                displayErrorMessage( Messages.getString( "ExportProjectsWizardPage.SelectedDirectoryNotDirectory" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.canWrite() )
             {
-                displayErrorMessage( "The selected directory is not writable." );
+                displayErrorMessage( Messages.getString( "ExportProjectsWizardPage.SelectedDirectoryNotWritable" ) ); //$NON-NLS-1$
                 return;
             }
         }

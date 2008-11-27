@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -72,11 +73,15 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
                 String name = mr.getName();
                 if ( name != null )
                 {
-                    return name + "  -  (" + mr.getOid() + ")";
+                    return NLS
+                        .bind(
+                            Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.NameOID" ), new String[] { name, mr.getOid() } ); //$NON-NLS-1$
                 }
                 else
                 {
-                    return "(None)  -  (" + mr.getOid() + ")";
+                    return NLS
+                        .bind(
+                            Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.NoneOID" ), new String[] { mr.getOid() } ); //$NON-NLS-1$
                 }
             }
 
@@ -95,9 +100,9 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
      */
     public NewAttributeTypeMatchingRulesWizardPage()
     {
-        super( "NewAttributeTypeMatchingRulesWizardPage" );
-        setTitle( "Matching Rules" );
-        setDescription( "Please specify the matching rules (equality, ordering and substring) to use for the attribute type." );
+        super( "NewAttributeTypeMatchingRulesWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.MatchingRules" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.PleaseSpecifiyMatchingRules" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_ATTRIBUTE_TYPE_NEW_WIZARD ) );
 
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -115,13 +120,13 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 
         // Matching Rules Group
         Group matchingRulesGroup = new Group( composite, SWT.NONE );
-        matchingRulesGroup.setText( "Matching Rules" );
+        matchingRulesGroup.setText( Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.MatchingRules" ) ); //$NON-NLS-1$
         matchingRulesGroup.setLayout( new GridLayout( 2, false ) );
         matchingRulesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Equality
         Label equalityLabel = new Label( matchingRulesGroup, SWT.NONE );
-        equalityLabel.setText( "Equality:" );
+        equalityLabel.setText( Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.Equality" ) ); //$NON-NLS-1$
         Combo equalityCombo = new Combo( matchingRulesGroup, SWT.READ_ONLY );
         equalityCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         equalityComboViewer = new ComboViewer( equalityCombo );
@@ -130,7 +135,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 
         // Ordering
         Label orderingLabel = new Label( matchingRulesGroup, SWT.NONE );
-        orderingLabel.setText( "Ordering:" );
+        orderingLabel.setText( Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.Ordering" ) ); //$NON-NLS-1$
         Combo orderingCombo = new Combo( matchingRulesGroup, SWT.READ_ONLY );
         orderingCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         orderingComboViewer = new ComboViewer( orderingCombo );
@@ -139,7 +144,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
 
         // Substring
         Label substringLabel = new Label( matchingRulesGroup, SWT.NONE );
-        substringLabel.setText( "Substring:" );
+        substringLabel.setText( Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.Substring" ) ); //$NON-NLS-1$
         Combo substringCombo = new Combo( matchingRulesGroup, SWT.READ_ONLY );
         substringCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         substringComboViewer = new ComboViewer( substringCombo );
@@ -163,7 +168,7 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
             // Getting the matching rules
             List<Object> matchingRules = new ArrayList( schemaHandler.getMatchingRules() );
             // Adding the (None) matching rule
-            String none = "(None)";
+            String none = Messages.getString( "NewAttributeTypeMatchingRulesWizardPage.None" ); //$NON-NLS-1$
             matchingRules.add( none );
 
             // Sorting the matching rules
@@ -186,11 +191,11 @@ public class NewAttributeTypeMatchingRulesWizardPage extends WizardPage
                             }
                             else if ( ( o1Names.length == 0 ) && ( o2Names.length > 0 ) )
                             {
-                                return "".compareToIgnoreCase( o2Names[0] );
+                                return "".compareToIgnoreCase( o2Names[0] ); //$NON-NLS-1$
                             }
                             else if ( ( o1Names.length > 0 ) && ( o2Names.length == 0 ) )
                             {
-                                return o1Names[0].compareToIgnoreCase( "" );
+                                return o1Names[0].compareToIgnoreCase( "" ); //$NON-NLS-1$
                             }
                         }
                         else if ( ( o1 instanceof String ) && ( o2 instanceof MatchingRuleImpl ) )

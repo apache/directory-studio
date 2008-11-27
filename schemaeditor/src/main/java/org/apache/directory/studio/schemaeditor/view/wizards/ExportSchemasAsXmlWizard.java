@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -86,24 +87,29 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                 {
                     public void run( IProgressMonitor monitor )
                     {
-                        monitor.beginTask( "Exporting schemas: ", selectedSchemas.length );
+                        monitor.beginTask(
+                            Messages.getString( "ExportSchemasAsXmlWizard.ExportingSchemas" ), selectedSchemas.length ); //$NON-NLS-1$
                         for ( Schema schema : selectedSchemas )
                         {
                             monitor.subTask( schema.getName() );
 
                             try
                             {
-                                BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
-                                    + schema.getName() + ".xml" ) );
+                                BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/" //$NON-NLS-1$
+                                    + schema.getName() + ".xml" ) ); //$NON-NLS-1$
                                 buffWriter.write( XMLSchemaFileExporter.toXml( schema ) );
                                 buffWriter.close();
                             }
                             catch ( IOException e )
                             {
-                                PluginUtils.logError( "An error occured when saving the schema " + schema.getName()
-                                    + ".", e );
-                                ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
-                                    + schema.getName() + "." );
+                                PluginUtils
+                                    .logError(
+                                        NLS
+                                            .bind(
+                                                Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ), e ); //$NON-NLS-1$
+                                ViewUtils
+                                    .displayErrorMessageBox(
+                                        Messages.getString( "ExportSchemasAsXmlWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
                             }
                             monitor.worked( 1 );
                         }
@@ -129,7 +135,7 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                 {
                     public void run( IProgressMonitor monitor )
                     {
-                        monitor.beginTask( "Exporting schemas", 1 );
+                        monitor.beginTask( Messages.getString( "ExportSchemasAsXmlWizard.ExportingSchemas" ), 1 ); //$NON-NLS-1$
                         try
                         {
                             BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportFile ) );
@@ -138,8 +144,11 @@ public class ExportSchemasAsXmlWizard extends Wizard implements IExportWizard
                         }
                         catch ( IOException e )
                         {
-                            PluginUtils.logError( "An error occured when saving the schemas.", e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schemas." );
+                            PluginUtils.logError( Messages
+                                .getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchemas" ), e ); //$NON-NLS-1$
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ExportSchemasAsXmlWizard.Error" ), Messages.getString( "ExportSchemasAsXmlWizard.ErrorWhenSavingSchemas" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         monitor.worked( 1 );
                         monitor.done();

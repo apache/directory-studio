@@ -93,9 +93,9 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
      */
     protected ExportSchemasAsXmlWizardPage()
     {
-        super( "ExportSchemasAsXmlWizardPage" );
-        setTitle( "Export schemas as XML file(s)" );
-        setDescription( "Please select the schemas to export as XML file(s)." );
+        super( "ExportSchemasAsXmlWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ExportSchemasAsXmlWizardPage.ExportSchemaAsXML" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ExportSchemasAsXmlWizardPage.PleaseSelectSchemas" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
@@ -112,13 +112,13 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
 
         // Schemas Group
         Group schemasGroup = new Group( composite, SWT.NONE );
-        schemasGroup.setText( "Schemas" );
+        schemasGroup.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.Schemas" ) ); //$NON-NLS-1$
         schemasGroup.setLayout( new GridLayout( 2, false ) );
         schemasGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Schemas TableViewer
         Label schemasLabel = new Label( schemasGroup, SWT.NONE );
-        schemasLabel.setText( "Select the schemas to export:" );
+        schemasLabel.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.SelectSchemasToExport" ) ); //$NON-NLS-1$
         schemasLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         schemasTableViewer = new CheckboxTableViewer( new Table( schemasGroup, SWT.BORDER | SWT.CHECK
             | SWT.FULL_SELECTION ) );
@@ -165,7 +165,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             }
         } );
         schemasTableSelectAllButton = new Button( schemasGroup, SWT.PUSH );
-        schemasTableSelectAllButton.setText( "Select All" );
+        schemasTableSelectAllButton.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.SelectAll" ) ); //$NON-NLS-1$
         schemasTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemasTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -176,7 +176,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             }
         } );
         schemasTableDeselectAllButton = new Button( schemasGroup, SWT.PUSH );
-        schemasTableDeselectAllButton.setText( "Deselect All" );
+        schemasTableDeselectAllButton.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.DeselectAll" ) ); //$NON-NLS-1$
         schemasTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemasTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -189,13 +189,14 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
 
         // Export Destination Group
         Group exportDestinationGroup = new Group( composite, SWT.NULL );
-        exportDestinationGroup.setText( "Export Destination" );
+        exportDestinationGroup.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.ExportDdestination" ) ); //$NON-NLS-1$
         exportDestinationGroup.setLayout( new GridLayout( 4, false ) );
         exportDestinationGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Export Multiple Files
         exportMultipleFilesRadio = new Button( exportDestinationGroup, SWT.RADIO );
-        exportMultipleFilesRadio.setText( "Export each schema as a separate file." );
+        exportMultipleFilesRadio.setText( Messages
+            .getString( "ExportSchemasAsXmlWizardPage.ExportEachSchemaAsSeparateFile" ) ); //$NON-NLS-1$
         exportMultipleFilesRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
         exportMultipleFilesRadio.addSelectionListener( new SelectionAdapter()
         {
@@ -206,9 +207,9 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             }
         } );
         Label exportMultipleFilesFiller = new Label( exportDestinationGroup, SWT.NONE );
-        exportMultipleFilesFiller.setText( "    " );
+        exportMultipleFilesFiller.setText( "    " ); //$NON-NLS-1$
         exportMultipleFilesLabel = new Label( exportDestinationGroup, SWT.NONE );
-        exportMultipleFilesLabel.setText( "Directory:" );
+        exportMultipleFilesLabel.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.Directory" ) ); //$NON-NLS-1$
         exportMultipleFilesText = new Text( exportDestinationGroup, SWT.BORDER );
         exportMultipleFilesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         exportMultipleFilesText.addModifyListener( new ModifyListener()
@@ -219,7 +220,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             }
         } );
         exportMultipleFilesButton = new Button( exportDestinationGroup, SWT.PUSH );
-        exportMultipleFilesButton.setText( "Browse..." );
+        exportMultipleFilesButton.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.Browse" ) ); //$NON-NLS-1$
         exportMultipleFilesButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -231,7 +232,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
 
         // Export Single File
         exportSingleFileRadio = new Button( exportDestinationGroup, SWT.RADIO );
-        exportSingleFileRadio.setText( "Export the schemas as a single file." );
+        exportSingleFileRadio.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.ExportSchemaAsSingleFile" ) ); //$NON-NLS-1$
         exportSingleFileRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
         exportSingleFileRadio.addSelectionListener( new SelectionAdapter()
         {
@@ -242,9 +243,9 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             }
         } );
         Label exportSingleFileFiller = new Label( exportDestinationGroup, SWT.NONE );
-        exportSingleFileFiller.setText( "    " );
+        exportSingleFileFiller.setText( "    " ); //$NON-NLS-1$
         exportSingleFileLabel = new Label( exportDestinationGroup, SWT.NONE );
-        exportSingleFileLabel.setText( "Export File:" );
+        exportSingleFileLabel.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.ExportFile" ) ); //$NON-NLS-1$
         exportSingleFileText = new Text( exportDestinationGroup, SWT.BORDER );
         exportSingleFileText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         exportSingleFileText.addModifyListener( new ModifyListener()
@@ -255,7 +256,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             }
         } );
         exportSingleFileButton = new Button( exportDestinationGroup, SWT.PUSH );
-        exportSingleFileButton.setText( "Browse..." );
+        exportSingleFileButton.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.Browse" ) ); //$NON-NLS-1$
         exportSingleFileButton.addSelectionListener( new SelectionAdapter()
         {
             /* (non-Javadoc)
@@ -348,9 +349,9 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
     private void chooseExportDirectory()
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder in which export the files." );
-        if ( "".equals( exportMultipleFilesText.getText() ) )
+        dialog.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.ChooseFolder" ) ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "ExportSchemasAsXmlWizardPage.SelectFolderToExport" ) ); //$NON-NLS-1$
+        if ( "".equals( exportMultipleFilesText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML ) );
@@ -374,12 +375,14 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
     private void chooseExportFile()
     {
         FileDialog dialog = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
-        dialog.setText( "Select File" );
+        dialog.setText( Messages.getString( "ExportSchemasAsXmlWizardPage.SelectFile" ) ); //$NON-NLS-1$
         dialog.setFilterExtensions( new String[]
-            { "*.xml", "*" } );
-        dialog.setFilterNames( new String[]
-            { "XML Files", "All Files" } );
-        if ( "".equals( exportSingleFileText.getText() ) )
+            { "*.xml", "*" } ); //$NON-NLS-1$ //$NON-NLS-2$
+        dialog
+            .setFilterNames( new String[]
+                {
+                    Messages.getString( "ExportSchemasAsXmlWizardPage.XMLFiles" ), Messages.getString( "ExportSchemasAsXmlWizardPage.AllFiles" ) } ); //$NON-NLS-1$ //$NON-NLS-2$
+        if ( Messages.getString( "ExportSchemasAsXmlWizardPage.24" ).equals( exportSingleFileText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML ) );
@@ -405,14 +408,14 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
         // Checking if a Schema Project is open
         if ( schemaHandler == null )
         {
-            displayErrorMessage( "A Schema Project must be open to export schemas as XML files." );
+            displayErrorMessage( Messages.getString( "ExportSchemasAsXmlWizardPage.ErrorNoOpenSchemaProject" ) ); //$NON-NLS-1$
             return;
         }
 
         // Schemas table
         if ( schemasTableViewer.getCheckedElements().length == 0 )
         {
-            displayErrorMessage( "One or several schemas must be selected." );
+            displayErrorMessage( Messages.getString( "ExportSchemasAsXmlWizardPage.ErrorNoSelectedSchema" ) ); //$NON-NLS-1$
             return;
         }
 
@@ -420,9 +423,9 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
         if ( exportMultipleFilesRadio.getSelection() )
         {
             String directory = exportMultipleFilesText.getText();
-            if ( ( directory == null ) || ( directory.equals( "" ) ) )
+            if ( ( directory == null ) || ( directory.equals( "" ) ) ) //$NON-NLS-1$
             {
-                displayErrorMessage( "A directory must be selected." );
+                displayErrorMessage( Messages.getString( "ExportSchemasAsXmlWizardPage.ErrorNotSelectedDirectory" ) ); //$NON-NLS-1$
                 return;
             }
             else
@@ -430,17 +433,20 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
                 File directoryFile = new File( directory );
                 if ( !directoryFile.exists() )
                 {
-                    displayErrorMessage( "The selected directory does not exist." );
+                    displayErrorMessage( Messages
+                        .getString( "ExportSchemasAsXmlWizardPage.ErrorSelectedDirectoryNotExists" ) ); //$NON-NLS-1$
                     return;
                 }
                 else if ( !directoryFile.isDirectory() )
                 {
-                    displayErrorMessage( "The selected directory is not a directory." );
+                    displayErrorMessage( Messages
+                        .getString( "ExportSchemasAsXmlWizardPage.ErrorSelectedDirectoryNotDirectory" ) ); //$NON-NLS-1$
                     return;
                 }
                 else if ( !directoryFile.canWrite() )
                 {
-                    displayErrorMessage( "The selected directory is not writable." );
+                    displayErrorMessage( Messages
+                        .getString( "ExportSchemasAsXmlWizardPage.ErrorSelectedDirectoryNotWritable" ) ); //$NON-NLS-1$
                     return;
                 }
             }
@@ -448,9 +454,9 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
         else if ( exportSingleFileRadio.getSelection() )
         {
             String exportFile = exportSingleFileText.getText();
-            if ( ( exportFile == null ) || ( exportFile.equals( "" ) ) )
+            if ( ( exportFile == null ) || ( exportFile.equals( "" ) ) ) //$NON-NLS-1$
             {
-                displayErrorMessage( "A file must be selected." );
+                displayErrorMessage( Messages.getString( "ExportSchemasAsXmlWizardPage.ErrorNoFileSelected" ) ); //$NON-NLS-1$
                 return;
             }
             else
@@ -458,7 +464,8 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
                 File file = new File( exportFile );
                 if ( !file.getParentFile().canWrite() )
                 {
-                    displayErrorMessage( "The selected file is not writable." );
+                    displayErrorMessage( Messages
+                        .getString( "ExportSchemasAsXmlWizardPage.ErrorSelectedFileNotWritable" ) ); //$NON-NLS-1$
                     return;
                 }
             }

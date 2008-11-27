@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
@@ -83,24 +84,30 @@ public class ExportSchemasAsOpenLdapWizard extends Wizard implements IExportWiza
             {
                 public void run( IProgressMonitor monitor )
                 {
-                    monitor.beginTask( "Exporting schemas: ", selectedSchemas.length );
+                    monitor.beginTask(
+                        Messages.getString( "ExportSchemasAsOpenLdapWizard.ExportingSchemas" ), selectedSchemas.length ); //$NON-NLS-1$
                     for ( Schema schema : selectedSchemas )
                     {
                         monitor.subTask( schema.getName() );
 
                         try
                         {
-                            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/"
-                                + schema.getName() + ".schema" ) );
+                            BufferedWriter buffWriter = new BufferedWriter( new FileWriter( exportDirectory + "/" //$NON-NLS-1$
+                                + schema.getName() + ".schema" ) ); //$NON-NLS-1$
                             buffWriter.write( OpenLdapSchemaFileExporter.toSourceCode( schema ) );
                             buffWriter.close();
                         }
                         catch ( IOException e )
                         {
-                            PluginUtils.logError( "An error occured when saving the schema " + schema.getName() + ".",
-                                e );
-                            ViewUtils.displayErrorMessageBox( "Error", "An error occured when saving the schema "
-                                + schema.getName() + "." );
+                            PluginUtils
+                                .logError(
+                                    NLS
+                                        .bind(
+                                            Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ), //$NON-NLS-1$
+                                    e );
+                            ViewUtils
+                                .displayErrorMessageBox(
+                                    Messages.getString( "ExportSchemasAsOpenLdapWizard.Error" ), NLS.bind( Messages.getString( "ExportSchemasAsOpenLdapWizard.ErrorSavingSchema" ), new String[] { schema.getName() } ) ); //$NON-NLS-1$
                         }
                         monitor.worked( 1 );
                     }

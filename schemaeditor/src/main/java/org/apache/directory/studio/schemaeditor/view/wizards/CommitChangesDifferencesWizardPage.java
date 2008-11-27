@@ -51,9 +51,9 @@ public class CommitChangesDifferencesWizardPage extends WizardPage
      */
     protected CommitChangesDifferencesWizardPage()
     {
-        super( "CommitChangesDifferencesWizardPage" );
-        setTitle( "Commit Changes" );
-        setDescription( "Displays the modifications made on the schema." );
+        super( "CommitChangesDifferencesWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "CommitChangesDifferencesWizardPage.CommitChanges" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "CommitChangesDifferencesWizardPage.DisplayModifications" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_COMMIT_CHANGES_WIZARD ) );
     }
 

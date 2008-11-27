@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -74,9 +75,9 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
      */
     protected NewObjectClassOptionalAttributesPage()
     {
-        super( "NewObjectClassOptionalAttributesPage" );
-        setTitle( "Optional Attribute Types" );
-        setDescription( "Please specify the optional attribute types for the object class." );
+        super( "NewObjectClassOptionalAttributesPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString("NewObjectClassOptionalAttributesPage.OptionalAttributeTypes") ); //$NON-NLS-1$
+        setDescription( Messages.getString("NewObjectClassOptionalAttributesPage.SpecifiyOptionalAttributeTypesForObjectClass") ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OBJECT_CLASS_NEW_WIZARD ) );
         optionalAttributeTypesList = new ArrayList<AttributeTypeImpl>();
     }
@@ -93,7 +94,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
 
         // Optional Attribute Types Group
         Group optionalAttributeTypesGroup = new Group( composite, SWT.NONE );
-        optionalAttributeTypesGroup.setText( "Optional Attribute Types" );
+        optionalAttributeTypesGroup.setText( Messages.getString("NewObjectClassOptionalAttributesPage.OptionalAttributeTypes") ); //$NON-NLS-1$
         optionalAttributeTypesGroup.setLayout( new GridLayout( 2, false ) );
         optionalAttributeTypesGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
@@ -127,11 +128,11 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
                     String[] names = at.getNamesRef();
                     if ( ( names != null ) && ( names.length > 0 ) )
                     {
-                        return ViewUtils.concateAliases( names ) + "  -  (" + at.getOid() + ")";
+                        return NLS.bind( Messages.getString("NewObjectClassOptionalAttributesPage.AliasOID"), new String[]{ViewUtils.concateAliases( names ), at.getOid()}); //$NON-NLS-1$
                     }
                     else
                     {
-                        return "(None)  -  (" + at.getOid() + ")";
+                        return NLS.bind( Messages.getString("NewObjectClassOptionalAttributesPage.NoneOID"), new String[]{ at.getOid()}); //$NON-NLS-1$
                     }
                 }
                 // Default
@@ -147,7 +148,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
             }
         } );
         optionalAttributeTypesAddButton = new Button( optionalAttributeTypesGroup, SWT.PUSH );
-        optionalAttributeTypesAddButton.setText( "Add..." );
+        optionalAttributeTypesAddButton.setText( Messages.getString("NewObjectClassOptionalAttributesPage.Add") ); //$NON-NLS-1$
         optionalAttributeTypesAddButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         optionalAttributeTypesAddButton.addSelectionListener( new SelectionAdapter()
         {
@@ -157,7 +158,7 @@ public class NewObjectClassOptionalAttributesPage extends WizardPage
             }
         } );
         optionalAttributeTypesRemoveButton = new Button( optionalAttributeTypesGroup, SWT.PUSH );
-        optionalAttributeTypesRemoveButton.setText( "Remove" );
+        optionalAttributeTypesRemoveButton.setText( Messages.getString("NewObjectClassOptionalAttributesPage.Remove") ); //$NON-NLS-1$
         optionalAttributeTypesRemoveButton.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         optionalAttributeTypesRemoveButton.addSelectionListener( new SelectionAdapter()
         {

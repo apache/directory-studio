@@ -84,9 +84,9 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
      */
     protected ExportSchemasAsOpenLdapWizardPage()
     {
-        super( "ExportSchemasAsOpenLdapWizardPage" );
-        setTitle( "Export schemas as OpenLdap files" );
-        setDescription( "Please select the schemas to export as OpenLdap files." );
+        super( "ExportSchemasAsOpenLdapWizardPage" ); //$NON-NLS-1$
+        setTitle( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.ExportSchemaAsOpenLDAP" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.PleaseSelectSchemaExportOpenLDAP" ) ); //$NON-NLS-1$
         setImageDescriptor( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_SCHEMAS_EXPORT_WIZARD ) );
         schemaHandler = Activator.getDefault().getSchemaHandler();
     }
@@ -103,13 +103,13 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
 
         // Schemas Group
         Group schemasGroup = new Group( composite, SWT.NONE );
-        schemasGroup.setText( "Schemas" );
+        schemasGroup.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.Schemas" ) ); //$NON-NLS-1$
         schemasGroup.setLayout( new GridLayout( 2, false ) );
         schemasGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Schemas TableViewer
         Label schemasLabel = new Label( schemasGroup, SWT.NONE );
-        schemasLabel.setText( "Select the schemas to export:" );
+        schemasLabel.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.SelectSchemasToExport" ) ); //$NON-NLS-1$
         schemasLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         schemasTableViewer = new CheckboxTableViewer( new Table( schemasGroup, SWT.BORDER | SWT.CHECK
             | SWT.FULL_SELECTION ) );
@@ -156,7 +156,7 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
             }
         } );
         schemasTableSelectAllButton = new Button( schemasGroup, SWT.PUSH );
-        schemasTableSelectAllButton.setText( "Select All" );
+        schemasTableSelectAllButton.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.SelectAll" ) ); //$NON-NLS-1$
         schemasTableSelectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemasTableSelectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -167,7 +167,7 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
             }
         } );
         schemasTableDeselectAllButton = new Button( schemasGroup, SWT.PUSH );
-        schemasTableDeselectAllButton.setText( "Deselect All" );
+        schemasTableDeselectAllButton.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.DeselectAll" ) ); //$NON-NLS-1$
         schemasTableDeselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         schemasTableDeselectAllButton.addSelectionListener( new SelectionAdapter()
         {
@@ -180,12 +180,12 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
 
         // Export Destination Group
         Group exportDestinationGroup = new Group( composite, SWT.NULL );
-        exportDestinationGroup.setText( "Export Destination" );
+        exportDestinationGroup.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.ExportDestination" ) ); //$NON-NLS-1$
         exportDestinationGroup.setLayout( new GridLayout( 3, false ) );
         exportDestinationGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         exportDirectoryLabel = new Label( exportDestinationGroup, SWT.NONE );
-        exportDirectoryLabel.setText( "Directory:" );
+        exportDirectoryLabel.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.Directory" ) ); //$NON-NLS-1$
         exportDirectoryText = new Text( exportDestinationGroup, SWT.BORDER );
         exportDirectoryText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         exportDirectoryText.addModifyListener( new ModifyListener()
@@ -196,7 +196,7 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
             }
         } );
         exportDirectoryButton = new Button( exportDestinationGroup, SWT.PUSH );
-        exportDirectoryButton.setText( "Browse..." );
+        exportDirectoryButton.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.Browse" ) ); //$NON-NLS-1$
         exportDirectoryButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -249,9 +249,9 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
     private void chooseExportDirectory()
     {
         DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell() );
-        dialog.setText( "Choose Folder" );
-        dialog.setMessage( "Select the folder in which export the files." );
-        if ( "".equals( exportDirectoryText.getText() ) )
+        dialog.setText( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.ChooseFolder" ) ); //$NON-NLS-1$
+        dialog.setMessage( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.SelectFolderToExport" ) ); //$NON-NLS-1$
+        if ( "".equals( exportDirectoryText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_OPENLDAP ) );
@@ -277,22 +277,22 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
         // Checking if a Schema Project is open
         if ( schemaHandler == null )
         {
-            displayErrorMessage( "A Schema Project must be open to export schemas as OpenLDAP files." );
+            displayErrorMessage( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.ErrorNoOpenSchemaProject" ) ); //$NON-NLS-1$
             return;
         }
 
         // Schemas table
         if ( schemasTableViewer.getCheckedElements().length == 0 )
         {
-            displayErrorMessage( "One or several schemas must be selected." );
+            displayErrorMessage( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.ErrorNoSchemaSelected" ) ); //$NON-NLS-1$
             return;
         }
 
         // Export Directory
         String directory = exportDirectoryText.getText();
-        if ( ( directory == null ) || ( directory.equals( "" ) ) )
+        if ( ( directory == null ) || ( directory.equals( "" ) ) ) //$NON-NLS-1$
         {
-            displayErrorMessage( "A directory must be selected." );
+            displayErrorMessage( Messages.getString( "ExportSchemasAsOpenLdapWizardPage.ErrorNotDirectorySelected" ) ); //$NON-NLS-1$
             return;
         }
         else
@@ -300,17 +300,20 @@ public class ExportSchemasAsOpenLdapWizardPage extends AbstractWizardPage
             File directoryFile = new File( directory );
             if ( !directoryFile.exists() )
             {
-                displayErrorMessage( "The selected directory does not exist." );
+                displayErrorMessage( Messages
+                    .getString( "ExportSchemasAsOpenLdapWizardPage.ErrorSelectedDirectoryNotExists" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.isDirectory() )
             {
-                displayErrorMessage( "The selected directory is not a directory." );
+                displayErrorMessage( Messages
+                    .getString( "ExportSchemasAsOpenLdapWizardPage.ErrorSelectedDirectoryNotDirectory" ) ); //$NON-NLS-1$
                 return;
             }
             else if ( !directoryFile.canWrite() )
             {
-                displayErrorMessage( "The selected directory is not writable." );
+                displayErrorMessage( Messages
+                    .getString( "ExportSchemasAsOpenLdapWizardPage.ErrorSelectedDirectoryNotWritable" ) ); //$NON-NLS-1$
                 return;
             }
         }
