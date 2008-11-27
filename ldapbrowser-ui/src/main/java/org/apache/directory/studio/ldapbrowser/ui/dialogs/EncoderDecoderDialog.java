@@ -39,8 +39,6 @@ import org.eclipse.swt.widgets.Text;
 public class EncoderDecoderDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "LDAP Encoder/Decoder";
-
     private Text iso88591Text;
 
     private Text iso88591HexText;
@@ -66,7 +64,7 @@ public class EncoderDecoderDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( DIALOG_TITLE );
+        shell.setText( Messages.getString( "EncoderDecoderDialog.LDAPEncodeDecoder" ) ); //$NON-NLS-1$
         //shell.setImage( BrowserUIPlugin.getDefault().getImage( BrowserUIConstants.IMG_IMAGEEDITOR ) );
     }
 
@@ -84,28 +82,28 @@ public class EncoderDecoderDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         Label iso8859Label = new Label( composite, SWT.NONE );
-        iso8859Label.setText( "ISO-8859-1:" );
+        iso8859Label.setText( Messages.getString( "EncoderDecoderDialog.ISOColon" ) ); //$NON-NLS-1$
         iso88591Text = new Text( composite, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL );
         GridData gd = new GridData( GridData.FILL_BOTH );
         iso88591Text.setLayoutData( gd );
 
         Label iso8859HexLabel = new Label( composite, SWT.NONE );
-        iso8859HexLabel.setText( "ISO-8859-1 Hex:" );
+        iso8859HexLabel.setText( Messages.getString( "EncoderDecoderDialog.ISOHex" ) ); //$NON-NLS-1$
         iso88591HexText = new Text( composite, SWT.BORDER | SWT.READ_ONLY );
         iso88591HexText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         Label utf8Label = new Label( composite, SWT.NONE );
-        utf8Label.setText( "UTF-8:" );
+        utf8Label.setText( Messages.getString( "EncoderDecoderDialog.UTF" ) ); //$NON-NLS-1$
         utf8Text = new Text( composite, SWT.BORDER );
         utf8Text.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         Label utf8HexLabel = new Label( composite, SWT.NONE );
-        utf8HexLabel.setText( "UTF-8 Hex:" );
+        utf8HexLabel.setText( Messages.getString( "EncoderDecoderDialog.UTFHex" ) ); //$NON-NLS-1$
         utf8HexText = new Text( composite, SWT.BORDER | SWT.READ_ONLY );
         utf8HexText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         Label base64Label = new Label( composite, SWT.NONE );
-        base64Label.setText( "BASE-64:" );
+        base64Label.setText( Messages.getString( "EncoderDecoderDialog.BASE" ) ); //$NON-NLS-1$
         base64Text = new Text( composite, SWT.BORDER );
         base64Text.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
@@ -124,16 +122,16 @@ public class EncoderDecoderDialog extends Dialog
                     try
                     {
                         String iso = iso88591Text.getText();
-                        byte[] isoHex = iso.getBytes( "ISO-8859-1" );
+                        byte[] isoHex = iso.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
                         byte[] utf8 = LdifUtils.utf8encode( iso );
-                        String utf8String = new String( utf8, "ISO-8859-1" );
+                        String utf8String = new String( utf8, "ISO-8859-1" ); //$NON-NLS-1$
                         String base64 = LdifUtils.base64encode( utf8 );
 
                         iso88591HexText.setText( LdifUtils.hexEncode( isoHex ) );
                         utf8Text.setText( utf8String );
                         utf8HexText.setText( LdifUtils.hexEncode( utf8 ) );
                         base64Text.setText( base64 );
-                        errorText.setText( "" );
+                        errorText.setText( "" ); //$NON-NLS-1$
                     }
                     catch ( Exception ex )
                     {
@@ -158,16 +156,16 @@ public class EncoderDecoderDialog extends Dialog
                     try
                     {
                         String utf8String = utf8Text.getText();
-                        byte[] utf8 = utf8String.getBytes( "ISO-8859-1" );
+                        byte[] utf8 = utf8String.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
                         String iso = LdifUtils.utf8decode( utf8 );
-                        byte[] isoHex = iso.getBytes( "ISO-8859-1" );
+                        byte[] isoHex = iso.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
                         String base64 = LdifUtils.base64encode( utf8 );
 
                         iso88591Text.setText( iso );
                         iso88591HexText.setText( LdifUtils.hexEncode( isoHex ) );
                         utf8HexText.setText( LdifUtils.hexEncode( utf8 ) );
                         base64Text.setText( base64 );
-                        errorText.setText( "" );
+                        errorText.setText( "" ); //$NON-NLS-1$
                     }
                     catch ( Exception ex )
                     {
@@ -193,15 +191,15 @@ public class EncoderDecoderDialog extends Dialog
                     {
                         String base64 = base64Text.getText();
                         byte[] utf8 = LdifUtils.base64decodeToByteArray( base64 );
-                        String utf8String = new String( utf8, "ISO-8859-1" );
+                        String utf8String = new String( utf8, "ISO-8859-1" ); //$NON-NLS-1$
                         String iso = LdifUtils.utf8decode( utf8 );
-                        byte[] isoHex = iso.getBytes( "ISO-8859-1" );
+                        byte[] isoHex = iso.getBytes( "ISO-8859-1" ); //$NON-NLS-1$
 
                         iso88591Text.setText( iso );
                         iso88591HexText.setText( LdifUtils.hexEncode( isoHex ) );
                         utf8Text.setText( utf8String );
                         utf8HexText.setText( LdifUtils.hexEncode( utf8 ) );
-                        errorText.setText( "" );
+                        errorText.setText( "" ); //$NON-NLS-1$
                     }
                     catch ( Exception ex )
                     {
