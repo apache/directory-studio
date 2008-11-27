@@ -51,7 +51,7 @@ public class NewBatchOperationAction extends BrowserAction
      */
     public String getText()
     {
-        return "New Batch Operation...";
+        return Messages.getString( "NewBatchOperationAction.NewBatch" ); //$NON-NLS-1$
     }
 
 

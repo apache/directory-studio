@@ -55,7 +55,7 @@ public class GotoDnAction extends LocateInDitAction
      */
     public String getText()
     {
-        return "Go to DN...";
+        return Messages.getString( "GotoDnAction.GotoDN" ); //$NON-NLS-1$
     }
 
 
@@ -98,7 +98,9 @@ public class GotoDnAction extends LocateInDitAction
 
             LdapDN dn = Utils.getLdapDn( getStringFromClipboard() );
 
-            DnDialog dialog = new DnDialog( getShell(), "Go to DN", "Please enter the DN you want to go to.", conn, dn );
+            DnDialog dialog = new DnDialog(
+                getShell(),
+                Messages.getString( "GotoDnAction.GotoDNAction" ), Messages.getString( "GotoDnAction.EnterDNAction" ), conn, dn ); //$NON-NLS-1$ //$NON-NLS-2$
             if ( dialog.open() == TextDialog.OK && dialog.getDn() != null )
             {
                 dn = dialog.getDn();

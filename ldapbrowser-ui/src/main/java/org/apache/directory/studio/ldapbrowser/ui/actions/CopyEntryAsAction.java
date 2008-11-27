@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRun
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -88,23 +89,23 @@ public abstract class CopyEntryAsAction extends BrowserAction
         this.mode = mode;
         if ( this.mode == MODE_DN_ONLY )
         {
-            this.appendix = " (DN only)";
+            this.appendix = Messages.getString( "CopyEntryAsAction.DNOnly" ); //$NON-NLS-1$
         }
         else if ( this.mode == MODE_RETURNING_ATTRIBUTES_ONLY )
         {
-            this.appendix = " (returning attributes only)";
+            this.appendix = Messages.getString( "CopyEntryAsAction.AttributesOnly" ); //$NON-NLS-1$
         }
         else if ( this.mode == MODE_INCLUDE_OPERATIONAL_ATTRIBUTES )
         {
-            this.appendix = " (include operational attributes)";
+            this.appendix = Messages.getString( "CopyEntryAsAction.OperationalAttributes" ); //$NON-NLS-1$
         }
         else if ( this.mode == MODE_NORMAL )
         {
-            this.appendix = " (all user attributes)";
+            this.appendix = Messages.getString( "CopyEntryAsAction.UserAttributes" ); //$NON-NLS-1$
         }
         else
         {
-            appendix = "";
+            appendix = ""; //$NON-NLS-1$
         }
     }
 
@@ -118,7 +119,9 @@ public abstract class CopyEntryAsAction extends BrowserAction
             && getSelectedSearches().length == 0 )
         {
             String text = ( getSelectedEntries().length + getSelectedSearchResults().length
-                + getSelectedBookmarks().length > 1 ? "Copy Entries as " + type : "Copy Entry as " + type )
+                + getSelectedBookmarks().length > 1 ? NLS.bind(
+                Messages.getString( "CopyEntryAsAction.CopyEntries" ), new String[] { type } ) //$NON-NLS-1$
+                : NLS.bind( Messages.getString( "CopyEntryAsAction.CopyEntry" ), new String[] { type } ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 + appendix;
             return text;
         }
@@ -126,13 +129,14 @@ public abstract class CopyEntryAsAction extends BrowserAction
             && getSelectedSearches().length == 1 && getSelectedSearches()[0].getSearchResults() != null
             && getSelectedSearches()[0].getSearchResults().length > 0 )
         {
-            String text = ( getSelectedSearches()[0].getSearchResults().length > 1 ? "Copy Search Results as " + type
-                : "Copy Search Result as " + type )
+            String text = ( getSelectedSearches()[0].getSearchResults().length > 1 ? NLS.bind( Messages
+                .getString( "CopyEntryAsAction.CopyResults" ), new String[] { type } )//$NON-NLS-1$
+                : NLS.bind( Messages.getString( "CopyEntryAsAction.CopyResult" ), new String[] { type } ) ) //$NON-NLS-1$
                 + appendix;
             return text;
         }
 
-        return "Copy Entry as " + type + appendix;
+        return NLS.bind( Messages.getString( "CopyEntryAsAction.CopyEntry" ), new String[] { type + appendix } ); //$NON-NLS-1$
     }
 
 

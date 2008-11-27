@@ -46,9 +46,9 @@ public class OpenSearchAction extends Action implements IWorkbenchWindowActionDe
      */
     public OpenSearchAction()
     {
-        super( "Search...", Action.AS_PUSH_BUTTON );
-        super.setText( "Search..." );
-        super.setToolTipText( "Search..." );
+        super( Messages.getString( "OpenSearchAction.Search" ), Action.AS_PUSH_BUTTON ); //$NON-NLS-1$
+        super.setText( Messages.getString( "OpenSearchAction.Search" ) ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "OpenSearchAction.Search" ) ); //$NON-NLS-1$
         super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_SEARCH ) );
         super.setEnabled( true );
     }

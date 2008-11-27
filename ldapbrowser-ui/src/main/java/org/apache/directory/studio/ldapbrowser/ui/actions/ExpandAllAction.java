@@ -46,7 +46,8 @@ public class ExpandAllAction extends Action
      */
     public ExpandAllAction( TreeViewer viewer )
     {
-        super( "Expand All", BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPANDALL ) );
+        super(
+            Messages.getString( "ExpandAllAction.ExpandAll" ), BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPANDALL ) ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 

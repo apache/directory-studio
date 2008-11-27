@@ -59,7 +59,7 @@ public class OpenEncoderDecoderDialogAction extends BrowserAction
      */
     public String getText()
     {
-        return "Open Encoder/Decoder";
+        return Messages.getString( "OpenEncoderDecoderDialogAction.OpenEndoderDecoder" ); //$NON-NLS-1$
     }
 
 

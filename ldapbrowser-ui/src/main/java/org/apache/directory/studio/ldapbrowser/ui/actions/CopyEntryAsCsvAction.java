@@ -65,7 +65,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
      */
     public CopyEntryAsCsvAction( int mode )
     {
-        super( "CSV", mode );
+        super( Messages.getString( "CopyEntryAsCsvAction.CSV" ), mode ); //$NON-NLS-1$
     }
 
 
@@ -108,7 +108,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     {
         if ( this.mode == MODE_TABLE )
         {
-            return "Copy Table";
+            return Messages.getString( "CopyEntryAsCsvAction.CopyTable" ); //$NON-NLS-1$
         }
 
         return super.getText();
@@ -241,7 +241,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
                 BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) )
         {
             text.append( quoteCharacter );
-            text.append( "DN" );
+            text.append( "DN" ); //$NON-NLS-1$
             text.append( quoteCharacter );
             text.append( attributeDelimiter );
         }

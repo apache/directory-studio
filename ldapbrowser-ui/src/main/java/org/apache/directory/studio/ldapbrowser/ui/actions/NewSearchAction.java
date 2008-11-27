@@ -61,7 +61,7 @@ public class NewSearchAction extends BrowserAction
      */
     public String getText()
     {
-        return "New Search...";
+        return Messages.getString( "NewSearchAction.NewSearch" ); //$NON-NLS-1$
     }
 
 
@@ -79,7 +79,7 @@ public class NewSearchAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.eclipse.search.ui.openSearchDialog";
+        return "org.eclipse.search.ui.openSearchDialog"; //$NON-NLS-1$
     }
 
 

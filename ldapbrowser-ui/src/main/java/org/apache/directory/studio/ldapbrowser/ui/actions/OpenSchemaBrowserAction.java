@@ -153,35 +153,35 @@ public class OpenSchemaBrowserAction extends BrowserAction
     {
         if ( mode == MODE_NONE )
         {
-            return "Open Schema Browser";
+            return Messages.getString( "OpenSchemaBrowserAction.OpenSchemaBrowser" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_OBJECTCLASS )
         {
-            return "Object Class Description";
+            return Messages.getString( "OpenSchemaBrowserAction.ObjectDescription" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_ATTRIBUTETYPE )
         {
-            return "Attribute Type Description";
+            return Messages.getString( "OpenSchemaBrowserAction.AttributeDescription" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_EQUALITYMATCHINGRULE )
         {
-            return "Equality Matching Rule Description";
+            return Messages.getString( "OpenSchemaBrowserAction.EqualityDescription" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_SUBSTRINGMATCHINGRULE )
         {
-            return "Substring Matching Rule Description";
+            return Messages.getString( "OpenSchemaBrowserAction.SubstringDescription" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_ORDERINGMATCHINGRULE )
         {
-            return "Ordering Matching Rule Description";
+            return Messages.getString( "OpenSchemaBrowserAction.OrderingDescription" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_SYNTAX )
         {
-            return "Syntax Description";
+            return Messages.getString( "OpenSchemaBrowserAction.SyntaxDescription" ); //$NON-NLS-1$
         }
         else
         {
-            return "Open Schema Browser";
+            return Messages.getString( "OpenSchemaBrowserAction.OpenSchemaBrowser" ); //$NON-NLS-1$
         }
     }
 

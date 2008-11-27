@@ -112,11 +112,11 @@ public class CopyAttributeDescriptionAction extends BrowserAction
     {
         if ( getAttributeNameSet().size() > 1 )
         {
-            return "Copy Attribute Descriptions";
+            return Messages.getString( "CopyAttributeDescriptionAction.CopyAttributeDescriptions" ); //$NON-NLS-1$
         }
         else
         {
-            return "Copy Attribute Description";
+            return Messages.getString( "CopyAttributeDescriptionAction.CopyAttributeDescription" ); //$NON-NLS-1$
         }
     }
 

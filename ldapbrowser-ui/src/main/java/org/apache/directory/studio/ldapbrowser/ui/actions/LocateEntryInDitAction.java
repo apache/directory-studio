@@ -52,17 +52,17 @@ public class LocateEntryInDitAction extends LocateInDitAction
         if ( getSelectedSearchResults().length == 1
             && getSelectedBookmarks().length + getSelectedEntries().length + getSelectedBrowserViewCategories().length == 0 )
         {
-            return "Open Search Result in DIT";
+            return Messages.getString( "LocateEntryInDitAction.openSearchResult" ); //$NON-NLS-1$
         }
         else if ( getSelectedBookmarks().length == 1
             && getSelectedSearchResults().length + getSelectedEntries().length
                 + getSelectedBrowserViewCategories().length == 0 )
         {
-            return "Open Bookmark in DIT";
+            return Messages.getString( "LocateEntryInDitAction.OpenBookmark" ); //$NON-NLS-1$
         }
         else
         {
-            return "Open Entry in DIT";
+            return Messages.getString( "LocateEntryInDitAction.OpenEntry" ); //$NON-NLS-1$
         }
     }
 
@@ -106,7 +106,8 @@ public class LocateEntryInDitAction extends LocateInDitAction
             && getSelectedSearchResults().length + getSelectedEntries().length
                 + getSelectedBrowserViewCategories().length == 0 )
         {
-            return new ConnectionAndDn( getSelectedBookmarks()[0].getBrowserConnection(), getSelectedBookmarks()[0].getDn() );
+            return new ConnectionAndDn( getSelectedBookmarks()[0].getBrowserConnection(), getSelectedBookmarks()[0]
+                .getDn() );
         }
         else
         {

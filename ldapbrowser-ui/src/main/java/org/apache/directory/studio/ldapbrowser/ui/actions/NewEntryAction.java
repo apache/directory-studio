@@ -104,7 +104,7 @@ public class NewEntryAction extends BrowserAction
     public String getText()
     {
         boolean isNewContextEntry = NewEntryWizard.isNewContextEntry( window.getSelectionService().getSelection() );
-        return isNewContextEntry ? "New Context Entry..." : "New Entry...";
+        return isNewContextEntry ? Messages.getString( "NewEntryAction.NewContextEntry" ) : Messages.getString( "NewEntryAction.NewEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

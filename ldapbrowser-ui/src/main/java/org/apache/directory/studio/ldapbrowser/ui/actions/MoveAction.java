@@ -67,11 +67,11 @@ public class MoveAction extends BrowserAction
 
         if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0 )
         {
-            return entries.length == 1 ? "Move Entry..." : "Move Entries...";
+            return entries.length == 1 ? Messages.getString( "MoveAction.MoveEntry" ) : Messages.getString( "MoveAction.MoveEntries" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            return "Move...";
+            return Messages.getString( "MoveAction.Move" ); //$NON-NLS-1$
         }
     }
 

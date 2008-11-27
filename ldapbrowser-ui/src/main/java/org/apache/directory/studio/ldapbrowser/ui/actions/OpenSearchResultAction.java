@@ -84,7 +84,7 @@ public class OpenSearchResultAction extends BrowserAction
      */
     public String getText()
     {
-        return "Open Search Result";
+        return Messages.getString( "OpenSearchResultAction.OpenResult" ); //$NON-NLS-1$
     }
 
 

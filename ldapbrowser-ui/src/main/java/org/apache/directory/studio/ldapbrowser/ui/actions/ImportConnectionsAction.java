@@ -69,7 +69,7 @@ public class ImportConnectionsAction extends BrowserAction
      */
     public String getText()
     {
-        return "Import Connections...";
+        return Messages.getString( "ImportConnectionsAction.ImportConnections" ); //$NON-NLS-1$
     }
 
 

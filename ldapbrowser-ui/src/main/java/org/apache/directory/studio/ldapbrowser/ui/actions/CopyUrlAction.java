@@ -97,7 +97,7 @@ public class CopyUrlAction extends BrowserAction
      */
     public String getText()
     {
-        return "Copy URL";
+        return Messages.getString( "CopyUrlAction.CopyURL" ); //$NON-NLS-1$
     }
 
 

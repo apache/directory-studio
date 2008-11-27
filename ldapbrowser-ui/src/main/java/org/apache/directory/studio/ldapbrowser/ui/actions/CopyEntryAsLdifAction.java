@@ -58,7 +58,7 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
      */
     public CopyEntryAsLdifAction( int mode )
     {
-        super( "LDIF", mode );
+        super( Messages.getString( "CopyEntryAsLdifAction.LDIF" ), mode ); //$NON-NLS-1$
     }
 
 
@@ -164,7 +164,8 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
      */
     protected void serializeValue( IValue value, StringBuffer text )
     {
-        text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( Utils.getLdifFormatParameters() ) );
+        text
+            .append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( Utils.getLdifFormatParameters() ) );
     }
 
 

@@ -56,7 +56,7 @@ public class LocateDnInDitAction extends LocateInDitAction
      */
     public String getText()
     {
-        return "Locate DN in DIT";
+        return Messages.getString( "LocateDnInDitAction.LocateDN" ); //$NON-NLS-1$
     }
 
 
@@ -85,8 +85,8 @@ public class LocateDnInDitAction extends LocateInDitAction
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
                 if ( value.isString() && LdapDN.isValid( value.getStringValue() ) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN( value
-                        .getStringValue() ) );
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN(
+                        value.getStringValue() ) );
                 }
             }
             catch ( InvalidNameException e )
@@ -102,8 +102,8 @@ public class LocateDnInDitAction extends LocateInDitAction
                 IValue value = getSelectedValues()[0];
                 if ( value.isString() && LdapDN.isValid( value.getStringValue() ) )
                 {
-                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN( value
-                        .getStringValue() ) );
+                    return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new LdapDN(
+                        value.getStringValue() ) );
                 }
             }
             catch ( InvalidNameException e )

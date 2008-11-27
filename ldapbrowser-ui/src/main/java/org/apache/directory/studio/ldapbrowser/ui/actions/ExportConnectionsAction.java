@@ -76,7 +76,7 @@ public class ExportConnectionsAction extends BrowserAction
      */
     public String getText()
     {
-        return "Export Connections...";
+        return Messages.getString( "ExportConnectionsAction.ExportConnections" ); //$NON-NLS-1$
     }
 
 

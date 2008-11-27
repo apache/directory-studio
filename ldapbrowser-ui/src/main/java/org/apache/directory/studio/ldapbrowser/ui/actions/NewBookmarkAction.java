@@ -68,7 +68,7 @@ public class NewBookmarkAction extends BrowserAction
      */
     public String getText()
     {
-        return "New Bookmark...";
+        return Messages.getString( "NewBookmarkAction.NewBookmark" ); //$NON-NLS-1$
     }
 
 

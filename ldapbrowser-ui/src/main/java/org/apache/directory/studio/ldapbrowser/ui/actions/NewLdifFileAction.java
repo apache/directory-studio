@@ -74,7 +74,7 @@ public class NewLdifFileAction extends BrowserAction
      */
     public String getText()
     {
-        return "New LDIF File";
+        return Messages.getString( "NewLdifFileAction.NewLDIF" ); //$NON-NLS-1$
     }
 
 

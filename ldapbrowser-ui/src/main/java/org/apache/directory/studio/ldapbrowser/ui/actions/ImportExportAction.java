@@ -102,31 +102,31 @@ public class ImportExportAction extends BrowserAction
     {
         if ( this.type == TYPE_IMPORT_LDIF )
         {
-            return "LDIF Import...";
+            return Messages.getString( "ImportExportAction.LDIFImport" ); //$NON-NLS-1$
         }
         else if ( this.type == TYPE_EXPORT_LDIF )
         {
-            return "LDIF Export...";
+            return Messages.getString( "ImportExportAction.LDIFExport" ); //$NON-NLS-1$
         }
         else if ( this.type == TYPE_EXPORT_CSV )
         {
-            return "CSV Export...";
+            return Messages.getString( "ImportExportAction.CVSExport" ); //$NON-NLS-1$
         }
         else if ( this.type == TYPE_EXPORT_EXCEL )
         {
-            return "Excel Export...";
+            return Messages.getString( "ImportExportAction.ExcelExport" ); //$NON-NLS-1$
         }
         else if ( this.type == TYPE_IMPORT_DSML )
         {
-            return "DSML Import...";
+            return Messages.getString( "ImportExportAction.DSMLImport" ); //$NON-NLS-1$
         }
         else if ( this.type == TYPE_EXPORT_DSML )
         {
-            return "DSML Export...";
+            return Messages.getString( "ImportExportAction.DSMLExport" ); //$NON-NLS-1$
         }
         else
         {
-            return "Export...";
+            return Messages.getString( "ImportExportAction.Export" ); //$NON-NLS-1$
         }
     }
 
@@ -297,8 +297,8 @@ public class ImportExportAction extends BrowserAction
             && getSelectedConnections()[0].getJNDIConnectionWrapper().isConnected() )
         {
             Connection connection = getSelectedConnections()[0];
-            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnection(
-                connection );
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnection( connection );
             return browserConnection;
         }
         else

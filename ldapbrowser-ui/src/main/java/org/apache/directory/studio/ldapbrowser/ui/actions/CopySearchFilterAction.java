@@ -89,23 +89,23 @@ public class CopySearchFilterAction extends BrowserAction
     {
         if ( mode == MODE_EQUALS )
         {
-            return "Copy Search Filter";
+            return Messages.getString( "CopySearchFilterAction.CopySearchFilter" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_NOT )
         {
-            return "Copy NOT Search Filter";
+            return Messages.getString( "CopySearchFilterAction.CopyNotSearchFilter" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_AND )
         {
-            return "Copy AND Search Filter";
+            return Messages.getString( "CopySearchFilterAction.CopyAndSearchFilter" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_OR )
         {
-            return "Copy OR Search Filter";
+            return Messages.getString( "CopySearchFilterAction.CopyOrSearchFilter" ); //$NON-NLS-1$
         }
         else
         {
-            return "Copy Search Filter";
+            return Messages.getString( "CopySearchFilterAction.CopySearchFilter" ); //$NON-NLS-1$
         }
     }
 
@@ -187,15 +187,15 @@ public class CopySearchFilterAction extends BrowserAction
         }
         else if ( mode == MODE_NOT )
         {
-            filter = getFilter( "!" );
+            filter = getFilter( "!" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_AND )
         {
-            filter = getFilter( "&" );
+            filter = getFilter( "&" ); //$NON-NLS-1$
         }
         else if ( mode == MODE_OR )
         {
-            filter = getFilter( "|" );
+            filter = getFilter( "|" ); //$NON-NLS-1$
         }
 
         if ( filter != null && filter.length() > 0 )
@@ -247,13 +247,13 @@ public class CopySearchFilterAction extends BrowserAction
         StringBuffer filter = new StringBuffer();
         if ( filterType != null )
         {
-            filter.append( "(" );
+            filter.append( "(" ); //$NON-NLS-1$
             filter.append( filterType );
             for ( Iterator filterIterator = filterSet.iterator(); filterIterator.hasNext(); )
             {
                 filter.append( filterIterator.next() );
             }
-            filter.append( ")" );
+            filter.append( ")" ); //$NON-NLS-1$
         }
         else if ( filterSet.size() == 1 )
         {

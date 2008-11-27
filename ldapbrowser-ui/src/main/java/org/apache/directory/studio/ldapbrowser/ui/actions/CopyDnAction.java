@@ -92,7 +92,7 @@ public class CopyDnAction extends BrowserAction
      */
     public String getText()
     {
-        return "Copy DN";
+        return Messages.getString( "CopyDnAction.CopyDN" ); //$NON-NLS-1$
     }
 
 

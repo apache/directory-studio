@@ -92,23 +92,23 @@ public class CopyValueAction extends BrowserAction
     {
         if ( mode == MODE_UTF8 )
         {
-            return getValueSet().size() > 1 ? "Copy Values (UTF-8)" : "Copy Value (UTF-8)";
+            return getValueSet().size() > 1 ? Messages.getString( "CopyValueAction.CopyValuesUTF" ) : Messages.getString( "CopyValueAction.CopyValueUTF" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( mode == MODE_BASE64 )
         {
-            return getValueSet().size() > 1 ? "Copy Values (BASE-64)" : "Copy Value (BASE-64)";
+            return getValueSet().size() > 1 ? Messages.getString( "CopyValueAction.CopyValuesBase" ) : Messages.getString( "CopyValueAction.CopyValueBase" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( mode == MODE_HEX )
         {
-            return getValueSet().size() > 1 ? "Copy Values (HEX)" : "Copy Value (HEX)";
+            return getValueSet().size() > 1 ? Messages.getString( "CopyValueAction.VopyValuesHex" ) : Messages.getString( "CopyValueAction.CopyValueHex" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( mode == MODE_LDIF )
         {
-            return getValueSet().size() > 1 ? "Copy Name-Value-Pairs as LDIF" : "Copy Name-Value-Pair as LDIF";
+            return getValueSet().size() > 1 ? Messages.getString( "CopyValueAction.CopyValuePairs" ) : Messages.getString( "CopyValueAction.CopyValuePair" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            return "Copy Value";
+            return Messages.getString( "CopyValueAction.CopyValue" ); //$NON-NLS-1$
         }
     }
 
@@ -193,7 +193,8 @@ public class CopyValueAction extends BrowserAction
                 }
                 else if ( mode == MODE_LDIF )
                 {
-                    text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString( Utils.getLdifFormatParameters() ) );
+                    text.append( ModelConverter.valueToLdifAttrValLine( value ).toFormattedString(
+                        Utils.getLdifFormatParameters() ) );
                 }
 
             }
