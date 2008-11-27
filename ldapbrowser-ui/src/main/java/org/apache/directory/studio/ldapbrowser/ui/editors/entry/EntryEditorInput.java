@@ -55,10 +55,10 @@ public class EntryEditorInput implements IEditorInput
 
     /** The entry input */
     private IEntry entry;
-    
+
     /** The search result input */
     private ISearchResult searchResult;
-    
+
     /** The bookmark input */
     private IBookmark bookmark;
 
@@ -135,7 +135,7 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return "Entry Editor";
+        return Messages.getString( "EntryEditorInput.EntryEditor" ); //$NON-NLS-1$
     }
 
 
@@ -144,8 +144,9 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
+
 
     /**
      * This implementation always return null.

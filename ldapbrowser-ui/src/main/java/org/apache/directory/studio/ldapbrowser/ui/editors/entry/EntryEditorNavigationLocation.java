@@ -31,6 +31,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
@@ -69,33 +70,39 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             {
                 if ( eei.getEntryInput() instanceof IRootDSE )
                 {
-                    return "Root DSE";
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
                 }
                 else
                 {
-                    return "Entry " + eei.getEntryInput().getDn().getUpName();
+                    return NLS
+                        .bind(
+                            Messages.getString( "EntryEditorNavigationLocation.Entry" ), new String[] { eei.getEntryInput().getDn().getUpName() } ); //$NON-NLS-1$
                 }
             }
             else if ( eei.getSearchResultInput() != null )
             {
                 if ( eei.getSearchResultInput() instanceof IRootDSE )
                 {
-                    return "Root DSE";
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
                 }
                 else
                 {
-                    return "Search Result " + eei.getSearchResultInput().getDn().getUpName();
+                    return NLS
+                        .bind(
+                            Messages.getString( "EntryEditorNavigationLocation.SearchResult" ), new String[] { eei.getSearchResultInput().getDn().getUpName() } ); //$NON-NLS-1$
                 }
             }
             else if ( eei.getBookmarkInput() != null )
             {
                 if ( eei.getBookmarkInput() instanceof IRootDSE )
                 {
-                    return "Root DSE";
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
                 }
                 else
                 {
-                    return "Bookmark " + eei.getBookmarkInput().getDn().getUpName();
+                    return NLS
+                        .bind(
+                            Messages.getString( "EntryEditorNavigationLocation.Bookmark" ), new String[] { eei.getBookmarkInput().getDn().getUpName() } ); //$NON-NLS-1$
                 }
             }
         }
@@ -114,24 +121,25 @@ public class EntryEditorNavigationLocation extends NavigationLocation
             if ( eei.getEntryInput() != null )
             {
                 IEntry entry = eei.getEntryInput();
-                memento.putString( "TYPE", "IEntry" );
-                memento.putString( "DN", entry.getDn().getUpName() );
-                memento.putString( "CONNECTION", entry.getBrowserConnection().getConnection().getId() );
+                memento.putString( "TYPE", "IEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
+                memento.putString( "DN", entry.getDn().getUpName() ); //$NON-NLS-1$
+                memento.putString( "CONNECTION", entry.getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
             }
             else if ( eei.getSearchResultInput() != null )
             {
                 ISearchResult searchResult = eei.getSearchResultInput();
-                memento.putString( "TYPE", "ISearchResult" );
-                memento.putString( "DN", searchResult.getDn().getUpName() );
-                memento.putString( "SEARCH", searchResult.getSearch().getName() );
-                memento.putString( "CONNECTION", searchResult.getSearch().getBrowserConnection().getConnection().getId() );
+                memento.putString( "TYPE", "ISearchResult" ); //$NON-NLS-1$ //$NON-NLS-2$
+                memento.putString( "DN", searchResult.getDn().getUpName() ); //$NON-NLS-1$
+                memento.putString( "SEARCH", searchResult.getSearch().getName() ); //$NON-NLS-1$
+                memento.putString(
+                    "CONNECTION", searchResult.getSearch().getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
             }
             else if ( eei.getBookmarkInput() != null )
             {
                 IBookmark bookmark = eei.getBookmarkInput();
-                memento.putString( "TYPE", "IBookmark" );
-                memento.putString( "BOOKMARK", bookmark.getName() );
-                memento.putString( "CONNECTION", bookmark.getBrowserConnection().getConnection().getId() );
+                memento.putString( "TYPE", "IBookmark" ); //$NON-NLS-1$ //$NON-NLS-2$
+                memento.putString( "BOOKMARK", bookmark.getName() ); //$NON-NLS-1$
+                memento.putString( "CONNECTION", bookmark.getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
             }
         }
 
@@ -145,22 +153,22 @@ public class EntryEditorNavigationLocation extends NavigationLocation
     {
         try
         {
-            String type = memento.getString( "TYPE" );
-            if ( "IEntry".equals( type ) )
+            String type = memento.getString( "TYPE" ); //$NON-NLS-1$
+            if ( "IEntry".equals( type ) ) //$NON-NLS-1$
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                    memento.getString( "CONNECTION" ) );
-                LdapDN dn = new LdapDN( memento.getString( "DN" ) );
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                    .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
+                LdapDN dn = new LdapDN( memento.getString( "DN" ) ); //$NON-NLS-1$
                 IEntry entry = connection.getEntryFromCache( dn );
                 super.setInput( new EntryEditorInput( entry ) );
             }
-            else if ( "ISearchResult".equals( type ) )
+            else if ( "ISearchResult".equals( type ) ) //$NON-NLS-1$
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                    memento.getString( "CONNECTION" ) );
-                ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                    .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
+                ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) ); //$NON-NLS-1$
                 ISearchResult[] searchResults = search.getSearchResults();
-                LdapDN dn = new LdapDN( memento.getString( "DN" ) );
+                LdapDN dn = new LdapDN( memento.getString( "DN" ) ); //$NON-NLS-1$
                 for ( int i = 0; i < searchResults.length; i++ )
                 {
                     if ( dn.equals( searchResults[i].getDn() ) )
@@ -170,11 +178,11 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                     }
                 }
             }
-            else if ( "IBookmark".equals( type ) )
+            else if ( "IBookmark".equals( type ) ) //$NON-NLS-1$
             {
-                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                    memento.getString( "CONNECTION" ) );
-                IBookmark bookmark = connection.getBookmarkManager().getBookmark( memento.getString( "BOOKMARK" ) );
+                IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
+                    .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
+                IBookmark bookmark = connection.getBookmarkManager().getBookmark( memento.getString( "BOOKMARK" ) ); //$NON-NLS-1$
                 super.setInput( new EntryEditorInput( bookmark ) );
             }
         }
@@ -266,7 +274,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
      */
     public String toString()
     {
-        return "" + getEntryEditorInput().getInput();
+        return "" + getEntryEditorInput().getInput(); //$NON-NLS-1$
     }
 
 }

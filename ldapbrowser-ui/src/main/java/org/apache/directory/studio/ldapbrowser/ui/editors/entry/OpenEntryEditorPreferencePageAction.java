@@ -42,8 +42,8 @@ public class OpenEntryEditorPreferencePageAction extends Action
      */
     public OpenEntryEditorPreferencePageAction()
     {
-        setText( "Preferences..." );
-        setToolTipText( "Preferences..." );
+        setText( Messages.getString( "OpenEntryEditorPreferencePageAction.Preferences" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenEntryEditorPreferencePageAction.PreferencesToolTip" ) ); //$NON-NLS-1$
         setEnabled( true );
     }
 

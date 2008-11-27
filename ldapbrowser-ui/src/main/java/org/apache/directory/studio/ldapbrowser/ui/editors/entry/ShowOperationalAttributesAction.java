@@ -40,7 +40,7 @@ public class ShowOperationalAttributesAction extends Action
      */
     public ShowOperationalAttributesAction()
     {
-        super( "Show Operational Attributes", AS_CHECK_BOX );
+        super( Messages.getString( "ShowOperationalAttributesAction.ShowOperationalAttributes" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setEnabled( true );
         setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
