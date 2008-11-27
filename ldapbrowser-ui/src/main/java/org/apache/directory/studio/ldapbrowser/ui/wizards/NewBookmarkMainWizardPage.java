@@ -67,8 +67,8 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
     public NewBookmarkMainWizardPage( String pageName, IEntry entry, NewBookmarkWizard wizard )
     {
         super( pageName );
-        setTitle( "New Bookmark" );
-        setDescription( "Please enter the bookmark parameters." );
+        setTitle( Messages.getString( "NewBookmarkMainWizardPage.NewBookmark" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewBookmarkMainWizardPage.EnterNewBookmark" ) ); //$NON-NLS-1$
         // setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
         setPageComplete( false );
 
@@ -93,7 +93,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
     {
         if ( bookmarkNameText != null && !bookmarkNameText.isDisposed() )
         {
-            setPageComplete( bookmarkEntryWidget.getDn() != null && !"".equals( bookmarkNameText.getText() ) );
+            setPageComplete( bookmarkEntryWidget.getDn() != null && !"".equals( bookmarkNameText.getText() ) ); //$NON-NLS-1$
         }
     }
 
@@ -123,7 +123,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
 
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
 
-        BaseWidgetUtils.createLabel( innerComposite, "Bookmark Name:", 1 );
+        BaseWidgetUtils.createLabel( innerComposite, Messages.getString( "NewBookmarkMainWizardPage.BookmarkName" ), 1 ); //$NON-NLS-1$
         bookmarkNameText = BaseWidgetUtils.createText( innerComposite, entry.getDn().getUpName(), 2 );
         bookmarkNameText.setFocus();
         bookmarkNameText.addModifyListener( new ModifyListener()
@@ -134,7 +134,7 @@ public class NewBookmarkMainWizardPage extends WizardPage implements WidgetModif
             }
         } );
 
-        BaseWidgetUtils.createLabel( innerComposite, "Bookmark DN:", 1 );
+        BaseWidgetUtils.createLabel( innerComposite, Messages.getString( "NewBookmarkMainWizardPage.BookmarkDN" ), 1 ); //$NON-NLS-1$
         bookmarkEntryWidget = new EntryWidget();
         bookmarkEntryWidget.addWidgetModifyListener( this );
         bookmarkEntryWidget.createWidget( innerComposite );

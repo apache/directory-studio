@@ -47,8 +47,8 @@ public class BatchOperationModifyWizardPage extends WizardPage implements Widget
     public BatchOperationModifyWizardPage( String pageName, BatchOperationWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Define Modification" );
-        super.setDescription( "Please define the modifcations." );
+        super.setTitle( Messages.getString( "BatchOperationModifyWizardPage.DefineModification" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "BatchOperationModifyWizardPage.PleaseDefineModifications" ) ); //$NON-NLS-1$
         // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ENTRY_WIZARD));
         super.setPageComplete( false );
 
@@ -59,7 +59,7 @@ public class BatchOperationModifyWizardPage extends WizardPage implements Widget
     private void validate()
     {
 
-        String dummyLdif = "dn: cn=dummy" + BrowserCoreConstants.LINE_SEPARATOR + modWidget.getLdifFragment();
+        String dummyLdif = "dn: cn=dummy" + BrowserCoreConstants.LINE_SEPARATOR + modWidget.getLdifFragment(); //$NON-NLS-1$
         LdifFile model = new LdifParser().parse( dummyLdif );
         LdifContainer[] containers = model.getContainers();
         if ( containers.length == 0 )
@@ -105,6 +105,7 @@ public class BatchOperationModifyWizardPage extends WizardPage implements Widget
     {
         return modWidget.getLdifFragment();
     }
+
 
     public void widgetModified( WidgetModifyEvent event )
     {

@@ -54,7 +54,7 @@ public class ExportSearchLogsWizard extends ExportBaseWizard
      */
     public ExportSearchLogsWizard()
     {
-        super( "Export Search Logs" );
+        super( Messages.getString( "ExportSearchLogsWizard.ExportSearchLogs" ) ); //$NON-NLS-1$
     }
 
 
@@ -100,8 +100,8 @@ public class ExportSearchLogsWizard extends ExportBaseWizard
             catch ( IOException e )
             {
                 ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
-                        "Can't export search logs", e ) );
+                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                        .getString( "ExportSearchLogsWizard.CantExportSearchLogs" ), e ) ); //$NON-NLS-1$
             }
         }
 

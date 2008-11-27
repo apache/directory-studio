@@ -67,7 +67,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
      */
     public NewBookmarkWizard()
     {
-        setWindowTitle( "New Bookmark" );
+        setWindowTitle( Messages.getString( "NewBookmarkWizard.NewBookmark" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( false );
     }
 
@@ -131,7 +131,7 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
         {
             selectedEntry = ( ( BrowserEntryPage ) o ).getEntry();
         }
-        
+
         else
         {
             selectedEntry = null;
@@ -170,9 +170,9 @@ public class NewBookmarkWizard extends Wizard implements INewWizard
          */
         protected DummyWizardPage()
         {
-            super( "" );
-            setTitle( "No entry selected" );
-            setDescription( "In order to use the bookmark creation wizard please select an entry or connection." );
+            super( "" ); //$NON-NLS-1$
+            setTitle( Messages.getString( "NewBookmarkWizard.NoEntrySelected" ) ); //$NON-NLS-1$
+            setDescription( Messages.getString( "NewBookmarkWizard.InOrderToUse" ) ); //$NON-NLS-1$
             // setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
             setPageComplete( true );
         }

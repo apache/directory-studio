@@ -43,6 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -77,8 +78,8 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
     public BatchOperationApplyOnWizardPage( String pageName, BatchOperationWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Select Application Entries" );
-        super.setDescription( "Please select the entries where the batch operation should be applied to." );
+        super.setTitle( Messages.getString( "BatchOperationApplyOnWizardPage.SelectApplicationEntries" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "BatchOperationApplyOnWizardPage.PleaseSelectEntries" ) ); //$NON-NLS-1$
         super.setPageComplete( false );
 
         this.prepareCurrentSelection();
@@ -103,7 +104,8 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
 
         Composite applyOnGroup = composite;
 
-        this.currentSelectionButton = BaseWidgetUtils.createRadiobutton( applyOnGroup, "Current Selection:", 1 );
+        this.currentSelectionButton = BaseWidgetUtils.createRadiobutton( applyOnGroup, Messages
+            .getString( "BatchOperationApplyOnWizardPage.CurrentSelection" ), 1 ); //$NON-NLS-1$
         this.currentSelectionButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -128,7 +130,8 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
         BaseWidgetUtils.createSpacer( applyOnGroup, 1 );
         BaseWidgetUtils.createSpacer( applyOnGroup, 1 );
 
-        this.searchButton = BaseWidgetUtils.createRadiobutton( applyOnGroup, "Results of following Search:", 1 );
+        this.searchButton = BaseWidgetUtils.createRadiobutton( applyOnGroup, Messages
+            .getString( "BatchOperationApplyOnWizardPage.ResultsOfSearch" ), 1 ); //$NON-NLS-1$
         this.searchButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -271,7 +274,10 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
             if ( !internalDnSet.isEmpty() )
             {
                 dnsList.add( internalDnSet.toArray( new LdapDN[internalDnSet.size()] ) );
-                textList.add( "DNs of selected Attributes (" + internalDnSet.size() + " Entries)" );
+                textList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "BatchOperationApplyOnWizardPage.DNsOfSelectedAttributes" ), new int[] { internalDnSet.size() } ) ); //$NON-NLS-1$
             }
         }
         if ( searches.length == 1 && searches[0].getSearchResults() != null )
@@ -284,8 +290,10 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
             }
 
             dnsList.add( internalDnSet.toArray( new LdapDN[internalDnSet.size()] ) );
-            textList.add( "Search Results of '" + searches[0].getName() + "' (" + searches[0].getSearchResults().length
-                + " Entries)" );
+            textList
+                .add( NLS
+                    .bind(
+                        Messages.getString( "BatchOperationApplyOnWizardPage.SearchResultOf" ), new Object[] { searches[0].getName(), searches[0].getSearchResults().length } ) ); //$NON-NLS-1$
         }
         if ( entries.length + searchResults.length + bookmarks.length > 0 )
         {
@@ -304,7 +312,10 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
             }
 
             dnsList.add( internalDnSet.toArray( new LdapDN[internalDnSet.size()] ) );
-            textList.add( "Selected Entries (" + internalDnSet.size() + " Entries)" );
+            textList
+                .add( NLS
+                    .bind(
+                        Messages.getString( "BatchOperationApplyOnWizardPage.SelectedEntries" ), new int[] { internalDnSet.size() } ) ); //$NON-NLS-1$
         }
 
         this.initCurrentSelectionTexts = textList.toArray( new String[textList.size()] );

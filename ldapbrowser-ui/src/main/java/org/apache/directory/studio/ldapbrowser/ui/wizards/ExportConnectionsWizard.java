@@ -61,7 +61,7 @@ public class ExportConnectionsWizard extends ExportBaseWizard
      */
     public ExportConnectionsWizard()
     {
-        super( "Connections Export" );
+        super( Messages.getString( "ExportConnectionsWizard.ConnectionsExport" ) ); //$NON-NLS-1$
     }
 
 
@@ -114,7 +114,7 @@ public class ExportConnectionsWizard extends ExportBaseWizard
             // Creating the ZipOutputStream
             ZipOutputStream zos = new ZipOutputStream( new FileOutputStream( new File( exportFileName ) ) );
             // Writing the Connections file.
-            zos.putNextEntry( new ZipEntry( "connections.xml" ) );
+            zos.putNextEntry( new ZipEntry( Messages.getString( "ExportConnectionsWizard.1" ) ) ); //$NON-NLS-1$
             Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
             Set<ConnectionParameter> connectionParameters = new HashSet<ConnectionParameter>();
             for ( Connection connection : connections )
@@ -124,7 +124,7 @@ public class ExportConnectionsWizard extends ExportBaseWizard
             ConnectionIO.save( connectionParameters, zos );
             zos.closeEntry();
             // Writing the Connection Folders file.
-            zos.putNextEntry( new ZipEntry( "connectionFolders.xml" ) );
+            zos.putNextEntry( new ZipEntry( Messages.getString( "ExportConnectionsWizard.2" ) ) ); //$NON-NLS-1$
             ConnectionFolder[] connectionFolders = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
                 .getConnectionFolders();
             Set<ConnectionFolder> connectionFoldersSet = new HashSet<ConnectionFolder>();
@@ -135,7 +135,7 @@ public class ExportConnectionsWizard extends ExportBaseWizard
             ConnectionIO.saveConnectionFolders( connectionFoldersSet, zos );
             zos.closeEntry();
             // Writing the Browser Connections file.
-            zos.putNextEntry( new ZipEntry( "browserconnections.xml" ) );
+            zos.putNextEntry( new ZipEntry( Messages.getString( "ExportConnectionsWizard.3" ) ) ); //$NON-NLS-1$
             IBrowserConnection[] browserConnections = BrowserCorePlugin.getDefault().getConnectionManager()
                 .getBrowserConnections();
             Map<String, IBrowserConnection> browserConnectionsMap = new HashMap<String, IBrowserConnection>();

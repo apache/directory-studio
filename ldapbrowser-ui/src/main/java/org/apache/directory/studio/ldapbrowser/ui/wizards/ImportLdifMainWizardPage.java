@@ -49,15 +49,15 @@ public class ImportLdifMainWizardPage extends WizardPage
 
     /** The continue on error flag key */
     public static final String CONTINUE_ON_ERROR_DIALOGSETTING_KEY = ImportLdifMainWizardPage.class.getName()
-        + ".continueOnError";
+        + ".continueOnError"; //$NON-NLS-1$
 
     /** The update if entry exists flag key */
     public static final String UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY = ImportLdifMainWizardPage.class.getName()
-        + ".updateIfEntryExists";
+        + ".updateIfEntryExists"; //$NON-NLS-1$
 
     /** The valid extension. */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ldif", "*.*" };
+        { "*.ldif", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The wizard. */
     private ImportLdifWizard wizard;
@@ -102,8 +102,8 @@ public class ImportLdifMainWizardPage extends WizardPage
     public ImportLdifMainWizardPage( String pageName, ImportLdifWizard wizard )
     {
         super( pageName );
-        setTitle( "LDIF Import" );
-        setDescription( "Please select a connection and the LDIF to import" );
+        setTitle( Messages.getString( "ImportLdifMainWizardPage.LDIFImport" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ImportLdifMainWizardPage.PleaseSelectConnectionAndLDIF" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_LDIF_WIZARD ) );
         setPageComplete( false );
 
@@ -120,19 +120,19 @@ public class ImportLdifMainWizardPage extends WizardPage
         boolean ok = true;
 
         File ldifFile = new File( ldifFileBrowserWidget.getFilename() );
-        if ( "".equals( ldifFileBrowserWidget.getFilename() ) )
+        if ( "".equals( ldifFileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
             ok = false;
         }
         else if ( !ldifFile.isFile() || !ldifFile.exists() )
         {
-            setErrorMessage( "Selected LDIF file doesn't exist." );
+            setErrorMessage( Messages.getString( "ImportLdifMainWizardPage.ErrorSelectedLDIFNotExist" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( !ldifFile.canRead() )
         {
-            setErrorMessage( "Selected LDIF file is not readable." );
+            setErrorMessage( Messages.getString( "ImportLdifMainWizardPage.ErrorSelectedLDIFNotReadable" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( enableLoggingButton.getSelection() )
@@ -142,32 +142,34 @@ public class ImportLdifMainWizardPage extends WizardPage
 
             if ( logFile.equals( ldifFile ) )
             {
-                setErrorMessage( "LDIF file and Logfile must not be equal." );
+                setErrorMessage( Messages.getString( "ImportLdifMainWizardPage.ErrorLDIFAndLogEqual" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( logFile.isDirectory() )
             {
-                setErrorMessage( "Selected logfile is no file." );
+                setErrorMessage( Messages.getString( "ImportLdifMainWizardPage.ErrorSelectedLogFileNotFile" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( logFile.exists() && !overwriteLogfileButton.getSelection() )
             {
-                setErrorMessage( "Selected logfile already exists. Select option 'Overwrite existing logfile' if you want to overwrite the logfile." );
+                setErrorMessage( Messages.getString( "ImportLdifMainWizardPage.ErrorSelectedLogFileExist" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( logFile.exists() && !logFile.canWrite() )
             {
-                setErrorMessage( "Selected logfile is not writeable." );
+                setErrorMessage( Messages.getString( "ImportLdifMainWizardPage.ErrorSelectedLogFileNotWritable" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( logFile.getParentFile() == null )
             {
-                setErrorMessage( "Selected logfile directory is not writeable." );
+                setErrorMessage( Messages
+                    .getString( "ImportLdifMainWizardPage.ErrorSelectedLogFileDirectoryNotWritable" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( !logFile.exists() && ( logFileDirectory == null || !logFileDirectory.canWrite() ) )
             {
-                setErrorMessage( "Selected logfile directory is not writeable." );
+                setErrorMessage( Messages
+                    .getString( "ImportLdifMainWizardPage.ErrorSelectedLogFileDirectoryNotWritable" ) ); //$NON-NLS-1$
                 ok = false;
             }
         }
@@ -194,8 +196,9 @@ public class ImportLdifMainWizardPage extends WizardPage
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         // LDIF file
-        BaseWidgetUtils.createLabel( composite, "LDIF File:", 1 );
-        ldifFileBrowserWidget = new FileBrowserWidget( "Select LDIF File", EXTENSIONS, FileBrowserWidget.TYPE_OPEN );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ImportLdifMainWizardPage.LDIFFile" ), 1 ); //$NON-NLS-1$
+        ldifFileBrowserWidget = new FileBrowserWidget(
+            Messages.getString( "ImportLdifMainWizardPage.SelectLDIFFile" ), EXTENSIONS, FileBrowserWidget.TYPE_OPEN ); //$NON-NLS-1$
         ldifFileBrowserWidget.createWidget( composite );
         ldifFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -204,14 +207,14 @@ public class ImportLdifMainWizardPage extends WizardPage
                 wizard.setLdifFilename( ldifFileBrowserWidget.getFilename() );
                 if ( useDefaultLogfileButton.getSelection() )
                 {
-                    logFileBrowserWidget.setFilename( ldifFileBrowserWidget.getFilename() + ".log" );
+                    logFileBrowserWidget.setFilename( ldifFileBrowserWidget.getFilename() + ".log" ); //$NON-NLS-1$
                 }
                 validate();
             }
         } );
 
         // Connection
-        BaseWidgetUtils.createLabel( composite, "Import into:", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ImportLdifMainWizardPage.ImportTo" ), 1 ); //$NON-NLS-1$
         browserConnectionWidget = new BrowserConnectionWidget( wizard.getImportConnection() );
         browserConnectionWidget.createWidget( composite );
         browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -225,10 +228,12 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         // Logging
         Composite loggingOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        Group loggingGroup = BaseWidgetUtils.createGroup( loggingOuterComposite, "Logging", 1 );
+        Group loggingGroup = BaseWidgetUtils.createGroup( loggingOuterComposite, Messages
+            .getString( "ImportLdifMainWizardPage.Logging" ), 1 ); //$NON-NLS-1$
         Composite loggingContainer = BaseWidgetUtils.createColumnContainer( loggingGroup, 3, 1 );
 
-        enableLoggingButton = BaseWidgetUtils.createCheckbox( loggingContainer, "Enable logging", 3 );
+        enableLoggingButton = BaseWidgetUtils.createCheckbox( loggingContainer, Messages
+            .getString( "ImportLdifMainWizardPage.EnableLogging" ), 3 ); //$NON-NLS-1$
         enableLoggingButton.setSelection( true );
         wizard.setEnableLogging( enableLoggingButton.getSelection() );
         enableLoggingButton.addSelectionListener( new SelectionAdapter()
@@ -246,14 +251,15 @@ public class ImportLdifMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( loggingContainer, 1 );
-        useDefaultLogfileButton = BaseWidgetUtils.createRadiobutton( loggingContainer, "Use default logfile", 2 );
+        useDefaultLogfileButton = BaseWidgetUtils.createRadiobutton( loggingContainer, Messages
+            .getString( "ImportLdifMainWizardPage.UseDefaultLogFile" ), 2 ); //$NON-NLS-1$
         useDefaultLogfileButton.setSelection( true );
         useDefaultLogfileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
                 String temp = customLogfileName;
-                logFileBrowserWidget.setFilename( ldifFileBrowserWidget.getFilename() + ".log" );
+                logFileBrowserWidget.setFilename( ldifFileBrowserWidget.getFilename() + ".log" ); //$NON-NLS-1$
                 logFileBrowserWidget.setEnabled( false );
                 customLogfileName = temp;
                 validate();
@@ -261,20 +267,22 @@ public class ImportLdifMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( loggingContainer, 1 );
-        useCustomLogfileButton = BaseWidgetUtils.createRadiobutton( loggingContainer, "Use custom logfile", 2 );
+        useCustomLogfileButton = BaseWidgetUtils.createRadiobutton( loggingContainer, Messages
+            .getString( "ImportLdifMainWizardPage.UseCustomLogFile" ), 2 ); //$NON-NLS-1$
         useCustomLogfileButton.setSelection( false );
         useCustomLogfileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
-                logFileBrowserWidget.setFilename( customLogfileName != null ? customLogfileName : "" );
+                logFileBrowserWidget.setFilename( customLogfileName != null ? customLogfileName : "" ); //$NON-NLS-1$
                 logFileBrowserWidget.setEnabled( true );
                 validate();
             }
         } );
 
         BaseWidgetUtils.createRadioIndent( loggingContainer, 1 );
-        logFileBrowserWidget = new FileBrowserWidget( "Select Logfile", null, FileBrowserWidget.TYPE_SAVE );
+        logFileBrowserWidget = new FileBrowserWidget(
+            Messages.getString( "ImportLdifMainWizardPage.SelectLogFile" ), null, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         logFileBrowserWidget.createWidget( loggingContainer );
         logFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -288,7 +296,8 @@ public class ImportLdifMainWizardPage extends WizardPage
         logFileBrowserWidget.setEnabled( false );
 
         BaseWidgetUtils.createRadioIndent( loggingContainer, 1 );
-        overwriteLogfileButton = BaseWidgetUtils.createCheckbox( loggingContainer, "Overwrite existing logfile", 2 );
+        overwriteLogfileButton = BaseWidgetUtils.createCheckbox( loggingContainer, Messages
+            .getString( "ImportLdifMainWizardPage.OverwriteExistingLogFile" ), 2 ); //$NON-NLS-1$
         overwriteLogfileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
@@ -299,14 +308,15 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         // Options
         Composite optionsOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        Group optionsGroup = BaseWidgetUtils.createGroup( optionsOuterComposite, "Options", 1 );
+        Group optionsGroup = BaseWidgetUtils.createGroup( optionsOuterComposite, Messages
+            .getString( "ImportLdifMainWizardPage.Options" ), 1 ); //$NON-NLS-1$
         Composite optionsContainer = BaseWidgetUtils.createColumnContainer( optionsGroup, 3, 1 );
 
-        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsContainer, "Update existing entries",
+        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsContainer, Messages
+            .getString( "ImportLdifMainWizardPage.UpdateExistingEntires" ), //$NON-NLS-1$
             3 );
         updateIfEntryExistsButton
-            .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
-                + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF record." );
+            .setToolTipText( Messages.getString( "ImportLdifMainWizardPage.OptionsAppliesForLdif" ) ); //$NON-NLS-1$
         if ( BrowserUIPlugin.getDefault().getDialogSettings().get( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY ) == null )
         {
             BrowserUIPlugin.getDefault().getDialogSettings().put( UPDATE_IF_ENTRY_EXISTS_DIALOGSETTING_KEY, false );
@@ -323,7 +333,8 @@ public class ImportLdifMainWizardPage extends WizardPage
             }
         } );
 
-        continueOnErrorButton = BaseWidgetUtils.createCheckbox( optionsContainer, "Continue on error", 3 );
+        continueOnErrorButton = BaseWidgetUtils.createCheckbox( optionsContainer, Messages
+            .getString( "ImportLdifMainWizardPage.ContinueOnError" ), 3 ); //$NON-NLS-1$
         if ( BrowserUIPlugin.getDefault().getDialogSettings().get( CONTINUE_ON_ERROR_DIALOGSETTING_KEY ) == null )
         {
             BrowserUIPlugin.getDefault().getDialogSettings().put( CONTINUE_ON_ERROR_DIALOGSETTING_KEY, false );

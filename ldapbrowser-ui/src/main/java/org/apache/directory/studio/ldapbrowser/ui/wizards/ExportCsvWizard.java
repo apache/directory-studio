@@ -48,7 +48,7 @@ public class ExportCsvWizard extends ExportBaseWizard
      */
     public ExportCsvWizard()
     {
-        super( "CSV Export" );
+        super( Messages.getString( "ExportCsvWizard.CSVExport" ) ); //$NON-NLS-1$
     }
 
 
@@ -84,9 +84,9 @@ public class ExportCsvWizard extends ExportBaseWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_csvexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -99,8 +99,8 @@ public class ExportCsvWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportCsvJob ecj = new ExportCsvJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
-            exportDn );
+        ExportCsvJob ecj = new ExportCsvJob( exportFilename, search.getBrowserConnection(),
+            search.getSearchParameter(), exportDn );
         ecj.execute();
 
         return true;

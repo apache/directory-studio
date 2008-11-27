@@ -49,9 +49,8 @@ public class BatchOperationFinishWizardPage extends WizardPage
     public BatchOperationFinishWizardPage( String pageName, BatchOperationWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Select Execution Method" );
-        super
-            .setDescription( "Please select if the batch operation should be executed online or a LDIF should be generated." );
+        super.setTitle( Messages.getString( "BatchOperationFinishWizardPage.SelectExecutionMethod" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "BatchOperationFinishWizardPage.PleaseSelectBatchOperation" ) ); //$NON-NLS-1$
         super.setPageComplete( false );
     }
 
@@ -70,7 +69,8 @@ public class BatchOperationFinishWizardPage extends WizardPage
         composite.setLayout( gl );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        generateLdifButton = BaseWidgetUtils.createRadiobutton( composite, "Generate LDIF", 1 );
+        generateLdifButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+            .getString( "BatchOperationFinishWizardPage.GenerateLDIF" ), 1 ); //$NON-NLS-1$
         generateLdifButton.setSelection( true );
         generateLdifButton.addSelectionListener( new SelectionAdapter()
         {
@@ -80,7 +80,8 @@ public class BatchOperationFinishWizardPage extends WizardPage
             }
         } );
 
-        executeOnlineButton = BaseWidgetUtils.createRadiobutton( composite, "Excecute online", 1 );
+        executeOnlineButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+            .getString( "BatchOperationFinishWizardPage.ExecuteOnline" ), 1 ); //$NON-NLS-1$
         executeOnlineButton.setEnabled( false );
         executeOnlineButton.addSelectionListener( new SelectionAdapter()
         {

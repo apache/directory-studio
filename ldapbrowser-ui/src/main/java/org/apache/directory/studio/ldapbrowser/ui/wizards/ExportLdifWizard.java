@@ -48,7 +48,7 @@ public class ExportLdifWizard extends ExportBaseWizard
      */
     public ExportLdifWizard()
     {
-        super( "LDIF Export" );
+        super( Messages.getString( "ExportLdifWizard.LDIFExport" ) ); //$NON-NLS-1$
     }
 
 
@@ -84,9 +84,9 @@ public class ExportLdifWizard extends ExportBaseWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -98,7 +98,8 @@ public class ExportLdifWizard extends ExportBaseWizard
         fromPage.saveDialogSettings();
         toPage.saveDialogSettings();
 
-        ExportLdifJob elj = new ExportLdifJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter() );
+        ExportLdifJob elj = new ExportLdifJob( exportFilename, search.getBrowserConnection(), search
+            .getSearchParameter() );
         elj.execute();
 
         return true;

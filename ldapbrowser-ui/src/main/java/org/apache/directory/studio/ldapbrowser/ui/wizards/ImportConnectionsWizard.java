@@ -64,7 +64,7 @@ public class ImportConnectionsWizard extends ExportBaseWizard
      */
     public ImportConnectionsWizard()
     {
-        super( "Connections Export" );
+        super( Messages.getString( "ImportConnectionsWizard.ConnectionsExport" ) ); //$NON-NLS-1$
     }
 
 
@@ -117,7 +117,7 @@ public class ImportConnectionsWizard extends ExportBaseWizard
             ZipFile importFile = new ZipFile( new File( importFileName ) );
 
             // Loading the Connections
-            ZipEntry connectionsEntry = importFile.getEntry( "connections.xml" );
+            ZipEntry connectionsEntry = importFile.getEntry( "connections.xml" ); //$NON-NLS-1$
             if ( connectionsEntry != null )
             {
                 InputStream connectionsInputStream = importFile.getInputStream( connectionsEntry );
@@ -130,7 +130,7 @@ public class ImportConnectionsWizard extends ExportBaseWizard
             }
 
             // Loading the ConnectionFolders
-            ZipEntry connectionFoldersEntry = importFile.getEntry( "connectionFolders.xml" );
+            ZipEntry connectionFoldersEntry = importFile.getEntry( "connectionFolders.xml" ); //$NON-NLS-1$
             ConnectionFolder rootConnectionFolder = null;
             if ( connectionFoldersEntry != null )
             {
@@ -141,7 +141,7 @@ public class ImportConnectionsWizard extends ExportBaseWizard
                     .loadConnectionFolders( connectionFoldersInputStream );
                 for ( ConnectionFolder connectionFolder : connectionFoldersSet )
                 {
-                    if ( !"0".equals( connectionFolder.getId() ) )
+                    if ( !"0".equals( connectionFolder.getId() ) ) //$NON-NLS-1$
                     {
                         connectionFolderManager.addConnectionFolder( connectionFolder );
                     }
@@ -178,7 +178,7 @@ public class ImportConnectionsWizard extends ExportBaseWizard
             }
 
             // Loading the BrowserConnections
-            ZipEntry browserConnectionsEntry = importFile.getEntry( "browserconnections.xml" );
+            ZipEntry browserConnectionsEntry = importFile.getEntry( "browserconnections.xml" ); //$NON-NLS-1$
             if ( browserConnectionsEntry != null )
             {
                 InputStream browserConnectionsInputStream = importFile.getInputStream( browserConnectionsEntry );

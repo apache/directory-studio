@@ -77,7 +77,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
 
     public BatchOperationWizard()
     {
-        super.setWindowTitle( "Batch Operation" );
+        super.setWindowTitle( Messages.getString( "BatchOperationWizard.BatchOperation" ) ); //$NON-NLS-1$
         super.setNeedsProgressMonitor( true );
     }
 
@@ -148,29 +148,28 @@ public class BatchOperationWizard extends Wizard implements INewWizard
     public void createPageControls( Composite pageContainer )
     {
         super.createPageControls( pageContainer );
-        
+
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( applyOnPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( ldifPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( modifyPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( finishPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_batchoperation_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-
 
     class DummyWizardPage extends WizardPage
     {
 
         protected DummyWizardPage()
         {
-            super( "" );
-            super.setTitle( "No connection selected or connection is closed" );
-            super.setDescription( "In order to use the batch operation wizard please select a opened connection." );
+            super( "" ); //$NON-NLS-1$
+            super.setTitle( Messages.getString( "BatchOperationWizard.NoConnectionSelected" ) ); //$NON-NLS-1$
+            super.setDescription( Messages.getString( "BatchOperationWizard.SelectOPenCollection" ) ); //$NON-NLS-1$
             // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ENTRY_WIZARD));
             super.setPageComplete( true );
         }
@@ -279,7 +278,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             this.applyOnPage.saveDialogSettings();
 
             // get LDIF
-            String ldifFragment = "";
+            String ldifFragment = ""; //$NON-NLS-1$
             if ( typePage.getOperationType() == BatchOperationTypeWizardPage.OPERATION_TYPE_CREATE_LDIF )
             {
                 ldifFragment = this.ldifPage.getLdifFragment();
@@ -290,7 +289,7 @@ public class BatchOperationWizard extends Wizard implements INewWizard
             }
             if ( typePage.getOperationType() == BatchOperationTypeWizardPage.OPERATION_TYPE_DELETE )
             {
-                ldifFragment = "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR;
+                ldifFragment = "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
             }
 
             // get DNs
@@ -324,13 +323,13 @@ public class BatchOperationWizard extends Wizard implements INewWizard
                 StringBuffer ldif = new StringBuffer();
                 for ( int i = 0; i < dns.length; i++ )
                 {
-                    ldif.append( "dn: " );
+                    ldif.append( "dn: " ); //$NON-NLS-1$
                     ldif.append( dns[i].getUpName() );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                     ldif.append( ldifFragment );
                     ldif.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
-                
+
                 if ( finishPage.getExecutionMethod() == BatchOperationFinishWizardPage.EXECUTION_METHOD_LDIF )
                 {
 

@@ -44,7 +44,8 @@ public class BatchOperationTypeWizardPage extends WizardPage
     public final static int OPERATION_TYPE_CREATE_LDIF = 2;
 
     private final static String[] OPERATION_TYPES =
-        { "Modify entries", "Delete entries", "Execute LDIF changetype fragment on each entry" };
+        {
+            Messages.getString( "BatchOperationTypeWizardPage.ModifyEntries" ), Messages.getString( "BatchOperationTypeWizardPage.DeleteEntries" ), Messages.getString( "BatchOperationTypeWizardPage.ExecuteLDIFChangetype" ) }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     private Button[] operationTypeButtons;
 
@@ -52,8 +53,8 @@ public class BatchOperationTypeWizardPage extends WizardPage
     public BatchOperationTypeWizardPage( String pageName, BatchOperationWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Select Operation Type" );
-        super.setDescription( "Please select the batch operation type." );
+        super.setTitle( Messages.getString( "BatchOperationTypeWizardPage.SelectOperationType" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "BatchOperationTypeWizardPage.PleaseSelectBatch" ) ); //$NON-NLS-1$
         super.setPageComplete( false );
     }
 

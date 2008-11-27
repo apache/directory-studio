@@ -43,7 +43,7 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
 
     /** The extensions used by LDIF files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ldif", "*.*" };
+        { "*.ldif", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**
@@ -55,8 +55,7 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
     public ExportLdifToWizardPage( String pageName, ExportBaseWizard wizard )
     {
         super( pageName, wizard );
-        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_EXPORT_LDIF_WIZARD ) );
+        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_LDIF_WIZARD ) );
     }
 
 
@@ -71,14 +70,14 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
         BaseWidgetUtils.createSpacer( composite, 3 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        String text = "See <a>Text Formats</a> for LDIF file format preferences.";
+        String text = Messages.getString( "ExportLdifToWizardPage.SeeTextFormats" ); //$NON-NLS-1$
         Link link = BaseWidgetUtils.createLink( composite, text, 2 );
         link.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS, null,
-                    TextFormatsPreferencePage.LDIF_TAB ).open();
+                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS,
+                    null, TextFormatsPreferencePage.LDIF_TAB ).open();
             }
         } );
     }
@@ -98,7 +97,7 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
      */
     protected String getFileType()
     {
-        return "LDIF";
+        return Messages.getString( "ExportLdifToWizardPage.LDIF" ); //$NON-NLS-1$
     }
 
 }

@@ -43,7 +43,7 @@ public class ExportExcelToWizardPage extends ExportBaseToPage
 
     /** The extensions used by Excel files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.xls", "*.*" };
+        { "*.xls", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**
@@ -70,21 +70,20 @@ public class ExportExcelToWizardPage extends ExportBaseToPage
         BaseWidgetUtils.createSpacer( composite, 3 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        String text = "See <a>Text Formats</a> for Excel file format preferences.";
+        String text = Messages.getString( "ExportExcelToWizardPage.SeeTextFormats" ); //$NON-NLS-1$
         Link link = BaseWidgetUtils.createLink( composite, text, 2 );
         link.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS, null,
-                    TextFormatsPreferencePage.XLS_TAB ).open();
+                PreferencesUtil.createPreferenceDialogOn( getShell(), BrowserUIConstants.PREFERENCEPAGEID_TEXTFORMATS,
+                    null, TextFormatsPreferencePage.XLS_TAB ).open();
             }
         } );
 
         BaseWidgetUtils.createSpacer( composite, 3 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        BaseWidgetUtils.createWrappedLabel( composite,
-            "Warning: Excel export is memory intensive! Maximum number of exportable entries is limited to 65000!", 2 );
+        BaseWidgetUtils.createWrappedLabel( composite, Messages.getString( "ExportExcelToWizardPage.WarningExcel" ), 2 ); //$NON-NLS-1$
     }
 
 
@@ -102,7 +101,7 @@ public class ExportExcelToWizardPage extends ExportBaseToPage
      */
     protected String getFileType()
     {
-        return "Excel";
+        return Messages.getString( "ExportExcelToWizardPage.Excel" ); //$NON-NLS-1$
     }
 
 }

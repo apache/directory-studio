@@ -38,7 +38,7 @@ public class ExportLogsToWizardPage extends ExportBaseToPage
 
     /** The extensions used by LDIF files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ldif", "*.*" };
+        { "*.ldif", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**
@@ -78,7 +78,7 @@ public class ExportLogsToWizardPage extends ExportBaseToPage
      */
     protected String getFileType()
     {
-        return "Log";
+        return Messages.getString( "ExportLogsToWizardPage.Log" ); //$NON-NLS-1$
     }
 
 }

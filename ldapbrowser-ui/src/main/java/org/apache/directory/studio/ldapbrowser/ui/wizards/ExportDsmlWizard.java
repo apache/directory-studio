@@ -38,7 +38,7 @@ public class ExportDsmlWizard extends ExportBaseWizard
 {
 
     /** The title. */
-    public static final String WIZARD_TITLE = "DSML Export";
+    public static final String WIZARD_TITLE = Messages.getString( "ExportDsmlWizard.DSMLExport" ); //$NON-NLS-1$
 
     /** The from page, used to select the exported data. */
     private ExportDsmlFromWizardPage fromPage;
@@ -100,9 +100,9 @@ public class ExportDsmlWizard extends ExportBaseWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

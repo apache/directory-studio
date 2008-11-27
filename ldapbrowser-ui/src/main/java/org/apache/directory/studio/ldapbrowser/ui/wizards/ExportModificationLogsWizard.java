@@ -54,7 +54,7 @@ public class ExportModificationLogsWizard extends ExportBaseWizard
      */
     public ExportModificationLogsWizard()
     {
-        super( "Export Modification Logs" );
+        super( Messages.getString( "ExportModificationLogsWizard.ExportModificationLogs" ) ); //$NON-NLS-1$
     }
 
 
@@ -101,8 +101,8 @@ public class ExportModificationLogsWizard extends ExportBaseWizard
             catch ( IOException e )
             {
                 ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
-                        "Can't export modification logs", e ) );
+                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                        .getString( "ExportModificationLogsWizard.CantExportModificationLogs" ), e ) ); //$NON-NLS-1$
             }
         }
 

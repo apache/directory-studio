@@ -47,9 +47,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ImportDsmlWizard extends Wizard implements IImportWizard
 {
-    /** Page Title */
-    public static final String WIZARD_TITLE = "DSML Import";
-
     /** The connection attached to the import */
     private IBrowserConnection importConnection;
 
@@ -72,7 +69,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     public ImportDsmlWizard()
     {
         super();
-        setWindowTitle( WIZARD_TITLE );
+        setWindowTitle( Messages.getString( "ImportDsmlWizard.DSMLImport" ) ); //$NON-NLS-1$
     }
 
 
@@ -83,7 +80,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
      */
     public ImportDsmlWizard( IBrowserConnection selectedConnection )
     {
-        setWindowTitle( WIZARD_TITLE );
+        setWindowTitle( Messages.getString( "ImportDsmlWizard.DSMLImport" ) ); //$NON-NLS-1$
         this.importConnection = selectedConnection;
     }
 
@@ -105,7 +102,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
     {
         mainPage.saveDialogSettings();
 
-        if ( dsmlFilename != null && !"".equals( dsmlFilename ) )
+        if ( dsmlFilename != null && !"".equals( dsmlFilename ) ) //$NON-NLS-1$
         {
             File dsmlFile = new File( dsmlFilename );
 
@@ -181,7 +178,7 @@ public class ImportDsmlWizard extends Wizard implements IImportWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlimport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_dsmlimport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

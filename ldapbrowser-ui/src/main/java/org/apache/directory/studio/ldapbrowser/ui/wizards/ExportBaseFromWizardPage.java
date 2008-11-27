@@ -55,8 +55,8 @@ public abstract class ExportBaseFromWizardPage extends WizardPage implements Wid
     public ExportBaseFromWizardPage( String pageName, ExportBaseWizard wizard, SearchPageWrapper spw )
     {
         super( pageName );
-        setTitle( "Data to Export" );
-        setDescription( "Please define search parameters for the export." );
+        setTitle( Messages.getString( "ExportBaseFromWizardPage.DataToExport" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ExportBaseFromWizardPage.PleaseDefineSearchParameters" ) ); //$NON-NLS-1$
         setPageComplete( true );
 
         this.wizard = wizard;

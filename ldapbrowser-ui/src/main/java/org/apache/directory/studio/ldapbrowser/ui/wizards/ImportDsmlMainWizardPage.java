@@ -51,7 +51,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
 
     /** The extensions used by DSML files*/
     private static final String[] EXTENSIONS = new String[]
-        { "*.xml", "*.*" };
+        { "*.xml", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The dsml file browser widget. */
     private FileBrowserWidget dsmlFileBrowserWidget;
@@ -90,7 +90,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
     {
         super( pageName );
         setTitle( ImportDsmlWizard.WIZARD_TITLE );
-        setDescription( "Please select a connection and the DSML file to import" );
+        setDescription( Messages.getString( "ImportDsmlMainWizardPage.SelectConnectionAndDSMLFile" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_DSML_WIZARD ) );
         setPageComplete( false );
         this.wizard = wizard;
@@ -105,8 +105,9 @@ public class ImportDsmlMainWizardPage extends WizardPage
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         // DSML file
-        BaseWidgetUtils.createLabel( composite, "DSML File:", 1 );
-        dsmlFileBrowserWidget = new FileBrowserWidget( "Select a DSML File", EXTENSIONS, FileBrowserWidget.TYPE_OPEN );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ImportDsmlMainWizardPage.DSMLFile" ), 1 ); //$NON-NLS-1$
+        dsmlFileBrowserWidget = new FileBrowserWidget(
+            Messages.getString( "ImportDsmlMainWizardPage.SelectDSMLFile" ), EXTENSIONS, FileBrowserWidget.TYPE_OPEN ); //$NON-NLS-1$
         dsmlFileBrowserWidget.createWidget( composite );
         dsmlFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -115,14 +116,14 @@ public class ImportDsmlMainWizardPage extends WizardPage
                 wizard.setDsmlFilename( dsmlFileBrowserWidget.getFilename() );
                 if ( useDefaultResponseFileButton.getSelection() )
                 {
-                    responseFileBrowserWidget.setFilename( dsmlFileBrowserWidget.getFilename() + ".response.xml" );
+                    responseFileBrowserWidget.setFilename( dsmlFileBrowserWidget.getFilename() + ".response.xml" ); //$NON-NLS-1$
                 }
                 validate();
             }
         } );
 
         // Connection
-        BaseWidgetUtils.createLabel( composite, "Import into:", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ImportDsmlMainWizardPage.ImportTo" ), 1 ); //$NON-NLS-1$
         browserConnectionWidget = new BrowserConnectionWidget( wizard.getImportConnection() );
         browserConnectionWidget.createWidget( composite );
         browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -136,10 +137,12 @@ public class ImportDsmlMainWizardPage extends WizardPage
 
         // Save Response
         Composite responseOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        Group responseGroup = BaseWidgetUtils.createGroup( responseOuterComposite, "Response", 1 );
+        Group responseGroup = BaseWidgetUtils.createGroup( responseOuterComposite, Messages
+            .getString( "ImportDsmlMainWizardPage.Response" ), 1 ); //$NON-NLS-1$
         Composite responseContainer = BaseWidgetUtils.createColumnContainer( responseGroup, 3, 1 );
 
-        saveResponseButton = BaseWidgetUtils.createCheckbox( responseContainer, "Save response", 3 );
+        saveResponseButton = BaseWidgetUtils.createCheckbox( responseContainer, Messages
+            .getString( "ImportDsmlMainWizardPage.SaveResponse" ), 3 ); //$NON-NLS-1$
         saveResponseButton.setSelection( true );
         wizard.setSaveResponse( saveResponseButton.getSelection() );
         saveResponseButton.addSelectionListener( new SelectionAdapter()
@@ -157,15 +160,15 @@ public class ImportDsmlMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        useDefaultResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer,
-            "Use default response file", 2 );
+        useDefaultResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer, Messages
+            .getString( "ImportDsmlMainWizardPage.UseDefaultResponse" ), 2 ); //$NON-NLS-1$
         useDefaultResponseFileButton.setSelection( true );
         useDefaultResponseFileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
                 String temp = customResponseFileName;
-                responseFileBrowserWidget.setFilename( dsmlFileBrowserWidget.getFilename() + ".response.xml" );
+                responseFileBrowserWidget.setFilename( dsmlFileBrowserWidget.getFilename() + ".response.xml" ); //$NON-NLS-1$
                 responseFileBrowserWidget.setEnabled( false );
                 customResponseFileName = temp;
                 validate();
@@ -173,21 +176,23 @@ public class ImportDsmlMainWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        useCustomResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer, "Use custom response file",
+        useCustomResponseFileButton = BaseWidgetUtils.createRadiobutton( responseContainer, Messages
+            .getString( "ImportDsmlMainWizardPage.UseCustomResponse" ), //$NON-NLS-1$
             2 );
         useCustomResponseFileButton.setSelection( false );
         useCustomResponseFileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
-                responseFileBrowserWidget.setFilename( customResponseFileName != null ? customResponseFileName : "" );
+                responseFileBrowserWidget.setFilename( customResponseFileName != null ? customResponseFileName : "" ); //$NON-NLS-1$
                 responseFileBrowserWidget.setEnabled( true );
                 validate();
             }
         } );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        responseFileBrowserWidget = new FileBrowserWidget( "Select save file", null, FileBrowserWidget.TYPE_SAVE );
+        responseFileBrowserWidget = new FileBrowserWidget( Messages
+            .getString( "ImportDsmlMainWizardPage.SelectSaveFile" ), null, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         responseFileBrowserWidget.createWidget( responseContainer );
         responseFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -201,8 +206,8 @@ public class ImportDsmlMainWizardPage extends WizardPage
         responseFileBrowserWidget.setEnabled( false );
 
         BaseWidgetUtils.createRadioIndent( responseContainer, 1 );
-        overwriteResponseFileButton = BaseWidgetUtils.createCheckbox( responseContainer,
-            "Overwrite existing response file", 2 );
+        overwriteResponseFileButton = BaseWidgetUtils.createCheckbox( responseContainer, Messages
+            .getString( "ImportDsmlMainWizardPage.OverwriteExistingResponseFile" ), 2 ); //$NON-NLS-1$
         overwriteResponseFileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
@@ -223,19 +228,19 @@ public class ImportDsmlMainWizardPage extends WizardPage
         boolean ok = true;
 
         File dsmlFile = new File( dsmlFileBrowserWidget.getFilename() );
-        if ( "".equals( dsmlFileBrowserWidget.getFilename() ) )
+        if ( "".equals( dsmlFileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
             ok = false;
         }
         else if ( !dsmlFile.isFile() || !dsmlFile.exists() )
         {
-            setErrorMessage( "Selected DSML file doesn't exist." );
+            setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.ErrorSelectedDSMLNotExist" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( !dsmlFile.canRead() )
         {
-            setErrorMessage( "Selected DSML file is not readable." );
+            setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.ErrorSelectedDSMLNotReadable" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( saveResponseButton.getSelection() )
@@ -245,39 +250,41 @@ public class ImportDsmlMainWizardPage extends WizardPage
 
             if ( responseFile.equals( dsmlFile ) )
             {
-                setErrorMessage( "DSML file and response file must not be equal." );
+                setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.ErrorDSMLFileAndResponseFileEqual" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( responseFile.isDirectory() )
             {
-                setErrorMessage( "Selected response file is not a file." );
+                setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.ErrorSelectedResponseFileNotFile" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( responseFile.exists() && !overwriteResponseFileButton.getSelection() )
             {
-                setErrorMessage( "Selected response file already exists. Select option 'Overwrite existing response file' if you want to overwrite the response file." );
+                setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.ErrorSelecedResponseFileExist" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( responseFile.exists() && !responseFile.canWrite() )
             {
-                setErrorMessage( "Selected response file is not writeable." );
+                setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.ErrorSelectedResponseFileNotWritable" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( responseFile.getParentFile() == null )
             {
-                setErrorMessage( "Selected response file directory is not writeable." );
+                setErrorMessage( Messages
+                    .getString( "ImportDsmlMainWizardPage.ErrorSelectedResponseFileDirectoryNotWritable" ) ); //$NON-NLS-1$
                 ok = false;
             }
             else if ( !responseFile.exists() && ( responseFileDirectory == null || !responseFileDirectory.canWrite() ) )
             {
-                setErrorMessage( "Selected response file directory is not writeable." );
+                setErrorMessage( Messages
+                    .getString( "ImportDsmlMainWizardPage.ErrorSelectedResponseFileDirectoryNotWritable" ) ); //$NON-NLS-1$
                 ok = false;
             }
         }
 
         if ( ( wizard.getImportConnection() == null ) || ( browserConnectionWidget.getBrowserConnection() == null ) )
         {
-            setErrorMessage( "Please select a Connection." );
+            setErrorMessage( Messages.getString( "ImportDsmlMainWizardPage.PleaseSelectConnection" ) ); //$NON-NLS-1$
             ok = false;
         }
 

@@ -45,8 +45,8 @@ import org.eclipse.swt.widgets.Composite;
 public class ExportConnectionsWizardPage extends WizardPage
 {
     // UI widgets
-//    private CheckboxTreeViewer connectionsTreeViewer;
-//    private ConnectionContentProvider contentProvider;
+    //    private CheckboxTreeViewer connectionsTreeViewer;
+    //    private ConnectionContentProvider contentProvider;
     private FileBrowserWidget fileBrowserWidget;
     private Button overwriteFileButton;
 
@@ -57,8 +57,8 @@ public class ExportConnectionsWizardPage extends WizardPage
     protected ExportConnectionsWizardPage()
     {
         super( ExportConnectionsWizardPage.class.getName() );
-        setTitle( "Export Connections" );
-        setDescription( "Define where connections should be exported." );
+        setTitle( Messages.getString( "ExportConnectionsWizardPage.ExportConnections" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ExportConnectionsWizardPage.DefineConnectionsExport" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_EXPORT_CONNECTIONS_WIZARD ) );
         setPageComplete( false );
@@ -73,70 +73,71 @@ public class ExportConnectionsWizardPage extends WizardPage
         // Main Composite
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
-//        // Connections Group
-//        Group connectionsGroup = BaseWidgetUtils.createGroup( composite, "Connections", 1 );
-//        Composite connectionsGroupComposite = BaseWidgetUtils.createColumnContainer( connectionsGroup, 2, 1 );
-//
-//        // Connections Label
-//        BaseWidgetUtils.createLabel( connectionsGroupComposite, "Select the connections to export: ", 1 );
-//        BaseWidgetUtils.createSpacer( connectionsGroupComposite, 1 );
-//
-//        // Connections TreeViewer
-//        connectionsTreeViewer = new CheckboxTreeViewer( new Tree( connectionsGroupComposite, SWT.BORDER | SWT.CHECK
-//            | SWT.FULL_SELECTION ) );
-//        GridData connectionsTableViewerGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
-//        connectionsTableViewerGridData.heightHint = 125;
-//        connectionsTreeViewer.getTree().setLayoutData( connectionsTableViewerGridData );
-//        contentProvider = new ConnectionContentProvider();
-//        connectionsTreeViewer.setContentProvider( contentProvider );
-//        connectionsTreeViewer.setLabelProvider( new ConnectionLabelProvider() );
-//        connectionsTreeViewer.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
-//        connectionsTreeViewer.addCheckStateListener( new ICheckStateListener()
-//        {
-//            public void checkStateChanged( CheckStateChangedEvent event )
-//            {
-//                Object checkedElement = event.getElement();
-//                Object[] children = contentProvider.getChildren( checkedElement );
-//                if ( ( children != null ) && ( children.length > 0 ) )
-//                {
-//                    for ( Object child : children )
-//                    {
-//                        connectionsTreeViewer.setChecked( child, event.getChecked() );
-//                    }
-//                }
-//            }
-//        } );
-//
-//        // Selection Buttons
-//        Button selectAllButton = BaseWidgetUtils.createButton( connectionsGroupComposite, "Select All", 1 );
-//        selectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-//        selectAllButton.addSelectionListener( new SelectionAdapter()
-//        {
-//            public void widgetSelected( SelectionEvent e )
-//            {
-//                connectionsTreeViewer.setAllChecked( true );
-//                validate();
-//            }
-//        } );
-//        Button deselectAllButton = BaseWidgetUtils.createButton( connectionsGroupComposite, "Deselect All", 1 );
-//        deselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-//        deselectAllButton.addSelectionListener( new SelectionAdapter()
-//        {
-//            public void widgetSelected( SelectionEvent e )
-//            {
-//                connectionsTreeViewer.setAllChecked( false );
-//                validate();
-//            }
-//        } );
+        //        // Connections Group
+        //        Group connectionsGroup = BaseWidgetUtils.createGroup( composite, "Connections", 1 );
+        //        Composite connectionsGroupComposite = BaseWidgetUtils.createColumnContainer( connectionsGroup, 2, 1 );
+        //
+        //        // Connections Label
+        //        BaseWidgetUtils.createLabel( connectionsGroupComposite, "Select the connections to export: ", 1 );
+        //        BaseWidgetUtils.createSpacer( connectionsGroupComposite, 1 );
+        //
+        //        // Connections TreeViewer
+        //        connectionsTreeViewer = new CheckboxTreeViewer( new Tree( connectionsGroupComposite, SWT.BORDER | SWT.CHECK
+        //            | SWT.FULL_SELECTION ) );
+        //        GridData connectionsTableViewerGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
+        //        connectionsTableViewerGridData.heightHint = 125;
+        //        connectionsTreeViewer.getTree().setLayoutData( connectionsTableViewerGridData );
+        //        contentProvider = new ConnectionContentProvider();
+        //        connectionsTreeViewer.setContentProvider( contentProvider );
+        //        connectionsTreeViewer.setLabelProvider( new ConnectionLabelProvider() );
+        //        connectionsTreeViewer.setInput( ConnectionCorePlugin.getDefault().getConnectionFolderManager() );
+        //        connectionsTreeViewer.addCheckStateListener( new ICheckStateListener()
+        //        {
+        //            public void checkStateChanged( CheckStateChangedEvent event )
+        //            {
+        //                Object checkedElement = event.getElement();
+        //                Object[] children = contentProvider.getChildren( checkedElement );
+        //                if ( ( children != null ) && ( children.length > 0 ) )
+        //                {
+        //                    for ( Object child : children )
+        //                    {
+        //                        connectionsTreeViewer.setChecked( child, event.getChecked() );
+        //                    }
+        //                }
+        //            }
+        //        } );
+        //
+        //        // Selection Buttons
+        //        Button selectAllButton = BaseWidgetUtils.createButton( connectionsGroupComposite, "Select All", 1 );
+        //        selectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        //        selectAllButton.addSelectionListener( new SelectionAdapter()
+        //        {
+        //            public void widgetSelected( SelectionEvent e )
+        //            {
+        //                connectionsTreeViewer.setAllChecked( true );
+        //                validate();
+        //            }
+        //        } );
+        //        Button deselectAllButton = BaseWidgetUtils.createButton( connectionsGroupComposite, "Deselect All", 1 );
+        //        deselectAllButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        //        deselectAllButton.addSelectionListener( new SelectionAdapter()
+        //        {
+        //            public void widgetSelected( SelectionEvent e )
+        //            {
+        //                connectionsTreeViewer.setAllChecked( false );
+        //                validate();
+        //            }
+        //        } );
 
         // Destination Group
-//        Group destinationGroup = BaseWidgetUtils.createGroup( composite, "Destination", 1 );
-//        Composite destinationGroupComposite = BaseWidgetUtils.createColumnContainer( destinationGroup, 3, 1 );
+        //        Group destinationGroup = BaseWidgetUtils.createGroup( composite, "Destination", 1 );
+        //        Composite destinationGroupComposite = BaseWidgetUtils.createColumnContainer( destinationGroup, 3, 1 );
 
         // Destination File
-        BaseWidgetUtils.createLabel( composite, "To file:", 1 );
-        fileBrowserWidget = new FileBrowserWidget( "Choose a file", new String[]
-            { "lbc" }, FileBrowserWidget.TYPE_SAVE );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ExportConnectionsWizardPage.ToFile" ), 1 ); //$NON-NLS-1$
+        fileBrowserWidget = new FileBrowserWidget(
+            Messages.getString( "ExportConnectionsWizardPage.ChooseFile" ), new String[] //$NON-NLS-1$
+                { "lbc" }, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -147,7 +148,8 @@ public class ExportConnectionsWizardPage extends WizardPage
         } );
 
         BaseWidgetUtils.createRadioIndent( composite, 1 );
-        overwriteFileButton = BaseWidgetUtils.createCheckbox( composite, "O&verwrite existing file", 2 );
+        overwriteFileButton = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "ExportConnectionsWizardPage.OverwriteExistingFile" ), 2 ); //$NON-NLS-1$
         overwriteFileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
@@ -169,34 +171,34 @@ public class ExportConnectionsWizardPage extends WizardPage
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
         File fileDirectory = file.getParentFile();
-        if ( "".equals( fileBrowserWidget.getFilename() ) )
+        if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
             ok = false;
         }
         else if ( file.isDirectory() )
         {
-            setErrorMessage( "Selected file is not a file." );
+            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileNotAFile" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.exists() && !overwriteFileButton.getSelection() )
         {
-            setErrorMessage( "Selected file already exists. Select option 'Overwrite existing file' if you want to overwrite the file." );
+            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileAlreadyExists" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.exists() && !file.canWrite() )
         {
-            setErrorMessage( "Selected file is not writeable." );
+            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileNotWritable" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.getParentFile() == null )
         {
-            setErrorMessage( "Selected file directory is not writeable." );
+            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileDirectoryNotWritable" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( !file.exists() && ( fileDirectory == null || !fileDirectory.canWrite() ) )
         {
-            setErrorMessage( "Selected file directory is not writeable." );
+            setErrorMessage( Messages.getString( "ExportConnectionsWizardPage.ErrorFileDirectoryNotWritable" ) ); //$NON-NLS-1$
             ok = false;
         }
 

@@ -28,6 +28,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.FileBrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -63,8 +64,9 @@ public abstract class ExportBaseToPage extends WizardPage
     {
         super( pageName );
         setPageComplete( false );
-        setTitle( getFileType() + " File" );
-        setDescription( "Please enter the target " + getFileType() + " file." );
+        setTitle( getFileType() + Messages.getString( "ExportBaseToPage.FileType" ) ); //$NON-NLS-1$
+        setDescription( NLS.bind(
+            Messages.getString( "ExportBaseToPage.PleaseEnterTargetFile" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
 
         this.wizard = wizard;
     }
@@ -79,35 +81,40 @@ public abstract class ExportBaseToPage extends WizardPage
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
         File fileDirectory = file.getParentFile();
-        if ( "".equals( fileBrowserWidget.getFilename() ) )
+        if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
             ok = false;
         }
         else if ( file.isDirectory() )
         {
-            setErrorMessage( "Selected " + getFileType() + " is no file." );
+            setErrorMessage( NLS.bind(
+                Messages.getString( "ExportBaseToPage.ErrorNotAFile" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.exists() && !overwriteFileButton.getSelection() )
         {
-            setErrorMessage( "Selected " + getFileType() + " file already exists. Select option 'Overwrite existing "
-                + getFileType() + " file' if you want to overwrite the " + getFileType() + " file." );
+            setErrorMessage( NLS
+                .bind(
+                    Messages.getString( "ExportBaseToPage.ErrorFileExists" ), new String[] { getFileType(), getFileType(), getFileType() } ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.exists() && !file.canWrite() )
         {
-            setErrorMessage( "Selected " + getFileType() + " file is not writeable." );
+            setErrorMessage( NLS.bind(
+                Messages.getString( "ExportBaseToPage.ErrorFileNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.getParentFile() == null )
         {
-            setErrorMessage( "Selected " + getFileType() + " file directory is not writeable." );
+            setErrorMessage( NLS.bind(
+                Messages.getString( "ExportBaseToPage.ErrorDirectoryNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( !file.exists() && ( fileDirectory == null || !fileDirectory.canWrite() ) )
         {
-            setErrorMessage( "Selected " + getFileType() + " file directory is not writeable." );
+            setErrorMessage( NLS.bind(
+                Messages.getString( "ExportBaseToPage.ErrorDirectoryNotWritable" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
             ok = false;
         }
 
@@ -116,7 +123,7 @@ public abstract class ExportBaseToPage extends WizardPage
             setErrorMessage( null );
         }
 
-        setPageComplete( ok && wizard.getExportFilename() != null && !"".equals( wizard.getExportFilename() ) );
+        setPageComplete( ok && wizard.getExportFilename() != null && !"".equals( wizard.getExportFilename() ) ); //$NON-NLS-1$
     }
 
 
@@ -126,8 +133,9 @@ public abstract class ExportBaseToPage extends WizardPage
     public void createControl( Composite composite )
     {
         // Export file
-        BaseWidgetUtils.createLabel( composite, getFileType() + " File:", 1 );
-        fileBrowserWidget = new FileBrowserWidget( "Select " + getFileType() + " File", getExtensions(),
+        BaseWidgetUtils.createLabel( composite, getFileType() + Messages.getString( "ExportBaseToPage.File" ), 1 ); //$NON-NLS-1$
+        fileBrowserWidget = new FileBrowserWidget( NLS.bind(
+            Messages.getString( "ExportBaseToPage.SelectFileType" ), new String[] { getFileType() } ), getExtensions(), //$NON-NLS-1$
             FileBrowserWidget.TYPE_SAVE );
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -139,8 +147,8 @@ public abstract class ExportBaseToPage extends WizardPage
             }
         } );
         BaseWidgetUtils.createRadioIndent( composite, 1 );
-        overwriteFileButton = BaseWidgetUtils.createCheckbox( composite, "O&verwrite existing " + getFileType()
-            + " file", 2 );
+        overwriteFileButton = BaseWidgetUtils.createCheckbox( composite, NLS.bind( Messages
+            .getString( "ExportBaseToPage.OverwriteExistingFile" ), new String[] { getFileType() } ), 2 ); //$NON-NLS-1$
         overwriteFileButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )

@@ -40,9 +40,9 @@ import org.eclipse.swt.widgets.Composite;
 public class BatchOperationLdifWizardPage extends WizardPage implements WidgetModifyListener
 {
 
-    private static final String LDIF_DN_PREFIX = "dn: cn=dummy" + BrowserCoreConstants.LINE_SEPARATOR;
+    private static final String LDIF_DN_PREFIX = "dn: cn=dummy" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
-    private static final String LDIF_INITIAL = "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR;
+    private static final String LDIF_INITIAL = "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
     private BatchOperationWizard wizard;
 
@@ -52,8 +52,8 @@ public class BatchOperationLdifWizardPage extends WizardPage implements WidgetMo
     public BatchOperationLdifWizardPage( String pageName, BatchOperationWizard wizard )
     {
         super( pageName );
-        super.setTitle( "LDIF Fragment" );
-        super.setDescription( "Please enter the LDIF fragment that should be executed on each entry." );
+        super.setTitle( Messages.getString( "BatchOperationLdifWizardPage.LDIFFragment" ) ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "BatchOperationLdifWizardPage.PleaseEnterLDIFFragment" ) ); //$NON-NLS-1$
         // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ENTRY_WIZARD));
         super.setPageComplete( false );
 
@@ -135,7 +135,7 @@ public class BatchOperationLdifWizardPage extends WizardPage implements WidgetMo
 
     public String getLdifFragment()
     {
-        return ldifEditorWidget.getLdifModel().toRawString().replaceAll( LDIF_DN_PREFIX, "" );
+        return ldifEditorWidget.getLdifModel().toRawString().replaceAll( LDIF_DN_PREFIX, "" ); //$NON-NLS-1$
     }
 
 

@@ -47,8 +47,8 @@ public class ImportConnectionsWizardPage extends WizardPage
     protected ImportConnectionsWizardPage()
     {
         super( ImportConnectionsWizardPage.class.getName() );
-        setTitle( "Import Connections" );
-        setDescription( "Import connections from local file system." );
+        setTitle( Messages.getString( "ImportConnectionsWizardPage.ImportConnections" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "ImportConnectionsWizardPage.ImportConnectionsFromFilesystem" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
             BrowserUIConstants.IMG_IMPORT_CONNECTIONS_WIZARD ) );
         setPageComplete( false );
@@ -61,9 +61,10 @@ public class ImportConnectionsWizardPage extends WizardPage
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
         // From File
-        BaseWidgetUtils.createLabel( composite, "From file:", 1 );
-        fileBrowserWidget = new FileBrowserWidget( "Choose a file", new String[]
-            { "lbc" }, FileBrowserWidget.TYPE_OPEN );
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "ImportConnectionsWizardPage.FromFile" ), 1 ); //$NON-NLS-1$
+        fileBrowserWidget = new FileBrowserWidget(
+            Messages.getString( "ImportConnectionsWizardPage.ChooseFile" ), new String[] //$NON-NLS-1$
+                { "lbc" }, FileBrowserWidget.TYPE_OPEN ); //$NON-NLS-1$
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -85,24 +86,24 @@ public class ImportConnectionsWizardPage extends WizardPage
     {
         boolean ok = true;
         File file = new File( fileBrowserWidget.getFilename() );
-        if ( "".equals( fileBrowserWidget.getFilename() ) )
+        if ( "".equals( fileBrowserWidget.getFilename() ) ) //$NON-NLS-1$
         {
             setErrorMessage( null );
             ok = false;
         }
         else if ( !file.exists() )
         {
-            setErrorMessage( "Selected file does not exist." );
+            setErrorMessage( Messages.getString( "ImportConnectionsWizardPage.ErrorFileNotExists" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.isDirectory() )
         {
-            setErrorMessage( "Selected file is not a file." );
+            setErrorMessage( Messages.getString( "ImportConnectionsWizardPage.ErrorFileNotFile" ) ); //$NON-NLS-1$
             ok = false;
         }
         else if ( file.exists() && !file.canRead() )
         {
-            setErrorMessage( "Selected file is not readable." );
+            setErrorMessage( Messages.getString( "ImportConnectionsWizardPage.ErrorFileNotReadable" ) ); //$NON-NLS-1$
             ok = false;
         }
 

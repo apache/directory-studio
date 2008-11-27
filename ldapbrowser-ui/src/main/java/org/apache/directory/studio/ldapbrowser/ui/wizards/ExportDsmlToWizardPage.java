@@ -45,7 +45,7 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
 
     /** The extensions used by DSML files*/
     private static final String[] EXTENSIONS = new String[]
-        { "*.xml", "*.*" };
+        { "*.xml", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**
@@ -74,10 +74,12 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
         super.createControl( composite );
 
         Composite saveAsOuterComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        Group saveAsGroup = BaseWidgetUtils.createGroup( saveAsOuterComposite, "Save As", 1 );
+        Group saveAsGroup = BaseWidgetUtils.createGroup( saveAsOuterComposite, Messages
+            .getString( "ExportDsmlToWizardPage.SaveAs" ), 1 ); //$NON-NLS-1$
         Composite saveAsComposite = BaseWidgetUtils.createColumnContainer( saveAsGroup, 2, 1 );
 
-        Button saveAsDsmlResponseButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, "DSML Response", 2 );
+        Button saveAsDsmlResponseButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, Messages
+            .getString( "ExportDsmlToWizardPage.DSMLResponse" ), 2 ); //$NON-NLS-1$
         saveAsDsmlResponseButton.setSelection( true );
         wizard.setSaveAsType( ExportDsmlWizardSaveAsType.RESPONSE );
         saveAsDsmlResponseButton.addSelectionListener( new SelectionAdapter()
@@ -88,10 +90,11 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
             }
         } );
         BaseWidgetUtils.createRadioIndent( saveAsComposite, 1 );
-        BaseWidgetUtils.createWrappedLabel( saveAsComposite,
-            "The search will be saved as a response to a DSML search request.", 1 );
+        BaseWidgetUtils.createWrappedLabel( saveAsComposite, Messages
+            .getString( "ExportDsmlToWizardPage.SearchSaveAsResponse" ), 1 ); //$NON-NLS-1$
 
-        Button saveAsDsmlRequestButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, "DSML Request", 2 );
+        Button saveAsDsmlRequestButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, Messages
+            .getString( "ExportDsmlToWizardPage.DSMLRequest" ), 2 ); //$NON-NLS-1$
         saveAsDsmlRequestButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -100,8 +103,8 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
             }
         } );
         BaseWidgetUtils.createRadioIndent( saveAsComposite, 1 );
-        BaseWidgetUtils.createWrappedLabel( saveAsComposite,
-            "The search will be saved as a DSML request containing an add request for each entry.", 1 );
+        BaseWidgetUtils.createWrappedLabel( saveAsComposite, Messages
+            .getString( "ExportDsmlToWizardPage.SearchSaveAsRequest" ), 1 ); //$NON-NLS-1$
     }
 
 
@@ -119,6 +122,6 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
      */
     protected String getFileType()
     {
-        return "DSML";
+        return Messages.getString( "ExportDsmlToWizardPage.DSML" ); //$NON-NLS-1$
     }
 }

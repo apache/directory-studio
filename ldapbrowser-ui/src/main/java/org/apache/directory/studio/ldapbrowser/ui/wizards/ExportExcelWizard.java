@@ -48,7 +48,7 @@ public class ExportExcelWizard extends ExportBaseWizard
      */
     public ExportExcelWizard()
     {
-        super( "Excel Export" );
+        super( Messages.getString( "ExportExcelWizard.ExcelExport" ) ); //$NON-NLS-1$
     }
 
 
@@ -84,9 +84,9 @@ public class ExportExcelWizard extends ExportBaseWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( fromPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( toPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_excelexport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -99,8 +99,8 @@ public class ExportExcelWizard extends ExportBaseWizard
         toPage.saveDialogSettings();
         boolean exportDn = this.fromPage.isExportDn();
 
-        ExportXlsJob eej = new ExportXlsJob( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
-            exportDn );
+        ExportXlsJob eej = new ExportXlsJob( exportFilename, search.getBrowserConnection(),
+            search.getSearchParameter(), exportDn );
         eej.execute();
 
         return true;

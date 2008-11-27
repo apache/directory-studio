@@ -43,7 +43,8 @@ public class ExportCsvToWizardPage extends ExportBaseToPage
 
     /** The extensions used by CSV files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.csv", "*.txt", "*.*" };
+        {
+            Messages.getString( "ExportCsvToWizardPage.0" ), Messages.getString( "ExportCsvToWizardPage.1" ), Messages.getString( "ExportCsvToWizardPage.2" ) }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 
     /**
@@ -70,7 +71,7 @@ public class ExportCsvToWizardPage extends ExportBaseToPage
         BaseWidgetUtils.createSpacer( composite, 3 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        String text = "See <a>Text Formats</a> for CSV file format preferences.";
+        String text = Messages.getString( "ExportCsvToWizardPage.SeeTextFormats" ); //$NON-NLS-1$
         Link link = BaseWidgetUtils.createLink( composite, text, 2 );
         link.addSelectionListener( new SelectionAdapter()
         {
@@ -97,7 +98,7 @@ public class ExportCsvToWizardPage extends ExportBaseToPage
      */
     protected String getFileType()
     {
-        return "CSV";
+        return Messages.getString( "ExportCsvToWizardPage.CVS" ); //$NON-NLS-1$
     }
 
 }
