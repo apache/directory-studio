@@ -58,9 +58,9 @@ public class SearchLogsPreferencePage extends PreferencePage implements IWorkben
      */
     public SearchLogsPreferencePage()
     {
-        super( "Search Logs" );
+        super( Messages.getString( "SearchLogsPreferencePage.SearchLogs" ) ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserUIPlugin.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the search logs view:" );
+        super.setDescription( Messages.getString( "SearchLogsPreferencePage.GeneralSettings" ) ); //$NON-NLS-1$
     }
 
 
@@ -81,54 +81,55 @@ public class SearchLogsPreferencePage extends PreferencePage implements IWorkben
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        enableSearchRequestLogging = BaseWidgetUtils.createCheckbox( composite, "Enable search request logs", 1 );
+        enableSearchRequestLogging = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "SearchLogsPreferencePage.EnableRequestLogs" ), 1 ); //$NON-NLS-1$
         enableSearchRequestLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
             ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
-        enableSearchResultEntryLogging = BaseWidgetUtils.createCheckbox( composite,
-            "Enable search result entry logs (!)", 1 );
+        enableSearchResultEntryLogging = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "SearchLogsPreferencePage.EnableResultLogs" ), 1 ); //$NON-NLS-1$
         enableSearchResultEntryLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
             .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE ) );
 
         Group rotateGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Log File Rotation", 1 );
+            Messages.getString( "SearchLogsPreferencePage.LogFileRotation" ), 1 ); //$NON-NLS-1$
         Composite rotateComposite = BaseWidgetUtils.createColumnContainer( rotateGroup, 5, 1 );
-        BaseWidgetUtils.createLabel( rotateComposite, "Use ", 1 );
-        logFileCountText = BaseWidgetUtils.createText( rotateComposite, "", 3, 1 );
+        BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.Use" ), 1 ); //$NON-NLS-1$
+        logFileCountText = BaseWidgetUtils.createText( rotateComposite, "", 3, 1 ); //$NON-NLS-1$
         logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
             ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT ) );
         logFileCountText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
             }
         } );
-        BaseWidgetUtils.createLabel( rotateComposite, " log files each with ", 1 );
-        logFileSizeText = BaseWidgetUtils.createText( rotateComposite, "", 5, 1 );
+        BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.LogFilesEach" ), 1 ); //$NON-NLS-1$
+        logFileSizeText = BaseWidgetUtils.createText( rotateComposite, "", 5, 1 ); //$NON-NLS-1$
         logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
             ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE ) );
         logFileSizeText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
             }
         } );
-        BaseWidgetUtils.createLabel( rotateComposite, " kB.", 1 );
+        BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.KB" ), 1 ); //$NON-NLS-1$
 
         applyDialogFont( composite );
         return composite;

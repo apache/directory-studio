@@ -54,9 +54,9 @@ public class SearchResultEditorPreferencePage extends PreferencePage implements 
      */
     public SearchResultEditorPreferencePage()
     {
-        super( "Search Result Editor" );
+        super( Messages.getString( "SearchResultEditorPreferencePage.ResultEditor" ) ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserUIPlugin.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the LDAP search result editor:" );
+        super.setDescription( Messages.getString( "SearchResultEditorPreferencePage.GeneralSettings" ) ); //$NON-NLS-1$
     }
 
 
@@ -77,10 +77,12 @@ public class SearchResultEditorPreferencePage extends PreferencePage implements 
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        showDnButton = BaseWidgetUtils.createCheckbox( composite, "Show DN as first column", 1 );
+        showDnButton = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "SearchResultEditorPreferencePage.DNAsFirst" ), 1 ); //$NON-NLS-1$
         showDnButton.setSelection( getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN ) );
-        showLinksButton = BaseWidgetUtils.createCheckbox( composite, "Show DN as link", 1 );
+        showLinksButton = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "SearchResultEditorPreferencePage.DNAsLink" ), 1 ); //$NON-NLS-1$
         showLinksButton.setSelection( getPreferenceStore().getBoolean(
             BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS ) );
 
