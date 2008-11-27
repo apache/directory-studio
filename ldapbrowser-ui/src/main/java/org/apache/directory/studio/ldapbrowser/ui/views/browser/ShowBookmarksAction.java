@@ -42,7 +42,7 @@ public class ShowBookmarksAction extends Action
      */
     public ShowBookmarksAction()
     {
-        super( "Show Bookmarks", IAction.AS_CHECK_BOX );
+        super( Messages.getString( "ShowBookmarksAction.ShowBookmarks" ), IAction.AS_CHECK_BOX ); //$NON-NLS-1$
         setEnabled( true );
         setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS ) );

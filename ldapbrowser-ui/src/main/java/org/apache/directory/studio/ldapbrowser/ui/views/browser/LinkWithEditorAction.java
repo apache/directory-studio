@@ -123,7 +123,7 @@ public class LinkWithEditorAction extends Action
      */
     public LinkWithEditorAction( BrowserView browserView )
     {
-        super( "Link with editor", AS_CHECK_BOX );
+        super( Messages.getString( "LinkWithEditorAction.LinkWithEditor" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_LINK_WITH_EDITOR ) );
         setEnabled( true );
         setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(

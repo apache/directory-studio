@@ -79,85 +79,85 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     private LinkWithEditorAction linkWithEditorAction;
 
     /** The Constant locateEntryInDitAction. */
-    private static final String locateEntryInDitAction = "locateEntryInDitAction";
+    private static final String locateEntryInDitAction = "locateEntryInDitAction"; //$NON-NLS-1$
 
     /** The Constant gotoDnAction. */
-    private static final String gotoDnAction = "gotoDnAction";
+    private static final String gotoDnAction = "gotoDnAction"; //$NON-NLS-1$
 
     /** The Constant newEntryAction. */
-    private static final String newEntryAction = "newEntryAction";
+    private static final String newEntryAction = "newEntryAction"; //$NON-NLS-1$
 
     /** The Constant newSearchAction. */
-    private static final String newSearchAction = "newSearchAction";
+    private static final String newSearchAction = "newSearchAction"; //$NON-NLS-1$
 
     /** The Constant newBookmarkAction. */
-    private static final String newBookmarkAction = "newBookmarkAction";
+    private static final String newBookmarkAction = "newBookmarkAction"; //$NON-NLS-1$
 
     /** The Constant newBatchOperationAction. */
-    private static final String newBatchOperationAction = "newBatchOperationAction";
+    private static final String newBatchOperationAction = "newBatchOperationAction"; //$NON-NLS-1$
 
     /** The Constant copyAction. */
-    private static final String copyAction = "copyAction";
+    private static final String copyAction = "copyAction"; //$NON-NLS-1$
 
     /** The Constant pasteAction. */
-    private static final String pasteAction = "pasteAction";
+    private static final String pasteAction = "pasteAction"; //$NON-NLS-1$
 
     /** The Constant deleteAction. */
-    private static final String deleteAction = "deleteAction";
+    private static final String deleteAction = "deleteAction"; //$NON-NLS-1$
 
     /** The Constant moveAction. */
-    private static final String moveAction = "moveAction";
+    private static final String moveAction = "moveAction"; //$NON-NLS-1$
 
     /** The Constant renameAction. */
-    private static final String renameAction = "renameAction";
+    private static final String renameAction = "renameAction"; //$NON-NLS-1$
 
     /** The Constant copyDnAction. */
-    private static final String copyDnAction = "copyDnAction";
+    private static final String copyDnAction = "copyDnAction"; //$NON-NLS-1$
 
     /** The Constant copyUrlAction. */
-    private static final String copyUrlAction = "copyUrlAction";
+    private static final String copyUrlAction = "copyUrlAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsLdifDnOnlyAction. */
-    private static final String copyEntryAsLdifDnOnlyAction = "copyEntryAsLdifDnOnlyAction";
+    private static final String copyEntryAsLdifDnOnlyAction = "copyEntryAsLdifDnOnlyAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsLdifReturningAttributesOnlyAction. */
-    private static final String copyEntryAsLdifReturningAttributesOnlyAction = "copyEntryAsLdifReturningAttributesOnlyAction";
+    private static final String copyEntryAsLdifReturningAttributesOnlyAction = "copyEntryAsLdifReturningAttributesOnlyAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsLdifAction. */
-    private static final String copyEntryAsLdifAction = "copyEntryAsLdifAction";
+    private static final String copyEntryAsLdifAction = "copyEntryAsLdifAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsLdifOperationalAction. */
-    private static final String copyEntryAsLdifOperationalAction = "copyEntryAsLdifOperationalAction";
+    private static final String copyEntryAsLdifOperationalAction = "copyEntryAsLdifOperationalAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsCsvDnOnlyAction. */
-    private static final String copyEntryAsCsvDnOnlyAction = "copyEntryAsCsvDnOnlyAction";
+    private static final String copyEntryAsCsvDnOnlyAction = "copyEntryAsCsvDnOnlyAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsCsvReturningAttributesOnlyAction. */
-    private static final String copyEntryAsCsvReturningAttributesOnlyAction = "copyEntryAsCsvReturningAttributesOnlyAction";
+    private static final String copyEntryAsCsvReturningAttributesOnlyAction = "copyEntryAsCsvReturningAttributesOnlyAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsCsvAction. */
-    private static final String copyEntryAsCsvAction = "copyEntryAsCsvAction";
+    private static final String copyEntryAsCsvAction = "copyEntryAsCsvAction"; //$NON-NLS-1$
 
     /** The Constant copyEntryAsCsvOperationalAction. */
-    private static final String copyEntryAsCsvOperationalAction = "copyEntryAsCsvOperationalAction";
+    private static final String copyEntryAsCsvOperationalAction = "copyEntryAsCsvOperationalAction"; //$NON-NLS-1$
 
     /** The Constant importDsmlAction. */
-    private static final String importDsmlAction = "importDsmlAction";
+    private static final String importDsmlAction = "importDsmlAction"; //$NON-NLS-1$
 
     /** The Constant importLdifAction. */
-    private static final String importLdifAction = "importLdifAction";
+    private static final String importLdifAction = "importLdifAction"; //$NON-NLS-1$
 
     /** The Constant exportLdifAction. */
-    private static final String exportLdifAction = "exportLdifAction";
+    private static final String exportLdifAction = "exportLdifAction"; //$NON-NLS-1$
 
     /** The Constant exportDsmlAction. */
-    private static final String exportDsmlAction = "exportDsmlAction";
+    private static final String exportDsmlAction = "exportDsmlAction"; //$NON-NLS-1$
 
     /** The Constant exportCsvAction. */
-    private static final String exportCsvAction = "exportCsvAction";
+    private static final String exportCsvAction = "exportCsvAction"; //$NON-NLS-1$
 
     /** The Constant exportExcelAction. */
-    private static final String exportExcelAction = "exportExcelAction";
+    private static final String exportExcelAction = "exportExcelAction"; //$NON-NLS-1$
 
 
     /**
@@ -314,7 +314,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( browserActionMap.get( deleteAction ) );
         menuManager.add( browserActionMap.get( moveAction ) );
         menuManager.add( browserActionMap.get( renameAction ) );
-        MenuManager advancedMenuManager = new MenuManager( "Advanced" );
+        MenuManager advancedMenuManager = new MenuManager( Messages.getString( "BrowserViewActionGroup.Advanced" ) ); //$NON-NLS-1$
         advancedMenuManager.add( browserActionMap.get( copyDnAction ) );
         advancedMenuManager.add( browserActionMap.get( copyUrlAction ) );
         advancedMenuManager.add( new Separator() );
@@ -340,13 +340,13 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // import/export
-        MenuManager importMenuManager = new MenuManager( "Import" );
+        MenuManager importMenuManager = new MenuManager( Messages.getString( "BrowserViewActionGroup.Import" ) ); //$NON-NLS-1$
         importMenuManager.add( browserActionMap.get( importLdifAction ) );
         importMenuManager.add( browserActionMap.get( importDsmlAction ) );
         importMenuManager.add( new Separator() );
         menuManager.add( importMenuManager );
 
-        MenuManager exportMenuManager = new MenuManager( "Export" );
+        MenuManager exportMenuManager = new MenuManager( Messages.getString( "BrowserViewActionGroup.Export" ) ); //$NON-NLS-1$
         exportMenuManager.add( browserActionMap.get( exportLdifAction ) );
         exportMenuManager.add( browserActionMap.get( exportDsmlAction ) );
         exportMenuManager.add( new Separator() );

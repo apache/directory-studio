@@ -42,7 +42,7 @@ public class ShowDITAction extends Action
      */
     public ShowDITAction()
     {
-        super( "Show DIT", IAction.AS_CHECK_BOX );
+        super( Messages.getString( "ShowDITAction.ShowDIT" ), IAction.AS_CHECK_BOX ); //$NON-NLS-1$
         setEnabled( true );
         setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_DIT ) );

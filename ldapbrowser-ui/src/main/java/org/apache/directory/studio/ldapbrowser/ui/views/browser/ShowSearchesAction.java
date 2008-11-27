@@ -42,7 +42,7 @@ public class ShowSearchesAction extends Action
      */
     public ShowSearchesAction()
     {
-        super( "Show Searches", IAction.AS_CHECK_BOX );
+        super( Messages.getString( "ShowSearchesAction.ShowSearches" ), IAction.AS_CHECK_BOX ); //$NON-NLS-1$
         setEnabled( true );
         setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_SEARCHES ) );

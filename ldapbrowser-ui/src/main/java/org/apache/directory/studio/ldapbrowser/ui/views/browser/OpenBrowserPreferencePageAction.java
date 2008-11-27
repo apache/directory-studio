@@ -43,8 +43,8 @@ public class OpenBrowserPreferencePageAction extends Action
      */
     public OpenBrowserPreferencePageAction()
     {
-        super.setText( "Preferences..." );
-        setToolTipText( "Preferences..." );
+        super.setText( Messages.getString( "OpenBrowserPreferencePageAction.Preferences" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenBrowserPreferencePageAction.PreferencesToolTip" ) ); //$NON-NLS-1$
         setEnabled( true );
     }
 

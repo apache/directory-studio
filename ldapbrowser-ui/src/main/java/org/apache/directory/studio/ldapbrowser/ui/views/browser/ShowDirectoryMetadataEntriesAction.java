@@ -42,7 +42,7 @@ public class ShowDirectoryMetadataEntriesAction extends Action
      */
     public ShowDirectoryMetadataEntriesAction()
     {
-        super( "Show Directory Metadata", IAction.AS_CHECK_BOX );
+        super( Messages.getString( "ShowDirectoryMetadataEntriesAction.ShowDirectoryMetadata" ), IAction.AS_CHECK_BOX ); //$NON-NLS-1$
         setEnabled( true );
         setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_DIRECTORY_META_ENTRIES ) );
