@@ -89,7 +89,7 @@ public class ImportDsmlMainWizardPage extends WizardPage
     public ImportDsmlMainWizardPage( String pageName, ImportDsmlWizard wizard )
     {
         super( pageName );
-        setTitle( ImportDsmlWizard.WIZARD_TITLE );
+        setTitle( wizard.getWindowTitle() );
         setDescription( Messages.getString( "ImportDsmlMainWizardPage.SelectConnectionAndDSMLFile" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_IMPORT_DSML_WIZARD ) );
         setPageComplete( false );
