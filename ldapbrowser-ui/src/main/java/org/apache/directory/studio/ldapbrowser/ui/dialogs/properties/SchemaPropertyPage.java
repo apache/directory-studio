@@ -95,20 +95,20 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
         Group infoGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Schema Information", 1 );
+            Messages.getString( "SchemaPropertyPage.SchemaInformation" ), 1 ); //$NON-NLS-1$
         Composite infoComposite = BaseWidgetUtils.createColumnContainer( infoGroup, 2, 1 );
         Composite infoGroupLeft = BaseWidgetUtils.createColumnContainer( infoComposite, 2, 1 );
 
-        BaseWidgetUtils.createLabel( infoGroupLeft, "Schema DN:", 1 );
-        dnText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "-", 1, 200 );
+        BaseWidgetUtils.createLabel( infoGroupLeft, Messages.getString( "SchemaPropertyPage.SchemaDN" ), 1 ); //$NON-NLS-1$
+        dnText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "-", 1, 200 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( infoGroupLeft, "Create Timestamp:", 1 );
-        ctText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "-", 1, 200 );
+        BaseWidgetUtils.createLabel( infoGroupLeft, Messages.getString( "SchemaPropertyPage.CreateTimestamp" ), 1 ); //$NON-NLS-1$
+        ctText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "-", 1, 200 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( infoGroupLeft, "Modify Timestamp:", 1 );
-        mtText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "-", 1, 200 );
+        BaseWidgetUtils.createLabel( infoGroupLeft, Messages.getString( "SchemaPropertyPage.ModifyTimestamp" ), 1 ); //$NON-NLS-1$
+        mtText = BaseWidgetUtils.createWrappedLabeledText( infoGroupLeft, "-", 1, 200 ); //$NON-NLS-1$
 
-        reloadSchemaButton = BaseWidgetUtils.createButton( infoComposite, "-", 1 );
+        reloadSchemaButton = BaseWidgetUtils.createButton( infoComposite, "-", 1 ); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalAlignment = SWT.BOTTOM;
         reloadSchemaButton.setLayoutData( gd );
@@ -124,17 +124,17 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group cacheGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Schema Cache", 1 );
+            Messages.getString( "SchemaPropertyPage.SchemaCache" ), 1 ); //$NON-NLS-1$
         Composite cacheComposite = BaseWidgetUtils.createColumnContainer( cacheGroup, 2, 1 );
 
-        BaseWidgetUtils.createLabel( cacheComposite, "Cache Location:", 1 );
-        cachePathText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "-", 1, 200 );
+        BaseWidgetUtils.createLabel( cacheComposite, Messages.getString( "SchemaPropertyPage.CacheLocation" ), 1 ); //$NON-NLS-1$
+        cachePathText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "-", 1, 200 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( cacheComposite, "Cache Date:", 1 );
-        cacheDateText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "-", 1, 200 );
+        BaseWidgetUtils.createLabel( cacheComposite, Messages.getString( "SchemaPropertyPage.CacheDate" ), 1 ); //$NON-NLS-1$
+        cacheDateText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "-", 1, 200 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( cacheComposite, "Cache Size:", 1 );
-        cacheSizeText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "-", 1, 200 );
+        BaseWidgetUtils.createLabel( cacheComposite, Messages.getString( "SchemaPropertyPage.CacheSize" ), 1 ); //$NON-NLS-1$
+        cacheSizeText = BaseWidgetUtils.createWrappedLabeledText( cacheComposite, "-", 1, 200 ); //$NON-NLS-1$
 
         IBrowserConnection connection = RootDSEPropertyPage.getConnection( getElement() );
         update( connection );
@@ -176,7 +176,7 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
             }
             else
             {
-                dnText.setText( "-" );
+                dnText.setText( "-" ); //$NON-NLS-1$
             }
 
             if ( schema != null && schema.getCreateTimestamp() != null )
@@ -185,7 +185,7 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
             }
             else
             {
-                ctText.setText( "-" );
+                ctText.setText( "-" ); //$NON-NLS-1$
             }
 
             if ( schema != null && schema.getModifyTimestamp() != null )
@@ -194,16 +194,16 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
             }
             else
             {
-                mtText.setText( "-" );
+                mtText.setText( "-" ); //$NON-NLS-1$
             }
 
             if ( schema != null )
             {
-                reloadSchemaButton.setText( "Reload Schema" );
+                reloadSchemaButton.setText( Messages.getString( "SchemaPropertyPage.ReloadSchema" ) ); //$NON-NLS-1$
             }
             else
             {
-                reloadSchemaButton.setText( "Load Schema" );
+                reloadSchemaButton.setText( Messages.getString( "SchemaPropertyPage.LoadSchema" ) ); //$NON-NLS-1$
             }
 
             if ( connection != null )
@@ -219,9 +219,9 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
                 }
                 else
                 {
-                    cachePathText.setText( "-" );
-                    cacheDateText.setText( "-" );
-                    cacheSizeText.setText( "-" );
+                    cachePathText.setText( "-" ); //$NON-NLS-1$
+                    cacheDateText.setText( "-" ); //$NON-NLS-1$
+                    cacheSizeText.setText( "-" ); //$NON-NLS-1$
                 }
             }
 

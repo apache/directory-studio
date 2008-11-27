@@ -121,8 +121,8 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         Composite infoComposite = new Composite( tabFolder, SWT.NONE );
         GridLayout gl = new GridLayout( 2, false );
         infoComposite.setLayout( gl );
-        BaseWidgetUtils.createLabel( infoComposite, "Directory Type:", 1 );
-        Text typeText = BaseWidgetUtils.createWrappedLabeledText( infoComposite, "-", 1, 150);
+        BaseWidgetUtils.createLabel( infoComposite, Messages.getString( "RootDSEPropertyPage.DirectoryTypw" ), 1 ); //$NON-NLS-1$
+        Text typeText = BaseWidgetUtils.createWrappedLabeledText( infoComposite, "-", 1, 150 ); //$NON-NLS-1$
         if ( connection != null && connection.getRootDSE() != null )
         {
             // Try to detect LDAP server from RootDSE
@@ -146,39 +146,41 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                 typeText.setText( type );
             }
         }
-        addInfo( connection, infoComposite, "vendorName", "Vendor Name:" );
-        addInfo( connection, infoComposite, "vendorVersion", "Vendor Version:" );
-        addInfo( connection, infoComposite, "supportedLDAPVersion", "Supported LDAP Versions:" );
-        addInfo( connection, infoComposite, "supportedSASLMechanisms", "Supported SASL Mechanisms:" );
+        addInfo( connection, infoComposite, "vendorName", Messages.getString( "RootDSEPropertyPage.VendorName" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        addInfo( connection, infoComposite, "vendorVersion", Messages.getString( "RootDSEPropertyPage.VendorVersion" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        addInfo( connection, infoComposite,
+            "supportedLDAPVersion", Messages.getString( "RootDSEPropertyPage.SupportedLDAPVersion" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        addInfo( connection, infoComposite,
+            "supportedSASLMechanisms", Messages.getString( "RootDSEPropertyPage.SupportedSASL" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         infoTab = new TabItem( tabFolder, SWT.NONE );
-        infoTab.setText( "Info" );
+        infoTab.setText( Messages.getString( "RootDSEPropertyPage.Info" ) ); //$NON-NLS-1$
         infoTab.setControl( infoComposite );
 
         // Controls tab 
         Composite controlsComposite = new Composite( tabFolder, SWT.NONE );
         controlsComposite.setLayout( new GridLayout() );
         Composite controlsComposite2 = BaseWidgetUtils.createColumnContainer( controlsComposite, 2, 1 );
-        addOidInfo( connection, controlsComposite2, "supportedControl" );
+        addOidInfo( connection, controlsComposite2, "supportedControl" ); //$NON-NLS-1$
         controlsTab = new TabItem( tabFolder, SWT.NONE );
-        controlsTab.setText( "Controls" );
+        controlsTab.setText( Messages.getString( "RootDSEPropertyPage.Controls" ) ); //$NON-NLS-1$
         controlsTab.setControl( controlsComposite );
 
         // Extensions tab
         Composite extensionComposite = new Composite( tabFolder, SWT.NONE );
         extensionComposite.setLayout( new GridLayout() );
         Composite extensionComposite2 = BaseWidgetUtils.createColumnContainer( extensionComposite, 2, 1 );
-        addOidInfo( connection, extensionComposite2, "supportedExtension" );
+        addOidInfo( connection, extensionComposite2, "supportedExtension" ); //$NON-NLS-1$
         extensionsTab = new TabItem( tabFolder, SWT.NONE );
-        extensionsTab.setText( "Extensions" );
+        extensionsTab.setText( Messages.getString( "RootDSEPropertyPage.Extensions" ) ); //$NON-NLS-1$
         extensionsTab.setControl( extensionComposite );
 
         // Features tab
         Composite featureComposite = new Composite( tabFolder, SWT.NONE );
         featureComposite.setLayout( new GridLayout() );
         Composite featureComposite2 = BaseWidgetUtils.createColumnContainer( featureComposite, 2, 1 );
-        addOidInfo( connection, featureComposite2, "supportedFeatures" );
+        addOidInfo( connection, featureComposite2, "supportedFeatures" ); //$NON-NLS-1$
         featuresTab = new TabItem( tabFolder, SWT.NONE );
-        featuresTab.setText( "Features" );
+        featuresTab.setText( Messages.getString( "RootDSEPropertyPage.Features" ) ); //$NON-NLS-1$
         featuresTab.setControl( featureComposite );
 
         return tabFolder;
@@ -194,36 +196,36 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
     {
         String result = null;
 
-        IAttribute vnAttribute = rootDSE.getAttribute( "vendorName" );
-        IAttribute vvAttribute = rootDSE.getAttribute( "vendorVersion" );
+        IAttribute vnAttribute = rootDSE.getAttribute( "vendorName" ); //$NON-NLS-1$
+        IAttribute vvAttribute = rootDSE.getAttribute( "vendorVersion" ); //$NON-NLS-1$
 
         if ( vnAttribute != null && vnAttribute.getStringValues().length > 0 && vvAttribute != null
             && vvAttribute.getStringValues().length > 0 )
         {
-            if ( vnAttribute.getStringValues()[0].indexOf( "Apache Software Foundation" ) > -1 )
+            if ( vnAttribute.getStringValues()[0].indexOf( "Apache Software Foundation" ) > -1 ) //$NON-NLS-1$
             {
-                result = "Apache Directory Server";
+                result = Messages.getString( "RootDSEPropertyPage.ApacheDirectoryServer" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "Novell" ) > -1
-                || vvAttribute.getStringValues()[0].indexOf( "eDirectory" ) > -1 )
+            if ( vnAttribute.getStringValues()[0].indexOf( "Novell" ) > -1 //$NON-NLS-1$
+                || vvAttribute.getStringValues()[0].indexOf( "eDirectory" ) > -1 ) //$NON-NLS-1$
             {
-                result = "Novell eDirectory";
+                result = Messages.getString( "RootDSEPropertyPage.NovellEDirectory" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "Sun" ) > -1
-                || vvAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 )
+            if ( vnAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 //$NON-NLS-1$
+                || vvAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 ) //$NON-NLS-1$
             {
-                result = "Sun Directory Server";
+                result = Messages.getString( "RootDSEPropertyPage.SunDirectoryServer" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1
-                || vvAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 )
+            if ( vnAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 //$NON-NLS-1$
+                || vvAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 ) //$NON-NLS-1$
             {
-                result = "Netscape Directory Server";
+                result = Messages.getString( "RootDSEPropertyPage.NetscapeDirectoryServer" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "International Business Machines" ) > -1
-                && ( ( vvAttribute.getStringValues()[0].indexOf( "6.0" ) > -1 ) || ( vvAttribute.getStringValues()[0]
-                    .indexOf( "5.2" ) > -1 ) ) )
+            if ( vnAttribute.getStringValues()[0].indexOf( "International Business Machines" ) > -1 //$NON-NLS-1$
+                && ( ( vvAttribute.getStringValues()[0].indexOf( "6.0" ) > -1 ) || ( vvAttribute.getStringValues()[0] //$NON-NLS-1$
+                    .indexOf( "5.2" ) > -1 ) ) ) //$NON-NLS-1$
             {
-                result = "IBM Tivoli Directory Server";
+                result = Messages.getString( "RootDSEPropertyPage.IBMTivoli" ); //$NON-NLS-1$
             }
         }
 
@@ -242,17 +244,17 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         String result = null;
 
         // check active directory
-        IAttribute rdncAttribute = rootDSE.getAttribute( "rootDomainNamingContext" );
+        IAttribute rdncAttribute = rootDSE.getAttribute( "rootDomainNamingContext" ); //$NON-NLS-1$
         if ( rdncAttribute != null )
         {
-            IAttribute ffAttribute = rootDSE.getAttribute( "forestFunctionality" );
+            IAttribute ffAttribute = rootDSE.getAttribute( "forestFunctionality" ); //$NON-NLS-1$
             if ( ffAttribute != null )
             {
-                result = "Microsoft Active Directory 2003";
+                result = Messages.getString( "RootDSEPropertyPage.MSAD2003" ); //$NON-NLS-1$
             }
             else
             {
-                result = "Microsoft Active Directory 2000";
+                result = Messages.getString( "RootDSEPropertyPage.MSAD2000" ); //$NON-NLS-1$
             }
         }
 
@@ -270,14 +272,14 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
     {
         String result = null;
 
-        IAttribute ssseAttribute = rootDSE.getAttribute( "subSchemaSubentry" );
+        IAttribute ssseAttribute = rootDSE.getAttribute( "subSchemaSubentry" ); //$NON-NLS-1$
         if ( ssseAttribute != null )
         {
             for ( int i = 0; i < ssseAttribute.getStringValues().length; i++ )
             {
-                if ( "cn=LDAPGlobalSchemaSubentry".equals( ssseAttribute.getStringValues()[i] ) )
+                if ( "cn=LDAPGlobalSchemaSubentry".equals( ssseAttribute.getStringValues()[i] ) ) //$NON-NLS-1$
                 {
-                    result = "Siemens DirX";
+                    result = Messages.getString( "RootDSEPropertyPage.SiemesDirX" ); //$NON-NLS-1$
                 }
             }
         }
@@ -298,31 +300,31 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         boolean typeDetected = false;
 
         // check OpenLDAP
-        IAttribute ocAttribute = rootDSE.getAttribute( "objectClass" );
+        IAttribute ocAttribute = rootDSE.getAttribute( "objectClass" ); //$NON-NLS-1$
         if ( ocAttribute != null )
         {
             for ( int i = 0; i < ocAttribute.getStringValues().length; i++ )
             {
-                if ( "OpenLDAProotDSE".equals( ocAttribute.getStringValues()[i] ) )
+                if ( "OpenLDAProotDSE".equals( ocAttribute.getStringValues()[i] ) ) //$NON-NLS-1$
                 {
-                    IAttribute ccAttribute = rootDSE.getAttribute( "configContext" );
+                    IAttribute ccAttribute = rootDSE.getAttribute( "configContext" ); //$NON-NLS-1$
                     if ( ccAttribute != null )
                     {
-                        result = "OpenLDAP 2.3";
+                        result = Messages.getString( "RootDSEPropertyPage.openLDAP23" ); //$NON-NLS-1$
                         typeDetected = true;
                     }
                     if ( !typeDetected )
                     {
-                        IAttribute scAttribute = rootDSE.getAttribute( "supportedControl" );
+                        IAttribute scAttribute = rootDSE.getAttribute( "supportedControl" ); //$NON-NLS-1$
                         if ( scAttribute != null )
                         {
                             for ( int sci = 0; sci < scAttribute.getStringValues().length; sci++ )
                             {
                                 // if("1.2.840.113556.1.4.319".equals(scAttribute.getStringValues()[sci]))
                                 // {
-                                if ( "2.16.840.1.113730.3.4.18".equals( scAttribute.getStringValues()[sci] ) )
+                                if ( "2.16.840.1.113730.3.4.18".equals( scAttribute.getStringValues()[sci] ) ) //$NON-NLS-1$
                                 {
-                                    result = "OpenLDAP 2.2";
+                                    result = Messages.getString( "RootDSEPropertyPage.OpenLDAP22" ); //$NON-NLS-1$
                                     typeDetected = true;
                                 }
                             }
@@ -331,14 +333,14 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                     }
                     if ( !typeDetected )
                     {
-                        IAttribute seAttribute = rootDSE.getAttribute( "supportedExtension" );
+                        IAttribute seAttribute = rootDSE.getAttribute( "supportedExtension" ); //$NON-NLS-1$
                         if ( seAttribute != null )
                         {
                             for ( int sei = 0; sei < seAttribute.getStringValues().length; sei++ )
                             {
-                                if ( "1.3.6.1.4.1.4203.1.11.3".equals( seAttribute.getStringValues()[sei] ) )
+                                if ( "1.3.6.1.4.1.4203.1.11.3".equals( seAttribute.getStringValues()[sei] ) ) //$NON-NLS-1$
                                 {
-                                    result = "OpenLDAP 2.1";
+                                    result = Messages.getString( "RootDSEPropertyPage.OpenLDAP21" ); //$NON-NLS-1$
                                     typeDetected = true;
                                 }
                             }
@@ -346,14 +348,14 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                     }
                     if ( !typeDetected )
                     {
-                        IAttribute sfAttribute = rootDSE.getAttribute( "supportedFeatures" );
+                        IAttribute sfAttribute = rootDSE.getAttribute( "supportedFeatures" ); //$NON-NLS-1$
                         if ( sfAttribute != null )
                         {
                             for ( int sfi = 0; sfi < sfAttribute.getStringValues().length; sfi++ )
                             {
-                                if ( "1.3.6.1.4.1.4203.1.5.4".equals( sfAttribute.getStringValues()[sfi] ) )
+                                if ( "1.3.6.1.4.1.4203.1.5.4".equals( sfAttribute.getStringValues()[sfi] ) ) //$NON-NLS-1$
                                 {
-                                    result = "OpenLDAP 2.0";
+                                    result = Messages.getString( "RootDSEPropertyPage.OpenLDAP20" ); //$NON-NLS-1$
                                     typeDetected = true;
                                 }
                             }
@@ -361,7 +363,7 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
                     }
                     if ( !typeDetected )
                     {
-                        result = "OpenLDAP";
+                        result = Messages.getString( "RootDSEPropertyPage.OpenLDAP" ); //$NON-NLS-1$
                         typeDetected = true;
                     }
                 }
@@ -431,11 +433,11 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         }
         catch ( Exception e )
         {
-            sb.append( "-" );
+            sb.append( Messages.getString( "RootDSEPropertyPage.Dash" ) ); //$NON-NLS-1$
         }
 
         BaseWidgetUtils.createLabel( composite, labelName, 1 );
-        BaseWidgetUtils.createWrappedLabeledText( composite, sb.toString(), 1, 150);
+        BaseWidgetUtils.createWrappedLabeledText( composite, sb.toString(), 1, 150 );
     }
 
 }

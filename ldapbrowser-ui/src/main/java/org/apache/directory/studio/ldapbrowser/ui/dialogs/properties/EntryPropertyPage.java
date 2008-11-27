@@ -30,6 +30,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -111,47 +112,47 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
         Composite mainGroup = BaseWidgetUtils.createColumnContainer( BaseWidgetUtils.createColumnContainer( composite,
             1, 1 ), 2, 1 );
-        BaseWidgetUtils.createLabel( mainGroup, "DN:", 1 );
-        dnText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "EntryPropertyPage.DN" ), 1 ); //$NON-NLS-1$
+        dnText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData dnTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         dnTextGridData.widthHint = 300;
         dnText.setLayoutData( dnTextGridData );
 
-        BaseWidgetUtils.createLabel( mainGroup, "URL:", 1 );
-        urlText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "EntryPropertyPage.URL" ), 1 ); //$NON-NLS-1$
+        urlText = BaseWidgetUtils.createWrappedLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData urlTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         urlTextGridData.widthHint = 300;
         urlText.setLayoutData( urlTextGridData );
 
         Group cmiGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Create and Modify Information", 1 );
+            Messages.getString( "EntryPropertyPage.CreateModifyinformation" ), 1 ); //$NON-NLS-1$
         Composite cmiComposite = BaseWidgetUtils.createColumnContainer( cmiGroup, 3, 1 );
 
-        BaseWidgetUtils.createLabel( cmiComposite, "Create Timestamp:", 1 );
-        ctText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 );
+        BaseWidgetUtils.createLabel( cmiComposite, Messages.getString( "EntryPropertyPage.CreateTimestamp" ), 1 ); //$NON-NLS-1$
+        ctText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 ); //$NON-NLS-1$
         GridData ctTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         ctTextGridData.widthHint = 300;
         ctText.setLayoutData( ctTextGridData );
 
-        BaseWidgetUtils.createLabel( cmiComposite, "Creators Name:", 1 );
-        cnText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 );
+        BaseWidgetUtils.createLabel( cmiComposite, Messages.getString( "EntryPropertyPage.CreatorsName" ), 1 ); //$NON-NLS-1$
+        cnText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 ); //$NON-NLS-1$
         GridData cnTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         cnTextGridData.widthHint = 300;
         cnText.setLayoutData( cnTextGridData );
 
-        BaseWidgetUtils.createLabel( cmiComposite, "Modify Timestamp:", 1 );
-        mtText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 );
+        BaseWidgetUtils.createLabel( cmiComposite, Messages.getString( "EntryPropertyPage.ModifyTimestamp" ), 1 ); //$NON-NLS-1$
+        mtText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 2 ); //$NON-NLS-1$
         GridData mtTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         mtTextGridData.widthHint = 300;
         mtText.setLayoutData( mtTextGridData );
 
-        BaseWidgetUtils.createLabel( cmiComposite, "Modifiers Name:", 1 );
-        mnText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 1 );
+        BaseWidgetUtils.createLabel( cmiComposite, Messages.getString( "EntryPropertyPage.ModifiersName" ), 1 ); //$NON-NLS-1$
+        mnText = BaseWidgetUtils.createLabeledText( cmiComposite, "", 1 ); //$NON-NLS-1$
         GridData mnTextGridData = new GridData( GridData.FILL_HORIZONTAL );
         mnTextGridData.widthHint = 300;
         mnText.setLayoutData( mnTextGridData );
 
-        reloadCmiButton = BaseWidgetUtils.createButton( cmiComposite, "", 1 );
+        reloadCmiButton = BaseWidgetUtils.createButton( cmiComposite, "", 1 ); //$NON-NLS-1$
         GridData gd = new GridData();
         gd.verticalAlignment = SWT.BOTTOM;
         gd.horizontalAlignment = SWT.RIGHT;
@@ -170,35 +171,35 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
         } );
 
         Group sizingGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Sizing Information", 1 );
+            Messages.getString( "EntryPropertyPage.SizingInformation" ), 1 ); //$NON-NLS-1$
         Composite sizingComposite = BaseWidgetUtils.createColumnContainer( sizingGroup, 3, 1 );
 
-        BaseWidgetUtils.createLabel( sizingComposite, "Entry Size:", 1 );
-        sizeText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        BaseWidgetUtils.createLabel( sizingComposite, Messages.getString( "EntryPropertyPage.EntrySize" ), 1 ); //$NON-NLS-1$
+        sizeText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 ); //$NON-NLS-1$
         GridData sizeTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         sizeTextGridData.widthHint = 300;
         sizeText.setLayoutData( sizeTextGridData );
 
-        BaseWidgetUtils.createLabel( sizingComposite, "Number of Children:", 1 );
-        childrenText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        BaseWidgetUtils.createLabel( sizingComposite, Messages.getString( "EntryPropertyPage.NumberOfChildren" ), 1 ); //$NON-NLS-1$
+        childrenText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 ); //$NON-NLS-1$
         GridData childrenTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         childrenTextGridData.widthHint = 300;
         childrenText.setLayoutData( childrenTextGridData );
 
-        BaseWidgetUtils.createLabel( sizingComposite, "Number of Attributes:", 1 );
-        attributesText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        BaseWidgetUtils.createLabel( sizingComposite, Messages.getString( "EntryPropertyPage.NumberOfAttributes" ), 1 ); //$NON-NLS-1$
+        attributesText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 ); //$NON-NLS-1$
         GridData attributesTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         attributesTextGridData.widthHint = 300;
         attributesText.setLayoutData( attributesTextGridData );
 
-        BaseWidgetUtils.createLabel( sizingComposite, "Number of Values:", 1 );
-        valuesText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 );
+        BaseWidgetUtils.createLabel( sizingComposite, Messages.getString( "EntryPropertyPage.NumberOfValues" ), 1 ); //$NON-NLS-1$
+        valuesText = BaseWidgetUtils.createLabeledText( sizingComposite, "", 2 ); //$NON-NLS-1$
         GridData valuesTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
         valuesTextGridData.widthHint = 300;
         valuesText.setLayoutData( valuesTextGridData );
 
-        includeOperationalAttributesButton = BaseWidgetUtils.createCheckbox( sizingComposite,
-            "Include operational attributes", 2 );
+        includeOperationalAttributesButton = BaseWidgetUtils.createCheckbox( sizingComposite, Messages
+            .getString( "EntryPropertyPage.IncludeoperationalAttributes" ), 2 ); //$NON-NLS-1$
         includeOperationalAttributesButton.addSelectionListener( new SelectionListener()
         {
             public void widgetSelected( SelectionEvent e )
@@ -212,7 +213,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
             }
         } );
 
-        reloadEntryButton = BaseWidgetUtils.createButton( sizingComposite, "", 1 );
+        reloadEntryButton = BaseWidgetUtils.createButton( sizingComposite, "", 1 ); //$NON-NLS-1$
         gd = new GridData();
         gd.verticalAlignment = SWT.BOTTOM;
         gd.horizontalAlignment = SWT.RIGHT;
@@ -308,7 +309,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
         {
             value = att.getStringValue();
         }
-        return value != null ? value : "-";
+        return value != null ? value : "-"; //$NON-NLS-1$
     }
 
 
@@ -322,7 +323,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
         if ( !this.dnText.isDisposed() )
         {
-            setMessage( "Entry " + entry.getDn().getUpName() );
+            setMessage( Messages.getString( "EntryPropertyPage.Entry" ) + entry.getDn().getUpName() ); //$NON-NLS-1$
 
             dnText.setText( entry.getDn().getUpName() );
             urlText.setText( entry.getUrl().toString() );
@@ -334,7 +335,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
                 .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) ) );
             mnText
                 .setText( getNonNullStringValue( entry.getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFIERS_NAME ) ) );
-            reloadCmiButton.setText( "Refresh" );
+            reloadCmiButton.setText( Messages.getString( "EntryPropertyPage.Refresh" ) ); //$NON-NLS-1$
 
             int attCount = 0;
             int valCount = 0;
@@ -362,18 +363,19 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
                 }
             }
 
-            reloadEntryButton.setText( "Refresh" );
+            reloadEntryButton.setText( Messages.getString( "EntryPropertyPage.Refresh" ) ); //$NON-NLS-1$
             if ( !entry.isChildrenInitialized() )
             {
-                childrenText.setText( "Not checked" );
+                childrenText.setText( Messages.getString( "EntryPropertyPage.NotChecked" ) ); //$NON-NLS-1$
             }
             else
             {
-                childrenText.setText( "" + entry.getChildrenCount()
-                    + ( entry.hasMoreChildren() ? " fetched, may have more" : "" ) );
+                childrenText.setText( ( entry.hasMoreChildren() ? NLS.bind( Messages
+                    .getString( "EntryPropertyPage.ChildrenFetched" ), new int[] { entry.getChildrenCount() } ) //$NON-NLS-1$
+                    : Integer.toString( entry.getChildrenCount() ) ) );
             }
-            attributesText.setText( "" + attCount );
-            valuesText.setText( "" + valCount );
+            attributesText.setText( "" + attCount ); //$NON-NLS-1$
+            valuesText.setText( "" + valCount ); //$NON-NLS-1$
             sizeText.setText( Utils.formatBytes( bytes ) );
         }
     }

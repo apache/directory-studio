@@ -78,16 +78,16 @@ public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropert
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
         Composite mainGroup = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
 
-        BaseWidgetUtils.createLabel( mainGroup, "Attribute Description:", 1 );
-        descriptionText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "ValuePropertyPage.AttributeDescription" ), 1 ); //$NON-NLS-1$
+        descriptionText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( mainGroup, "Value Type:", 1 );
-        typeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "ValuePropertyPage.ValueType" ), 1 ); //$NON-NLS-1$
+        typeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( mainGroup, "Value Size:", 1 );
-        sizeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "ValuePropertyPage.ValueSize" ), 1 ); //$NON-NLS-1$
+        sizeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( mainGroup, "Data:", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "ValuePropertyPage.Data" ), 1 ); //$NON-NLS-1$
         if ( value != null && value.isString() )
         {
             valueText = new Text( mainGroup, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY );
@@ -100,22 +100,25 @@ public class ValuePropertyPage extends PropertyPage implements IWorkbenchPropert
         }
         else
         {
-            valueText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+            valueText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         }
 
         if ( value != null )
         {
-            super.setMessage( "Value "
+            super.setMessage( Messages.getString( "ValuePropertyPage.Value" ) //$NON-NLS-1$
                 + org.apache.directory.studio.connection.core.Utils.shorten( value.toString(), 30 ) );
 
             descriptionText.setText( value.getAttribute().getDescription() );
             // valueText.setText(LdifUtils.mustEncode(value.getBinaryValue())?"Binary":value.getStringValue());
-            valueText.setText( value.isString() ? value.getStringValue() : "Binary" );
-            typeText.setText( value.isString() ? "String" : "Binary" );
+            valueText.setText( value.isString() ? value.getStringValue() : Messages
+                .getString( "ValuePropertyPage.Binary" ) ); //$NON-NLS-1$
+            typeText
+                .setText( value.isString() ? Messages.getString( "ValuePropertyPage.String" ) : Messages.getString( "ValuePropertyPage.Binary" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
             int bytes = value.getBinaryValue().length;
             int chars = value.isString() ? value.getStringValue().length() : 0;
-            String size = value.isString() ? chars + ( chars > 1 ? " Characters, " : " Character, " ) : "";
+            String size = value.isString() ? chars
+                + ( chars > 1 ? Messages.getString( "ValuePropertyPage.Characters" ) : Messages.getString( "ValuePropertyPage.Character" ) ) : ""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             size += Utils.formatBytes( bytes );
             sizeText.setText( size );
         }

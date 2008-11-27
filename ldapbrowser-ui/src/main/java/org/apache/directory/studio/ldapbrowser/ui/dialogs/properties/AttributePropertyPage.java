@@ -29,6 +29,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -125,61 +126,64 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
 
         Composite mainGroup = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
 
-        BaseWidgetUtils.createLabel( mainGroup, "Description:", 1 );
-        attributeNameText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "AttributePropertyPage.Description" ), 1 ); //$NON-NLS-1$
+        attributeNameText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData attributeNameTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         attributeNameTextGridData.widthHint = 300;
         attributeNameText.setLayoutData( attributeNameTextGridData );
 
-        BaseWidgetUtils.createLabel( mainGroup, "Type:", 1 );
-        attributeTypeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "AttributePropertyPage.Type" ), 1 ); //$NON-NLS-1$
+        attributeTypeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData attributeTypeTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         attributeTypeTextGridData.widthHint = 300;
         attributeTypeText.setLayoutData( attributeTypeTextGridData );
 
-        BaseWidgetUtils.createLabel( mainGroup, "Number of Values:", 1 );
-        attributeValuesText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "AttributePropertyPage.NumberOfValues" ), 1 ); //$NON-NLS-1$
+        attributeValuesText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData attributeValuesTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         attributeValuesTextGridData.widthHint = 300;
         attributeValuesText.setLayoutData( attributeValuesTextGridData );
 
-        BaseWidgetUtils.createLabel( mainGroup, "Attribute Size:", 1 );
-        attributeSizeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 );
+        BaseWidgetUtils.createLabel( mainGroup, Messages.getString( "AttributePropertyPage.AttributeSize" ), 1 ); //$NON-NLS-1$
+        attributeSizeText = BaseWidgetUtils.createLabeledText( mainGroup, "", 1 ); //$NON-NLS-1$
         GridData attributeSizeTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         attributeSizeTextGridData.widthHint = 300;
         attributeSizeText.setLayoutData( attributeSizeTextGridData );
 
-        Group atdGroup = BaseWidgetUtils.createGroup( composite, "Attribute Type", 1 );
+        Group atdGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "AttributePropertyPage.AttributeType" ), 1 ); //$NON-NLS-1$
         Composite atdComposite = BaseWidgetUtils.createColumnContainer( atdGroup, 2, 1 );
 
-        BaseWidgetUtils.createLabel( atdComposite, "Numeric OID:", 1 );
-        atdOidText = BaseWidgetUtils.createLabeledText( atdComposite, "", 1 );
+        BaseWidgetUtils.createLabel( atdComposite, Messages.getString( "AttributePropertyPage.NubericOID" ), 1 ); //$NON-NLS-1$
+        atdOidText = BaseWidgetUtils.createLabeledText( atdComposite, "", 1 ); //$NON-NLS-1$
         GridData atdOidTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         atdOidTextGridData.widthHint = 300;
         atdOidText.setLayoutData( atdOidTextGridData );
 
-        BaseWidgetUtils.createLabel( atdComposite, "Alternative Names:", 1 );
-        atdNamesText = BaseWidgetUtils.createLabeledText( atdComposite, "", 1 );
+        BaseWidgetUtils.createLabel( atdComposite, Messages.getString( "AttributePropertyPage.AlternativeNames" ), 1 ); //$NON-NLS-1$
+        atdNamesText = BaseWidgetUtils.createLabeledText( atdComposite, "", 1 ); //$NON-NLS-1$
         GridData atdNamesTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         atdNamesTextGridData.widthHint = 300;
         atdNamesText.setLayoutData( atdNamesTextGridData );
 
-        BaseWidgetUtils.createLabel( atdComposite, "Description:", 1 );
-        atdDescText = BaseWidgetUtils.createWrappedLabeledText( atdComposite, "", 1 );
+        BaseWidgetUtils.createLabel( atdComposite, Messages.getString( "AttributePropertyPage.Description" ), 1 ); //$NON-NLS-1$
+        atdDescText = BaseWidgetUtils.createWrappedLabeledText( atdComposite, "", 1 ); //$NON-NLS-1$
         GridData atdDescTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         atdDescTextGridData.widthHint = 300;
         atdDescText.setLayoutData( atdDescTextGridData );
 
-        BaseWidgetUtils.createLabel( atdComposite, "Usage:", 1 );
-        atdUsageText = BaseWidgetUtils.createLabeledText( atdComposite, "", 1 );
+        BaseWidgetUtils.createLabel( atdComposite, Messages.getString( "AttributePropertyPage.Usage" ), 1 ); //$NON-NLS-1$
+        atdUsageText = BaseWidgetUtils.createLabeledText( atdComposite, "", 1 ); //$NON-NLS-1$
         GridData atdUsageTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         atdUsageTextGridData.widthHint = 300;
         atdUsageText.setLayoutData( atdUsageTextGridData );
 
-        Group flagsGroup = BaseWidgetUtils.createGroup( composite, "Flags", 1 );
+        Group flagsGroup = BaseWidgetUtils.createGroup( composite,
+            Messages.getString( "AttributePropertyPage.Flags" ), 1 ); //$NON-NLS-1$
         Composite flagsComposite = BaseWidgetUtils.createColumnContainer( flagsGroup, 4, 1 );
 
-        singleValuedFlag = BaseWidgetUtils.createCheckbox( flagsComposite, "Single valued", 1 );
+        singleValuedFlag = BaseWidgetUtils.createCheckbox( flagsComposite, Messages
+            .getString( "AttributePropertyPage.SingleValued" ), 1 ); //$NON-NLS-1$
         singleValuedFlag.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -188,7 +192,8 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
             }
         } );
 
-        noUserModificationFlag = BaseWidgetUtils.createCheckbox( flagsComposite, "Read only", 1 );
+        noUserModificationFlag = BaseWidgetUtils.createCheckbox( flagsComposite, Messages
+            .getString( "AttributePropertyPage.ReadOnly" ), 1 ); //$NON-NLS-1$
         noUserModificationFlag.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -197,7 +202,8 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
             }
         } );
 
-        collectiveFlag = BaseWidgetUtils.createCheckbox( flagsComposite, "Collective", 1 );
+        collectiveFlag = BaseWidgetUtils.createCheckbox( flagsComposite, Messages
+            .getString( "AttributePropertyPage.Collective" ), 1 ); //$NON-NLS-1$
         collectiveFlag.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -206,7 +212,8 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
             }
         } );
 
-        obsoleteFlag = BaseWidgetUtils.createCheckbox( flagsComposite, "Obsolete", 1 );
+        obsoleteFlag = BaseWidgetUtils.createCheckbox( flagsComposite, Messages
+            .getString( "AttributePropertyPage.Obsolete" ), 1 ); //$NON-NLS-1$
         obsoleteFlag.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -215,44 +222,48 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
             }
         } );
 
-        Group syntaxGroup = BaseWidgetUtils.createGroup( composite, "Syntax", 1 );
+        Group syntaxGroup = BaseWidgetUtils.createGroup( composite,
+            Messages.getString( "AttributePropertyPage.Syntax" ), 1 ); //$NON-NLS-1$
         Composite syntaxComposite = BaseWidgetUtils.createColumnContainer( syntaxGroup, 2, 1 );
 
-        BaseWidgetUtils.createLabel( syntaxComposite, "Syntax OID:", 1 );
-        syntaxOidText = BaseWidgetUtils.createLabeledText( syntaxComposite, "", 1 );
+        BaseWidgetUtils.createLabel( syntaxComposite, Messages.getString( "AttributePropertyPage.SyntaxOID" ), 1 ); //$NON-NLS-1$
+        syntaxOidText = BaseWidgetUtils.createLabeledText( syntaxComposite, "", 1 ); //$NON-NLS-1$
         GridData syntaxOidTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         syntaxOidTextGridData.widthHint = 300;
         syntaxOidText.setLayoutData( syntaxOidTextGridData );
 
-        BaseWidgetUtils.createLabel( syntaxComposite, "Syntax Description:", 1 );
-        syntaxDescText = BaseWidgetUtils.createLabeledText( syntaxComposite, "", 1 );
+        BaseWidgetUtils.createLabel( syntaxComposite,
+            Messages.getString( "AttributePropertyPage.SyntaxDescription" ), 1 ); //$NON-NLS-1$
+        syntaxDescText = BaseWidgetUtils.createLabeledText( syntaxComposite, "", 1 ); //$NON-NLS-1$
         GridData syntaxDescTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         syntaxDescTextGridData.widthHint = 300;
         syntaxDescText.setLayoutData( syntaxDescTextGridData );
 
-        BaseWidgetUtils.createLabel( syntaxComposite, "Syntax Length:", 1 );
-        syntaxLengthText = BaseWidgetUtils.createLabeledText( syntaxComposite, "", 1 );
+        BaseWidgetUtils.createLabel( syntaxComposite, Messages.getString( "AttributePropertyPage.SyntaxLength" ), 1 ); //$NON-NLS-1$
+        syntaxLengthText = BaseWidgetUtils.createLabeledText( syntaxComposite, "", 1 ); //$NON-NLS-1$
         GridData syntaxLengthTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         syntaxLengthTextGridData.widthHint = 300;
         syntaxLengthText.setLayoutData( syntaxLengthTextGridData );
 
-        Group matchingGroup = BaseWidgetUtils.createGroup( composite, "Matching Rules", 1 );
+        Group matchingGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "AttributePropertyPage.MatchingRules" ), 1 ); //$NON-NLS-1$
         Composite matchingComposite = BaseWidgetUtils.createColumnContainer( matchingGroup, 2, 1 );
 
-        BaseWidgetUtils.createLabel( matchingComposite, "Equality Match:", 1 );
-        equalityMatchingRuleText = BaseWidgetUtils.createLabeledText( matchingComposite, "", 1 );
+        BaseWidgetUtils.createLabel( matchingComposite, Messages.getString( "AttributePropertyPage.EqualityMatch" ), 1 ); //$NON-NLS-1$
+        equalityMatchingRuleText = BaseWidgetUtils.createLabeledText( matchingComposite, "", 1 ); //$NON-NLS-1$
         GridData equalityMatchingRuleTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         equalityMatchingRuleTextGridData.widthHint = 300;
         equalityMatchingRuleText.setLayoutData( equalityMatchingRuleTextGridData );
 
-        BaseWidgetUtils.createLabel( matchingComposite, "Substring Match:", 1 );
-        substringMatchingRuleText = BaseWidgetUtils.createLabeledText( matchingComposite, "", 1 );
+        BaseWidgetUtils
+            .createLabel( matchingComposite, Messages.getString( "AttributePropertyPage.SubstringMatch" ), 1 ); //$NON-NLS-1$
+        substringMatchingRuleText = BaseWidgetUtils.createLabeledText( matchingComposite, "", 1 ); //$NON-NLS-1$
         GridData substringMatchingRuleTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         substringMatchingRuleTextGridData.widthHint = 300;
         substringMatchingRuleText.setLayoutData( substringMatchingRuleTextGridData );
 
-        BaseWidgetUtils.createLabel( matchingComposite, "Ordering Match:", 1 );
-        orderingMatchingRuleText = BaseWidgetUtils.createLabeledText( matchingComposite, "", 1 );
+        BaseWidgetUtils.createLabel( matchingComposite, Messages.getString( "AttributePropertyPage.OrderingMatch" ), 1 ); //$NON-NLS-1$
+        orderingMatchingRuleText = BaseWidgetUtils.createLabeledText( matchingComposite, "", 1 ); //$NON-NLS-1$
         GridData orderingMatchingRuleTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         orderingMatchingRuleTextGridData.widthHint = 300;
         orderingMatchingRuleText.setLayoutData( orderingMatchingRuleTextGridData );
@@ -274,10 +285,11 @@ public class AttributePropertyPage extends PropertyPage implements IWorkbenchPro
                 }
             }
 
-            this.setMessage( "Attribute " + attribute.getDescription() );
+            this.setMessage( NLS.bind(
+                Messages.getString( "AttributePropertyPage.Attribute" ), new String[] { attribute.getDescription() } ) ); //$NON-NLS-1$
             attributeNameText.setText( attribute.getDescription() );
-            attributeTypeText.setText( attribute.isString() ? "String" : "Binary" );
-            attributeValuesText.setText( "" + valCount );
+            attributeTypeText.setText( attribute.isString() ? "String" : "Binary" ); //$NON-NLS-1$ //$NON-NLS-2$
+            attributeValuesText.setText( "" + valCount ); //$NON-NLS-1$
             attributeSizeText.setText( Utils.formatBytes( bytes ) );
 
             if ( schema.hasAttributeTypeDescription( attribute.getDescription() ) )

@@ -75,7 +75,8 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
         if ( getElement() instanceof IAdaptable )
         {
             bookmark = ( IBookmark ) ( ( IAdaptable ) getElement() ).getAdapter( IBookmark.class );
-            super.setMessage( "Bookmark " + Utils.shorten( bookmark.getName(), 30 ) );
+            super
+                .setMessage( Messages.getString( "BookmarkPropertyPage.Bookmark" ) + Utils.shorten( bookmark.getName(), 30 ) ); //$NON-NLS-1$
         }
         else
         {
@@ -84,8 +85,8 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
 
         Composite innerComposite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
-        BaseWidgetUtils.createLabel( innerComposite, "Bookmark Name:", 1 );
-        bookmarkNameText = BaseWidgetUtils.createText( innerComposite, bookmark != null ? bookmark.getName() : "", 2 );
+        BaseWidgetUtils.createLabel( innerComposite, Messages.getString( "BookmarkPropertyPage.BookmarkName" ), 1 ); //$NON-NLS-1$
+        bookmarkNameText = BaseWidgetUtils.createText( innerComposite, bookmark != null ? bookmark.getName() : "", 2 ); //$NON-NLS-1$
         bookmarkNameText.setFocus();
         bookmarkNameText.addModifyListener( new ModifyListener()
         {
@@ -95,7 +96,7 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
             }
         } );
 
-        BaseWidgetUtils.createLabel( innerComposite, "Bookmark DN:", 1 );
+        BaseWidgetUtils.createLabel( innerComposite, Messages.getString( "BookmarkPropertyPage.BookmarkDN" ), 1 ); //$NON-NLS-1$
         bookmarkEntryWidget = new EntryWidget();
         bookmarkEntryWidget.createWidget( innerComposite );
         if ( bookmark != null )
@@ -135,25 +136,25 @@ public class BookmarkPropertyPage extends PropertyPage implements IWorkbenchProp
      */
     private void validate()
     {
-        setValid( bookmarkEntryWidget.getDn() != null && !"".equals( bookmarkNameText.getText() ) );
+        setValid( bookmarkEntryWidget.getDn() != null && !"".equals( bookmarkNameText.getText() ) ); //$NON-NLS-1$
 
         if ( bookmark != null )
         {
             if ( bookmarkEntryWidget.getDn() == null )
             {
                 setValid( false );
-                setErrorMessage( "Please enter a DN." );
+                setErrorMessage( Messages.getString( "BookmarkPropertyPage.EnterDN" ) ); //$NON-NLS-1$
             }
-            else if ( "".equals( bookmarkNameText.getText() ) )
+            else if ( "".equals( bookmarkNameText.getText() ) ) //$NON-NLS-1$
             {
                 setValid( false );
-                setErrorMessage( "Please enter a name." );
+                setErrorMessage( Messages.getString( "BookmarkPropertyPage.EnterName" ) ); //$NON-NLS-1$
             }
             else if ( !bookmark.getName().equals( bookmarkNameText.getText() )
                 && bookmark.getBrowserConnection().getBookmarkManager().getBookmark( bookmarkNameText.getText() ) != null )
             {
                 setValid( false );
-                setErrorMessage( "A bookmark with this name already exists." );
+                setErrorMessage( Messages.getString( "BookmarkPropertyPage.ErrorBookmarkExists" ) ); //$NON-NLS-1$
             }
             else
             {

@@ -88,7 +88,7 @@ public class SearchPropertyPage extends PropertyPage implements IWorkbenchProper
             this.search = new Search();
         }
 
-        super.setMessage( "Search " + Utils.shorten( search.getName(), 30 ) );
+        super.setMessage( Messages.getString( "SearchPropertyPage.Search" ) + Utils.shorten( search.getName(), 30 ) ); //$NON-NLS-1$
 
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 3, 1 );
 
