@@ -54,10 +54,10 @@ public class SearchResultEditorPasteAction extends PasteAction
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-            return values.length > 1 ? "Paste Values" : "Paste Value";
+            return values.length > 1 ? Messages.getString( "SearchResultEditorPasteAction.PasteValues" ) : Messages.getString( "SearchResultEditorPasteAction.PasteValue" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return "Paste";
+        return Messages.getString( "SearchResultEditorPasteAction.Paste" ); //$NON-NLS-1$
     }
 
 

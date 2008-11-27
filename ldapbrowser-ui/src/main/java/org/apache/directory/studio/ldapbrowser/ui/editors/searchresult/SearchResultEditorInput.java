@@ -95,7 +95,7 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return "Search Result Editor";
+        return Messages.getString( "SearchResultEditorInput.SearchResultEditor" ); //$NON-NLS-1$
     }
 
 
@@ -104,7 +104,7 @@ public class SearchResultEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return "";
+        return Messages.getString( "SearchResultEditorInput.SearchResultEditorToolTip" ); //$NON-NLS-1$
     }
 
 

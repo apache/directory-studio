@@ -129,7 +129,7 @@ public class OpenEntryEditorAction extends AbstractOpenEditorAction
      */
     public String getText()
     {
-        return "Edit Entry...";
+        return Messages.getString( "OpenEntryEditorAction.EditEntry" ); //$NON-NLS-1$
     }
 
 

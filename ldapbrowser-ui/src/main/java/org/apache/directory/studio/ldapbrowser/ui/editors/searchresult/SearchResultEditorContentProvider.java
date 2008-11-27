@@ -115,7 +115,7 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
             else if ( elements.length > 0 && mainWidget.getViewer() != null
                 && !mainWidget.getViewer().getTable().isDisposed() )
             {
-                filteredAndSortedElements = configuration.getFilter().filter( mainWidget.getViewer(), "", elements );
+                filteredAndSortedElements = configuration.getFilter().filter( mainWidget.getViewer(), "", elements ); //$NON-NLS-1$
                 configuration.getSorter().sort( mainWidget.getViewer(), filteredAndSortedElements );
             }
         }
@@ -124,7 +124,7 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
         mainWidget.getViewer().setItemCount( filteredAndSortedElements.length );
 
         // update state
-        String url = "";
+        String url = ""; //$NON-NLS-1$
         boolean enabled = true;
         if ( input != null && input instanceof ISearch )
         {
@@ -132,26 +132,28 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
 
             if ( filteredAndSortedElements.length < elements.length )
             {
-                url += filteredAndSortedElements.length + " of ";
+                url += filteredAndSortedElements.length + Messages.getString( "SearchResultEditorContentProvider.Of" ); //$NON-NLS-1$
             }
 
             if ( search.getSearchResults() == null )
             {
-                url += "Search not performed  -  ";
+                url += Messages.getString( "SearchResultEditorContentProvider.SearchNotPerformed" ); //$NON-NLS-1$
                 enabled = false;
             }
             else if ( search.getSearchResults().length == 1 )
             {
-                url += search.getSearchResults().length + " Result  -  ";
+                url += search.getSearchResults().length
+                    + Messages.getString( "SearchResultEditorContentProvider.Result" ); //$NON-NLS-1$
             }
             else
             {
-                url += search.getSearchResults().length + " Results  -  ";
+                url += search.getSearchResults().length
+                    + Messages.getString( "SearchResultEditorContentProvider.Results" ); //$NON-NLS-1$
             }
 
             // url += search.getURL();
-            url += "Search Base: " + search.getSearchBase().getUpName() + "  -  ";
-            url += "Filter: " + search.getFilter();
+            url += Messages.getString( "SearchResultEditorContentProvider.SearchBase" ) + search.getSearchBase().getUpName() + "  -  "; //$NON-NLS-1$ //$NON-NLS-2$
+            url += Messages.getString( "SearchResultEditorContentProvider.Filter" ) + search.getFilter(); //$NON-NLS-1$
 
             boolean showDn = BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
                 BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN )
@@ -161,7 +163,7 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
         }
         else
         {
-            url = "No search selected";
+            url = Messages.getString( "SearchResultEditorContentProvider.NoSearchSelected" ); //$NON-NLS-1$
             enabled = false;
         }
 

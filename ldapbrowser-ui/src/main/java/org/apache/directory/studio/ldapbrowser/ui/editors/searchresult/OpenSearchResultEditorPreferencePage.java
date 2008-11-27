@@ -42,8 +42,8 @@ public class OpenSearchResultEditorPreferencePage extends Action
      */
     public OpenSearchResultEditorPreferencePage()
     {
-        super.setText( "Preferences..." );
-        super.setToolTipText( "Preferences..." );
+        super.setText( Messages.getString( "OpenSearchResultEditorPreferencePage.Preferences" ) ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "OpenSearchResultEditorPreferencePage.PreferencesToolTip" ) ); //$NON-NLS-1$
         super.setEnabled( true );
     }
 

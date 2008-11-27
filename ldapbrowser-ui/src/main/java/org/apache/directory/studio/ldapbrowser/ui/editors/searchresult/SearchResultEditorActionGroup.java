@@ -104,61 +104,61 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
     /** The open value editor preferences action. */
     private ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
-    private static final String copyTableAction = "copyTableAction";
+    private static final String copyTableAction = "copyTableAction"; //$NON-NLS-1$
 
-    private static final String refreshSearchAction = "refreshSearchAction";
+    private static final String refreshSearchAction = "refreshSearchAction"; //$NON-NLS-1$
 
-    private final static String newValueAction = "newValueAction";
+    private final static String newValueAction = "newValueAction"; //$NON-NLS-1$
 
-    private final static String newSearchAction = "newSearchAction";
+    private final static String newSearchAction = "newSearchAction"; //$NON-NLS-1$
 
-    private static final String newBatchOperationAction = "newBatchOperationAction";
+    private static final String newBatchOperationAction = "newBatchOperationAction"; //$NON-NLS-1$
 
-    private final static String copyAction = "copyAction";
+    private final static String copyAction = "copyAction"; //$NON-NLS-1$
 
-    private final static String pasteAction = "pasteAction";
+    private final static String pasteAction = "pasteAction"; //$NON-NLS-1$
 
-    private final static String deleteAction = "deleteAction";
+    private final static String deleteAction = "deleteAction"; //$NON-NLS-1$
 
-    private static final String copyDnAction = "copyDnAction";
+    private static final String copyDnAction = "copyDnAction"; //$NON-NLS-1$
 
-    private static final String copyUrlAction = "copyUrlAction";
+    private static final String copyUrlAction = "copyUrlAction"; //$NON-NLS-1$
 
-    private static final String copyAttriuteDescriptionAction = "copyAttriuteDescriptionAction";
+    private static final String copyAttriuteDescriptionAction = "copyAttriuteDescriptionAction"; //$NON-NLS-1$
 
-    private static final String copyValueUtf8Action = "copyValueUtf8Action";
+    private static final String copyValueUtf8Action = "copyValueUtf8Action"; //$NON-NLS-1$
 
-    private static final String copyValueBase64Action = "copyValueBase64Action";
+    private static final String copyValueBase64Action = "copyValueBase64Action"; //$NON-NLS-1$
 
-    private static final String copyValueHexAction = "copyValueHexAction";
+    private static final String copyValueHexAction = "copyValueHexAction"; //$NON-NLS-1$
 
-    private static final String copyValueAsLdifAction = "copyValueAsLdifAction";
+    private static final String copyValueAsLdifAction = "copyValueAsLdifAction"; //$NON-NLS-1$
 
-    private static final String copySearchFilterAction = "copySearchFilterAction";
+    private static final String copySearchFilterAction = "copySearchFilterAction"; //$NON-NLS-1$
 
-    private static final String copyNotSearchFilterAction = "copyNotSearchFilterAction";
+    private static final String copyNotSearchFilterAction = "copyNotSearchFilterAction"; //$NON-NLS-1$
 
-    private static final String copyAndSearchFilterAction = "copyAndSearchFilterAction";
+    private static final String copyAndSearchFilterAction = "copyAndSearchFilterAction"; //$NON-NLS-1$
 
-    private static final String copyOrSearchFilterAction = "copyOrSearchFilterAction";
+    private static final String copyOrSearchFilterAction = "copyOrSearchFilterAction"; //$NON-NLS-1$
 
-    private static final String openSearchResultAction = "showEntryInSearchResultsAction";
+    private static final String openSearchResultAction = "showEntryInSearchResultsAction"; //$NON-NLS-1$
 
-    private static final String locateDnInDitAction = "locateDnInDitAction";
+    private static final String locateDnInDitAction = "locateDnInDitAction"; //$NON-NLS-1$
 
-    private static final String showOcdAction = "showOcdAction";
+    private static final String showOcdAction = "showOcdAction"; //$NON-NLS-1$
 
-    private static final String showAtdAction = "showAtdAction";
+    private static final String showAtdAction = "showAtdAction"; //$NON-NLS-1$
 
-    private static final String showEqualityMrdAction = "showEqualityMrdAction";
+    private static final String showEqualityMrdAction = "showEqualityMrdAction"; //$NON-NLS-1$
 
-    private static final String showSubstringMrdAction = "showSubstringMrdAction";
+    private static final String showSubstringMrdAction = "showSubstringMrdAction"; //$NON-NLS-1$
 
-    private static final String showOrderingMrdAction = "showOrderingMrdAction";
+    private static final String showOrderingMrdAction = "showOrderingMrdAction"; //$NON-NLS-1$
 
-    private static final String showLsdAction = "showLsdAction";
+    private static final String showLsdAction = "showLsdAction"; //$NON-NLS-1$
 
-    private final static String propertyDialogAction = "propertyDialogAction";
+    private final static String propertyDialogAction = "propertyDialogAction"; //$NON-NLS-1$
 
     /** The search result editor action map. */
     private Map<String, SearchResultEditorActionProxy> searchResultEditorActionMap;
@@ -399,7 +399,8 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         // navigation
         menuManager.add( searchResultEditorActionMap.get( locateDnInDitAction ) );
         menuManager.add( searchResultEditorActionMap.get( openSearchResultAction ) );
-        MenuManager schemaMenuManager = new MenuManager( "Open Schema Browser" );
+        MenuManager schemaMenuManager = new MenuManager( Messages
+            .getString( "SearchResultEditorActionGroup.OpenSchemaBrowser" ) ); //$NON-NLS-1$
         schemaMenuManager.add( searchResultEditorActionMap.get( showOcdAction ) );
         schemaMenuManager.add( searchResultEditorActionMap.get( showAtdAction ) );
         schemaMenuManager.add( searchResultEditorActionMap.get( showEqualityMrdAction ) );
@@ -407,7 +408,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         schemaMenuManager.add( searchResultEditorActionMap.get( showOrderingMrdAction ) );
         schemaMenuManager.add( searchResultEditorActionMap.get( showLsdAction ) );
         menuManager.add( schemaMenuManager );
-        MenuManager showInSubMenu = new MenuManager( "Show In" );
+        MenuManager showInSubMenu = new MenuManager( Messages.getString( "SearchResultEditorActionGroup.ShowIn" ) ); //$NON-NLS-1$
         showInSubMenu.add( ContributionItemFactory.VIEWS_SHOW_IN.create( PlatformUI.getWorkbench()
             .getActiveWorkbenchWindow() ) );
         menuManager.add( showInSubMenu );
@@ -417,7 +418,8 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         menuManager.add( searchResultEditorActionMap.get( copyAction ) );
         menuManager.add( searchResultEditorActionMap.get( pasteAction ) );
         menuManager.add( searchResultEditorActionMap.get( deleteAction ) );
-        MenuManager advancedMenuManager = new MenuManager( "Advanced" );
+        MenuManager advancedMenuManager = new MenuManager( Messages
+            .getString( "SearchResultEditorActionGroup.Advanced" ) ); //$NON-NLS-1$
         advancedMenuManager.add( searchResultEditorActionMap.get( copyDnAction ) );
         advancedMenuManager.add( searchResultEditorActionMap.get( copyUrlAction ) );
         advancedMenuManager.add( new Separator() );
@@ -438,7 +440,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
 
         // edit
         menuManager.add( openDefaultValueEditorActionProxy );
-        MenuManager editorMenuManager = new MenuManager( "Edit Value With" );
+        MenuManager editorMenuManager = new MenuManager( Messages.getString( "SearchResultEditorActionGroup.EditValue" ) ); //$NON-NLS-1$
         if ( openBestValueEditorActionProxy.isEnabled() )
         {
             editorMenuManager.add( openBestValueEditorActionProxy );

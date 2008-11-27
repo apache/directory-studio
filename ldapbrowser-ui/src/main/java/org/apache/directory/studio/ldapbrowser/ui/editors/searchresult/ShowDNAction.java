@@ -40,7 +40,7 @@ public class ShowDNAction extends Action
      */
     public ShowDNAction()
     {
-        super( "Show DN", AS_CHECK_BOX );
+        super( Messages.getString( "ShowDNAction.ShowDN" ), AS_CHECK_BOX ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
         super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(

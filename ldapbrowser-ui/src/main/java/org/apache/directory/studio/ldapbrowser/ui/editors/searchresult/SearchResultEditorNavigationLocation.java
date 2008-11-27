@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
@@ -58,7 +59,8 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
         ISearch search = getSearch();
         if ( search != null )
         {
-            return "Search " + search.getName();
+            return NLS.bind(
+                Messages.getString( "SearchResultEditorNavigationLocation.Search" ), new String[] { search.getName() } ); //$NON-NLS-1$
         }
         else
         {
@@ -73,8 +75,8 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     public void saveState( IMemento memento )
     {
         ISearch search = getSearch();
-        memento.putString( "SEARCH", search.getName() );
-        memento.putString( "CONNECTION", search.getBrowserConnection().getConnection().getId() );
+        memento.putString( "SEARCH", search.getName() ); //$NON-NLS-1$
+        memento.putString( "CONNECTION", search.getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
     }
 
 
@@ -84,8 +86,8 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     public void restoreState( IMemento memento )
     {
         IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-            memento.getString( "CONNECTION" ) );
-        ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) );
+            memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
+        ISearch search = connection.getSearchManager().getSearch( memento.getString( "SEARCH" ) ); //$NON-NLS-1$
         super.setInput( new SearchResultEditorInput( search ) );
     }
 
@@ -173,7 +175,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
      */
     public String toString()
     {
-        return "" + getSearch();
+        return "" + getSearch(); //$NON-NLS-1$
     }
 
 }

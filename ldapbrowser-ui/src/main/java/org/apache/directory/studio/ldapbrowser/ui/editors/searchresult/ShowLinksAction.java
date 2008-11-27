@@ -40,7 +40,7 @@ public class ShowLinksAction extends Action
      */
     public ShowLinksAction()
     {
-        super( "DN as link", AS_CHECK_BOX );
+        super( Messages.getString( "ShowLinksAction.DNAsLink" ), AS_CHECK_BOX ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
         super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(

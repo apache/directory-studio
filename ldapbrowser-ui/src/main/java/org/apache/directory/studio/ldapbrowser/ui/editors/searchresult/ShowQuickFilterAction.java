@@ -33,7 +33,7 @@ public class ShowQuickFilterAction extends Action
 
     /** The Constant SHOW_QUICKFILTER_DIALOGSETTING_KEY. */
     public static final String SHOW_QUICKFILTER_DIALOGSETTING_KEY = ShowQuickFilterAction.class.getName()
-        + ".showQuickFilter";
+        + ".showQuickFilter"; //$NON-NLS-1$
 
     /** The quick filter widget. */
     private SearchResultEditorQuickFilterWidget quickFilterWidget;
@@ -41,8 +41,8 @@ public class ShowQuickFilterAction extends Action
 
     public ShowQuickFilterAction( SearchResultEditorQuickFilterWidget quickFilterWidget )
     {
-        super( "Show Quick Filter", AS_CHECK_BOX );
-        super.setToolTipText( "Show Quick Filter" );
+        super( Messages.getString( "ShowQuickFilterAction.ShowQuickFilter" ), AS_CHECK_BOX ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString( "ShowQuickFilterAction.ShowQuickFilterToolTip" ) ); //$NON-NLS-1$
         super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_FILTER ) );
         super.setActionDefinitionId( IWorkbenchActionDefinitionIds.FIND_REPLACE );

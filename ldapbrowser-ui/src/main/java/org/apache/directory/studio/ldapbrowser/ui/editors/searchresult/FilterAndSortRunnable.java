@@ -70,7 +70,7 @@ public class FilterAndSortRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 
@@ -88,17 +88,17 @@ public class FilterAndSortRunnable implements StudioRunnableWithProgress
      */
     public void run( StudioProgressMonitor monitor )
     {
-        monitor.beginTask( "Filter and Sort", 3 );
+        monitor.beginTask( Messages.getString( "FilterAndSortRunnable.FilterAndSort" ), 3 ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        monitor.setTaskName( "Filter and Sort" );
+        monitor.setTaskName( Messages.getString( "FilterAndSortRunnable.FilterAndSort" ) ); //$NON-NLS-1$
 
-        monitor.reportProgress( "Filtering..." );
-        this.filteredAndSortedElements = this.configuration.getFilter().filter( this.mainWidget.getViewer(), "",
+        monitor.reportProgress( Messages.getString( "FilterAndSortRunnable.Filtering" ) ); //$NON-NLS-1$
+        this.filteredAndSortedElements = this.configuration.getFilter().filter( this.mainWidget.getViewer(), "", //$NON-NLS-1$
             elements );
         monitor.worked( 1 );
 
-        monitor.reportProgress( "Sorting..." );
+        monitor.reportProgress( Messages.getString( "FilterAndSortRunnable.Sorting" ) ); //$NON-NLS-1$
         this.configuration.getSorter().sort( this.mainWidget.getViewer(), this.filteredAndSortedElements );
         monitor.worked( 1 );
     }
@@ -118,7 +118,7 @@ public class FilterAndSortRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 

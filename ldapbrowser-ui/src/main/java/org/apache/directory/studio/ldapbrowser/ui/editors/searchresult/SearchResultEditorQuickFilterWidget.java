@@ -114,8 +114,8 @@ public class SearchResultEditorQuickFilterWidget
             public void modifyText( ModifyEvent e )
             {
                 filter.setQuickFilterValue( quickFilterValueText.getText() );
-                clearQuickFilterButton.setEnabled( !"".equals( quickFilterValueText.getText() ) );
-                if ( !"".equals( quickFilterValueText.getText() ) )
+                clearQuickFilterButton.setEnabled( !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
+                if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
                 {
                     RGB fgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
                         BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
@@ -138,7 +138,8 @@ public class SearchResultEditorQuickFilterWidget
         } );
 
         clearQuickFilterButton = new Button( innerComposite, SWT.PUSH );
-        clearQuickFilterButton.setToolTipText( "Clear Quick Filter" );
+        clearQuickFilterButton.setToolTipText( Messages
+            .getString( "SearchResultEditorQuickFilterWidget.ClearQuickFilterToolTip" ) ); //$NON-NLS-1$
         clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault()
             .getImage( BrowserCommonConstants.IMG_CLEAR ) );
         clearQuickFilterButton.setEnabled( false );
@@ -146,8 +147,8 @@ public class SearchResultEditorQuickFilterWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                if ( !"".equals( quickFilterValueText.getText() ) )
-                    quickFilterValueText.setText( "" );
+                if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
+                    quickFilterValueText.setText( "" ); //$NON-NLS-1$
             }
         } );
 
@@ -163,9 +164,9 @@ public class SearchResultEditorQuickFilterWidget
      */
     private void destroy()
     {
-        if ( !"".equals( quickFilterValueText.getText() ) )
+        if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
         {
-            quickFilterValueText.setText( "" );
+            quickFilterValueText.setText( "" ); //$NON-NLS-1$
         }
         innerComposite.dispose();
         innerComposite = null;

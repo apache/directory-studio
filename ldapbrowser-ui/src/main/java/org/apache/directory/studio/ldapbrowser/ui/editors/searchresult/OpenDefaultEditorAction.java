@@ -108,7 +108,7 @@ public class OpenDefaultEditorAction extends AbstractOpenEditorAction
      */
     public String getText()
     {
-        return "Edit Value";
+        return Messages.getString( "OpenDefaultEditorAction.EditValue" ); //$NON-NLS-1$
     }
 
 
