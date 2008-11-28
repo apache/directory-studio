@@ -29,13 +29,13 @@ package org.apache.directory.studio.apacheds.configuration.model.v152;
 public enum SaslQualityOfProtectionEnum
 {
     /** The auth QoP */
-    AUTH("auth (Authentication only)"),
+    AUTH(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationOnly" )), //$NON-NLS-1$
 
     /** The auth-int QoP */
-    AUTH_INT("auth-int (Authentication with integrity protection)"),
+    AUTH_INT(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationWithIntegrityProtection" )), //$NON-NLS-1$
 
     /** The auth-conf QoP */
-    AUTH_CONF("auth-conf (Authentication with integrity and privacy protection)");
+    AUTH_CONF(Messages.getString( "SaslQualityOfProtectionEnum.AuthenticationWithIntegrityAndPrivacyProtection" )); //$NON-NLS-1$
 
     /** The name */
     private String name;
