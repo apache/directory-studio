@@ -83,32 +83,32 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
                 case VERSION_1_5_4:
                     serverXmlIO = new ServerXmlIOV154();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.4.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.4.xml" ) ); //$NON-NLS-1$
                     break;
                 case VERSION_1_5_3:
                     serverXmlIO = new ServerXmlIOV153();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.3.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.3.xml" ) ); //$NON-NLS-1$
                     break;
                 case VERSION_1_5_2:
                     serverXmlIO = new ServerXmlIOV152();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.2.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.2.xml" ) ); //$NON-NLS-1$
                     break;
                 case VERSION_1_5_1:
                     serverXmlIO = new ServerXmlIOV151();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.1.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.1.xml" ) ); //$NON-NLS-1$
                     break;
                 case VERSION_1_5_0:
                     serverXmlIO = new ServerXmlIOV150();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.0.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.0.xml" ) ); //$NON-NLS-1$
                     break;
                 default:
                     serverXmlIO = new ServerXmlIOV154();
                     serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.4.xml" ) );
+                        .getResourceAsStream( "default-server-1.5.4.xml" ) ); //$NON-NLS-1$
                     break;
             }
 
@@ -124,8 +124,9 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( "Error!" );
-            messageBox.setMessage( "An error occurred when reading the file." + "\n" + e.getMessage() );
+            messageBox.setText( Messages.getString( "NewApacheDSConfigurationFileWizard.Error" ) ); //$NON-NLS-1$
+            messageBox
+                .setMessage( Messages.getString( "NewApacheDSConfigurationFileWizard.ErrorReadingFile" ) + e.getMessage() ); //$NON-NLS-1$
             messageBox.open();
             return false;
         }

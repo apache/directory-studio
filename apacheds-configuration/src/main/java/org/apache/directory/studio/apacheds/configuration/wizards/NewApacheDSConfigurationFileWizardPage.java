@@ -44,15 +44,15 @@ import org.eclipse.swt.widgets.Label;
 public class NewApacheDSConfigurationFileWizardPage extends WizardPage
 {
     /** Version 1.5.0 */
-    private static final String VERSION_1_5_0 = "1.5.0";
+    private static final String VERSION_1_5_0 = "1.5.0"; //$NON-NLS-1$
     /** Version 1.5.1 */
-    private static final String VERSION_1_5_1 = "1.5.1";
+    private static final String VERSION_1_5_1 = "1.5.1"; //$NON-NLS-1$
     /** Version 1.5.2 */
-    private static final String VERSION_1_5_2 = "1.5.2";
+    private static final String VERSION_1_5_2 = "1.5.2"; //$NON-NLS-1$
     /** Version 1.5.3 */
-    private static final String VERSION_1_5_3 = "1.5.3";
+    private static final String VERSION_1_5_3 = "1.5.3"; //$NON-NLS-1$
     /** Version 1.5.3 */
-    private static final String VERSION_1_5_4 = "1.5.4";
+    private static final String VERSION_1_5_4 = "1.5.4"; //$NON-NLS-1$
 
     // UI Fields
     private Combo versionCombo;
@@ -64,8 +64,8 @@ public class NewApacheDSConfigurationFileWizardPage extends WizardPage
     public NewApacheDSConfigurationFileWizardPage()
     {
         super( NewApacheDSConfigurationFileWizardPage.class.getCanonicalName() );
-        setTitle( "Create a new Apache DS configuration file." );
-        setDescription( "Please select the target version for the configuration file." );
+        setTitle( Messages.getString( "NewApacheDSConfigurationFileWizardPage.CreateConfigurationFile" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewApacheDSConfigurationFileWizardPage.SelectTargetVersion" ) ); //$NON-NLS-1$
         setImageDescriptor( ApacheDSConfigurationPlugin.getDefault().getImageDescriptor(
             ApacheDSConfigurationPluginConstants.IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD ) );
     }
@@ -81,13 +81,13 @@ public class NewApacheDSConfigurationFileWizardPage extends WizardPage
 
         // Target Version Group
         Group targetVersionGroup = new Group( composite, SWT.NONE );
-        targetVersionGroup.setText( "Target Version" );
+        targetVersionGroup.setText( Messages.getString( "NewApacheDSConfigurationFileWizardPage.TargetVersion" ) ); //$NON-NLS-1$
         targetVersionGroup.setLayout( new GridLayout( 2, false ) );
         targetVersionGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Version Label
         Label versionLabel = new Label( targetVersionGroup, SWT.NONE );
-        versionLabel.setText( "Apache DS version:" );
+        versionLabel.setText( Messages.getString( "NewApacheDSConfigurationFileWizardPage.ApacheDSVersion" ) ); //$NON-NLS-1$
 
         // Version Combo
         versionCombo = new Combo( targetVersionGroup, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
