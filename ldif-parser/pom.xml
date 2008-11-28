@@ -40,7 +40,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <skip>false</skip>
-	  <pde>true</pde>
+          <pde>true</pde>
           <buildcommands>
             <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
             <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
