@@ -98,15 +98,15 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private boolean isValid( Document document )
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
+        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
         {
             Element element = ( Element ) i.next();
-            org.dom4j.Attribute classAttribute = element.attribute( "class" );
+            org.dom4j.Attribute classAttribute = element.attribute( "class" ); //$NON-NLS-1$
             if ( classAttribute != null
                 && ( classAttribute.getValue()
-                    .equals( "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" ) ) )
+                    .equals( "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" ) ) ) //$NON-NLS-1$
             {
-                String partitionName = readBeanProperty( "name", element );
+                String partitionName = readBeanProperty( "name", element ); //$NON-NLS-1$
 
                 if ( partitionName != null )
                 {
@@ -183,27 +183,27 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void readEnvironmentBean( Document document, ServerConfigurationV150 serverConfiguration )
     {
-        Element environmentBean = getBeanElementById( document, "environment" );
+        Element environmentBean = getBeanElementById( document, "environment" ); //$NON-NLS-1$
 
         // Principal
-        String principal = readEnvironmentBeanProperty( "java.naming.security.principal", environmentBean );
+        String principal = readEnvironmentBeanProperty( "java.naming.security.principal", environmentBean ); //$NON-NLS-1$
         if ( principal != null )
         {
             serverConfiguration.setPrincipal( principal );
         }
 
         // Password
-        String password = readEnvironmentBeanProperty( "java.naming.security.credentials", environmentBean );
+        String password = readEnvironmentBeanProperty( "java.naming.security.credentials", environmentBean ); //$NON-NLS-1$
         if ( password != null )
         {
             serverConfiguration.setPassword( password );
         }
 
         // Binary Attributes
-        String binaryAttributes = readEnvironmentBeanProperty( "java.naming.ldap.attributes.binary", environmentBean );
+        String binaryAttributes = readEnvironmentBeanProperty( "java.naming.ldap.attributes.binary", environmentBean ); //$NON-NLS-1$
         if ( binaryAttributes != null )
         {
-            String[] attributes = binaryAttributes.split( " " );
+            String[] attributes = binaryAttributes.split( " " ); //$NON-NLS-1$
 
             for ( String attribute : attributes )
             {
@@ -225,16 +225,16 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private String readEnvironmentBeanProperty( String property, Element element )
     {
-        Element propertyElement = element.element( "property" );
+        Element propertyElement = element.element( "property" ); //$NON-NLS-1$
         if ( propertyElement != null )
         {
-            Element propsElement = propertyElement.element( "props" );
+            Element propsElement = propertyElement.element( "props" ); //$NON-NLS-1$
             if ( propsElement != null )
             {
-                for ( Iterator<?> i = propsElement.elementIterator( "prop" ); i.hasNext(); )
+                for ( Iterator<?> i = propsElement.elementIterator( "prop" ); i.hasNext(); ) //$NON-NLS-1$
                 {
                     Element propElement = ( Element ) i.next();
-                    org.dom4j.Attribute keyAttribute = propElement.attribute( "key" );
+                    org.dom4j.Attribute keyAttribute = propElement.attribute( "key" ); //$NON-NLS-1$
                     if ( keyAttribute != null && ( keyAttribute.getValue().equals( property ) ) )
                     {
                         return propElement.getText();
@@ -261,87 +261,87 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
     private void readConfigurationBean( Document document, ServerConfigurationV150 serverConfiguration )
         throws NumberFormatException, BooleanFormatException, ServerXmlIOException
     {
-        Element configurationBean = getBeanElementById( document, "configuration" );
+        Element configurationBean = getBeanElementById( document, "configuration" ); //$NON-NLS-1$
 
         // LdapPort
-        String ldapPort = readBeanProperty( "ldapPort", configurationBean );
+        String ldapPort = readBeanProperty( "ldapPort", configurationBean ); //$NON-NLS-1$
         if ( ldapPort != null )
         {
             serverConfiguration.setPort( Integer.parseInt( ldapPort ) );
         }
 
         // SynchPeriodMillis
-        String synchPeriodMillis = readBeanProperty( "synchPeriodMillis", configurationBean );
+        String synchPeriodMillis = readBeanProperty( "synchPeriodMillis", configurationBean ); //$NON-NLS-1$
         if ( synchPeriodMillis != null )
         {
             serverConfiguration.setSynchronizationPeriod( Long.parseLong( synchPeriodMillis ) );
         }
 
         // MaxTimeLimit
-        String maxTimeLimit = readBeanProperty( "maxTimeLimit", configurationBean );
+        String maxTimeLimit = readBeanProperty( "maxTimeLimit", configurationBean ); //$NON-NLS-1$
         if ( maxTimeLimit != null )
         {
             serverConfiguration.setMaxTimeLimit( Integer.parseInt( maxTimeLimit ) );
         }
 
         // MaxSizeLimit
-        String maxSizeLimit = readBeanProperty( "maxSizeLimit", configurationBean );
+        String maxSizeLimit = readBeanProperty( "maxSizeLimit", configurationBean ); //$NON-NLS-1$
         if ( maxSizeLimit != null )
         {
             serverConfiguration.setMaxSizeLimit( Integer.parseInt( maxSizeLimit ) );
         }
 
         // MaxThreads
-        String maxThreads = readBeanProperty( "maxThreads", configurationBean );
+        String maxThreads = readBeanProperty( "maxThreads", configurationBean ); //$NON-NLS-1$
         if ( maxThreads != null )
         {
             serverConfiguration.setMaxThreads( Integer.parseInt( maxThreads ) );
         }
 
         // AllowAnonymousAccess
-        String allowAnonymousAccess = readBeanProperty( "allowAnonymousAccess", configurationBean );
+        String allowAnonymousAccess = readBeanProperty( "allowAnonymousAccess", configurationBean ); //$NON-NLS-1$
         if ( allowAnonymousAccess != null )
         {
             serverConfiguration.setAllowAnonymousAccess( parseBoolean( allowAnonymousAccess ) );
         }
 
         // AccessControlEnabled
-        String accessControlEnabled = readBeanProperty( "accessControlEnabled", configurationBean );
+        String accessControlEnabled = readBeanProperty( "accessControlEnabled", configurationBean ); //$NON-NLS-1$
         if ( accessControlEnabled != null )
         {
             serverConfiguration.setEnableAccessControl( parseBoolean( accessControlEnabled ) );
         }
 
         // EnableNtp
-        String enableNtp = readBeanProperty( "enableNtp", configurationBean );
+        String enableNtp = readBeanProperty( "enableNtp", configurationBean ); //$NON-NLS-1$
         if ( enableNtp != null )
         {
             serverConfiguration.setEnableNTP( parseBoolean( enableNtp ) );
         }
 
         // EnableKerberos
-        String enableKerberos = readBeanProperty( "enableKerberos", configurationBean );
+        String enableKerberos = readBeanProperty( "enableKerberos", configurationBean ); //$NON-NLS-1$
         if ( enableKerberos != null )
         {
             serverConfiguration.setEnableKerberos( parseBoolean( enableKerberos ) );
         }
 
         // EnableChangePassword
-        String enableChangePassword = readBeanProperty( "enableChangePassword", configurationBean );
+        String enableChangePassword = readBeanProperty( "enableChangePassword", configurationBean ); //$NON-NLS-1$
         if ( enableChangePassword != null )
         {
             serverConfiguration.setEnableChangePassword( parseBoolean( enableChangePassword ) );
         }
 
         // EnableChangePassword
-        String denormalizeOpAttrsEnabled = readBeanProperty( "denormalizeOpAttrsEnabled", configurationBean );
+        String denormalizeOpAttrsEnabled = readBeanProperty( "denormalizeOpAttrsEnabled", configurationBean ); //$NON-NLS-1$
         if ( denormalizeOpAttrsEnabled != null )
         {
             serverConfiguration.setDenormalizeOpAttr( parseBoolean( denormalizeOpAttrsEnabled ) );
         }
 
         // SystemPartition
-        String systemPartitionConfiguration = readBeanProperty( "systemPartitionConfiguration", configurationBean );
+        String systemPartitionConfiguration = readBeanProperty( "systemPartitionConfiguration", configurationBean ); //$NON-NLS-1$
         if ( systemPartitionConfiguration != null )
         {
             Partition systemPartition = readPartition( document, systemPartitionConfiguration, true );
@@ -353,7 +353,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
         else
         {
             throw new ServerXmlIOException(
-                "The Server Configuration does not contain a 'systemPartitionConfiguration' property." );
+                Messages.getString("ServerXmlIOV150.0") ); //$NON-NLS-1$
         }
 
         // Other Partitions
@@ -380,16 +380,16 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
     private void readOtherPartitions( Element configurationBean, ServerConfigurationV150 serverConfiguration )
         throws NumberFormatException, BooleanFormatException
     {
-        Element propertyElement = getBeanPropertyElement( "partitionConfigurations", configurationBean );
+        Element propertyElement = getBeanPropertyElement( "partitionConfigurations", configurationBean ); //$NON-NLS-1$
         if ( propertyElement != null )
         {
-            Element setElement = propertyElement.element( "set" );
+            Element setElement = propertyElement.element( "set" ); //$NON-NLS-1$
             if ( setElement != null )
             {
-                for ( Iterator<?> i = setElement.elementIterator( "ref" ); i.hasNext(); )
+                for ( Iterator<?> i = setElement.elementIterator( "ref" ); i.hasNext(); ) //$NON-NLS-1$
                 {
                     Element element = ( Element ) i.next();
-                    org.dom4j.Attribute beanAttribute = element.attribute( "bean" );
+                    org.dom4j.Attribute beanAttribute = element.attribute( "bean" ); //$NON-NLS-1$
                     if ( beanAttribute != null )
                     {
                         Partition partition = readPartition( configurationBean.getDocument(), beanAttribute.getValue(),
@@ -428,35 +428,35 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
             partition.setSystemPartition( isSystemPartition );
 
             // Name
-            String name = readBeanProperty( "name", partitionBean );
+            String name = readBeanProperty( "name", partitionBean ); //$NON-NLS-1$
             if ( name != null )
             {
                 partition.setId( name );
             }
 
             // CacheSize
-            String cacheSize = readBeanProperty( "cacheSize", partitionBean );
+            String cacheSize = readBeanProperty( "cacheSize", partitionBean ); //$NON-NLS-1$
             if ( cacheSize != null )
             {
                 partition.setCacheSize( Integer.parseInt( cacheSize ) );
             }
 
             // Suffix
-            String suffix = readBeanProperty( "suffix", partitionBean );
+            String suffix = readBeanProperty( "suffix", partitionBean ); //$NON-NLS-1$
             if ( suffix != null )
             {
                 partition.setSuffix( suffix );
             }
 
             // OptimizerEnabled
-            String optimizerEnabled = readBeanProperty( "optimizerEnabled", partitionBean );
+            String optimizerEnabled = readBeanProperty( "optimizerEnabled", partitionBean ); //$NON-NLS-1$
             if ( optimizerEnabled != null )
             {
                 partition.setEnableOptimizer( parseBoolean( optimizerEnabled ) );
             }
 
             // SynchOnWrite
-            String synchOnWrite = readBeanProperty( "synchOnWrite", partitionBean );
+            String synchOnWrite = readBeanProperty( "synchOnWrite", partitionBean ); //$NON-NLS-1$
             if ( synchOnWrite != null )
             {
                 partition.setSynchronizationOnWrite( parseBoolean( synchOnWrite ) );
@@ -487,13 +487,13 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
     {
         List<IndexedAttribute> indexedAttributes = new ArrayList<IndexedAttribute>();
 
-        Element propertyElement = getBeanPropertyElement( "indexedAttributes", partitionBean );
+        Element propertyElement = getBeanPropertyElement( "indexedAttributes", partitionBean ); //$NON-NLS-1$
         if ( propertyElement != null )
         {
-            Element setElement = propertyElement.element( "set" );
+            Element setElement = propertyElement.element( "set" ); //$NON-NLS-1$
             if ( setElement != null )
             {
-                for ( Iterator<?> i = setElement.elementIterator( "bean" ); i.hasNext(); )
+                for ( Iterator<?> i = setElement.elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
                 {
                     Element beanElement = ( Element ) i.next();
                     IndexedAttribute ia = readIndexedAttribute( beanElement );
@@ -520,13 +520,13 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private IndexedAttribute readIndexedAttribute( Element beanElement ) throws NumberFormatException
     {
-        org.dom4j.Attribute classAttribute = beanElement.attribute( "class" );
+        org.dom4j.Attribute classAttribute = beanElement.attribute( "class" ); //$NON-NLS-1$
         if ( classAttribute != null
             && classAttribute.getValue().equals(
-                "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" ) )
+                "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" ) ) //$NON-NLS-1$
         {
-            String attributeId = readBeanProperty( "attributeId", beanElement );
-            String cacheSize = readBeanProperty( "cacheSize", beanElement );
+            String attributeId = readBeanProperty( "attributeId", beanElement ); //$NON-NLS-1$
+            String cacheSize = readBeanProperty( "cacheSize", beanElement ); //$NON-NLS-1$
             if ( ( attributeId != null ) && ( cacheSize != null ) )
             {
                 return new IndexedAttribute( attributeId, Integer.parseInt( cacheSize ) );
@@ -548,10 +548,10 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private Attributes readPartitionContextEntry( Element partitionBean )
     {
-        Element propertyElement = getBeanPropertyElement( "contextEntry", partitionBean );
+        Element propertyElement = getBeanPropertyElement( "contextEntry", partitionBean ); //$NON-NLS-1$
         if ( propertyElement != null )
         {
-            Element valueElement = propertyElement.element( "value" );
+            Element valueElement = propertyElement.element( "value" ); //$NON-NLS-1$
             if ( valueElement != null )
             {
                 return readContextEntry( valueElement.getText() );
@@ -572,13 +572,13 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void readInterceptors( Element configurationBean, ServerConfigurationV150 serverConfiguration )
     {
-        Element propertyElement = getBeanPropertyElement( "interceptorConfigurations", configurationBean );
+        Element propertyElement = getBeanPropertyElement( "interceptorConfigurations", configurationBean ); //$NON-NLS-1$
         if ( propertyElement != null )
         {
-            Element listElement = propertyElement.element( "list" );
+            Element listElement = propertyElement.element( "list" ); //$NON-NLS-1$
             if ( listElement != null )
             {
-                for ( Iterator<?> i = listElement.elementIterator( "bean" ); i.hasNext(); )
+                for ( Iterator<?> i = listElement.elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
                 {
                     Interceptor interceptor = readInterceptor( ( Element ) i.next() );
                     if ( interceptor != null )
@@ -601,23 +601,23 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private Interceptor readInterceptor( Element element )
     {
-        org.dom4j.Attribute classAttribute = element.attribute( "class" );
+        org.dom4j.Attribute classAttribute = element.attribute( "class" ); //$NON-NLS-1$
         if ( classAttribute != null
             && classAttribute.getValue().equals(
-                "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" ) )
+                "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" ) ) //$NON-NLS-1$
         {
-            String name = readBeanProperty( "name", element );
+            String name = readBeanProperty( "name", element ); //$NON-NLS-1$
 
-            for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); )
+            for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); ) //$NON-NLS-1$
             {
                 Element propertyElement = ( Element ) i.next();
-                org.dom4j.Attribute nameAttribute = propertyElement.attribute( "name" );
-                if ( nameAttribute != null && ( nameAttribute.getValue().equals( "interceptor" ) ) )
+                org.dom4j.Attribute nameAttribute = propertyElement.attribute( "name" ); //$NON-NLS-1$
+                if ( nameAttribute != null && ( nameAttribute.getValue().equals( "interceptor" ) ) ) //$NON-NLS-1$
                 {
-                    Element beanElement = propertyElement.element( "bean" );
+                    Element beanElement = propertyElement.element( "bean" ); //$NON-NLS-1$
                     if ( beanElement != null )
                     {
-                        org.dom4j.Attribute beanClassAttribute = beanElement.attribute( "class" );
+                        org.dom4j.Attribute beanClassAttribute = beanElement.attribute( "class" ); //$NON-NLS-1$
                         if ( beanClassAttribute != null )
                         {
                             Interceptor interceptor = new Interceptor( name );
@@ -643,13 +643,13 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void readExtendedOperations( Element configurationBean, ServerConfigurationV150 serverConfiguration )
     {
-        Element propertyElement = getBeanPropertyElement( "extendedOperationHandlers", configurationBean );
+        Element propertyElement = getBeanPropertyElement( "extendedOperationHandlers", configurationBean ); //$NON-NLS-1$
         if ( propertyElement != null )
         {
-            Element listElement = propertyElement.element( "list" );
+            Element listElement = propertyElement.element( "list" ); //$NON-NLS-1$
             if ( listElement != null )
             {
-                for ( Iterator<?> i = listElement.elementIterator( "bean" ); i.hasNext(); )
+                for ( Iterator<?> i = listElement.elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
                 {
                     ExtendedOperation extendedOperation = readExtendedOperation( ( Element ) i.next() );
                     if ( extendedOperation != null )
@@ -672,7 +672,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private ExtendedOperation readExtendedOperation( Element element )
     {
-        org.dom4j.Attribute classAttribute = element.attribute( "class" );
+        org.dom4j.Attribute classAttribute = element.attribute( "class" ); //$NON-NLS-1$
         if ( classAttribute != null )
         {
             return new ExtendedOperation( classAttribute.getValue() );
@@ -688,7 +688,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
     public String toXml( ServerConfiguration serverConfiguration )
     {
         Document document = DocumentHelper.createDocument();
-        Element root = document.addElement( "beans" );
+        Element root = document.addElement( "beans" ); //$NON-NLS-1$
 
         // Environment Bean
         createEnvironmentBean( root, ( ServerConfigurationV150 ) serverConfiguration );
@@ -715,8 +715,8 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
             // Will never occur
         }
 
-        stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN",
-            "http://www.springframework.org/dtd/spring-beans.dtd" );
+        stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN", //$NON-NLS-1$ //$NON-NLS-2$
+            "http://www.springframework.org/dtd/spring-beans.dtd" ); //$NON-NLS-1$
 
         return stylizedDocument.asXML();
     }
@@ -732,39 +732,39 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createEnvironmentBean( Element root, ServerConfigurationV150 serverConfiguration )
     {
-        Element environmentBean = root.addElement( "bean" );
-        environmentBean.addAttribute( "id", "environment" );
-        environmentBean.addAttribute( "class", "org.springframework.beans.factory.config.PropertiesFactoryBean" );
+        Element environmentBean = root.addElement( "bean" ); //$NON-NLS-1$
+        environmentBean.addAttribute( "id", "environment" ); //$NON-NLS-1$ //$NON-NLS-2$
+        environmentBean.addAttribute( "class", "org.springframework.beans.factory.config.PropertiesFactoryBean" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-        Element propertyElement = environmentBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "properties" );
-        Element propsElement = propertyElement.addElement( "props" );
+        Element propertyElement = environmentBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "properties" ); //$NON-NLS-1$ //$NON-NLS-2$
+        Element propsElement = propertyElement.addElement( "props" ); //$NON-NLS-1$
 
         // Key 'java.naming.security.authentication'
-        Element propElement = propsElement.addElement( "prop" );
-        propElement.addAttribute( "key", "java.naming.security.authentication" );
-        propElement.setText( "simple" );
+        Element propElement = propsElement.addElement( "prop" ); //$NON-NLS-1$
+        propElement.addAttribute( "key", "java.naming.security.authentication" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propElement.setText( "simple" ); //$NON-NLS-1$
 
         // Key 'java.naming.security.principal'
-        propElement = propsElement.addElement( "prop" );
-        propElement.addAttribute( "key", "java.naming.security.principal" );
+        propElement = propsElement.addElement( "prop" ); //$NON-NLS-1$
+        propElement.addAttribute( "key", "java.naming.security.principal" ); //$NON-NLS-1$ //$NON-NLS-2$
         propElement.setText( serverConfiguration.getPrincipal() );
 
         // Key 'java.naming.security.credentials'
-        propElement = propsElement.addElement( "prop" );
-        propElement.addAttribute( "key", "java.naming.security.credentials" );
+        propElement = propsElement.addElement( "prop" ); //$NON-NLS-1$
+        propElement.addAttribute( "key", "java.naming.security.credentials" ); //$NON-NLS-1$ //$NON-NLS-2$
         propElement.setText( serverConfiguration.getPassword() );
 
         // Key 'java.naming.ldap.attributes.binary'
         if ( !serverConfiguration.getBinaryAttributes().isEmpty() )
         {
-            propElement = propsElement.addElement( "prop" );
-            propElement.addAttribute( "key", "java.naming.ldap.attributes.binary" );
+            propElement = propsElement.addElement( "prop" ); //$NON-NLS-1$
+            propElement.addAttribute( "key", "java.naming.ldap.attributes.binary" ); //$NON-NLS-1$ //$NON-NLS-2$
             StringBuffer sb = new StringBuffer();
             for ( String attribute : serverConfiguration.getBinaryAttributes() )
             {
                 sb.append( attribute );
-                sb.append( " " );
+                sb.append( " " ); //$NON-NLS-1$
             }
             String attributes = sb.toString();
             propElement.setText( attributes.substring( 0, attributes.length() - 1 ) );
@@ -783,125 +783,125 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createConfigurationBean( Element root, ServerConfigurationV150 serverConfiguration )
     {
-        Element configurationBean = root.addElement( "bean" );
-        configurationBean.addAttribute( "id", "configuration" );
-        configurationBean.addAttribute( "class",
-            "org.apache.directory.server.configuration.MutableServerStartupConfiguration" );
+        Element configurationBean = root.addElement( "bean" ); //$NON-NLS-1$
+        configurationBean.addAttribute( "id", "configuration" ); //$NON-NLS-1$ //$NON-NLS-2$
+        configurationBean.addAttribute( "class", //$NON-NLS-1$
+            "org.apache.directory.server.configuration.MutableServerStartupConfiguration" ); //$NON-NLS-1$
 
         // Working directory
-        Element propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "workingDirectory" );
-        propertyElement.addAttribute( "value", "example.com" ); // Ask Alex about this value.
+        Element propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "workingDirectory" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "example.com" ); // Ask Alex about this value. //$NON-NLS-1$ //$NON-NLS-2$
 
         // SynchPeriodMillis
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "synchPeriodMillis" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getSynchronizationPeriod() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "synchPeriodMillis" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getSynchronizationPeriod() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // MaxTimeLimit
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "maxTimeLimit" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxTimeLimit() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "maxTimeLimit" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxTimeLimit() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // MaxSizeLimit
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "maxSizeLimit" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxSizeLimit() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "maxSizeLimit" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxSizeLimit() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // MaxThreads
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "maxThreads" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxThreads() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "maxThreads" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getMaxThreads() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // AllowAnonymousAccess
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "allowAnonymousAccess" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isAllowAnonymousAccess() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "allowAnonymousAccess" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isAllowAnonymousAccess() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // AccessControlEnabled
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "accessControlEnabled" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableAccessControl() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "accessControlEnabled" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableAccessControl() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Enable NTP
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableNtp" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableNTP() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "enableNtp" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableNTP() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // EnableKerberos
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableKerberos" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableKerberos() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "enableKerberos" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableKerberos() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // EnableChangePassword
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "enableChangePassword" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableChangePassword() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "enableChangePassword" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isEnableChangePassword() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // DenormalizeOpAttrsEnabled
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "denormalizeOpAttrsEnabled" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.isDenormalizeOpAttr() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "denormalizeOpAttrsEnabled" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.isDenormalizeOpAttr() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // LdapPort
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "ldapPort" );
-        propertyElement.addAttribute( "value", "" + serverConfiguration.getPort() );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "ldapPort" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + serverConfiguration.getPort() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // SystemPartitionConfiguration
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "systemPartitionConfiguration" );
-        propertyElement.addAttribute( "ref", "systemPartitionConfiguration" );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "systemPartitionConfiguration" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "ref", "systemPartitionConfiguration" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // PartitionConfigurations
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "partitionConfigurations" );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "partitionConfigurations" ); //$NON-NLS-1$ //$NON-NLS-2$
         if ( serverConfiguration.getPartitions().size() > 1 )
         {
-            Element setElement = propertyElement.addElement( "set" );
+            Element setElement = propertyElement.addElement( "set" ); //$NON-NLS-1$
             int partitionCounter = 1;
             for ( Partition partition : serverConfiguration.getPartitions() )
             {
                 if ( !partition.isSystemPartition() )
                 {
-                    setElement.addElement( "ref" ).addAttribute( "bean", "partition-" + partitionCounter );
+                    setElement.addElement( "ref" ).addAttribute( "bean", "partition-" + partitionCounter ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     partitionCounter++;
                 }
             }
         }
 
         // ExtendedOperationHandlers
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "extendedOperationHandlers" );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "extendedOperationHandlers" ); //$NON-NLS-1$ //$NON-NLS-2$
         if ( serverConfiguration.getExtendedOperations().size() > 1 )
         {
-            Element listElement = propertyElement.addElement( "list" );
+            Element listElement = propertyElement.addElement( "list" ); //$NON-NLS-1$
             for ( ExtendedOperation extendedOperation : serverConfiguration.getExtendedOperations() )
             {
-                listElement.addElement( "bean" ).addAttribute( "class", extendedOperation.getClassType() );
+                listElement.addElement( "bean" ).addAttribute( "class", extendedOperation.getClassType() ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
         // InterceptorConfigurations
-        propertyElement = configurationBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "interceptorConfigurations" );
+        propertyElement = configurationBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "interceptorConfigurations" ); //$NON-NLS-1$ //$NON-NLS-2$
         if ( serverConfiguration.getInterceptors().size() > 1 )
         {
-            Element listElement = propertyElement.addElement( "list" );
+            Element listElement = propertyElement.addElement( "list" ); //$NON-NLS-1$
             for ( Interceptor interceptor : serverConfiguration.getInterceptors() )
             {
-                Element interceptorBeanElement = listElement.addElement( "bean" );
-                interceptorBeanElement.addAttribute( "class",
-                    "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" );
+                Element interceptorBeanElement = listElement.addElement( "bean" ); //$NON-NLS-1$
+                interceptorBeanElement.addAttribute( "class", //$NON-NLS-1$
+                    "org.apache.directory.server.core.configuration.MutableInterceptorConfiguration" ); //$NON-NLS-1$
 
-                Element interceptorPropertyElement = interceptorBeanElement.addElement( "property" );
-                interceptorPropertyElement.addAttribute( "name", "name" );
-                interceptorPropertyElement.addAttribute( "value", interceptor.getName() );
+                Element interceptorPropertyElement = interceptorBeanElement.addElement( "property" ); //$NON-NLS-1$
+                interceptorPropertyElement.addAttribute( "name", "name" ); //$NON-NLS-1$ //$NON-NLS-2$
+                interceptorPropertyElement.addAttribute( "value", interceptor.getName() ); //$NON-NLS-1$
 
-                interceptorPropertyElement = interceptorBeanElement.addElement( "property" );
-                interceptorPropertyElement.addAttribute( "name", "interceptor" );
-                interceptorPropertyElement.addElement( "bean" ).addAttribute( "class",
-                    ( interceptor.getClassType() == null ? "" : interceptor.getClassType() ) );
+                interceptorPropertyElement = interceptorBeanElement.addElement( "property" ); //$NON-NLS-1$
+                interceptorPropertyElement.addAttribute( "name", "interceptor" ); //$NON-NLS-1$ //$NON-NLS-2$
+                interceptorPropertyElement.addElement( "bean" ).addAttribute( "class", //$NON-NLS-1$ //$NON-NLS-2$
+                    ( interceptor.getClassType() == null ? "" : interceptor.getClassType() ) ); //$NON-NLS-1$
             }
         }
 
@@ -930,7 +930,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
 
         if ( systemPartition != null )
         {
-            createPartitionConfigurationBean( root, systemPartition, "systemPartitionConfiguration" );
+            createPartitionConfigurationBean( root, systemPartition, "systemPartitionConfiguration" ); //$NON-NLS-1$
         }
     }
 
@@ -950,7 +950,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
         {
             if ( !partition.isSystemPartition() )
             {
-                createPartitionConfigurationBean( root, partition, "partition-" + counter );
+                createPartitionConfigurationBean( root, partition, "partition-" + counter ); //$NON-NLS-1$
                 counter++;
             }
         }
@@ -969,66 +969,66 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createPartitionConfigurationBean( Element root, Partition partition, String name )
     {
-        Element partitionBean = root.addElement( "bean" );
-        partitionBean.addAttribute( "id", name );
-        partitionBean.addAttribute( "class",
-            "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" );
+        Element partitionBean = root.addElement( "bean" ); //$NON-NLS-1$
+        partitionBean.addAttribute( "id", name ); //$NON-NLS-1$
+        partitionBean.addAttribute( "class", //$NON-NLS-1$
+            "org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration" ); //$NON-NLS-1$
 
         // Name
-        Element propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "name" );
-        propertyElement.addAttribute( "value", partition.getId() );
+        Element propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "name" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", partition.getId() ); //$NON-NLS-1$
 
         // CacheSize
-        propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "cacheSize" );
-        propertyElement.addAttribute( "value", "" + partition.getCacheSize() );
+        propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "cacheSize" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + partition.getCacheSize() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Suffix
-        propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "suffix" );
-        propertyElement.addAttribute( "value", partition.getSuffix() );
+        propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "suffix" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", partition.getSuffix() ); //$NON-NLS-1$
 
         // OptimizerEnabled
-        propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "optimizerEnabled" );
-        propertyElement.addAttribute( "value", "" + partition.isEnableOptimizer() );
+        propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "optimizerEnabled" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + partition.isEnableOptimizer() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // SynchOnWrite
-        propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "synchOnWrite" );
-        propertyElement.addAttribute( "value", "" + partition.isSynchronizationOnWrite() );
+        propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "synchOnWrite" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propertyElement.addAttribute( "value", "" + partition.isSynchronizationOnWrite() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Indexed Attributes
-        propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "indexedAttributes" );
+        propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "indexedAttributes" ); //$NON-NLS-1$ //$NON-NLS-2$
         if ( partition.getIndexedAttributes().size() > 1 )
         {
-            Element setElement = propertyElement.addElement( "set" );
+            Element setElement = propertyElement.addElement( "set" ); //$NON-NLS-1$
             for ( IndexedAttribute indexedAttribute : partition.getIndexedAttributes() )
             {
-                Element beanElement = setElement.addElement( "bean" );
-                beanElement.addAttribute( "class",
-                    "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" );
+                Element beanElement = setElement.addElement( "bean" ); //$NON-NLS-1$
+                beanElement.addAttribute( "class", //$NON-NLS-1$
+                    "org.apache.directory.server.core.partition.impl.btree.MutableIndexConfiguration" ); //$NON-NLS-1$
 
                 // AttributeID
-                Element beanPropertyElement = beanElement.addElement( "property" );
-                beanPropertyElement.addAttribute( "name", "attributeId" );
-                beanPropertyElement.addAttribute( "value", indexedAttribute.getAttributeId() );
+                Element beanPropertyElement = beanElement.addElement( "property" ); //$NON-NLS-1$
+                beanPropertyElement.addAttribute( "name", "attributeId" ); //$NON-NLS-1$ //$NON-NLS-2$
+                beanPropertyElement.addAttribute( "value", indexedAttribute.getAttributeId() ); //$NON-NLS-1$
 
                 // CacheSize
-                beanPropertyElement = beanElement.addElement( "property" );
-                beanPropertyElement.addAttribute( "name", "cacheSize" );
-                beanPropertyElement.addAttribute( "value", "" + indexedAttribute.getCacheSize() );
+                beanPropertyElement = beanElement.addElement( "property" ); //$NON-NLS-1$
+                beanPropertyElement.addAttribute( "name", "cacheSize" ); //$NON-NLS-1$ //$NON-NLS-2$
+                beanPropertyElement.addAttribute( "value", "" + indexedAttribute.getCacheSize() ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 
         // ContextEntry
-        propertyElement = partitionBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "contextEntry" );
+        propertyElement = partitionBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "contextEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
         if ( partition.getContextEntry() != null )
         {
-            Element valueElement = propertyElement.addElement( "value" );
+            Element valueElement = propertyElement.addElement( "value" ); //$NON-NLS-1$
 
             Attributes contextEntry = partition.getContextEntry();
             StringBuffer sb = new StringBuffer();
@@ -1041,7 +1041,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
                     NamingEnumeration<?> values = attribute.getAll();
                     while ( values.hasMoreElements() )
                     {
-                        sb.append( attribute.getID() + ": " + values.nextElement() + "\n" );
+                        sb.append( attribute.getID() + ": " + values.nextElement() + "\n" ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
                 catch ( NamingException e )
@@ -1062,16 +1062,16 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      */
     private void createCustomEditorsBean( Element root )
     {
-        Element customEditorsBean = root.addElement( "bean" );
-        customEditorsBean.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" );
-        Element propertyElement = customEditorsBean.addElement( "property" );
-        propertyElement.addAttribute( "name", "customEditors" );
-        Element mapElement = propertyElement.addElement( "map" );
-        Element entryElement = mapElement.addElement( "entry" );
-        entryElement.addAttribute( "key", "javax.naming.directory.Attributes" );
-        Element entryBeanElement = entryElement.addElement( "bean" );
-        entryBeanElement.addAttribute( "class",
-            "org.apache.directory.server.core.configuration.AttributesPropertyEditor" );
+        Element customEditorsBean = root.addElement( "bean" ); //$NON-NLS-1$
+        customEditorsBean.addAttribute( "class", "org.springframework.beans.factory.config.CustomEditorConfigurer" ); //$NON-NLS-1$ //$NON-NLS-2$
+        Element propertyElement = customEditorsBean.addElement( "property" ); //$NON-NLS-1$
+        propertyElement.addAttribute( "name", "customEditors" ); //$NON-NLS-1$ //$NON-NLS-2$
+        Element mapElement = propertyElement.addElement( "map" ); //$NON-NLS-1$
+        Element entryElement = mapElement.addElement( "entry" ); //$NON-NLS-1$
+        entryElement.addAttribute( "key", "javax.naming.directory.Attributes" ); //$NON-NLS-1$ //$NON-NLS-2$
+        Element entryBeanElement = entryElement.addElement( "bean" ); //$NON-NLS-1$
+        entryBeanElement.addAttribute( "class", //$NON-NLS-1$
+            "org.apache.directory.server.core.configuration.AttributesPropertyEditor" ); //$NON-NLS-1$
     }
 
 }
