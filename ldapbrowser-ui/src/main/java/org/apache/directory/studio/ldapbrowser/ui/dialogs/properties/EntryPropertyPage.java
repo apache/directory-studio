@@ -371,7 +371,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
             else
             {
                 childrenText.setText( ( entry.hasMoreChildren() ? NLS.bind( Messages
-                    .getString( "EntryPropertyPage.ChildrenFetched" ), new int[] { entry.getChildrenCount() } ) //$NON-NLS-1$
+                    .getString( "EntryPropertyPage.ChildrenFetched" ), new Object[] { entry.getChildrenCount() } ) //$NON-NLS-1$
                     : Integer.toString( entry.getChildrenCount() ) ) );
             }
             attributesText.setText( "" + attCount ); //$NON-NLS-1$

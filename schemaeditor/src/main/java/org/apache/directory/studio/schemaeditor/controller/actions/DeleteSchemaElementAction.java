@@ -148,7 +148,7 @@ public class DeleteSchemaElementAction extends Action implements IWorkbenchWindo
             else
             {
                 messageBox.setMessage( NLS.bind(
-                    Messages.getString( "DeleteSchemaElementAction.SureToDeleteItems" ), new int[] { count } ) ); //$NON-NLS-1$
+                    Messages.getString( "DeleteSchemaElementAction.SureToDeleteItems" ), new Object[] { count } ) ); //$NON-NLS-1$
             }
             if ( messageBox.open() == SWT.YES )
             {

@@ -119,7 +119,7 @@ public class DeleteProjectAction extends Action implements IWorkbenchWindowActio
             else
             {
                 messageBox.setMessage( NLS.bind(
-                    Messages.getString( "DeleteProjectAction.SureToDeleteProjects" ), new int[] { count } ) ); //$NON-NLS-1$
+                    Messages.getString( "DeleteProjectAction.SureToDeleteProjects" ), new Object[] { count } ) ); //$NON-NLS-1$
             }
             if ( messageBox.open() == SWT.YES )
             {

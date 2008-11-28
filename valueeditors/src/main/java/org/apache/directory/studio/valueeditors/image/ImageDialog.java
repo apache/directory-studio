@@ -728,7 +728,7 @@ public class ImageDialog extends Dialog
             return "NULL"; //$NON-NLS-1$
         }
 
-        String text = NLS.bind( Messages.getString( "ImageDialog.Image" ), new int[] { imageRawData.length } ); //$NON-NLS-1$
+        String text = NLS.bind( Messages.getString( "ImageDialog.Image" ), new Object[] { imageRawData.length } ); //$NON-NLS-1$
         try
         {
             ByteArrayInputStream bais = new ByteArrayInputStream( imageRawData );
@@ -741,11 +741,11 @@ public class ImageDialog extends Dialog
             text = typePrefix
                 + NLS
                     .bind(
-                        Messages.getString( "ImageDialog.Pixel" ), new int[] { imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-2$
+                        Messages.getString( "ImageDialog.Pixel" ), new Object[] { imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-2$
         }
         catch ( SWTException swte )
         {
-            text = NLS.bind( Messages.getString( "ImageDialog.InvalidImage" ), new int[] { imageRawData.length } ); //$NON-NLS-1$
+            text = NLS.bind( Messages.getString( "ImageDialog.InvalidImage" ), new Object[] { imageRawData.length } ); //$NON-NLS-1$
         }
         return text;
     }

@@ -277,7 +277,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
                 textList
                     .add( NLS
                         .bind(
-                            Messages.getString( "BatchOperationApplyOnWizardPage.DNsOfSelectedAttributes" ), new int[] { internalDnSet.size() } ) ); //$NON-NLS-1$
+                            Messages.getString( "BatchOperationApplyOnWizardPage.DNsOfSelectedAttributes" ), new Object[] { internalDnSet.size() } ) ); //$NON-NLS-1$
             }
         }
         if ( searches.length == 1 && searches[0].getSearchResults() != null )
@@ -315,7 +315,7 @@ public class BatchOperationApplyOnWizardPage extends WizardPage
             textList
                 .add( NLS
                     .bind(
-                        Messages.getString( "BatchOperationApplyOnWizardPage.SelectedEntries" ), new int[] { internalDnSet.size() } ) ); //$NON-NLS-1$
+                        Messages.getString( "BatchOperationApplyOnWizardPage.SelectedEntries" ), new Object[] { internalDnSet.size() } ) ); //$NON-NLS-1$
         }
 
         this.initCurrentSelectionTexts = textList.toArray( new String[textList.size()] );
