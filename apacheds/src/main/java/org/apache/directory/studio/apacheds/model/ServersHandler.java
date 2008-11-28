@@ -230,7 +230,7 @@ public class ServersHandler
         File store = getServersStorePath().toFile();
         File tempStore = getServersStoreTempPath().toFile();
         boolean loadFailed = false;
-        String exceptionMessage = "";
+        String exceptionMessage = ""; //$NON-NLS-1$
 
         // We try to load the servers file
         if ( store.exists() )
@@ -273,18 +273,18 @@ public class ServersHandler
                     }
                     catch ( FileNotFoundException e )
                     {
-                        ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n"
+                        ApacheDsPluginUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) //$NON-NLS-1$
                             + e.getMessage() );
                     }
                     catch ( ServersHandlerIOException e )
                     {
-                        ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n"
+                        ApacheDsPluginUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) //$NON-NLS-1$
                             + e.getMessage() );
                     }
                 }
                 else
                 {
-                    ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n"
+                    ApacheDsPluginUtils.reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) //$NON-NLS-1$
                         + exceptionMessage );
                 }
             }
@@ -308,8 +308,8 @@ public class ServersHandler
             ServersHandlerIO.write( serversList, outputStream );
 
             // Copying the temp servers file to the final location
-            String content = FileUtils.readFileToString( tempStore, "UTF-8" );
-            FileUtils.writeStringToFile( store, content, "UTF-8" );
+            String content = FileUtils.readFileToString( tempStore, "UTF-8" ); //$NON-NLS-1$
+            FileUtils.writeStringToFile( store, content, "UTF-8" ); //$NON-NLS-1$
         }
         catch ( FileNotFoundException e )
         {
@@ -333,11 +333,13 @@ public class ServersHandler
             }
             catch ( FileNotFoundException e )
             {
-                ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                ApacheDsPluginUtils
+                    .reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
-                ApacheDsPluginUtils.reportError( "An error occured when loading the servers.\n\n" + e.getMessage() );
+                ApacheDsPluginUtils
+                    .reportError( Messages.getString( "ServersHandler.ErrorLoadingServer" ) + e.getMessage() ); //$NON-NLS-1$
             }
         }
     }
@@ -351,7 +353,7 @@ public class ServersHandler
      */
     private IPath getServersStorePath()
     {
-        return ApacheDsPlugin.getDefault().getStateLocation().append( "servers.xml" );
+        return ApacheDsPlugin.getDefault().getStateLocation().append( "servers.xml" ); //$NON-NLS-1$
     }
 
 
@@ -363,7 +365,7 @@ public class ServersHandler
      */
     private IPath getServersStoreTempPath()
     {
-        return ApacheDsPlugin.getDefault().getStateLocation().append( "servers-temp.xml" );
+        return ApacheDsPlugin.getDefault().getStateLocation().append( "servers-temp.xml" ); //$NON-NLS-1$
     }
 
 

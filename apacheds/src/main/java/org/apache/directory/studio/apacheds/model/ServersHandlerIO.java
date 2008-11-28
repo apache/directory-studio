@@ -46,11 +46,11 @@ import org.dom4j.io.XMLWriter;
 public class ServersHandlerIO
 {
     // XML tags and attributes
-    private static final String SERVERS_TAG = "servers";
-    private static final String SERVER_TAG = "server";
-    private static final String SERVER_ID_ATTRIBUTE = "id";
-    private static final String SERVER_NAME_ATTRIBUTE = "name";
-    private static final String SERVER_VERSION_ATTRIBUTE = "version";
+    private static final String SERVERS_TAG = "servers"; //$NON-NLS-1$
+    private static final String SERVER_TAG = "server"; //$NON-NLS-1$
+    private static final String SERVER_ID_ATTRIBUTE = "id"; //$NON-NLS-1$
+    private static final String SERVER_NAME_ATTRIBUTE = "name"; //$NON-NLS-1$
+    private static final String SERVER_VERSION_ATTRIBUTE = "version"; //$NON-NLS-1$
 
 
     /**
@@ -81,7 +81,7 @@ public class ServersHandlerIO
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( SERVERS_TAG ) )
         {
-            throw new ServersHandlerIOException( "The file does not seem to be a valid servers file." );
+            throw new ServersHandlerIOException( Messages.getString( "ServersHandlerIO.ErrorNotValidServersFile" ) ); //$NON-NLS-1$
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( SERVER_TAG ); i.hasNext(); )
@@ -123,11 +123,11 @@ public class ServersHandlerIO
         Attribute versionAttribute = element.attribute( SERVER_VERSION_ATTRIBUTE );
         if ( versionAttribute != null )
         {
-            if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.4" ) )
+            if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.4" ) ) //$NON-NLS-1$
             {
                 server.setVersion( ServerVersion.VERSION_1_5_4 );
             }
-            else if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.3" ) )
+            else if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.3" ) ) //$NON-NLS-1$
             {
                 server.setVersion( ServerVersion.VERSION_1_5_3 );
             }
@@ -179,7 +179,7 @@ public class ServersHandlerIO
 
         // Writing the file to the stream
         OutputFormat outformat = OutputFormat.createPrettyPrint();
-        outformat.setEncoding( "UTF-8" );
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
         XMLWriter writer = new XMLWriter( outputStream, outformat );
         writer.write( document );
         writer.flush();

@@ -73,7 +73,7 @@ public class Server implements IAdaptable
     {
         if ( listener == null )
         {
-            throw new IllegalArgumentException( "Listener cannot be null" );
+            throw new IllegalArgumentException( Messages.getString( "Server.ListenerCantBeNull" ) ); //$NON-NLS-1$
         }
 
         listeners.add( listener );
@@ -90,7 +90,7 @@ public class Server implements IAdaptable
     {
         if ( listener == null )
         {
-            throw new IllegalArgumentException( "Listener cannot be null" );
+            throw new IllegalArgumentException( Messages.getString( "Server.ListenerCantBeNull" ) ); //$NON-NLS-1$
         }
 
         listeners.remove( listener );

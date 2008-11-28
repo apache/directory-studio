@@ -28,7 +28,7 @@ package org.apache.directory.studio.apacheds.model;
  */
 public enum ServerStateEnum
 {
-    STARTING("Starting"), STARTED("Started"), STOPPING("Stopping"), STOPPED("Stopped"), UNKNONW("Unknown");
+    STARTING(Messages.getString( "ServerStateEnum.Starting" )), STARTED(Messages.getString( "ServerStateEnum.Started" )), STOPPING(Messages.getString( "ServerStateEnum.Stopping" )), STOPPED(Messages.getString( "ServerStateEnum.Stopped" )), UNKNONW(Messages.getString( "ServerStateEnum.Unknown" )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
     /** The dispayable name of the state */
     private String displayName;
