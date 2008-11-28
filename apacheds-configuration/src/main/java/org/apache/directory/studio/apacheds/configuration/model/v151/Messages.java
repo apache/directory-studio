@@ -1,4 +1,4 @@
-p/*
+/*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
  *  distributed with this work for additional information
@@ -17,7 +17,7 @@ p/*
  *  under the License. 
  *  
  */
-ackage org.apache.directory.studio.apacheds.configuration.model.v151;
+package org.apache.directory.studio.apacheds.configuration.model.v151;
 
 
 import java.util.MissingResourceException;
