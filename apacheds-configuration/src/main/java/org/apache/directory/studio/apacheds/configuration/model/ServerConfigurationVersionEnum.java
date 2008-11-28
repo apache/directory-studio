@@ -36,10 +36,10 @@ public enum ServerConfigurationVersionEnum
          */
         public String toString()
         {
-            return "Version 1.5.4";
+            return Messages.getString( "ServerConfigurationVersionEnum.Version154" ); //$NON-NLS-1$
         }
     },
-    
+
     /** Version 1.5.3 */
     VERSION_1_5_3
     {
@@ -48,10 +48,10 @@ public enum ServerConfigurationVersionEnum
          */
         public String toString()
         {
-            return "Version 1.5.3";
+            return Messages.getString( "ServerConfigurationVersionEnum.Version153" ); //$NON-NLS-1$
         }
     },
-    
+
     /** Version 1.5.2 */
     VERSION_1_5_2
     {
@@ -60,7 +60,7 @@ public enum ServerConfigurationVersionEnum
          */
         public String toString()
         {
-            return "Version 1.5.2";
+            return Messages.getString( "ServerConfigurationVersionEnum.Version152" ); //$NON-NLS-1$
         }
     },
 
@@ -72,7 +72,7 @@ public enum ServerConfigurationVersionEnum
          */
         public String toString()
         {
-            return "Version 1.5.1";
+            return Messages.getString( "ServerConfigurationVersionEnum.Version151" ); //$NON-NLS-1$
         }
     },
 
@@ -84,7 +84,7 @@ public enum ServerConfigurationVersionEnum
          */
         public String toString()
         {
-            return "Version 1.5.0";
+            return Messages.getString( "ServerConfigurationVersionEnum.Version150" ); //$NON-NLS-1$
         }
     }
 }

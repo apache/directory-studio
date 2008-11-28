@@ -40,6 +40,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -63,10 +64,10 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      */
     public Element getBeanElementById( Document document, String id )
     {
-        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); )
+        for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
         {
             Element element = ( Element ) i.next();
-            org.dom4j.Attribute idAttribute = element.attribute( "id" );
+            org.dom4j.Attribute idAttribute = element.attribute( "id" ); //$NON-NLS-1$
             if ( idAttribute != null && ( idAttribute.getValue().equals( id ) ) )
             {
                 return element;
@@ -89,10 +90,10 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      */
     public Element getBeanPropertyElement( String property, Element element )
     {
-        for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); )
+        for ( Iterator<?> i = element.elementIterator( "property" ); i.hasNext(); ) //$NON-NLS-1$
         {
             Element propertyElement = ( Element ) i.next();
-            org.dom4j.Attribute nameAttribute = propertyElement.attribute( "name" );
+            org.dom4j.Attribute nameAttribute = propertyElement.attribute( "name" ); //$NON-NLS-1$
             if ( nameAttribute != null && ( nameAttribute.getValue().equals( property ) ) )
             {
                 return propertyElement;
@@ -118,13 +119,13 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
         Element propertyElement = getBeanPropertyElement( property, element );
         if ( propertyElement != null )
         {
-            org.dom4j.Attribute valueAttribute = propertyElement.attribute( "value" );
+            org.dom4j.Attribute valueAttribute = propertyElement.attribute( "value" ); //$NON-NLS-1$
             if ( valueAttribute != null )
             {
                 return valueAttribute.getValue();
             }
 
-            org.dom4j.Attribute refAttribute = propertyElement.attribute( "ref" );
+            org.dom4j.Attribute refAttribute = propertyElement.attribute( "ref" ); //$NON-NLS-1$
             if ( refAttribute != null )
             {
                 return refAttribute.getValue();
@@ -147,17 +148,18 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
      */
     public boolean parseBoolean( String s ) throws BooleanFormatException
     {
-        if ( "true".equals( s ) )
+        if ( "true".equals( s ) ) //$NON-NLS-1$
         {
             return true;
         }
-        else if ( "false".equals( s ) )
+        else if ( "false".equals( s ) ) //$NON-NLS-1$
         {
             return false;
         }
         else
         {
-            throw new BooleanFormatException( "The String '" + s + "' could not be parsed as a boolean." );
+            throw new BooleanFormatException( NLS.bind(
+                Messages.getString( "AbstractServerXmlIO.ErrorNotBoolean" ), new String[] { s } ) ); //$NON-NLS-1$
         }
     }
 
@@ -263,8 +265,8 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = null;
 
-        transformer = factory
-            .newTransformer( new StreamSource( ApacheDSConfigurationPlugin.class.getResourceAsStream( "template.xslt" ) ) );
+        transformer = factory.newTransformer( new StreamSource( ApacheDSConfigurationPlugin.class
+            .getResourceAsStream( "template.xslt" ) ) ); //$NON-NLS-1$
 
         // now lets style the given document
         DocumentSource source = new DocumentSource( document );
