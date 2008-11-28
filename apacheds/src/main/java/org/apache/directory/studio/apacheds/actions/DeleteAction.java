@@ -50,8 +50,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class DeleteAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "&Delete";
-
     /** The associated view */
     private ServersView view;
 
@@ -61,7 +59,7 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
      */
     public DeleteAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "DeleteAction.Delete" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -74,7 +72,7 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
      */
     public DeleteAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "DeleteAction.Delete" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -87,7 +85,7 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
     {
         setId( ApacheDsPluginConstants.CMD_DELETE );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_DELETE );
-        setToolTipText( "Delete" );
+        setToolTipText( Messages.getString( "DeleteAction.DeleteToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
             ISharedImages.IMG_TOOL_DELETE ) );
     }
@@ -132,7 +130,7 @@ public class DeleteAction extends Action implements IWorkbenchWindowActionDelega
                             }
                             catch ( DebugException e )
                             {
-                                ApacheDsPluginUtils.reportError( "An error occurred when stopping the server.\n\n"
+                                ApacheDsPluginUtils.reportError( Messages.getString( "DeleteAction.ErrorWhileStopping" ) //$NON-NLS-1$
                                     + e.getMessage() );
                             }
                         }

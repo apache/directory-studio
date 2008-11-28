@@ -41,6 +41,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
@@ -53,8 +54,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "&Run";
-
     /** The associated view */
     private ServersView view;
 
@@ -64,7 +63,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public RunAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "RunAction.Run" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -77,7 +76,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public RunAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "RunAction.Run" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -90,7 +89,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
     {
         setId( ApacheDsPluginConstants.CMD_RUN );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_RUN );
-        setToolTipText( "Run" );
+        setToolTipText( Messages.getString( "RunAction.RunToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor( ApacheDsPluginConstants.IMG_RUN ) );
     }
 
@@ -142,22 +141,23 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 
                     if ( alreadyInUseProtocolPortsList.length == 1 )
                     {
-                        title = "Port already in use";
-                        message = "The port of the protocol " + alreadyInUseProtocolPortsList[0]
-                            + " is already in use.";
+                        title = Messages.getString( "RunAction.PortInUse" ); //$NON-NLS-1$
+                        message = NLS
+                            .bind(
+                                Messages.getString( "RunAction.PortOfProtocolInUse" ), new String[] { alreadyInUseProtocolPortsList[0] } ); //$NON-NLS-1$
                     }
                     else
                     {
-                        title = "Ports already in use";
-                        message = "The ports of the following protocols are already in use:";
+                        title = Messages.getString( "RunAction.PortsInUse" ); //$NON-NLS-1$
+                        message = Messages.getString( "RunAction.PortsOfProtocolsInUse" ); //$NON-NLS-1$
                         for ( String alreadyInUseProtocolPort : alreadyInUseProtocolPortsList )
                         {
-                            message += ApacheDsPluginUtils.LINE_SEPARATOR + "    - " + alreadyInUseProtocolPort;
+                            message += ApacheDsPluginUtils.LINE_SEPARATOR + "    - " + alreadyInUseProtocolPort; //$NON-NLS-1$
                         }
                     }
 
                     message += ApacheDsPluginUtils.LINE_SEPARATOR + ApacheDsPluginUtils.LINE_SEPARATOR
-                        + "Do you wish to continue?";
+                        + Messages.getString( "RunAction.Continue" ); //$NON-NLS-1$
 
                     MessageDialog dialog = new MessageDialog( view.getSite().getShell(), title, null, message,
                         MessageDialog.WARNING, new String[]
@@ -195,15 +195,17 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
 
         if ( errorMessage == null )
         {
-            message = "Unable to read the server configuration.";
+            message = Messages.getString( "RunAction.UnableReadServerConfiguration" ); //$NON-NLS-1$
         }
         else
         {
-            message = "Unable to read the server configuration." + ApacheDsPluginUtils.LINE_SEPARATOR
-                + ApacheDsPluginUtils.LINE_SEPARATOR + "The following error occurred: " + errorMessage;
+            message = Messages.getString( "RunAction.UnableReadServerConfiguration" ) + ApacheDsPluginUtils.LINE_SEPARATOR //$NON-NLS-1$
+                + ApacheDsPluginUtils.LINE_SEPARATOR
+                + Messages.getString( "RunAction.FollowingErrorOccurred" ) + errorMessage; //$NON-NLS-1$
         }
 
-        MessageDialog dialog = new MessageDialog( view.getSite().getShell(), "Unable to read the server configuration",
+        MessageDialog dialog = new MessageDialog( view.getSite().getShell(), Messages
+            .getString( "RunAction.UnableReadServerConfiguration" ), //$NON-NLS-1$
             null, message, MessageDialog.ERROR, new String[]
                 { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
@@ -258,7 +260,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getLdapPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "LDAP (port " + serverConfiguration.getLdapPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.LDAPPort" ), new Object[] { serverConfiguration.getLdapPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -267,7 +270,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getLdapsPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "LDAPS (port " + serverConfiguration.getLdapsPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.LDAPSPort" ), new Object[] { serverConfiguration.getLdapsPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -276,7 +280,10 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getKerberosPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "Kerberos (port " + serverConfiguration.getKerberosPort() + ")" );
+                alreadyInUseProtocolPortsList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "RunAction.KerberosPort" ), new Object[] { serverConfiguration.getKerberosPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -285,7 +292,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getDnsPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "DNS (port " + serverConfiguration.getDnsPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.DNSPort" ), new Object[] { serverConfiguration.getDnsPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -294,7 +302,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getNtpPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "NTP (port " + serverConfiguration.getNtpPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.NTPPort" ), new Object[] { serverConfiguration.getNtpPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -303,8 +312,10 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getChangePasswordPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "ChangePassword (port "
-                    + serverConfiguration.getChangePasswordPort() + ")" );
+                alreadyInUseProtocolPortsList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "RunAction.ChangePasswordPort" ), new Object[] { serverConfiguration.getChangePasswordPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -331,7 +342,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getLdapPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "LDAP (port " + serverConfiguration.getLdapPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.LDAPPort" ), new Object[] { serverConfiguration.getLdapPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -340,7 +352,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getLdapsPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "LDAPS (port " + serverConfiguration.getLdapsPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.LDAPSPort" ), new Object[] { serverConfiguration.getLdapsPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -349,7 +362,10 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getKerberosPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "Kerberos (port " + serverConfiguration.getKerberosPort() + ")" );
+                alreadyInUseProtocolPortsList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "RunAction.KerberosPort" ), new Object[] { serverConfiguration.getKerberosPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -358,7 +374,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getDnsPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "DNS (port " + serverConfiguration.getDnsPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind(
+                    Messages.getString( "RunAction.DNSPort" ), new Object[] { serverConfiguration.getDnsPort() } ) ); //$NON-NLS-1$
             }
         }
 
@@ -367,7 +384,8 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getNtpPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "NTP (port " + serverConfiguration.getNtpPort() + ")" );
+                alreadyInUseProtocolPortsList.add( NLS.bind( Messages.getString( "RunAction.NTPPort" ), new Object[]
+                    { serverConfiguration.getNtpPort() } ) );
             }
         }
 
@@ -376,8 +394,10 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getChangePasswordPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( "ChangePassword (port "
-                    + serverConfiguration.getChangePasswordPort() + ")" );
+                alreadyInUseProtocolPortsList
+                    .add( NLS
+                        .bind(
+                            Messages.getString( "RunAction.ChangePasswordPort" ), new Object[] { serverConfiguration.getChangePasswordPort() } ) ); //$NON-NLS-1$
             }
         }
 

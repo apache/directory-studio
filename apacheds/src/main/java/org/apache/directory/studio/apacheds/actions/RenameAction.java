@@ -64,8 +64,6 @@ import org.eclipse.ui.actions.TextActionHandler;
  */
 public class RenameAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "R&ename...";
-
     /** The associated view */
     private ServersView view;
     private Tree tree;
@@ -84,7 +82,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      */
     public RenameAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "RenameAction.Rename" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -97,7 +95,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
      */
     public RenameAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "RenameAction.Rename" ) ); //$NON-NLS-1$
         this.view = view;
         this.tree = view.getViewer().getTree();
         this.treeEditor = new TreeEditor( tree );
@@ -112,7 +110,7 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
     {
         setId( ApacheDsPluginConstants.CMD_RENAME );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_RENAME );
-        setToolTipText( "Rename..." );
+        setToolTipText( Messages.getString( "RenameAction.RenameToolTip" ) ); //$NON-NLS-1$
     }
 
 
@@ -303,8 +301,8 @@ public class RenameAction extends Action implements IWorkbenchWindowActionDelega
                     {
                         if ( !ServersHandler.getDefault().isNameAvailable( newName ) )
                         {
-                            MessageDialog.openError( tree.getShell(), "Server",
-                                "The name is already in use. Specify a different name." );
+                            MessageDialog.openError( tree.getShell(), Messages.getString( "RenameAction.Server" ), //$NON-NLS-1$
+                                Messages.getString( "RenameAction.ErrorNameInUse" ) ); //$NON-NLS-1$
                         }
                         else
                         {

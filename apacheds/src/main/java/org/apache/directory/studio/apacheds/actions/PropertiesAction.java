@@ -41,8 +41,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  */
 public class PropertiesAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "&Properties";
-
     /** The associated view */
     private ServersView view;
 
@@ -52,7 +50,7 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
      */
     public PropertiesAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "PropertiesAction.Properties" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -65,7 +63,7 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
      */
     public PropertiesAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "PropertiesAction.Properties" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -78,7 +76,7 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
     {
         setId( ApacheDsPluginConstants.CMD_PROPERTIES );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_PROPERTIES );
-        setToolTipText( "Properties" );
+        setToolTipText( Messages.getString( "PropertiesAction.PropertiesToolTip" ) ); //$NON-NLS-1$
     }
 
 
@@ -95,7 +93,8 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
                 Server server = ( Server ) selection.getFirstElement();
                 PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(),
                     server, ApacheDsPluginConstants.PROP_SERVER_PROPERTY_PAGE, null, null );
-                dialog.getShell().setText( "Properties for '" + shorten( server.getName(), 30 ) + "'" );
+                dialog.getShell().setText(
+                    Messages.getString( "PropertiesAction.PropertiesFor" ) + shorten( server.getName(), 30 ) + "'" ); //$NON-NLS-1$ //$NON-NLS-2$
                 dialog.open();
             }
         }
@@ -121,11 +120,11 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
         // shorten label
         if ( maxLength < 3 )
         {
-            return "...";
+            return "..."; //$NON-NLS-1$
         }
         if ( label.length() > maxLength )
         {
-            label = label.substring( 0, maxLength / 2 ) + "..."
+            label = label.substring( 0, maxLength / 2 ) + "..." //$NON-NLS-1$
                 + label.substring( label.length() - maxLength / 2, label.length() );
 
         }

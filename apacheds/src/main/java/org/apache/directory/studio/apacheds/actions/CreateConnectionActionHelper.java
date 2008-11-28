@@ -31,6 +31,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -91,13 +92,13 @@ public class CreateConnectionActionHelper
         }
 
         // Bind password
-        connectionParameter.setBindPassword( "secret" );
+        connectionParameter.setBindPassword( "secret" ); //$NON-NLS-1$
 
         // Bind principal
-        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
+        connectionParameter.setBindPrincipal( "uid=admin,ou=system" ); //$NON-NLS-1$
 
         // Host
-        connectionParameter.setHost( "localhost" );
+        connectionParameter.setHost( "localhost" ); //$NON-NLS-1$
 
         // Name
         connectionParameter.setName( serverName );
@@ -122,8 +123,12 @@ public class CreateConnectionActionHelper
         {
             // As we're already in the LDAP perspective, we only indicate to the user 
             // the name of the connection that has been created
-            MessageDialog dialog = new MessageDialog( window.getShell(), "Connection created", null,
-                "A connection called '" + connection.getName() + "' has been created.", MessageDialog.INFORMATION,
+            MessageDialog dialog = new MessageDialog(
+                window.getShell(),
+                Messages.getString( "CreateConnectionActionHelper.ConnectionCreated" ), null, //$NON-NLS-1$
+                NLS
+                    .bind(
+                        Messages.getString( "CreateConnectionActionHelper.ConnectionCalledCreated" ), new String[] { connection.getName() } ), MessageDialog.INFORMATION, //$NON-NLS-1$
                 new String[]
                     { IDialogConstants.OK_LABEL }, MessageDialog.OK );
             dialog.open();
@@ -133,9 +138,12 @@ public class CreateConnectionActionHelper
             // We're not already in the LDAP perspective, we indicate to the user
             // the name of the connection that has been created and we ask him
             // if we wants to switch to the LDAP perspective
-            MessageDialog dialog = new MessageDialog( window.getShell(), "Connection created", null,
-                "A connection called '" + connection.getName()
-                    + "' has been created.\n\nDo you want to switch to the LDAP perspective ?",
+            MessageDialog dialog = new MessageDialog(
+                window.getShell(),
+                Messages.getString( "CreateConnectionActionHelper.ConnectionCreated" ), null, //$NON-NLS-1$
+                NLS
+                    .bind(
+                        Messages.getString( "CreateConnectionActionHelper.ConnectionCalledCreatedSwitch" ), new String[] { connection.getName() } ), //$NON-NLS-1$
                 MessageDialog.INFORMATION, new String[]
                     { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, MessageDialog.OK );
             if ( dialog.open() == MessageDialog.OK )
@@ -157,7 +165,7 @@ public class CreateConnectionActionHelper
     {
         for ( IPerspectiveDescriptor perspective : PlatformUI.getWorkbench().getPerspectiveRegistry().getPerspectives() )
         {
-            if ( ApacheDsPlugin.getDefault().getPluginProperties().getString( "Perspective_LdapBrowserPerspective_id" )
+            if ( ApacheDsPlugin.getDefault().getPluginProperties().getString( "Perspective_LdapBrowserPerspective_id" ) //$NON-NLS-1$
                 .equalsIgnoreCase( perspective.getId() ) )
             {
                 return perspective;

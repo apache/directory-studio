@@ -17,6 +17,7 @@
  *  under the License. 
  *  
  */
+
 package org.apache.directory.studio.apacheds.actions;
 
 
@@ -52,8 +53,6 @@ import org.osgi.framework.Bundle;
  */
 public class CreateConnectionAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "Create a Connection";
-
     /** The associated view */
     private ServersView view;
 
@@ -63,7 +62,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
      */
     public CreateConnectionAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "CreateConnectionAction.CreateAConnection" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -76,7 +75,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
      */
     public CreateConnectionAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "CreateConnectionAction.CreateAConnection" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -89,7 +88,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
     {
         setId( ApacheDsPluginConstants.CMD_CREATE_CONNECTION );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_CREATE_CONNECTION );
-        setToolTipText( "Stop" );
+        setToolTipText( Messages.getString( "CreateConnectionAction.StopToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor(
             ApacheDsPluginConstants.IMG_CREATE_CONNECTION ) );
     }
@@ -133,7 +132,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                     return;
                 }
 
-                if ( isEnableLdapOrLdaps( serverConfiguration ))
+                if ( isEnableLdapOrLdaps( serverConfiguration ) )
                 {
                     // Creating the connection using the helper class
                     CreateConnectionActionHelper.createLdapBrowserConnection( server.getName(), serverConfiguration );
@@ -141,9 +140,9 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                 else
                 {
                     // LDAP and LDAPS protocols are disabled, we report this error to the user
-                    MessageDialog dialog = new MessageDialog( view.getSite().getShell(),
-                        "Unable to create a connection", null,
-                        "LDAP and LDAPS protocols are disabled. A connection cannot be created.", MessageDialog.ERROR,
+                    MessageDialog dialog = new MessageDialog( view.getSite().getShell(), Messages
+                        .getString( "CreateConnectionAction.UnableCreateConnection" ), null, //$NON-NLS-1$
+                        Messages.getString( "CreateConnectionAction.LDAPAndLDAPSDisabled" ), MessageDialog.ERROR, //$NON-NLS-1$
                         new String[]
                             { IDialogConstants.OK_LABEL }, MessageDialog.OK );
                     dialog.open();
@@ -166,15 +165,17 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
         if ( errorMessage == null )
         {
-            message = "Unable to read the server configuration.";
+            message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ); //$NON-NLS-1$
         }
         else
         {
-            message = "Unable to read the server configuration." + ApacheDsPluginUtils.LINE_SEPARATOR
-                + ApacheDsPluginUtils.LINE_SEPARATOR + "The following error occurred: " + errorMessage;
+            message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) + ApacheDsPluginUtils.LINE_SEPARATOR //$NON-NLS-1$
+                + ApacheDsPluginUtils.LINE_SEPARATOR
+                + Messages.getString( "CreateConnectionAction.FollowingErrorOccurred" ) + errorMessage; //$NON-NLS-1$
         }
 
-        MessageDialog dialog = new MessageDialog( view.getSite().getShell(), "Unable to read the server configuration",
+        MessageDialog dialog = new MessageDialog( view.getSite().getShell(), Messages
+            .getString( "CreateConnectionAction.UnableReadServerConfiguration" ), //$NON-NLS-1$
             null, message, MessageDialog.ERROR, new String[]
                 { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
@@ -253,7 +254,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
         PropertyResourceBundle properties = ApacheDsPlugin.getDefault().getPluginProperties();
 
         // Connection Core Plugin
-        Bundle connectionCoreBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionCore_id" ) );
+        Bundle connectionCoreBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionCore_id" ) ); //$NON-NLS-1$
         if ( connectionCoreBundle != null )
         {
             // Checking the state of the plugin
@@ -263,7 +264,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
             }
 
             // Connection UI Plugin
-            Bundle connectionUiBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionUi_id" ) );
+            Bundle connectionUiBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionUi_id" ) ); //$NON-NLS-1$
             if ( connectionUiBundle != null )
             {
                 // Checking the state of the plugin
@@ -274,7 +275,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
                 // LDAP Browser Common Plugin
                 Bundle ldapBrowserCommonBundle = Platform.getBundle( properties
-                    .getString( "Plugin_LdapBrowserCommon_id" ) );
+                    .getString( "Plugin_LdapBrowserCommon_id" ) ); //$NON-NLS-1$
                 if ( ldapBrowserCommonBundle != null )
                 {
                     // Checking the state of the plugin
@@ -285,7 +286,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
                     // LDAP Browser Core Plugin
                     Bundle ldapBrowserCoreBundle = Platform.getBundle( properties
-                        .getString( "Plugin_LdapBrowserCore_id" ) );
+                        .getString( "Plugin_LdapBrowserCore_id" ) ); //$NON-NLS-1$
                     if ( ldapBrowserCoreBundle != null )
                     {
                         // Checking the state of the plugin
@@ -296,7 +297,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
                         // LDAP Browser UI Plugin
                         Bundle ldapBrowserUiBundle = Platform.getBundle( properties
-                            .getString( "Plugin_LdapBrowserUi_id" ) );
+                            .getString( "Plugin_LdapBrowserUi_id" ) ); //$NON-NLS-1$
                         if ( ldapBrowserUiBundle != null )
                         {
                             // Checking the state of the plugin
@@ -307,7 +308,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
                             // LDIF Editor Plugin
                             Bundle ldifEditorBundle = Platform
-                                .getBundle( properties.getString( "Plugin_LdifEditor_id" ) );
+                                .getBundle( properties.getString( "Plugin_LdifEditor_id" ) ); //$NON-NLS-1$
                             if ( ldifEditorBundle != null )
                             {
                                 // Checking the state of the plugin
@@ -318,7 +319,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
 
                                 // LDIF Parser Plugin
                                 Bundle ldifParserBundle = Platform.getBundle( properties
-                                    .getString( "Plugin_LdifParser_id" ) );
+                                    .getString( "Plugin_LdifParser_id" ) ); //$NON-NLS-1$
                                 if ( ldifParserBundle != null )
                                 {
                                     // Checking the state of the plugin
@@ -328,7 +329,7 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
                                     }
 
                                     // Jars Plugin
-                                    Bundle jarsBundle = Platform.getBundle( properties.getString( "Plugin_Jars_id" ) );
+                                    Bundle jarsBundle = Platform.getBundle( properties.getString( "Plugin_Jars_id" ) ); //$NON-NLS-1$
                                     if ( jarsBundle != null )
                                     {
                                         // Checking the state of the plugin

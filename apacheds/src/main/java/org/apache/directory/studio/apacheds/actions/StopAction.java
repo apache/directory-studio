@@ -50,8 +50,6 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
  */
 public class StopAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "S&top";
-
     /** The associated view */
     private ServersView view;
 
@@ -64,7 +62,7 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public StopAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "StopAction.Stop" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -77,7 +75,7 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
      */
     public StopAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "StopAction.Stop" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -90,7 +88,7 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
     {
         setId( ApacheDsPluginConstants.CMD_STOP );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_STOP );
-        setToolTipText( "Stop" );
+        setToolTipText( Messages.getString( "StopAction.StopToolTip" ) ); //$NON-NLS-1$
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor( ApacheDsPluginConstants.IMG_STOP ) );
     }
 
@@ -124,11 +122,11 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                         try
                         {
                             launch.terminate();
-                            writeToInfoConsoleMessageStream( "Server stopped.\n" );
+                            writeToInfoConsoleMessageStream( Messages.getString( "StopAction.ServerStopped" ) ); //$NON-NLS-1$
                         }
                         catch ( DebugException e )
                         {
-                            ApacheDsPluginUtils.reportError( "An error occurred when stopping the server.\n\n"
+                            ApacheDsPluginUtils.reportError( Messages.getString( "StopAction.ErrorWhenStopping" ) //$NON-NLS-1$
                                 + e.getMessage() );
                         }
                     }
@@ -157,9 +155,8 @@ public class StopAction extends Action implements IWorkbenchWindowActionDelegate
                 }
                 catch ( IOException e )
                 {
-                    ApacheDsPluginUtils
-                        .reportError( "An error occurred when writing to the Info console message stream.\n\n"
-                            + e.getMessage() );
+                    ApacheDsPluginUtils.reportError( Messages.getString( "StopAction.ErrorWhenWriting" ) //$NON-NLS-1$
+                        + e.getMessage() );
                 }
             }
         } );

@@ -49,8 +49,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class OpenConfigurationAction extends Action implements IWorkbenchWindowActionDelegate
 {
-    private static final String ACTION_TEXT = "&Open Configuration";
-
     /** The associated view */
     private ServersView view;
 
@@ -60,7 +58,7 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
      */
     public OpenConfigurationAction()
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "OpenConfigurationAction.OpenConfiguration" ) ); //$NON-NLS-1$
         init();
     }
 
@@ -73,7 +71,7 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
      */
     public OpenConfigurationAction( ServersView view )
     {
-        super( ACTION_TEXT );
+        super( Messages.getString( "OpenConfigurationAction.OpenConfiguration" ) ); //$NON-NLS-1$
         this.view = view;
         init();
     }
@@ -86,7 +84,7 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
     {
         setId( ApacheDsPluginConstants.CMD_OPEN_CONFIGURATION );
         setActionDefinitionId( ApacheDsPluginConstants.CMD_OPEN_CONFIGURATION );
-        setToolTipText( "Open Configuration" );
+        setToolTipText( Messages.getString( "OpenConfigurationAction.OpenConfigurationToolTip" ) ); //$NON-NLS-1$
     }
 
 
@@ -107,16 +105,15 @@ public class OpenConfigurationAction extends Action implements IWorkbenchWindowA
                 // Opening the editor
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 PathEditorInput input = new PathEditorInput( ApacheDsPluginUtils.getApacheDsServersFolder().append(
-                    server.getId() ).append( "conf" ).append( "server.xml" ) );
+                    server.getId() ).append( "conf" ).append( "server.xml" ) ); //$NON-NLS-1$ //$NON-NLS-2$
                 try
                 {
                     page.openEditor( input, ServerConfigurationEditor.ID );
                 }
                 catch ( PartInitException e )
                 {
-                    ApacheDsPluginUtils
-                        .reportError( "An error occurred when opening the Apache DS Configuration Editor.\n\n"
-                            + e.getMessage() );
+                    ApacheDsPluginUtils.reportError( Messages.getString( "OpenConfigurationAction.ErrorWhenOpening" ) //$NON-NLS-1$
+                        + e.getMessage() );
                 }
             }
         }
