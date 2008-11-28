@@ -64,7 +64,7 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
 
         // Name
         Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( "Name:" );
+        nameLabel.setText( Messages.getString( "ServerPropertyPage.Name" ) ); //$NON-NLS-1$
         Text nameText = new Text( composite, SWT.NONE );
         nameText.setEditable( false );
         nameText.setBackground( parent.getBackground() );
@@ -72,7 +72,7 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
 
         // Version
         Label versionLabel = new Label( composite, SWT.NONE );
-        versionLabel.setText( "Version:" );
+        versionLabel.setText( Messages.getString( "ServerPropertyPage.Version" ) ); //$NON-NLS-1$
         Text versionText = new Text( composite, SWT.NONE );
         versionText.setEditable( false );
         versionText.setBackground( parent.getBackground() );
@@ -80,7 +80,7 @@ public class ServerPropertyPage extends PropertyPage implements IWorkbenchProper
 
         // Location
         Label locationLabel = new Label( composite, SWT.NONE );
-        locationLabel.setText( "Location:" );
+        locationLabel.setText( Messages.getString( "ServerPropertyPage.Location" ) ); //$NON-NLS-1$
         Text locationText = new Text( composite, SWT.WRAP );
         locationText.setEditable( false );
         locationText.setBackground( parent.getBackground() );
