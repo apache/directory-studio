@@ -17,6 +17,7 @@
  *  under the License. 
  *  
  */
+
 package org.apache.directory.studio.apacheds.dialogs;
 
 
@@ -47,7 +48,7 @@ public class DeleteServerDialog extends MessageDialog
      */
     public DeleteServerDialog( Shell parentShell, Server server )
     {
-        super( parentShell, "Delete Server", null, null, QUESTION, new String[]
+        super( parentShell, Messages.getString( "DeleteServerDialog.DeleteServer" ), null, null, QUESTION, new String[] //$NON-NLS-1$
             { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, OK );
 
         if ( server == null )
@@ -56,7 +57,7 @@ public class DeleteServerDialog extends MessageDialog
         }
 
         this.server = server;
-        message = NLS.bind( "Are you sure you want to delete {0}?", server.getName() );
+        message = NLS.bind( Messages.getString( "DeleteServerDialog.SureToDelete" ), server.getName() ); //$NON-NLS-1$
     }
 
 
