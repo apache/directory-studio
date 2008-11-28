@@ -67,7 +67,7 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
      */
     public ServerLogsPage()
     {
-        super( "Server Logs" );
+        super( Messages.getString( "ServerLogsPage.ServerLogs" ) ); //$NON-NLS-1$
         setPreferenceStore( ApacheDsPlugin.getDefault().getPreferenceStore() );
     }
 
@@ -87,8 +87,7 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
         GridData gd = new GridData( SWT.FILL, SWT.BEGINNING, true, false );
         gd.widthHint = 150;
         colorsAndFontsLink.setLayoutData( gd );
-        colorsAndFontsLink
-            .setText( "Default colors and fonts settings can be configured on the <a>Colors and Fonts</a> preference page." );
+        colorsAndFontsLink.setText( Messages.getString( "ServerLogsPage.DefaultColorsAndFontsSettings" ) ); //$NON-NLS-1$
         colorsAndFontsLink.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -100,38 +99,37 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
 
         // Log Level Group
         Group logLevelGroup = new Group( composite, SWT.NONE );
-        logLevelGroup.setText( "Log Level" );
+        logLevelGroup.setText( Messages.getString( "ServerLogsPage.LogLevel" ) ); //$NON-NLS-1$
         logLevelGroup.setLayout( new GridLayout( 2, false ) );
         logLevelGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Level Label
         Label levelLabel = new Label( logLevelGroup, SWT.NONE );
-        levelLabel.setText( "Level:" );
+        levelLabel.setText( Messages.getString( "ServerLogsPage.Level" ) ); //$NON-NLS-1$
 
         //  Level Combo
         levelCombo = new Combo( logLevelGroup, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.SIMPLE );
-        levelCombo.add( "Debug", 0 );
-        levelCombo.add( "Info", 1 );
-        levelCombo.add( "Warning", 2 );
-        levelCombo.add( "Error", 3 );
-        levelCombo.add( "Fatal", 4 );
+        levelCombo.add( Messages.getString( "ServerLogsPage.Debug" ), 0 ); //$NON-NLS-1$
+        levelCombo.add( Messages.getString( "ServerLogsPage.Info" ), 1 ); //$NON-NLS-1$
+        levelCombo.add( Messages.getString( "ServerLogsPage.Warning" ), 2 ); //$NON-NLS-1$
+        levelCombo.add( Messages.getString( "ServerLogsPage.Error" ), 3 ); //$NON-NLS-1$
+        levelCombo.add( Messages.getString( "ServerLogsPage.Fatal" ), 4 ); //$NON-NLS-1$
 
         // Warning Label
         new Label( logLevelGroup, SWT.NONE ); // Filler
         Label warningLabel = new Label( logLevelGroup, SWT.WRAP );
-        warningLabel
-            .setText( "Warning: Setting the log level to 'Debug' or 'Info' can cause issues and slow down the server." );
+        warningLabel.setText( Messages.getString( "ServerLogsPage.WarnLogLevel" ) ); //$NON-NLS-1$
         warningLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Conversion Pattern Group
         conversionPatternGroup = new Group( composite, SWT.NONE );
-        conversionPatternGroup.setText( "Conversion Pattern" );
+        conversionPatternGroup.setText( Messages.getString( "ServerLogsPage.ConverstionPattern" ) ); //$NON-NLS-1$
         conversionPatternGroup.setLayout( new GridLayout( 2, false ) );
         conversionPatternGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Pattern Label
         Label patternLabel = new Label( conversionPatternGroup, SWT.NONE );
-        patternLabel.setText( "Pattern:" );
+        patternLabel.setText( Messages.getString( "ServerLogsPage.Pattern" ) ); //$NON-NLS-1$
 
         // Pattern Text
         patternText = new Text( conversionPatternGroup, SWT.BORDER );
@@ -146,7 +144,7 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
 
         // Preview
         Label label = new Label( conversionPatternGroup, SWT.NONE );
-        label.setText( "Preview:" );
+        label.setText( Messages.getString( "ServerLogsPage.Preview" ) ); //$NON-NLS-1$
         previewLabel = new Label( conversionPatternGroup, SWT.NONE );
         previewLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
@@ -162,8 +160,9 @@ public class ServerLogsPage extends PreferencePage implements IWorkbenchPreferen
      */
     private void updatePreviewLabel()
     {
-        LoggingEvent loggingEvent = new LoggingEvent( "CategoryClass", Logger.getLogger( "logger" ), Level.INFO,
-            "Logging message", new Exception( "AnException" ) );
+        LoggingEvent loggingEvent = new LoggingEvent(
+            Messages.getString( "ServerLogsPage.CategoryClass" ), Logger.getLogger( "logger" ), Level.INFO, //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getString( "ServerLogsPage.LoggingMessage" ), new Exception( Messages.getString( "ServerLogsPage.AnException" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         previewLabel.setText( new PatternLayout( patternText.getText() ).format( loggingEvent ) );
     }
 

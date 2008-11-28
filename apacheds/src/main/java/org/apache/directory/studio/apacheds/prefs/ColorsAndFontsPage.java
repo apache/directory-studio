@@ -71,7 +71,7 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
      */
     public ColorsAndFontsPage()
     {
-        super( "Colors and Fonts" );
+        super( Messages.getString( "ColorsAndFontsPage.ColorsAndFonts" ) ); //$NON-NLS-1$
         setPreferenceStore( ApacheDsPlugin.getDefault().getPreferenceStore() );
     }
 
@@ -88,60 +88,60 @@ public class ColorsAndFontsPage extends PreferencePage implements IWorkbenchPref
 
         // Console Group
         Group consoleGroup = new Group( composite, SWT.NONE );
-        consoleGroup.setText( "Console" );
+        consoleGroup.setText( Messages.getString( "ColorsAndFontsPage.Console" ) ); //$NON-NLS-1$
         GridLayout consoleGroupLayout = new GridLayout( 4, false );
         consoleGroup.setLayout( consoleGroupLayout );
         consoleGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Debug
         Label debugLabel = new Label( consoleGroup, SWT.NONE );
-        debugLabel.setText( "Debug:" );
+        debugLabel.setText( Messages.getString( "ColorsAndFontsPage.Debug" ) ); //$NON-NLS-1$
         debugColorButton = new ColorSelector( consoleGroup );
         debugColorButton.getButton().setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, true, false ) );
         debugBoldCheckbox = new Button( consoleGroup, SWT.CHECK );
-        debugBoldCheckbox.setText( "Bold" );
+        debugBoldCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Bold" ) ); //$NON-NLS-1$
         debugItalicCheckbox = new Button( consoleGroup, SWT.CHECK );
-        debugItalicCheckbox.setText( "Italic" );
+        debugItalicCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Italic" ) ); //$NON-NLS-1$
 
         // Info
         Label infoLabel = new Label( consoleGroup, SWT.NONE );
-        infoLabel.setText( "Info:" );
+        infoLabel.setText( Messages.getString( "ColorsAndFontsPage.Info" ) ); //$NON-NLS-1$
         infoColorButton = new ColorSelector( consoleGroup );
         infoColorButton.getButton().setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, true, false ) );
         infoBoldCheckbox = new Button( consoleGroup, SWT.CHECK );
-        infoBoldCheckbox.setText( "Bold" );
+        infoBoldCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Bold" ) ); //$NON-NLS-1$
         infoItalicCheckbox = new Button( consoleGroup, SWT.CHECK );
-        infoItalicCheckbox.setText( "Italic" );
+        infoItalicCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Italic" ) ); //$NON-NLS-1$
 
         // Warn
         Label warnLabel = new Label( consoleGroup, SWT.NONE );
-        warnLabel.setText( "Warn:" );
+        warnLabel.setText( Messages.getString( "ColorsAndFontsPage.Warn" ) ); //$NON-NLS-1$
         warnColorButton = new ColorSelector( consoleGroup );
         warnColorButton.getButton().setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, true, false ) );
         warnBoldCheckbox = new Button( consoleGroup, SWT.CHECK );
-        warnBoldCheckbox.setText( "Bold" );
+        warnBoldCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Bold" ) ); //$NON-NLS-1$
         warnItalicCheckbox = new Button( consoleGroup, SWT.CHECK );
-        warnItalicCheckbox.setText( "Italic" );
+        warnItalicCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Italic" ) ); //$NON-NLS-1$
 
         // Error
         Label errorLabel = new Label( consoleGroup, SWT.NONE );
-        errorLabel.setText( "Error:" );
+        errorLabel.setText( Messages.getString( "ColorsAndFontsPage.Error" ) ); //$NON-NLS-1$
         errorColorButton = new ColorSelector( consoleGroup );
         errorColorButton.getButton().setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, true, false ) );
         errorBoldCheckbox = new Button( consoleGroup, SWT.CHECK );
-        errorBoldCheckbox.setText( "Bold" );
+        errorBoldCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Bold" ) ); //$NON-NLS-1$
         errorItalicCheckbox = new Button( consoleGroup, SWT.CHECK );
-        errorItalicCheckbox.setText( "Italic" );
+        errorItalicCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Italic" ) ); //$NON-NLS-1$
 
         // Fatal
         Label fatalLabel = new Label( consoleGroup, SWT.NONE );
-        fatalLabel.setText( "Fatal:" );
+        fatalLabel.setText( Messages.getString( "ColorsAndFontsPage.Fatal" ) ); //$NON-NLS-1$
         fatalColorButton = new ColorSelector( consoleGroup );
         fatalColorButton.getButton().setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, true, false ) );
         fatalBoldCheckbox = new Button( consoleGroup, SWT.CHECK );
-        fatalBoldCheckbox.setText( "Bold" );
+        fatalBoldCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Bold" ) ); //$NON-NLS-1$
         fatalItalicCheckbox = new Button( consoleGroup, SWT.CHECK );
-        fatalItalicCheckbox.setText( "Italic" );
+        fatalItalicCheckbox.setText( Messages.getString( "ColorsAndFontsPage.Italic" ) ); //$NON-NLS-1$
 
         initFromPreferences();
 

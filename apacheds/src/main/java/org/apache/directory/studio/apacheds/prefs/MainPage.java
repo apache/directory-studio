@@ -44,9 +44,9 @@ public class MainPage extends PreferencePage implements IWorkbenchPreferencePage
      */
     public MainPage()
     {
-        super( "Apache DS" );
+        super( Messages.getString( "MainPage.ApacheDS" ) ); //$NON-NLS-1$
         setPreferenceStore( ApacheDsPlugin.getDefault().getPreferenceStore() );
-        setDescription( "General settings for the Apache DS Plugin" );
+        setDescription( Messages.getString( "MainPage.GeneralSettingsPlugin" ) ); //$NON-NLS-1$
     }
 
 
