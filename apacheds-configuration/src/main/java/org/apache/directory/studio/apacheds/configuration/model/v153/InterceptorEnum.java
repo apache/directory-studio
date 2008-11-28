@@ -20,8 +20,6 @@
 package org.apache.directory.studio.apacheds.configuration.model.v153;
 
 
-
-
 /**
  * This enum contains all the interceptors.
  *
@@ -31,62 +29,53 @@ package org.apache.directory.studio.apacheds.configuration.model.v153;
 public enum InterceptorEnum
 {
     /** The Normalization Interceptor */
-    NORMALIZATION("Normalization", "A name normalization interceptor. This interceptor makes sure all relative "
-        + "and distinguished names are normalized before calls are made against "
-        + "the respective interface methods on PartitionNexus."),
+    NORMALIZATION(
+        Messages.getString( "InterceptorEnum.Normalization" ), Messages.getString( "InterceptorEnum.NormalizationDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Authentication Interceptor */
-    AUTHENTICATION("Authentication", "An interceptor that authenticates users."),
+    AUTHENTICATION(
+        Messages.getString( "InterceptorEnum.Authentication" ), Messages.getString( "InterceptorEnum.AuthenticationDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Referral Interceptor */
-    REFERRAL("Referral", "An interceptor which is responsible referral handling behaviors.  It "
-        + "manages  referral handling behavior when the Context#REFERRAL "
-        + "is implicitly or explicitly set to \"ignore\", when set to \"throw\" " + "and when set to \"follow\"."),
+    REFERRAL(
+        Messages.getString( "InterceptorEnum.Referral" ), Messages.getString( "InterceptorEnum.ReferralDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The ACI Authorization Interceptor */
-    ACI_AUTHORIZATION("ACI Authorization", "An ACI based authorization interceptor."),
+    ACI_AUTHORIZATION(
+        Messages.getString( "InterceptorEnum.ACIAuthorization" ), Messages.getString( "InterceptorEnum.ACIAuthorizationDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Default Authorization Interceptor */
-    DEFAULT_AUTHORIZATION("Default Authorization", "An interceptor that controls access to PartitionNexus. If a user "
-        + "tries to perform any operations that requires permission he or she "
-        + "doesn't have, NoPermissionException will be thrown and therefore the "
-        + "current invocation chain will terminate."),
+    DEFAULT_AUTHORIZATION(
+        Messages.getString( "InterceptorEnum.DefaultAuthorization" ), Messages.getString( "InterceptorEnum.DefaultAuthorizationDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Exception Interceptor */
-    EXCEPTION("Exception", "An interceptor that detects any operations that breaks integrity of "
-        + "Partition and terminates the current invocation chain by throwing a "
-        + "NamingException. Those operations include when an entry already "
-        + "exists at a DN and is added once again to the same DN."),
+    EXCEPTION(
+        Messages.getString( "InterceptorEnum.Exception" ), Messages.getString( "InterceptorEnum.ExceptionDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Operational Attribute Interceptor */
-    OPERATIONAL_ATTRIBUTE("Operational Attribute", "An interceptor that adds or modifies the default attributes of "
-        + "entries. There are four default attributes for now; 'creatorsName', "
-        + "'createTimestamp', 'modifiersName', 'modifyTimestamp'."),
+    OPERATIONAL_ATTRIBUTE(
+        Messages.getString( "InterceptorEnum.OperationalAttribute" ), Messages.getString( "InterceptorEnum.OperationalAttributeDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Schema Interceptor */
-    SCHEMA("Schema", "An interceptor that manages and enforces schemas."),
+    SCHEMA(Messages.getString( "InterceptorEnum.Schema" ), Messages.getString( "InterceptorEnum.SchemaDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Sub-Entry Interceptor */
-    SUBENTRY("Sub-Entry", "The sub-entry interceptor service which is responsible for filtering "
-        + "out sub-entries on search operations and injecting operational attributes"),
+    SUBENTRY(
+        Messages.getString( "InterceptorEnum.SubEntry" ), Messages.getString( "InterceptorEnum.SubEntryDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Collective Attribute Interceptor */
-    COLLECTIVE_ATTRIBUTE("Collective Attribute", "An interceptor based service dealing with collective attribute "
-        + "management. This service intercepts read operations on entries to "
-        + "inject collective attribute value pairs into the response based on "
-        + "the entires inclusion within collectiveAttributeSpecificAreas and collectiveAttributeInnerAreas."),
+    COLLECTIVE_ATTRIBUTE(
+        Messages.getString( "InterceptorEnum.CollectiveAttribute" ), Messages.getString( "InterceptorEnum.CollectiveAttributeDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Event Interceptor */
-    EVENT("Event", "An interceptor based serivice for notifying NamingListeners of "
-        + "EventContext and EventDirContext changes."),
+    EVENT(Messages.getString( "InterceptorEnum.Event" ), Messages.getString( "InterceptorEnum.EventDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Trigger Interceptor */
-    TRIGGER("Trigger", "The trigger interceptor based on the Trigger Specification."),
+    TRIGGER(Messages.getString( "InterceptorEnum.Trigger" ), Messages.getString( "InterceptorEnum.TriggerDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Replication Interceptor */
-    REPLICATION("Replication", "An interceptor that intercepts LDAP operations and propagates the "
-        + "changes occurred by the operations into other ReplicaIds so the DIT "
-        + "of each ReplicaId in the cluster has the same content without any conflict.",
+    REPLICATION(
+        Messages.getString( "InterceptorEnum.Replication" ), Messages.getString( "InterceptorEnum.ReplicationDescription" ), //$NON-NLS-1$ //$NON-NLS-2$
         new ReplicationInterceptorConfiguration());
 
     /** The name */

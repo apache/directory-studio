@@ -29,18 +29,16 @@ package org.apache.directory.studio.apacheds.configuration.model.v153;
 public enum ExtendedOperationEnum
 {
     /** The Start TLS Extended Operation */
-    START_TLS("Start TLS", "The Start TLS extended operation allows an application to serialize secure and "
-        + "plain requests against an LDAP server on a single connection."),
+    START_TLS(
+        Messages.getString( "ExtendedOperationEnum.StartTLS" ), Messages.getString( "ExtendedOperationEnum.StartTLSDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Graceful Shutdown Extended Operation */
-    GRACEFUL_SHUTDOWN("Graceful Shutdown", "The Graceful Shutdown TLS extended operation allows an application to "
-        + "gracefully manage server's that must go offline or shutdown with proper notification to bound clients."),
+    GRACEFUL_SHUTDOWN(
+        Messages.getString( "ExtendedOperationEnum.Shutdown" ), Messages.getString( "ExtendedOperationEnum.ShutdownDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Launch Diagnostic UI Extended Operation */
-    LAUNCH_DIAGNOSTIC_UI("Launch Diagnostic UI",
-        "The Launch Diagnostic UI extended operation allows an application to "
-            + "launch the diagnostic user interface which can be used to look at "
-            + "the master table and the indices.");
+    LAUNCH_DIAGNOSTIC_UI(Messages.getString( "ExtendedOperationEnum.LaunchDiagnosticUI" ), //$NON-NLS-1$
+        Messages.getString( "ExtendedOperationEnum.LaunchDiagnosticUIDescription" )); //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The name */
     private String name;
