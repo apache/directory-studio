@@ -17,6 +17,7 @@
  *  under the License. 
  *  
  */
+
 package org.apache.directory.studio.apacheds.jobs;
 
 
@@ -57,6 +58,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 
 
@@ -81,10 +83,10 @@ public class LaunchServerJob extends Job
     private static final int MIN_PORT = 1024;
 
     /** The logs level */
-    private String logsLevel = "WARN";
+    private String logsLevel = "WARN"; //$NON-NLS-1$
 
     /** The logs pattern */
-    private String logsPattern = "[%d{HH:mm:ss}] %p [%c] - %m%n";
+    private String logsPattern = "[%d{HH:mm:ss}] %p [%c] - %m%n"; //$NON-NLS-1$
 
 
     /**
@@ -97,7 +99,7 @@ public class LaunchServerJob extends Job
      */
     public LaunchServerJob( Server server, ServerConfiguration configuration )
     {
-        super( "" );
+        super( "" ); //$NON-NLS-1$
         this.server = server;
         this.configuration = configuration;
     }
@@ -111,11 +113,11 @@ public class LaunchServerJob extends Job
     protected IStatus run( IProgressMonitor monitor )
     {
         // Setting the name of the Job
-        setName( "Starting " + server.getName() + "..." );
+        setName( NLS.bind( Messages.getString( "LaunchServerJob.Starting" ), new String[] { server.getName() } ) ); //$NON-NLS-1$
 
         // Setting the server in a "starting" state
         server.setState( ServerStateEnum.STARTING );
-        writeToInfoConsoleMessageStream( "Server starting...\n" );
+        writeToInfoConsoleMessageStream( Messages.getString( "LaunchServerJob.ServerStarting" ) ); //$NON-NLS-1$
 
         // Getting the first available port for the Log4J socket server
         int port = AvailablePortFinder.getNextAvailable( MIN_PORT );
@@ -130,9 +132,8 @@ public class LaunchServerJob extends Job
         }
         catch ( IOException e )
         {
-            ApacheDsPluginUtils
-                .reportError( "An error occurred when overwriting the server's log4j.properties file.\n\n"
-                    + e.getMessage() );
+            ApacheDsPluginUtils.reportError( Messages.getString( "LaunchServerJob.ErrorOverwritingLog" ) //$NON-NLS-1$
+                + e.getMessage() );
         }
 
         // Launching Apache DS
@@ -189,7 +190,7 @@ public class LaunchServerJob extends Job
 
                         // We set the state of the server to 'started'...
                         server.setState( ServerStateEnum.STARTED );
-                        writeToInfoConsoleMessageStream( "Server started.\n" );
+                        writeToInfoConsoleMessageStream( Messages.getString( "LaunchServerJob.ServerStarted" ) ); //$NON-NLS-1$
 
                         // ... and we exit the thread
                         return;
@@ -217,7 +218,7 @@ public class LaunchServerJob extends Job
                 if ( ServerStateEnum.STARTING == server.getState() )
                 {
                     server.setState( ServerStateEnum.STOPPED );
-                    writeToInfoConsoleMessageStream( "Server stopped.\n" );
+                    writeToInfoConsoleMessageStream( Messages.getString( "LaunchServerJob.ServerStopped" ) ); //$NON-NLS-1$
                 }
             }
 
@@ -365,9 +366,8 @@ public class LaunchServerJob extends Job
                 }
                 catch ( IOException e )
                 {
-                    ApacheDsPluginUtils
-                        .reportError( "An error occurred when writing to the Info console message stream.\n\n"
-                            + e.getMessage() );
+                    ApacheDsPluginUtils.reportError( Messages.getString( "LaunchServerJob.ErrorWritingConsole" ) //$NON-NLS-1$
+                        + e.getMessage() );
                 }
             }
         } );
@@ -446,8 +446,8 @@ public class LaunchServerJob extends Job
     {
         final int finalPort = port;
         final IPath serverSocketFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() )
-            .append( "serverSocket" );
-        final IPath log4jPropertiesFilePath = serverSocketFolderPath.append( "log4j.properties" );
+            .append( "serverSocket" ); //$NON-NLS-1$
+        final IPath log4jPropertiesFilePath = serverSocketFolderPath.append( "log4j.properties" ); //$NON-NLS-1$
 
         // Creating a new thread for the SocketServer
         Thread thread = new Thread()
@@ -455,7 +455,7 @@ public class LaunchServerJob extends Job
             public void run()
             {
                 SocketServer.main( new String[]
-                    { "" + finalPort, log4jPropertiesFilePath.toOSString(), serverSocketFolderPath.toOSString() } );
+                    { "" + finalPort, log4jPropertiesFilePath.toOSString(), serverSocketFolderPath.toOSString() } ); //$NON-NLS-1$
             }
         };
 
@@ -474,10 +474,10 @@ public class LaunchServerJob extends Job
      */
     private void overwriteServersLog4jPropertiesFile( int port ) throws IOException
     {
-        IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" );
+        IPath confFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() ).append( "conf" ); //$NON-NLS-1$
         File confFolder = new File( confFolderPath.toOSString() );
         ApacheDsPluginUtils.createServersLog4jPropertiesFile( new FileOutputStream( new File( confFolder,
-            "log4j.properties" ) ), port, logsLevel, logsPattern );
+            "log4j.properties" ) ), port, logsLevel, logsPattern ); //$NON-NLS-1$
     }
 
 
@@ -494,7 +494,8 @@ public class LaunchServerJob extends Job
             // Creating a new editable launch configuration
             ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType(
                 IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-            ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, "Starting " + server.getName() );
+            ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, NLS.bind( Messages
+                .getString( "LaunchServerJob.StartingServer" ), new String[] { server.getName() } ) ); //$NON-NLS-1$
 
             // Setting the JRE container path attribute
             workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
@@ -502,7 +503,7 @@ public class LaunchServerJob extends Job
 
             // Setting the main type attribute
             workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-                "org.apache.directory.studio.apacheds.Launcher" );
+                "org.apache.directory.studio.apacheds.Launcher" ); //$NON-NLS-1$
 
             // Creating the classpath list
             List<String> classpath = new ArrayList<String>();
@@ -526,21 +527,21 @@ public class LaunchServerJob extends Job
             IPath serverFolderPath = ApacheDsPluginUtils.getApacheDsServersFolder().append( server.getId() );
 
             // Setting the program arguments attribute
-            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\""
-                + serverFolderPath.toOSString() + "\"" );
+            workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
+                + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
 
             // Creating the VM arguments string
             StringBuffer vmArguments = new StringBuffer();
-            vmArguments.append( "-Dlog4j.configuration=file:\""
-                + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" );
-            vmArguments.append( " " );
-            vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" );
-            vmArguments.append( " " );
-            vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" );
-            vmArguments.append( " " );
-            vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" );
-            vmArguments.append( " " );
-            vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" );
+            vmArguments.append( "-Dlog4j.configuration=file:\"" //$NON-NLS-1$
+                + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            vmArguments.append( " " ); //$NON-NLS-1$
+            vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+            vmArguments.append( " " ); //$NON-NLS-1$
+            vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            vmArguments.append( " " ); //$NON-NLS-1$
+            vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            vmArguments.append( " " ); //$NON-NLS-1$
+            vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
 
             // Setting the VM arguments attribute
             workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
@@ -559,7 +560,7 @@ public class LaunchServerJob extends Job
         }
         catch ( CoreException e )
         {
-            ApacheDsPluginUtils.reportError( "An error occurred when launching the server.\n\n" + e.getMessage() );
+            ApacheDsPluginUtils.reportError( Messages.getString( "LaunchServerJob.ErrorLaunching" ) + e.getMessage() ); //$NON-NLS-1$
         }
     }
 
