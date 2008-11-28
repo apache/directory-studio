@@ -34,13 +34,21 @@
   <description />
   
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <skip>false</skip>
-	  <pde>false</pde>
+          <pde>false</pde>
           <projectnatures>
             <projectnature>org.eclipse.jdt.core.javanature</projectnature>
           </projectnatures>
