@@ -55,8 +55,8 @@ public class NewServerWizardPage extends WizardPage
     public NewServerWizardPage()
     {
         super( NewServerWizardPage.class.getCanonicalName() );
-        setTitle( "Create a Server" );
-        setDescription( "Please specify a name to create a new server." );
+        setTitle( Messages.getString( "NewServerWizardPage.CreateNewServer" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewServerWizardPage.PleaseSpecifyName" ) ); //$NON-NLS-1$
         setImageDescriptor( ApacheDsPlugin.getDefault().getImageDescriptor(
             ApacheDsPluginConstants.IMG_SERVER_NEW_WIZARD ) );
         setPageComplete( false );
@@ -73,7 +73,7 @@ public class NewServerWizardPage extends WizardPage
         composite.setLayout( new GridLayout( 2, false ) );
 
         Label nameLabel = new Label( composite, SWT.NONE );
-        nameLabel.setText( "Name:" );
+        nameLabel.setText( Messages.getString( "NewServerWizardPage.Name" ) ); //$NON-NLS-1$
         nameText = new Text( composite, SWT.BORDER );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         nameText.addModifyListener( new ModifyListener()
@@ -98,14 +98,14 @@ public class NewServerWizardPage extends WizardPage
         String name = nameText.getText();
         if ( ( name != null ) )
         {
-            if ( "".equals( name ) )
+            if ( "".equals( name ) ) //$NON-NLS-1$
             {
-                displayErrorMessage( "Enter a name for the server." );
+                displayErrorMessage( Messages.getString( "NewServerWizardPage.ErrorEnterName" ) ); //$NON-NLS-1$
                 return;
             }
             if ( !serversHandler.isNameAvailable( name ) )
             {
-                displayErrorMessage( "A server with the same name already exists." );
+                displayErrorMessage( Messages.getString( "NewServerWizardPage.ErrorNameExists" ) ); //$NON-NLS-1$
                 return;
             }
         }
