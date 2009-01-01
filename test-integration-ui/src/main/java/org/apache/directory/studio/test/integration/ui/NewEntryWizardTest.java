@@ -70,7 +70,7 @@ public class NewEntryWizardTest extends AbstractServerTest
 
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapService.getIpPort() );
+        SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapService.getPort() );
     }
 
 

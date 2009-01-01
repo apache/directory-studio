@@ -54,7 +54,7 @@ public class ReferralDialogTest extends AbstractServerTest
         super.setUp();
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapService.getIpPort() );
+        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapService.getPort() );
     }
 
 
@@ -104,11 +104,11 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort()
+        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getPort()
             + "/ou=users,ou=system" );
         assertNotNull( referralNode );
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ldap://localhost:"
-            + ldapService.getIpPort() + "/ou=users,ou=system" );
+            + ldapService.getPort() + "/ou=users,ou=system" );
 
     }
 
@@ -155,7 +155,7 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotTreeItem referralNode = null;
         try
         {
-            referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort() + "/ou=users,ou=system" );
+            referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
         }
         catch ( WidgetNotFoundException wnfe )
         {
@@ -190,7 +190,7 @@ public class ReferralDialogTest extends AbstractServerTest
         SWTBotTreeItem referralNode1 = null;
         try
         {
-            referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapService.getIpPort() + "/ou=users,ou=system" );
+            referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
         }
         catch ( WidgetNotFoundException wnfe )
         {
@@ -244,7 +244,7 @@ public class ReferralDialogTest extends AbstractServerTest
         entry.setDn( new LdapDN("cn=referralDialogTest,ou=system"  ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapService.getIpPort() + "/ou=users,ou=system" );
+        entry.add( "ref", "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
         rootDSE.add( entry );
     }
 }

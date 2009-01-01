@@ -95,7 +95,7 @@ public class NewConnectionWizardTest extends AbstractServerTest
         SWTBotCombo hostnameCombo = bot.comboBoxWithLabel( "Hostname:" );
         hostnameCombo.setText( "localhost" );
         SWTBotCombo portCombo = bot.comboBoxWithLabel( "Port:" );
-        portCombo.setText( Integer.toString( ldapService.getIpPort() ) );
+        portCombo.setText( Integer.toString( ldapService.getPort() ) );
 
         // ensure "Next >" button is enabled, "Finish" button is disabled
         assertFalse( backButton.isEnabled() );
@@ -136,7 +136,7 @@ public class NewConnectionWizardTest extends AbstractServerTest
         Connection connection = connectionManager.getConnections()[0];
         assertEquals( "NewConnectionWizardTest", connection.getName() );
         assertEquals( "localhost", connection.getHost() );
-        assertEquals( ldapService.getIpPort(), connection.getPort() );
+        assertEquals( ldapService.getPort(), connection.getPort() );
         assertEquals( AuthenticationMethod.SIMPLE, connection.getAuthMethod() );
         assertEquals( "uid=admin,ou=system", connection.getBindPrincipal() );
         assertEquals( "secret", connection.getBindPassword() );
@@ -172,7 +172,7 @@ public class NewConnectionWizardTest extends AbstractServerTest
         SWTBotCombo hostnameCombo = bot.comboBoxWithLabel( "Hostname:" );
         hostnameCombo.setText( "localhost" );
         SWTBotCombo portCombo = bot.comboBoxWithLabel( "Port:" );
-        portCombo.setText( Integer.toString( ldapService.getIpPort() ) );
+        portCombo.setText( Integer.toString( ldapService.getPort() ) );
 
         // click "Check Network Parameter" button
         SWTBotButton checkButton = bot.button( "Check Network Parameter" );
@@ -222,7 +222,7 @@ public class NewConnectionWizardTest extends AbstractServerTest
         SWTBotCombo hostnameCombo = bot.comboBoxWithLabel( "Hostname:" );
         hostnameCombo.setText( "localhost" );
         SWTBotCombo portCombo = bot.comboBoxWithLabel( "Port:" );
-        portCombo.setText( Integer.toString( ldapService.getIpPort() + 1 ) );
+        portCombo.setText( Integer.toString( ldapService.getPort() + 1 ) );
 
         // click "Check Network Parameter" button
         SWTBotButton checkButton = bot.button( "Check Network Parameter" );

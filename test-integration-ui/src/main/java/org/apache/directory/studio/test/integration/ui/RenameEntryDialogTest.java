@@ -45,7 +45,7 @@ public class RenameEntryDialogTest extends AbstractServerTest
         super.loadTestLdif( true );
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapService.getIpPort() );
+        SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapService.getPort() );
     }
 
 

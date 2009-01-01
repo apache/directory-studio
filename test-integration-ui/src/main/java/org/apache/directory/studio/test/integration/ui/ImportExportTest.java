@@ -50,7 +50,7 @@ public class ImportExportTest extends AbstractServerTest
         super.loadTestLdif( false );
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "ImportExportTest", ldapService.getIpPort() );
+        SWTBotUtils.createTestConnection( bot, "ImportExportTest", ldapService.getPort() );
     }
 
 
