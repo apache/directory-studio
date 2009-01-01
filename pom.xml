@@ -99,7 +99,7 @@
     <test.integration.ui.version>1.4.0-SNAPSHOT</test.integration.ui.version>
 
     <!-- Set versions for depending projects -->
-    <org.apache.directory.shared.version>0.9.13</org.apache.directory.shared.version>
+    <org.apache.directory.shared.version>0.9.14-SNAPSHOT</org.apache.directory.shared.version>
   </properties>
 
   <profiles>
