@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;

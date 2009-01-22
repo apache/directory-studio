@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IStructuredContentProvider;

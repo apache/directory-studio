@@ -23,9 +23,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleUseDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
@@ -248,8 +248,10 @@ public class MatchingRuleUseDescriptionDetailsPage extends SchemaDetailsPage
             List<String> names = mrud.getApplicableAttributes();
             if ( names != null && !names.isEmpty() )
             {
-                appliesSection.setText( NLS.bind( Messages
-                    .getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
+                appliesSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "MatchingRuleUseDescriptionDetailsPage.AppliesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
                 Schema schema = getSchema();
                 for ( String name : names )
                 {

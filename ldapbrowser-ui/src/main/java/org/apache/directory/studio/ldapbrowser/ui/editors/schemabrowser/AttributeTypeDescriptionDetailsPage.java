@@ -24,10 +24,10 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.schema.UsageEnum;
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;

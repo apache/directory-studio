@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.syntax.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.schema.syntax.AbstractSchemaDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;

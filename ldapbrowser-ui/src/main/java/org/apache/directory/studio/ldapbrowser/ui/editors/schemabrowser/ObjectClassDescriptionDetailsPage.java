@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -365,8 +365,10 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             Collection<String> names = SchemaUtils.getMayAttributeTypeDescriptionNamesTransitive( ocd, getSchema() );
             if ( names != null && names.size() > 0 )
             {
-                maySection.setText( NLS.bind( Messages
-                    .getString( "ObjectClassDescriptionDetailsPage.MayAttributesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
+                maySection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "ObjectClassDescriptionDetailsPage.MayAttributesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
                 for ( String name : names )
                 {
                     if ( getSchema().hasAttributeTypeDescription( name ) )
@@ -432,8 +434,10 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             List<ObjectClassDescription> subOcds = SchemaUtils.getSubObjectClassDescriptions( ocd, getSchema() );
             if ( subOcds != null && subOcds.size() > 0 )
             {
-                subclassesSection.setText( NLS.bind( Messages
-                    .getString( "ObjectClassDescriptionDetailsPage.SubclassesCount" ), new Object[] { subOcds.size() } ) ); //$NON-NLS-1$
+                subclassesSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "ObjectClassDescriptionDetailsPage.SubclassesCount" ), new Object[] { subOcds.size() } ) ); //$NON-NLS-1$
                 for ( ObjectClassDescription subOcd : subOcds )
                 {
                     Hyperlink subLink = toolkit.createHyperlink( subClient, SchemaUtils.toString( subOcd ), SWT.WRAP );
@@ -488,8 +492,10 @@ public class ObjectClassDescriptionDetailsPage extends SchemaDetailsPage
             List<String> names = ocd.getSuperiorObjectClasses();
             if ( names != null && names.size() > 0 )
             {
-                superclassesSection.setText( NLS.bind( Messages
-                    .getString( "ObjectClassDescriptionDetailsPage.SuperclassesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
+                superclassesSection
+                    .setText( NLS
+                        .bind(
+                            Messages.getString( "ObjectClassDescriptionDetailsPage.SuperclassesCount" ), new Object[] { names.size() } ) ); //$NON-NLS-1$
                 Composite supClient = toolkit.createComposite( superClient, SWT.WRAP );
                 GridLayout gl = new GridLayout();
                 gl.marginWidth = 0;
