@@ -29,7 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.ui.actions.SelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserEntryPage;
@@ -423,7 +423,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
         return list.toArray( new BrowserSearchResultPage[list.size()] );
     }
 
-    
+
     /**
      * Gets the objects contained in the given selection.
      *

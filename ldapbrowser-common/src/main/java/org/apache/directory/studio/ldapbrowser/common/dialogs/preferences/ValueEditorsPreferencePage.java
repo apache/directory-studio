@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.LdapSyntaxDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
@@ -129,6 +129,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     /** The map of images */
     private Map<ImageDescriptor, Image> imageMap;
 
+
     /**
      * Creates a new instance of ValueEditorsPreferencePage.
      */
@@ -153,7 +154,8 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public void dispose()
     {
-        if ( imageMap != null ) {
+        if ( imageMap != null )
+        {
             for ( Image image : imageMap.values() )
             {
                 if ( image != null && !image.isDisposed() )
@@ -493,8 +495,7 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     {
         AttributeValueEditorRelation[] aRelations = attributeList
             .toArray( new AttributeValueEditorRelation[attributeList.size()] );
-        BrowserCommonActivator.getDefault().getValueEditorsPreferences()
-            .setAttributeValueEditorRelations( aRelations );
+        BrowserCommonActivator.getDefault().getValueEditorsPreferences().setAttributeValueEditorRelations( aRelations );
 
         SyntaxValueEditorRelation[] sRelations = syntaxList.toArray( new SyntaxValueEditorRelation[syntaxList.size()] );
         BrowserCommonActivator.getDefault().getValueEditorsPreferences().setSyntaxValueEditorRelations( sRelations );

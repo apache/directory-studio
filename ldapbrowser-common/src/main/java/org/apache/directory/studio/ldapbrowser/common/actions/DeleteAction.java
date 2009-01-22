@@ -33,8 +33,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
