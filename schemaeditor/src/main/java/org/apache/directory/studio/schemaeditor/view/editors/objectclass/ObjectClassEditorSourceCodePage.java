@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.parser.ObjectClassLiteral;
-import org.apache.directory.shared.ldap.schema.parser.OpenLdapSchemaParser;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassLiteral;
+import org.apache.directory.shared.ldap.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
@@ -148,7 +148,8 @@ public class ObjectClassEditorSourceCodePage extends FormPage
         schemaSourceViewer.getTextWidget().addModifyListener( schemaSourceViewerListener );
 
         // Help Context for Dynamic Help
-        PlatformUI.getWorkbench().getHelpSystem().setHelp( form, PluginConstants.PLUGIN_ID + "." + "object_class_editor" );
+        PlatformUI.getWorkbench().getHelpSystem().setHelp( form,
+            PluginConstants.PLUGIN_ID + "." + "object_class_editor" );
     }
 
 

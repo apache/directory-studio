@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.model;
 import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.schema.AbstractSyntax;
-import org.apache.directory.shared.ldap.schema.syntax.SyntaxChecker;
+import org.apache.directory.shared.ldap.schema.SyntaxChecker;
 
 
 /**
