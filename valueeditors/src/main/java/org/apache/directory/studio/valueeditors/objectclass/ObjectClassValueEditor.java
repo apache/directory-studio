@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.objectclass;
 
 
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -84,18 +84,18 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
             switch ( ocd.getKind() )
             {
                 case STRUCTURAL:
-                    displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Structural");
+                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Structural" );
                     break;
                 case ABSTRACT:
-                    displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Abstract");
+                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Abstract" );
                     break;
                 case AUXILIARY:
-                    displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Auxiliary");
+                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Auxiliary" );
                     break;
             }
             if ( ocd.isObsolete() )
             {
-                displayValue = displayValue + Messages.getString("ObjectClassValueEditor.Obsolete");
+                displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Obsolete" );
             }
         }
 
