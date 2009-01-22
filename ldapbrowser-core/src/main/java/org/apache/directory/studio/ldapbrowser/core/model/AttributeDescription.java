@@ -28,8 +28,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.schema.syntax.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
@@ -240,15 +240,15 @@ public class AttributeDescription implements Serializable
         {
             return true;
         }
-        
+
         // special case @: attributes by object class (RFC4529)
-        if ( other.description.length() > 1 &&  other.description.startsWith( "@" ) )
+        if ( other.description.length() > 1 && other.description.startsWith( "@" ) )
         {
             String objectClass = other.description.substring( 1 );
             ObjectClassDescription ocd = schema.getObjectClassDescription( objectClass );
             ocd.getMayAttributeTypes();
             ocd.getMustAttributeTypes();
-            
+
             Collection<String> names = new HashSet<String>();
             names.addAll( SchemaUtils.getMayAttributeTypeDescriptionNamesTransitive( ocd, schema ) );
             names.addAll( SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd, schema ) );

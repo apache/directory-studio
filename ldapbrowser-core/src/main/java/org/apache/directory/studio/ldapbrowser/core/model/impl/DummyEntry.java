@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.syntax.ObjectClassDescription;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -317,8 +317,8 @@ public class DummyEntry implements IEntry
     {
         return null;
     }
-    
-    
+
+
     /**
      * This implementation always returns false.
      */
@@ -498,8 +498,8 @@ public class DummyEntry implements IEntry
     public void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable )
     {
     }
-    
-    
+
+
     /**
      * This implementation does nothing.
      */
