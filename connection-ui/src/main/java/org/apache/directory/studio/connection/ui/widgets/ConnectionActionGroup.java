@@ -65,31 +65,31 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
 {
 
     /** The Constant newConnectionAction. */
-    protected static final String newConnectionAction = "newConnectionAction";
+    protected static final String newConnectionAction = "newConnectionAction"; //$NON-NLS-1$
 
     /** The Constant newConnectionFolderAction. */
-    protected static final String newConnectionFolderAction = "newConnectionFolderAction";
+    protected static final String newConnectionFolderAction = "newConnectionFolderAction"; //$NON-NLS-1$
 
     /** The Constant openConnectionAction. */
-    protected static final String openConnectionAction = "openConnectionAction";
+    protected static final String openConnectionAction = "openConnectionAction"; //$NON-NLS-1$
 
     /** The Constant closeConnectionAction. */
-    protected static final String closeConnectionAction = "closeConnectionAction";
+    protected static final String closeConnectionAction = "closeConnectionAction"; //$NON-NLS-1$
 
     /** The Constant copyConnectionAction. */
-    protected static final String copyConnectionAction = "copyConnectionAction";
+    protected static final String copyConnectionAction = "copyConnectionAction"; //$NON-NLS-1$
 
     /** The Constant pasteConnectionAction. */
-    protected static final String pasteConnectionAction = "pasteConnectionAction";
+    protected static final String pasteConnectionAction = "pasteConnectionAction"; //$NON-NLS-1$
 
     /** The Constant deleteConnectionAction. */
-    protected static final String deleteConnectionAction = "deleteConnectionAction";
+    protected static final String deleteConnectionAction = "deleteConnectionAction"; //$NON-NLS-1$
 
     /** The Constant renameConnectionAction. */
-    protected static final String renameConnectionAction = "renameConnectionAction";
+    protected static final String renameConnectionAction = "renameConnectionAction"; //$NON-NLS-1$
 
     /** The Constant propertyDialogAction. */
-    protected static final String propertyDialogAction = "propertyDialogAction";
+    protected static final String propertyDialogAction = "propertyDialogAction"; //$NON-NLS-1$
 
     /** The drag connection listener. */
     private DragConnectionListener dragConnectionListener;

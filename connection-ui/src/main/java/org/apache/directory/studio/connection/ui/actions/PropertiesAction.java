@@ -53,7 +53,7 @@ public class PropertiesAction extends StudioAction
      */
     public String getText()
     {
-        return Messages.getString( "PropertiesAction.Properties" );
+        return Messages.getString( "PropertiesAction.Properties" ); //$NON-NLS-1$
     }
 
 

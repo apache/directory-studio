@@ -73,15 +73,15 @@ public class PasteAction extends StudioAction
         List<ConnectionFolder> connectionFolders = getConnectionFoldersToPaste();
         if ( connections.size() > 0 && connectionFolders.size() == 0 )
         {
-            return connections.size() > 1 ? Messages.getString("PasteAction.PasteConnections") : Messages.getString("PasteAction.PasteConnection");
+            return connections.size() > 1 ? Messages.getString("PasteAction.PasteConnections") : Messages.getString("PasteAction.PasteConnection"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( connectionFolders.size() > 0 && connections.size() == 0 )
         {
-            return connectionFolders.size() > 1 ? Messages.getString("PasteAction.PasteConnectionFolders") : Messages.getString("PasteAction.PasteConnectionFolder");
+            return connectionFolders.size() > 1 ? Messages.getString("PasteAction.PasteConnectionFolders") : Messages.getString("PasteAction.PasteConnectionFolder"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            return Messages.getString("PasteAction.Paste");
+            return Messages.getString("PasteAction.Paste"); //$NON-NLS-1$
         }
     }
 

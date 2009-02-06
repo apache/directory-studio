@@ -130,7 +130,7 @@ public class RunnableContextRunner
         {
             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                 new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, IStatus.ERROR, ex.getMessage() != null ? ex
-                    .getMessage() : "", ex ) );
+                    .getMessage() : "", ex ) ); //$NON-NLS-1$
         }
 
         IStatus status = spm[0].getErrorStatus( runnable.getErrorMessage() );

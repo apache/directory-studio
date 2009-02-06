@@ -31,68 +31,68 @@ public interface ConnectionUIConstants
 {
     /** The plug-in ID */
     public static final String PLUGIN_ID = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "Plugin_id" );
+        .getString( "Plugin_id" ); //$NON-NLS-1$
 
     /** The dialog setting key used for the history of host names. */
-    public static final String DIALOGSETTING_KEY_HOST_HISTORY = "hostHistory";
+    public static final String DIALOGSETTING_KEY_HOST_HISTORY = "hostHistory"; //$NON-NLS-1$
 
     /** The dialog setting key used for the history of ports. */
-    public static final String DIALOGSETTING_KEY_PORT_HISTORY = "portHistory";
+    public static final String DIALOGSETTING_KEY_PORT_HISTORY = "portHistory"; //$NON-NLS-1$
 
     /** The dialog setting key used for the history of principals (bind DNs). */
-    public static final String DIALOGSETTING_KEY_PRINCIPAL_HISTORY = "principalHistory";
+    public static final String DIALOGSETTING_KEY_PRINCIPAL_HISTORY = "principalHistory"; //$NON-NLS-1$
 
     /** The dialog setting key used for the history of SASL realms. */
-    public static final String DIALOGSETTING_KEY_REALM_HISTORY = "saslrealmHistory";
+    public static final String DIALOGSETTING_KEY_REALM_HISTORY = "saslrealmHistory"; //$NON-NLS-1$
 
     /** The image to add a connection. */
-    public static final String IMG_CONNECTION_ADD = "resources/icons/connection_add.gif";
+    public static final String IMG_CONNECTION_ADD = "resources/icons/connection_add.gif"; //$NON-NLS-1$
 
     /** The image used to display the connected state of connections. */
-    public static final String IMG_CONNECTION_CONNECTED = "resources/icons/connection_connected.gif";
+    public static final String IMG_CONNECTION_CONNECTED = "resources/icons/connection_connected.gif"; //$NON-NLS-1$
 
     /** The image used to display the disconnected state of connections. */
-    public static final String IMG_CONNECTION_DISCONNECTED = "resources/icons/connection_disconnected.gif";
+    public static final String IMG_CONNECTION_DISCONNECTED = "resources/icons/connection_disconnected.gif"; //$NON-NLS-1$
 
     /** The image used to display the connected state of SSL connections. */
-    public static final String IMG_CONNECTION_SSL_CONNECTED = "resources/icons/connection_ssl_connected.gif";
+    public static final String IMG_CONNECTION_SSL_CONNECTED = "resources/icons/connection_ssl_connected.gif"; //$NON-NLS-1$
 
     /** The image used to display the disconnected state of SSL connections. */
-    public static final String IMG_CONNECTION_SSL_DISCONNECTED = "resources/icons/connection_ssl_disconnected.gif";
+    public static final String IMG_CONNECTION_SSL_DISCONNECTED = "resources/icons/connection_ssl_disconnected.gif"; //$NON-NLS-1$
 
     /** The image to connect connections. */
-    public static final String IMG_CONNECTION_CONNECT = "resources/icons/connection_connect.gif";
+    public static final String IMG_CONNECTION_CONNECT = "resources/icons/connection_connect.gif"; //$NON-NLS-1$
 
     /** The image to disconnect connections. */
-    public static final String IMG_CONNECTION_DISCONNECT = "resources/icons/connection_disconnect.gif";
+    public static final String IMG_CONNECTION_DISCONNECT = "resources/icons/connection_disconnect.gif"; //$NON-NLS-1$
 
     /** The new connection wizard image */
-    public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.gif";
+    public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.gif"; //$NON-NLS-1$
 
     /** The pull-down image */
-    public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif";
+    public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif"; //$NON-NLS-1$
 
     /** The image used for connection folders. */
-    public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.gif";
+    public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.gif"; //$NON-NLS-1$
 
     /** The image to add a connection folder. */
-    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.gif";
+    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.gif"; //$NON-NLS-1$
 
     public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "ConnectionTransfert_Typename" );
+        "ConnectionTransfert_Typename" ); //$NON-NLS-1$
 
     public static final String CMD_COPY = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Copy_id" );
+        "Cmd_Copy_id" ); //$NON-NLS-1$
 
     public static final String CMD_PASTE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Paste_id" );
+        "Cmd_Paste_id" ); //$NON-NLS-1$
 
     public static final String CMD_DELETE = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Delete_id" );
+        "Cmd_Delete_id" ); //$NON-NLS-1$
 
     public static final String CMD_PROPERTIES = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_Properties_id" );
+        "Cmd_Properties_id" ); //$NON-NLS-1$
 
     public static final String NEW_WIZARD_NEW_CONNECTION = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "NewWizards_NewConnectionWizard_id" );
+        .getString( "NewWizards_NewConnectionWizard_id" ); //$NON-NLS-1$
 }

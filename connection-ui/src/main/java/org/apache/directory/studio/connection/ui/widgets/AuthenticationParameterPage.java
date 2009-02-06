@@ -183,23 +183,24 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         Composite composite1 = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group1 = BaseWidgetUtils.createGroup( composite1, Messages.getString("AuthenticationParameterPage.AuthenticationMethod"), 1 );
+        Group group1 = BaseWidgetUtils.createGroup( composite1, Messages.getString("AuthenticationParameterPage.AuthenticationMethod"), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group1, 1, 1 );
 
         String[] authMethods = new String[]
-            { "Anonymous Authentication", "Simple Authentication", "DIGEST-MD5 (SASL)", "CRAM-MD5 (SASL)" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            {
+                Messages.getString( "AuthenticationParameterPage.AnonymousAuthentication" ), Messages.getString( "AuthenticationParameterPage.SimpleAuthentication" ), Messages.getString( "AuthenticationParameterPage.DigestMD5" ), Messages.getString( "AuthenticationParameterPage.CramMD5" ) }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         authenticationMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, authMethods, 1, 2 );
 
         Composite composite2 = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group2 = BaseWidgetUtils.createGroup( composite2, Messages.getString("AuthenticationParameterPage.AuthenticationParameter"), 1 );
+        Group group2 = BaseWidgetUtils.createGroup( composite2, Messages.getString("AuthenticationParameterPage.AuthenticationParameter"), 1 ); //$NON-NLS-1$
         Composite composite = BaseWidgetUtils.createColumnContainer( group2, 3, 1 );
 
-        BaseWidgetUtils.createLabel( composite, Messages.getString("AuthenticationParameterPage.BindDNOrUser"), 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString("AuthenticationParameterPage.BindDNOrUser"), 1 ); //$NON-NLS-1$
         String[] dnHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY );
         bindPrincipalCombo = BaseWidgetUtils.createCombo( composite, dnHistory, -1, 2 );
 
-        BaseWidgetUtils.createLabel( composite, Messages.getString("AuthenticationParameterPage.BindPassword"), 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString("AuthenticationParameterPage.BindPassword"), 1 ); //$NON-NLS-1$
         bindPasswordText = BaseWidgetUtils.createPasswordText( composite, "", 2 ); //$NON-NLS-1$
 
         BaseWidgetUtils.createLabel( composite, "SASL Realm:", 1 ); //$NON-NLS-1$
@@ -207,14 +208,14 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         saslRealmText = BaseWidgetUtils.createCombo( composite, saslHistory, -1, 2 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        saveBindPasswordButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AuthenticationParameterPage.SavePassword"), 1 );
+        saveBindPasswordButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AuthenticationParameterPage.SavePassword"), 1 ); //$NON-NLS-1$
         saveBindPasswordButton.setSelection( true );
 
         checkPrincipalPasswordAuthButton = new Button( composite, SWT.PUSH );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalAlignment = SWT.RIGHT;
         checkPrincipalPasswordAuthButton.setLayoutData( gd );
-        checkPrincipalPasswordAuthButton.setText( Messages.getString("AuthenticationParameterPage.CheckAuthentication") );
+        checkPrincipalPasswordAuthButton.setText( Messages.getString("AuthenticationParameterPage.CheckAuthentication") ); //$NON-NLS-1$
         checkPrincipalPasswordAuthButton.setEnabled( false );
     }
 
@@ -240,11 +241,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             if ( isSaveBindPassword() && "".equals( bindPasswordText.getText() ) ) //$NON-NLS-1$
             {
-                message = Messages.getString("AuthenticationParameterPage.PleaseEnterBindPassword");
+                message = Messages.getString("AuthenticationParameterPage.PleaseEnterBindPassword"); //$NON-NLS-1$
             }
             if ( "".equals( bindPrincipalCombo.getText() ) ) //$NON-NLS-1$
             {
-                message = Messages.getString("AuthenticationParameterPage.PleaseEnterBindDNOrUser");
+                message = Messages.getString("AuthenticationParameterPage.PleaseEnterBindDNOrUser"); //$NON-NLS-1$
             }
         }
 
@@ -252,7 +253,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             if ( "".equals( saslRealmText.getText() ) ) //$NON-NLS-1$
             {
-                infoMessage = Messages.getString("AuthenticationParameterPage.PleasEnterSASL");
+                infoMessage = Messages.getString("AuthenticationParameterPage.PleasEnterSASL"); //$NON-NLS-1$
             }
         }
     }
@@ -356,8 +357,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                 IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
                 if ( status.isOK() )
                 {
-                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("AuthenticationParameterPage.CheckAuthentication"),
-                        Messages.getString("AuthenticationParameterPage.AuthenticationSuccessfull") );
+                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("AuthenticationParameterPage.CheckAuthentication"), //$NON-NLS-1$
+                        Messages.getString("AuthenticationParameterPage.AuthenticationSuccessfull") ); //$NON-NLS-1$
                 }
             }
         } );

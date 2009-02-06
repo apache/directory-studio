@@ -58,11 +58,11 @@ public class ConnectionLabelProvider extends LabelProvider
             Connection conn = ( Connection ) obj;
             if ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
             {
-                return conn.getName() + " (LDAPS)";
+                return conn.getName() + " (LDAPS)"; //$NON-NLS-1$
             }
             else if ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS )
             {
-                return conn.getName() + " (StartTLS)";
+                return conn.getName() + " (StartTLS)"; //$NON-NLS-1$
             }
             else
             {
@@ -75,7 +75,7 @@ public class ConnectionLabelProvider extends LabelProvider
         }
         else
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

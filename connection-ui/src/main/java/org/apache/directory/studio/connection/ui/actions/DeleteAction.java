@@ -55,15 +55,15 @@ public class DeleteAction extends StudioAction
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();        
         if ( connections.length > 0 && connectionFolders.length == 0 )
         {
-            return connections.length > 1 ? Messages.getString("DeleteAction.DeleteConnections") : Messages.getString("DeleteAction.DeleteConnection");
+            return connections.length > 1 ? Messages.getString("DeleteAction.DeleteConnections") : Messages.getString("DeleteAction.DeleteConnection"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( connectionFolders.length > 0 && connections.length == 0 )
         {
-            return connectionFolders.length > 1 ? Messages.getString("DeleteAction.DeleteConnectionFolders") : Messages.getString("DeleteAction.DeleteConnectionFolder");
+            return connectionFolders.length > 1 ? Messages.getString("DeleteAction.DeleteConnectionFolders") : Messages.getString("DeleteAction.DeleteConnectionFolder"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else 
         {
-            return Messages.getString("DeleteAction.Delete");
+            return Messages.getString("DeleteAction.Delete"); //$NON-NLS-1$
         }
     }
 
@@ -100,8 +100,8 @@ public class DeleteAction extends StudioAction
         {
             if ( connections.length <= 5 )
             {
-                message.append( connections.length == 1 ? Messages.getString("DeleteAction.SureDeleteFollowingConnection")
-                    : Messages.getString("DeleteAction.SureDeleteFollowingConnections") );
+                message.append( connections.length == 1 ? Messages.getString("DeleteAction.SureDeleteFollowingConnection") //$NON-NLS-1$
+                    : Messages.getString("DeleteAction.SureDeleteFollowingConnections") ); //$NON-NLS-1$
                 for ( int i = 0; i < connections.length; i++ )
                 {
                     message.append( ConnectionCoreConstants.LINE_SEPARATOR );
@@ -111,7 +111,7 @@ public class DeleteAction extends StudioAction
             }
             else
             {
-                message.append( Messages.getString("DeleteAction.SureDeleteSelectedConnections") );
+                message.append( Messages.getString("DeleteAction.SureDeleteSelectedConnections") ); //$NON-NLS-1$
             }
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
@@ -121,8 +121,8 @@ public class DeleteAction extends StudioAction
         {
             if ( connectionFolders.length <= 5 )
             {
-                message.append( connectionFolders.length == 1 ? Messages.getString("DeleteAction.SureDeleteFollowingFolder")
-                    : Messages.getString("DeleteAction.SureDeleteFollowingFolders") );
+                message.append( connectionFolders.length == 1 ? Messages.getString("DeleteAction.SureDeleteFollowingFolder") //$NON-NLS-1$
+                    : Messages.getString("DeleteAction.SureDeleteFollowingFolders") ); //$NON-NLS-1$
                 for ( int i = 0; i < connectionFolders.length; i++ )
                 {
                     message.append( ConnectionCoreConstants.LINE_SEPARATOR );
@@ -132,7 +132,7 @@ public class DeleteAction extends StudioAction
             }
             else
             {
-                message.append( Messages.getString("DeleteAction.SureDeleteSelectedConnectionFolders") );
+                message.append( Messages.getString("DeleteAction.SureDeleteSelectedConnectionFolders") ); //$NON-NLS-1$
             }
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );

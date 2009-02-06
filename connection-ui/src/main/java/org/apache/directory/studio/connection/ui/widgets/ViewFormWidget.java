@@ -103,7 +103,7 @@ public abstract class ViewFormWidget
         // infoText = BaseWidgetUtils.createLabeledText(control, "", 1);
         Composite infoTextControl = BaseWidgetUtils.createColumnContainer( control, 1, 1 );
         infoTextControl.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        infoText = BaseWidgetUtils.createLabeledText( infoTextControl, "", 1 );
+        infoText = BaseWidgetUtils.createLabeledText( infoTextControl, "", 1 ); //$NON-NLS-1$
         infoText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, true ) );
         control.setTopLeft( infoTextControl );
 

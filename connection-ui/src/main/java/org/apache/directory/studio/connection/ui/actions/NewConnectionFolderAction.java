@@ -54,7 +54,7 @@ public class NewConnectionFolderAction extends StudioAction
     public void run()
     {
         ConnectionFolderDialog dialog = new ConnectionFolderDialog( PlatformUI.getWorkbench().getDisplay()
-            .getActiveShell(), Messages.getString("NewConnectionFolderAction.NewConnectionFolder"), Messages.getString("NewConnectionFolderAction.NeterNameNewFolder"), "", null ); //$NON-NLS-3$
+            .getActiveShell(), Messages.getString("NewConnectionFolderAction.NewConnectionFolder"), Messages.getString("NewConnectionFolderAction.NeterNameNewFolder"), "", null );  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
         if ( dialog.open() == CredentialsDialog.OK )
         {
             String name = dialog.getValue();
@@ -81,7 +81,7 @@ public class NewConnectionFolderAction extends StudioAction
      */
     public String getText()
     {
-        return Messages.getString("NewConnectionFolderAction.NewConnectionFolderDots");
+        return Messages.getString("NewConnectionFolderAction.NewConnectionFolderDots"); //$NON-NLS-1$
     }
 
 
