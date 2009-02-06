@@ -296,8 +296,8 @@
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
  org.junit,
- net.sf.swtbot.finder,
- net.sf.swtbot.eclipse.finder,
+ org.eclipse.swtbot.swt.finder,
+ org.eclipse.swtbot.eclipse.finder,
  org.hamcrest
             </Require-Bundle>
             <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
@@ -377,12 +377,12 @@
     </dependency>
     
     <dependency>
-      <groupId>net.sf.swtbot</groupId>
+      <groupId>org.eclipse.swtbot.swt</groupId>
       <artifactId>finder</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>net.sf.swtbot.eclipse</groupId>
+      <groupId>org.eclipse.swtbot.eclipse</groupId>
       <artifactId>finder</artifactId>
       <scope>provided</scope>
     </dependency>

@@ -20,232 +20,225 @@
 
 package org.apache.directory.studio.test.integration.ui;
 
-
-import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
-import net.sf.swtbot.wait.DefaultCondition;
-import net.sf.swtbot.widgets.SWTBotButton;
-import net.sf.swtbot.widgets.SWTBotCombo;
-import net.sf.swtbot.widgets.SWTBotMenu;
-import net.sf.swtbot.widgets.SWTBotText;
-import net.sf.swtbot.widgets.SWTBotTree;
-
 import org.apache.directory.server.unit.AbstractServerTest;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.eclipse.jface.dialogs.ErrorDialog;
-
+import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
 /**
  * Tests the new connection wizard.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory
+ *         Project</a>
  * @version $Rev$, $Date$
  */
-public class NewConnectionWizardTest extends AbstractServerTest
-{
-    private SWTEclipseBot bot;
+public class NewConnectionWizardTest extends AbstractServerTest {
+	private SWTEclipseBot bot;
 
+	protected void setUp() throws Exception {
+		super.setUp();
+		bot = new SWTEclipseBot();
+		SWTBotUtils.openLdapPerspective(bot);
+	}
 
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        bot = new SWTEclipseBot();
-        SWTBotUtils.openLdapPerspective( bot );
-    }
+	protected void tearDown() throws Exception {
+		SWTBotUtils.deleteTestConnections();
+		bot = null;
+		super.tearDown();
+	}
 
+	/**
+	 * Creates a new connection using the new connection wizard.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testCreateConnection() throws Exception {
+		// Select "Connections" view, ensure no connections exists yet
+		SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree(bot);
+		assertEquals(0, connectionsTree.rowCount());
 
-    protected void tearDown() throws Exception
-    {
-        SWTBotUtils.deleteTestConnections();
-        bot = null;
-        super.tearDown();
-    }
+		// open "New Connection" wizard
+		SWTBotMenu newConnectionMenu = connectionsTree
+				.contextMenu("New Connection...");
+		newConnectionMenu.click();
 
+		// get buttons
+		SWTBotButton backButton = bot.button("< Back");
+		SWTBotButton nextButton = bot.button("Next >");
+		SWTBotButton finishButton = bot.button("Finish");
 
-    /**
-     * Creates a new connection using the new connection wizard.
-     * 
-     * @throws Exception the exception
-     */
-    public void testCreateConnection() throws Exception
-    {
-        // Select "Connections" view, ensure no connections exists yet
-        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
-        assertEquals( 0, connectionsTree.rowCount() );
+		// ensure "Next >" and "Finish" buttons are disabled
+		assertFalse(backButton.isEnabled());
+		assertFalse(nextButton.isEnabled());
+		assertFalse(finishButton.isEnabled());
 
-        // open "New Connection" wizard
-        SWTBotMenu newConnectionMenu = connectionsTree.contextMenu( "New Connection..." );
-        newConnectionMenu.click();
+		// enter connection parameter
+		SWTBotText connText = bot.textWithLabel("Connection name:");
+		connText.setText("NewConnectionWizardTest");
+		SWTBotCombo hostnameCombo = bot.comboBoxWithLabel("Hostname:");
+		hostnameCombo.setText("localhost");
+		SWTBotCombo portCombo = bot.comboBoxWithLabel("Port:");
+		portCombo.setText(Integer.toString(ldapService.getPort()));
 
-        // get buttons
-        SWTBotButton backButton = bot.button( "< Back" );
-        SWTBotButton nextButton = bot.button( "Next >" );
-        SWTBotButton finishButton = bot.button( "Finish" );
+		// ensure "Next >" button is enabled, "Finish" button is disabled
+		assertFalse(backButton.isEnabled());
+		assertTrue(nextButton.isEnabled());
+		assertFalse(finishButton.isEnabled());
 
-        // ensure "Next >" and "Finish" buttons are disabled
-        assertFalse( backButton.isEnabled() );
-        assertFalse( nextButton.isEnabled() );
-        assertFalse( finishButton.isEnabled() );
+		// jump to auth page
+		nextButton.click();
 
-        // enter connection parameter
-        SWTBotText connText = bot.textWithLabel( "Connection name:" );
-        connText.setText( "NewConnectionWizardTest" );
-        SWTBotCombo hostnameCombo = bot.comboBoxWithLabel( "Hostname:" );
-        hostnameCombo.setText( "localhost" );
-        SWTBotCombo portCombo = bot.comboBoxWithLabel( "Port:" );
-        portCombo.setText( Integer.toString( ldapService.getPort() ) );
+		// ensure "< Back" is enabled, "Next >" button is disabled, "Finish"
+		// button is disabled
+		assertTrue(backButton.isEnabled());
+		assertFalse(nextButton.isEnabled());
+		assertFalse(finishButton.isEnabled());
 
-        // ensure "Next >" button is enabled, "Finish" button is disabled
-        assertFalse( backButton.isEnabled() );
-        assertTrue( nextButton.isEnabled() );
-        assertFalse( finishButton.isEnabled() );
+		// ensure "Simple Authentication" is the default
+		SWTBotCombo authMethodCombo = bot
+				.comboBoxInGroup("Authentication Method");
+		assertEquals("Simple Authentication", authMethodCombo.selection());
 
-        // jump to auth page
-        nextButton.click();
+		// enter authentication parameters
+		SWTBotCombo dnCombo = bot.comboBoxWithLabel("Bind DN or user:");
+		dnCombo.setText("uid=admin,ou=system");
+		SWTBotText passwordText = bot.textWithLabel("Bind password:");
+		passwordText.setText("secret");
 
-        // ensure "< Back" is enabled, "Next >" button is disabled, "Finish" button is disabled
-        assertTrue( backButton.isEnabled() );
-        assertFalse( nextButton.isEnabled() );
-        assertFalse( finishButton.isEnabled() );
+		// ensure "< Back" is enabled, "Next >" button is enabled, "Finish"
+		// button is enabled
+		assertTrue(backButton.isEnabled());
+		assertTrue(nextButton.isEnabled());
+		assertTrue(finishButton.isEnabled());
 
-        // ensure "Simple Authentication" is the default
-        SWTBotCombo authMethodCombo = bot.comboBoxInGroup( "Authentication Method" );
-        assertEquals( "Simple Authentication", authMethodCombo.selection() );
+		// finish dialog
+		finishButton.click();
+		bot.sleep(2000);
 
-        // enter authentication parameters
-        SWTBotCombo dnCombo = bot.comboBoxWithLabel( "Bind DN or user:" );
-        dnCombo.setText( "uid=admin,ou=system" );
-        SWTBotText passwordText = bot.textWithLabel( "Bind password:" );
-        passwordText.setText( "secret" );
+		// ensure connection was created
+		ConnectionManager connectionManager = ConnectionCorePlugin.getDefault()
+				.getConnectionManager();
+		assertNotNull(connectionManager.getConnections());
+		assertEquals(1, connectionManager.getConnections().length);
+		Connection connection = connectionManager.getConnections()[0];
+		assertEquals("NewConnectionWizardTest", connection.getName());
+		assertEquals("localhost", connection.getHost());
+		assertEquals(ldapService.getPort(), connection.getPort());
+		assertEquals(AuthenticationMethod.SIMPLE, connection.getAuthMethod());
+		assertEquals("uid=admin,ou=system", connection.getBindPrincipal());
+		assertEquals("secret", connection.getBindPassword());
 
-        // ensure "< Back" is enabled, "Next >" button is enabled, "Finish" button is enabled
-        assertTrue( backButton.isEnabled() );
-        assertTrue( nextButton.isEnabled() );
-        assertTrue( finishButton.isEnabled() );
+		// ensure connection is visible in Connections view
+		assertEquals(1, connectionsTree.rowCount());
 
-        // finish dialog
-        finishButton.click();
-        bot.sleep( 2000 );
+		// close connection
+		connectionsTree.select("NewConnectionWizardTest");
+		SWTBotMenu contextMenu = connectionsTree
+				.contextMenu("Close Connection");
+		contextMenu.click();
+	}
 
-        // ensure connection was created
-        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
-        assertNotNull( connectionManager.getConnections() );
-        assertEquals( 1, connectionManager.getConnections().length );
-        Connection connection = connectionManager.getConnections()[0];
-        assertEquals( "NewConnectionWizardTest", connection.getName() );
-        assertEquals( "localhost", connection.getHost() );
-        assertEquals( ldapService.getPort(), connection.getPort() );
-        assertEquals( AuthenticationMethod.SIMPLE, connection.getAuthMethod() );
-        assertEquals( "uid=admin,ou=system", connection.getBindPrincipal() );
-        assertEquals( "secret", connection.getBindPassword() );
+	/**
+	 * Tests the "Check Network Parameter" button.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testCheckNetworkParameterButtonOK() throws Exception {
+		// Select "Connections" view, ensure no connections exists yet
+		SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree(bot);
+		assertEquals(0, connectionsTree.rowCount());
 
-        // ensure connection is visible in Connections view
-        assertEquals( 1, connectionsTree.rowCount() );
+		// open "New Connection" wizard
+		SWTBotMenu newConnectionMenu = connectionsTree
+				.contextMenu("New Connection...");
+		newConnectionMenu.click();
 
-        // close connection
-        connectionsTree.select( "NewConnectionWizardTest" );
-        SWTBotMenu contextMenu = connectionsTree.contextMenu( "Close Connection" );
-        contextMenu.click();
-    }
+		// enter connection parameter
+		SWTBotText connText = bot.textWithLabel("Connection name:");
+		connText.setText("NewConnectionWizardTest");
+		SWTBotCombo hostnameCombo = bot.comboBoxWithLabel("Hostname:");
+		hostnameCombo.setText("localhost");
+		SWTBotCombo portCombo = bot.comboBoxWithLabel("Port:");
+		portCombo.setText(Integer.toString(ldapService.getPort()));
 
+		// click "Check Network Parameter" button
+		SWTBotButton checkButton = bot.button("Check Network Parameter");
+		checkButton.click();
+		bot.sleep(1000);
+		bot.waitUntil(new DefaultCondition() {
+			public boolean test() throws Exception {
+				return bot.activeShell().getText().equals(
+						"Check Network Parameter")
+						&& bot.button("OK") != null;
+			}
 
-    /**
-     * Tests the "Check Network Parameter" button.
-     * 
-     * @throws Exception the exception
-     */
-    public void testCheckNetworkParameterButtonOK() throws Exception
-    {
-        // Select "Connections" view, ensure no connections exists yet
-        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
-        assertEquals( 0, connectionsTree.rowCount() );
+			public String getFailureMessage() {
+				return "Expected an dialog box 'Check Network Parameter' with an 'OK' button.";
+			}
+		});
 
-        // open "New Connection" wizard
-        SWTBotMenu newConnectionMenu = connectionsTree.contextMenu( "New Connection..." );
-        newConnectionMenu.click();
+		bot.button("OK").click();
+		bot.button("Cancel").click();
+	}
 
-        // enter connection parameter
-        SWTBotText connText = bot.textWithLabel( "Connection name:" );
-        connText.setText( "NewConnectionWizardTest" );
-        SWTBotCombo hostnameCombo = bot.comboBoxWithLabel( "Hostname:" );
-        hostnameCombo.setText( "localhost" );
-        SWTBotCombo portCombo = bot.comboBoxWithLabel( "Port:" );
-        portCombo.setText( Integer.toString( ldapService.getPort() ) );
+	/**
+	 * Tests the "Check Network Parameter" button.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testCheckNetworkParameterButtonNOK() throws Exception {
+		// we expect the error dialog here, so set flag to false
+		boolean errorDialogAutomatedMode = ErrorDialog.AUTOMATED_MODE;
+		ErrorDialog.AUTOMATED_MODE = false;
 
-        // click "Check Network Parameter" button
-        SWTBotButton checkButton = bot.button( "Check Network Parameter" );
-        checkButton.click();
-        bot.sleep( 1000 );
-        bot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.activeShell().getText().equals( "Check Network Parameter" ) && bot.button( "OK" ) != null;
-            }
+		// Select "Connections" view, ensure no connections exists yet
+		SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree(bot);
+		assertEquals(0, connectionsTree.rowCount());
 
+		// open "New Connection" wizard
+		SWTBotMenu newConnectionMenu = connectionsTree
+				.contextMenu("New Connection...");
+		newConnectionMenu.click();
 
-            public String getFailureMessage()
-            {
-                return "Expected an dialog box 'Check Network Parameter' with an 'OK' button.";
-            }
-        } );
+		// enter connection parameter
+		SWTBotText connText = bot.textWithLabel("Connection name:");
+		connText.setText("NewConnectionWizardTest");
+		SWTBotCombo hostnameCombo = bot.comboBoxWithLabel("Hostname:");
+		hostnameCombo.setText("localhost");
+		SWTBotCombo portCombo = bot.comboBoxWithLabel("Port:");
+		portCombo.setText(Integer.toString(ldapService.getPort() + 1));
 
-        bot.button( "OK" ).click();
-        bot.button( "Cancel" ).click();
-    }
+		// click "Check Network Parameter" button
+		SWTBotButton checkButton = bot.button("Check Network Parameter");
+		checkButton.click();
+		bot.sleep(1000);
+		bot.waitUntil(new DefaultCondition() {
+			public boolean test() throws Exception {
+				return bot.activeShell().getText().equals("Error")
+						&& bot.button("OK") != null;
+			}
 
+			public String getFailureMessage() {
+				return "Expected an dialog box 'Error' with an 'OK' button.";
+			}
+		});
 
-    /**
-     * Tests the "Check Network Parameter" button.
-     * 
-     * @throws Exception the exception
-     */
-    public void testCheckNetworkParameterButtonNOK() throws Exception
-    {
-        // we expect the error dialog here, so set flag to false
-        boolean errorDialogAutomatedMode = ErrorDialog.AUTOMATED_MODE;
-        ErrorDialog.AUTOMATED_MODE = false;
-        
-        // Select "Connections" view, ensure no connections exists yet
-        SWTBotTree connectionsTree = SWTBotUtils.getConnectionsTree( bot );
-        assertEquals( 0, connectionsTree.rowCount() );
+		bot.button("OK").click();
+		bot.button("Cancel").click();
 
-        // open "New Connection" wizard
-        SWTBotMenu newConnectionMenu = connectionsTree.contextMenu( "New Connection..." );
-        newConnectionMenu.click();
-
-        // enter connection parameter
-        SWTBotText connText = bot.textWithLabel( "Connection name:" );
-        connText.setText( "NewConnectionWizardTest" );
-        SWTBotCombo hostnameCombo = bot.comboBoxWithLabel( "Hostname:" );
-        hostnameCombo.setText( "localhost" );
-        SWTBotCombo portCombo = bot.comboBoxWithLabel( "Port:" );
-        portCombo.setText( Integer.toString( ldapService.getPort() + 1 ) );
-
-        // click "Check Network Parameter" button
-        SWTBotButton checkButton = bot.button( "Check Network Parameter" );
-        checkButton.click();
-        bot.sleep( 1000 );
-        bot.waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.activeShell().getText().equals( "Error" ) && bot.button( "OK" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Expected an dialog box 'Error' with an 'OK' button.";
-            }
-        } );
-        
-        bot.button( "OK" ).click();
-        bot.button( "Cancel" ).click();
-        
-        // reset flag
-        ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
-    }
+		// reset flag
+		ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
+	}
 }

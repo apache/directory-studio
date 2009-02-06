@@ -503,11 +503,11 @@
     
     <!-- Testing framework dependencies -->
     <dependency>
-      <groupId>net.sf.swtbot.eclipse</groupId>
+      <groupId>org.eclipse.swtbot.eclipse</groupId>
       <artifactId>finder</artifactId>
     </dependency>
     <dependency>
-      <groupId>net.sf.swtbot</groupId>
+      <groupId>org.eclipse.swtbot.swt</groupId>
       <artifactId>finder</artifactId>
     </dependency>
     

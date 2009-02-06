@@ -1,0 +1,40 @@
+Manifest-Version: 1.0
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-SymbolicName: org.junit4
+Bundle-ManifestVersion: 2
+Bundle-Localization: plugin
+Bundle-Name: %pluginName
+Bundle-Version: 4.5.0.v20080911
+Bundle-ClassPath: junit.jar
+Bundle-Vendor: %providerName
+Export-Package: junit.extensions;version="4.5.0",junit.framework;versi
+ on="4.5.0",junit.runner;version="4.5.0",junit.textui;version="4.5.0",
+ org.hamcrest;version="4.5.0",org.hamcrest.core;version="4.5.0",org.ha
+ mcrest.internal;version="4.5.0";x-internal:=true,org.junit;version="4
+ .5.0",org.junit.experimental.results;version="4.5.0",org.junit.experi
+ mental.runners;version="4.5.0",org.junit.experimental.theories;versio
+ n="4.5.0",org.junit.experimental.theories.internal;version="4.5.0";x-
+ internal:=true,org.junit.experimental.theories.suppliers;version="4.5
+ .0",org.junit.internal;version="4.5.0";x-internal:=true,org.junit.int
+ ernal.builders;version="4.5.0";x-internal:=true,org.junit.internal.ma
+ tchers;version="4.5.0";x-internal:=true,org.junit.internal.requests;v
+ ersion="4.5.0";x-internal:=true,org.junit.internal.runners;version="4
+ .5.0";x-internal:=true,org.junit.internal.runners.model;version="4.5.
+ 0";x-internal:=true,org.junit.internal.runners.statements;version="4.
+ 5.0";x-internal:=true,org.junit.matchers;version="4.5.0",org.junit.ru
+ nner;version="4.5.0",org.junit.runner.manipulation;version="4.5.0",or
+ g.junit.runner.notification;version="4.5.0",org.junit.runners;version
+ ="4.5.0",org.junit.runners.model;version="4.5.0"
+
+Name: junit.jar
+SHA1-Digest: JwcIbxR3OM92kIkYskRl3K5j3+c=
+
+Name: plugin.properties
+SHA1-Digest: Wv0zvGNivCvwY7jZIUt/sphnRAk=
+
+Name: about.html
+SHA1-Digest: 4JA9YsI+MUVDqhCyZPOXX2lo97Q=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: KyT9FF7C7t86NoBoa2kZT3ZJBfw=
+

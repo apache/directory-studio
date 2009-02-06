@@ -20,237 +20,205 @@
 
 package org.apache.directory.studio.test.integration.ui;
 
-
 import java.io.File;
 import java.net.URL;
-
-import net.sf.swtbot.eclipse.finder.SWTEclipseBot;
-import net.sf.swtbot.wait.DefaultCondition;
-import net.sf.swtbot.widgets.SWTBotTree;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.server.unit.AbstractServerTest;
 import org.eclipse.core.runtime.Platform;
-
+import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
 /**
  * Tests the import and export (LDIF, DSML).
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory
+ *         Project</a>
  * @version $Rev$, $Date$
  */
-public class ImportExportTest extends AbstractServerTest
-{
-    private SWTEclipseBot bot;
+public class ImportExportTest extends AbstractServerTest {
+	private SWTEclipseBot bot;
 
+	protected void setUp() throws Exception {
+		super.setUp();
+		super.loadTestLdif(false);
+		bot = new SWTEclipseBot();
+		SWTBotUtils.openLdapPerspective(bot);
+		SWTBotUtils.createTestConnection(bot, "ImportExportTest", ldapService
+				.getPort());
+	}
 
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        super.loadTestLdif( false );
-        bot = new SWTEclipseBot();
-        SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "ImportExportTest", ldapService.getPort() );
-    }
+	protected void tearDown() throws Exception {
+		SWTBotUtils.deleteTestConnections();
+		bot = null;
+		super.tearDown();
+	}
 
+	/**
+	 * Test for DIRSTUDIO-395.
+	 * 
+	 * <li>export an entry with German umlaut in DN to LDIF</li> <li>verify that
+	 * exported LDIF starts with the Base64 encoded DN</li> <li>delete the entry
+	 * </li> <li>import the exported LDIF</li> <li>verify that entry with umlaut
+	 * exists</li>
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testExportImportLdifWithGermanUmlautInDN() throws Exception {
+		URL url = Platform.getInstanceLocation().getURL();
+		String file = url.getFile() + "ImportExportTest.ldif";
 
-    protected void tearDown() throws Exception
-    {
-        SWTBotUtils.deleteTestConnections();
-        bot = null;
-        super.tearDown();
-    }
+		final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree(bot);
 
+		SWTBotUtils.selectEntry(bot, browserTree, false, "DIT", "Root DSE",
+				"ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel");
 
-    /**
-     * Test for DIRSTUDIO-395.
-     * 
-     * <li>export an entry with German umlaut in DN to LDIF</li>
-     * <li>verify that exported LDIF starts with the Base64 encoded DN</li>
-     * <li>delete the entry</li>
-     * <li>import the exported LDIF</li>
-     * <li>verify that entry with umlaut exists</li>
-     * 
-     * @throws Exception the exception
-     */
-    public void testExportImportLdifWithGermanUmlautInDN() throws Exception
-    {
-        URL url = Platform.getInstanceLocation().getURL();
-        String file = url.getFile() + "ImportExportTest.ldif";
+		// export LDIF
+		SWTBotUtils.asyncClick(bot, browserTree.contextMenu("LDIF Export..."),
+				new DefaultCondition() {
+					public boolean test() throws Exception {
+						return bot.shell("LDIF Export") != null;
+					}
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+					public String getFailureMessage() {
+						return "Could not find dialog 'LDIF Export'";
+					}
+				});
+		bot.button("Next >").click();
+		bot.comboBoxWithLabel("LDIF File:").setText(file);
+		bot.button("Finish").click();
 
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
+		// verify that exported LDIF starts with the Base64 encoded DN
+		String content = FileUtils.readFileToString(new File(file));
+		assertTrue(
+				"LDIF must start with Base64 encoded DN.",
+				content
+						.startsWith("dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT11c2VycyxvdT1zeXN0ZW0="));
 
-        // export LDIF
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "LDIF Export..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "LDIF Export" ) != null;
-            }
+		// delete entry
+		SWTBotUtils.asyncClick(bot, browserTree.contextMenu("Delete Entry"),
+				new DefaultCondition() {
+					public boolean test() throws Exception {
+						return bot.shell("Delete Entry") != null;
+					}
 
+					public String getFailureMessage() {
+						return "Could not find dialog 'New Entry'";
+					}
+				});
+		SWTBotUtils.asyncClick(bot, bot.button("OK"), new DefaultCondition() {
+			public boolean test() throws Exception {
+				return browserTree.selection().get(0).get(0).startsWith(
+						"ou=users");
+			}
 
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'LDIF Export'";
-            }
-        } );
-        bot.button( "Next >" ).click();
-        bot.comboBoxWithLabel( "LDIF File:" ).setText( file );
-        bot.button( "Finish" ).click();
+			public String getFailureMessage() {
+				return "Could not select 'ou=system'";
+			}
+		});
 
-        // verify that exported LDIF starts with the Base64 encoded DN 
-        String content = FileUtils.readFileToString( new File( file ) );
-        assertTrue( "LDIF must start with Base64 encoded DN.", content
-            .startsWith( "dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT11c2VycyxvdT1zeXN0ZW0=" ) );
+		// import LDIF
+		SWTBotUtils.asyncClick(bot, browserTree.contextMenu("LDIF Import..."),
+				new DefaultCondition() {
+					public boolean test() throws Exception {
+						return bot.shell("LDIF Import") != null;
+					}
 
-        // delete entry
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "Delete Entry" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "Delete Entry" ) != null;
-            }
+					public String getFailureMessage() {
+						return "Could not find dialog 'LDIF Import'";
+					}
+				});
+		bot.comboBoxWithLabel("LDIF File:").setText(file);
+		bot.button("Finish").click();
 
+		// verify that entry with umlaut exists
+		SWTBotUtils.selectEntry(bot, browserTree, false, "DIT", "Root DSE",
+				"ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel");
+	}
 
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
-        SWTBotUtils.asyncClick( bot, bot.button( "OK" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "ou=users" );
-            }
+	/**
+	 * Test for DIRSTUDIO-395.
+	 * 
+	 * <li>export an entry with German umlaut in DN to DSML</li> <li>verify that
+	 * exported DSML starts with the Base64 encoded DN</li> <li>delete the entry
+	 * </li> <li>import the exported DSML</li> <li>verify that entry with umlaut
+	 * exists</li>
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
+	public void testExportImportDsmlWithGermanUmlautInDN() throws Exception {
+		URL url = Platform.getInstanceLocation().getURL();
+		String file = url.getFile() + "ImportExportTest.dsml";
 
+		final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree(bot);
 
-            public String getFailureMessage()
-            {
-                return "Could not select 'ou=system'";
-            }
-        } );
+		SWTBotUtils.selectEntry(bot, browserTree, false, "DIT", "Root DSE",
+				"ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel");
+		bot.sleep(2000);
 
-        // import LDIF
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "LDIF Import..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "LDIF Import" ) != null;
-            }
+		// export DSML
+		SWTBotUtils.asyncClick(bot, browserTree.contextMenu("DSML Export..."),
+				new DefaultCondition() {
+					public boolean test() throws Exception {
+						return bot.shell("DSML Export") != null;
+					}
 
+					public String getFailureMessage() {
+						return "Could not find dialog 'DSML Export'";
+					}
+				});
+		bot.button("Next >").click();
+		bot.comboBoxWithLabel("DSML File:").setText(file);
+		bot.radio("DSML Request").click();
+		bot.button("Finish").click();
 
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'LDIF Import'";
-            }
-        } );
-        bot.comboBoxWithLabel( "LDIF File:" ).setText( file );
-        bot.button( "Finish" ).click();
+		// verify that exported DSML contains the Base64 encoded DN
+		String content = FileUtils.readFileToString(new File(file));
+		assertTrue("DSML must contain DN with umlaut.", content
+				.contains("dn=\"cn=Wolfgang Kölbel,ou=users,ou=system\""));
 
-        // verify that entry with umlaut exists
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
-    }
+		// delete entry
+		SWTBotUtils.asyncClick(bot, browserTree.contextMenu("Delete Entry"),
+				new DefaultCondition() {
+					public boolean test() throws Exception {
+						return bot.shell("Delete Entry") != null;
+					}
 
+					public String getFailureMessage() {
+						return "Could not find dialog 'New Entry'";
+					}
+				});
+		SWTBotUtils.asyncClick(bot, bot.button("OK"), new DefaultCondition() {
+			public boolean test() throws Exception {
+				return browserTree.selection().get(0).get(0).startsWith(
+						"ou=users");
+			}
 
-    /**
-     * Test for DIRSTUDIO-395.
-     * 
-     * <li>export an entry with German umlaut in DN to DSML</li>
-     * <li>verify that exported DSML starts with the Base64 encoded DN</li>
-     * <li>delete the entry</li>
-     * <li>import the exported DSML</li>
-     * <li>verify that entry with umlaut exists</li>
-     * 
-     * @throws Exception the exception
-     */
-    public void testExportImportDsmlWithGermanUmlautInDN() throws Exception
-    {
-        URL url = Platform.getInstanceLocation().getURL();
-        String file = url.getFile() + "ImportExportTest.dsml";
+			public String getFailureMessage() {
+				return "Could not select 'ou=system'";
+			}
+		});
 
-        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+		// import DSML
+		SWTBotUtils.asyncClick(bot, browserTree.contextMenu("DSML Import..."),
+				new DefaultCondition() {
+					public boolean test() throws Exception {
+						return bot.shell("DSML Import") != null;
+					}
 
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
-        bot.sleep( 2000 );
+					public String getFailureMessage() {
+						return "Could not find dialog 'LDIF Import'";
+					}
+				});
+		bot.comboBoxWithLabel("DSML File:").setText(file);
+		bot.button("Finish").click();
 
-        // export DSML
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "DSML Export..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "DSML Export" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'DSML Export'";
-            }
-        } );
-        bot.button( "Next >" ).click();
-        bot.comboBoxWithLabel( "DSML File:" ).setText( file );
-        bot.radio( "DSML Request" ).click();
-        bot.button( "Finish" ).click();
-
-        // verify that exported DSML contains the Base64 encoded DN 
-        String content = FileUtils.readFileToString( new File( file ) );
-        assertTrue( "DSML must contain DN with umlaut.", content
-            .contains( "dn=\"cn=Wolfgang Kölbel,ou=users,ou=system\"" ) );
-
-        // delete entry
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "Delete Entry" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "Delete Entry" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
-        SWTBotUtils.asyncClick( bot, bot.button( "OK" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return browserTree.selection().get( 0 ).get( 0 ).startsWith( "ou=users" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not select 'ou=system'";
-            }
-        } );
-
-        // import DSML
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "DSML Import..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "DSML Import" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'LDIF Import'";
-            }
-        } );
-        bot.comboBoxWithLabel( "DSML File:" ).setText( file );
-        bot.button( "Finish" ).click();
-
-        // verify that entry with umlaut exists
-        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Wolfgang K\u00f6lbel" );
-    }
+		// verify that entry with umlaut exists
+		SWTBotUtils.selectEntry(bot, browserTree, false, "DIT", "Root DSE",
+				"ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel");
+	}
 
 }
