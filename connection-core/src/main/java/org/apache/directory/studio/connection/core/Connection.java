@@ -22,7 +22,6 @@ package org.apache.directory.studio.connection.core;
 
 
 import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -480,15 +479,9 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public LdapURL getUrl()
     {
-        String s = "ldap://" + getHost() + ":" + getPort();
-        LdapURL url = null;
-        try
-        {
-            url = new LdapURL( s );
-        }
-        catch ( LdapURLEncodingException e )
-        {
-        }
+        LdapURL url = new LdapURL();
+        url.setHost( getHost() );
+        url.setPort( getPort() );
         return url;
     }
 
