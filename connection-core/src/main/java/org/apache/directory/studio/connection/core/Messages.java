@@ -50,12 +50,20 @@ public class Messages extends NLS
 
     public static String copy_n_of_s;
 
+    public static String error__execute_connection_initializer;
+    public static String error__invalid_rdn;
+    public static String error__saving_connections;
+    public static String error__loading_connections;
+    public static String error__unable_to_create_connection_listener;
+    public static String error__unable_to_create_jndi_logger;
+    public static String error__unable_to_get_plugin_properties;
+    public static String error__loop_detected;
+    public static String error__connection_is_readonly;
+
     public static String model__no_auth_handler;
     public static String model__no_credentials;
 
-    public static String jobs__error_occurred;
     public static String jobs__progressmonitor_check_cancellation;
-    public static String jobs__progressmonitor_report_progress;
 
     public static String jobs__check_bind_name;
     public static String jobs__check_bind_task;

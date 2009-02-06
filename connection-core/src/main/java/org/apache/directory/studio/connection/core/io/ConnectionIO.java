@@ -52,25 +52,25 @@ import org.dom4j.io.XMLWriter;
 public class ConnectionIO
 {
     // XML tags
-    private static final String CONNECTIONS_TAG = "connections";
-    private static final String CONNECTION_TAG = "connection";
-    private static final String ID_TAG = "id";
-    private static final String NAME_TAG = "name";
-    private static final String HOST_TAG = "host";
-    private static final String PORT_TAG = "port";
-    private static final String ENCRYPTION_METHOD_TAG = "encryptionMethod";
-    private static final String AUTH_METHOD_TAG = "authMethod";
-    private static final String BIND_PRINCIPAL_TAG = "bindPrincipal";
-    private static final String BIND_PASSWORD_TAG = "bindPassword";
-    private static final String EXTENDED_PROPERTIES_TAG = "extendedProperties";
-    private static final String EXTENDED_PROPERTY_TAG = "extendedProperty";
-    private static final String KEY_TAG = "key";
-    private static final String VALUE_TAG = "value";
+    private static final String CONNECTIONS_TAG = "connections"; //$NON-NLS-1$
+    private static final String CONNECTION_TAG = "connection"; //$NON-NLS-1$
+    private static final String ID_TAG = "id"; //$NON-NLS-1$
+    private static final String NAME_TAG = "name"; //$NON-NLS-1$
+    private static final String HOST_TAG = "host"; //$NON-NLS-1$
+    private static final String PORT_TAG = "port"; //$NON-NLS-1$
+    private static final String ENCRYPTION_METHOD_TAG = "encryptionMethod"; //$NON-NLS-1$
+    private static final String AUTH_METHOD_TAG = "authMethod"; //$NON-NLS-1$
+    private static final String BIND_PRINCIPAL_TAG = "bindPrincipal"; //$NON-NLS-1$
+    private static final String BIND_PASSWORD_TAG = "bindPassword"; //$NON-NLS-1$
+    private static final String EXTENDED_PROPERTIES_TAG = "extendedProperties"; //$NON-NLS-1$
+    private static final String EXTENDED_PROPERTY_TAG = "extendedProperty"; //$NON-NLS-1$
+    private static final String KEY_TAG = "key"; //$NON-NLS-1$
+    private static final String VALUE_TAG = "value"; //$NON-NLS-1$
 
-    private static final String CONNECTION_FOLDERS_TAG = "connectionFolders";
-    private static final String CONNECTION_FOLDER_TAG = "connectionFolder";
-    private static final String SUB_FOLDERS_TAG = "subFolders";
-    private static final String SUB_FOLDER_TAG = "subFolder";
+    private static final String CONNECTION_FOLDERS_TAG = "connectionFolders"; //$NON-NLS-1$
+    private static final String CONNECTION_FOLDER_TAG = "connectionFolder"; //$NON-NLS-1$
+    private static final String SUB_FOLDERS_TAG = "subFolders"; //$NON-NLS-1$
+    private static final String SUB_FOLDER_TAG = "subFolder"; //$NON-NLS-1$
 
     /**
      * Loads the connections using the reader
@@ -101,7 +101,7 @@ public class ConnectionIO
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( CONNECTIONS_TAG ) )
         {
-            throw new ConnectionIOException( "The file does not seem to be a valid Connections file." );
+            throw new ConnectionIOException( "The file does not seem to be a valid Connections file." ); //$NON-NLS-1$
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( CONNECTION_TAG ); i.hasNext(); )
@@ -159,8 +159,8 @@ public class ConnectionIO
             }
             catch ( NumberFormatException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Port' of connection '" + connection.getName()
-                    + "' as int value. Port value :" + portAttribute.getValue() );
+                throw new ConnectionIOException( "Unable to parse 'Port' of connection '" + connection.getName() //$NON-NLS-1$
+                    + "' as int value. Port value :" + portAttribute.getValue() ); //$NON-NLS-1$
             }
         }
 
@@ -174,8 +174,8 @@ public class ConnectionIO
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Encryption Method' of connection '"
-                    + connection.getName() + "' as int value. Encryption Method value :"
+                throw new ConnectionIOException( "Unable to parse 'Encryption Method' of connection '" //$NON-NLS-1$
+                    + connection.getName() + "' as int value. Encryption Method value :" //$NON-NLS-1$
                     + encryptionMethodAttribute.getValue() );
             }
         }
@@ -190,8 +190,8 @@ public class ConnectionIO
             }
             catch ( IllegalArgumentException e )
             {
-                throw new ConnectionIOException( "Unable to parse 'Authentication Method' of connection '"
-                    + connection.getName() + "' as int value. Authentication Method value :"
+                throw new ConnectionIOException( "Unable to parse 'Authentication Method' of connection '" //$NON-NLS-1$
+                    + connection.getName() + "' as int value. Authentication Method value :" //$NON-NLS-1$
                     + authMethodAttribute.getValue() );
             }
         }
@@ -260,7 +260,7 @@ public class ConnectionIO
 
         // Writing the file to disk
         OutputFormat outformat = OutputFormat.createPrettyPrint();
-        outformat.setEncoding( "UTF-8" );
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
         XMLWriter writer = new XMLWriter( stream, outformat );
         writer.write( document );
         writer.flush();
@@ -289,7 +289,7 @@ public class ConnectionIO
         connectionElement.addAttribute( HOST_TAG, connection.getHost() );
 
         // Port
-        connectionElement.addAttribute( PORT_TAG, "" + connection.getPort() );
+        connectionElement.addAttribute( PORT_TAG, "" + connection.getPort() ); //$NON-NLS-1$
 
         // Encryption Method
         connectionElement.addAttribute( ENCRYPTION_METHOD_TAG, connection.getEncryptionMethod().toString() );
@@ -349,7 +349,7 @@ public class ConnectionIO
         Element rootElement = document.getRootElement();
         if ( !rootElement.getName().equals( CONNECTION_FOLDERS_TAG ) )
         {
-            throw new ConnectionIOException( "The file does not seem to be a valid ConnectionFolders file." );
+            throw new ConnectionIOException( "The file does not seem to be a valid ConnectionFolders file." ); //$NON-NLS-1$
         }
 
         for ( Iterator<?> i = rootElement.elementIterator( CONNECTION_FOLDER_TAG ); i.hasNext(); )
@@ -456,7 +456,7 @@ public class ConnectionIO
 
         // Writing the file to disk
         OutputFormat outformat = OutputFormat.createPrettyPrint();
-        outformat.setEncoding( "UTF-8" );
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
         XMLWriter writer = new XMLWriter( stream, outformat );
         writer.write( document );
         writer.flush();

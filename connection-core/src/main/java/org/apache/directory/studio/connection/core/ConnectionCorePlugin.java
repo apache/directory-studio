@@ -281,23 +281,23 @@ public class ConnectionCorePlugin extends Plugin
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
             IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
-                "ExtensionPoint_JndiLogger_id" ) );
+                "ExtensionPoint_JndiLogger_id" ) ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
                 try
                 {
-                    IJndiLogger logger = ( IJndiLogger ) member.createExecutableExtension( "class" );
-                    logger.setId( member.getAttribute( "id" ) );
-                    logger.setName( member.getAttribute( "name" ) );
-                    logger.setDescription( member.getAttribute( "description" ) );
+                    IJndiLogger logger = ( IJndiLogger ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
+                    logger.setId( member.getAttribute( "id" ) ); //$NON-NLS-1$
+                    logger.setName( member.getAttribute( "name" ) ); //$NON-NLS-1$
+                    logger.setDescription( member.getAttribute( "description" ) ); //$NON-NLS-1$
                     jndiLoggers.add( logger );
                 }
                 catch ( Exception e )
                 {
                     getLog().log(
                         new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
-                            "Unable to create JNDI logger " + member.getAttribute( "class" ), e ) );
+                            Messages.error__unable_to_create_jndi_logger + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
                 }
             }
         }
@@ -319,23 +319,20 @@ public class ConnectionCorePlugin extends Plugin
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
             IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
-                "ExtensionPoint_ConnectionListener_id" ) );
+                "ExtensionPoint_ConnectionListener_id" ) ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
                 try
                 {
-                    IConnectionListener listener = ( IConnectionListener ) member.createExecutableExtension( "class" );
-                    //                    listener.setId( member.getAttribute( "id" ) );
-                    //                    listener.setName( member.getAttribute( "name" ) );
-                    //                    listener.setDescription( member.getAttribute( "description" ) );
+                    IConnectionListener listener = ( IConnectionListener ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
                     connectionListeners.add( listener );
                 }
                 catch ( Exception e )
                 {
                     getLog().log(
                         new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
-                            "Unable to create connection listener " + member.getAttribute( "class" ), e ) );
+                            Messages.error__unable_to_create_connection_listener + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
                 }
             }
         }
@@ -357,15 +354,15 @@ public class ConnectionCorePlugin extends Plugin
             try
             {
                 properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
-                    "plugin.properties" ), false ) );
+                    "plugin.properties" ), false ) ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.connection.core", Status.OK,
-                        "Unable to get the plugin properties.", e ) );
+                    new Status( Status.ERROR, "org.apache.directory.studio.connection.core", Status.OK, //$NON-NLS-1$
+                        Messages.error__unable_to_get_plugin_properties, e ) );
             }
         }
 
@@ -386,11 +383,11 @@ public class ConnectionCorePlugin extends Plugin
      */
     public String getDefaultLdapContextFactory()
     {
-        String defaultLdapContextFactory = "";
+        String defaultLdapContextFactory = ""; //$NON-NLS-1$
 
         try
         {
-            String sun = "com.sun.jndi.ldap.LdapCtxFactory";
+            String sun = "com.sun.jndi.ldap.LdapCtxFactory"; //$NON-NLS-1$
             Class.forName( sun );
             defaultLdapContextFactory = sun;
         }
@@ -399,7 +396,7 @@ public class ConnectionCorePlugin extends Plugin
         }
         try
         {
-            String apache = "org.apache.harmony.jndi.provider.ldap.LdapContextFactory";
+            String apache = "org.apache.harmony.jndi.provider.ldap.LdapContextFactory"; //$NON-NLS-1$
             Class.forName( apache );
             defaultLdapContextFactory = apache;
         }

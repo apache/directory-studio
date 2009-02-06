@@ -30,7 +30,7 @@ public interface ConnectionCoreConstants
 {
     /** The plug-in ID */
     public static final String PLUGIN_ID = ConnectionCorePlugin.getDefault().getPluginProperties().getString(
-        "Plugin_id" );
+        "Plugin_id" ); //$NON-NLS-1$
 
     /** The line separator. */
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$
@@ -39,30 +39,30 @@ public interface ConnectionCoreConstants
     public static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"; //$NON-NLS-1$
 
     /** The constant used to preferred LDAP context factory */
-    public static final String PREFERENCE_LDAP_CONTEXT_FACTORY = "ldapContextFactory";
+    public static final String PREFERENCE_LDAP_CONTEXT_FACTORY = "ldapContextFactory"; //$NON-NLS-1$
 
     /** The constant used to identify the "enable modification logs" preference  */
-    public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable";
+    public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable"; //$NON-NLS-1$
 
     /** The constant used to identify the "modification log file count" preference  */
-    public static final String PREFERENCE_MODIFICATIONLOGS_FILE_COUNT = "modificationLogsFileCount";
+    public static final String PREFERENCE_MODIFICATIONLOGS_FILE_COUNT = "modificationLogsFileCount"; //$NON-NLS-1$
 
     /** The constant used to identify the "modification log file size" preference  */
-    public static final String PREFERENCE_MODIFICATIONLOGS_FILE_SIZE = "modificationLogsFileSize";
+    public static final String PREFERENCE_MODIFICATIONLOGS_FILE_SIZE = "modificationLogsFileSize"; //$NON-NLS-1$
 
     /** The constant used to identify the "enable search request logs" preference  */
-    public static final String PREFERENCE_SEARCHREQUESTLOGS_ENABLE = "searchRequestLogsEnable";
+    public static final String PREFERENCE_SEARCHREQUESTLOGS_ENABLE = "searchRequestLogsEnable"; //$NON-NLS-1$
 
     /** The constant used to identify the "enable search result entry logs" preference  */
-    public static final String PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE = "searchResultEntryLogsEnable";
+    public static final String PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE = "searchResultEntryLogsEnable"; //$NON-NLS-1$
 
     /** The constant used to identify the "search log file count" preference  */
-    public static final String PREFERENCE_SEARCHLOGS_FILE_COUNT = "searchLogsFileCount";
+    public static final String PREFERENCE_SEARCHLOGS_FILE_COUNT = "searchLogsFileCount"; //$NON-NLS-1$
 
     /** The constant used to identify the "search log file size" preference  */
-    public static final String PREFERENCE_SEARCHLOGS_FILE_SIZE = "searchLogsFileSize";
+    public static final String PREFERENCE_SEARCHLOGS_FILE_SIZE = "searchLogsFileSize"; //$NON-NLS-1$
 
     /** The constant used to identify the "masked attributes" preference  */
-    public static final String PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES = "modificationLogsMaskedAttributes";
+    public static final String PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES = "modificationLogsMaskedAttributes"; //$NON-NLS-1$
 
 }

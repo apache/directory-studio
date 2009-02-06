@@ -290,7 +290,7 @@ public class LdifModificationLogger implements IJndiLogger
                     Object o = valueEnumeration.next();
                     if ( maskedAttributes.contains( attributeName.toLowerCase() ) )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
                     }
                     else
                     {
@@ -379,7 +379,7 @@ public class LdifModificationLogger implements IJndiLogger
                     Object o = valueEnumeration.next();
                     if ( maskedAttributes.contains( attributeDescription.toLowerCase() ) )
                     {
-                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, "**********" ) );
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, "**********" ) ); //$NON-NLS-1$
                     }
                     else
                     {
@@ -622,7 +622,7 @@ public class LdifModificationLogger implements IJndiLogger
 
         String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
-        String[] splitted = maskedAttributeString.split( "," );
+        String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
         for ( String s : splitted )
         {
             maskedAttributes.add( s.toLowerCase() );

@@ -276,14 +276,14 @@ public class StudioConnectionJob extends Job
 
     private static String getLockIdentifier( Connection connection )
     {
-        return connection.getHost() + ":" + connection.getPort();
+        return connection.getHost() + ':' + connection.getPort();
     }
 
 
     private static String getLockIdentifier( Object object )
     {
-        String s = object != null ? object.toString() : "null";
-        s = "-" + s;
+        String s = object != null ? object.toString() : "null"; //$NON-NLS-1$
+        s = '-' + s;
         return s;
     }
 

@@ -221,12 +221,12 @@ public class LdifSearchLogger implements IJndiLogger
             if ( ex != null )
             {
                 logger.log( Level.ALL, LdifCommentLine
-                    .create( "#!" + type + " ERROR" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
+                    .create( "#!" + type + " ERROR" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else
             {
                 logger.log( Level.ALL, LdifCommentLine
-                    .create( "#!" + type + " OK" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
+                    .create( "#!" + type + " OK" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
             }
 
             logger
@@ -303,15 +303,15 @@ public class LdifSearchLogger implements IJndiLogger
             return;
         }
 
-        String scopeAsString = searchControls.getSearchScope() == SearchControls.SUBTREE_SCOPE ? "wholeSubtree (2)"
-            : searchControls.getSearchScope() == SearchControls.ONELEVEL_SCOPE ? "singleLevel (1)" : "baseObject (0)";
-        String attributesAsString = searchControls.getReturningAttributes() == null ? "*" : searchControls
-            .getReturningAttributes().length == 0 ? "1.1" : StringUtils.join( searchControls.getReturningAttributes(),
-            " " );
-        String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "derefAlways (3)"
-            : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "derefFindingBaseObj (2)"
-                : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "derefInSearching (1)"
-                    : "neverDerefAliases (0)";
+        String scopeAsString = searchControls.getSearchScope() == SearchControls.SUBTREE_SCOPE ? "wholeSubtree (2)" //$NON-NLS-1$
+            : searchControls.getSearchScope() == SearchControls.ONELEVEL_SCOPE ? "singleLevel (1)" : "baseObject (0)"; //$NON-NLS-1$ //$NON-NLS-2$
+        String attributesAsString = searchControls.getReturningAttributes() == null ? "*" : searchControls //$NON-NLS-1$
+            .getReturningAttributes().length == 0 ? "1.1" : StringUtils.join( searchControls.getReturningAttributes(), //$NON-NLS-1$
+            " " ); //$NON-NLS-1$
+        String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "derefAlways (3)" //$NON-NLS-1$
+            : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "derefFindingBaseObj (2)" //$NON-NLS-1$
+                : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "derefInSearching (1)" //$NON-NLS-1$
+                    : "neverDerefAliases (0)"; //$NON-NLS-1$
 
         // build LDAP URL
         LdapURL url = Utils.getLdapURL( connection, searchBase, searchControls.getSearchScope(), filter, searchControls
@@ -324,32 +324,32 @@ public class LdifSearchLogger implements IJndiLogger
 
         // build 
         Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# LDAP URL     : " + url.toString() ) );
-        lines.add( LdifCommentLine.create( "# command line : " + cmdLine.toString() ) );
-        lines.add( LdifCommentLine.create( "# baseObject   : " + searchBase ) );
-        lines.add( LdifCommentLine.create( "# scope        : " + scopeAsString ) );
-        lines.add( LdifCommentLine.create( "# derefAliases : " + aliasAsString ) );
-        lines.add( LdifCommentLine.create( "# sizeLimit    : " + searchControls.getCountLimit() ) );
-        lines.add( LdifCommentLine.create( "# timeLimit    : " + searchControls.getTimeLimit() ) );
-        lines.add( LdifCommentLine.create( "# typesOnly    : " + "False" ) );
-        lines.add( LdifCommentLine.create( "# filter       : " + filter ) );
-        lines.add( LdifCommentLine.create( "# attributes   : " + attributesAsString ) );
+        lines.add( LdifCommentLine.create( "# LDAP URL     : " + url.toString() ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# command line : " + cmdLine.toString() ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# baseObject   : " + searchBase ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# scope        : " + scopeAsString ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# derefAliases : " + aliasAsString ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# sizeLimit    : " + searchControls.getCountLimit() ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# timeLimit    : " + searchControls.getTimeLimit() ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# typesOnly    : " + "False" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        lines.add( LdifCommentLine.create( "# filter       : " + filter ) ); //$NON-NLS-1$
+        lines.add( LdifCommentLine.create( "# attributes   : " + attributesAsString ) ); //$NON-NLS-1$
         if ( controls != null )
         {
             for ( Control control : controls )
             {
-                lines.add( LdifCommentLine.create( "# control      : " + control.getID() ) );
+                lines.add( LdifCommentLine.create( "# control      : " + control.getID() ) ); //$NON-NLS-1$
             }
         }
         lines.add( LdifSepLine.create() );
 
-        String formattedString = "";
+        String formattedString = ""; //$NON-NLS-1$
         for ( LdifLineBase line : lines )
         {
             formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
         }
 
-        log( formattedString, "SEARCH REQUEST (" + requestNum + ")", ex, connection );
+        log( formattedString, "SEARCH REQUEST (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -400,7 +400,7 @@ public class LdifSearchLogger implements IJndiLogger
                 formattedString = LdifFormatParameters.DEFAULT.getLineSeparator();
             }
 
-            log( formattedString, "SEARCH RESULT ENTRY (" + requestNum + ")", ex, connection );
+            log( formattedString, "SEARCH RESULT ENTRY (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch ( NamingException e )
         {
@@ -420,15 +420,15 @@ public class LdifSearchLogger implements IJndiLogger
         }
 
         Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# reference : " + ( urlAndDn != null ? urlAndDn.getUrl() : "null" ) ) );
+        lines.add( LdifCommentLine.create( "# reference : " + ( urlAndDn != null ? urlAndDn.getUrl() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         lines.add( LdifSepLine.create() );
 
-        String formattedString = "";
+        String formattedString = ""; //$NON-NLS-1$
         for ( LdifLineBase line : lines )
         {
             formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
         }
-        log( formattedString, "SEARCH RESULT REFERENCE (" + requestNum + ")", ex, connection );
+        log( formattedString, "SEARCH RESULT REFERENCE (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -443,15 +443,15 @@ public class LdifSearchLogger implements IJndiLogger
         }
 
         Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# numEntries : " + count ) );
+        lines.add( LdifCommentLine.create( "# numEntries : " + count ) ); //$NON-NLS-1$
         lines.add( LdifSepLine.create() );
 
-        String formattedString = "";
+        String formattedString = ""; //$NON-NLS-1$
         for ( LdifLineBase line : lines )
         {
             formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
         }
-        log( formattedString, "SEARCH RESULT DONE (" + requestNum + ")", ex, connection );
+        log( formattedString, "SEARCH RESULT DONE (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

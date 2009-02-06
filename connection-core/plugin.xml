@@ -21,7 +21,7 @@
 <plugin>
    <extension-point id="org.apache.directory.studio.jndilogger" name="%ExtensionPoint_JndiLogger_name" schema="src/main/resources/jndiLogger.exsd"/>
    <extension-point id="org.apache.directory.studio.connectionlistener" name="%ExtensionPoint_ConnectionListener_name" schema="src/main/resources/connectionListener.exsd"/>
-   <extension-point id="org.apache.directory.studio.connectionInitializer" name="%ExtensionPoint_ConnectionInitialiazer_name" schema="src/main/resources/connectionInitializer.exsd"/>
+   <extension-point id="org.apache.directory.studio.connectionInitializer" name="%ExtensionPoint_ConnectionInitializer_name" schema="src/main/resources/connectionInitializer.exsd"/>
    <extension
          point="org.apache.directory.studio.jndilogger">
       <jndiLogger

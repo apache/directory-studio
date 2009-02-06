@@ -42,6 +42,9 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 public class Utils
 {
 
+    private static final String DOT_DOT_DOT = "..."; //$NON-NLS-1$
+
+
     /**
      * Shortens the given label to the given maximum length
      * and filters non-printable characters.
@@ -61,11 +64,11 @@ public class Utils
         // shorten label
         if ( maxLength < 3 )
         {
-            return "...";
+            return DOT_DOT_DOT;
         }
         if ( label.length() > maxLength )
         {
-            label = label.substring( 0, maxLength / 2 ) + "..."
+            label = label.substring( 0, maxLength / 2 ) + DOT_DOT_DOT
                 + label.substring( label.length() - maxLength / 2, label.length() );
 
         }
@@ -121,7 +124,7 @@ public class Utils
                     x = 256 + x;
                 String t = Integer.toHexString( x );
                 if ( t.length() == 1 )
-                    t = "0" + t; //$NON-NLS-1$
+                    t = '0' + t; //$NON-NLS-1$
                 sb.append( t );
             }
         }
@@ -145,7 +148,8 @@ public class Utils
         String[] attributes )
     {
         LdapURL url = new LdapURL();
-        url.setScheme( connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? "ldaps://" : "ldap://" );
+        url.setScheme( connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? LdapURL.LDAPS_SCHEME
+            : LdapURL.LDAP_SCHEME );
         url.setHost( connection.getHost() );
         url.setPort( connection.getPort() );
         try
@@ -185,71 +189,71 @@ public class Utils
     {
         StringBuilder cmdLine = new StringBuilder();
 
-        cmdLine.append( "ldapsearch" );
+        cmdLine.append( "ldapsearch" ); //$NON-NLS-1$
 
-        cmdLine.append( " -H " ).append(
-            connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? "ldaps://" : "ldap://" ).append(
-            connection.getHost() ).append( ":" ).append( connection.getPort() );
+        cmdLine.append( " -H " ).append( //$NON-NLS-1$
+            connection.getEncryptionMethod() == EncryptionMethod.LDAPS ? LdapURL.LDAPS_SCHEME : LdapURL.LDAP_SCHEME )
+            .append( connection.getHost() ).append( ":" ).append( connection.getPort() ); //$NON-NLS-1$
 
         if ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS )
         {
-            cmdLine.append( " -ZZ" );
+            cmdLine.append( " -ZZ" ); //$NON-NLS-1$
         }
 
         switch ( connection.getAuthMethod() )
         {
             case SIMPLE:
-                cmdLine.append( " -x" );
-                cmdLine.append( " -D \"" ).append( connection.getBindPrincipal() ).append( "\"" );
-                cmdLine.append( " -W" );
+                cmdLine.append( " -x" ); //$NON-NLS-1$
+                cmdLine.append( " -D \"" ).append( connection.getBindPrincipal() ).append( "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+                cmdLine.append( " -W" ); //$NON-NLS-1$
                 break;
             case SASL_CRAM_MD5:
-                cmdLine.append( " -U \"" ).append( connection.getBindPrincipal() ).append( "\"" );
-                cmdLine.append( " -Y \"CRAM-MD5\"" );
+                cmdLine.append( " -U \"" ).append( connection.getBindPrincipal() ).append( "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+                cmdLine.append( " -Y \"CRAM-MD5\"" ); //$NON-NLS-1$
                 break;
             case SASL_DIGEST_MD5:
-                cmdLine.append( " -U \"" ).append( connection.getBindPrincipal() ).append( "\"" );
-                cmdLine.append( " -Y \"DIGEST-MD5\"" );
+                cmdLine.append( " -U \"" ).append( connection.getBindPrincipal() ).append( "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+                cmdLine.append( " -Y \"DIGEST-MD5\"" ); //$NON-NLS-1$
                 break;
             case SASL_GSSAPI:
-                cmdLine.append( " -Y \"GSSAPI\"" );
+                cmdLine.append( " -Y \"GSSAPI\"" ); //$NON-NLS-1$
                 break;
         }
 
-        cmdLine.append( " -b \"" ).append( searchBase ).append( "\"" );
+        cmdLine.append( " -b \"" ).append( searchBase ).append( "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-        String scopeAsString = scope == SearchControls.SUBTREE_SCOPE ? "sub"
-            : scope == SearchControls.ONELEVEL_SCOPE ? "one" : "base";
-        cmdLine.append( " -s " ).append( scopeAsString );
+        String scopeAsString = scope == SearchControls.SUBTREE_SCOPE ? "sub" //$NON-NLS-1$
+            : scope == SearchControls.ONELEVEL_SCOPE ? "one" : "base"; //$NON-NLS-1$ //$NON-NLS-2$
+        cmdLine.append( " -s " ).append( scopeAsString ); //$NON-NLS-1$
 
         if ( aliasesDereferencingMethod != AliasDereferencingMethod.NEVER )
         {
-            String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "always"
-                : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "find"
-                    : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "search" : "never";
-            cmdLine.append( " -a " ).append( aliasAsString );
+            String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "always" //$NON-NLS-1$
+                : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "find" //$NON-NLS-1$
+                    : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "search" : "never"; //$NON-NLS-1$ //$NON-NLS-2$
+            cmdLine.append( " -a " ).append( aliasAsString ); //$NON-NLS-1$
         }
 
         if ( sizeLimit > 0 )
         {
-            cmdLine.append( " -z " ).append( sizeLimit );
+            cmdLine.append( " -z " ).append( sizeLimit ); //$NON-NLS-1$
         }
         if ( timeLimit > 0 )
         {
-            cmdLine.append( " -l " ).append( timeLimit );
+            cmdLine.append( " -l " ).append( timeLimit ); //$NON-NLS-1$
         }
 
-        cmdLine.append( " \"" ).append( filter ).append( "\"" );
+        cmdLine.append( " \"" ).append( filter ).append( "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         if ( attributes != null )
         {
             if ( attributes.length == 0 )
             {
-                cmdLine.append( " \"1.1\"" );
+                cmdLine.append( " \"1.1\"" ); //$NON-NLS-1$
             }
             for ( String attribute : attributes )
             {
-                cmdLine.append( " \"" ).append( attribute ).append( "\"" );
+                cmdLine.append( " \"" ).append( attribute ).append( "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

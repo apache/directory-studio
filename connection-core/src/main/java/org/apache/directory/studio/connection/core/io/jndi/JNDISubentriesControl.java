@@ -38,7 +38,7 @@ public class JNDISubentriesControl extends BasicControl
     /**
      * The Subentries control's OID is 1.3.6.1.4.1.4203.1.10.1.
      */
-    public static final String OID = "1.3.6.1.4.1.4203.1.10.1";
+    public static final String OID = "1.3.6.1.4.1.4203.1.10.1"; //$NON-NLS-1$
 
     /**
      * The Subentries control's value.

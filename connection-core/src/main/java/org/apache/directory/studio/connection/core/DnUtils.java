@@ -170,7 +170,7 @@ public class DnUtils
         {
         }
 
-        throw new InvalidNameException( "RDN is invalid" );
+        throw new InvalidNameException( Messages.error__invalid_rdn );
     }
 
 }

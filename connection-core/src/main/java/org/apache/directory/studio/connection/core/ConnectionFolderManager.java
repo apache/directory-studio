@@ -46,6 +46,9 @@ import org.apache.directory.studio.connection.core.io.ConnectionIOException;
  */
 public class ConnectionFolderManager implements ConnectionUpdateListener
 {
+    private static final String CONNECTION_FOLDERS_FILENAME = "connectionFolders.xml"; //$NON-NLS-1$
+
+    private static final String ROOT_ID = "0"; //$NON-NLS-1$
 
     /** The root connection folder. */
     private ConnectionFolder root;
@@ -59,8 +62,8 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
      */
     public ConnectionFolderManager()
     {
-        this.root = new ConnectionFolder( "" );
-        this.root.setId( "0" ); //$NON-NLS-1$s
+        this.root = new ConnectionFolder( "" ); //$NON-NLS-1$s
+        this.root.setId( ROOT_ID ); //$NON-NLS-1$s
         this.folderList = new HashSet<ConnectionFolder>();
 
         loadConnectionFolders();
@@ -78,8 +81,8 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
      */
     public static final String getConnectionFolderStoreFileName()
     {
-        String filename = ConnectionCorePlugin.getDefault().getStateLocation()
-            .append( "connectionFolders.xml" ).toOSString(); //$NON-NLS-1$
+        String filename = ConnectionCorePlugin.getDefault().getStateLocation().append( CONNECTION_FOLDERS_FILENAME )
+            .toOSString();
         return filename;
     }
 
@@ -349,7 +352,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
         try
         {
             ConnectionIO.saveConnectionFolders( folderList, new FileOutputStream( getConnectionFolderStoreFileName()
-                + "-temp" ) );
+                + ConnectionManager.TEMP_SUFFIX ) );
         }
         catch ( IOException e )
         {
@@ -359,7 +362,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
 
         // move temp file to good file
         File file = new File( getConnectionFolderStoreFileName() );
-        File tempFile = new File( getConnectionFolderStoreFileName() + "-temp" );
+        File tempFile = new File( getConnectionFolderStoreFileName() + ConnectionManager.TEMP_SUFFIX );
         if ( file.exists() )
         {
             file.delete();
@@ -367,8 +370,8 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
 
         try
         {
-            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
-            FileUtils.writeStringToFile( file, content, "UTF-8" );
+            String content = FileUtils.readFileToString( tempFile, ConnectionManager.ENCODING_UTF8 );
+            FileUtils.writeStringToFile( file, content, ConnectionManager.ENCODING_UTF8 );
         }
         catch ( IOException e )
         {
@@ -393,7 +396,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
             try
             {
                 folderList = ConnectionIO.loadConnectionFolders( new FileInputStream(
-                    getConnectionFolderStoreFileName() + "-temp" ) );
+                    getConnectionFolderStoreFileName() + ConnectionManager.TEMP_SUFFIX ) );
             }
             catch ( FileNotFoundException e1 )
             {
@@ -409,7 +412,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
         {
             for ( ConnectionFolder folder : folderList )
             {
-                if ( "0".equals( folder.getId() ) )
+                if ( ROOT_ID.equals( folder.getId() ) )
                 {
                     root = folder;
                 }

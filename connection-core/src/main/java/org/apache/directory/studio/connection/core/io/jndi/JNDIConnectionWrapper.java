@@ -70,6 +70,7 @@ import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -87,6 +88,36 @@ import org.eclipse.core.runtime.Preferences;
  */
 public class JNDIConnectionWrapper implements ConnectionWrapper
 {
+
+    private static final String JAVA_NAMING_LDAP_DELETE_RDN = "java.naming.ldap.deleteRDN"; //$NON-NLS-1$
+
+    private static final String AUTHMETHOD_NONE = "none"; //$NON-NLS-1$
+
+    private static final String AUTHMETHOD_SIMPLE = "simple"; //$NON-NLS-1$
+
+    private static final String AUTHMETHOD_DIGEST_MD5 = "DIGEST-MD5"; //$NON-NLS-1$
+
+    private static final String AUTHMETHOD_CRAM_MD5 = "CRAM-MD5"; //$NON-NLS-1$
+
+    private static final String AUTHMETHOD_GSSAPI = "GSSAPI"; //$NON-NLS-1$
+
+    private static final String NO_CONNECTION = "No connection"; //$NON-NLS-1$
+
+    private static final String JAVA_NAMING_SECURITY_SASL_REALM = "java.naming.security.sasl.realm"; //$NON-NLS-1$
+
+    private static final String JAVA_NAMING_LDAP_FACTORY_SOCKET = "java.naming.ldap.factory.socket"; //$NON-NLS-1$
+
+    private static final String COM_SUN_JNDI_DNS_TIMEOUT_RETRIES = "com.sun.jndi.dns.timeout.retries"; //$NON-NLS-1$
+
+    private static final String COM_SUN_JNDI_DNS_TIMEOUT_INITIAL = "com.sun.jndi.dns.timeout.initial"; //$NON-NLS-1$
+
+    private static final String COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT = "com.sun.jndi.ldap.connect.timeout"; //$NON-NLS-1$
+
+    private static final String JAVA_NAMING_LDAP_VERSION = "java.naming.ldap.version"; //$NON-NLS-1$
+
+    private static final String JAVA_NAMING_LDAP_DEREF_ALIASES = "java.naming.ldap.derefAliases"; //$NON-NLS-1$
+
+    private static final String JAVA_NAMING_LDAP_ATTRIBUTES_BINARY = "java.naming.ldap.attributes.binary"; //$NON-NLS-1$
 
     private static int SEARCH_RESQUEST_NUM = 0;
 
@@ -115,25 +146,25 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     private Collection<String> binaryAttributes;
 
     /** JNDI constant for "throw" referrals handling */
-    public static final String REFERRAL_THROW = "throw";
+    public static final String REFERRAL_THROW = "throw"; //$NON-NLS-1$
 
     /** JNDI constant for "follow" referrals handling */
-    public static final String REFERRAL_FOLLOW = "follow";
+    public static final String REFERRAL_FOLLOW = "follow"; //$NON-NLS-1$
 
     /** JNDI constant for "ignore" referrals handling */
-    public static final String REFERRAL_IGNORE = "ignore";
+    public static final String REFERRAL_IGNORE = "ignore"; //$NON-NLS-1$
 
     /** JNDI constant for "searching" alias dereferencing */
-    public static final String ALIAS_SEARCHING = "searching";
+    public static final String ALIAS_SEARCHING = "searching"; //$NON-NLS-1$
 
     /** JNDI constant for "finding" alias dereferencing */
-    public static final String ALIAS_FINDING = "finding";
+    public static final String ALIAS_FINDING = "finding"; //$NON-NLS-1$
 
     /** JNDI constant for "always" alias dereferencing */
-    public static final String ALIAS_ALWAYS = "always";
+    public static final String ALIAS_ALWAYS = "always"; //$NON-NLS-1$
 
     /** JNDI constant for "never" alias dereferencing */
-    public static final String ALIAS_NEVER = "never";
+    public static final String ALIAS_NEVER = "never"; //$NON-NLS-1$
 
 
     /**
@@ -239,22 +270,22 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     public void setBinaryAttributes( Collection<String> binaryAttributes )
     {
         this.binaryAttributes = binaryAttributes;
-        String binaryAttributesString = "";
+        String binaryAttributesString = StringUtils.EMPTY;
         for ( String string : binaryAttributes )
         {
-            binaryAttributesString += string + " ";
+            binaryAttributesString += string + ' ';
         }
 
         if ( environment != null )
         {
-            environment.put( "java.naming.ldap.attributes.binary", binaryAttributesString );
+            environment.put( JAVA_NAMING_LDAP_ATTRIBUTES_BINARY, binaryAttributesString );
         }
 
         if ( context != null )
         {
             try
             {
-                context.addToEnvironment( "java.naming.ldap.attributes.binary", binaryAttributesString );
+                context.addToEnvironment( JAVA_NAMING_LDAP_ATTRIBUTES_BINARY, binaryAttributesString );
             }
             catch ( NamingException e )
             {
@@ -300,8 +331,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     LdapContext searchCtx = context.newInstance( localControls );
 
                     // translate alias dereferencing method
-                    searchCtx.addToEnvironment(
-                        "java.naming.ldap.derefAliases", translateDerefAliasMethod( aliasesDereferencingMethod ) ); //$NON-NLS-1$
+                    searchCtx.addToEnvironment( JAVA_NAMING_LDAP_DEREF_ALIASES,
+                        translateDerefAliasMethod( aliasesDereferencingMethod ) );
 
                     // use "throw" as we handle referrals manually
                     searchCtx.addToEnvironment( Context.REFERRAL, REFERRAL_THROW );
@@ -440,7 +471,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
             return;
         }
 
@@ -531,7 +562,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
             return;
         }
 
@@ -553,11 +584,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     // delete old RDN
                     if ( deleteOldRdn )
                     {
-                        modCtx.addToEnvironment( "java.naming.ldap.deleteRDN", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+                        modCtx.addToEnvironment( JAVA_NAMING_LDAP_DELETE_RDN, "true" ); //$NON-NLS-1$
                     }
                     else
                     {
-                        modCtx.addToEnvironment( "java.naming.ldap.deleteRDN", "false" ); //$NON-NLS-1$ //$NON-NLS-2$
+                        modCtx.addToEnvironment( JAVA_NAMING_LDAP_DELETE_RDN, "false" ); //$NON-NLS-1$
                     }
 
                     // rename entry
@@ -631,7 +662,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
             return;
         }
 
@@ -719,7 +750,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( connection.isReadOnly() )
         {
-            monitor.reportError( "Connection '" + connection.getName() + "' is read only." );
+            monitor.reportError( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) );
             return;
         }
 
@@ -809,28 +840,28 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
         String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
         environment.put( Context.INITIAL_CONTEXT_FACTORY, ldapCtxFactory ); //$NON-NLS-1$
-        environment.put( "java.naming.ldap.version", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        environment.put( JAVA_NAMING_LDAP_VERSION, "3" ); //$NON-NLS-1$
 
         // timeouts
         // Don't use a timeout when using ldaps: JNDI throws a SocketException 
         // when setting a timeout on SSL connections.
         if ( !useLdaps )
         {
-            environment.put( "com.sun.jndi.ldap.connect.timeout", "10000" ); //$NON-NLS-1$ //$NON-NLS-2$
+            environment.put( COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT, "10000" ); //$NON-NLS-1$
         }
-        environment.put( "com.sun.jndi.dns.timeout.initial", "2000" ); //$NON-NLS-1$ //$NON-NLS-2$
-        environment.put( "com.sun.jndi.dns.timeout.retries", "3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        environment.put( COM_SUN_JNDI_DNS_TIMEOUT_INITIAL, "2000" ); //$NON-NLS-1$
+        environment.put( COM_SUN_JNDI_DNS_TIMEOUT_RETRIES, "3" ); //$NON-NLS-1$
 
         // ldaps://
         if ( useLdaps )
         {
-            environment.put( Context.PROVIDER_URL, "ldaps://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
+            environment.put( Context.PROVIDER_URL, LdapURL.LDAPS_SCHEME + host + ':' + port );
             environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
-            environment.put( "java.naming.ldap.factory.socket", DummySSLSocketFactory.class.getName() ); //$NON-NLS-1$
+            environment.put( JAVA_NAMING_LDAP_FACTORY_SOCKET, DummySSLSocketFactory.class.getName() );
         }
         else
         {
-            environment.put( Context.PROVIDER_URL, "ldap://" + host + ":" + port ); //$NON-NLS-1$ //$NON-NLS-2$
+            environment.put( Context.PROVIDER_URL, LdapURL.LDAP_SCHEME + host + ':' + port );
         }
 
         if ( binaryAttributes != null )
@@ -900,23 +931,23 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         if ( context != null && isConnected )
         {
             // setup authentication methdod
-            authMethod = "none";
+            authMethod = AUTHMETHOD_NONE;
             if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
             {
-                authMethod = "simple";
+                authMethod = AUTHMETHOD_SIMPLE;
             }
             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
             {
-                authMethod = "DIGEST-MD5";
+                authMethod = AUTHMETHOD_DIGEST_MD5;
                 saslRealm = connection.getConnectionParameter().getSaslRealm();
             }
             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
             {
-                authMethod = "CRAM-MD5";
+                authMethod = AUTHMETHOD_CRAM_MD5;
             }
             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
             {
-                authMethod = "GSSAPI";
+                authMethod = AUTHMETHOD_GSSAPI;
             }
 
             // setup credentials
@@ -953,7 +984,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         context.removeFromEnvironment( Context.SECURITY_AUTHENTICATION );
                         context.removeFromEnvironment( Context.SECURITY_PRINCIPAL );
                         context.removeFromEnvironment( Context.SECURITY_CREDENTIALS );
-                        context.removeFromEnvironment( "java.naming.security.sasl.realm" );
+                        context.removeFromEnvironment( JAVA_NAMING_SECURITY_SASL_REALM );
 
                         context.addToEnvironment( Context.SECURITY_PRINCIPAL, bindPrincipal );
                         context.addToEnvironment( Context.SECURITY_CREDENTIALS, bindCredentials );
@@ -962,7 +993,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5
                             && StringUtils.isNotEmpty( saslRealm ) )
                         {
-                            context.addToEnvironment( "java.naming.security.sasl.realm", saslRealm );
+                            context.addToEnvironment( JAVA_NAMING_SECURITY_SASL_REALM, saslRealm );
                         }
                         context.reconnect( context.getConnectControls() );
                     }
@@ -991,7 +1022,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            throw new NamingException( "No connection" );
+            throw new NamingException( NO_CONNECTION );
         }
     }
 
@@ -1007,7 +1038,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         if ( context == null )
         {
-            throw new NamingException( "No connection" );
+            throw new NamingException( NO_CONNECTION );
         }
 
         // loop for reconnection
@@ -1151,21 +1182,21 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      */
     private String translateDerefAliasMethod( AliasDereferencingMethod aliasDereferencingMethod )
     {
-        String m = ALIAS_ALWAYS; //$NON-NLS-1$
+        String m = ALIAS_ALWAYS;
 
         switch ( aliasDereferencingMethod )
         {
             case NEVER:
-                m = ALIAS_NEVER; //$NON-NLS-1$
+                m = ALIAS_NEVER;
                 break;
             case ALWAYS:
-                m = ALIAS_ALWAYS; //$NON-NLS-1$
+                m = ALIAS_ALWAYS;
                 break;
             case FINDING:
-                m = ALIAS_FINDING; //$NON-NLS-1$
+                m = ALIAS_FINDING;
                 break;
             case SEARCH:
-                m = ALIAS_SEARCHING; //$NON-NLS-1$
+                m = ALIAS_SEARCHING;
                 break;
         }
 
@@ -1252,7 +1283,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      */
     private Name getSaveJndiName( String name ) throws InvalidNameException
     {
-        if ( name == null || "".equals( name ) )
+        if ( name == null || StringUtils.isEmpty( name ) ) //$NON-NLS-1$
         {
             return new CompositeName();
         }
@@ -1331,7 +1362,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             try
             {
                 Context ctx = referralException.getReferralContext();
-                ctx.list( "" ); //$NON-NLS-1$
+                ctx.list( StringUtils.EMPTY ); //$NON-NLS-1$
             }
             catch ( NamingException ne )
             {

@@ -51,6 +51,20 @@ import org.eclipse.core.runtime.Status;
  */
 public class ConnectionManager implements ConnectionUpdateListener
 {
+    private static final String LOGS_PATH = "logs"; //$NON-NLS-1$
+
+    private static final String SEARCH_LOGS_PREFIX = "search-"; //$NON-NLS-1$
+
+    private static final String MODIFICATIONS_LOG_PREFIX = "modifications-"; //$NON-NLS-1$
+
+    private static final String LDIFLOG_SUFFIX = "-%u-%g.ldiflog"; //$NON-NLS-1$
+
+    private static final String CONNECTIONS_XML = "connections.xml"; //$NON-NLS-1$
+
+    public static final String ENCODING_UTF8 = "UTF-8"; //$NON-NLS-1$
+
+    public static final String TEMP_SUFFIX = "-temp"; //$NON-NLS-1$
+
 
     /** The list of connections. */
     private Set<Connection> connectionList;
@@ -82,12 +96,12 @@ public class ConnectionManager implements ConnectionUpdateListener
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
             ConnectionCorePlugin.getDefault().getPluginProperties().getString(
-                "ExtensionPoint_ConnectionInitialiazer_id" ) );
+                "ExtensionPoint_ConnectionInitializer_id" ) ); //$NON-NLS-1$
 
         IConfigurationElement[] configurationElements = extensionPoint.getConfigurationElements();
         for ( IConfigurationElement configurationElement : configurationElements )
         {
-            if ( "connection".equals( configurationElement.getName() ) )
+            if ( "connection".equals( configurationElement.getName() ) ) //$NON-NLS-1$
             {
                 addInitialConnection( configurationElement );
             }
@@ -105,14 +119,14 @@ public class ConnectionManager implements ConnectionUpdateListener
         try
         {
             ConnectionParameter connectionParameter = ( ConnectionParameter ) configurationElement
-                .createExecutableExtension( "class" );
+                .createExecutableExtension( "class" ); //$NON-NLS-1$
             Connection conn = new Connection( connectionParameter );
             connectionList.add( conn );
         }
         catch ( CoreException e )
         {
             Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
-                "Exception occured while executing connection initializer: " + e.getMessage(), e );
+                Messages.error__execute_connection_initializer + e.getMessage(), e );
             ConnectionCorePlugin.getDefault().getLog().log( status );
         }
     }
@@ -128,14 +142,14 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public static final String getModificationLogFileName( Connection connection )
     {
-        IPath p = ConnectionCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
+        IPath p = ConnectionCorePlugin.getDefault().getStateLocation().append( LOGS_PATH );
         File file = p.toFile();
         if ( !file.exists() )
         {
             file.mkdir();
         }
         return p
-            .append( "modifications-" + Utils.getFilenameString( connection.getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+            .append( MODIFICATIONS_LOG_PREFIX + Utils.getFilenameString( connection.getId() ) + LDIFLOG_SUFFIX ).toOSString();
     }
 
 
@@ -149,13 +163,13 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public static final String getSearchLogFileName( Connection connection )
     {
-        IPath p = ConnectionCorePlugin.getDefault().getStateLocation().append( "logs" ); //$NON-NLS-1$
+        IPath p = ConnectionCorePlugin.getDefault().getStateLocation().append( LOGS_PATH ); //$NON-NLS-1$
         File file = p.toFile();
         if ( !file.exists() )
         {
             file.mkdir();
         }
-        return p.append( "search-" + Utils.getFilenameString( connection.getId() ) + "-%u-%g.ldiflog" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
+        return p.append( SEARCH_LOGS_PREFIX + Utils.getFilenameString( connection.getId() ) + LDIFLOG_SUFFIX ).toOSString();
     }
 
 
@@ -167,7 +181,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public static final String getConnectionStoreFileName()
     {
-        String filename = ConnectionCorePlugin.getDefault().getStateLocation().append( "connections.xml" ).toOSString(); //$NON-NLS-1$
+        String filename = ConnectionCorePlugin.getDefault().getStateLocation().append( CONNECTIONS_XML ).toOSString();
         return filename;
     }
 
@@ -341,17 +355,18 @@ public class ConnectionManager implements ConnectionUpdateListener
         // To avoid a corrupt file, save object to a temp file first 
         try
         {
-            ConnectionIO.save( connectionParameters, new FileOutputStream( getConnectionStoreFileName() + "-temp" ) );
+            ConnectionIO.save( connectionParameters, new FileOutputStream( getConnectionStoreFileName() + TEMP_SUFFIX ) );
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                Messages.error__saving_connections + e.getMessage(), e );
+            ConnectionCorePlugin.getDefault().getLog().log( status );
         }
 
         // move temp file to good file
         File file = new File( getConnectionStoreFileName() );
-        File tempFile = new File( getConnectionStoreFileName() + "-temp" );
+        File tempFile = new File( getConnectionStoreFileName() + TEMP_SUFFIX );
         if ( file.exists() )
         {
             file.delete();
@@ -359,13 +374,14 @@ public class ConnectionManager implements ConnectionUpdateListener
 
         try
         {
-            String content = FileUtils.readFileToString( tempFile, "UTF-8" );
-            FileUtils.writeStringToFile( file, content, "UTF-8" );
+            String content = FileUtils.readFileToString( tempFile, ENCODING_UTF8 );
+            FileUtils.writeStringToFile( file, content, ENCODING_UTF8 );
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                Messages.error__saving_connections + e.getMessage(), e );
+            ConnectionCorePlugin.getDefault().getLog().log( status );
         }
     }
 
@@ -387,17 +403,18 @@ public class ConnectionManager implements ConnectionUpdateListener
             try
             {
                 connectionParameters = ConnectionIO
-                    .load( new FileInputStream( getConnectionStoreFileName() + "-temp" ) );
+                    .load( new FileInputStream( getConnectionStoreFileName() + TEMP_SUFFIX ) );
             }
             catch ( FileNotFoundException e1 )
             {
-                // TODO Auto-generated catch block
+                // ignore, this is a fresh workspace
                 return;
             }
             catch ( ConnectionIOException e1 )
             {
-                // TODO Auto-generated catch block
-                return;
+                Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                    Messages.error__loading_connections + e.getMessage(), e );
+                ConnectionCorePlugin.getDefault().getLog().log( status );
             }
         }
 

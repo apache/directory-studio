@@ -27,6 +27,8 @@ import javax.naming.LinkLoopException;
 
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Messages;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -74,7 +76,7 @@ public class ReferralsInfo
         }
         else
         {
-            throw new LinkLoopException( "Loop detected while following referral: " + url );
+            throw new LinkLoopException( NLS.bind( Messages.error__loop_detected, url ) );
         }
     }
 
@@ -120,11 +122,11 @@ public class ReferralsInfo
         {
             if ( url == null )
             {
-                throw new IllegalArgumentException( "URL may not be null" );
+                throw new IllegalArgumentException( "URL may not be null" ); //$NON-NLS-1$
             }
             if ( dn == null )
             {
-                throw new IllegalArgumentException( "DN may not be null" );
+                throw new IllegalArgumentException( "DN may not be null" ); //$NON-NLS-1$
             }
             this.url = url;
             this.dn = dn;
