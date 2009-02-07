@@ -82,29 +82,29 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return "NULL";
+                return "NULL"; //$NON-NLS-1$
             }
 
             String password = value.getStringValue();;
             if ( password == null )
             {
-                return "NULL";
+                return "NULL"; //$NON-NLS-1$
             }
             else
             {
                 String text;
-                if ( "".equals( password ) )
+                if ( "".equals( password ) ) //$NON-NLS-1$
                 {
-                    text = "Empty password";
+                    text = Messages.getString("PasswordValueEditor.EmptyPassword"); //$NON-NLS-1$
                 }
                 else if ( password.indexOf( '{' ) == 0 && password.indexOf( '}' ) > 0 )
                 {
-                    String encryptionMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
-                    text = encryptionMethod + " encrypted password";
+                    String hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
+                    text = hashMethod + Messages.getString("PasswordValueEditor.HashedPassword"); //$NON-NLS-1$
                 }
                 else
                 {
-                    text = "Plain text password";
+                    text = Messages.getString("PasswordValueEditor.PlainTextPassword"); //$NON-NLS-1$
                 }
                 return text;
             }

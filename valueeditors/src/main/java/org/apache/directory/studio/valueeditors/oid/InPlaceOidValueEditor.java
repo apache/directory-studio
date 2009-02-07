@@ -51,7 +51,7 @@ public class InPlaceOidValueEditor extends AbstractInPlaceStringValueEditor
             String description = Utils.getOidDescription( displayValue );
             if ( description != null )
             {
-                displayValue = displayValue + " (" + description + ")";
+                displayValue = displayValue + " (" + description + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
 

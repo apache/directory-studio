@@ -50,7 +50,7 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof String )
         {
             AddressDialog dialog = new AddressDialog( shell, ( String ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAddress() ) )
+            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAddress() ) ) //$NON-NLS-1$
             {
                 setValue( dialog.getAddress() );
                 return true;
@@ -71,7 +71,7 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
 
         if ( !showRawValues() )
         {
-            displayValue = displayValue.replaceAll( "\\$", ", " );
+            displayValue = displayValue.replaceAll( "\\$", ", " ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         return displayValue;

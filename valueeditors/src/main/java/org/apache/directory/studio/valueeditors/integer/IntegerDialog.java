@@ -74,7 +74,7 @@ public class IntegerDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("IntegerDialog.IntegerEditor") );
+        shell.setText( Messages.getString("IntegerDialog.IntegerEditor") ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_INTEGEREDITOR ) );
     }
 

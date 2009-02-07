@@ -84,18 +84,18 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
             switch ( ocd.getKind() )
             {
                 case STRUCTURAL:
-                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Structural" );
+                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Structural" ); //$NON-NLS-1$
                     break;
                 case ABSTRACT:
-                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Abstract" );
+                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Abstract" ); //$NON-NLS-1$
                     break;
                 case AUXILIARY:
-                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Auxiliary" );
+                    displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Auxiliary" ); //$NON-NLS-1$
                     break;
             }
             if ( ocd.isObsolete() )
             {
-                displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Obsolete" );
+                displayValue = displayValue + Messages.getString( "ObjectClassValueEditor.Obsolete" ); //$NON-NLS-1$
             }
         }
 

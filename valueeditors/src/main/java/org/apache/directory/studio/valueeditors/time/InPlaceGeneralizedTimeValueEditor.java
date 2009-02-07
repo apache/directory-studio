@@ -61,7 +61,7 @@ public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValu
             {
                 GeneralizedTime generalizedTime = new GeneralizedTime( displayValue );
                 Date date = generalizedTime.getCalendar().getTime();
-                displayValue = targetFormat.format( date ) + " (" + displayValue + ")";
+                displayValue = targetFormat.format( date ) + " (" + displayValue + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             catch ( ParseException pe )
             {

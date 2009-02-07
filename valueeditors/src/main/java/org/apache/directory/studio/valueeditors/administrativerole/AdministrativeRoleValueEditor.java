@@ -46,7 +46,7 @@ public class AdministrativeRoleValueEditor extends AbstractDialogStringValueEdit
         if ( value != null && value instanceof String )
         {
             AdministrativeRoleDialog dialog = new AdministrativeRoleDialog( shell, ( String ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAdministrativeRole() ) )
+            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getAdministrativeRole() ) ) //$NON-NLS-1$
             {
                 setValue( dialog.getAdministrativeRole() );
                 return true;

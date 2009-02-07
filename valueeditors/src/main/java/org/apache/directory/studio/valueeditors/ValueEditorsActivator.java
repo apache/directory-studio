@@ -159,7 +159,7 @@ public class ValueEditorsActivator extends AbstractUIPlugin
                 // So we're using a default plugin id.
                 getLog().log(
                     new Status( Status.ERROR, "org.apache.directory.studio.valueeditors", Status.OK, //$NON-NLS-1$
-                        Messages.getString("ValueEditorsActivator.UnableGetPluginProperties"), e ) );
+                        Messages.getString("ValueEditorsActivator.UnableGetPluginProperties"), e ) ); //$NON-NLS-1$
             }
         }
 

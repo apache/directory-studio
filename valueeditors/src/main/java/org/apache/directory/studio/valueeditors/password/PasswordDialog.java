@@ -162,7 +162,7 @@ public class PasswordDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("PasswordDialog.PasswordEditor") );
+        shell.setText( Messages.getString("PasswordDialog.PasswordEditor") ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_PASSWORDEDITOR ) );
     }
 
@@ -280,20 +280,20 @@ public class PasswordDialog extends Dialog
             currentLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
             currentPasswordContainer.setLayout( currentLayout );
 
-            BaseWidgetUtils.createLabel( currentPasswordContainer, Messages.getString("PasswordDialog.CurrentPassword") + ":", 1 ); //$NON-NLS-2$
+            BaseWidgetUtils.createLabel( currentPasswordContainer, Messages.getString("PasswordDialog.CurrentPassword") + ":", 1 );  //$NON-NLS-1$//$NON-NLS-2$
             currentPasswordText = BaseWidgetUtils.createReadonlyText( currentPasswordContainer, "", 1 ); //$NON-NLS-1$
 
             new Label( currentPasswordContainer, SWT.NONE );
             Composite currentPasswordDetailContainer = BaseWidgetUtils.createColumnContainer( currentPasswordContainer,
                 2, 1 );
-            BaseWidgetUtils.createLabel( currentPasswordDetailContainer, Messages.getString("PasswordDialog.HashMethod"), 1 );
+            BaseWidgetUtils.createLabel( currentPasswordDetailContainer, Messages.getString("PasswordDialog.HashMethod"), 1 ); //$NON-NLS-1$
             currentPasswordHashMethodText = BaseWidgetUtils.createLabeledText( currentPasswordDetailContainer, "", 1 ); //$NON-NLS-1$
-            BaseWidgetUtils.createLabel( currentPasswordDetailContainer, Messages.getString("PasswordDialog.PasswordHex"), 1 );
+            BaseWidgetUtils.createLabel( currentPasswordDetailContainer, Messages.getString("PasswordDialog.PasswordHex"), 1 ); //$NON-NLS-1$
             currentPasswordValueHexText = BaseWidgetUtils.createLabeledText( currentPasswordDetailContainer, "", 1 ); //$NON-NLS-1$
-            BaseWidgetUtils.createLabel( currentPasswordDetailContainer, Messages.getString("PasswordDialog.SaltHex"), 1 );
+            BaseWidgetUtils.createLabel( currentPasswordDetailContainer, Messages.getString("PasswordDialog.SaltHex"), 1 ); //$NON-NLS-1$
             currentPasswordSaltHexText = BaseWidgetUtils.createLabeledText( currentPasswordDetailContainer, "", 1 ); //$NON-NLS-1$
             showCurrentPasswordDetailsButton = BaseWidgetUtils.createCheckbox( currentPasswordDetailContainer,
-                Messages.getString("PasswordDialog.ShowCurrentPasswordDetails"), 1 );
+                Messages.getString("PasswordDialog.ShowCurrentPasswordDetails"), 1 ); //$NON-NLS-1$
             showCurrentPasswordDetailsButton.addSelectionListener( new SelectionAdapter()
             {
                 public void widgetSelected( SelectionEvent arg0 )
@@ -302,7 +302,7 @@ public class PasswordDialog extends Dialog
                 }
             } );
 
-            BaseWidgetUtils.createLabel( currentPasswordContainer, Messages.getString("PasswordDialog.VerifyPassword"), 1 );
+            BaseWidgetUtils.createLabel( currentPasswordContainer, Messages.getString("PasswordDialog.VerifyPassword"), 1 ); //$NON-NLS-1$
             testPasswordText = BaseWidgetUtils.createPasswordText( currentPasswordContainer, "", 1 ); //$NON-NLS-1$
             testPasswordText.addModifyListener( new ModifyListener()
             {
@@ -315,7 +315,7 @@ public class PasswordDialog extends Dialog
             new Label( currentPasswordContainer, SWT.NONE );
             Composite verifyPasswordButtonContainer = BaseWidgetUtils.createColumnContainer( currentPasswordContainer,
                 2, 1 );
-            verifyPasswordButton = BaseWidgetUtils.createButton( verifyPasswordButtonContainer, Messages.getString("PasswordDialog.Verify"), 1 );
+            verifyPasswordButton = BaseWidgetUtils.createButton( verifyPasswordButtonContainer, Messages.getString("PasswordDialog.Verify"), 1 ); //$NON-NLS-1$
             verifyPasswordButton.setEnabled( false );
             verifyPasswordButton.addSelectionListener( new SelectionAdapter()
             {
@@ -324,7 +324,7 @@ public class PasswordDialog extends Dialog
                     verifyCurrentPassword();
                 }
             } );
-            bindPasswordButton = BaseWidgetUtils.createButton( verifyPasswordButtonContainer, Messages.getString("PasswordDialog.Bind"), 1 );
+            bindPasswordButton = BaseWidgetUtils.createButton( verifyPasswordButtonContainer, Messages.getString("PasswordDialog.Bind"), 1 ); //$NON-NLS-1$
             bindPasswordButton.setEnabled( false );
             bindPasswordButton.addSelectionListener( new SelectionAdapter()
             {
@@ -335,7 +335,7 @@ public class PasswordDialog extends Dialog
             } );
 
             currentTab = new TabItem( tabFolder, SWT.NONE );
-            currentTab.setText( Messages.getString("PasswordDialog.CurrentPassword") );
+            currentTab.setText( Messages.getString("PasswordDialog.CurrentPassword") ); //$NON-NLS-1$
             currentTab.setControl( currentPasswordContainer );
         }
 
@@ -348,7 +348,7 @@ public class PasswordDialog extends Dialog
         newLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
         newPasswordContainer.setLayout( newLayout );
 
-        BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString("PasswordDialog.EnterNewPassword"), 1 );
+        BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString("PasswordDialog.EnterNewPassword"), 1 ); //$NON-NLS-1$
         newPasswordText = BaseWidgetUtils.createPasswordText( newPasswordContainer, "", 1 ); //$NON-NLS-1$
         newPasswordText.addModifyListener( new ModifyListener()
         {
@@ -358,7 +358,7 @@ public class PasswordDialog extends Dialog
             }
         } );
 
-        BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString("PasswordDialog.SelectHashMethod"), 1 );
+        BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString("PasswordDialog.SelectHashMethod"), 1 ); //$NON-NLS-1$
         newPasswordHashMethodCombo = BaseWidgetUtils.createReadonlyCombo( newPasswordContainer, HASH_METHODS, 0, 1 );
         newPasswordHashMethodCombo.addSelectionListener( new SelectionAdapter()
         {
@@ -368,10 +368,10 @@ public class PasswordDialog extends Dialog
             }
         } );
 
-        BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString("PasswordDialog.PasswordPreview"), 1 );
+        BaseWidgetUtils.createLabel( newPasswordContainer, Messages.getString("PasswordDialog.PasswordPreview"), 1 ); //$NON-NLS-1$
         newPasswordPreviewText = BaseWidgetUtils.createReadonlyText( newPasswordContainer, "", 1 ); //$NON-NLS-1$
 
-        newSaltButton = BaseWidgetUtils.createButton( newPasswordContainer, Messages.getString("PasswordDialog.NewSalt"), 1 );
+        newSaltButton = BaseWidgetUtils.createButton( newPasswordContainer, Messages.getString("PasswordDialog.NewSalt"), 1 ); //$NON-NLS-1$
         newSaltButton.setEnabled( false );
         newSaltButton.addSelectionListener( new SelectionAdapter()
         {
@@ -382,12 +382,12 @@ public class PasswordDialog extends Dialog
         } );
         Composite newPasswordPreviewDetailContainer = BaseWidgetUtils
             .createColumnContainer( newPasswordContainer, 2, 1 );
-        BaseWidgetUtils.createLabel( newPasswordPreviewDetailContainer, Messages.getString("PasswordDialog.PasswordHex"), 1 );
+        BaseWidgetUtils.createLabel( newPasswordPreviewDetailContainer, Messages.getString("PasswordDialog.PasswordHex"), 1 ); //$NON-NLS-1$
         newPasswordPreviewValueHexText = BaseWidgetUtils.createLabeledText( newPasswordPreviewDetailContainer, ":", 1 ); //$NON-NLS-1$
-        BaseWidgetUtils.createLabel( newPasswordPreviewDetailContainer, Messages.getString("PasswordDialog.SaltHex"), 1 );
+        BaseWidgetUtils.createLabel( newPasswordPreviewDetailContainer, Messages.getString("PasswordDialog.SaltHex"), 1 ); //$NON-NLS-1$
         newPasswordPreviewSaltHexText = BaseWidgetUtils.createLabeledText( newPasswordPreviewDetailContainer, "", 1 ); //$NON-NLS-1$
         showNewPasswordDetailsButton = BaseWidgetUtils.createCheckbox( newPasswordPreviewDetailContainer,
-            Messages.getString("PasswordDialog.ShowNewPasswordDetails"), 1 );
+            Messages.getString("PasswordDialog.ShowNewPasswordDetails"), 1 ); //$NON-NLS-1$
         showNewPasswordDetailsButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent arg0 )
@@ -397,7 +397,7 @@ public class PasswordDialog extends Dialog
         } );
 
         newTab = new TabItem( tabFolder, SWT.NONE );
-        newTab.setText( Messages.getString("PasswordDialog.NewPassword") );
+        newTab.setText( Messages.getString("PasswordDialog.NewPassword") ); //$NON-NLS-1$
         newTab.setControl( newPasswordContainer );
 
         applyDialogFont( composite );
@@ -464,15 +464,15 @@ public class PasswordDialog extends Dialog
         {
             if ( currentPassword.verify( testPassword ) )
             {
-                MessageDialog dialog = new MessageDialog( getShell(), Messages.getString("PasswordDialog.PasswordVerification"), getShell().getImage(),
-                    Messages.getString("PasswordDialog.PasswordVerifiedSuccessfully"), MessageDialog.INFORMATION, new String[]
+                MessageDialog dialog = new MessageDialog( getShell(), Messages.getString("PasswordDialog.PasswordVerification"), getShell().getImage(), //$NON-NLS-1$
+                    Messages.getString("PasswordDialog.PasswordVerifiedSuccessfully"), MessageDialog.INFORMATION, new String[] //$NON-NLS-1$
                         { IDialogConstants.OK_LABEL }, 0 );
                 dialog.open();
             }
             else
             {
-                MessageDialog dialog = new MessageDialog( getShell(), Messages.getString("PasswordDialog.PasswordVerification"), getShell().getImage(),
-                    Messages.getString("PasswordDialog.PasswordVerificationFailed"), MessageDialog.ERROR, new String[]
+                MessageDialog dialog = new MessageDialog( getShell(), Messages.getString("PasswordDialog.PasswordVerification"), getShell().getImage(), //$NON-NLS-1$
+                    Messages.getString("PasswordDialog.PasswordVerificationFailed"), MessageDialog.ERROR, new String[] //$NON-NLS-1$
                         { IDialogConstants.OK_LABEL }, 0 );
                 dialog.open();
             }
@@ -498,8 +498,8 @@ public class PasswordDialog extends Dialog
             IStatus status = RunnableContextRunner.execute( runnable, null, true );
             if ( status.isOK() )
             {
-                MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("PasswordDialog.CheckAuthentication"),
-                    Messages.getString("PasswordDialog.AuthenticationSuccessful") );
+                MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("PasswordDialog.CheckAuthentication"), //$NON-NLS-1$
+                    Messages.getString("PasswordDialog.AuthenticationSuccessful") ); //$NON-NLS-1$
             }
         }
     }

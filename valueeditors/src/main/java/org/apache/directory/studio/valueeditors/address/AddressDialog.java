@@ -74,7 +74,7 @@ public class AddressDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("AddressDialog.AddressEditor") );
+        shell.setText( Messages.getString("AddressDialog.AddressEditor") ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_ADDRESSEDITOR ) );
     }
 

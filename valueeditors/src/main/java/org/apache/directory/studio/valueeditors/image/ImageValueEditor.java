@@ -88,7 +88,7 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
             }
             else
             {
-                return Messages.getString("ImageValueEditor.InvalidImageData");
+                return Messages.getString("ImageValueEditor.InvalidImageData"); //$NON-NLS-1$
             }
         }
     }

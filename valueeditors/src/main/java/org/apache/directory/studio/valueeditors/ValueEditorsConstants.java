@@ -30,30 +30,30 @@ public interface ValueEditorsConstants
 {
     /** The plug-in ID */
     public static final String PLUGIN_ID = ValueEditorsActivator.getDefault().getPluginProperties().getString(
-        "Plugin_id" );
+        "Plugin_id" ); //$NON-NLS-1$
 
     /** The relative path to the image editor icon */
-    public static final String IMG_IMAGEEDITOR = "resources/icons/imageeditor.gif";
+    public static final String IMG_IMAGEEDITOR = "resources/icons/imageeditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the address editor icon */
-    public static final String IMG_ADDRESSEDITOR = "resources/icons/addresseditor.gif";
+    public static final String IMG_ADDRESSEDITOR = "resources/icons/addresseditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the DN editor icon */
-    public static final String IMG_DNEDITOR = "resources/icons/dneditor.gif";
+    public static final String IMG_DNEDITOR = "resources/icons/dneditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the password editor icon */
-    public static final String IMG_PASSWORDEDITOR = "resources/icons/passwordeditor.gif";
+    public static final String IMG_PASSWORDEDITOR = "resources/icons/passwordeditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the generalized time editor icon */
-    public static final String IMG_INPLACE_GENERALIZEDTIMEEDITOR = "resources/icons/inplace_generalizedtimeeditor.gif";
+    public static final String IMG_INPLACE_GENERALIZEDTIMEEDITOR = "resources/icons/inplace_generalizedtimeeditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the object class editor icon */
-    public static final String IMG_OCDEDITOR = "resources/icons/objectclasseditor.png";
+    public static final String IMG_OCDEDITOR = "resources/icons/objectclasseditor.png"; //$NON-NLS-1$
 
     /** The relative path to the integer editor icon */
-    public static final String IMG_INTEGEREDITOR = "resources/icons/integereditor.gif";
+    public static final String IMG_INTEGEREDITOR = "resources/icons/integereditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the administrative role editor icon */
-    public static final String IMG_ADMINISTRATIVEROLEEDITOR = "resources/icons/administrativeroleeditor.gif";
+    public static final String IMG_ADMINISTRATIVEROLEEDITOR = "resources/icons/administrativeroleeditor.gif"; //$NON-NLS-1$
 
 }
