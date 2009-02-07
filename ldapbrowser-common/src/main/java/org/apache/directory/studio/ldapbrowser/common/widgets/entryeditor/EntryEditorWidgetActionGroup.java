@@ -83,22 +83,22 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     protected ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
     /** The Constant newValueAction. */
-    protected final static String newValueAction = "newValueAction";
+    protected final static String newValueAction = "newValueAction"; //$NON-NLS-1$
 
     /** The Constant copyAction. */
-    protected final static String copyAction = "copyAction";
+    protected final static String copyAction = "copyAction"; //$NON-NLS-1$
 
     /** The Constant pasteAction. */
-    protected final static String pasteAction = "pasteAction";
+    protected final static String pasteAction = "pasteAction"; //$NON-NLS-1$
 
     /** The Constant deleteAction. */
-    protected final static String deleteAction = "deleteAction";
+    protected final static String deleteAction = "deleteAction"; //$NON-NLS-1$
 
     /** The Constant selectAllAction. */
-    protected final static String selectAllAction = "selectAllAction";
+    protected final static String selectAllAction = "selectAllAction"; //$NON-NLS-1$
 
     /** The Constant propertyDialogAction. */
-    protected final static String propertyDialogAction = "propertyDialogAction";
+    protected final static String propertyDialogAction = "propertyDialogAction"; //$NON-NLS-1$
 
     /** The entry editor action map. */
     protected Map<String, EntryEditorActionProxy> entryEditorActionMap;
@@ -289,7 +289,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     protected void addEditMenu( IMenuManager menuManager )
     {
         menuManager.add( openDefaultValueEditorActionProxy );
-        MenuManager editorMenuManager = new MenuManager( "Edit Value With" );
+        MenuManager editorMenuManager = new MenuManager( Messages.getString("EntryEditorWidgetActionGroup.EditValueWith") ); //$NON-NLS-1$
         if ( openBestValueEditorActionProxy.isEnabled() )
         {
             editorMenuManager.add( openBestValueEditorActionProxy );

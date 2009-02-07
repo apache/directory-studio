@@ -54,6 +54,7 @@ import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
@@ -92,14 +93,14 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
     public NewEntryDnWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        setTitle( "Distinguished Name" );
+        setTitle( Messages.getString("NewEntryDnWizardPage.DistinguishedName") ); //$NON-NLS-1$
         if ( wizard.isNewContextEntry() )
         {
-            setDescription( "Please enter the DN of the context entry." );
+            setDescription( Messages.getString("NewEntryDnWizardPage.EnterDN") ); //$NON-NLS-1$
         }
         else
         {
-            setDescription( "Please select the parent of the new entry and enter the RDN." );
+            setDescription( Messages.getString("NewEntryDnWizardPage.SelectParent") ); //$NON-NLS-1$
         }
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
@@ -129,7 +130,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      */
     private void validate()
     {
-        if ( wizard.isNewContextEntry() && !"".equals( contextEntryDnCombo.getText() )
+        if ( wizard.isNewContextEntry() && !"".equals( contextEntryDnCombo.getText() ) //$NON-NLS-1$
             && LdapDN.isValid( contextEntryDnCombo.getText() ) )
         {
             setPageComplete( true );
@@ -357,8 +358,8 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), "Error", "Parent "
-                            + dnBuilderWidget.getParentDn().toString() + " doesn't exists" );
+                        MessageDialog.openError( getShell(), Messages.getString("NewEntryDnWizardPage.Error"), //$NON-NLS-1$
+                            NLS.bind( Messages.getString("NewEntryDnWizardPage.ParentDoesNotExist"), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
                     }
                 } );
                 return null;
@@ -374,7 +375,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 {
                     public void run()
                     {
-                        MessageDialog.openError( getShell(), "Error", "Entry " + dn.toString() + " already exists" );
+                        MessageDialog.openError( getShell(), Messages.getString("NewEntryDnWizardPage.Error"), NLS.bind( Messages.getString("NewEntryDnWizardPage.EntryAlreadyExists"), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 } );
                 return null;
@@ -396,7 +397,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                     {
                         public void run()
                         {
-                            MessageDialog.openError( getShell(), "Error", "Entry " + dn.toString() + " already exists" );
+                            MessageDialog.openError( getShell(), Messages.getString("NewEntryDnWizardPage.Error"), NLS.bind( Messages.getString("NewEntryDnWizardPage.EntryAlreadyExists"), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     } );
                     return null;

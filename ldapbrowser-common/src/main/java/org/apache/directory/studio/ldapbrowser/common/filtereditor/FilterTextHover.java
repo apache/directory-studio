@@ -166,7 +166,7 @@ public class FilterTextHover implements ITextHover
                 int stop = start + tokens[i].getLength();
                 if ( start <= hoverRegion.getOffset() && hoverRegion.getOffset() < stop )
                 {
-                    return "Invalid characters";
+                    return Messages.getString("FilterTextHover.InvalidCharacters"); //$NON-NLS-1$
                 }
             }
         }

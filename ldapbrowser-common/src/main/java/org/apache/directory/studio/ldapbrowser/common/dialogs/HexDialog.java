@@ -56,7 +56,7 @@ public class HexDialog extends Dialog
 {
 
     /** The default title. */
-    private static final String DIALOG_TITLE = "Hex Editor";
+    private static final String DIALOG_TITLE = Messages.getString("HexDialog.HexEditor"); //$NON-NLS-1$
 
     /** The button ID for the load button. */
     private static final int LOAD_BUTTON_ID = 9998;
@@ -100,7 +100,7 @@ public class HexDialog extends Dialog
         else if ( buttonId == SAVE_BUTTON_ID )
         {
             FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
-            fileDialog.setText( "Save Data" );
+            fileDialog.setText( Messages.getString("HexDialog.SaveData") ); //$NON-NLS-1$
             // fileDialog.setFilterExtensions(new String[]{"*.jpg"});
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
@@ -117,20 +117,20 @@ public class HexDialog extends Dialog
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                         new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
-                            "Can't write to file", e ) );
+                            Messages.getString("HexDialog.CantWriteToFile"), e ) ); //$NON-NLS-1$
                 }
                 catch ( IOException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                         new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
-                            "Can't write to file", e ) );
+                            Messages.getString("HexDialog.CantWriteToFile"), e ) ); //$NON-NLS-1$
                 }
             }
         }
         else if ( buttonId == LOAD_BUTTON_ID )
         {
             FileDialog fileDialog = new FileDialog( getShell(), SWT.OPEN );
-            fileDialog.setText( "Load Data" );
+            fileDialog.setText( Messages.getString("HexDialog.LoadData") ); //$NON-NLS-1$
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
             {
@@ -153,13 +153,13 @@ public class HexDialog extends Dialog
                 catch ( FileNotFoundException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, "Can't read file",
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages.getString("HexDialog.CantReadFile"), //$NON-NLS-1$
                             e ) );
                 }
                 catch ( IOException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, "Can't read file",
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages.getString("HexDialog.CantReadFile"), //$NON-NLS-1$
                             e ) );
                 }
             }
@@ -189,8 +189,8 @@ public class HexDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
-        createButton( parent, LOAD_BUTTON_ID, "Load Data...", false );
-        createButton( parent, SAVE_BUTTON_ID, "Save Data...", false );
+        createButton( parent, LOAD_BUTTON_ID, Messages.getString("HexDialog.LoadDataButton"), false ); //$NON-NLS-1$
+        createButton( parent, SAVE_BUTTON_ID, Messages.getString("HexDialog.SaveDataButton"), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
@@ -247,16 +247,16 @@ public class HexDialog extends Dialog
             String s = Integer.toHexString( b );
             if ( s.length() == 1 )
             {
-                s = "0" + s;
+                s = "0" + s; //$NON-NLS-1$
             }
 
             // space between hex numbers
-            sb.append( s ).append( " " );
+            sb.append( s ).append( " " ); //$NON-NLS-1$
 
             // extra space after 8 hex numbers
             if ( ( i + 1 ) % 8 == 0 )
             {
-                sb.append( " " );
+                sb.append( " " ); //$NON-NLS-1$
             }
 
             // if end of data is reached then fill with spaces
@@ -264,20 +264,20 @@ public class HexDialog extends Dialog
             {
                 while ( ( i + 1 ) % 16 != 0 )
                 {
-                    sb.append( "   " );
+                    sb.append( "   " ); //$NON-NLS-1$
                     if ( ( i + 1 ) % 8 == 0 )
                     {
-                        sb.append( " " );
+                        sb.append( " " ); //$NON-NLS-1$
                     }
                     i++;
                 }
-                sb.append( " " );
+                sb.append( " " ); //$NON-NLS-1$
             }
 
             // print ASCII characters after 16 hex numbers 
             if ( ( i + 1 ) % 16 == 0 )
             {
-                sb.append( "   " );
+                sb.append( "   " ); //$NON-NLS-1$
                 for ( int x = i - 16 + 1; x <= i && x < data.length; x++ )
                 {
                     // print ASCII charachter if printable
@@ -294,7 +294,7 @@ public class HexDialog extends Dialog
                     // space after 8 characters 
                     if ( ( x + 1 ) % 8 == 0 )
                     {
-                        sb.append( " " );
+                        sb.append( " " ); //$NON-NLS-1$
                     }
                 }
             }
@@ -302,7 +302,7 @@ public class HexDialog extends Dialog
             // start new line after 16 hex numbers
             if ( ( i + 1 ) % 16 == 0 )
             {
-                sb.append( "\r\n" );
+                sb.append( "\r\n" ); //$NON-NLS-1$
             }
         }
         return sb.toString();

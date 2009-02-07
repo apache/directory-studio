@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.SimulateRenameDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -46,7 +47,7 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
 {
 
     /** The dialog title. */
-    private String dialogTitle = "Simulate moving/renaming?";
+    private String dialogTitle = Messages.getString("SimulateRenameDialogImpl.SimulateRename"); //$NON-NLS-1$
 
     /** The simulate rename flag */
     private boolean isSimulateRename;
@@ -118,14 +119,14 @@ public class SimulateRenameDialogImpl extends Dialog implements SimulateRenameDi
         gd = new GridData( GridData.FILL_BOTH );
         innerComposite.setLayoutData( gd );
 
-        String text1 = "You are trying to move/rename '" + oldDn.getUpName() + "' to '" + newDn.getUpName() + "'.";
+        String text1 = NLS.bind( Messages.getString("SimulateRenameDialogImpl.SimulateRenameDescription1"), oldDn.getUpName(), newDn.getUpName() ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( innerComposite, text1, 1 );
 
-        String text2 = "The LDAP server '" + browserConnection.getConnection().getName()
-            + "' doesn't support moving/renaming of non-leaf entries.";
+        String text2 = NLS.bind( Messages.getString("SimulateRenameDialogImpl.SimulateRenameDescription2"), //$NON-NLS-1$
+            browserConnection.getConnection().getName() );
         BaseWidgetUtils.createLabel( innerComposite, text2, 1 );
 
-        String text3 = "Press OK to simulate the move/rename operation by searching/copying/deleting.";
+        String text3 = Messages.getString("SimulateRenameDialogImpl.SimulateButton"); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( innerComposite, text3, 1 );
 
         applyDialogFont( composite );

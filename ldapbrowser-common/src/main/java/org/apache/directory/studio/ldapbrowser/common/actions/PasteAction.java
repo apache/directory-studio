@@ -65,17 +65,17 @@ public class PasteAction extends BrowserAction
         IEntry[] entries = getEntriesToPaste();
         if ( entries != null )
         {
-            return entries.length > 1 ? "Paste Entries" : "Paste Entry";
+            return entries.length > 1 ? Messages.getString("PasteAction.PasteEntries") : Messages.getString("PasteAction.PasteEntry"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // value
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-            return values.length > 1 ? "Paste Values" : "Paste Value";
+            return values.length > 1 ? Messages.getString("PasteAction.PasteValues") : Messages.getString("PasteAction.PasteValue"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return "Paste";
+        return Messages.getString("PasteAction.Paste"); //$NON-NLS-1$
     }
 
 
@@ -164,7 +164,7 @@ public class PasteAction extends BrowserAction
         }
         if ( askForScope )
         {
-            ScopeDialog scopeDialog = new ScopeDialog( Display.getDefault().getActiveShell(), "Select Copy Depth",
+            ScopeDialog scopeDialog = new ScopeDialog( Display.getDefault().getActiveShell(), Messages.getString("PasteAction.SelectCopyDepth"), //$NON-NLS-1$
                 entriesToPaste.length > 1 );
             scopeDialog.open();
             scope = scopeDialog.getScope();

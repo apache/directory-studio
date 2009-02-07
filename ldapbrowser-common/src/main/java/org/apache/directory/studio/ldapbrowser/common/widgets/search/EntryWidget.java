@@ -157,7 +157,7 @@ public class EntryWidget extends BrowserWidget
 
         // Up button
         upButton = new Button( textAndUpComposite, SWT.PUSH );
-        upButton.setToolTipText( "Parent" );
+        upButton.setToolTipText( Messages.getString("EntryWidget.Parent") ); //$NON-NLS-1$
         upButton.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_PARENT ) );
         upButton.setEnabled( false );
         upButton.addSelectionListener( new SelectionAdapter()
@@ -175,7 +175,7 @@ public class EntryWidget extends BrowserWidget
         } );
 
         // Browse button
-        entryBrowseButton = BaseWidgetUtils.createButton( parent, "Br&owse...", 1 );
+        entryBrowseButton = BaseWidgetUtils.createButton( parent, Messages.getString("EntryWidget.BrowseButton"), 1 ); //$NON-NLS-1$
         entryBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -219,7 +219,7 @@ public class EntryWidget extends BrowserWidget
                     }
 
                     // open dialog
-                    SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), "Select DN", rootEntry, entry );
+                    SelectEntryDialog dialog = new SelectEntryDialog( parent.getShell(), Messages.getString("EntryWidget.SelectDN"), rootEntry, entry ); //$NON-NLS-1$
                     dialog.open();
                     IEntry selectedEntry = dialog.getSelectedEntry();
 
@@ -251,7 +251,7 @@ public class EntryWidget extends BrowserWidget
     {
         if ( dnCombo != null && entryBrowseButton != null )
         {
-            dnCombo.setText( dn != null ? dn.getUpName() : "" );
+            dnCombo.setText( dn != null ? dn.getUpName() : "" ); //$NON-NLS-1$
         }
     }
 

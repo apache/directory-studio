@@ -238,10 +238,10 @@ public class ModWidget extends BrowserWidget implements ModifyListener
     {
         final ModSpec modSpec = new ModSpec();
 
-        modSpec.modGroup = BaseWidgetUtils.createGroup( modComposite, "", 1 );
+        modSpec.modGroup = BaseWidgetUtils.createGroup( modComposite, "", 1 ); //$NON-NLS-1$
         Composite modSpecComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 2, 1 );
         modSpec.modType = BaseWidgetUtils.createCombo( modSpecComposite, new String[]
-            { "add", "replace", "delete" }, 0, 1 );
+            { "add", "replace", "delete" }, 0, 1 ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         modSpec.modType.addModifyListener( this );
         String[] attributeDescriptions = SchemaUtils.getNamesAsArray( schema.getAttributeTypeDescriptions() );
         Arrays.sort( attributeDescriptions );
@@ -253,7 +253,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         // add button with listener
         modSpec.modAddButton = new Button( modComposite, SWT.PUSH );
-        modSpec.modAddButton.setText( "  +   " );
+        modSpec.modAddButton.setText( "  +   " ); //$NON-NLS-1$
         modSpec.modAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -276,7 +276,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         // delete button with listener
         modSpec.modDeleteButton = new Button( modComposite, SWT.PUSH );
-        modSpec.modDeleteButton.setText( "  \u2212  " ); // \u2013
+        modSpec.modDeleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
         modSpec.modDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -388,12 +388,12 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         // text field
         valueLine.valueComposite = BaseWidgetUtils.createColumnContainer( modSpec.modGroup, 3, 1 );
-        valueLine.valueText = BaseWidgetUtils.createText( valueLine.valueComposite, "", 1 );
+        valueLine.valueText = BaseWidgetUtils.createText( valueLine.valueComposite, "", 1 ); //$NON-NLS-1$
         valueLine.valueText.addModifyListener( this );
 
         // add button with listener
         valueLine.valueAddButton = new Button( valueLine.valueComposite, SWT.PUSH );
-        valueLine.valueAddButton.setText( "  +   " );
+        valueLine.valueAddButton.setText( "  +   " ); //$NON-NLS-1$
         valueLine.valueAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -416,7 +416,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
 
         // delete button with listener
         valueLine.valueDeleteButton = new Button( valueLine.valueComposite, SWT.PUSH );
-        valueLine.valueDeleteButton.setText( "  \u2212  " ); // \u2013
+        valueLine.valueDeleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
         valueLine.valueDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -471,7 +471,7 @@ public class ModWidget extends BrowserWidget implements ModifyListener
     {
 
         StringBuffer sb = new StringBuffer();
-        sb.append( "changetype: modify" ).append( BrowserCoreConstants.LINE_SEPARATOR );
+        sb.append( "changetype: modify" ).append( BrowserCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
 
         ModSpec[] modSpecs = ( ModSpec[] ) modSpecList.toArray( new ModSpec[modSpecList.size()] );
 
@@ -491,16 +491,16 @@ public class ModWidget extends BrowserWidget implements ModifyListener
                 }
 
                 // build ldif
-                sb.append( type ).append( ": " ).append( attribute ).append( BrowserCoreConstants.LINE_SEPARATOR );
+                sb.append( type ).append( ": " ).append( attribute ).append( BrowserCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
                 for ( int k = 0; k < values.length; k++ )
                 {
                     if ( values[k].length() > 0 )
                     {
-                        sb.append( attribute ).append( ": " ).append( values[k] ).append(
+                        sb.append( attribute ).append( ": " ).append( values[k] ).append( //$NON-NLS-1$
                             BrowserCoreConstants.LINE_SEPARATOR );
                     }
                 }
-                sb.append( "-" ).append( BrowserCoreConstants.LINE_SEPARATOR );
+                sb.append( "-" ).append( BrowserCoreConstants.LINE_SEPARATOR ); //$NON-NLS-1$
                 // sb.append(BrowserCoreConstants.NEWLINE);
             }
         }

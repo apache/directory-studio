@@ -46,7 +46,7 @@ public class CollapseAllAction extends Action
      */
     public CollapseAllAction( TreeViewer viewer )
     {
-        super( "Collapse All", BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_COLLAPSEALL ) );
+        super( Messages.getString("CollapseAllAction.CollapseAll"), BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 

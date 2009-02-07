@@ -113,7 +113,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             }
             else
             {
-                returnValue = "";
+                returnValue = ""; //$NON-NLS-1$
             }
             return returnValue;
         }

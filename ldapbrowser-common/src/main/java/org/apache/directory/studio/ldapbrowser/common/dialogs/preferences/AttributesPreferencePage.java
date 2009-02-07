@@ -52,9 +52,9 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
      */
     public AttributesPreferencePage()
     {
-        super( "Attributes" );
+        super( Messages.getString("AttributesPreferencePage.Attributes") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for attributes:" );
+        super.setDescription( Messages.getString("AttributesPreferencePage.GeneralSettings") ); //$NON-NLS-1$
     }
 
 
@@ -85,7 +85,7 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        showDecoratedValuesButton = BaseWidgetUtils.createCheckbox( composite, "Show decorated values", 1 );
+        showDecoratedValuesButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AttributesPreferencePage.ShowDecoratedValues"), 1 ); //$NON-NLS-1$
         showDecoratedValuesButton.setSelection( !getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
 

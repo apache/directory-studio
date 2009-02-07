@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -61,11 +62,11 @@ public class DeleteAllValuesAction extends DeleteAction
     {
         if ( getSelectedValues().length == 1 )
         {
-            return "Delete Attribute '" + getSelectedValues()[0].getAttribute().getDescription() + "'";
+            return NLS.bind( Messages.getString("DeleteAllValuesAction.DeleteAttributeX"), getSelectedValues()[0].getAttribute().getDescription() ); //$NON-NLS-1$
         }
         else
         {
-            return "Delete Attribute";
+            return Messages.getString("DeleteAllValuesAction.DeleteAttribute"); //$NON-NLS-1$
         }
     }
 

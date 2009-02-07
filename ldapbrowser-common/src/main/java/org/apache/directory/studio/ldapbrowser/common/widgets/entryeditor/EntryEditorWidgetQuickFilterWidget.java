@@ -123,9 +123,9 @@ public class EntryEditorWidgetQuickFilterWidget
             public void modifyText( ModifyEvent e )
             {
                 filter.setQuickFilterAttribute( quickFilterAttributeText.getText() );
-                clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() )
-                    || !"".equals( quickFilterValueText.getText() ) );
-                if ( !"".equals( quickFilterAttributeText.getText() ) )
+                clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() ) //$NON-NLS-1$
+                    || !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
+                if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
                 {
                     RGB fgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
                         BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
@@ -154,9 +154,9 @@ public class EntryEditorWidgetQuickFilterWidget
             public void modifyText( ModifyEvent e )
             {
                 filter.setQuickFilterValue( quickFilterValueText.getText() );
-                clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() )
-                    || !"".equals( quickFilterValueText.getText() ) );
-                if ( !"".equals( quickFilterValueText.getText() ) )
+                clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() ) //$NON-NLS-1$
+                    || !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
+                if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
                 {
                     RGB fgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
                         BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
@@ -179,7 +179,7 @@ public class EntryEditorWidgetQuickFilterWidget
         } );
 
         clearQuickFilterButton = new Button( innerComposite, SWT.PUSH );
-        clearQuickFilterButton.setToolTipText( "Clear Quick Filter" );
+        clearQuickFilterButton.setToolTipText( Messages.getString("EntryEditorWidgetQuickFilterWidget.ClearQuickFilter") ); //$NON-NLS-1$
         clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault()
             .getImage( BrowserCommonConstants.IMG_CLEAR ) );
         clearQuickFilterButton.setEnabled( false );
@@ -187,13 +187,13 @@ public class EntryEditorWidgetQuickFilterWidget
         {
             public void widgetSelected( SelectionEvent e )
             {
-                if ( !"".equals( quickFilterAttributeText.getText() ) )
+                if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
                 {
-                    quickFilterAttributeText.setText( "" );
+                    quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
                 }
-                if ( !"".equals( quickFilterValueText.getText() ) )
+                if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
                 {
-                    quickFilterValueText.setText( "" );
+                    quickFilterValueText.setText( "" ); //$NON-NLS-1$
                 }
             }
         } );
@@ -210,13 +210,13 @@ public class EntryEditorWidgetQuickFilterWidget
      */
     private void destroy()
     {
-        if ( !"".equals( quickFilterAttributeText.getText() ) )
+        if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
         {
-            quickFilterAttributeText.setText( "" );
+            quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
         }
-        if ( !"".equals( quickFilterValueText.getText() ) )
+        if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
         {
-            quickFilterValueText.setText( "" );
+            quickFilterValueText.setText( "" ); //$NON-NLS-1$
         }
         innerComposite.dispose();
         innerComposite = null;

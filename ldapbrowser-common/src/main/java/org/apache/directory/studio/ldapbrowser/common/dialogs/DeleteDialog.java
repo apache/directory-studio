@@ -41,7 +41,7 @@ public class DeleteDialog extends MessageDialog
 
     /** The "Use Tree Delete Control" dialog setting . */
     private static final String USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY = DeleteDialog.class.getName()
-        + ".useTreeDeleteControl";
+        + ".useTreeDeleteControl"; //$NON-NLS-1$
 
     private Button useTreeDeleteControlCheckbox;
 
@@ -80,7 +80,7 @@ public class DeleteDialog extends MessageDialog
         if ( askForTreeDeleteControl )
         {
             useTreeDeleteControlCheckbox = new Button( parent, SWT.CHECK );
-            useTreeDeleteControlCheckbox.setText( "Use Tree Delete Control" );
+            useTreeDeleteControlCheckbox.setText( Messages.getString("DeleteDialog.UseTreeDeleteControl") ); //$NON-NLS-1$
             useTreeDeleteControlCheckbox.setSelection( BrowserCommonActivator.getDefault().getDialogSettings()
                 .getBoolean( USE_TREE_DELETE_CONTROL_DIALOGSETTING_KEY ) );
             return useTreeDeleteControlCheckbox;

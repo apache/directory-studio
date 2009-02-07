@@ -53,11 +53,11 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class BrowserPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private static final String DN = "DN";
+    private static final String DN = Messages.getString("BrowserPreferencePage.DN"); //$NON-NLS-1$
 
-    private static final String RDN = "RDN";
+    private static final String RDN = Messages.getString("BrowserPreferencePage.RDN"); //$NON-NLS-1$
 
-    private static final String RDN_VALUE = "RDN value";
+    private static final String RDN_VALUE = Messages.getString("BrowserPreferencePage.RDNValue"); //$NON-NLS-1$
 
     private Combo entryLabelCombo;
 
@@ -87,9 +87,9 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
      */
     public BrowserPreferencePage()
     {
-        super( "Browser" );
+        super( Messages.getString("BrowserPreferencePage.Browser") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the LDAP browser view:" );
+        super.setDescription( Messages.getString("BrowserPreferencePage.GeneralSettings") ); //$NON-NLS-1$
     }
 
 
@@ -111,10 +111,10 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         Group entryLabelGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Entry label", 1 );
+            Messages.getString("BrowserPreferencePage.EntryLabel"), 1 ); //$NON-NLS-1$
 
         Composite entryLabelComposite = BaseWidgetUtils.createColumnContainer( entryLabelGroup, 3, 1 );
-        BaseWidgetUtils.createLabel( entryLabelComposite, "Use ", 1 );
+        BaseWidgetUtils.createLabel( entryLabelComposite, Messages.getString("BrowserPreferencePage.UseAsEntryLabel1"), 1 ); //$NON-NLS-1$
         entryLabelCombo = BaseWidgetUtils.createCombo( entryLabelComposite, new String[]
             { DN, RDN, RDN_VALUE }, 0, 1 );
         entryLabelCombo.setLayoutData( new GridData() );
@@ -122,10 +122,10 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
             .select( getPreferenceStore().getInt( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_LABEL ) == BrowserCommonConstants.SHOW_RDN_VALUE ? 2
                 : getPreferenceStore().getInt( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_LABEL ) == BrowserCommonConstants.SHOW_RDN ? 1
                     : 0 );
-        BaseWidgetUtils.createLabel( entryLabelComposite, " as entry label", 1 );
+        BaseWidgetUtils.createLabel( entryLabelComposite, Messages.getString("BrowserPreferencePage.UseAsEntryLabel2"), 1 ); //$NON-NLS-1$
 
         Composite entryAbbreviateComposite = BaseWidgetUtils.createColumnContainer( entryLabelGroup, 3, 1 );
-        entryAbbreviateButton = BaseWidgetUtils.createCheckbox( entryAbbreviateComposite, "Limit label length to ", 1 );
+        entryAbbreviateButton = BaseWidgetUtils.createCheckbox( entryAbbreviateComposite, Messages.getString("BrowserPreferencePage.LimitLabelLength1"), 1 ); //$NON-NLS-1$
         entryAbbreviateButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_ABBREVIATE ) );
         entryAbbreviateButton.addSelectionListener( new SelectionAdapter()
@@ -142,25 +142,25 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( entryAbbreviateMaxLengthText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( entryAbbreviateMaxLengthText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
             }
         } );
-        BaseWidgetUtils.createLabel( entryAbbreviateComposite, " characters", 1 );
+        BaseWidgetUtils.createLabel( entryAbbreviateComposite, Messages.getString("BrowserPreferencePage.LimitLabelLength2"), 1 ); //$NON-NLS-1$
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         Group searchResultLabelGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite,
-            1, 1 ), "Search result label", 1 );
+            1, 1 ), Messages.getString("BrowserPreferencePage.SearchResultLabel"), 1 ); //$NON-NLS-1$
 
         Composite searchResultLabelComposite = BaseWidgetUtils.createColumnContainer( searchResultLabelGroup, 3, 1 );
-        BaseWidgetUtils.createLabel( searchResultLabelComposite, "Use ", 1 );
+        BaseWidgetUtils.createLabel( searchResultLabelComposite, Messages.getString("BrowserPreferencePage.UseAsSearchResultLabel1"), 1 ); //$NON-NLS-1$
         searchResultLabelCombo = BaseWidgetUtils.createCombo( searchResultLabelComposite, new String[]
             { DN, RDN, RDN_VALUE }, 0, 1 );
         searchResultLabelCombo.setLayoutData( new GridData() );
@@ -168,12 +168,12 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
             .select( getPreferenceStore().getInt( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL ) == BrowserCommonConstants.SHOW_RDN_VALUE ? 2
                 : getPreferenceStore().getInt( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL ) == BrowserCommonConstants.SHOW_RDN ? 1
                     : 0 );
-        BaseWidgetUtils.createLabel( searchResultLabelComposite, " as search result label", 1 );
+        BaseWidgetUtils.createLabel( searchResultLabelComposite, Messages.getString("BrowserPreferencePage.UseAsSearchResultLabel2"), 1 ); //$NON-NLS-1$
 
         Composite searchResultAbbreviateComposite = BaseWidgetUtils
             .createColumnContainer( searchResultLabelGroup, 3, 1 );
         searchResultAbbreviateButton = BaseWidgetUtils.createCheckbox( searchResultAbbreviateComposite,
-            "Limit label length to ", 1 );
+            Messages.getString("BrowserPreferencePage.LimitLabelLength1"), 1 ); //$NON-NLS-1$
         searchResultAbbreviateButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE ) );
         searchResultAbbreviateButton.addSelectionListener( new SelectionAdapter()
@@ -191,24 +191,24 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( searchResultAbbreviateMaxLengthText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( searchResultAbbreviateMaxLengthText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
             }
         } );
-        BaseWidgetUtils.createLabel( searchResultAbbreviateComposite, " characters", 1 );
+        BaseWidgetUtils.createLabel( searchResultAbbreviateComposite, Messages.getString("BrowserPreferencePage.LimitLabelLength2"), 1 ); //$NON-NLS-1$
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         Group foldingGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Folding", 1 );
+            Messages.getString("BrowserPreferencePage.Folding"), 1 ); //$NON-NLS-1$
         Composite pagingGroupComposite = BaseWidgetUtils.createColumnContainer( foldingGroup, 2, 1 );
-        enableFoldingButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite, "Enable folding", 2 );
+        enableFoldingButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite, Messages.getString("BrowserPreferencePage.EnableFolding"), 2 ); //$NON-NLS-1$
         enableFoldingButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_ENABLE_FOLDING ) );
         enableFoldingButton.addSelectionListener( new SelectionAdapter()
@@ -218,7 +218,7 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
                 updateEnabled();
             }
         } );
-        foldingSizeLabel = BaseWidgetUtils.createLabel( pagingGroupComposite, "Folding size: ", 1 );
+        foldingSizeLabel = BaseWidgetUtils.createLabel( pagingGroupComposite, Messages.getString("BrowserPreferencePage.FoldingSize"), 1 ); //$NON-NLS-1$
         foldingSizeLabel.setEnabled( enableFoldingButton.getSelection() );
         foldingSizeText = BaseWidgetUtils.createText( pagingGroupComposite, getPreferenceStore().getString(
             BrowserCommonConstants.PREFERENCE_BROWSER_FOLDING_SIZE ), 4, 1 );
@@ -227,11 +227,11 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( foldingSizeText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( foldingSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
@@ -241,11 +241,11 @@ public class BrowserPreferencePage extends PreferencePage implements IWorkbenchP
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         expandBaseEntriesButton = BaseWidgetUtils.createCheckbox( composite,
-            "Expand base entries when opening connection", 1 );
+            Messages.getString("BrowserPreferencePage.ExpandBaseEntries"), 1 ); //$NON-NLS-1$
         expandBaseEntriesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_BROWSER_EXPAND_BASE_ENTRIES ) );
         Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
-        checkForChildrenButton = BaseWidgetUtils.createCheckbox( composite, "Check for children", 1 );
+        checkForChildrenButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("BrowserPreferencePage.CheckForChildren"), 1 ); //$NON-NLS-1$
         checkForChildrenButton
             .setSelection( coreStore.getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ) );
 

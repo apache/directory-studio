@@ -189,12 +189,12 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
                 StringBuffer filter = new StringBuffer();
                 if ( filterSet.size() > 1 )
                 {
-                    filter.append( "(&" );
+                    filter.append( "(&" ); //$NON-NLS-1$
                     for ( Iterator<String> filterIterator = filterSet.iterator(); filterIterator.hasNext(); )
                     {
                         filter.append( filterIterator.next() );
                     }
-                    filter.append( ")" );
+                    filter.append( ")" ); //$NON-NLS-1$
                 }
                 else if ( filterSet.size() == 1 )
                 {

@@ -66,7 +66,7 @@ public class MultivaluedDialog extends Dialog
 {
 
     /** The dialog title. */
-    private static final String DIALOG_TITLE = "Multivalued Editor";
+    private static final String DIALOG_TITLE = Messages.getString("MultivaluedDialog.MultivaluedEditor"); //$NON-NLS-1$
 
     /** The attribute hierarchie to edit. */
     private AttributeHierarchy attributeHierarchie;

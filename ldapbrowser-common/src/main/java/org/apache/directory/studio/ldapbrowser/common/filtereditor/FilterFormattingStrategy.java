@@ -115,7 +115,7 @@ public class FilterFormattingStrategy implements IFormattingStrategy
         }
         else if ( fc instanceof LdapNotFilterComponent )
         {
-            sb.append( "(!" );
+            sb.append( "(!" ); //$NON-NLS-1$
             LdapNotFilterComponent lnfc = ( LdapNotFilterComponent ) fc;
             if ( lnfc.getFilters().length > 0
                 && lnfc.getFilters()[0].getFilterComponent() instanceof LdapFilterItemComponent )
@@ -134,7 +134,7 @@ public class FilterFormattingStrategy implements IFormattingStrategy
         }
         else if ( fc instanceof LdapAndFilterComponent )
         {
-            sb.append( "(&" );
+            sb.append( "(&" ); //$NON-NLS-1$
             sb.append( '\n' );
             LdapFilter[] filters = ( ( LdapAndFilterComponent ) fc ).getFilters();
             for ( int i = 0; i < filters.length; i++ )
@@ -148,7 +148,7 @@ public class FilterFormattingStrategy implements IFormattingStrategy
         }
         else if ( fc instanceof LdapOrFilterComponent )
         {
-            sb.append( "(|" );
+            sb.append( "(|" ); //$NON-NLS-1$
             sb.append( '\n' );
             LdapFilter[] filters = ( ( LdapOrFilterComponent ) fc ).getFilters();
             for ( int i = 0; i < filters.length; i++ )

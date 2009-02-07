@@ -54,8 +54,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
      */
     public EntryEditorWidgetFilter()
     {
-        this.quickFilterAttribute = "";
-        this.quickFilterValue = "";
+        this.quickFilterAttribute = ""; //$NON-NLS-1$
+        this.quickFilterValue = ""; //$NON-NLS-1$
     }
 
 
@@ -147,7 +147,7 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     private boolean goesThroughQuickFilter( IValue value )
     {
         // filter attribute description
-        if ( quickFilterAttribute != null && !"".equals( quickFilterAttribute ) )
+        if ( quickFilterAttribute != null && !"".equals( quickFilterAttribute ) ) //$NON-NLS-1$
         {
             if ( value.getAttribute().getDescription().toUpperCase().indexOf( quickFilterAttribute.toUpperCase() ) == -1 )
             {
@@ -156,7 +156,7 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         }
 
         // fitler value
-        if ( quickFilterValue != null && !"".equals( quickFilterValue ) )
+        if ( quickFilterValue != null && !"".equals( quickFilterValue ) ) //$NON-NLS-1$
         {
             if ( value.isString()
                 && value.getStringValue().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) == -1 )

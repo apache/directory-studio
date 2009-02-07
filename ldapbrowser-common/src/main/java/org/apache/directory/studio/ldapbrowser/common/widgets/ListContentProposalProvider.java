@@ -79,7 +79,7 @@ public class ListContentProposalProvider implements IContentProposalProvider
         {
             final String proposal = proposals.get( k );
             if ( proposal.toUpperCase().startsWith( string.toUpperCase() ) && !proposal.equalsIgnoreCase( string )
-                && !"".equals( string ) )
+                && !"".equals( string ) ) //$NON-NLS-1$
             {
                 IContentProposal p = new IContentProposal()
                 {

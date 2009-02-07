@@ -178,7 +178,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                     rdnLineList.get( i ).rdnValueText.setText( ( String ) atav.getUpValue() );
                     if ( i == 0 )
                     {
-                        if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) )
+                        if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) ) //$NON-NLS-1$
                         {
                             rdnLineList.get( i ).rdnTypeCombo.setFocus();
                         }
@@ -240,7 +240,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw parent
         if ( showParent )
         {
-            parentEntryLabel = BaseWidgetUtils.createLabel( composite, "Parent:", 1 );
+            parentEntryLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("DnBuilderWidget.Parent"), 1 ); //$NON-NLS-1$
             parentEntryWidget = new EntryWidget();
             parentEntryWidget.createWidget( composite );
             parentEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -257,7 +257,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw RDN group
         if ( showRDN )
         {
-            rdnLabel = BaseWidgetUtils.createLabel( composite, "RDN:", 1 );
+            rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("DnBuilderWidget.RDN"), 1 ); //$NON-NLS-1$
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
             rdnLineList = new ArrayList<RdnLine>();
             BaseWidgetUtils.createSpacer( composite, 3 );
@@ -266,8 +266,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         // draw dn/rdn preview
         if ( showRDN )
         {
-            previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? "DN Preview: " : "RDN Preview: ", 1 );
-            previewText = BaseWidgetUtils.createReadonlyText( composite, "", 2 );
+            previewLabel = BaseWidgetUtils.createLabel( composite, showParent ? Messages.getString("DnBuilderWidget.DNPreview") : Messages.getString("DnBuilderWidget.RDNPrevei"), 1 ); //$NON-NLS-1$ //$NON-NLS-2$
+            previewText = BaseWidgetUtils.createReadonlyText( composite, "", 2 ); //$NON-NLS-1$
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
 
@@ -348,14 +348,14 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             }
         }
 
-        String s = "";
+        String s = ""; //$NON-NLS-1$
         if ( rdnE != null )
         {
-            s += rdnE.getMessage() != null ? rdnE.getMessage() : "Error in RDN ";
+            s += rdnE.getMessage() != null ? rdnE.getMessage() : Messages.getString("DnBuilderWidget.ErrorInRDN"); //$NON-NLS-1$
         }
         if ( parentE != null )
         {
-            s += ", " + parentE.getMessage() != null ? parentE.getMessage() : "Error in Parent DN ";
+            s += ", " + parentE.getMessage() != null ? parentE.getMessage() : Messages.getString("DnBuilderWidget.ErrorInParentDN"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         if ( previewText != null )
@@ -465,14 +465,14 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             new ListContentProposalProvider( attributeNames ), null, null, true );
 
         rdnLine.rdnEqualsLabel = new Label( rdnComposite, SWT.NONE );
-        rdnLine.rdnEqualsLabel.setText( "=" );
+        rdnLine.rdnEqualsLabel.setText( "=" ); //$NON-NLS-1$
 
         rdnLine.rdnValueText = new Text( rdnComposite, SWT.BORDER );
         gd = new GridData( GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL );
         rdnLine.rdnValueText.setLayoutData( gd );
 
         rdnLine.rdnAddButton = new Button( rdnComposite, SWT.PUSH );
-        rdnLine.rdnAddButton.setText( "  +   " );
+        rdnLine.rdnAddButton.setText( "  +   " ); //$NON-NLS-1$
         rdnLine.rdnAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -493,7 +493,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         } );
 
         rdnLine.rdnDeleteButton = new Button( rdnComposite, SWT.PUSH );
-        rdnLine.rdnDeleteButton.setText( "  \u2212  " ); // \u2013
+        rdnLine.rdnDeleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
         rdnLine.rdnDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

@@ -80,17 +80,17 @@ public class CopyAction extends BrowserAction
         IEntry[] entries = getEntries();
         if ( entries != null )
         {
-            return entries.length > 1 ? "Copy Entries / DNs" : "Copy Entry / DN";
+            return entries.length > 1 ? Messages.getString("CopyAction.CopyEntriesDNs") : Messages.getString("CopyAction.CopyEntryDN"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // values
         IValue[] values = getValues();
         if ( values != null )
         {
-            return values.length > 1 ? "Copy Values" : "Copy Value";
+            return values.length > 1 ? Messages.getString("CopyAction.CopyValues") : Messages.getString("CopyAction.CopyValue"); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return "Copy";
+        return Messages.getString("CopyAction.Copy"); //$NON-NLS-1$
     }
 
 

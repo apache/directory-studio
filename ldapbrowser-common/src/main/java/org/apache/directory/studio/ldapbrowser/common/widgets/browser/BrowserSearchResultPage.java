@@ -205,7 +205,7 @@ public class BrowserSearchResultPage
      */
     public String toString()
     {
-        return search.toString() + "[" + first + "..." + last + "]" + hashCode();
+        return search.toString() + "[" + first + "..." + last + "]" + hashCode(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

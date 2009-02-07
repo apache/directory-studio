@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -97,7 +98,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
                     String dv = vp.getDisplayValue( value );
                     return dv;
                 default:
-                    return "";
+                    return ""; //$NON-NLS-1$
             }
         }
         else if ( obj != null && obj instanceof IAttribute )
@@ -105,16 +106,16 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
             IAttribute attribute = ( IAttribute ) obj;
             if ( index == EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX )
             {
-                return attribute.getDescription() + " (" + attribute.getValueSize() + " values)";
+                return NLS.bind( Messages.getString("EntryEditorWidgetLabelProvider.AttributeLabel"), attribute.getDescription(), attribute.getValueSize() ); //$NON-NLS-1$
             }
             else
             {
-                return "";
+                return ""; //$NON-NLS-1$
             }
         }
         else
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

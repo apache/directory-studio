@@ -62,7 +62,7 @@ public class SelectAllAction extends BrowserAction
      */
     public String getText()
     {
-        return "Select All";
+        return Messages.getString("SelectAllAction.SelectAll"); //$NON-NLS-1$
     }
 
     /**

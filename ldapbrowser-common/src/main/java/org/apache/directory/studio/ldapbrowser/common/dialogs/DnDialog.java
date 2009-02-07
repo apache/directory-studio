@@ -156,7 +156,7 @@ public class DnDialog extends Dialog
         if ( getButton( IDialogConstants.OK_ID ) != null )
         {
             getButton( IDialogConstants.OK_ID ).setEnabled(
-                entryWidget.getDn() != null && !"".equals( entryWidget.getDn().toString() ) );
+                entryWidget.getDn() != null && !"".equals( entryWidget.getDn().toString() ) ); //$NON-NLS-1$
         }
     }
 

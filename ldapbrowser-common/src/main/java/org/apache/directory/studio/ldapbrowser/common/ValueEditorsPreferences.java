@@ -84,8 +84,8 @@ public class ValueEditorsPreferences
         // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class AttributeValueProviderRelation 
         // was renamed to AttributeValueEditorRelation, to be able to load the old configuration it
         // is necessary to replace the old class name with the new class name.
-        s = s.replaceAll( "AttributeValueProviderRelation", "AttributeValueEditorRelation" );
-        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        s = s.replaceAll( "AttributeValueProviderRelation", "AttributeValueEditorRelation" ); //$NON-NLS-1$ //$NON-NLS-2$
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" ); //$NON-NLS-1$ //$NON-NLS-2$
         AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) Utils.deserialize( s );
         return aver;
     }
@@ -117,8 +117,8 @@ public class ValueEditorsPreferences
         // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class AttributeValueProviderRelation 
         // was renamed to AttributeValueEditorRelation, to be able to load the old configuration it
         // is necessary to replace the old class name with the new class name.
-        s = s.replaceAll( "AttributeValueProviderRelation", "AttributeValueEditorRelation" );
-        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        s = s.replaceAll( "AttributeValueProviderRelation", "AttributeValueEditorRelation" ); //$NON-NLS-1$ //$NON-NLS-2$
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" ); //$NON-NLS-1$ //$NON-NLS-2$
         AttributeValueEditorRelation[] aver = ( AttributeValueEditorRelation[] ) Utils.deserialize( s );
         return aver;
     }
@@ -187,8 +187,8 @@ public class ValueEditorsPreferences
         // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class SyntaxValueProviderRelation 
         // was renamed to SyntaxValueEditorRelation, to be able to load the old configuration it
         // is necessary to replace the old class name with the new class name.
-        s = s.replaceAll( "SyntaxValueProviderRelation", "SyntaxValueEditorRelation" );
-        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        s = s.replaceAll( "SyntaxValueProviderRelation", "SyntaxValueEditorRelation" ); //$NON-NLS-1$ //$NON-NLS-2$
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" ); //$NON-NLS-1$ //$NON-NLS-2$
         SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) Utils.deserialize( s );
         return sver;
     }
@@ -207,8 +207,8 @@ public class ValueEditorsPreferences
         // Migration issue from 1.0.1 to 1.1.0 (DIRSTUDIO-287): class SyntaxValueProviderRelation 
         // was renamed to SyntaxValueEditorRelation, to be able to load the old configuration it
         // is necessary to replace the old class name with the new class name.
-        s = s.replaceAll( "SyntaxValueProviderRelation", "SyntaxValueEditorRelation" );
-        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" );
+        s = s.replaceAll( "SyntaxValueProviderRelation", "SyntaxValueEditorRelation" ); //$NON-NLS-1$ //$NON-NLS-2$
+        s = s.replaceAll( "valueProviderClassname", "valueEditorClassName" ); //$NON-NLS-1$ //$NON-NLS-2$
         SyntaxValueEditorRelation[] sver = ( SyntaxValueEditorRelation[] ) Utils.deserialize( s );
         return sver;
     }

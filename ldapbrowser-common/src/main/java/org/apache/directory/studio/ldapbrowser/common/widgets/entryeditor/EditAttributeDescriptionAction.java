@@ -85,7 +85,7 @@ public class EditAttributeDescriptionAction extends BrowserAction
     @Override
     public String getText()
     {
-        return "Edit Attribute Description";
+        return Messages.getString("EditAttributeDescriptionAction.EditAttributeDescription"); //$NON-NLS-1$
     }
 
 
@@ -123,7 +123,7 @@ public class EditAttributeDescriptionAction extends BrowserAction
      */
     private void renameValues( final IValue[] values )
     {
-        AttributeWizard wizard = new AttributeWizard( "Edit Attribute Description", true, false, values[0]
+        AttributeWizard wizard = new AttributeWizard( Messages.getString("EditAttributeDescriptionAction.EditAttributeDescription"), true, false, values[0] //$NON-NLS-1$
             .getAttribute().getDescription(), values[0].getAttribute().getEntry() );
         WizardDialog dialog = new WizardDialog( Display.getDefault().getActiveShell(), wizard );
         dialog.setBlockOnOpen( true );
@@ -131,7 +131,7 @@ public class EditAttributeDescriptionAction extends BrowserAction
         if ( dialog.open() == Dialog.OK )
         {
             String newAttributeName = wizard.getAttributeDescription();
-            if ( newAttributeName != null && !"".equals( newAttributeName )
+            if ( newAttributeName != null && !"".equals( newAttributeName ) //$NON-NLS-1$
                 && !newAttributeName.equals( values[0].getAttribute().getDescription() ) )
             {
                 new RenameValuesJob( values[0].getAttribute().getEntry(), values, newAttributeName ).execute();

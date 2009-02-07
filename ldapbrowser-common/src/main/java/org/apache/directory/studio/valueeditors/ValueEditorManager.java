@@ -72,6 +72,20 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ValueEditorManager
 {
+    private static final String ATTRIBUTE_TYPE = "attributeType"; //$NON-NLS-1$
+
+    private static final String ATTRIBUTE = "attribute"; //$NON-NLS-1$
+
+    private static final String SYNTAX_OID = "syntaxOID"; //$NON-NLS-1$
+
+    private static final String SYNTAX = "syntax"; //$NON-NLS-1$
+
+    private static final String ICON = "icon"; //$NON-NLS-1$
+
+    private static final String NAME = "name"; //$NON-NLS-1$
+
+    private static final String CLASS = "class"; //$NON-NLS-1$
+
     /** The extension point ID for value editors */
     private static final String EXTENSION_POINT = BrowserCommonConstants.EXTENSION_POINT_VALUE_EDITORS;
 
@@ -123,13 +137,13 @@ public class ValueEditorManager
 
         // special case: multivalued editor
         multiValuedValueEditor = new MultivaluedValueEditor( this.parent, this );
-        multiValuedValueEditor.setValueEditorName( "Mulitvalued Editor..." );
+        multiValuedValueEditor.setValueEditorName( Messages.getString("ValueEditorManager.MulitivaluedEditor") ); //$NON-NLS-1$
         multiValuedValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_MULTIVALUEDEDITOR ) );
 
         // special case: entry editor
         entryValueEditor = new EntryValueEditor( this.parent, this );
-        entryValueEditor.setValueEditorName( "Entry Editor..." );
+        entryValueEditor.setValueEditorName( Messages.getString("ValueEditorManager.EntryEditor") ); //$NON-NLS-1$
         entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY ) );
 
@@ -705,7 +719,7 @@ public class ValueEditorManager
         {
             try
             {
-                IValueEditor valueEditor = ( IValueEditor ) vee.member.createExecutableExtension( "class" );
+                IValueEditor valueEditor = ( IValueEditor ) vee.member.createExecutableExtension( CLASS );
                 valueEditor.create( parent );
                 valueEditor.setValueEditorName( vee.name );
                 valueEditor.setValueEditorImageDescriptor( vee.icon );
@@ -714,7 +728,7 @@ public class ValueEditorManager
             catch ( Exception e )
             {
                 BrowserCommonActivator.getDefault().getLog().log(
-                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, 1, "Unable to create ValueEditor "
+                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, 1, Messages.getString("ValueEditorManager.UnableToCreateValueEditor") //$NON-NLS-1$
                         + vee.className, e ) );
             }
         }
@@ -747,28 +761,28 @@ public class ValueEditorManager
             String extendingPluginId = extension.getNamespaceIdentifier();
 
             proxy.member = member;
-            proxy.name = member.getAttribute( "name" );
-            String iconPath = member.getAttribute( "icon" );
+            proxy.name = member.getAttribute( NAME );
+            String iconPath = member.getAttribute( ICON );
             proxy.icon = AbstractUIPlugin.imageDescriptorFromPlugin( extendingPluginId, iconPath );
             if ( proxy.icon == null )
             {
                 proxy.icon = ImageDescriptor.getMissingImageDescriptor();
             }
-            proxy.className = member.getAttribute( "class" );
+            proxy.className = member.getAttribute( CLASS );
 
             IConfigurationElement[] children = member.getChildren();
             for ( int c = 0; c < children.length; c++ )
             {
                 IConfigurationElement element = children[c];
                 String type = element.getName();
-                if ( "syntax".equals( type ) )
+                if ( SYNTAX.equals( type ) )
                 {
-                    String syntaxOID = element.getAttribute( "syntaxOID" );
+                    String syntaxOID = element.getAttribute( SYNTAX_OID );
                     proxy.syntaxOids.add( syntaxOID );
                 }
-                else if ( "attribute".equals( type ) )
+                else if ( ATTRIBUTE.equals( type ) )
                 {
-                    String attributeType = element.getAttribute( "attributeType" );
+                    String attributeType = element.getAttribute( ATTRIBUTE_TYPE );
                     proxy.attributeTypes.add( attributeType );
                 }
             }

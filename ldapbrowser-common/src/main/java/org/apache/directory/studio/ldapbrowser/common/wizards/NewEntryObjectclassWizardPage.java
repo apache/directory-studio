@@ -162,8 +162,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
     public NewEntryObjectclassWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        setTitle( "Object Classes" );
-        setDescription( "Please select object classes of the entry. Select at least one structural object class." );
+        setTitle( Messages.getString("NewEntryObjectclassWizardPage.ObjectClasses") ); //$NON-NLS-1$
+        setDescription( Messages.getString("NewEntryObjectclassWizardPage.ObjectClassesDescription") ); //$NON-NLS-1$
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
@@ -192,7 +192,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             }
             if ( !hasOneStructuralOC )
             {
-                setMessage( "Please select at least one structural object class.", WizardPage.WARNING );
+                setMessage( Messages.getString("NewEntryObjectclassWizardPage.SelectStructuralObjectClass"), WizardPage.WARNING ); //$NON-NLS-1$
             }
             else
             {
@@ -311,15 +311,15 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         Label availableLabel = new Label( composite, SWT.NONE );
-        availableLabel.setText( "Available object classes" );
+        availableLabel.setText( Messages.getString("NewEntryObjectclassWizardPage.AvailableObjectClasses") ); //$NON-NLS-1$
         Label buttonLabel = new Label( composite, SWT.NONE );
-        buttonLabel.setText( "" );
+        buttonLabel.setText( "" ); //$NON-NLS-1$
         Label selectedLabel = new Label( composite, SWT.NONE );
-        selectedLabel.setText( "Selected object classes" );
+        selectedLabel.setText( Messages.getString("NewEntryObjectclassWizardPage.SelectedObjectClasses") ); //$NON-NLS-1$
 
         Composite availableObjectClassesComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        availableObjectClassesInstantSearch = BaseWidgetUtils.createText( availableObjectClassesComposite, "", 1 );
+        availableObjectClassesInstantSearch = BaseWidgetUtils.createText( availableObjectClassesComposite, "", 1 ); //$NON-NLS-1$
         availableObjectClassesInstantSearch.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -349,7 +349,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         ControlDecoration availableObjectClassesInstantSearchDecoration = new ControlDecoration(
             availableObjectClassesInstantSearch, SWT.TOP | SWT.LEFT, composite );
         availableObjectClassesInstantSearchDecoration
-            .setDescriptionText( "You may enter a filter to restrict the list below" );
+            .setDescriptionText( Messages.getString("NewEntryObjectclassWizardPage.FilterDescription") ); //$NON-NLS-1$
         availableObjectClassesInstantSearchDecoration.setImage( FieldDecorationRegistry.getDefault()
             .getFieldDecoration( FieldDecorationRegistry.DEC_CONTENT_PROPOSAL ).getImage() );
 
@@ -397,8 +397,8 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         data.grabExcessHorizontalSpace = true;
         data.grabExcessVerticalSpace = true;
         label0.setLayoutData( data );
-        addButton = BaseWidgetUtils.createButton( buttonComposite, "&Add", 1 );
-        removeButton = BaseWidgetUtils.createButton( buttonComposite, "&Remove", 1 );
+        addButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("NewEntryObjectclassWizardPage.AddButton"), 1 ); //$NON-NLS-1$
+        removeButton = BaseWidgetUtils.createButton( buttonComposite, Messages.getString("NewEntryObjectclassWizardPage.RemoveButton"), 1 ); //$NON-NLS-1$
         Label label3 = new Label( buttonComposite, SWT.NONE );
         data = new GridData();
         data.grabExcessHorizontalSpace = true;
@@ -475,9 +475,9 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         selectedObjectClassesViewer.refresh();
         validate();
 
-        if ( !"".equals( availableObjectClassesInstantSearch.getText() ) )
+        if ( !"".equals( availableObjectClassesInstantSearch.getText() ) ) //$NON-NLS-1$
         {
-            availableObjectClassesInstantSearch.setText( "" );
+            availableObjectClassesInstantSearch.setText( "" ); //$NON-NLS-1$
             availableObjectClassesInstantSearch.setFocus();
         }
     }

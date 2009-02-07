@@ -65,7 +65,7 @@ public class UnfilterChildrenAction extends BrowserAction
      */
     public String getText()
     {
-        return "Remove Children Filter";
+        return Messages.getString("UnfilterChildrenAction.RemoveChildrenFilter"); //$NON-NLS-1$
     }
 
 

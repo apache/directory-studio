@@ -53,16 +53,16 @@ public class BrowserSorterDialog extends Dialog
 {
 
     /** The dialog title. */
-    public static final String DIALOG_TITLE = "Browser Sorting";
+    public static final String DIALOG_TITLE = Messages.getString("BrowserSorterDialog.BrowserSorting"); //$NON-NLS-1$
 
     /** The Constant SORT_BY_NONE. */
-    public static final String SORT_BY_NONE = "No Sorting";
+    public static final String SORT_BY_NONE = Messages.getString("BrowserSorterDialog.NoSorting"); //$NON-NLS-1$
 
     /** The Constant SORT_BY_RDN. */
-    public static final String SORT_BY_RDN = "RDN";
+    public static final String SORT_BY_RDN = Messages.getString("BrowserSorterDialog.RDN"); //$NON-NLS-1$
 
     /** The Constant SORT_BY_RDN_VALUE. */
-    public static final String SORT_BY_RDN_VALUE = "RDN Value";
+    public static final String SORT_BY_RDN_VALUE = Messages.getString("BrowserSorterDialog.RDNValue"); //$NON-NLS-1$
 
     /** The browser preferences. */
     private BrowserPreferences preferences;
@@ -170,32 +170,32 @@ public class BrowserSorterDialog extends Dialog
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         composite.setLayoutData( gd );
 
-        Group groupingGroup = BaseWidgetUtils.createGroup( composite, "Group entries", 1 );
+        Group groupingGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("BrowserSorterDialog.GroupEntries"), 1 ); //$NON-NLS-1$
         Composite columGroup = BaseWidgetUtils.createColumnContainer( groupingGroup, 3, 1 );
 
-        leafEntriesFirstButton = BaseWidgetUtils.createRadiobutton( columGroup, "Leaf entries first", 1 );
+        leafEntriesFirstButton = BaseWidgetUtils.createRadiobutton( columGroup, Messages.getString("BrowserSorterDialog.LeafEntriesFirst"), 1 ); //$NON-NLS-1$
         leafEntriesFirstButton
-            .setToolTipText( "This option displays entries without children before entries with children." );
+            .setToolTipText( Messages.getString("BrowserSorterDialog.LeafEntriesFirstToolTip") ); //$NON-NLS-1$
         leafEntriesFirstButton.setSelection( preferences.isLeafEntriesFirst() );
 
-        containerEntriesFirstButton = BaseWidgetUtils.createRadiobutton( columGroup, "Container entries first", 1 );
+        containerEntriesFirstButton = BaseWidgetUtils.createRadiobutton( columGroup, Messages.getString("BrowserSorterDialog.ContainerEntriesFirst"), 1 ); //$NON-NLS-1$
         containerEntriesFirstButton
-        .setToolTipText( "This option displays entries with children before entries without children." );
+        .setToolTipText( Messages.getString("BrowserSorterDialog.ContainerEntriesFirstToolTip") ); //$NON-NLS-1$
         containerEntriesFirstButton.setSelection( preferences.isContainerEntriesFirst() );
         
-        mixedButton = BaseWidgetUtils.createRadiobutton( columGroup, "Mixed", 1 );
-        mixedButton.setToolTipText( "This option displays entries with and without children mixed." );
+        mixedButton = BaseWidgetUtils.createRadiobutton( columGroup, Messages.getString("BrowserSorterDialog.Mixed"), 1 ); //$NON-NLS-1$
+        mixedButton.setToolTipText( Messages.getString("BrowserSorterDialog.MixedToolTip") ); //$NON-NLS-1$
         mixedButton.setSelection( !preferences.isLeafEntriesFirst() && !preferences.isContainerEntriesFirst() );
 
-        metaEntriesLastButton = BaseWidgetUtils.createCheckbox( groupingGroup, "Meta entries last", 1 );
+        metaEntriesLastButton = BaseWidgetUtils.createCheckbox( groupingGroup, Messages.getString("BrowserSorterDialog.MetaEntriesLast"), 1 ); //$NON-NLS-1$
         metaEntriesLastButton
-            .setToolTipText( "This option displays meta entries after normal entries. Meta entries are e.g. the root DSE or the schema entry." );
+            .setToolTipText( Messages.getString("BrowserSorterDialog.MetaEntriesLastToolTip") ); //$NON-NLS-1$
         metaEntriesLastButton.setSelection( preferences.isMetaEntriesLast() );
 
-        Group sortingGroup = BaseWidgetUtils.createGroup( composite, "Sort entries", 1 );
+        Group sortingGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("BrowserSorterDialog.SortEntries"), 1 ); //$NON-NLS-1$
 
         Composite sortByComposite = BaseWidgetUtils.createColumnContainer( sortingGroup, 4, 1 );
-        BaseWidgetUtils.createLabel( sortByComposite, "Sort by", 1 );
+        BaseWidgetUtils.createLabel( sortByComposite, Messages.getString("BrowserSorterDialog.SortBy"), 1 ); //$NON-NLS-1$
         sortByCombo = BaseWidgetUtils.createReadonlyCombo( sortByComposite, new String[]
             { SORT_BY_NONE, SORT_BY_RDN, SORT_BY_RDN_VALUE }, 0, 1 );
         sortByCombo.select( preferences.getSortBy() == BrowserCoreConstants.SORT_BY_RDN_VALUE ? 2 : preferences
@@ -210,26 +210,26 @@ public class BrowserSorterDialog extends Dialog
             }
         } );
 
-        sortAcendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, "Ascending", 1 );
+        sortAcendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, Messages.getString("BrowserSorterDialog.Ascending"), 1 ); //$NON-NLS-1$
         sortAcendingButton.setSelection( preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_ASCENDING );
         sortAcendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
-        sortDescendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, "Descending", 1 );
+        sortDescendingButton = BaseWidgetUtils.createRadiobutton( sortByComposite, Messages.getString("BrowserSorterDialog.Descending"), 1 ); //$NON-NLS-1$
         sortDescendingButton.setSelection( preferences.getSortOrder() == BrowserCoreConstants.SORT_ORDER_DESCENDING );
         sortDescendingButton.setEnabled( sortByCombo.getSelectionIndex() != 0 );
 
         Composite sortLimitComposite = BaseWidgetUtils.createColumnContainer( sortingGroup, 2, 1 );
-        String sortLimitTooltip = "If there are more than the specified number of children they won't be sorted. Hint: For performance reason the maximum value should be 10.000!";
-        Label sortLimitLabel = BaseWidgetUtils.createLabel( sortLimitComposite, "Sort limit:", 1 );
+        String sortLimitTooltip = Messages.getString("BrowserSorterDialog.SortLimitToolTip"); //$NON-NLS-1$
+        Label sortLimitLabel = BaseWidgetUtils.createLabel( sortLimitComposite, Messages.getString("BrowserSorterDialog.SortLimit"), 1 ); //$NON-NLS-1$
         sortLimitLabel.setToolTipText( sortLimitTooltip );
-        sortLimitText = BaseWidgetUtils.createText( sortLimitComposite, "" + preferences.getSortLimit(), 5, 1 );
+        sortLimitText = BaseWidgetUtils.createText( sortLimitComposite, "" + preferences.getSortLimit(), 5, 1 ); //$NON-NLS-1$
         sortLimitText.setToolTipText( sortLimitTooltip );
         sortLimitText.setEnabled( sortByCombo.getSelectionIndex() != 0 );
         sortLimitText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }

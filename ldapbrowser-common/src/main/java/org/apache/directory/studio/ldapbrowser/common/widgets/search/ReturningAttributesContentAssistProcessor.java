@@ -95,29 +95,29 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
         {
             public int compare( String o1, String o2 )
             {
-                if ( "+".equals( o1 ) && !"+".equals( o2 ) )
+                if ( "+".equals( o1 ) && !"+".equals( o2 ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return 4;
                 }
-                if ( "+".equals( o2 ) && !"+".equals( o1 ) )
+                if ( "+".equals( o2 ) && !"+".equals( o1 ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return -4;
                 }
 
-                if ( "*".equals( o1 ) && !"*".equals( o2 ) )
+                if ( "*".equals( o1 ) && !"*".equals( o2 ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return 3;
                 }
-                if ( "*".equals( o2 ) && !"*".equals( o1 ) )
+                if ( "*".equals( o2 ) && !"*".equals( o1 ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return -3;
                 }
 
-                if ( o1.startsWith( "@" ) && !o2.startsWith( "@" ) )
+                if ( o1.startsWith( "@" ) && !o2.startsWith( "@" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return 2;
                 }
-                if ( o2.startsWith( "@" ) && !o1.startsWith( "@" ) )
+                if ( o2.startsWith( "@" ) && !o1.startsWith( "@" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return -2;
                 }
@@ -189,7 +189,7 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
         {
             if ( string.toUpperCase().startsWith( attribute.toUpperCase() ) )
             {
-                ICompletionProposal proposal = new CompletionProposal( string + ", ", start,
+                ICompletionProposal proposal = new CompletionProposal( string + ", ", start, //$NON-NLS-1$
                     documentOffset - start, string.length() + 2, null, string,
                     null, null );
                 proposalList.add( proposal );

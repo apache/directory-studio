@@ -50,7 +50,7 @@ public class LineSeparatorInput extends OptionsInput
      */
     public LineSeparatorInput( String initialRawValue, boolean asGroup )
     {
-        super( "Line Separator", getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(),
+        super( Messages.getString("LineSeparatorInput.LineSeparator"), getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(), //$NON-NLS-1$
             getOtherRawValues(), initialRawValue, asGroup, false );
 
     }
@@ -70,7 +70,7 @@ public class LineSeparatorInput extends OptionsInput
             String v = ( String ) lsMap.get( k );
             if ( v.equals( getDefaultRawValue() ) )
             {
-                k = k + " (" + ( v.replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" ) ) + ")";
+                k = k + " (" + ( v.replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" ) ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
                 return k;
             }
         }
@@ -104,9 +104,9 @@ public class LineSeparatorInput extends OptionsInput
         for ( int i = 0; i < displayValues.length; i++ )
         {
             displayValues[i] = displayValues[i]
-                + " ("
-                + ( ( ( String ) lsMap.get( displayValues[i] ) ).replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" ) )
-                + ")";
+                + " (" //$NON-NLS-1$
+                + ( ( ( String ) lsMap.get( displayValues[i] ) ).replaceAll( "\n", "\\\\n" ).replaceAll( "\r", "\\\\r" ) ) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                + ")"; //$NON-NLS-1$
         }
         return displayValues;
     }

@@ -89,21 +89,21 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
 
             if ( entry.isChildrenInitialized() && ( entry.getChildrenCount() > 0 ) || entry.getChildrenFilter() != null )
             {
-                append.append( " (" ).append( entry.getChildrenCount() );
+                append.append( " (" ).append( entry.getChildrenCount() ); //$NON-NLS-1$
                 if ( entry.hasMoreChildren() )
                 {
-                    append.append( "+" );
+                    append.append( "+" ); //$NON-NLS-1$
                 }
                 if ( entry.getChildrenFilter() != null )
                 {
-                    append.append( ", filtered" );
+                    append.append( ", filtered" ); //$NON-NLS-1$
                 }
-                append.append( ")" );
+                append.append( ")" ); //$NON-NLS-1$
             }
 
             if ( entry instanceof IRootDSE )
             {
-                return "Root DSE" + append.toString();
+                return "Root DSE" + append.toString(); //$NON-NLS-1$
             }
             else if ( entry instanceof ReferralBaseEntry )
             {
@@ -119,7 +119,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else if ( entry.hasParententry() )
             {
-                String label = "";
+                String label = ""; //$NON-NLS-1$
                 if ( preferences.getEntryLabel() == BrowserCommonConstants.SHOW_DN )
                 {
                     label = entry.getDn().getUpName();
@@ -150,12 +150,12 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         else if ( obj instanceof BrowserEntryPage )
         {
             BrowserEntryPage container = ( BrowserEntryPage ) obj;
-            return "[" + ( container.getFirst() + 1 ) + "..." + ( container.getLast() + 1 ) + "]";
+            return "[" + ( container.getFirst() + 1 ) + "..." + ( container.getLast() + 1 ) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         else if ( obj instanceof BrowserSearchResultPage )
         {
             BrowserSearchResultPage container = ( BrowserSearchResultPage ) obj;
-            return "[" + ( container.getFirst() + 1 ) + "..." + ( container.getLast() + 1 ) + "]";
+            return "[" + ( container.getFirst() + 1 ) + "..." + ( container.getLast() + 1 ) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         else if ( obj instanceof ISearch )
         {
@@ -164,12 +164,12 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             StringBuffer append = new StringBuffer( search.getName() );
             if ( results != null )
             {
-                append.append( " (" ).append( results.length );
+                append.append( " (" ).append( results.length ); //$NON-NLS-1$
                 if ( search.isCountLimitExceeded() )
                 {
-                    append.append( "+" );
+                    append.append( "+" ); //$NON-NLS-1$
                 }
-                append.append( ")" );
+                append.append( ")" ); //$NON-NLS-1$
             }
             return append.toString();
         }
@@ -188,10 +188,10 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             }
             else if ( sr.getEntry().hasParententry() || sr.getEntry() instanceof IRootDSE )
             {
-                String label = "";
+                String label = ""; //$NON-NLS-1$
                 if ( sr.getEntry() instanceof IRootDSE )
                 {
-                    label = "Root DSE";
+                    label = "Root DSE"; //$NON-NLS-1$
                 }
                 else if ( preferences.getSearchResultLabel() == BrowserCommonConstants.SHOW_DN )
                 {
@@ -230,11 +230,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                     ISearch search = ( ISearch ) lockedObject;
                     if ( obj == search.getTopSearchRunnable() )
                     {
-                        return "--- Top Page ---";
+                        return Messages.getString("BrowserLabelProvider.TopPage"); //$NON-NLS-1$
                     }
                     else if ( obj == search.getNextSearchRunnable() )
                     {
-                        return "--- Next Page ---";
+                        return Messages.getString("BrowserLabelProvider.NextPage"); //$NON-NLS-1$
                     }
                 }
                 else if ( lockedObject instanceof IEntry )
@@ -242,11 +242,11 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
                     IEntry entry = ( IEntry ) lockedObject;
                     if ( obj == entry.getTopPageChildrenRunnable() )
                     {
-                        return "--- Top Page ---";
+                        return Messages.getString("BrowserLabelProvider.TopPage"); //$NON-NLS-1$
                     }
                     else if ( obj == entry.getNextPageChildrenRunnable() )
                     {
-                        return "--- Next Page ---";
+                        return Messages.getString("BrowserLabelProvider.NextPage"); //$NON-NLS-1$
                     }
                 }
             }
@@ -263,7 +263,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         }
         else
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 
@@ -411,17 +411,17 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
             while ( atavIterator.hasNext() )
             {
                 AttributeTypeAndValue atav = atavIterator.next();
-                if ( "cn".equalsIgnoreCase( atav.getUpType() ) || "sn".equalsIgnoreCase( atav.getUpType() )
-                    || "uid".equalsIgnoreCase( atav.getUpType() ) || "userid".equalsIgnoreCase( atav.getUpType() ) )
+                if ( "cn".equalsIgnoreCase( atav.getUpType() ) || "sn".equalsIgnoreCase( atav.getUpType() ) //$NON-NLS-1$ //$NON-NLS-2$
+                    || "uid".equalsIgnoreCase( atav.getUpType() ) || "userid".equalsIgnoreCase( atav.getUpType() ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_PERSON );
                 }
-                else if ( "ou".equalsIgnoreCase( atav.getUpType() ) || "o".equalsIgnoreCase( atav.getUpType() ) )
+                else if ( "ou".equalsIgnoreCase( atav.getUpType() ) || "o".equalsIgnoreCase( atav.getUpType() ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ORG );
                 }
-                else if ( "dc".equalsIgnoreCase( atav.getUpType() ) || "c".equalsIgnoreCase( atav.getUpType() )
-                    || "l".equalsIgnoreCase( atav.getUpType() ) )
+                else if ( "dc".equalsIgnoreCase( atav.getUpType() ) || "c".equalsIgnoreCase( atav.getUpType() ) //$NON-NLS-1$ //$NON-NLS-2$
+                    || "l".equalsIgnoreCase( atav.getUpType() ) ) //$NON-NLS-1$
                 {
                     return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_DC );
                 }

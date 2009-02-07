@@ -58,13 +58,13 @@ public class FilterChildrenAction extends BrowserAction
     {
         if ( getSelectedEntries().length == 1 )
         {
-            FilterWidgetDialog dialog = new FilterWidgetDialog( getShell(), "Filter Children", getSelectedEntries()[0]
+            FilterWidgetDialog dialog = new FilterWidgetDialog( getShell(), Messages.getString("FilterChildrenAction.FilterChildren"), getSelectedEntries()[0] //$NON-NLS-1$
                 .getChildrenFilter(), getSelectedEntries()[0].getBrowserConnection() );
             if ( dialog.open() == Dialog.OK )
             {
                 String newFilter = dialog.getFilter();
 
-                if ( newFilter == null || "".equals( newFilter.trim() ) )
+                if ( newFilter == null || "".equals( newFilter.trim() ) ) //$NON-NLS-1$
                 {
                     getSelectedEntries()[0].setChildrenFilter( null );
                 }
@@ -85,7 +85,7 @@ public class FilterChildrenAction extends BrowserAction
      */
     public String getText()
     {
-        return "Filter Children...";
+        return Messages.getString("FilterChildrenAction.FilterChildrenLabel"); //$NON-NLS-1$
     }
 
 

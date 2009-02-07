@@ -74,11 +74,11 @@ public class AttributeWizard extends Wizard implements INewWizard
      */
     public AttributeWizard()
     {
-        super.setWindowTitle( "New Attribute" );
+        super.setWindowTitle( Messages.getString("AttributeWizard.NewAttribute") ); //$NON-NLS-1$
         super.setNeedsProgressMonitor( false );
         this.initialShowSubschemaAttributesOnly = true;
         this.initialHideExistingAttributes = true;
-        this.initialAttributeDescription = "";
+        this.initialAttributeDescription = ""; //$NON-NLS-1$
         this.initialEntry = null;
     }
 
@@ -155,9 +155,9 @@ public class AttributeWizard extends Wizard implements INewWizard
 
         // set help context ID
         PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-            BrowserCommonConstants.PLUGIN_ID + "." + "tools_attribute_wizard" );
+            BrowserCommonConstants.PLUGIN_ID + "." + "tools_attribute_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( optionsPage.getControl(),
-            BrowserCommonConstants.PLUGIN_ID + "." + "tools_attribute_wizard" );
+            BrowserCommonConstants.PLUGIN_ID + "." + "tools_attribute_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /** 
@@ -174,9 +174,9 @@ public class AttributeWizard extends Wizard implements INewWizard
          */
         protected DummyWizardPage()
         {
-            super( "" );
-            super.setTitle( "No entry selected" );
-            super.setDescription( "In order to use the attribute creation wizard please select an entry." );
+            super( "" ); //$NON-NLS-1$
+            super.setTitle( Messages.getString("AttributeWizard.NoEntrySelected") ); //$NON-NLS-1$
+            super.setDescription( Messages.getString("AttributeWizard.NoeEntrySelectedDescription") ); //$NON-NLS-1$
             // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
             super.setPageComplete( true );
         }

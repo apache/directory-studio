@@ -67,33 +67,33 @@ import org.eclipse.swt.widgets.Text;
 public class BrowserParameterPage extends AbstractConnectionParameterPage
 {
 
-    private static final String X_BASE_DN = "X-BASE-DN";
+    private static final String X_BASE_DN = "X-BASE-DN"; //$NON-NLS-1$
 
-    private static final String X_COUNT_LIMIT = "X-COUNT-LIMIT";
+    private static final String X_COUNT_LIMIT = "X-COUNT-LIMIT"; //$NON-NLS-1$
 
-    private static final String X_TIME_LIMIT = "X-TIME-LIMIT";
+    private static final String X_TIME_LIMIT = "X-TIME-LIMIT"; //$NON-NLS-1$
 
-    private static final String X_ALIAS_HANDLING = "X-ALIAS-HANDLING";
+    private static final String X_ALIAS_HANDLING = "X-ALIAS-HANDLING"; //$NON-NLS-1$
 
-    private static final String X_ALIAS_HANDLING_FINDING = "FINDING";
+    private static final String X_ALIAS_HANDLING_FINDING = "FINDING"; //$NON-NLS-1$
 
-    private static final String X_ALIAS_HANDLING_SEARCHING = "SEARCHING";
+    private static final String X_ALIAS_HANDLING_SEARCHING = "SEARCHING"; //$NON-NLS-1$
 
-    private static final String X_ALIAS_HANDLING_NEVER = "NEVER";
+    private static final String X_ALIAS_HANDLING_NEVER = "NEVER"; //$NON-NLS-1$
 
-    private static final String X_REFERRAL_HANDLING = "X-REFERRAL-HANDLING";
+    private static final String X_REFERRAL_HANDLING = "X-REFERRAL-HANDLING"; //$NON-NLS-1$
 
-    private static final String X_REFERRAL_HANDLING_IGNORE = "IGNORE";
+    private static final String X_REFERRAL_HANDLING_IGNORE = "IGNORE"; //$NON-NLS-1$
 
-    private static final String X_REFERRAL_HANDLING_MANAGE = "MANAGE";
+    private static final String X_REFERRAL_HANDLING_MANAGE = "MANAGE"; //$NON-NLS-1$
 
-    private static final String X_FETCH_SUBENTRIES = "X-FETCH-SUBENTRIES";
+    private static final String X_FETCH_SUBENTRIES = "X-FETCH-SUBENTRIES"; //$NON-NLS-1$
 
-    private static final String X_PAGED_SEARCH = "X-PAGED-SEARCH";
+    private static final String X_PAGED_SEARCH = "X-PAGED-SEARCH"; //$NON-NLS-1$
 
-    private static final String X_PAGED_SEARCH_SIZE = "X-PAGED-SEARCH-SIZE";
+    private static final String X_PAGED_SEARCH_SIZE = "X-PAGED-SEARCH-SIZE"; //$NON-NLS-1$
 
-    private static final String X_PAGED_SEARCH_SCROLL_MODE = "X-PAGED-SEARCH-SCROLL-MODE";
+    private static final String X_PAGED_SEARCH_SCROLL_MODE = "X-PAGED-SEARCH-SCROLL-MODE"; //$NON-NLS-1$
 
     /** The checkbox to fetch the base DN's from namingContexts whenever opening the connection */
     private Button autoFetchBaseDnsButton;
@@ -294,21 +294,21 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( composite, "Base DN", 1 );
+        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("BrowserParameterPage.BaseDNGroup"), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
         GridData gd;
 
-        autoFetchBaseDnsButton = BaseWidgetUtils.createCheckbox( groupComposite, "Get base DNs from Root DSE", 2 );
+        autoFetchBaseDnsButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages.getString("BrowserParameterPage.GetBaseDNsFromRootDSE"), 2 ); //$NON-NLS-1$
         autoFetchBaseDnsButton.setSelection( true );
 
         fetchBaseDnsButton = new Button( groupComposite, SWT.PUSH );
-        fetchBaseDnsButton.setText( "Fetch Base DNs" );
+        fetchBaseDnsButton.setText( Messages.getString("BrowserParameterPage.FetchBaseDNs") ); //$NON-NLS-1$
         fetchBaseDnsButton.setEnabled( true );
         gd = new GridData();
         gd.horizontalAlignment = SWT.RIGHT;
         fetchBaseDnsButton.setLayoutData( gd );
 
-        BaseWidgetUtils.createLabel( groupComposite, "Base DN:", 1 );
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("BrowserParameterPage.BaseDN"), 1 ); //$NON-NLS-1$
         baseDNCombo = BaseWidgetUtils.createCombo( groupComposite, new String[0], 0, 2 );
     }
 
@@ -322,30 +322,26 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( composite, "Controls", 1 );
+        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("BrowserParameterPage.Controls"), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
 
         // fetch subentries control
         fetchSubentriesButton = BaseWidgetUtils.createCheckbox( groupComposite,
-            "Fetch subentries while browsing (requires additional search request)", 1 );
+            Messages.getString("BrowserParameterPage.FetchSubentriesWhileBrowsing"), 1 ); //$NON-NLS-1$
         fetchSubentriesButton
-            .setToolTipText( "If enabled both, normal entries and subentries according to RFC 3672, are retrieved. "
-                + "This causes additional search requests while browsing the DIT." );
+            .setToolTipText( Messages.getString("BrowserParameterPage.FetchSubentriesWhileBrowsingTooltip") ); //$NON-NLS-1$
         fetchSubentriesButton.setSelection( false );
 
         // paged search control
         Composite sprcComposite = BaseWidgetUtils.createColumnContainer( groupComposite, 4, 1 );
-        pagedSearchButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Paged Search", 1 );
-        pagedSearchButton.setToolTipText( "If enabled simple paged results control is used." );
+        pagedSearchButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("BrowserParameterPage.PagedSearch"), 1 ); //$NON-NLS-1$
+        pagedSearchButton.setToolTipText( Messages.getString("BrowserParameterPage.PagedSearchTooltip") ); //$NON-NLS-1$
 
-        pagedSearchSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, " Page Size:", 1 );
-        pagedSearchSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 );
-        pagedSearchScrollModeButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Scroll Mode", 1 );
+        pagedSearchSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, Messages.getString("BrowserParameterPage.PageSize"), 1 ); //$NON-NLS-1$
+        pagedSearchSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 ); //$NON-NLS-1$
+        pagedSearchScrollModeButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("BrowserParameterPage.ScrollMode"), 1 ); //$NON-NLS-1$
         pagedSearchScrollModeButton
-            .setToolTipText( "If enabled only one page is fetched from the server at once while browsing, "
-                + "you could 'scroll' through the pages by using the 'next page' and 'top page' items. "
-                + "If disabled _all_ entries are fetched from the server, the paged result control "
-                + "is only used in background to avoid server-side limits." );
+            .setToolTipText( Messages.getString("BrowserParameterPage.ScrollModeTooltip") ); //$NON-NLS-1$
         pagedSearchScrollModeButton.setSelection( true );
     }
 
@@ -389,7 +385,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         {
             if ( !LdapDN.isValid( getBaseDN() ) )
             {
-                message = "Please enter a valid base DN.";
+                message = Messages.getString("BrowserParameterPage.EnterValidBaseDN"); //$NON-NLS-1$
             }
         }
     }
@@ -406,7 +402,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_BASE_DNS );
         autoFetchBaseDnsButton.setSelection( fetchBaseDns );
         String baseDn = parameter.getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_BASE_DN );
-        baseDNCombo.setText( baseDn != null ? baseDn : "" );
+        baseDNCombo.setText( baseDn != null ? baseDn : "" ); //$NON-NLS-1$
 
         int countLimit = parameter.getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT );
         limitWidget.setCountLimit( countLimit );
@@ -433,7 +429,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         pagedSearchButton.setSelection( pagedSearch );
         String pagedSearchSize = parameter
             .getExtendedProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
-        pagedSearchSizeText.setText( pagedSearchSize != null ? pagedSearchSize : "100" );
+        pagedSearchSizeText.setText( pagedSearchSize != null ? pagedSearchSize : "100" ); //$NON-NLS-1$
         boolean pagedSearchScrollMode = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
         pagedSearchScrollModeButton.setSelection( pagedSearch ? pagedSearchScrollMode : true );
@@ -470,17 +466,17 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                         baseDNCombo.setItems( baseDNs.toArray( new String[baseDNs.size()] ) );
                         baseDNCombo.select( 0 );
 
-                        String msg = "The server returned the following base DNs:";
+                        String msg = Messages.getString("BrowserParameterPage.BaseDNResult"); //$NON-NLS-1$
                         for ( String baseDN : baseDNs )
                         {
-                            msg += "\n  - " + baseDN;
+                            msg += "\n  - " + baseDN; //$NON-NLS-1$
                         }
-                        MessageDialog.openInformation( Display.getDefault().getActiveShell(), "Fetch Base DNs", msg );
+                        MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("BrowserParameterPage.FetchBaseDNs"), msg ); //$NON-NLS-1$
                     }
                     else
                     {
-                        MessageDialog.openWarning( Display.getDefault().getActiveShell(), "Fetch Base DNs",
-                            "No base DN returned from server. Please enter the base DN manually." );
+                        MessageDialog.openWarning( Display.getDefault().getActiveShell(), Messages.getString("BrowserParameterPage.FetchBaseDNs"), //$NON-NLS-1$
+                            Messages.getString("BrowserParameterPage.NoBaseDNReturnedFromServer") ); //$NON-NLS-1$
                         autoFetchBaseDnsButton.setSelection( false );
                     }
                 }
@@ -514,7 +510,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }

@@ -123,11 +123,11 @@ public class NewEntryWizard extends Wizard implements INewWizard
         isNewContextEntry = isNewContextEntry( selection );
         if ( isNewContextEntry )
         {
-            setWindowTitle( "New Context Entry" );
+            setWindowTitle( Messages.getString("NewEntryWizard.NewContextEntry") ); //$NON-NLS-1$
         }
         else
         {
-            setWindowTitle( "New Entry" );
+            setWindowTitle( Messages.getString("NewEntryWizard.NewEntry") ); //$NON-NLS-1$
         }
 
         if ( o instanceof IEntry )
@@ -238,22 +238,22 @@ public class NewEntryWizard extends Wizard implements INewWizard
             if ( typePage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
-                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( ocPage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( ocPage.getControl(),
-                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( dnPage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( dnPage.getControl(),
-                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( attributePage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( attributePage.getControl(),
-                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" );
+                    BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
     }
@@ -272,9 +272,9 @@ public class NewEntryWizard extends Wizard implements INewWizard
          */
         protected DummyWizardPage()
         {
-            super( "" );
-            setTitle( "No connection selected or connection is closed" );
-            setDescription( "In order to use the entry creation wizard please select an entry or connection." );
+            super( "" ); //$NON-NLS-1$
+            setTitle( Messages.getString("NewEntryWizard.NoConnectonSelected") ); //$NON-NLS-1$
+            setDescription( Messages.getString("NewEntryWizard.NoConnectonSelectedDescription") ); //$NON-NLS-1$
             setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
                 BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
             setPageComplete( true );

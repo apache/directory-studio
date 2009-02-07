@@ -109,8 +109,8 @@ public class AttributeOptionsWizardPage extends WizardPage
     public AttributeOptionsWizardPage( String pageName, String initialAttributeDescription, AttributeWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Options" );
-        super.setDescription( "Optionally you may specify options (e.g. language tags)." );
+        super.setTitle( Messages.getString("AttributeOptionsWizardPage.Options") ); //$NON-NLS-1$
+        super.setDescription( Messages.getString("AttributeOptionsWizardPage.OptionsDescription") ); //$NON-NLS-1$
         // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
         super.setPageComplete( false );
 
@@ -144,19 +144,19 @@ public class AttributeOptionsWizardPage extends WizardPage
         // parse options
         if ( initialAttributeDescription == null )
         {
-            initialAttributeDescription = "";
+            initialAttributeDescription = ""; //$NON-NLS-1$
         }
-        String[] attributeDescriptionComponents = initialAttributeDescription.split( ";" );
+        String[] attributeDescriptionComponents = initialAttributeDescription.split( ";" ); //$NON-NLS-1$
         parsedLangList = new ArrayList<String>();
         parsedOptionList = new ArrayList<String>();
         parsedBinary = false;
         for ( int i = 1; i < attributeDescriptionComponents.length; i++ )
         {
-            if ( attributeDescriptionComponents[i].startsWith( "lang-" ) )
+            if ( attributeDescriptionComponents[i].startsWith( "lang-" ) ) //$NON-NLS-1$
             {
                 parsedLangList.add( attributeDescriptionComponents[i] );
             }
-            else if ( attributeDescriptionComponents[i].equals( "binary" ) )
+            else if ( attributeDescriptionComponents[i].equals( "binary" ) ) //$NON-NLS-1$
             {
                 parsedBinary = true;
             }
@@ -204,7 +204,7 @@ public class AttributeOptionsWizardPage extends WizardPage
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         // Lang group
-        langGroup = BaseWidgetUtils.createGroup( composite, "Language tags", 2 );
+        langGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("AttributeOptionsWizardPage.LanguageTags"), 2 ); //$NON-NLS-1$
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 2;
         langGroup.setLayoutData( gd );
@@ -214,14 +214,14 @@ public class AttributeOptionsWizardPage extends WizardPage
         BaseWidgetUtils.createSpacer( composite, 2 );
 
         // Options group with binary option
-        optionsGroup = BaseWidgetUtils.createGroup( composite, "Other options", 2 );
+        optionsGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("AttributeOptionsWizardPage.OtherOptions"), 2 ); //$NON-NLS-1$
         gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 2;
         optionsGroup.setLayoutData( gd );
         Composite optionsComposite = BaseWidgetUtils.createColumnContainer( optionsGroup, 3, 1 );
         optionLineList = new ArrayList<OptionLine>();
         Composite binaryComposite = BaseWidgetUtils.createColumnContainer( optionsGroup, 1, 1 );
-        binaryOptionButton = BaseWidgetUtils.createCheckbox( binaryComposite, "binary option", 1 );
+        binaryOptionButton = BaseWidgetUtils.createCheckbox( binaryComposite, Messages.getString("AttributeOptionsWizardPage.BinaryOption"), 1 ); //$NON-NLS-1$
         binaryOptionButton.setSelection( parsedBinary );
 
         Label la = new Label( composite, SWT.NONE );
@@ -230,8 +230,8 @@ public class AttributeOptionsWizardPage extends WizardPage
         la.setLayoutData( gd );
 
         // Preview text
-        BaseWidgetUtils.createLabel( composite, "Preview:", 1 );
-        previewText = BaseWidgetUtils.createReadonlyText( composite, "", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString("AttributeOptionsWizardPage.Preview"), 1 ); //$NON-NLS-1$
+        previewText = BaseWidgetUtils.createReadonlyText( composite, "", 1 ); //$NON-NLS-1$
 
         // fill lang
         if ( parsedLangList.isEmpty() )
@@ -244,7 +244,7 @@ public class AttributeOptionsWizardPage extends WizardPage
             {
                 addLangLine( langComposite, i );
                 String l = parsedLangList.get( i );
-                String[] ls = l.split( "-", 3 );
+                String[] ls = l.split( "-", 3 ); //$NON-NLS-1$
                 if ( ls.length > 1 )
                 {
                     langLineList.get( i ).languageCombo.setText( ls[1] );
@@ -295,7 +295,7 @@ public class AttributeOptionsWizardPage extends WizardPage
 
         if ( binaryOptionButton == null || binaryOptionButton.isDisposed() )
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         // attribute type
@@ -309,7 +309,7 @@ public class AttributeOptionsWizardPage extends WizardPage
             {
                 if ( s1 == null || s2 == null )
                 {
-                    throw new ClassCastException( "Must not be null" );
+                    throw new ClassCastException( Messages.getString("AttributeOptionsWizardPage.MustNotBeNull") ); //$NON-NLS-1$
                 }
                 return s1.compareToIgnoreCase( s2 );
             }
@@ -317,12 +317,12 @@ public class AttributeOptionsWizardPage extends WizardPage
         SortedSet<String> options = new TreeSet<String>( comparator );
         if ( binaryOptionButton.getSelection() )
         {
-            options.add( "binary" );
+            options.add( "binary" ); //$NON-NLS-1$
         }
         for ( int i = 0; i < optionLineList.size(); i++ )
         {
             OptionLine optionLine = optionLineList.get( i );
-            if ( !"".equals( optionLine.optionText.getText() ) )
+            if ( !"".equals( optionLine.optionText.getText() ) ) //$NON-NLS-1$
             {
                 options.add( optionLine.optionText.getText() );
             }
@@ -342,12 +342,12 @@ public class AttributeOptionsWizardPage extends WizardPage
             String l = langLine.languageCombo.getText();
             String c = langLine.countryCombo.getText();
 
-            if ( !"".equals( l ) )
+            if ( !"".equals( l ) ) //$NON-NLS-1$
             {
-                String s = "lang-" + l;
-                if ( !"".equals( c ) )
+                String s = "lang-" + l; //$NON-NLS-1$
+                if ( !"".equals( c ) ) //$NON-NLS-1$
                 {
-                    s += "-" + c;
+                    s += "-" + c; //$NON-NLS-1$
                 }
                 options.add( s );
             }
@@ -440,7 +440,7 @@ public class AttributeOptionsWizardPage extends WizardPage
         optionLine.optionText.setLayoutData( gd );
 
         optionLine.optionAddButton = new Button( optionComposite, SWT.PUSH );
-        optionLine.optionAddButton.setText( "  +   " );
+        optionLine.optionAddButton.setText( "  +   " ); //$NON-NLS-1$
         optionLine.optionAddButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -462,7 +462,7 @@ public class AttributeOptionsWizardPage extends WizardPage
         } );
 
         optionLine.optionDeleteButton = new Button( optionComposite, SWT.PUSH );
-        optionLine.optionDeleteButton.setText( "  \u2212  " ); // \u2013
+        optionLine.optionDeleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
         optionLine.optionDeleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -602,17 +602,17 @@ public class AttributeOptionsWizardPage extends WizardPage
     {
         final LangLine langLine = new LangLine();
 
-        langLine.langLabel = BaseWidgetUtils.createLabel( langComposite, "lang-", 1 );
+        langLine.langLabel = BaseWidgetUtils.createLabel( langComposite, "lang-", 1 ); //$NON-NLS-1$
 
         langLine.languageCombo = BaseWidgetUtils.createCombo( langComposite, possibleLanguages, -1, 1 );
 
-        langLine.minusLabel = BaseWidgetUtils.createLabel( langComposite, "-", 1 );
+        langLine.minusLabel = BaseWidgetUtils.createLabel( langComposite, "-", 1 ); //$NON-NLS-1$
 
         langLine.countryCombo = BaseWidgetUtils.createCombo( langComposite, new String[0], -1, 1 );
         langLine.countryCombo.setEnabled( false );
 
         langLine.addButton = new Button( langComposite, SWT.PUSH );
-        langLine.addButton.setText( "  +   " );
+        langLine.addButton.setText( "  +   " ); //$NON-NLS-1$
         langLine.addButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -634,7 +634,7 @@ public class AttributeOptionsWizardPage extends WizardPage
         } );
 
         langLine.deleteButton = new Button( langComposite, SWT.PUSH );
-        langLine.deleteButton.setText( "  \u2212  " ); // \u2013
+        langLine.deleteButton.setText( "  \u2212  " ); //$NON-NLS-1$
         langLine.deleteButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -659,7 +659,7 @@ public class AttributeOptionsWizardPage extends WizardPage
         {
             public void modifyText( ModifyEvent e )
             {
-                if ( "".equals( langLine.languageCombo.getText() ) )
+                if ( "".equals( langLine.languageCombo.getText() ) ) //$NON-NLS-1$
                 {
                     langLine.countryCombo.setEnabled( false );
                 }

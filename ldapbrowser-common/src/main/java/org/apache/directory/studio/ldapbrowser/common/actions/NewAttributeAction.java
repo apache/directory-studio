@@ -83,14 +83,14 @@ public class NewAttributeAction extends BrowserAction
 
         if ( entry != null )
         {
-            AttributeWizard wizard = new AttributeWizard( "New Attribute", true, true, null, entry );
+            AttributeWizard wizard = new AttributeWizard( Messages.getString("NewAttributeAction.NewAttribute"), true, true, null, entry ); //$NON-NLS-1$
             WizardDialog dialog = new WizardDialog( getShell(), wizard );
             dialog.setBlockOnOpen( true );
             dialog.create();
             if ( dialog.open() == WizardDialog.OK )
             {
                 String newAttributeDescription = wizard.getAttributeDescription();
-                if ( newAttributeDescription != null && !"".equals( newAttributeDescription ) )
+                if ( newAttributeDescription != null && !"".equals( newAttributeDescription ) ) //$NON-NLS-1$
                 {
                     IAttribute att = entry.getAttribute( newAttributeDescription );
                     if ( att == null )
@@ -111,7 +111,7 @@ public class NewAttributeAction extends BrowserAction
      */
     public String getText()
     {
-        return "New Attribute...";
+        return Messages.getString("NewAttributeAction.NewAttributeLabel"); //$NON-NLS-1$
     }
 
 

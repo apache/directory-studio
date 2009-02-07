@@ -43,13 +43,13 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
 {
 
     /** The Constant editAttributeDescriptionAction. */
-    private static final String editAttributeDescriptionAction = "editAttributeDescriptionAction";
+    private static final String editAttributeDescriptionAction = "editAttributeDescriptionAction"; //$NON-NLS-1$
 
     /** The Constant newAttributeAction. */
-    private static final String newAttributeAction = "newAttributeAction";
+    private static final String newAttributeAction = "newAttributeAction"; //$NON-NLS-1$
 
     /** The Constant deleteAllValuesAction. */
-    private static final String deleteAllValuesAction = "deleteAllValuesAction";
+    private static final String deleteAllValuesAction = "deleteAllValuesAction"; //$NON-NLS-1$
 
 
     /**
@@ -104,7 +104,7 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
         menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
         menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
         menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
-        MenuManager copyMenuManager = new MenuManager( "Advanced" );
+        MenuManager copyMenuManager = new MenuManager( Messages.getString("EntryEditorWidgetActionGroupWithAttribute.Advanced") ); //$NON-NLS-1$
         copyMenuManager.add( ( IAction ) entryEditorActionMap.get( deleteAllValuesAction ) );
         menuManager.add( copyMenuManager );
         menuManager.add( new Separator() );

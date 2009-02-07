@@ -277,14 +277,14 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        searchNameLabel = BaseWidgetUtils.createLabel( composite, "Search Name:", 1 );
+        searchNameLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.SearchName"), 1 ); //$NON-NLS-1$
         if ( isActive( NAME_READONLY ) )
         {
-            searchNameText = BaseWidgetUtils.createReadonlyText( composite, "", 2 );
+            searchNameText = BaseWidgetUtils.createReadonlyText( composite, "", 2 ); //$NON-NLS-1$
         }
         else
         {
-            searchNameText = BaseWidgetUtils.createText( composite, "", 2 );
+            searchNameText = BaseWidgetUtils.createText( composite, "", 2 ); //$NON-NLS-1$
         }
         searchNameText.addModifyListener( new ModifyListener()
         {
@@ -310,7 +310,7 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        connectionLabel = BaseWidgetUtils.createLabel( composite, "Connection:", 1 );
+        connectionLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.Connection"), 1 ); //$NON-NLS-1$
         browserConnectionWidget = new BrowserConnectionWidget();
         browserConnectionWidget.createWidget( composite );
         browserConnectionWidget.setEnabled( !isActive( CONNECTION_READONLY ) );
@@ -337,7 +337,7 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        searchBaseLabel = BaseWidgetUtils.createLabel( composite, "Search Base:", 1 );
+        searchBaseLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.SearchBase"), 1 ); //$NON-NLS-1$
         searchBaseWidget = new EntryWidget();
         searchBaseWidget.createWidget( composite );
         searchBaseWidget.setEnabled( !isActive( SEARCHBASE_READONLY ) );
@@ -364,7 +364,7 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        filterLabel = BaseWidgetUtils.createLabel( composite, "Filter:", 1 );
+        filterLabel = BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.Filter"), 1 ); //$NON-NLS-1$
         filterWidget = new FilterWidget();
         filterWidget.createWidget( composite );
         filterWidget.setEnabled( !isActive( FILTER_READONLY ) );
@@ -391,7 +391,7 @@ public class SearchPageWrapper extends BrowserWidget
             return;
         }
 
-        BaseWidgetUtils.createLabel( composite, "Returning Attributes:", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString("SearchPageWrapper.ReturningAttributes"), 1 ); //$NON-NLS-1$
         Composite retComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 2 );
         returningAttributesWidget = new ReturningAttributesWidget();
         returningAttributesWidget.createWidget( retComposite );
@@ -412,7 +412,7 @@ public class SearchPageWrapper extends BrowserWidget
             Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
             if ( isActive( RETURN_DN_VISIBLE ) )
             {
-                returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, "Export DN", 1 );
+                returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages.getString("SearchPageWrapper.ExportDN"), 1 ); //$NON-NLS-1$
                 returnDnButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
@@ -424,7 +424,7 @@ public class SearchPageWrapper extends BrowserWidget
             }
             if ( isActive( RETURN_ALLATTRIBUTES_VISIBLE ) )
             {
-                returnAllAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, "All user attributes", 1 );
+                returnAllAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages.getString("SearchPageWrapper.AllUserAttributes"), 1 ); //$NON-NLS-1$
                 returnAllAttributesButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
@@ -437,7 +437,7 @@ public class SearchPageWrapper extends BrowserWidget
             if ( isActive( RETURN_OPERATIONALATTRIBUTES_VISIBLE ) )
             {
                 returnOperationalAttributesButton = BaseWidgetUtils.createCheckbox( buttonComposite,
-                    "Operational attributes", 1 );
+                    Messages.getString("SearchPageWrapper.OperationalAttributes"), 1 ); //$NON-NLS-1$
                 returnOperationalAttributesButton.addSelectionListener( new SelectionAdapter()
                 {
                     public void widgetSelected( SelectionEvent e )
@@ -527,12 +527,12 @@ public class SearchPageWrapper extends BrowserWidget
         }
 
         Composite controlComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 3 );
-        Group controlGroup = BaseWidgetUtils.createGroup( controlComposite, "Controls", 1 );
+        Group controlGroup = BaseWidgetUtils.createGroup( controlComposite, Messages.getString("SearchPageWrapper.Controls"), 1 ); //$NON-NLS-1$
 
         // subentries control
-        subentriesControlButton = BaseWidgetUtils.createCheckbox( controlGroup, "Subentries", 1 );
+        subentriesControlButton = BaseWidgetUtils.createCheckbox( controlGroup, Messages.getString("SearchPageWrapper.Subentries"), 1 ); //$NON-NLS-1$
         subentriesControlButton
-            .setToolTipText( "If enabled only subentries according to RFC 3672 are retrieved, no normal entries." );
+            .setToolTipText( Messages.getString("SearchPageWrapper.SubentriesTooltip") ); //$NON-NLS-1$
         subentriesControlButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -543,8 +543,8 @@ public class SearchPageWrapper extends BrowserWidget
 
         // simple paged results control
         Composite sprcComposite = BaseWidgetUtils.createColumnContainer( controlGroup, 4, 1 );
-        pagedSearchControlButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Paged Search", 1 );
-        pagedSearchControlButton.setToolTipText( "If enabled simple paged results control is used." );
+        pagedSearchControlButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("SearchPageWrapper.PagedSearch"), 1 ); //$NON-NLS-1$
+        pagedSearchControlButton.setToolTipText( Messages.getString("SearchPageWrapper.PagedSearchToolTip") ); //$NON-NLS-1$
         pagedSearchControlButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -552,13 +552,13 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
-        pagedSearchControlSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, " Page Size:", 1 );
-        pagedSearchControlSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 );
+        pagedSearchControlSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, Messages.getString("SearchPageWrapper.PageSize"), 1 ); //$NON-NLS-1$
+        pagedSearchControlSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 ); //$NON-NLS-1$
         pagedSearchControlSizeText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
@@ -571,11 +571,8 @@ public class SearchPageWrapper extends BrowserWidget
                 validate();
             }
         } );
-        pagedSearchControlScrollButton = BaseWidgetUtils.createCheckbox( sprcComposite, "Scroll Mode", 1 );
-        pagedSearchControlScrollButton.setToolTipText( "If enabled only one page is fetched from the server at once, "
-            + "you could 'scroll' through the pages by using the 'next page' and 'top page' items. "
-            + "If disabled _all_ entries are fetched from the server, the paged result control "
-            + "is only used in background to avoid server-side limits." );
+        pagedSearchControlScrollButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("SearchPageWrapper.ScrollMode"), 1 ); //$NON-NLS-1$
+        pagedSearchControlScrollButton.setToolTipText( Messages.getString("SearchPageWrapper.ScrollModeToolTip") ); //$NON-NLS-1$
         pagedSearchControlScrollButton.setSelection( true );
         pagedSearchControlScrollButton.addSelectionListener( new SelectionAdapter()
         {
@@ -692,7 +689,7 @@ public class SearchPageWrapper extends BrowserWidget
                         else if ( c.getOid().equalsIgnoreCase( StudioPagedResultsControl.OID ) )
                         {
                             pagedSearchControlButton.setSelection( true );
-                            pagedSearchControlSizeText.setText( "" + ( ( StudioPagedResultsControl ) c ).getSize() );
+                            pagedSearchControlSizeText.setText( "" + ( ( StudioPagedResultsControl ) c ).getSize() ); //$NON-NLS-1$
                             pagedSearchControlScrollButton.setSelection( ( ( StudioPagedResultsControl ) c )
                                 .isScrollMode() );
                         }
@@ -909,7 +906,7 @@ public class SearchPageWrapper extends BrowserWidget
         {
             return false;
         }
-        if ( searchNameText != null && "".equals( searchNameText.getText() ) )
+        if ( searchNameText != null && "".equals( searchNameText.getText() ) ) //$NON-NLS-1$
         {
             return false;
         }
@@ -918,7 +915,7 @@ public class SearchPageWrapper extends BrowserWidget
             return false;
         }
         if ( pagedSearchControlButton != null && pagedSearchControlButton.isEnabled()
-            && "".equals( pagedSearchControlButton.getText() ) )
+            && "".equals( pagedSearchControlButton.getText() ) ) //$NON-NLS-1$
         {
             return false;
         }
@@ -936,19 +933,19 @@ public class SearchPageWrapper extends BrowserWidget
     {
         if ( browserConnectionWidget != null && browserConnectionWidget.getBrowserConnection() == null )
         {
-            return "Please select a connection.";
+            return Messages.getString("SearchPageWrapper.SelectConnection"); //$NON-NLS-1$
         }
         if ( searchBaseWidget != null && searchBaseWidget.getDn() == null )
         {
-            return "Please enter a valid search base DN.";
+            return Messages.getString("SearchPageWrapper.EnterValidSearchBase"); //$NON-NLS-1$
         }
-        if ( searchNameText != null && "".equals( searchNameText.getText() ) )
+        if ( searchNameText != null && "".equals( searchNameText.getText() ) ) //$NON-NLS-1$
         {
-            return "Please enter a search name.";
+            return Messages.getString("SearchPageWrapper.EnterSearchName"); //$NON-NLS-1$
         }
         if ( filterWidget != null && filterWidget.getFilter() == null )
         {
-            return "Please enter a valid filter.";
+            return Messages.getString("SearchPageWrapper.EnterValidFilter"); //$NON-NLS-1$
         }
 
         return null;

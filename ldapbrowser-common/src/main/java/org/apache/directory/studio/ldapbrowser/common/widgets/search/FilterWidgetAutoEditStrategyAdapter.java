@@ -145,7 +145,7 @@ public class FilterWidgetAutoEditStrategyAdapter
             Point oldSelection = combo.getSelection();
 
             // compose new text
-            String newText = "";
+            String newText = ""; //$NON-NLS-1$
             newText += oldText.substring( 0, autoEditParameters.offset );
             newText += autoEditParameters.text;
             newText += oldText.substring( autoEditParameters.offset + autoEditParameters.length, oldText.length() );

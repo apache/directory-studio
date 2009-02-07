@@ -70,9 +70,9 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
      */
     public EntryEditorPreferencePage()
     {
-        super( "Entry Editor" );
+        super( Messages.getString("EntryEditorPreferencePage.EntryEditor") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the LDAP entry editor:" );
+        super.setDescription( Messages.getString("EntryEditorPreferencePage.GeneralSettings") ); //$NON-NLS-1$
     }
 
 
@@ -94,31 +94,31 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
         Group visibleAttributesGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite,
-            1, 1 ), "Visible Attributes", 1 );
+            1, 1 ), Messages.getString("EntryEditorPreferencePage.VisibleAttributes"), 1 ); //$NON-NLS-1$
         Composite visibleAttributesComposite = BaseWidgetUtils.createColumnContainer( visibleAttributesGroup, 1, 1 );
         showObjectClassAttributeButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite,
-            "Show objectClass attribute", 1 );
+            Messages.getString("EntryEditorPreferencePage.ShowObjectClassAttributes"), 1 ); //$NON-NLS-1$
         showObjectClassAttributeButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES ) );
-        showMustAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, "Show must attributes",
+        showMustAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, Messages.getString("EntryEditorPreferencePage.ShowMustAttributes"), //$NON-NLS-1$
             1 );
         showMustAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES ) );
-        showMayAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, "Show may attributes", 1 );
+        showMayAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite, Messages.getString("EntryEditorPreferencePage.ShowMayAttributes"), 1 ); //$NON-NLS-1$
         showMayAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES ) );
         showOperationalAttributesButton = BaseWidgetUtils.createCheckbox( visibleAttributesComposite,
-            "Show operational attributes", 1 );
+            Messages.getString("EntryEditorPreferencePage.ShowOperationalAttributes"), 1 ); //$NON-NLS-1$
         showOperationalAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        String foldingTooltip = "If an attribute has more than the specified number of values it will be folded to one line. You may expand and collapse the values.";
+        String foldingTooltip = Messages.getString("EntryEditorPreferencePage.FoldingToolTip"); //$NON-NLS-1$
         Group foldingGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Folding", 1 );
+            Messages.getString("EntryEditorPreferencePage.Folding"), 1 ); //$NON-NLS-1$
         Composite pagingGroupComposite = BaseWidgetUtils.createColumnContainer( foldingGroup, 3, 1 );
-        enableFoldingButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite, "Enable folding", 3 );
+        enableFoldingButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite, Messages.getString("EntryEditorPreferencePage.EnableFolding"), 3 ); //$NON-NLS-1$
         enableFoldingButton.setToolTipText( foldingTooltip );
         enableFoldingButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING ) );
@@ -130,7 +130,7 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
             }
         } );
         BaseWidgetUtils.createRadioIndent( pagingGroupComposite, 1 );
-        foldingThresholdLabel = BaseWidgetUtils.createLabel( pagingGroupComposite, "Folding threshold: ", 1 );
+        foldingThresholdLabel = BaseWidgetUtils.createLabel( pagingGroupComposite, Messages.getString("EntryEditorPreferencePage.FoldingThreshold"), 1 ); //$NON-NLS-1$
         foldingThresholdLabel.setToolTipText( foldingTooltip );
         foldingThresholdLabel.setEnabled( enableFoldingButton.getSelection() );
         foldingThresholdText = BaseWidgetUtils.createText( pagingGroupComposite, getPreferenceStore().getString(
@@ -141,11 +141,11 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( foldingThresholdText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( foldingThresholdText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
@@ -153,7 +153,7 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         } );
         BaseWidgetUtils.createRadioIndent( pagingGroupComposite, 1 );
         autoExpandFoldedAttributesButton = BaseWidgetUtils.createCheckbox( pagingGroupComposite,
-            "Auto-expand folded attributes", 2 );
+            Messages.getString("EntryEditorPreferencePage.AutoExpandFoldedAttributes"), 2 ); //$NON-NLS-1$
         autoExpandFoldedAttributesButton.setEnabled( enableFoldingButton.getSelection() );
         autoExpandFoldedAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES ) );

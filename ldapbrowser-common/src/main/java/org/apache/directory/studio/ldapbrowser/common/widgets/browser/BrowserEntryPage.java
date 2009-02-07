@@ -203,7 +203,7 @@ public class BrowserEntryPage
      */
     public String toString()
     {
-        return entry.toString() + "[" + first + "..." + last + "]" + hashCode();
+        return entry.toString() + "[" + first + "..." + last + "]" + hashCode(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 }

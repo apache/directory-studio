@@ -74,11 +74,11 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     {
         public int compare( String s1, String s2 )
         {
-            if ( s1.matches( "[0-9\\.]+" ) && !s2.matches( "[0-9\\.]+" ) )
+            if ( s1.matches( "[0-9\\.]+" ) && !s2.matches( "[0-9\\.]+" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 return 1;
             }
-            else if ( !s1.matches( "[0-9\\.]+" ) && s2.matches( "[0-9\\.]+" ) )
+            else if ( !s1.matches( "[0-9\\.]+" ) && s2.matches( "[0-9\\.]+" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 return -1;
             }
@@ -186,11 +186,11 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 }
             }
 
-            possibleFilterTypes.put( "=", "= (equals)" );
-            possibleFilterTypes.put( "=*", "=* (present)" );
-            possibleFilterTypes.put( "<=", "<= (less than or equals)" );
-            possibleFilterTypes.put( ">=", ">= (greater than or equals)" );
-            possibleFilterTypes.put( "~=", "~= (approximately)" );
+            possibleFilterTypes.put( "=", Messages.getString("FilterContentAssistProcessor.Equals") ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "=*", Messages.getString("FilterContentAssistProcessor.Present") ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "<=", Messages.getString("FilterContentAssistProcessor.LessThanOrEquals") ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( ">=", Messages.getString("FilterContentAssistProcessor.GreaterThanOrEquals") ); //$NON-NLS-1$ //$NON-NLS-2$
+            possibleFilterTypes.put( "~=", Messages.getString("FilterContentAssistProcessor.Approximately") ); //$NON-NLS-1$ //$NON-NLS-2$
 
             Collection<ObjectClassDescription> ocds = schema.getObjectClassDescriptions();
             for ( ObjectClassDescription ocd : ocds )
@@ -313,7 +313,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                         proposalList.addAll( Arrays.asList( templateProposals ) );
                     }
                 }
-                addPossibleAttributeTypes( proposalList, "", offset );
+                addPossibleAttributeTypes( proposalList, "", offset ); //$NON-NLS-1$
             }
 
             // case A: simple filter
@@ -343,7 +343,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                             + ( fc.getFilterToken() != null ? fc.getFilterToken().getLength() : 0 ) )
                     {
                         //String attributeType = fc.getAttributeToken().getValue();
-                        String filterType = fc.getFilterToken() != null ? fc.getFilterToken().getValue() : "";
+                        String filterType = fc.getFilterToken() != null ? fc.getFilterToken().getValue() : ""; //$NON-NLS-1$
                         int filterTypeOffset = fc.getAttributeToken().getOffset() + fc.getAttributeToken().getLength();
                         addPossibleFilterTypes( proposalList, attributeType, filterType, filterTypeOffset );
                     }
@@ -358,7 +358,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                             + ( fc.getFilterToken() != null ? fc.getFilterToken().getLength() : 0 )
                             + ( fc.getValueToken() != null ? fc.getValueToken().getLength() : 0 ) )
                     {
-                        addPossibleObjectClasses( proposalList, fc.getValueToken() == null ? "" : fc.getValueToken()
+                        addPossibleObjectClasses( proposalList, fc.getValueToken() == null ? "" : fc.getValueToken() //$NON-NLS-1$
                             .getValue(), fc.getValueToken() == null ? offset : fc.getValueToken().getOffset() );
                     }
                 }
@@ -394,9 +394,9 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 {
                     if ( fc.getDnAttrColonToken() == null )
                     {
-                        addDnAttr( proposalList, "", offset );
+                        addDnAttr( proposalList, "", offset ); //$NON-NLS-1$
                     }
-                    addPossibleMatchingRules( proposalList, "", offset, fc.getEqualsColonToken(), fc.getEqualsToken() );
+                    addPossibleMatchingRules( proposalList, "", offset, fc.getEqualsColonToken(), fc.getEqualsToken() ); //$NON-NLS-1$
                 }
                 if ( fc.getMatchingRuleToken() != null && fc.getMatchingRuleToken().getOffset() <= offset
                     && offset <= fc.getMatchingRuleToken().getOffset() + fc.getMatchingRuleToken().getLength() )
@@ -438,11 +438,11 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                     String displayString = possibleAttributeType;
                     if ( displayString.equals( description.getNumericOid() ) )
                     {
-                        displayString += " (" + SchemaUtils.toString( description ) + ")";
+                        displayString += " (" + SchemaUtils.toString( description ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOid() + ")";
+                        displayString += " (" + description.getNumericOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     String info = SchemaUtils.getLdifLine( description );
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, attributeType
@@ -470,14 +470,14 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             if ( SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( schema
                 .getAttributeTypeDescription( attributeType ), schema ) == null )
             {
-                copy.remove( "=" );
-                copy.remove( "~=" );
+                copy.remove( "=" ); //$NON-NLS-1$
+                copy.remove( "~=" ); //$NON-NLS-1$
             }
             if ( SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( schema
                 .getAttributeTypeDescription( attributeType ), schema ) == null )
             {
-                copy.remove( "<=" );
-                copy.remove( ">=" );
+                copy.remove( "<=" ); //$NON-NLS-1$
+                copy.remove( ">=" ); //$NON-NLS-1$
             }
 
             for ( String possibleFilterType : copy.keySet() )
@@ -513,11 +513,11 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                     String displayString = possibleObjectClass;
                     if ( displayString.equals( description.getNumericOid() ) )
                     {
-                        displayString += " (" + SchemaUtils.toString( description ) + ")";
+                        displayString += " (" + SchemaUtils.toString( description ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOid() + ")";
+                        displayString += " (" + description.getNumericOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, objectClass
@@ -550,20 +550,20 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                     String replacementString = possibleMatchingRule;
                     if ( equalsColonToken == null )
                     {
-                        replacementString += ":";
+                        replacementString += ":"; //$NON-NLS-1$
                     }
                     if ( equalsToken == null )
                     {
-                        replacementString += "=";
+                        replacementString += "="; //$NON-NLS-1$
                     }
                     String displayString = possibleMatchingRule;
                     if ( displayString.equals( description.getNumericOid() ) )
                     {
-                        displayString += " (" + SchemaUtils.toString( description ) + ")";
+                        displayString += " (" + SchemaUtils.toString( description ) + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else
                     {
-                        displayString += " (" + description.getNumericOid() + ")";
+                        displayString += " (" + description.getNumericOid() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     String info = SchemaUtils.getLdifLine( description );
                     ICompletionProposal proposal = new CompletionProposal( replacementString, offset, matchingRule
@@ -584,10 +584,10 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
      */
     private void addDnAttr( List<ICompletionProposal> proposalList, String dnAttr, int offset )
     {
-        if ( "dn".toUpperCase().startsWith( dnAttr.toUpperCase() ) )
+        if ( "dn".toUpperCase().startsWith( dnAttr.toUpperCase() ) ) //$NON-NLS-1$
         {
-            String replacementString = "dn:";
-            String displayString = "dn: ()";
+            String replacementString = "dn:"; //$NON-NLS-1$
+            String displayString = "dn: ()"; //$NON-NLS-1$
             ICompletionProposal proposal = new CompletionProposal( replacementString, offset, dnAttr.length(),
                 replacementString.length(), null, displayString, null, null );
             proposalList.add( proposal );

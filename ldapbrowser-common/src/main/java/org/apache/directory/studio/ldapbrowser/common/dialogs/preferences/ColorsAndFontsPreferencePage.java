@@ -51,7 +51,7 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
 {
 
     private final String[] ERROR_TYPES = new String[]
-        { "Warnings:", "Errors:" };
+        { Messages.getString("ColorsAndFontsPreferencePage.Warnings"), Messages.getString("ColorsAndFontsPreferencePage.Errors") }; //$NON-NLS-1$ //$NON-NLS-2$
 
     private final String[] ERROR_FONT_CONSTANTS = new String[]
         { BrowserCommonConstants.PREFERENCE_WARNING_FONT, BrowserCommonConstants.PREFERENCE_ERROR_FONT };
@@ -78,7 +78,7 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
     private Button quickfilterItalicButton;
 
     private final String[] ATTRIBUTE_TYPES = new String[]
-        { "Objectclass attribute:", "Must attributes:", "May attributes:", "Operational attributes:" };
+        { Messages.getString("ColorsAndFontsPreferencePage.ObjectClassAttribute"), Messages.getString("ColorsAndFontsPreferencePage.MustAttributes"), Messages.getString("ColorsAndFontsPreferencePage.MayAttributes"), Messages.getString("ColorsAndFontsPreferencePage.OperationalAttributes") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     private final String[] ATTRIBUTE_FONT_CONSTANTS = new String[]
         { BrowserCommonConstants.PREFERENCE_OBJECTCLASS_FONT, BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_FONT,
@@ -104,9 +104,9 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
      */
     public ColorsAndFontsPreferencePage()
     {
-        super( "Colors and Fonts" );
+        super( Messages.getString("ColorsAndFontsPreferencePage.colorsAndFonts") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( "Color and Font settings for the LDAP browser:" );
+        super.setDescription( Messages.getString("ColorsAndFontsPreferencePage.colorsAndFontsDescription") ); //$NON-NLS-1$
     }
 
 
@@ -137,7 +137,7 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
         // warning and error
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        Group errorGroup = BaseWidgetUtils.createGroup( composite, "Warning and Error Colors and Fonts", 1 );
+        Group errorGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("ColorsAndFontsPreferencePage.WaringAndErrorColorsAndFonts"), 1 ); //$NON-NLS-1$
         errorGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         Composite errorComposite = BaseWidgetUtils.createColumnContainer( errorGroup, 4, 1 );
         for ( int i = 0; i < ERROR_TYPES.length; i++ )
@@ -145,8 +145,8 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
             errorTypeLabels[i] = BaseWidgetUtils.createLabel( errorComposite, ERROR_TYPES[i], 1 );
             errorTypeLabels[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             errorColorSelectors[i] = new ColorSelector( errorComposite );
-            errorBoldButtons[i] = BaseWidgetUtils.createCheckbox( errorComposite, "Bold", 1 );
-            errorItalicButtons[i] = BaseWidgetUtils.createCheckbox( errorComposite, "Italic", 1 );
+            errorBoldButtons[i] = BaseWidgetUtils.createCheckbox( errorComposite, Messages.getString("ColorsAndFontsPreferencePage.Bold"), 1 ); //$NON-NLS-1$
+            errorItalicButtons[i] = BaseWidgetUtils.createCheckbox( errorComposite, Messages.getString("ColorsAndFontsPreferencePage.Italic"), 1 ); //$NON-NLS-1$
 
             FontData[] fontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
                 .getPreferenceStore(), ERROR_FONT_CONSTANTS[i] );
@@ -158,15 +158,15 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
         // quick filter
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        Group otherGroup = BaseWidgetUtils.createGroup( composite, "Quick Filter Colors and Fonts", 1 );
+        Group otherGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("ColorsAndFontsPreferencePage.QuickFilterColorsAndFonts"), 1 ); //$NON-NLS-1$
         otherGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         Composite otherComposite = BaseWidgetUtils.createColumnContainer( otherGroup, 4, 1 );
-        quickfilterTypeLabel = BaseWidgetUtils.createLabel( otherComposite, "Quick Filter", 1 );
+        quickfilterTypeLabel = BaseWidgetUtils.createLabel( otherComposite, Messages.getString("ColorsAndFontsPreferencePage.QuickFilter"), 1 ); //$NON-NLS-1$
         quickfilterTypeLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         quickfilterForegroundColorSelector = new ColorSelector( otherComposite );
-        quickfilterBoldButton = BaseWidgetUtils.createCheckbox( otherComposite, "Bold", 1 );
-        quickfilterItalicButton = BaseWidgetUtils.createCheckbox( otherComposite, "Italic", 1 );
-        Label quickfilterBgLabel = BaseWidgetUtils.createLabel( otherComposite, "Quick Filter Background", 1 );
+        quickfilterBoldButton = BaseWidgetUtils.createCheckbox( otherComposite, Messages.getString("ColorsAndFontsPreferencePage.Bold"), 1 ); //$NON-NLS-1$
+        quickfilterItalicButton = BaseWidgetUtils.createCheckbox( otherComposite, Messages.getString("ColorsAndFontsPreferencePage.Italic"), 1 ); //$NON-NLS-1$
+        Label quickfilterBgLabel = BaseWidgetUtils.createLabel( otherComposite, Messages.getString("ColorsAndFontsPreferencePage.QuickFilterBackground"), 1 ); //$NON-NLS-1$
         quickfilterBgLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         quickfilterBackgroundColorSelector = new ColorSelector( otherComposite );
         FontData[] qfFontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
@@ -180,7 +180,7 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
         // attribute
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
-        Group colorsAndFontsGroup = BaseWidgetUtils.createGroup( composite, "Attribute Colors and Fonts", 1 );
+        Group colorsAndFontsGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("ColorsAndFontsPreferencePage.AttributeColorsAndFonts"), 1 ); //$NON-NLS-1$
         colorsAndFontsGroup.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         Composite colorsAndFontsComposite = BaseWidgetUtils.createColumnContainer( colorsAndFontsGroup, 4, 1 );
         for ( int i = 0; i < ATTRIBUTE_TYPES.length; i++ )
@@ -188,8 +188,8 @@ public class ColorsAndFontsPreferencePage extends PreferencePage implements IWor
             attributeTypeLabels[i] = BaseWidgetUtils.createLabel( colorsAndFontsComposite, ATTRIBUTE_TYPES[i], 1 );
             attributeTypeLabels[i].setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
             attributeColorSelectors[i] = new ColorSelector( colorsAndFontsComposite );
-            attributeBoldButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, "Bold", 1 );
-            attributeItalicButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, "Italic", 1 );
+            attributeBoldButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, Messages.getString("ColorsAndFontsPreferencePage.Bold"), 1 ); //$NON-NLS-1$
+            attributeItalicButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, Messages.getString("ColorsAndFontsPreferencePage.Italic"), 1 ); //$NON-NLS-1$
 
             FontData[] fontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
                 .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );

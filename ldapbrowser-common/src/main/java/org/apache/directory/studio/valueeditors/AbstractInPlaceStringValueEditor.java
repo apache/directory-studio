@@ -87,7 +87,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     {
         if ( attributeHierarchy == null )
         {
-            return "NULL";
+            return "NULL"; //$NON-NLS-1$
         }
 
         List<IValue> valueList = new ArrayList<IValue>();
@@ -103,7 +103,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
             IValue value = it.next();
             sb.append( getDisplayValue( value ) );
             if ( it.hasNext() )
-                sb.append( ", " );
+                sb.append( ", " ); //$NON-NLS-1$
         }
         return sb.toString();
     }
@@ -117,7 +117,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     public String getDisplayValue( IValue value )
     {
         Object obj = this.getRawValue( value );
-        return obj == null ? "NULL" : obj.toString();
+        return obj == null ? "NULL" : obj.toString(); //$NON-NLS-1$
     }
 
 
@@ -242,7 +242,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     protected Object doGetValue()
     {
-        return "".equals( text.getText() ) ? null : text.getText();
+        return "".equals( text.getText() ) ? null : text.getText(); //$NON-NLS-1$
     }
 
 

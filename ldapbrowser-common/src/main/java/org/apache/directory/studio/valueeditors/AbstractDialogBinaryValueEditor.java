@@ -23,6 +23,7 @@ package org.apache.directory.studio.valueeditors;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -60,16 +61,16 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         {
             if ( value == null )
             {
-                return "NULL";
+                return "NULL"; //$NON-NLS-1$
             }
             else if ( value.isBinary() )
             {
                 byte[] data = value.getBinaryValue();
-                return "Binary Data (" + data.length + " Bytes)";
+                return NLS.bind( Messages.getString("AbstractDialogBinaryValueEditor.BinaryDateNBytes"), data.length ); //$NON-NLS-1$
             }
             else
             {
-                return "Invalid Data";
+                return Messages.getString("AbstractDialogBinaryValueEditor.InvalidData"); //$NON-NLS-1$
             }
         }
     }
@@ -87,7 +88,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
     {
         if ( value == null )
         {
-            return "NULL";
+            return "NULL"; //$NON-NLS-1$
         }
         else if ( value.isBinary() )
         {
@@ -108,7 +109,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         }
         else
         {
-            return "NULL";
+            return "NULL"; //$NON-NLS-1$
         }
     }
 

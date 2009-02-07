@@ -56,7 +56,7 @@ public class EditEntryWizard extends NewEntryWizard
      */
     public EditEntryWizard( IEntry entry )
     {
-        setWindowTitle( "Edit Entry" );
+        setWindowTitle( Messages.getString("EditEntryWizard.EditEntry") ); //$NON-NLS-1$
         setNeedsProgressMonitor( true );
 
         selectedEntry = entry;

@@ -39,7 +39,7 @@ public class ShowDecoratedValuesAction extends Action
      */
     public ShowDecoratedValuesAction()
     {
-        super( "Show Decorated Values", AS_CHECK_BOX );
+        super( Messages.getString("ShowDecoratedValuesAction.ShowDecoratedValues"), AS_CHECK_BOX ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 

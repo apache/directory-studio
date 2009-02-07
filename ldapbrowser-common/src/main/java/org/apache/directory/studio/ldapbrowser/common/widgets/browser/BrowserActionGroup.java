@@ -63,19 +63,19 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     protected CollapseAllAction collapseAllAction;
 
     /** The Constant upAction. */
-    protected static final String upAction = "upAction";
+    protected static final String upAction = "upAction"; //$NON-NLS-1$
 
     /** The Constant refreshAction. */
-    protected static final String refreshAction = "refreshAction";
+    protected static final String refreshAction = "refreshAction"; //$NON-NLS-1$
 
     /** The Constant filterChildrenAction. */
-    protected static final String filterChildrenAction = "filterChildrenAction";
+    protected static final String filterChildrenAction = "filterChildrenAction"; //$NON-NLS-1$
 
     /** The Constant unfilterChildrenAction. */
-    protected static final String unfilterChildrenAction = "unfilterChildrenAction";
+    protected static final String unfilterChildrenAction = "unfilterChildrenAction"; //$NON-NLS-1$
 
     /** The Constant propertyDialogAction. */
-    protected static final String propertyDialogAction = "propertyDialogAction";
+    protected static final String propertyDialogAction = "propertyDialogAction"; //$NON-NLS-1$
 
     /** The browser action map. */
     protected Map<String, BrowserViewActionProxy> browserActionMap;

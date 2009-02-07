@@ -53,7 +53,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
     public String getDisplayValue( IValue value )
     {
         Object obj = this.getRawValue( value );
-        return obj == null ? "NULL" : obj.toString();
+        return obj == null ? "NULL" : obj.toString(); //$NON-NLS-1$
     }
 
 

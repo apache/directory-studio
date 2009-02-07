@@ -27,6 +27,7 @@ import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -53,9 +54,9 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
      */
     public MainPreferencePage()
     {
-        super( "LDAP" );
+        super( Messages.getString("MainPreferencePage.LDAP") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( "General settings for the LDAP browser:" );
+        super.setDescription( Messages.getString("MainPreferencePage.GeneralSettings") ); //$NON-NLS-1$
     }
 
 
@@ -78,13 +79,13 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group group = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "JNDI LDAP context provider", 1 );
+            Messages.getString("MainPreferencePage.ContextProvider"), 1 ); //$NON-NLS-1$
 
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
         String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
         String defaultLdapCtxFactory = preferences
             .getDefaultString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
-        String note = "Note: The system detected '" + defaultLdapCtxFactory + "'.";
+        String note = NLS.bind(Messages.getString("MainPreferencePage.SystemDetectedContextFactory"), defaultLdapCtxFactory); //$NON-NLS-1$
 
         jndiLdapContextProvider = BaseWidgetUtils.createText( group, ldapCtxFactory, 1 );
         BaseWidgetUtils.createWrappedLabel( group, note, 1 );

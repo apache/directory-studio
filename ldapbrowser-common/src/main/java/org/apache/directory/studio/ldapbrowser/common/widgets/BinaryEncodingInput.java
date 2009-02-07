@@ -46,7 +46,7 @@ public class BinaryEncodingInput extends OptionsInput
      */
     public BinaryEncodingInput( String initialRawValue, boolean asGroup )
     {
-        super( "Binary Encoding", getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(),
+        super( Messages.getString("BinaryEncodingInput.BinaryEncoding"), getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(), //$NON-NLS-1$
             getOtherRawValues(), initialRawValue, asGroup, false );
 
     }
@@ -59,7 +59,7 @@ public class BinaryEncodingInput extends OptionsInput
      */
     private static String getDefaultDisplayValue()
     {
-        return "Ignore";
+        return Messages.getString("BinaryEncodingInput.Ignore"); //$NON-NLS-1$
     }
 
 
@@ -83,7 +83,7 @@ public class BinaryEncodingInput extends OptionsInput
     private static String[] getOtherDisplayValues()
     {
         return new String[]
-            { "Ignore", "BASE-64", "HEX" };
+            { Messages.getString("BinaryEncodingInput.Ignore"), "BASE-64", "HEX" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
 

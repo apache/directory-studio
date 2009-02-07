@@ -154,11 +154,11 @@ public class ReturningAttributesWidget extends BrowserWidget
                 .getObjectClassDescriptions() );
             for ( String ocName : ocNames )
             {
-                proposals.add( "@" + ocName );
+                proposals.add( "@" + ocName ); //$NON-NLS-1$
             }
 
-            proposals.add( "+" );
-            proposals.add( "*" );
+            proposals.add( "+" ); //$NON-NLS-1$
+            proposals.add( "*" ); //$NON-NLS-1$
         }
 
         contentAssistProcessor.setProposals( proposals );

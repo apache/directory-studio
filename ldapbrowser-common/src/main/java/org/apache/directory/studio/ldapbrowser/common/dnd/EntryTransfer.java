@@ -105,10 +105,10 @@ public class EntryTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < entries.length; i++ )
                 {
-                    byte[] connectionId = entries[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" );
+                    byte[] connectionId = entries[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] dn = entries[i].getDn().getUpName().getBytes( "UTF-8" );
+                    byte[] dn = entries[i].getDn().getUpName().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( dn.length );
                     writeOut.write( dn );
                 }
@@ -162,7 +162,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             byte[] connectionId = new byte[size];
                             readIn.read( connectionId );
                             connection = BrowserCorePlugin.getDefault().getConnectionManager()
-                                .getBrowserConnectionById( new String( connectionId, "UTF-8" ) );
+                                .getBrowserConnectionById( new String( connectionId, "UTF-8" ) ); //$NON-NLS-1$
                         }
 
                         IEntry entry = null;
@@ -171,7 +171,7 @@ public class EntryTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] dn = new byte[size];
                             readIn.read( dn );
-                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) );
+                            entry = connection.getEntryFromCache( new LdapDN( new String( dn, "UTF-8" ) ) ); //$NON-NLS-1$
                         }
                         else
                         {

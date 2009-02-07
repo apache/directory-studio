@@ -81,16 +81,16 @@ public class BrowserConnectionWidget extends BrowserWidget
     public void createWidget( final Composite parent )
     {
         // Text
-        browserConnectionText = BaseWidgetUtils.createReadonlyText( parent, "", 1 );
+        browserConnectionText = BaseWidgetUtils.createReadonlyText( parent, "", 1 ); //$NON-NLS-1$
 
         // Button
-        connectionBrowseButton = BaseWidgetUtils.createButton( parent, "B&rowse...", 1 );
+        connectionBrowseButton = BaseWidgetUtils.createButton( parent, Messages.getString("BrowserConnectionWidget.BrowseButton"), 1 ); //$NON-NLS-1$
         connectionBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 SelectBrowserConnectionDialog dialog = new SelectBrowserConnectionDialog( parent.getShell(),
-                    "Select Connection", selectedBrowserConnection );
+                    Messages.getString("BrowserConnectionWidget.SelectConnection"), selectedBrowserConnection ); //$NON-NLS-1$
                 dialog.open();
                 IBrowserConnection browserConnection = dialog.getSelectedBrowserConnection();
                 if ( browserConnection != null )
@@ -127,7 +127,7 @@ public class BrowserConnectionWidget extends BrowserWidget
         selectedBrowserConnection = connection;
         browserConnectionText.setText( selectedBrowserConnection != null
             && selectedBrowserConnection.getConnection() != null ? selectedBrowserConnection.getConnection().getName()
-            : "" );
+            : "" ); //$NON-NLS-1$
     }
 
 

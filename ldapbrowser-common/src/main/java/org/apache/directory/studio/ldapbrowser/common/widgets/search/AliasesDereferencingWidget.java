@@ -85,10 +85,10 @@ public class AliasesDereferencingWidget extends BrowserWidget
     public void createWidget( Composite parent )
     {
 
-        group = BaseWidgetUtils.createGroup( parent, "Aliases Dereferencing", 1 );
+        group = BaseWidgetUtils.createGroup( parent, Messages.getString("AliasesDereferencingWidget.AliasesDereferencing"), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
 
-        findingButton = BaseWidgetUtils.createCheckbox( groupComposite, "Finding Base DN", 1 );
+        findingButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages.getString("AliasesDereferencingWidget.FindingBaseDN"), 1 ); //$NON-NLS-1$
         findingButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -97,7 +97,7 @@ public class AliasesDereferencingWidget extends BrowserWidget
             }
         } );
 
-        searchButton = BaseWidgetUtils.createCheckbox( groupComposite, "Search", 1 );
+        searchButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages.getString("AliasesDereferencingWidget.Search"), 1 ); //$NON-NLS-1$
         searchButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

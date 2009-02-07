@@ -149,14 +149,14 @@ public class FilterWidget extends BrowserWidget
         new FilterWidgetAutoEditStrategyAdapter( filterCombo, parser );
 
         // Filter editor button
-        filterEditorButton = BaseWidgetUtils.createButton( parent, "F&ilter Editor...", 1 );
+        filterEditorButton = BaseWidgetUtils.createButton( parent, Messages.getString("FilterWidget.FilterEditorButton"), 1 ); //$NON-NLS-1$
         filterEditorButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
                 if ( browserConnection != null )
                 {
-                    FilterDialog dialog = new FilterDialog( parent.getShell(), "Filter Editor", filterCombo.getText(),
+                    FilterDialog dialog = new FilterDialog( parent.getShell(), Messages.getString("FilterWidget.FilterEditor"), filterCombo.getText(), //$NON-NLS-1$
                         browserConnection );
                     dialog.open();
                     String filter = dialog.getFilter();
@@ -173,7 +173,7 @@ public class FilterWidget extends BrowserWidget
         filterCombo.setItems( history );
 
         // initial values
-        filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter );
+        filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter ); //$NON-NLS-1$
     }
 
 

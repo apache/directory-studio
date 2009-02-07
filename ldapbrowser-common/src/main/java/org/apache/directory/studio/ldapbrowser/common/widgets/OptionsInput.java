@@ -141,7 +141,7 @@ public class OptionsInput extends BrowserWidget
         {
             composite = parent;
             Composite labelComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
-            BaseWidgetUtils.createLabel( labelComposite, title + ":", 1 );
+            BaseWidgetUtils.createLabel( labelComposite, title + ":", 1 ); //$NON-NLS-1$
         }
 
         Composite defaultComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
@@ -157,7 +157,7 @@ public class OptionsInput extends BrowserWidget
         } );
 
         Composite otherComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        otherButton = BaseWidgetUtils.createRadiobutton( otherComposite, "Other: ", 1 );
+        otherButton = BaseWidgetUtils.createRadiobutton( otherComposite, Messages.getString("OptionsInput.Other"), 1 ); //$NON-NLS-1$
         otherButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

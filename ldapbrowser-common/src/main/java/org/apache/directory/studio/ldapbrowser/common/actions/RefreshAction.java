@@ -66,7 +66,7 @@ public class RefreshAction extends BrowserAction
 
         if ( entries.length > 0 && searches.length == 0 && entryInput == null && searchInput == null )
         {
-            return "Reload Attributes and Children";
+            return Messages.getString("RefreshAction.ReloadAttributesAndChildren"); //$NON-NLS-1$
         }
         else if ( searches.length > 0 && entries.length == 0 && entryInput == null && searchInput == null )
         {
@@ -81,24 +81,24 @@ public class RefreshAction extends BrowserAction
             }
             if ( searchAgain )
             {
-                return "Search Again";
+                return Messages.getString("RefreshAction.SearchAgain"); //$NON-NLS-1$
             }
             else
             {
-                return searches.length == 1 ? "Perform Search" : "Perform Searches";
+                return searches.length == 1 ? Messages.getString("RefreshAction.PerformSearch") : Messages.getString("RefreshAction.PerformSearches"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         else if ( entryInput != null && searches.length == 0 && entries.length == 0 && searchInput == null )
         {
-            return "Reload Attributes";
+            return Messages.getString("RefreshAction.RelaodAttributes"); //$NON-NLS-1$
         }
         else if ( searchInput != null && searches.length == 0 && entryInput == null )
         {
-            return searchInput.getSearchResults() == null ? "Perform Search" : "Search Again";
+            return searchInput.getSearchResults() == null ? Messages.getString("RefreshAction.PerformSearch") : Messages.getString("RefreshAction.SearchAgain"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            return "Refresh";
+            return Messages.getString("RefreshAction.Refresh"); //$NON-NLS-1$
         }
     }
 
@@ -117,7 +117,7 @@ public class RefreshAction extends BrowserAction
      */
     public String getCommandId()
     {
-        return "org.eclipse.ui.file.refresh";
+        return "org.eclipse.ui.file.refresh"; //$NON-NLS-1$
     }
 
 

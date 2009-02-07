@@ -45,13 +45,13 @@ public class BrowserCategory
     public static final int TYPE_BOOKMARKS = 2;
 
     /** The title for the DIT categoy */
-    public static final String TITLE_DIT = "DIT";
+    public static final String TITLE_DIT = Messages.getString("BrowserCategory.DIT"); //$NON-NLS-1$
 
     /** The title for the searches categoy */
-    public static final String TITLE_SEARCHES = "Searches";
+    public static final String TITLE_SEARCHES = Messages.getString("BrowserCategory.Searches"); //$NON-NLS-1$
 
     /** The title for the bookmarks categoy */
-    public static final String TITLE_BOOKMARKS = "Bookmarks";
+    public static final String TITLE_BOOKMARKS = Messages.getString("BrowserCategory.Bookmarsk"); //$NON-NLS-1$
 
     /** The category's connection */
     private IBrowserConnection parent;
@@ -114,7 +114,7 @@ public class BrowserCategory
                 return TITLE_BOOKMARKS;
 
             default:
-                return "ERROR";
+                return "ERROR"; //$NON-NLS-1$
         }
     }
 

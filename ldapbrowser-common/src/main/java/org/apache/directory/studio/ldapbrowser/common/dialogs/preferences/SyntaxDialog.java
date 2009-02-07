@@ -77,7 +77,7 @@ public class SyntaxDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Select Syntax OID" );
+        newShell.setText( Messages.getString("SyntaxDialog.SelectSyntaxOID") ); //$NON-NLS-1$
     }
 
 
@@ -99,7 +99,7 @@ public class SyntaxDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( c, "Syntax OID:", 1 );
+        BaseWidgetUtils.createLabel( c, Messages.getString("SyntaxDialog.SyntaxOID"), 1 ); //$NON-NLS-1$
         oidCombo = BaseWidgetUtils.createCombo( c, syntaxOids, -1, 1 );
         if ( currentSyntax != null )
         {
@@ -119,7 +119,7 @@ public class SyntaxDialog extends Dialog
 
     private void validate()
     {
-        getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( oidCombo.getText() ) );
+        getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( oidCombo.getText() ) ); //$NON-NLS-1$
     }
 
 

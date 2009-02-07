@@ -83,7 +83,7 @@ public class NewValueAction extends BrowserAction
      */
     public String getText()
     {
-        return "New Value";
+        return Messages.getString("NewValueAction.NewValue"); //$NON-NLS-1$
     }
 
 

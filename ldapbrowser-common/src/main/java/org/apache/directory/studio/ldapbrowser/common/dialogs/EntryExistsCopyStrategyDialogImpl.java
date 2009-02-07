@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -54,7 +55,7 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
 {
 
     /** The dialog title. */
-    private String dialogTitle = "Select copy strategy";
+    private String dialogTitle = Messages.getString("EntryExistsCopyStrategyDialogImpl.SelectCopyStrategy"); //$NON-NLS-1$
 
     /** The break button. */
     private Button breakButton;
@@ -161,10 +162,10 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
         GridData gd = new GridData( GridData.FILL_BOTH );
         composite.setLayoutData( gd );
 
-        String text = "The entry " + dn.getUpName() + " already exists. Please select how to proceed.";
+        String text = NLS.bind( Messages.getString("EntryExistsCopyStrategyDialogImpl.SelectCopyStrategyDescription"), dn.getUpName() ); //$NON-NLS-1$
         BaseWidgetUtils.createLabel( composite, text, 1 );
 
-        Composite group2 = BaseWidgetUtils.createGroup( composite, "", 1 );
+        Composite group2 = BaseWidgetUtils.createGroup( composite, "", 1 ); //$NON-NLS-1$
         Composite group = BaseWidgetUtils.createColumnContainer( group2, 2, 1 );
 
         SelectionListener listener = new SelectionAdapter()
@@ -175,17 +176,17 @@ public class EntryExistsCopyStrategyDialogImpl extends Dialog implements EntryEx
             }
         };
 
-        breakButton = BaseWidgetUtils.createRadiobutton( group, "Stop copy process", 2 );
+        breakButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.StopCopyProcess"), 2 ); //$NON-NLS-1$
         breakButton.setSelection( true );
         breakButton.addSelectionListener( listener );
 
-        ignoreButton = BaseWidgetUtils.createRadiobutton( group, "Ignore entry and continue", 2 );
+        ignoreButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.IgnoreEntryAndContinue"), 2 ); //$NON-NLS-1$
         ignoreButton.addSelectionListener( listener );
 
-        overwriteButton = BaseWidgetUtils.createRadiobutton( group, "Overwrite entry and continue", 2 );
+        overwriteButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.OverwriteEntryAndContinue"), 2 ); //$NON-NLS-1$
         overwriteButton.addSelectionListener( listener );
 
-        renameButton = BaseWidgetUtils.createRadiobutton( group, "Rename entry and continue", 2 );
+        renameButton = BaseWidgetUtils.createRadiobutton( group, Messages.getString("EntryExistsCopyStrategyDialogImpl.RenameEntryAndContinue"), 2 ); //$NON-NLS-1$
         renameButton.addSelectionListener( listener );
 
         BaseWidgetUtils.createRadioIndent( group, 1 );

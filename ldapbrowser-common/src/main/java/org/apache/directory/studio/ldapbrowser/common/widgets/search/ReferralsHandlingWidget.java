@@ -87,10 +87,10 @@ public class ReferralsHandlingWidget extends BrowserWidget
      */
     public void createWidget( Composite parent )
     {
-        group = BaseWidgetUtils.createGroup( parent, "Referrals Handling", 1 );
+        group = BaseWidgetUtils.createGroup( parent, Messages.getString("ReferralsHandlingWidget.ReferralsHandling"), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
         
-        followButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Follow", 1 );
+        followButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages.getString("ReferralsHandlingWidget.Follow"), 1 ); //$NON-NLS-1$
         followButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -99,7 +99,7 @@ public class ReferralsHandlingWidget extends BrowserWidget
             }
         } );
 
-        ignoreButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Ignore", 1 );
+        ignoreButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages.getString("ReferralsHandlingWidget.Ignore"), 1 ); //$NON-NLS-1$
         ignoreButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -108,7 +108,7 @@ public class ReferralsHandlingWidget extends BrowserWidget
             }
         } );
         
-        manageButton = BaseWidgetUtils.createRadiobutton( groupComposite, "Manage", 1 );
+        manageButton = BaseWidgetUtils.createRadiobutton( groupComposite, Messages.getString("ReferralsHandlingWidget.Manage"), 1 ); //$NON-NLS-1$
         manageButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

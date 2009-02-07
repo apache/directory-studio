@@ -48,7 +48,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
 {
 
     /** The dialog title. */
-    private static final String DIALOG_TITLE = "Move Entries";
+    private static final String DIALOG_TITLE = Messages.getString("MoveEntriesDialog.MoveEntries"); //$NON-NLS-1$
 
     /** The entries to move. */
     private IEntry[] entries;
@@ -131,7 +131,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
         composite.setLayoutData( gd );
 
         BaseWidgetUtils.createLabel( composite,
-            "Please enter/select the parent DN where the selected entries should be moved to.", 1 );
+            Messages.getString("MoveEntriesDialog.MoveEntriesDescription"), 1 ); //$NON-NLS-1$
 
         dnBuilderWidget = new DnBuilderWidget( false, true );
         dnBuilderWidget.addWidgetModifyListener( this );

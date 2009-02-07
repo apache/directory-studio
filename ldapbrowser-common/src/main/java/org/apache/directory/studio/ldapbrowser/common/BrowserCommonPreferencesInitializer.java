@@ -151,9 +151,9 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         
 
         // Text Format
-        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER, "\t" );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER, "|" );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER, "\"" );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER, "\t" ); //$NON-NLS-1$
+        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER, "|" ); //$NON-NLS-1$
+        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER, "\"" ); //$NON-NLS-1$
         store
             .setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR, BrowserCoreConstants.LINE_SEPARATOR );
         store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_BINARYENCODING,

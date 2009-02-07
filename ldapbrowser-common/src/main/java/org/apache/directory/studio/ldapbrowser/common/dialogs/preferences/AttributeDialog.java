@@ -77,7 +77,7 @@ public class AttributeDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Select Attribute Type or OID" );
+        newShell.setText( Messages.getString("AttributeDialog.SelectAttributeTypeOrOID") ); //$NON-NLS-1$
     }
 
 
@@ -99,7 +99,7 @@ public class AttributeDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( c, "Attribute Type or OID:", 1 );
+        BaseWidgetUtils.createLabel( c, Messages.getString("AttributeDialog.AttributeTypeOrOID"), 1 ); //$NON-NLS-1$
         typeOrOidCombo = BaseWidgetUtils.createCombo( c, attributeTypesAndOids, -1, 1 );
         if ( currentAttribute != null )
         {
@@ -119,7 +119,7 @@ public class AttributeDialog extends Dialog
 
     private void validate()
     {
-        getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( typeOrOidCombo.getText() ) );
+        getButton( IDialogConstants.OK_ID ).setEnabled( !"".equals( typeOrOidCombo.getText() ) ); //$NON-NLS-1$
     }
 
 

@@ -47,7 +47,7 @@ public class OpenSortDialogAction extends Action
      */
     public OpenSortDialogAction( BrowserPreferences preferences )
     {
-        super( "Sorting...", BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_SORT ) );
+        super( Messages.getString("OpenSortDialogAction.Sorting"), BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_SORT ) ); //$NON-NLS-1$
         super.setEnabled( true );
 
         this.preferences = preferences;

@@ -93,8 +93,8 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
         if ( paintManager == null && sourceViewer.getAnnotationModel() instanceof IAnnotationModelExtension )
         {
             AnnotationPainter ap = new AnnotationPainter( sourceViewer, null );
-            ap.addAnnotationType( "DEFAULT" );
-            ap.setAnnotationTypeColor( "DEFAULT", BrowserCommonActivator.getDefault().getColor( new RGB( 255, 0, 0 ) ) );
+            ap.addAnnotationType( "DEFAULT" ); //$NON-NLS-1$
+            ap.setAnnotationTypeColor( "DEFAULT", BrowserCommonActivator.getDefault().getColor( new RGB( 255, 0, 0 ) ) ); //$NON-NLS-1$
             sourceViewer.getAnnotationModel().addAnnotationModelListener( ap );
 
             FilterCharacterPairMatcher cpm = new FilterCharacterPairMatcher( sourceViewer, parser );
@@ -142,7 +142,7 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
                         + invalidFilters[i].getStopToken().getLength() : start
                         + invalidFilters[i].getStartToken().getLength();
 
-                    Annotation annotation = new Annotation( "DEFAULT", true, invalidFilters[i].toString() );
+                    Annotation annotation = new Annotation( "DEFAULT", true, invalidFilters[i].toString() ); //$NON-NLS-1$
                     Position position = new Position( start, stop - start );
                     positionList.add( position );
                     sourceViewer.getAnnotationModel().addAnnotation( annotation, position );
@@ -166,7 +166,7 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
                     }
                     if ( !overlaps )
                     {
-                        Annotation annotation = new Annotation( "DEFAULT", true, tokens[i].getValue() );
+                        Annotation annotation = new Annotation( "DEFAULT", true, tokens[i].getValue() ); //$NON-NLS-1$
                         Position position = new Position( tokens[i].getOffset(), tokens[i].getLength() );
                         sourceViewer.getAnnotationModel().addAnnotation( annotation, position );
                     }

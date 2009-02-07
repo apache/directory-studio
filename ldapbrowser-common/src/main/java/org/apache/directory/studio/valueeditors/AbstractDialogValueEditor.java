@@ -202,7 +202,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
     {
         if ( attributeHierarchy == null )
         {
-            return "NULL";
+            return "NULL"; //$NON-NLS-1$
         }
 
         List<IValue> valueList = new ArrayList<IValue>();
@@ -218,7 +218,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
             IValue value = it.next();
             sb.append( getDisplayValue( value ) );
             if ( it.hasNext() )
-                sb.append( ", " );
+                sb.append( ", " ); //$NON-NLS-1$
         }
         return sb.toString();
     }

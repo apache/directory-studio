@@ -108,7 +108,7 @@ public class OpenDefaultEditorAction extends BrowserAction
      */
     public String getText()
     {
-        return "Edit Value";
+        return Messages.getString("OpenDefaultEditorAction.EditValue"); //$NON-NLS-1$
     }
 
 

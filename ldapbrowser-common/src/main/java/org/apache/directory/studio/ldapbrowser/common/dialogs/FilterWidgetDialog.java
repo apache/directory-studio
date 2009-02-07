@@ -137,7 +137,7 @@ public class FilterWidgetDialog extends Dialog
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         inner.setLayoutData( gd );
 
-        filterWidget = new FilterWidget( filter != null ? filter : "" );
+        filterWidget = new FilterWidget( filter != null ? filter : "" ); //$NON-NLS-1$
         filterWidget.createWidget( inner );
         filterWidget.setBrowserConnection( connection );
         filterWidget.setFocus();
@@ -149,7 +149,7 @@ public class FilterWidgetDialog extends Dialog
             }
         } );
 
-        errorMessageLabel = BaseWidgetUtils.createLabel( inner, "Please enter a valid filter.", 2 );
+        errorMessageLabel = BaseWidgetUtils.createLabel( inner, Messages.getString("FilterWidgetDialog.EnterValidFilter"), 2 ); //$NON-NLS-1$
 
         validate();
 
@@ -166,7 +166,7 @@ public class FilterWidgetDialog extends Dialog
         {
             getButton( IDialogConstants.OK_ID ).setEnabled( filterWidget.getFilter() != null );
         }
-        errorMessageLabel.setText( filterWidget.getFilter() == null ? "Please enter a valid filter." : "" );
+        errorMessageLabel.setText( filterWidget.getFilter() == null ? Messages.getString("FilterWidgetDialog.EnterValidFilter") : "" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

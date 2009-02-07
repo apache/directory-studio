@@ -103,7 +103,7 @@ public class FileBrowserWidget extends BrowserWidget
         } );
 
         // Button
-        browseButton = BaseWidgetUtils.createButton( parent, "Bro&wse...", 1 );
+        browseButton = BaseWidgetUtils.createButton( parent, Messages.getString("FileBrowserWidget.BrowseButton"), 1 ); //$NON-NLS-1$
         browseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )

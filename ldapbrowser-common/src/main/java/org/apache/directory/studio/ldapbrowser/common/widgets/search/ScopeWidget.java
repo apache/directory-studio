@@ -91,13 +91,13 @@ public class ScopeWidget extends BrowserWidget
 
         // Scope group
         scopeGroup = new Group( parent, SWT.NONE );
-        scopeGroup.setText( "Scope" );
+        scopeGroup.setText( Messages.getString("ScopeWidget.Scope") ); //$NON-NLS-1$
         scopeGroup.setLayout( new GridLayout( 1, false ) );
         scopeGroup.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
         // Object radio
         scopeObjectButton = new Button( scopeGroup, SWT.RADIO );
-        scopeObjectButton.setText( "&Object" );
+        scopeObjectButton.setText( Messages.getString("ScopeWidget.Object") ); //$NON-NLS-1$
         scopeObjectButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -108,7 +108,7 @@ public class ScopeWidget extends BrowserWidget
 
         // Onelevel radio
         scopeOnelevelButton = new Button( scopeGroup, SWT.RADIO );
-        scopeOnelevelButton.setText( "One &Level" );
+        scopeOnelevelButton.setText( Messages.getString("ScopeWidget.OneLevel") ); //$NON-NLS-1$
         scopeOnelevelButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -119,7 +119,7 @@ public class ScopeWidget extends BrowserWidget
 
         // subtree button
         scopeSubtreeButton = new Button( scopeGroup, SWT.RADIO );
-        scopeSubtreeButton.setText( "&Subtree" );
+        scopeSubtreeButton.setText( Messages.getString("ScopeWidget.Subtree") ); //$NON-NLS-1$
         scopeSubtreeButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )

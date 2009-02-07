@@ -47,7 +47,7 @@ public class FileEncodingInput extends OptionsInput
      */
     public FileEncodingInput( String initialRawValue, boolean asGroup )
     {
-        super( "File Encoding", getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(),
+        super( Messages.getString("FileEncodingInput.FileEncoding"), getDefaultDisplayValue(), getDefaultRawValue(), getOtherDisplayValues(), //$NON-NLS-1$
             getOtherRawValues(), initialRawValue, asGroup, false );
 
     }

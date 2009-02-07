@@ -41,8 +41,8 @@ public class ValueEditorPreferencesAction extends Action
      */
     public ValueEditorPreferencesAction()
     {
-        super.setText( "Preferences..." );
-        super.setToolTipText( "Preferences..." );
+        super.setText( Messages.getString("ValueEditorPreferencesAction.Preferences") ); //$NON-NLS-1$
+        super.setToolTipText( Messages.getString("ValueEditorPreferencesAction.Preferences") ); //$NON-NLS-1$
         super.setEnabled( true );
     }
 

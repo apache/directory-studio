@@ -63,16 +63,16 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 {
 
     /** The constant used to preselect the 'LDIF' tab */
-    public static final String LDIF_TAB = "LDIF";
+    public static final String LDIF_TAB = "LDIF"; //$NON-NLS-1$
 
     /** The constant used to preselect the 'CSV Export' tab */
-    public static final String CSV_TAB = "CSV";
+    public static final String CSV_TAB = "CSV"; //$NON-NLS-1$
 
     /** The constant used to preselect the 'Excel Export' tab */
-    public static final String XLS_TAB = "XLS";
+    public static final String XLS_TAB = "XLS"; //$NON-NLS-1$
 
     /** The constant used to preselect the 'CSV Copy' tab */
-    public static final String TABLE_TAB = "TABLE";
+    public static final String TABLE_TAB = "TABLE"; //$NON-NLS-1$
 
     private Preferences coreStore = BrowserCorePlugin.getDefault().getPluginPreferences();
 
@@ -124,9 +124,9 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
      */
     public TextFormatsPreferencePage()
     {
-        super( "Text Formats" );
+        super( Messages.getString("TextFormatsPreferencePage.TextFormats") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( "Settings for text formats" );
+        super.setDescription( Messages.getString("TextFormatsPreferencePage.SettingsForTextFormats") ); //$NON-NLS-1$
     }
 
 
@@ -189,32 +189,32 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private void createTableTab()
     {
         tableTab = new TabItem( tabFolder, SWT.NONE );
-        tableTab.setText( "CSV Copy" );
+        tableTab.setText( Messages.getString("TextFormatsPreferencePage.CSVCopy") ); //$NON-NLS-1$
 
         Composite tableComposite = new Composite( tabFolder, SWT.NONE );
         tableComposite.setLayout( new GridLayout( 1, false ) );
         Composite tableInnerComposite = BaseWidgetUtils.createColumnContainer( tableComposite, 3, 1 );
 
-        BaseWidgetUtils.createLabel( tableInnerComposite, "Select CSV copy format options:", 3 );
+        BaseWidgetUtils.createLabel( tableInnerComposite, Messages.getString("TextFormatsPreferencePage.CSVCopyLabel"), 3 ); //$NON-NLS-1$
         BaseWidgetUtils.createSpacer( tableInnerComposite, 3 );
 
-        tableAttributeDelimiterWidget = new OptionsInput( "Attribute Delimiter", "Tabulator (\\t)", "\t", new String[]
-            { "Tabulator (\\t)", "Comma (,)", "Semikolon (;)" }, new String[]
-            { "\t", ",", ";" }, getPreferenceStore().getString(
+        tableAttributeDelimiterWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.AttributeDelimiter"), Messages.getString("TextFormatsPreferencePage.Tabulator"), "\t", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.Tabulator"), Messages.getString("TextFormatsPreferencePage.Comma"), Messages.getString("TextFormatsPreferencePage.Semicolon") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { "\t", ",", ";" }, getPreferenceStore().getString( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER ), false, true );
         tableAttributeDelimiterWidget.createWidget( tableInnerComposite );
         tableAttributeDelimiterWidget.addWidgetModifyListener( this );
 
-        tableValueDelimiterWidget = new OptionsInput( "Value Delimiter", "Pipe (|)", "|", new String[]
-            { "Pipe (|)", "Comma (,)", "Semikolon (;)", "Newline (\\n)" }, new String[]
-            { "|", ",", ";", "\n" }, getPreferenceStore().getString(
+        tableValueDelimiterWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.ValueDelimiter"), Messages.getString("TextFormatsPreferencePage.Pipe"), "|", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.Pipe"), Messages.getString("TextFormatsPreferencePage.Comma"), Messages.getString("TextFormatsPreferencePage.Semicolon"), Messages.getString("TextFormatsPreferencePage.Newline") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            { "|", ",", ";", "\n" }, getPreferenceStore().getString( //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER ), false, true );
         tableValueDelimiterWidget.createWidget( tableInnerComposite );
         tableValueDelimiterWidget.addWidgetModifyListener( this );
 
-        tableQuoteWidget = new OptionsInput( "Quote Character", "Double Quote (\")", "\"", new String[]
-            { "Double Quote (\")", "Single Quote (')" }, new String[]
-            { "\"", "'" }, getPreferenceStore().getString(
+        tableQuoteWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.QuoteCharacter"), Messages.getString("TextFormatsPreferencePage.DoubleQuote"), "\"", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.DoubleQuote"), Messages.getString("TextFormatsPreferencePage.SingleQuote") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$
+            { "\"", "'" }, getPreferenceStore().getString( //$NON-NLS-1$ //$NON-NLS-2$
             BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER ), false, true );
         tableQuoteWidget.createWidget( tableInnerComposite );
         tableQuoteWidget.addWidgetModifyListener( this );
@@ -231,7 +231,7 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
         Composite copyTableHintComposite = BaseWidgetUtils.createColumnContainer( tableInnerComposite, 3, 3 );
         Text hintText = BaseWidgetUtils.createWrappedLabeledText( copyTableHintComposite,
-            "Hint: The default settings are suitable to paste the copied data into Excel or OpenOffice.", 1 );
+            Messages.getString("TextFormatsPreferencePage.CSVCopyHint"), 1 ); //$NON-NLS-1$
         GridData hintTextGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         hintTextGridData.widthHint = 300;
         hintText.setLayoutData( hintTextGridData );
@@ -243,32 +243,32 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private void createCsvTab()
     {
         csvTab = new TabItem( tabFolder, SWT.NONE );
-        csvTab.setText( "CSV Export" );
+        csvTab.setText( Messages.getString("TextFormatsPreferencePage.CSVExport") ); //$NON-NLS-1$
 
         Composite csvComposite = new Composite( tabFolder, SWT.NONE );
         csvComposite.setLayout( new GridLayout( 1, false ) );
         Composite csvInnerComposite = BaseWidgetUtils.createColumnContainer( csvComposite, 3, 1 );
 
-        BaseWidgetUtils.createLabel( csvInnerComposite, "Select CSV export file format options:", 3 );
+        BaseWidgetUtils.createLabel( csvInnerComposite, Messages.getString("TextFormatsPreferencePage.CSVExportLabel"), 3 ); //$NON-NLS-1$
         BaseWidgetUtils.createSpacer( csvInnerComposite, 3 );
 
-        csvAttributeDelimiterWidget = new OptionsInput( "Attribute Delimiter", "Comma (,)", ",", new String[]
-            { "Comma (,)", "Semikolon (;)", "Tabulator (\\t)" }, new String[]
-            { ",", ";", "\t" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER ),
+        csvAttributeDelimiterWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.AttributeDelimiter"), Messages.getString("TextFormatsPreferencePage.Comma"), ",", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.Comma"), Messages.getString("TextFormatsPreferencePage.Semicolon"), Messages.getString("TextFormatsPreferencePage.Tabulator") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { ",", ";", "\t" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ATTRIBUTEDELIMITER ), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             false, true );
         csvAttributeDelimiterWidget.createWidget( csvInnerComposite );
         csvAttributeDelimiterWidget.addWidgetModifyListener( this );
 
-        csvValueDelimiterWidget = new OptionsInput( "Value Delimiter", "Pipe (|)", "|", new String[]
-            { "Pipe (|)", "Comma (,)", "Semikolon (;)", "Newline (\\n)" }, new String[]
-            { "|", ",", ";", "\n" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_VALUEDELIMITER ),
+        csvValueDelimiterWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.ValueDelimiter"), Messages.getString("TextFormatsPreferencePage.Pipe"), "|", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.Pipe"), Messages.getString("TextFormatsPreferencePage.Comma"), Messages.getString("TextFormatsPreferencePage.Semicolon"), Messages.getString("TextFormatsPreferencePage.Newline") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            { "|", ",", ";", "\n" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_VALUEDELIMITER ), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             false, true );
         csvValueDelimiterWidget.createWidget( csvInnerComposite );
         csvValueDelimiterWidget.addWidgetModifyListener( this );
 
-        csvQuoteWidget = new OptionsInput( "Quote Character", "Double Quote (\")", "\"", new String[]
-            { "Double Quote (\")", "Single Quote (')" }, new String[]
-            { "\"", "'" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_QUOTECHARACTER ), false,
+        csvQuoteWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.QuoteCharacter"), Messages.getString("TextFormatsPreferencePage.DoubleQuote"), "\"", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.DoubleQuote"), Messages.getString("TextFormatsPreferencePage.SingleQuote") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$
+            { "\"", "'" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_QUOTECHARACTER ), false, //$NON-NLS-1$ //$NON-NLS-2$
             true );
         csvQuoteWidget.createWidget( csvInnerComposite );
         csvQuoteWidget.addWidgetModifyListener( this );
@@ -295,18 +295,18 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private void createXlsTab()
     {
         xlsTab = new TabItem( tabFolder, SWT.NONE );
-        xlsTab.setText( "Excel Export" );
+        xlsTab.setText( Messages.getString("TextFormatsPreferencePage.ExcelExport") ); //$NON-NLS-1$
 
         Composite xlsComposite = new Composite( tabFolder, SWT.NONE );
         xlsComposite.setLayout( new GridLayout( 1, false ) );
         Composite xlsInnerComposite = BaseWidgetUtils.createColumnContainer( xlsComposite, 3, 1 );
 
-        BaseWidgetUtils.createLabel( xlsInnerComposite, "Select Excel export file format options:", 3 );
+        BaseWidgetUtils.createLabel( xlsInnerComposite, Messages.getString("TextFormatsPreferencePage.ExcelExportLabel"), 3 ); //$NON-NLS-1$
         BaseWidgetUtils.createSpacer( xlsInnerComposite, 3 );
 
-        xlsValueDelimiterWidget = new OptionsInput( "Value Delimiter", "Pipe (|)", "|", new String[]
-            { "Pipe (|)", "Comma (,)", "Semikolon (;)", "Newline (\\n)" }, new String[]
-            { "|", ",", ";", "\n" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_VALUEDELIMITER ),
+        xlsValueDelimiterWidget = new OptionsInput( Messages.getString("TextFormatsPreferencePage.ValueDelimiter"), Messages.getString("TextFormatsPreferencePage.Pipe"), "|", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            { Messages.getString("TextFormatsPreferencePage.Pipe"), Messages.getString("TextFormatsPreferencePage.Comma"), Messages.getString("TextFormatsPreferencePage.Semicolon"), Messages.getString("TextFormatsPreferencePage.Newline") }, new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            { "|", ",", ";", "\n" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_VALUEDELIMITER ), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             false, true );
         xlsValueDelimiterWidget.createWidget( xlsInnerComposite );
         xlsValueDelimiterWidget.addWidgetModifyListener( this );
@@ -323,13 +323,13 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private void createLdifTab()
     {
         ldifTab = new TabItem( tabFolder, SWT.NONE );
-        ldifTab.setText( "LDIF" );
+        ldifTab.setText( Messages.getString("TextFormatsPreferencePage.LDIF") ); //$NON-NLS-1$
 
         Composite ldifComposite = new Composite( tabFolder, SWT.NONE );
         ldifComposite.setLayout( new GridLayout( 1, false ) );
         Composite ldifInnerComposite = BaseWidgetUtils.createColumnContainer( ldifComposite, 1, 1 );
 
-        BaseWidgetUtils.createLabel( ldifInnerComposite, "Select LDIF format options:", 1 );
+        BaseWidgetUtils.createLabel( ldifInnerComposite, Messages.getString("TextFormatsPreferencePage.LDIFLabel"), 1 ); //$NON-NLS-1$
         BaseWidgetUtils.createSpacer( ldifInnerComposite, 1 );
 
         ldifLineSeparator = new LineSeparatorInput( coreStore
@@ -340,27 +340,27 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( ldifInnerComposite, 1 );
 
         Composite lineLengthComposite = BaseWidgetUtils.createColumnContainer( ldifInnerComposite, 3, 1 );
-        BaseWidgetUtils.createLabel( lineLengthComposite, "Line length:", 1 );
-        ldifLineLengthText = BaseWidgetUtils.createText( lineLengthComposite, "", 3, 1 );
+        BaseWidgetUtils.createLabel( lineLengthComposite, Messages.getString("TextFormatsPreferencePage.LineLength1"), 1 ); //$NON-NLS-1$
+        ldifLineLengthText = BaseWidgetUtils.createText( lineLengthComposite, "", 3, 1 ); //$NON-NLS-1$
         ldifLineLengthText.setText( coreStore.getString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH ) );
         ldifLineLengthText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
             {
-                if ( !e.text.matches( "[0-9]*" ) )
+                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
                     e.doit = false;
                 }
-                if ( "".equals( ldifLineLengthText.getText() ) && e.text.matches( "[0]" ) )
+                if ( "".equals( ldifLineLengthText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }
             }
         } );
         ldifLineLengthText.addModifyListener( this );
-        BaseWidgetUtils.createLabel( lineLengthComposite, "characters", 1 );
+        BaseWidgetUtils.createLabel( lineLengthComposite, Messages.getString("TextFormatsPreferencePage.LineLength2"), 1 ); //$NON-NLS-1$
 
-        ldifSpaceAfterColonButton = BaseWidgetUtils.createCheckbox( ldifInnerComposite, "Space after colon", 1 );
+        ldifSpaceAfterColonButton = BaseWidgetUtils.createCheckbox( ldifInnerComposite, Messages.getString("TextFormatsPreferencePage.SpaceAfterColon"), 1 ); //$NON-NLS-1$
         ldifSpaceAfterColonButton.setSelection( coreStore
             .getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON ) );
 
@@ -471,20 +471,20 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     protected void validate()
     {
-        setValid( !"".equals( csvAttributeDelimiterWidget.getRawValue() )
-            && !"".equals( csvValueDelimiterWidget.getRawValue() ) && !"".equals( csvQuoteWidget.getRawValue() )
-            && !"".equals( csvLineSeparator.getRawValue() ) && !"".equals( csvBinaryEncodingWidget.getRawValue() )
-            && !"".equals( csvEncodingWidget.getRawValue() ) &&
+        setValid( !"".equals( csvAttributeDelimiterWidget.getRawValue() ) //$NON-NLS-1$
+            && !"".equals( csvValueDelimiterWidget.getRawValue() ) && !"".equals( csvQuoteWidget.getRawValue() ) //$NON-NLS-1$ //$NON-NLS-2$
+            && !"".equals( csvLineSeparator.getRawValue() ) && !"".equals( csvBinaryEncodingWidget.getRawValue() ) //$NON-NLS-1$ //$NON-NLS-2$
+            && !"".equals( csvEncodingWidget.getRawValue() ) && //$NON-NLS-1$
 
-            !"".equals( tableAttributeDelimiterWidget.getRawValue() )
-            && !"".equals( tableValueDelimiterWidget.getRawValue() ) && !"".equals( tableQuoteWidget.getRawValue() )
-            && !"".equals( tableLineSeparator.getRawValue() ) && !"".equals( tableBinaryEncodingWidget.getRawValue() )
+            !"".equals( tableAttributeDelimiterWidget.getRawValue() ) //$NON-NLS-1$
+            && !"".equals( tableValueDelimiterWidget.getRawValue() ) && !"".equals( tableQuoteWidget.getRawValue() ) //$NON-NLS-1$ //$NON-NLS-2$
+            && !"".equals( tableLineSeparator.getRawValue() ) && !"".equals( tableBinaryEncodingWidget.getRawValue() ) //$NON-NLS-1$ //$NON-NLS-2$
             &&
 
-            !"".equals( xlsValueDelimiterWidget.getRawValue() ) && !"".equals( xlsBinaryEncodingWidget.getRawValue() )
+            !"".equals( xlsValueDelimiterWidget.getRawValue() ) && !"".equals( xlsBinaryEncodingWidget.getRawValue() ) //$NON-NLS-1$ //$NON-NLS-2$
             &&
 
-            !"".equals( ldifLineLengthText.getText() ) && !"".equals( ldifLineSeparator.getRawValue() ) );
+            !"".equals( ldifLineLengthText.getText() ) && !"".equals( ldifLineSeparator.getRawValue() ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

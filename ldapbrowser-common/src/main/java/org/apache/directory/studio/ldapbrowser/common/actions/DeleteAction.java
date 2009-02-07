@@ -79,34 +79,34 @@ public class DeleteAction extends BrowserAction
             if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0 && attributes.length == 0
                 && values.length == 0 )
             {
-                return entries.length > 1 ? "Delete Entries" : "Delete Entry";
+                return entries.length > 1 ? Messages.getString("DeleteAction.DeleteEntries") : Messages.getString("DeleteAction.DeleteEntry"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( searches.length > 0 && entries.length == 0 && bookmarks.length == 0 && attributes.length == 0
                 && values.length == 0 )
             {
-                return searches.length > 1 ? "Delete Searches" : "Delete Search";
+                return searches.length > 1 ? Messages.getString("DeleteAction.DeleteSearches") : Messages.getString("DeleteAction.DeleteSearch"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( bookmarks.length > 0 && entries.length == 0 && searches.length == 0 && attributes.length == 0
                 && values.length == 0 )
             {
-                return bookmarks.length > 1 ? "Delete Bookmarks" : "Delete Bookmark";
+                return bookmarks.length > 1 ? Messages.getString("DeleteAction.DeleteBookmarks") : Messages.getString("DeleteAction.DeleteBookmark"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( attributes.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
                 && values.length == 0 )
             {
-                return attributes.length > 1 ? "Delete Attributes" : "Delete Attribute";
+                return attributes.length > 1 ? Messages.getString("DeleteAction.DeleteAttributes") : Messages.getString("DeleteAction.DeleteAttribute"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             if ( values.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
                 && attributes.length == 0 )
             {
-                return values.length > 1 ? "Delete Values" : "Delete Value";
+                return values.length > 1 ? Messages.getString("DeleteAction.DeleteValues") : Messages.getString("DeleteAction.DeleteValue"); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         catch ( Exception e )
         {
         }
 
-        return "Delete";
+        return Messages.getString("DeleteAction.Delete"); //$NON-NLS-1$
     }
 
 
@@ -149,18 +149,18 @@ public class DeleteAction extends BrowserAction
                 if ( entries.length <= 5 )
                 {
                     message
-                        .append( entries.length == 1 ? "Are your sure to delete the following entry, including all children?"
-                            : "Are your sure to delete the following entries, including all children?" );
+                        .append( entries.length == 1 ? Messages.getString("DeleteAction.DeleteEntryQuestion") //$NON-NLS-1$
+                            : Messages.getString("DeleteAction.DeleteEntriesQuestion") ); //$NON-NLS-1$
                     for ( int i = 0; i < entries.length; i++ )
                     {
                         message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " );
+                        message.append( "  - " ); //$NON-NLS-1$
                         message.append( entries[i].getDn().getUpName() );
                     }
                 }
                 else
                 {
-                    message.append( "Are your sure to delete the selected entries, including all children?" );
+                    message.append( Messages.getString("DeleteAction.DeleteSelectedEntriesQuestion") ); //$NON-NLS-1$
                 }
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -176,18 +176,18 @@ public class DeleteAction extends BrowserAction
             {
                 if ( searches.length <= 5 )
                 {
-                    message.append( searches.length == 1 ? "Are your sure to delete the following search?"
-                        : "Are your sure to delete the following searches?" );
+                    message.append( searches.length == 1 ? Messages.getString("DeleteAction.DeleteSearchQuestion") //$NON-NLS-1$
+                        : Messages.getString("DeleteAction.DeleteSearchesQuestion") ); //$NON-NLS-1$
                     for ( int i = 0; i < searches.length; i++ )
                     {
                         message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " );
+                        message.append( "  - " ); //$NON-NLS-1$
                         message.append( searches[i].getName() );
                     }
                 }
                 else
                 {
-                    message.append( "Are your sure to delete the selected searches?" );
+                    message.append( Messages.getString("DeleteAction.DeleteSelectedSearchesQuestion") ); //$NON-NLS-1$
                 }
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -197,18 +197,18 @@ public class DeleteAction extends BrowserAction
             {
                 if ( bookmarks.length <= 5 )
                 {
-                    message.append( bookmarks.length == 1 ? "Are your sure to delete the following bookmark?"
-                        : "Are your sure to delete the following bookmarks?" );
+                    message.append( bookmarks.length == 1 ? Messages.getString("DeleteAction.DeleteBookmarkQuestion") //$NON-NLS-1$
+                        : Messages.getString("DeleteAction.DeleteBookmarksQuestion") ); //$NON-NLS-1$
                     for ( int i = 0; i < bookmarks.length; i++ )
                     {
                         message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " );
+                        message.append( "  - " ); //$NON-NLS-1$
                         message.append( bookmarks[i].getName() );
                     }
                 }
                 else
                 {
-                    message.append( "Are your sure to delete the selected bookmarks?" );
+                    message.append( Messages.getString("DeleteAction.DeleteSelectedBookmarksQuestion") ); //$NON-NLS-1$
                 }
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -218,18 +218,18 @@ public class DeleteAction extends BrowserAction
             {
                 if ( attributes.length <= 5 )
                 {
-                    message.append( attributes.length == 1 ? "Are your sure to delete the following attribute?"
-                        : "Are your sure to delete the following attribute?" );
+                    message.append( attributes.length == 1 ? Messages.getString("DeleteAction.DeleteAttributeQuestion") //$NON-NLS-1$
+                        : Messages.getString("DeleteAction.DeleteAttributesQuestion") ); //$NON-NLS-1$
                     for ( int i = 0; i < attributes.length; i++ )
                     {
                         message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " );
+                        message.append( "  - " ); //$NON-NLS-1$
                         message.append( attributes[i].getDescription() );
                     }
                 }
                 else
                 {
-                    message.append( "Are your sure to delete the selected attributes?" );
+                    message.append( Messages.getString("DeleteAction.DeleteSelectedAttributesQuestion") ); //$NON-NLS-1$
                 }
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -249,18 +249,18 @@ public class DeleteAction extends BrowserAction
                 {
                     if ( values.length <= 5 )
                     {
-                        message.append( values.length == 1 ? "Are your sure to delete the following value?"
-                            : "Are your sure to delete the following values?" );
+                        message.append( values.length == 1 ? Messages.getString("DeleteAction.DeleteValueQuestion") //$NON-NLS-1$
+                            : Messages.getString("DeleteAction.DeleteValuesQuestion") ); //$NON-NLS-1$
                         for ( int i = 0; i < values.length; i++ )
                         {
                             message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                            message.append( "  - " );
+                            message.append( "  - " ); //$NON-NLS-1$
                             message.append( values[i].toString() );
                         }
                     }
                     else
                     {
-                        message.append( "Are your sure to delete the selected values?" );
+                        message.append( Messages.getString("DeleteAction.DeleteSelectedValuesQuestion") ); //$NON-NLS-1$
                     }
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );

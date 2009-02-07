@@ -103,10 +103,10 @@ public class SearchTransfer extends ByteArrayTransfer
 
                 for ( int i = 0; i < searches.length; i++ )
                 {
-                    byte[] connectionId = searches[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" );
+                    byte[] connectionId = searches[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] searchName = searches[i].getName().getBytes( "UTF-8" );
+                    byte[] searchName = searches[i].getName().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( searchName.length );
                     writeOut.write( searchName );
                 }
@@ -160,7 +160,7 @@ public class SearchTransfer extends ByteArrayTransfer
                             byte[] connectionId = new byte[size];
                             readIn.read( connectionId );
                             connection = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-                                new String( connectionId, "UTF-8" ) );
+                                new String( connectionId, "UTF-8" ) ); //$NON-NLS-1$
                         }
 
                         ISearch search = null;
@@ -169,7 +169,7 @@ public class SearchTransfer extends ByteArrayTransfer
                             int size = readIn.readInt();
                             byte[] searchName = new byte[size];
                             readIn.read( searchName );
-                            search = connection.getSearchManager().getSearch( new String( searchName, "UTF-8" ) );
+                            search = connection.getSearchManager().getSearch( new String( searchName, "UTF-8" ) ); //$NON-NLS-1$
                         }
                         else
                         {

@@ -123,7 +123,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
         if ( filterTemplateStore == null )
         {
             filterTemplateStore = new ContributionTemplateStore( getFilterTemplateContextTypeRegistry(),
-                getPreferenceStore(), "templates" );
+                getPreferenceStore(), "templates" ); //$NON-NLS-1$
             try
             {
                 filterTemplateStore.load();
@@ -329,7 +329,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
     public static boolean isIDEEnvironment()
     {
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            "org.eclipse.ui.perspectives" );
+            "org.eclipse.ui.perspectives" ); //$NON-NLS-1$
         if ( extensionPoint != null )
         {
             IExtension[] extensions = extensionPoint.getExtensions();
@@ -342,9 +342,9 @@ public class BrowserCommonActivator extends AbstractUIPlugin
                     for ( int j = 0; j < elements.length; j++ )
                     {
                         IConfigurationElement element = elements[j];
-                        if ( element.getName().equals( "perspective" ) )
+                        if ( element.getName().equals( "perspective" ) ) //$NON-NLS-1$
                         {
-                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) )
+                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
                             {
                                 return true;
                             }
@@ -382,13 +382,13 @@ public class BrowserCommonActivator extends AbstractUIPlugin
             try
             {
                 properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
-                    "plugin.properties" ), false ) );
+                    "plugin.properties" ), false ) ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.common", Status.OK,
-                        "Unable to get the plugin properties.", e ) );
+                    new Status( Status.ERROR, "org.apache.directory.studio.ldapbrowser.common", Status.OK, //$NON-NLS-1$
+                        "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
             }
         }
 

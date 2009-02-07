@@ -107,8 +107,8 @@ public class AttributeTypeWizardPage extends WizardPage
         boolean initialShowSubschemaAttributesOnly, boolean initialHideExistingAttributes, AttributeWizard wizard )
     {
         super( pageName );
-        super.setTitle( "Attribute Type" );
-        super.setDescription( "Please enter or select the attribute type." );
+        super.setTitle( Messages.getString("AttributeTypeWizardPage.AttributeType") ); //$NON-NLS-1$
+        super.setDescription( Messages.getString("AttributeTypeWizardPage.AttributeTypeDescription") ); //$NON-NLS-1$
         // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
         super.setPageComplete( false );
 
@@ -136,9 +136,9 @@ public class AttributeTypeWizardPage extends WizardPage
         String attributeDescription = initialAttributeDescription;
         if ( attributeDescription == null )
         {
-            attributeDescription = "";
+            attributeDescription = ""; //$NON-NLS-1$
         }
-        String[] attributeDescriptionComponents = attributeDescription.split( ";" );
+        String[] attributeDescriptionComponents = attributeDescription.split( ";" ); //$NON-NLS-1$
         parsedAttributeType = attributeDescriptionComponents[0];
     }
 
@@ -149,7 +149,7 @@ public class AttributeTypeWizardPage extends WizardPage
     private void validate()
     {
         previewText.setText( wizard.getAttributeDescription() );
-        setPageComplete( !"".equals( attributeTypeCombo.getText() ) );
+        setPageComplete( !"".equals( attributeTypeCombo.getText() ) ); //$NON-NLS-1$
     }
 
 
@@ -176,7 +176,7 @@ public class AttributeTypeWizardPage extends WizardPage
         composite.setLayout( gl );
         composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
-        BaseWidgetUtils.createLabel( composite, "Attribute type:", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString("AttributeTypeWizardPage.AttributeTypeLabel"), 1 ); //$NON-NLS-1$
 
         // attribute combo with field decoration and content proposal
         attributeTypeCombo = BaseWidgetUtils.createCombo( composite, possibleAttributeTypes, -1, 1 );
@@ -185,12 +185,12 @@ public class AttributeTypeWizardPage extends WizardPage
             new ListContentProposalProvider( possibleAttributeTypes ), null, null, true );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, "Show subschema attributes only",
+        showSubschemAttributesOnlyButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AttributeTypeWizardPage.ShowSubschemaAttributesOnly"), //$NON-NLS-1$
             1 );
         showSubschemAttributesOnlyButton.setSelection( initialShowSubschemaAttributesOnly );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
-        hideExistingAttributesButton = BaseWidgetUtils.createCheckbox( composite, "Hide existing attributes", 1 );
+        hideExistingAttributesButton = BaseWidgetUtils.createCheckbox( composite, Messages.getString("AttributeTypeWizardPage.HideExistingAttributes"), 1 ); //$NON-NLS-1$
         hideExistingAttributesButton.setSelection( initialHideExistingAttributes );
 
         Label l = new Label( composite, SWT.NONE );
@@ -198,8 +198,8 @@ public class AttributeTypeWizardPage extends WizardPage
         gd.horizontalSpan = 2;
         l.setLayoutData( gd );
 
-        BaseWidgetUtils.createLabel( composite, "Preview:", 1 );
-        previewText = BaseWidgetUtils.createReadonlyText( composite, "", 1 );
+        BaseWidgetUtils.createLabel( composite, Messages.getString("AttributeTypeWizardPage.PreviewLabel"), 1 ); //$NON-NLS-1$
+        previewText = BaseWidgetUtils.createReadonlyText( composite, "", 1 ); //$NON-NLS-1$
 
         // attribute type listener
         attributeTypeCombo.addModifyListener( new ModifyListener()
@@ -278,7 +278,7 @@ public class AttributeTypeWizardPage extends WizardPage
     {
         if ( attributeTypeCombo == null | attributeTypeCombo.isDisposed() )
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         return attributeTypeCombo.getText();

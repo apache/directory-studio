@@ -44,7 +44,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
 {
 
     /** The Constant INDENT_STRING. */
-    public static final String INDENT_STRING = "    ";
+    public static final String INDENT_STRING = "    "; //$NON-NLS-1$
 
     /** The filter parser. */
     private LdapFilterParser parser;
@@ -106,7 +106,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             }
         }
 
-        if ( aep.length > 0 && ( aep.text == null || "".equals( aep.text ) ) )
+        if ( aep.length > 0 && ( aep.text == null || "".equals( aep.text ) ) ) //$NON-NLS-1$
         {
             // delete surrounding parenthesis after deleting the last character
             if ( filter.toString().length() - aep.length == 2 
@@ -137,15 +137,15 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             
         }
 
-        if ( (aep.length == 0 || aep.length==currentFilter.length()) && aep.text != null && !"".equals( aep.text ) )
+        if ( (aep.length == 0 || aep.length==currentFilter.length()) && aep.text != null && !"".equals( aep.text ) ) //$NON-NLS-1$
         {
-            boolean isNewFilter = aep.text.equals( "(" );
-            boolean isNewNestedFilter = aep.text.equals( "&" ) || aep.text.equals( "|" ) || aep.text.equals( "!" );
+            boolean isNewFilter = aep.text.equals( "(" ); //$NON-NLS-1$
+            boolean isNewNestedFilter = aep.text.equals( "&" ) || aep.text.equals( "|" ) || aep.text.equals( "!" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             boolean isSurroundNew = false;
             boolean isSurroundNested = false;
             boolean isSurroundBeforeOtherFilter = false;
             boolean isSurroundAfterOtherFilter = false;
-            if( !Character.isWhitespace( aep.text.charAt( 0 ) ) && !aep.text.startsWith( "(" ) && !aep.text.endsWith( ")" ) )
+            if( !Character.isWhitespace( aep.text.charAt( 0 ) ) && !aep.text.startsWith( "(" ) && !aep.text.endsWith( ")" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 // isSurroundNew
                 isSurroundNew = aep.offset == 0;
@@ -209,7 +209,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             // add opening parenthesis '('
             if ( isSurroundNew || isSurroundNested || isSurroundAfterOtherFilter || isSurroundBeforeOtherFilter )
             {
-                aep.text = "(" + aep.text;
+                aep.text = "(" + aep.text; //$NON-NLS-1$
                 aep.caretOffset = aep.offset + aep.text.length();
                 aep.shiftsCaret = false;
             }
@@ -217,7 +217,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             // add parenthesis for nested filters
             if ( isNewNestedFilter )
             {
-                aep.text = aep.text + "()";
+                aep.text = aep.text + "()"; //$NON-NLS-1$
                 aep.caretOffset = aep.offset + aep.text.length() - 1;
                 aep.shiftsCaret = false;
             }
@@ -228,7 +228,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             {
                 if ( balanced == 0 )
                 {
-                    aep.text = aep.text + ")";
+                    aep.text = aep.text + ")"; //$NON-NLS-1$
                     if( aep.caretOffset == -1 )
                     {
                         aep.caretOffset = aep.offset + aep.text.length() - 1;
@@ -238,7 +238,7 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
             }
             
             // translate tab to IDENT_STRING
-            if ( aep.text.equals( "\t" ) )
+            if ( aep.text.equals( "\t" ) ) //$NON-NLS-1$
             {
                 aep.text = INDENT_STRING;
             }

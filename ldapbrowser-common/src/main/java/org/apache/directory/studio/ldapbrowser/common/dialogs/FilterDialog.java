@@ -52,7 +52,7 @@ public class FilterDialog extends Dialog
 {
 
     /** The default dialog title. */
-    private static final String DIALOG_TITLE = "Filter Editor";
+    private static final String DIALOG_TITLE = Messages.getString("FilterDialog.FilterEditor"); //$NON-NLS-1$
 
     /** The button ID for the format button. */
     private static final int FORMAT_BUTTON_ID = 987654321;
@@ -144,7 +144,7 @@ public class FilterDialog extends Dialog
     protected Control createButtonBar( Composite parent )
     {
         Composite composite = ( Composite ) super.createButtonBar( parent );
-        super.createButton( composite, FORMAT_BUTTON_ID, "Format", false );
+        super.createButton( composite, FORMAT_BUTTON_ID, Messages.getString("FilterDialog.Format"), false ); //$NON-NLS-1$
         return composite;
     }
 

@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -169,7 +170,7 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
         StringBuffer sb = new StringBuffer();
         if ( valueList.size() > 1 )
         {
-            sb.append( valueList.size() + " values: " );
+            sb.append( NLS.bind( Messages.getString("EntryValueEditor.n_values"), valueList.size() ) ); //$NON-NLS-1$
         }
         for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
         {
@@ -179,7 +180,7 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
             sb.append( vp.getDisplayValue( value ) );
             if ( it.hasNext() )
             {
-                sb.append( ", " );
+                sb.append( ", " ); //$NON-NLS-1$
             }
         }
         return sb.toString();
@@ -194,7 +195,7 @@ public class MultivaluedValueEditor extends CellEditor implements IValueEditor
      */
     public String getDisplayValue( IValue value )
     {
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 

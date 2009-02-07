@@ -85,8 +85,8 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
     public NewEntryAttributesWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        setTitle( "Attributes" );
-        setDescription( "Please enter the attributes for the entry. Enter at least the MUST attributes." );
+        setTitle( Messages.getString("NewEntryAttributesWizardPage.Attributes") ); //$NON-NLS-1$
+        setDescription( Messages.getString("NewEntryAttributesWizardPage.PleaseEnterAttributesForEntry") ); //$NON-NLS-1$
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
@@ -211,7 +211,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         }
         else
         {
-            mainWidget.getViewer().setInput( "" );
+            mainWidget.getViewer().setInput( "" ); //$NON-NLS-1$
             mainWidget.getViewer().refresh();
             setPageComplete( false );
         }

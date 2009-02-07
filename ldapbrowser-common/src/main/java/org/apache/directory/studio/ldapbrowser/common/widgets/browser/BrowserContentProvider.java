@@ -282,7 +282,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             if ( objects == null )
             {
                 return new String[]
-                    { "Fetching Entries..." };
+                    { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
             }
             else if ( objects instanceof IEntry[] )
             {
@@ -303,7 +303,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
                     { rootDSE } ) ).execute();
                 return new String[]
-                    { "Fetching Entries..." };
+                    { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
             }
 
             // get base entries
@@ -331,7 +331,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
                     { parentEntry } ) ).execute();
                 return new String[]
-                    { "Fetching Entries..." };
+                    { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
             }
 
             int childrenCount = parentEntry.getChildrenCount();
@@ -363,7 +363,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 if ( results == null )
                 {
                     return new String[]
-                        { "Fetching Entries..." };
+                        { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
                 }
                 else
                 {
@@ -397,7 +397,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             if ( objects == null )
             {
                 return new String[]
-                    { "Fetching Search Results..." };
+                    { Messages.getString("BrowserContentProvider.FetchingSearchResults") }; //$NON-NLS-1$
             }
             else if ( objects instanceof ISearchResult[] )
             {
@@ -417,12 +417,12 @@ public class BrowserContentProvider implements ITreeContentProvider
                 new StudioBrowserJob( new SearchRunnable( new ISearch[]
                     { search } ) ).execute();
                 return new String[]
-                    { "Performing Search..." };
+                    { Messages.getString("BrowserContentProvider.PerformingSearch") }; //$NON-NLS-1$
             }
             else if ( search.getSearchResults().length == 0 )
             {
                 return new String[]
-                    { "No Results" };
+                    { Messages.getString("BrowserContentProvider.NoResults") }; //$NON-NLS-1$
             }
             else if ( search.getSearchResults().length <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
@@ -481,7 +481,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                         new StudioBrowserJob( new OpenConnectionsRunnable( browserConnection.getConnection() ) )
                             .execute();
                         return new String[]
-                            { "Opening Connection..." };
+                            { Messages.getString("BrowserContentProvider.OpeningConnection") }; //$NON-NLS-1$
                     }
 
                     return new Object[]

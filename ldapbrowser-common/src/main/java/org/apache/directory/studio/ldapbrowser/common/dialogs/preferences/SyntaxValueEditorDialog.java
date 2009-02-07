@@ -100,7 +100,7 @@ public class SyntaxValueEditorDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Attribute Value Editor" );
+        newShell.setText( Messages.getString("SyntaxValueEditorDialog.AttributeValueEditor") ); //$NON-NLS-1$
     }
 
 
@@ -123,7 +123,7 @@ public class SyntaxValueEditorDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         Composite c = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        BaseWidgetUtils.createLabel( c, "Syntax OID:", 1 );
+        BaseWidgetUtils.createLabel( c, Messages.getString("SyntaxValueEditorDialog.SyntaxOID"), 1 ); //$NON-NLS-1$
         oidCombo = BaseWidgetUtils.createCombo( c, syntaxOids, -1, 1 );
         if ( relation != null && relation.getSyntaxOID() != null )
         {
@@ -137,7 +137,7 @@ public class SyntaxValueEditorDialog extends Dialog
             }
         } );
 
-        BaseWidgetUtils.createLabel( c, "Value Editor:", 1 );
+        BaseWidgetUtils.createLabel( c, Messages.getString("SyntaxValueEditorDialog.ValueEditor"), 1 ); //$NON-NLS-1$
         valueEditorCombo = BaseWidgetUtils.createReadonlyCombo( c, veName2classMap.keySet().toArray( new String[0] ),
             -1, 1 );
         if ( relation != null && relation.getValueEditorClassName() != null
@@ -160,7 +160,7 @@ public class SyntaxValueEditorDialog extends Dialog
     private void validate()
     {
         super.getButton( IDialogConstants.OK_ID ).setEnabled(
-            !"".equals( valueEditorCombo.getText() ) && !"".equals( oidCombo.getText() ) );
+            !"".equals( valueEditorCombo.getText() ) && !"".equals( oidCombo.getText() ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
