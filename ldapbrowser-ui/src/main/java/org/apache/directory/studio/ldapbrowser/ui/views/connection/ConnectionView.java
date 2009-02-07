@@ -125,7 +125,7 @@ public class ConnectionView extends ViewPart
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_connections_view" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_connections_view" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // create configuration
         configuration = new ConnectionConfiguration();

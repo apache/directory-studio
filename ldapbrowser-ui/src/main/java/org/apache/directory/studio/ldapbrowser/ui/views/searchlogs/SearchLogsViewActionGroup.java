@@ -48,19 +48,19 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
     private SearchLogsView view;
 
     /** The Constant olderAction. */
-    private static final String olderAction = "olderAction";
+    private static final String olderAction = "olderAction"; //$NON-NLS-1$
 
     /** The Constant newerAction. */
-    private static final String newerAction = "newerAction";
+    private static final String newerAction = "newerAction"; //$NON-NLS-1$
 
     /** The Constant refreshAction. */
-    private static final String refreshAction = "refreshAction";
+    private static final String refreshAction = "refreshAction"; //$NON-NLS-1$
 
     /** The Constant refreshAction. */
-    private static final String clearAction = "clearAction";
+    private static final String clearAction = "clearAction"; //$NON-NLS-1$
 
     /** The Constant exportAction. */
-    private static final String exportAction = "exportAction";
+    private static final String exportAction = "exportAction"; //$NON-NLS-1$
 
     /** The enable search request logs action. */
     private EnableSearchRequestLogsAction enableSearchRequestLogsAction;

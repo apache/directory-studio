@@ -302,7 +302,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             {
                 TableItem item = cursor.getRow();
                 if ( cursor.getColumn() == 0
-                    && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) )
+                    && "DN".equalsIgnoreCase( cursor.getRow().getParent().getColumns()[0].getText() ) ) //$NON-NLS-1$
                 {
                     checkDnLink( item );
                 }
@@ -325,7 +325,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
                 TableItem item = viewer.getTable().getItem( new Point( e.x, e.y ) );
                 viewer.getTable().getColumns()[0].getWidth();
                 if ( e.x > 0 && e.x < viewer.getTable().getColumns()[0].getWidth()
-                    && "DN".equalsIgnoreCase( viewer.getTable().getColumns()[0].getText() ) )
+                    && "DN".equalsIgnoreCase( viewer.getTable().getColumns()[0].getText() ) ) //$NON-NLS-1$
                 {
                     checkDnLink( item );
                 }
@@ -466,7 +466,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         // create dn link control
         dnLink = new Hyperlink( viewer.getTable(), SWT.NONE );
         dnLink.setLayoutData( new GridData( SWT.BOTTOM, SWT.LEFT, true, true ) );
-        dnLink.setText( "" );
+        dnLink.setText( "" ); //$NON-NLS-1$
         dnLink.setMenu( viewer.getTable().getMenu() );
         tableEditor = new TableEditor( viewer.getTable() );
         tableEditor.horizontalAlignment = SWT.LEFT;
@@ -601,7 +601,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             if ( showDn )
             {
                 attributes = new String[selectedSearch.getReturningAttributes().length + 1];
-                attributes[0] = "DN";
+                attributes[0] = "DN"; //$NON-NLS-1$
                 System.arraycopy( selectedSearch.getReturningAttributes(), 0, attributes, 1, attributes.length - 1 );
             }
             else
@@ -651,7 +651,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         else
         {
             viewer.setInput( null );
-            columns[0].setText( "DN" );
+            columns[0].setText( "DN" ); //$NON-NLS-1$
             columns[0].pack();
             usedColumns = 1;
         }
@@ -660,7 +660,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
         for ( int i = usedColumns; i < columns.length; i++ )
         {
             columns[i].setWidth( 0 );
-            columns[i].setText( " " );
+            columns[i].setText( " " ); //$NON-NLS-1$
         }
 
         // refresh content provider (sorter and filter)
@@ -684,7 +684,7 @@ public class SearchResultEditorUniversalListener implements SearchUpdateListener
             for ( int i = columns.length; i < count; i++ )
             {
                 TableColumn column = new TableColumn( viewer.getTable(), SWT.LEFT );
-                column.setText( "" );
+                column.setText( "" ); //$NON-NLS-1$
                 column.setWidth( 0 );
                 column.setResizable( true );
                 column.setMoveable( true );

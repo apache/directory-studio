@@ -125,7 +125,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
             catch ( ArrayIndexOutOfBoundsException aioobe )
             {
                 // occurs on "invisible" columns
-                return "";
+                return ""; //$NON-NLS-1$
             }
 
         }
@@ -135,7 +135,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
         }
         else
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 
@@ -161,13 +161,13 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
         IValueEditor vp = valueEditorManager.getCurrentValueEditor( ah );
         if ( vp == null )
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
 
         String value = vp.getDisplayValue( ah );
         if ( value.length() > 50 )
         {
-            value = value.substring( 0, 47 ) + "...";
+            value = value.substring( 0, 47 ) + "..."; //$NON-NLS-1$
         }
         return value;
     }

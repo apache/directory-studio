@@ -111,7 +111,7 @@ public class ModificationLogsView extends ViewPart
         composite.setLayout( layout );
 
         // create main widget
-        mainWidget = new LdifEditorWidget( null, "", false );
+        mainWidget = new LdifEditorWidget( null, "", false ); //$NON-NLS-1$
         mainWidget.createWidget( composite );
         mainWidget.getSourceViewer().setEditable( false );
 
@@ -125,7 +125,7 @@ public class ModificationLogsView extends ViewPart
         
         // set help context
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainWidget.getSourceViewer().getTextWidget(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_modification_logs_view" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

@@ -276,7 +276,7 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
     {
         if ( input.getBrowserConnection().getConnection() != null )
         {
-            StringBuffer sb = new StringBuffer( "" );
+            StringBuffer sb = new StringBuffer( "" ); //$NON-NLS-1$
             FileWriter fw = null;
             LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
             File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
@@ -288,7 +288,7 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
                     if ( files[i] != null && files[i].exists() && !files[i].delete() )
                     {
                         fw = new FileWriter( files[i] );
-                        fw.write( "" );
+                        fw.write( "" ); //$NON-NLS-1$
                     }
     
                 }

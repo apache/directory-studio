@@ -56,7 +56,7 @@ public class SearchResultEditorFilter extends ViewerFilter
      */
     public SearchResultEditorFilter()
     {
-        this.quickFilterValue = "";
+        this.quickFilterValue = ""; //$NON-NLS-1$
     }
 
 
@@ -90,7 +90,7 @@ public class SearchResultEditorFilter extends ViewerFilter
      */
     public boolean isFiltered()
     {
-        return quickFilterValue != null && !"".equals( quickFilterValue );
+        return quickFilterValue != null && !"".equals( quickFilterValue ); //$NON-NLS-1$
     }
 
 

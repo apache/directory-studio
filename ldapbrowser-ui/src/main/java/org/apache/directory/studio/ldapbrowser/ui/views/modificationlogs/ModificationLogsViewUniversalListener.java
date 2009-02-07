@@ -231,7 +231,7 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
     {
         if ( input.getBrowserConnection().getConnection() != null )
         {
-            StringBuffer sb = new StringBuffer( "" );
+            StringBuffer sb = new StringBuffer( "" ); //$NON-NLS-1$
             FileWriter fw = null;
             LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault().getLdifModificationLogger();
             File[] files = modificationLogger.getFiles( input.getBrowserConnection().getConnection() );
@@ -243,7 +243,7 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
                     if ( files[i] != null && files[i].exists() && !files[i].delete() )
                     {
                         fw = new FileWriter( files[i] );
-                        fw.write( "" );
+                        fw.write( "" ); //$NON-NLS-1$
                     }
     
                 }

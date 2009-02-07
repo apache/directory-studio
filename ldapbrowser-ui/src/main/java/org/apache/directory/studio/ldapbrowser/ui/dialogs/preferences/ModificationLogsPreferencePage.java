@@ -135,7 +135,7 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
                 {
                     e.doit = false;
                 }
-                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$
+                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
                 {
                     e.doit = false;
                 }

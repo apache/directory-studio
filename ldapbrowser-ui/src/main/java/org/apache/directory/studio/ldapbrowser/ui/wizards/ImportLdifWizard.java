@@ -76,7 +76,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     public ImportLdifWizard()
     {
         super();
-        setWindowTitle( "LDIF Import" );
+        setWindowTitle( Messages.getString("ImportLdifWizard.LDIFImport") ); //$NON-NLS-1$
     }
 
 
@@ -87,7 +87,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      */
     public ImportLdifWizard( IBrowserConnection importConnection )
     {
-        super.setWindowTitle( "LDIF Import" );
+        super.setWindowTitle( Messages.getString("ImportLdifWizard.LDIFImport") ); //$NON-NLS-1$
         this.importConnection = importConnection;
     }
 
@@ -158,7 +158,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
         super.createPageControls( pageContainer );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( mainPage.getControl(),
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifimport_wizard" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_ldifimport_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -169,7 +169,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     {
         mainPage.saveDialogSettings();
 
-        if ( ldifFilename != null && !"".equals( ldifFilename ) )
+        if ( ldifFilename != null && !"".equals( ldifFilename ) ) //$NON-NLS-1$
         {
             File ldifFile = new File( ldifFilename );
 

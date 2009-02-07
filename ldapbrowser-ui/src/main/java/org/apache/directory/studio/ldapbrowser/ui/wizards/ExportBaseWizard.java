@@ -40,7 +40,7 @@ public abstract class ExportBaseWizard extends Wizard implements IExportWizard
 {
 
     /** The export filename. */
-    protected String exportFilename = "";
+    protected String exportFilename = ""; //$NON-NLS-1$
 
     /** The search. */
     protected ISearch search;
@@ -67,7 +67,7 @@ public abstract class ExportBaseWizard extends Wizard implements IExportWizard
     {
         search = BrowserSelectionUtils.getExampleSearch( selection );
         search.setName( null );
-        exportFilename = "";
+        exportFilename = ""; //$NON-NLS-1$
     }
 
 

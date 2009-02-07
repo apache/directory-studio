@@ -158,7 +158,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_result_editor" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_result_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // create configuration
         configuration = new SearchResultEditorConfiguration( this );

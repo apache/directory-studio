@@ -154,7 +154,7 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_entry_editor" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_entry_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // create configuration
         configuration = new EntryEditorConfiguration();

@@ -163,12 +163,12 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
         spw.loadFromSearch( search );
         spw.addWidgetModifyListener( this );
 
-        errorMessageLabel = BaseWidgetUtils.createLabel( parent, "", 3 );
+        errorMessageLabel = BaseWidgetUtils.createLabel( parent, "", 3 ); //$NON-NLS-1$
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_dialog" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_dialog" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_search_dialog" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         super.setControl( parent );
     }
@@ -192,7 +192,7 @@ public class SearchPage extends DialogPage implements ISearchPage, WidgetModifyL
         container.setPerformActionEnabled( spw.isValid() );
 
         setErrorMessage( spw.getErrorMessage() );
-        errorMessageLabel.setText( getErrorMessage() != null ? getErrorMessage() : "" );
+        errorMessageLabel.setText( getErrorMessage() != null ? getErrorMessage() : "" ); //$NON-NLS-1$
     }
 
 }

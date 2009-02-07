@@ -136,7 +136,7 @@ public class BrowserView extends ViewPart
         composite.setLayout( layout );
 
         PlatformUI.getWorkbench().getHelpSystem().setHelp( composite,
-            BrowserUIConstants.PLUGIN_ID + "." + "tools_browser_view" );
+            BrowserUIConstants.PLUGIN_ID + "." + "tools_browser_view" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // create configuration
         configuration = new BrowserConfiguration();

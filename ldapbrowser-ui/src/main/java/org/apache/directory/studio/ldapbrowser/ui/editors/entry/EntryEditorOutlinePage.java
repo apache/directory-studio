@@ -419,14 +419,14 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
             else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
                 List<?> list = ( List<?> ) element;
-                return ( ( LdifAttrValLine ) list.get( 0 ) ).getUnfoldedAttributeDescription() + " (" + list.size()
-                    + ")";
+                return ( ( LdifAttrValLine ) list.get( 0 ) ).getUnfoldedAttributeDescription() + " (" + list.size() //$NON-NLS-1$
+                    + ")"; //$NON-NLS-1$
             }
             else if ( element instanceof LdifModSpec )
             {
                 LdifModSpec modSpec = ( LdifModSpec ) element;
-                return modSpec.getModSpecType().getUnfoldedAttributeDescription() + " (" + modSpec.getAttrVals().length
-                    + ")";
+                return modSpec.getModSpecType().getUnfoldedAttributeDescription() + " (" + modSpec.getAttrVals().length //$NON-NLS-1$
+                    + ")"; //$NON-NLS-1$
             }
 
             // AttrValLine
@@ -438,7 +438,7 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
 
             else
             {
-                return "";
+                return ""; //$NON-NLS-1$
             }
         }
 

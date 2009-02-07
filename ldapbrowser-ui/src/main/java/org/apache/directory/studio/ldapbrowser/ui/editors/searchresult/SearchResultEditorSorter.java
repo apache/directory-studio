@@ -320,7 +320,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         }
         else
         {
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
 

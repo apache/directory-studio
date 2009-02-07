@@ -93,7 +93,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         layout.addShowViewShortcut( ModificationLogsView.getId() );
         layout.addShowViewShortcut( SearchLogsView.getId() );
         layout.addShowViewShortcut( IPageLayout.ID_OUTLINE );
-        layout.addShowViewShortcut( "org.eclipse.ui.views.ProgressView" );
+        layout.addShowViewShortcut( "org.eclipse.ui.views.ProgressView" ); //$NON-NLS-1$
     }
 
 
@@ -109,30 +109,30 @@ public class BrowserPerspective implements IPerspectiveFactory
         String editorArea = layout.getEditorArea();
 
         // Browser folder
-        IFolderLayout browserFolder = layout.createFolder( "browserFolder", IPageLayout.LEFT, ( float ) 0.25,
+        IFolderLayout browserFolder = layout.createFolder( "browserFolder", IPageLayout.LEFT, ( float ) 0.25, //$NON-NLS-1$
             editorArea );
         browserFolder.addView( BrowserView.getId() );
 
         // Connection folder
-        IFolderLayout connectionFolder = layout.createFolder( "connectionFolder", IPageLayout.BOTTOM, ( float ) 0.75,
-            "browserFolder" );
+        IFolderLayout connectionFolder = layout.createFolder( "connectionFolder", IPageLayout.BOTTOM, ( float ) 0.75, //$NON-NLS-1$
+            "browserFolder" ); //$NON-NLS-1$
         connectionFolder.addView( ConnectionView.getId() );
 
         // Outline folder
-        IFolderLayout outlineFolder = layout.createFolder( "outlineFolder", IPageLayout.RIGHT, ( float ) 0.75,
+        IFolderLayout outlineFolder = layout.createFolder( "outlineFolder", IPageLayout.RIGHT, ( float ) 0.75, //$NON-NLS-1$
             editorArea );
         outlineFolder.addView( IPageLayout.ID_OUTLINE );
 
         // Progress folder
-        IFolderLayout progessFolder = layout.createFolder( "progressFolder", IPageLayout.BOTTOM, ( float ) 0.75,
-            "outlineFolder" );
-        progessFolder.addView( "org.eclipse.ui.views.ProgressView" );
+        IFolderLayout progessFolder = layout.createFolder( "progressFolder", IPageLayout.BOTTOM, ( float ) 0.75, //$NON-NLS-1$
+            "outlineFolder" ); //$NON-NLS-1$
+        progessFolder.addView( "org.eclipse.ui.views.ProgressView" ); //$NON-NLS-1$
 
         // Log folder
-        IFolderLayout logFolder = layout.createFolder( "logFolder", IPageLayout.BOTTOM, ( float ) 0.75, editorArea );
+        IFolderLayout logFolder = layout.createFolder( "logFolder", IPageLayout.BOTTOM, ( float ) 0.75, editorArea ); //$NON-NLS-1$
         logFolder.addView( ModificationLogsView.getId() );
         logFolder.addView( SearchLogsView.getId() );
-        logFolder.addPlaceholder( "*" );
+        logFolder.addPlaceholder( "*" ); //$NON-NLS-1$
 
         // non-closable?
         boolean isIDE = BrowserCommonActivator.isIDEEnvironment();
@@ -141,7 +141,7 @@ public class BrowserPerspective implements IPerspectiveFactory
             layout.getViewLayout( BrowserView.getId() ).setCloseable( false );
             layout.getViewLayout( ConnectionView.getId() ).setCloseable( false );
             layout.getViewLayout( IPageLayout.ID_OUTLINE ).setCloseable( false );
-            layout.getViewLayout( "org.eclipse.ui.views.ProgressView" ).setCloseable( false );
+            layout.getViewLayout( "org.eclipse.ui.views.ProgressView" ).setCloseable( false ); //$NON-NLS-1$
             layout.getViewLayout( ModificationLogsView.getId() ).setCloseable( false );
         }
     }
