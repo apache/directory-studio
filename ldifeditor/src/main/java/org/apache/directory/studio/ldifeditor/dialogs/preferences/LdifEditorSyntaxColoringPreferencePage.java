@@ -60,34 +60,34 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
     ILdifEditor
 {
 
-    private static final String LDIF_INITIAL = "" + "# Content record" + BrowserCoreConstants.LINE_SEPARATOR
-        + "dn: cn=content record" + BrowserCoreConstants.LINE_SEPARATOR + "objectClass: person"
-        + BrowserCoreConstants.LINE_SEPARATOR + "cn: content record" + BrowserCoreConstants.LINE_SEPARATOR
-        + "cn;lang-ja:: 5Za25qWt6YOo" + BrowserCoreConstants.LINE_SEPARATOR + "" + BrowserCoreConstants.LINE_SEPARATOR
+    private static final String LDIF_INITIAL = "" + "# Content record" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$ //$NON-NLS-2$
+        + "dn: cn=content record" + BrowserCoreConstants.LINE_SEPARATOR + "objectClass: person" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "cn: content record" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
+        + "cn;lang-ja:: 5Za25qWt6YOo" + BrowserCoreConstants.LINE_SEPARATOR + "" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$ //$NON-NLS-2$
 
-        + "# Add record with control" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=add record"
-        + BrowserCoreConstants.LINE_SEPARATOR + "control: 1.2.3.4 true: controlValue"
-        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: add" + BrowserCoreConstants.LINE_SEPARATOR
-        + "objectClass: person" + BrowserCoreConstants.LINE_SEPARATOR + "cn: add record"
-        + BrowserCoreConstants.LINE_SEPARATOR + "" + BrowserCoreConstants.LINE_SEPARATOR
+        + "# Add record with control" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=add record" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "control: 1.2.3.4 true: controlValue" //$NON-NLS-1$
+        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: add" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
+        + "objectClass: person" + BrowserCoreConstants.LINE_SEPARATOR + "cn: add record" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
 
-        + "# Modify record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=modify record"
-        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR + "add: cn"
-        + BrowserCoreConstants.LINE_SEPARATOR + "cn: modify record" + BrowserCoreConstants.LINE_SEPARATOR + "-"
-        + BrowserCoreConstants.LINE_SEPARATOR + "delete: cn" + BrowserCoreConstants.LINE_SEPARATOR + "-"
-        + BrowserCoreConstants.LINE_SEPARATOR + "replace: cn" + BrowserCoreConstants.LINE_SEPARATOR
-        + "cn: modify record" + BrowserCoreConstants.LINE_SEPARATOR + "-" + BrowserCoreConstants.LINE_SEPARATOR + ""
+        + "# Modify record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=modify record" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR + "add: cn" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "cn: modify record" + BrowserCoreConstants.LINE_SEPARATOR + "-" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "delete: cn" + BrowserCoreConstants.LINE_SEPARATOR + "-" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "replace: cn" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
+        + "cn: modify record" + BrowserCoreConstants.LINE_SEPARATOR + "-" + BrowserCoreConstants.LINE_SEPARATOR + "" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         + BrowserCoreConstants.LINE_SEPARATOR
 
-        + "# Delete record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=delete record"
-        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR + ""
+        + "# Delete record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=delete record" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR + "" //$NON-NLS-1$ //$NON-NLS-2$
         + BrowserCoreConstants.LINE_SEPARATOR
 
-        + "# Modify DN record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=moddn record"
-        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: moddn" + BrowserCoreConstants.LINE_SEPARATOR
-        + "newrdn: cn=new rdn" + BrowserCoreConstants.LINE_SEPARATOR + "deleteoldrdn: 1"
-        + BrowserCoreConstants.LINE_SEPARATOR + "newsuperior: cn=new superior" + BrowserCoreConstants.LINE_SEPARATOR
-        + "" + BrowserCoreConstants.LINE_SEPARATOR;
+        + "# Modify DN record" + BrowserCoreConstants.LINE_SEPARATOR + "dn: cn=moddn record" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "changetype: moddn" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
+        + "newrdn: cn=new rdn" + BrowserCoreConstants.LINE_SEPARATOR + "deleteoldrdn: 1" //$NON-NLS-1$ //$NON-NLS-2$
+        + BrowserCoreConstants.LINE_SEPARATOR + "newsuperior: cn=new superior" + BrowserCoreConstants.LINE_SEPARATOR //$NON-NLS-1$
+        + "" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
     private LdifEditorWidget ldifEditorWidget;
 
@@ -191,7 +191,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
     public LdifEditorSyntaxColoringPreferencePage()
     {
-        super( "Syntax Coloring" );
+        super( Messages.getString("LdifEditorSyntaxColoringPreferencePage.SyntaxColoring") ); //$NON-NLS-1$
         super.setPreferenceStore( LdifEditorActivator.getDefault().getPreferenceStore() );
         // super.setDescription("");
     }
@@ -231,21 +231,21 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         createPreviewer( composite );
 
         syntaxItems = new SyntaxItem[10];
-        syntaxItems[0] = new SyntaxItem( "Comments", LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT );
-        syntaxItems[1] = new SyntaxItem( "DN", LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN );
-        syntaxItems[2] = new SyntaxItem( "Attribute Descriptions",
+        syntaxItems[0] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.Comments"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT ); //$NON-NLS-1$
+        syntaxItems[1] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.DN"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN ); //$NON-NLS-1$
+        syntaxItems[2] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.AttributeDescriptions"), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE );
-        syntaxItems[3] = new SyntaxItem( "Value Types", LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE );
-        syntaxItems[4] = new SyntaxItem( "Values", LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE );
-        syntaxItems[5] = new SyntaxItem( "Keywords (w/o changetypes)",
+        syntaxItems[3] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ValueTypes"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE ); //$NON-NLS-1$
+        syntaxItems[4] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.Values"), LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE ); //$NON-NLS-1$
+        syntaxItems[5] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.Keywords"), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD );
-        syntaxItems[6] = new SyntaxItem( "Changetype 'add'",
+        syntaxItems[6] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeAdd"), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD );
-        syntaxItems[7] = new SyntaxItem( "Changetype 'modify'",
+        syntaxItems[7] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeModify"), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY );
-        syntaxItems[8] = new SyntaxItem( "Changetype 'delete'",
+        syntaxItems[8] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeDelete"), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE );
-        syntaxItems[9] = new SyntaxItem( "Changetype 'moddn'",
+        syntaxItems[9] = new SyntaxItem( Messages.getString("LdifEditorSyntaxColoringPreferencePage.ChangetypeModdn"), //$NON-NLS-1$
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN );
         syntaxItemViewer.setInput( syntaxItems );
         syntaxItemViewer.setSelection( new StructuredSelection( syntaxItems[0] ) );
@@ -257,7 +257,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
     private void createSyntaxPage( Composite parent )
     {
 
-        BaseWidgetUtils.createLabel( parent, "Element:", 1 );
+        BaseWidgetUtils.createLabel( parent, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Element"), 1 ); //$NON-NLS-1$
 
         Composite editorComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
 
@@ -273,12 +273,12 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
         Composite stylesComposite = BaseWidgetUtils.createColumnContainer( editorComposite, 1, 1 );
         stylesComposite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         Composite colorComposite = BaseWidgetUtils.createColumnContainer( stylesComposite, 2, 1 );
-        BaseWidgetUtils.createLabel( colorComposite, "Color:", 1 );
+        BaseWidgetUtils.createLabel( colorComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Color"), 1 ); //$NON-NLS-1$
         colorSelector = new ColorSelector( colorComposite );
-        boldCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, "Bold", 1 );
-        italicCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, "Italic", 1 );
-        strikethroughCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, "Strikethrough", 1 );
-        underlineCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, "Underline", 1 );
+        boldCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Bold"), 1 ); //$NON-NLS-1$
+        italicCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Italic"), 1 ); //$NON-NLS-1$
+        strikethroughCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Strikethrough"), 1 ); //$NON-NLS-1$
+        underlineCheckBox = BaseWidgetUtils.createCheckbox( stylesComposite, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Underline"), 1 ); //$NON-NLS-1$
 
         syntaxItemViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
@@ -416,7 +416,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
     private void createPreviewer( Composite parent )
     {
 
-        BaseWidgetUtils.createLabel( parent, "Preview:", 1 );
+        BaseWidgetUtils.createLabel( parent, Messages.getString("LdifEditorSyntaxColoringPreferencePage.Preview"), 1 ); //$NON-NLS-1$
 
         ldifEditorWidget = new LdifEditorWidget( null, LDIF_INITIAL, false );
         ldifEditorWidget.createWidget( parent );

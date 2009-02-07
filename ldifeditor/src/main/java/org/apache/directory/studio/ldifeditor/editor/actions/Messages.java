@@ -21,34 +21,31 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 
-public class OpenDefaultValueEditorAction extends AbstractLdifAction
+public class Messages
 {
+    private static final String BUNDLE_NAME = "org.apache.directory.studio.ldifeditor.editor.actions.messages"; //$NON-NLS-1$
 
-    private OpenBestValueEditorAction proxy;
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle( BUNDLE_NAME );
 
 
-    public OpenDefaultValueEditorAction( LdifEditor editor, OpenBestValueEditorAction proxy )
+    private Messages()
     {
-        super( Messages.getString("OpenDefaultValueEditorAction.EditValue"), editor ); //$NON-NLS-1$
-        super.setActionDefinitionId( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
-        this.proxy = proxy;
     }
 
 
-    public void update()
+    public static String getString( String key )
     {
-        this.proxy.update();
-        super.setEnabled( this.proxy.isEnabled() );
+        try
+        {
+            return RESOURCE_BUNDLE.getString( key );
+        }
+        catch ( MissingResourceException e )
+        {
+            return '!' + key + '!';
+        }
     }
-
-
-    protected void doRun()
-    {
-        this.proxy.run();
-    }
-
 }

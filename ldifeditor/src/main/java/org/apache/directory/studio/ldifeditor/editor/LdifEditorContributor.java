@@ -54,7 +54,7 @@ public class LdifEditorContributor extends BasicTextEditorActionContributor
         super();
 
         contentAssist = new RetargetTextEditorAction( LdifEditorActivator.getDefault().getResourceBundle(),
-            "ContentAssistProposal." );
+            "ContentAssistProposal." ); //$NON-NLS-1$
         contentAssist.setActionDefinitionId( ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS );
     }
 

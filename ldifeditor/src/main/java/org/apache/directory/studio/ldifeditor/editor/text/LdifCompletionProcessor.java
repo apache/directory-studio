@@ -67,21 +67,21 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
 {
 
     // private final static String DN = "dn: ";
-    private final static String CT_ADD = "changetype: add" + BrowserCoreConstants.LINE_SEPARATOR;
+    private final static String CT_ADD = "changetype: add" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
-    private final static String CT_MODIFY = "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR;
+    private final static String CT_MODIFY = "changetype: modify" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
-    private final static String CT_DELETE = "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR;
+    private final static String CT_DELETE = "changetype: delete" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
-    private final static String CT_MODDN = "changetype: moddn" + BrowserCoreConstants.LINE_SEPARATOR;
+    private final static String CT_MODDN = "changetype: moddn" + BrowserCoreConstants.LINE_SEPARATOR; //$NON-NLS-1$
 
-    private final static String MD_NEWRDN = "newrdn: ";
+    private final static String MD_NEWRDN = "newrdn: "; //$NON-NLS-1$
 
-    private final static String MD_DELETEOLDRDN_TRUE = "deleteoldrdn: 1";
+    private final static String MD_DELETEOLDRDN_TRUE = "deleteoldrdn: 1"; //$NON-NLS-1$
 
     // private final static String MD_DELETEOLDRDN_FALSE = "deleteoldrdn:
     // 0";
-    private final static String MD_NEWSUPERIOR = "newsuperior: ";
+    private final static String MD_NEWSUPERIOR = "newsuperior: "; //$NON-NLS-1$
 
     private final ILdifEditor editor;
 
@@ -114,7 +114,7 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
         LdifPart part = container != null ? LdifFile.getContainerContent( container, offset ) : null;
         int documentLine = -1;
         int documentLineOffset = -1;
-        String prefix = "";
+        String prefix = ""; //$NON-NLS-1$
         try
         {
             documentLine = viewer.getDocument().getLineOfOffset( offset );
@@ -212,7 +212,7 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
             {
 
                 String rawAttributeDescription = prefix;
-                String rawValueType = "";
+                String rawValueType = ""; //$NON-NLS-1$
 
                 if ( part instanceof LdifAttrValLine )
                 {
@@ -239,11 +239,11 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
                             {
                                 if ( SchemaUtils.isBinary( schema.getAttributeTypeDescription( proposal ), schema ) )
                                 {
-                                    proposal += ":: ";
+                                    proposal += ":: "; //$NON-NLS-1$
                                 }
                                 else
                                 {
-                                    proposal += ": ";
+                                    proposal += ": "; //$NON-NLS-1$
                                 }
                             }
 
@@ -261,8 +261,8 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
         if ( documentLineOffset == offset )
         {
             commentOnly = proposalList.isEmpty();
-            proposalList.add( new CompletionProposal( "# ", offset, 0, 2, LdifEditorActivator.getDefault().getImage(
-                LdifEditorConstants.IMG_LDIF_COMMENT ), "# - Comment", null, null ) );
+            proposalList.add( new CompletionProposal( "# ", offset, 0, 2, LdifEditorActivator.getDefault().getImage( //$NON-NLS-1$
+                LdifEditorConstants.IMG_LDIF_COMMENT ), "# - Comment", null, null ) ); //$NON-NLS-1$
         }
 
         // adjust auto-insert
@@ -351,7 +351,7 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
         LdifPart part = container != null ? LdifFile.getContainerContent( container, offset ) : null;
         int documentLine = -1;
         int documentLineOffset = -1;
-        String prefix = "";
+        String prefix = ""; //$NON-NLS-1$
         try
         {
             documentLine = viewer.getDocument().getLineOfOffset( offset );
@@ -373,9 +373,9 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
             return LdifEditorActivator.getDefault().getLdifTemplateContextTypeRegistry().getContextType(
                 LdifEditorConstants.LDIF_FILE_TEMPLATE_ID );
         }
-        if ( ( container instanceof LdifInvalidContainer && part instanceof LdifInvalidPart && "d".equals( prefix ) )
-            || ( container instanceof LdifContentRecord && part instanceof LdifInvalidPart && "dn".equals( prefix ) )
-            || ( container instanceof LdifContentRecord && part instanceof LdifInvalidPart && "dn:".equals( prefix ) ) )
+        if ( ( container instanceof LdifInvalidContainer && part instanceof LdifInvalidPart && "d".equals( prefix ) ) //$NON-NLS-1$
+            || ( container instanceof LdifContentRecord && part instanceof LdifInvalidPart && "dn".equals( prefix ) ) //$NON-NLS-1$
+            || ( container instanceof LdifContentRecord && part instanceof LdifInvalidPart && "dn:".equals( prefix ) ) ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getLdifTemplateContextTypeRegistry().getContextType(
                 LdifEditorConstants.LDIF_FILE_TEMPLATE_ID );
@@ -417,36 +417,36 @@ public class LdifCompletionProcessor extends TemplateCompletionProcessor
     protected Image getImage( Template template )
     {
 
-        if ( template.getPattern().indexOf( "add: " ) > -1 )
+        if ( template.getPattern().indexOf( "add: " ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_ADD );
         }
-        else if ( template.getPattern().indexOf( "replace: " ) > -1 )
+        else if ( template.getPattern().indexOf( "replace: " ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_REPLACE );
         }
-        else if ( template.getPattern().indexOf( "delete: " ) > -1 )
+        else if ( template.getPattern().indexOf( "delete: " ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_DELETE );
         }
 
-        else if ( template.getPattern().indexOf( "changetype: add" ) > -1 )
+        else if ( template.getPattern().indexOf( "changetype: add" ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_ADD );
         }
-        else if ( template.getPattern().indexOf( "changetype: modify" ) > -1 )
+        else if ( template.getPattern().indexOf( "changetype: modify" ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MODIFY );
         }
-        else if ( template.getPattern().indexOf( "changetype: delete" ) > -1 )
+        else if ( template.getPattern().indexOf( "changetype: delete" ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_DELETE );
         }
-        else if ( template.getPattern().indexOf( "changetype: moddn" ) > -1 )
+        else if ( template.getPattern().indexOf( "changetype: moddn" ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_RENAME );
         }
-        else if ( template.getPattern().indexOf( "dn: " ) > -1 )
+        else if ( template.getPattern().indexOf( "dn: " ) > -1 ) //$NON-NLS-1$
         {
             return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_ENTRY );
         }

@@ -40,7 +40,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 class LdifAnnotationUpdater
 {
 
-    private static final String ERROR_ANNOTATION_TYPE = "org.eclipse.ui.workbench.texteditor.error";
+    private static final String ERROR_ANNOTATION_TYPE = "org.eclipse.ui.workbench.texteditor.error"; //$NON-NLS-1$
 
     private ILdifEditor editor;
 

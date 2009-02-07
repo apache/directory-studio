@@ -30,7 +30,7 @@ import org.eclipse.jface.text.rules.Token;
 public class LdifPartitionScanner extends RuleBasedPartitionScanner
 {
 
-    public final static String LDIF_RECORD = "__ldif_record";
+    public final static String LDIF_RECORD = "__ldif_record"; //$NON-NLS-1$
 
 
     public LdifPartitionScanner()

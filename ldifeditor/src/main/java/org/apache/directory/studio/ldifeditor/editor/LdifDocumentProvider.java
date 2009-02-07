@@ -253,8 +253,8 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
             {
                 reader = new FileReader( ( ( IPathEditorInput ) input ).getPath().toFile() );
             }
-            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
             // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
             // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
             // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
@@ -382,8 +382,8 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
             IPath path = pei.getPath();
             file = path.toFile();
         }
-        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
         // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
         // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
         // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
@@ -470,8 +470,8 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
             File file = pei.getPath().toFile();
             return file.canWrite() || !file.exists(); // Allow to edit new files
         }
-        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+        else if ( elementClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+            || elementClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
         // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
         // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
         // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when

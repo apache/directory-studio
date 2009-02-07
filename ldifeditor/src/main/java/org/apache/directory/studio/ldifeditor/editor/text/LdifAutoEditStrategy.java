@@ -70,7 +70,7 @@ public class LdifAutoEditStrategy implements IAutoEditStrategy
                 {
                     LdifModSpec modSpec = ( LdifModSpec ) innerContainer;
                     String att = modSpec.getModSpecType().getUnfoldedAttributeDescription();
-                    c.text += att + ": ";
+                    c.text += att + ": "; //$NON-NLS-1$
                 }
             }
         }

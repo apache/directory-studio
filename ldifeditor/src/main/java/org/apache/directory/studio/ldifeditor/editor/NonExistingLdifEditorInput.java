@@ -178,7 +178,7 @@ public class NonExistingLdifEditorInput implements IPathEditorInput, ILocationPr
      */
     public IPath getPath()
     {
-        return LdifEditorActivator.getDefault().getStateLocation().append( name + ".ldif" );
+        return LdifEditorActivator.getDefault().getStateLocation().append( name + ".ldif" ); //$NON-NLS-1$
     }
 
 }

@@ -83,7 +83,7 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
      */
     public LdifEditorPreferencePage()
     {
-        super( "LDIF Editor" );
+        super( Messages.getString("LdifEditorPreferencePage.LDIFEditor") ); //$NON-NLS-1$
         super.setPreferenceStore( LdifEditorActivator.getDefault().getPreferenceStore() );
     }
 
@@ -112,7 +112,7 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
         composite.setLayout( layout );
         composite.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        String text = "See <a>Text Editors</a> for the general text editor preferences.";
+        String text = Messages.getString("LdifEditorPreferencePage.LinkToTextEditors"); //$NON-NLS-1$
         Link link = BaseWidgetUtils.createLink( composite, text, 1 );
         link.addSelectionListener( new SelectionAdapter()
         {
@@ -122,7 +122,7 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
                     "org.eclipse.ui.preferencePages.GeneralTextEditor", null, null ); //$NON-NLS-1$
             }
         } );
-        String text2 = "See <a>Text Formats</a> for LDIF format preferences.";
+        String text2 = Messages.getString("LdifEditorPreferencePage.LinkToTextFormats"); //$NON-NLS-1$
         Link link2 = BaseWidgetUtils.createLink( composite, text2, 1 );
         link2.addSelectionListener( new SelectionAdapter()
         {
@@ -137,9 +137,9 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group foldGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Folding", 1 );
+            Messages.getString("LdifEditorPreferencePage.Folding"), 1 ); //$NON-NLS-1$
 
-        enableFoldingButton = BaseWidgetUtils.createCheckbox( foldGroup, "Enable Folding", 1 );
+        enableFoldingButton = BaseWidgetUtils.createCheckbox( foldGroup, Messages.getString("LdifEditorPreferencePage.EnableFolding"), 1 ); //$NON-NLS-1$
         enableFoldingButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_ENABLE ) );
         enableFoldingButton.addSelectionListener( new SelectionAdapter()
@@ -151,23 +151,23 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
         } );
 
         Composite initiallyFoldComposiste = BaseWidgetUtils.createColumnContainer( foldGroup, 4, 1 );
-        initiallyFoldLabel = BaseWidgetUtils.createLabel( initiallyFoldComposiste, "Initially fold:", 1 );
-        initiallyFoldCommentsButton = BaseWidgetUtils.createCheckbox( initiallyFoldComposiste, "Comments", 1 );
+        initiallyFoldLabel = BaseWidgetUtils.createLabel( initiallyFoldComposiste, Messages.getString("LdifEditorPreferencePage.InitiallyFold"), 1 ); //$NON-NLS-1$
+        initiallyFoldCommentsButton = BaseWidgetUtils.createCheckbox( initiallyFoldComposiste, Messages.getString("LdifEditorPreferencePage.Comments"), 1 ); //$NON-NLS-1$
         initiallyFoldCommentsButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_INITIALLYFOLDCOMMENTS ) );
-        initiallyFoldRecordsButton = BaseWidgetUtils.createCheckbox( initiallyFoldComposiste, "Records", 1 );
+        initiallyFoldRecordsButton = BaseWidgetUtils.createCheckbox( initiallyFoldComposiste, Messages.getString("LdifEditorPreferencePage.Records"), 1 ); //$NON-NLS-1$
         initiallyFoldRecordsButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_INITIALLYFOLDRECORDS ) );
-        initiallyFoldWrappedLinesButton = BaseWidgetUtils.createCheckbox( initiallyFoldComposiste, "Wrapped lines", 1 );
+        initiallyFoldWrappedLinesButton = BaseWidgetUtils.createCheckbox( initiallyFoldComposiste, Messages.getString("LdifEditorPreferencePage.WrappedLines"), 1 ); //$NON-NLS-1$
         initiallyFoldWrappedLinesButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_INITIALLYFOLDWRAPPEDLINES ) );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group doubleClickGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Double Click Behaviour", 1 );
+            Messages.getString("LdifEditorPreferencePage.DoubleClickBehaviour"), 1 ); //$NON-NLS-1$
         useLdifDoubleClickButton = BaseWidgetUtils.createCheckbox( doubleClickGroup,
-            "Select whole attribute or value on double click", 1 );
+            Messages.getString("LdifEditorPreferencePage.SelectWholeAttributeOnDoubleClick"), 1 ); //$NON-NLS-1$
         useLdifDoubleClickButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_DOUBLECLICK_USELDIFDOUBLECLICK ) );
 
@@ -175,16 +175,16 @@ public class LdifEditorPreferencePage extends PreferencePage implements IWorkben
 
         // Options
         Group optionsGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            "Execute Options", 1 );
+            Messages.getString("LdifEditorPreferencePage.ExecuteOptions"), 1 ); //$NON-NLS-1$
 
-        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsGroup, "Update existing entries", 1 );
+        updateIfEntryExistsButton = BaseWidgetUtils.createCheckbox( optionsGroup, Messages.getString("LdifEditorPreferencePage.UpdateExistingEntries"), 1 ); //$NON-NLS-1$
         updateIfEntryExistsButton
-            .setToolTipText( "This options applies for LDIF content records and LDIF add records. "
-                + "If enabled and the entry to add already exists it will be updated with the attributes defined in the LDIF record." );
+            .setToolTipText( Messages.getString("LdifEditorPreferencePage.UpdateExistingEntriesToolTip1") //$NON-NLS-1$
+                + Messages.getString("LdifEditorPreferencePage.UpdateExistingEntriesToolTip2") ); //$NON-NLS-1$
         updateIfEntryExistsButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS ) );
 
-        continueOnErrorButton = BaseWidgetUtils.createCheckbox( optionsGroup, "Continue on error", 1 );
+        continueOnErrorButton = BaseWidgetUtils.createCheckbox( optionsGroup, Messages.getString("LdifEditorPreferencePage.ContinueOnError"), 1 ); //$NON-NLS-1$
         continueOnErrorButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR ) );
 

@@ -396,7 +396,7 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
                 else
                 {
                     // TODO
-                    System.out.println( "LdifDamagerRepairer: Unspecified Token: " + parts[i].getClass() );
+                    System.out.println( "LdifDamagerRepairer: Unspecified Token: " + parts[i].getClass() ); //$NON-NLS-1$
                 }
 
             }

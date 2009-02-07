@@ -76,7 +76,7 @@ public class LdifEditorActivator extends AbstractUIPlugin
         
         try
         {
-            resourceBundle = ResourceBundle.getBundle( "org.apache.directory.studio.ldifeditor.messages" );
+            resourceBundle = ResourceBundle.getBundle( "org.apache.directory.studio.ldifeditor.messages" ); //$NON-NLS-1$
         }
         catch ( MissingResourceException x )
         {
@@ -121,7 +121,7 @@ public class LdifEditorActivator extends AbstractUIPlugin
         if ( ldifTemplateStore == null )
         {
             ldifTemplateStore = new ContributionTemplateStore( getLdifTemplateContextTypeRegistry(),
-                getPreferenceStore(), "templates" );
+                getPreferenceStore(), "templates" ); //$NON-NLS-1$
             try
             {
                 ldifTemplateStore.load();
@@ -298,15 +298,15 @@ public class LdifEditorActivator extends AbstractUIPlugin
             try
             {
                 properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
-                    "plugin.properties" ), false ) );
+                    "plugin.properties" ), false ) ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.ldifeditor", Status.OK,
-                        "Unable to get the plugin properties.", e ) );
+                    new Status( Status.ERROR, "org.apache.directory.studio.ldifeditor", Status.OK, //$NON-NLS-1$
+                        "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
             }
         }
 

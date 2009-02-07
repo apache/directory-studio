@@ -55,7 +55,7 @@ import org.eclipse.ui.contexts.IContextService;
 public class LdifEntryEditorDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = "LDIF Record Editor";
+    public static final String DIALOG_TITLE = Messages.getString("LdifEntryEditorDialog.LDIFRecordEditor"); //$NON-NLS-1$
 
     public static final int MAX_WIDTH = 450;
 

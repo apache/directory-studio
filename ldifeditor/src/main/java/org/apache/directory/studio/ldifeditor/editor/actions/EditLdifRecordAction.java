@@ -37,7 +37,7 @@ public class EditLdifRecordAction extends AbstractLdifAction
 
     public EditLdifRecordAction( LdifEditor editor )
     {
-        super( "Edit Record", editor );
+        super( Messages.getString("EditLdifRecordAction.EditRecord"), editor ); //$NON-NLS-1$
         super.setActionDefinitionId( LdifEditorConstants.ACTION_ID_EDIT_RECORD );
     }
 

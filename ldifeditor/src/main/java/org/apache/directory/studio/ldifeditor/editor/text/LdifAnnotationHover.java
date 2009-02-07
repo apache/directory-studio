@@ -60,7 +60,7 @@ public class LdifAnnotationHover implements IAnnotationHover
                     {
                         // return container.getClass().getName() + " - " +
                         // part.getClass().getName();
-                        return container.getInvalidString() + " - " + part.getInvalidString();
+                        return container.getInvalidString() + " - " + part.getInvalidString(); //$NON-NLS-1$
                     }
                 }
             }

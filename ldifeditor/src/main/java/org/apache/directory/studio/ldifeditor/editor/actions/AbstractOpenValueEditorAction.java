@@ -59,7 +59,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
     public AbstractOpenValueEditorAction( LdifEditor editor )
     {
-        super( "Edit Value", editor );
+        super( Messages.getString("AbstractOpenValueEditorAction.EditValue"), editor ); //$NON-NLS-1$
         valueEditorManager = editor.getValueEditorManager();
     }
 
@@ -213,7 +213,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
 
             if ( line instanceof LdifControlLine )
             {
-                attributeDescription = "";
+                attributeDescription = ""; //$NON-NLS-1$
             }
             else
             {

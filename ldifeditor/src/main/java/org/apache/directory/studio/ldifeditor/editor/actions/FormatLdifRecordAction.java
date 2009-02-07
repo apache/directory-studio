@@ -34,7 +34,7 @@ public class FormatLdifRecordAction extends AbstractLdifAction
 
     public FormatLdifRecordAction( LdifEditor editor )
     {
-        super( "Format Record", editor );
+        super( Messages.getString("FormatLdifRecordAction.FormatRecord"), editor ); //$NON-NLS-1$
     }
 
 

@@ -60,7 +60,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
 
     public EditLdifAttributeAction( LdifEditor editor )
     {
-        super( "Edit Attribute Description", editor );
+        super( Messages.getString("EditLdifAttributeAction.EditAttributeDescription"), editor ); //$NON-NLS-1$
         super.setActionDefinitionId( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
 
         manager = new ValueEditorManager( editor.getSite().getShell() );
@@ -130,7 +130,7 @@ public class EditLdifAttributeAction extends AbstractLdifAction
                     dummyEntry = new DummyEntry( new LdapDN(), dummyConnection );
                 }
 
-                AttributeWizard wizard = new AttributeWizard( "Edit Attribute Description", true, false,
+                AttributeWizard wizard = new AttributeWizard( Messages.getString("EditLdifAttributeAction.EditAttributeDescription"), true, false, //$NON-NLS-1$
                     attributeDescription, dummyEntry );
                 WizardDialog dialog = new WizardDialog( Display.getDefault().getActiveShell(), wizard );
                 dialog.setBlockOnOpen( true );
