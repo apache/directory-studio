@@ -23,12 +23,8 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -76,33 +72,7 @@ public class NewValueAction extends BrowserAction
             attribute = getSelectedAttributeHierarchies()[0].getAttribute();
         }
 
-        // validate non-modifiable and single-valued attributes
-        StringBuffer message = new StringBuffer();
-        if ( !SchemaUtils.isModifiable( attribute.getAttributeTypeDescription() ) )
-        {
-            message.append( NLS.bind( Messages.getString( "NewValueAction.NewValueNotModifiable" ), attribute //$NON-NLS-1$
-                .getDescription() ) );
-            message.append( BrowserCoreConstants.LINE_SEPARATOR );
-            message.append( BrowserCoreConstants.LINE_SEPARATOR );
-        }
-        if ( attribute.getAttributeTypeDescription().isSingleValued() )
-        {
-            message.append( NLS.bind( Messages.getString( "NewValueAction.NewValueSingleValued" ), attribute //$NON-NLS-1$
-                .getDescription() ) );
-            message.append( BrowserCoreConstants.LINE_SEPARATOR );
-            message.append( BrowserCoreConstants.LINE_SEPARATOR );
-        }
-
-        boolean ok = true;
-        if ( message.length() > 0 )
-        {
-            message.append( Messages.getString( "NewValueAction.NewValueQuestion" ) ); //$NON-NLS-1$
-            ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
-        }
-        if ( ok )
-        {
-            attribute.addEmptyValue();
-        }
+        attribute.addEmptyValue();
     }
 
 

@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.schema;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -222,6 +223,30 @@ public class Subschema implements Serializable
         }
 
         return allAttributeNameSet;
+    }
+
+
+    /**
+     * Gets must and may attribute types descriptions of this subschema.
+     * 
+     * @return the must and may attribute types descriptions of this subschema
+     */
+    public Set<AttributeTypeDescription> getAllAttributeTypeDescriptions()
+    {
+        Set<AttributeTypeDescription> atds = new HashSet<AttributeTypeDescription>();
+        String[] musts = getMustAttributeNames();
+        for ( String must : musts )
+        {
+            AttributeTypeDescription atd = getSchema().getAttributeTypeDescription( must );
+            atds.add( atd );
+        }
+        String[] mays = getMayAttributeNames();
+        for ( String may : mays )
+        {
+            AttributeTypeDescription atd = getSchema().getAttributeTypeDescription( may );
+            atds.add( atd );
+        }
+        return atds;
     }
 
 

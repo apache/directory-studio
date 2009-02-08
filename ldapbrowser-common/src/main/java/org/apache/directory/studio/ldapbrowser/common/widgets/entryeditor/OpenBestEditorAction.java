@@ -21,9 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import java.util.Set;
+
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -128,37 +132,78 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             return false;
         }
     }
-    
+
+
     @Override
     public void run()
     {
         boolean ok = true;
 
-        // validate non-modifiable attributes
         if ( getSelectedValues().length == 1 && getSelectedAttributes().length == 0 )
         {
             IValue value = getSelectedValues()[0];
             StringBuffer message = new StringBuffer();
-            if ( !value.isEmpty() && !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
+
+            if ( value.isEmpty() )
+            {
+                // validate single-valued attributes
+                if ( value.getAttribute().getValueSize() > 1
+                    && value.getAttribute().getAttributeTypeDescription().isSingleValued() )
+                {
+                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueSingleValued" ), //$NON-NLS-1$
+                        value.getAttribute().getDescription() ) );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                }
+
+                // validate if value is allowed
+                Subschema subschema = value.getAttribute().getEntry().getSubschema();
+                Set<AttributeTypeDescription> allAtds = subschema.getAllAttributeTypeDescriptions();
+                AttributeTypeDescription atd = value.getAttribute().getAttributeTypeDescription();
+                if ( !allAtds.contains( atd ) )
+                {
+                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.AttributeNotInSubSchema" ), //$NON-NLS-1$
+                        value.getAttribute().getDescription() ) );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                }
+            }
+
+            // validate non-modifiable attributes
+            if ( !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
             {
                 message
                     .append( NLS
                         .bind(
-                            Messages.getString( "OpenBestEditorAction.EditValueNotModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                            Messages.getString( "OpenBestEditorAction.ValueNotModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
 
             if ( message.length() > 0 )
             {
-                message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
+                if ( value.isEmpty() )
+                {
+                    message.append( Messages.getString( "OpenBestEditorAction.NewValueQuestion" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
+                }
                 ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
             }
-        }
 
-        if ( ok )
-        {
-            super.run();
+            if ( ok )
+            {
+                super.run();
+            }
+            else
+            {
+                if ( value.isEmpty() )
+                {
+                    value.getAttribute().deleteEmptyValue();
+                }
+            }
         }
     }
 

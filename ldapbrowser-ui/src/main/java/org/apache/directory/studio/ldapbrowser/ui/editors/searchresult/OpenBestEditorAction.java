@@ -21,10 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import java.util.Set;
+
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -150,14 +154,31 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         if ( attributeHierarchies.length == 1 )
         {
             AttributeHierarchy attributeHierarchy = attributeHierarchies[0];
+            StringBuffer message = new StringBuffer();
+
+            if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
+            {
+                // validate if value is allowed
+                Subschema subschema = attributeHierarchy.getAttribute().getEntry().getSubschema();
+                Set<AttributeTypeDescription> allAtds = subschema.getAllAttributeTypeDescriptions();
+                AttributeTypeDescription atd = attributeHierarchy.getAttribute().getAttributeTypeDescription();
+                if ( !allAtds.contains( atd ) )
+                {
+                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.AttributeNotInSubSchema" ), //$NON-NLS-1$
+                        attributeHierarchy.getAttribute().getDescription() ) );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                }
+            }
+
             if ( attributeHierarchy.size() == 1
                 && attributeHierarchy.getAttribute().getValueSize() == 1
                 && attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
                     attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() )
                 && !attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
             {
+                // validate non-modifiable attributes
                 IValue value = attributeHierarchy.getAttribute().getValues()[0];
-                StringBuffer message = new StringBuffer();
                 if ( !value.isEmpty() && !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
                 {
                     message
@@ -167,12 +188,12 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
+            }
 
-                if ( message.length() > 0 )
-                {
-                    message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
-                    ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
-                }
+            if ( message.length() > 0 )
+            {
+                message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
+                ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
             }
         }
 
