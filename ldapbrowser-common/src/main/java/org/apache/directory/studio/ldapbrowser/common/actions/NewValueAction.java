@@ -23,8 +23,12 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -58,22 +62,46 @@ public class NewValueAction extends BrowserAction
      */
     public void run()
     {
+        IAttribute attribute = null;
         if ( getSelectedValues().length == 1 )
         {
-            getSelectedValues()[0].getAttribute().addEmptyValue();
+            attribute = getSelectedValues()[0].getAttribute();
         }
         else if ( getSelectedAttributes().length == 1 )
         {
-            getSelectedAttributes()[0].addEmptyValue();
+            attribute = getSelectedAttributes()[0];
         }
         else if ( getSelectedAttributeHierarchies().length == 1 )
         {
-            getSelectedAttributeHierarchies()[0].getAttribute().addEmptyValue();
+            attribute = getSelectedAttributeHierarchies()[0].getAttribute();
         }
 
-        if ( getSelectedSearchResults().length > 0 )
+        // validate non-modifiable and single-valued attributes
+        StringBuffer message = new StringBuffer();
+        if ( !SchemaUtils.isModifyable( attribute.getAttributeTypeDescription() ) )
         {
+            message.append( NLS.bind( Messages.getString( "NewValueAction.NewValueNotModifyable" ), attribute //$NON-NLS-1$
+                .getDescription() ) );
+            message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        }
+        if ( attribute.getAttributeTypeDescription().isSingleValued() )
+        {
+            message.append( NLS.bind( Messages.getString( "NewValueAction.NewValueSingleValued" ), attribute //$NON-NLS-1$
+                .getDescription() ) );
+            message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        }
 
+        boolean ok = true;
+        if ( message.length() > 0 )
+        {
+            message.append( Messages.getString( "NewValueAction.NewValueQuestion" ) ); //$NON-NLS-1$
+            ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
+        }
+        if ( ok )
+        {
+            attribute.addEmptyValue();
         }
     }
 
@@ -83,7 +111,7 @@ public class NewValueAction extends BrowserAction
      */
     public String getText()
     {
-        return Messages.getString("NewValueAction.NewValue"); //$NON-NLS-1$
+        return Messages.getString( "NewValueAction.NewValue" ); //$NON-NLS-1$
     }
 
 
@@ -110,27 +138,11 @@ public class NewValueAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        // System.out.println(getSelectedAttributeArrays());
-        // System.out.print("==> ");
-        // IAttribute[][] attArr = getSelectedAttributeArrays();
-        // for (int i = 0; i < attArr.length; i++) {
-        // for (int j = 0; j < attArr[i].length; j++) {
-        // IAttribute att = attArr[i][j];
-        // System.out.print(att + "|");
-        // }
-        // }
-        // System.out.println();
+        return ( getSelectedSearchResults().length == 0 && getSelectedAttributes().length == 0 && getSelectedValues().length == 1 )
 
-        return ( getSelectedSearchResults().length == 0 && getSelectedAttributes().length == 0
-            && getSelectedValues().length == 1 && SchemaUtils.isModifyable( getSelectedValues()[0].getAttribute()
-            .getAttributeTypeDescription() ) )
-
-            || ( getSelectedSearchResults().length == 0 && getSelectedValues().length == 0
-                && getSelectedAttributes().length == 1 && SchemaUtils.isModifyable( getSelectedAttributes()[0]
-                .getAttributeTypeDescription() ) )
+            || ( getSelectedSearchResults().length == 0 && getSelectedValues().length == 0 && getSelectedAttributes().length == 1 )
 
             || ( getSelectedSearchResults().length == 1 && getSelectedValues().length == 0
-                && getSelectedAttributes().length == 0 && getSelectedAttributeHierarchies().length == 1 && SchemaUtils
-                .isModifyable( getSelectedAttributeHierarchies()[0].getAttribute().getAttributeTypeDescription() ) );
+                && getSelectedAttributes().length == 0 && getSelectedAttributeHierarchies().length == 1 );
     }
 }
