@@ -128,6 +128,22 @@ public class AttributeHierarchy implements Iterable<IAttribute>
 
 
     /**
+     * Gets the number of all values in all attributes.
+     *
+     * @return the number of all values in all attributes
+     */
+    public int getValueSize()
+    {
+        int size = 0;
+        for ( IAttribute attribute : attributes )
+        {
+            size += attribute.getValueSize();
+        }
+        return size;
+    }
+
+
+    /**
      * Gets the attribute description.
      *
      * @return the attribute description

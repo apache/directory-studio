@@ -75,31 +75,21 @@ public class DeleteAction extends BrowserAction
             Collection<IEntry> entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
-            Collection<IAttribute> attributes = getAttributes();
             Collection<IValue> values = getValues();
 
-            if ( entries.size() > 0 && searches.length == 0 && bookmarks.length == 0 && attributes.size() == 0
-                && values.size() == 0 )
+            if ( entries.size() > 0 && searches.length == 0 && bookmarks.length == 0 && values.size() == 0 )
             {
                 return entries.size() > 1 ? Messages.getString( "DeleteAction.DeleteEntries" ) : Messages.getString( "DeleteAction.DeleteEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( searches.length > 0 && entries.size() == 0 && bookmarks.length == 0 && attributes.size() == 0
-                && values.size() == 0 )
+            if ( searches.length > 0 && entries.size() == 0 && bookmarks.length == 0 && values.size() == 0 )
             {
                 return searches.length > 1 ? Messages.getString( "DeleteAction.DeleteSearches" ) : Messages.getString( "DeleteAction.DeleteSearch" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( bookmarks.length > 0 && entries.size() == 0 && searches.length == 0 && attributes.size() == 0
-                && values.size() == 0 )
+            if ( bookmarks.length > 0 && entries.size() == 0 && searches.length == 0 && values.size() == 0 )
             {
                 return bookmarks.length > 1 ? Messages.getString( "DeleteAction.DeleteBookmarks" ) : Messages.getString( "DeleteAction.DeleteBookmark" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( attributes.size() > 0 && entries.size() == 0 && searches.length == 0 && bookmarks.length == 0
-                && values.size() == 0 )
-            {
-                return attributes.size() > 1 ? Messages.getString( "DeleteAction.DeleteAttributes" ) : Messages.getString( "DeleteAction.DeleteAttribute" ); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            if ( values.size() > 0 && entries.size() == 0 && searches.length == 0 && bookmarks.length == 0
-                && attributes.size() == 0 )
+            if ( values.size() > 0 && entries.size() == 0 && searches.length == 0 && bookmarks.length == 0 )
             {
                 return values.size() > 1 ? Messages.getString( "DeleteAction.DeleteValues" ) : Messages.getString( "DeleteAction.DeleteValue" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -140,7 +130,6 @@ public class DeleteAction extends BrowserAction
             Collection<IEntry> entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
-            Collection<IAttribute> attributes = getAttributes();
             Collection<IValue> values = getValues();
 
             StringBuffer message = new StringBuffer();
@@ -165,11 +154,6 @@ public class DeleteAction extends BrowserAction
             if ( bookmarks.length > 0 )
             {
                 appendBookmarsWarnMessage( message, bookmarks );
-            }
-
-            if ( attributes.size() > 0 )
-            {
-                appendAttributesWarnMessage( message, attributes );
             }
 
             if ( values.size() > 0 )
@@ -203,29 +187,11 @@ public class DeleteAction extends BrowserAction
                 {
                     deleteBookmarks( bookmarks );
                 }
-                if ( attributes.size() + values.size() > 0 )
+                if ( values.size() > 0 )
                 {
-                    List<IAttribute> attributeList = new ArrayList<IAttribute>( attributes );
                     List<IValue> valueList = new ArrayList<IValue>( values );
 
                     // filter empty attributes and values
-                    for ( Iterator<IAttribute> it = attributeList.iterator(); it.hasNext(); )
-                    {
-                        IAttribute att = it.next();
-                        IValue[] vals = att.getValues();
-                        for ( IValue value : vals )
-                        {
-                            if ( value.isEmpty() )
-                            {
-                                att.deleteEmptyValue();
-                            }
-                        }
-                        if ( att.getValueSize() == 0 )
-                        {
-                            att.getEntry().deleteAttribute( att );
-                            it.remove();
-                        }
-                    }
                     for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
                     {
                         IValue value = it.next();
@@ -236,10 +202,9 @@ public class DeleteAction extends BrowserAction
                         }
                     }
 
-                    if ( !attributeList.isEmpty() || !valueList.isEmpty() )
+                    if ( !valueList.isEmpty() )
                     {
-                        deleteAttributesAndValues( attributeList.toArray( new IAttribute[attributeList.size()] ),
-                            valueList.toArray( new IValue[valueList.size()] ) );
+                        deleteValues( valueList.toArray( new IValue[valueList.size()] ) );
                     }
                 }
             }
@@ -260,10 +225,9 @@ public class DeleteAction extends BrowserAction
             Collection<IEntry> entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
-            Collection<IAttribute> attributes = getAttributes();
             Collection<IValue> values = getValues();
 
-            return entries.size() + searches.length + bookmarks.length + attributes.size() + values.size() > 0;
+            return entries.size() + searches.length + bookmarks.length + values.size() > 0;
 
         }
         catch ( Exception e )
@@ -458,22 +422,22 @@ public class DeleteAction extends BrowserAction
 
 
     /**
-     * Gets the Attributes
+     * Gets the Values
      *
      * @return
-     *      the Attributes
+     *      the Values
      * @throws Exception
      */
-    protected Collection<IAttribute> getAttributes()
+    protected Collection<IValue> getValues() throws Exception
     {
-        List<IAttribute> attributeList = new ArrayList<IAttribute>();
+        Set<IValue> valueList = new LinkedHashSet<IValue>();
 
         // add selected attributes
         for ( IAttribute attribute : getSelectedAttributes() )
         {
             if ( attribute != null && attribute.getValueSize() > 0 )
             {
-                attributeList.add( attribute );
+                valueList.addAll( Arrays.asList( attribute.getValues() ) );
             }
         }
 
@@ -484,118 +448,15 @@ public class DeleteAction extends BrowserAction
             {
                 if ( attribute != null && attribute.getValueSize() > 0 )
                 {
-                    attributeList.add( attribute );
+                    valueList.addAll( Arrays.asList( attribute.getValues() ) );
                 }
             }
         }
-
-        // check if ALL values of an attribute are selected -> delete whole attribute
-        Map<String, Integer> attributeNameToSelectedValuesCountMap = new HashMap<String, Integer>();
-        for ( IValue value : getSelectedValues() )
-        {
-            if ( !attributeNameToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
-            {
-                attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( 0 ) );
-            }
-            int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( value.getAttribute().getDescription() ) )
-                .intValue() + 1;
-            attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( count ) );
-            if ( count >= value.getAttribute().getValueSize() )
-            {
-                IAttribute attribute = value.getAttribute();
-                if ( attribute != null && !attributeList.contains( attribute ) )
-                {
-                    attributeList.add( attribute );
-                }
-            }
-        }
-
-        return attributeList;
-    }
-
-
-    protected void appendAttributesWarnMessage( StringBuffer message, Collection<IAttribute> attributes )
-    {
-        // check if a non-modifiable, must or objectClass attribute is selected
-        for ( IAttribute att : attributes )
-        {
-            Iterator<AttributeTypeAndValue> atavIterator = att.getEntry().getRdn().iterator();
-            while ( atavIterator.hasNext() )
-            {
-                AttributeTypeAndValue atav = atavIterator.next();
-                for ( IValue value : att.getValues() )
-                {
-                    if ( att.getDescription().equals( atav.getUpType() )
-                        && value.getStringValue().equals( atav.getUpValue() ) )
-                    {
-                        message.append( NLS.bind(
-                            Messages.getString( "DeleteAction.DeletePartOfRDN" ), value.toString() ) ); //$NON-NLS-1$
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                    }
-                }
-            }
-
-            if ( att.isObjectClassAttribute() )
-            {
-                message.append( Messages.getString( "DeleteAction.DeleteObjectClass" ) ); //$NON-NLS-1$
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-            }
-            else if ( att.isMustAttribute() )
-            {
-                message.append( NLS.bind( Messages.getString( "DeleteAction.DeleteMust" ), att.getDescription() ) ); //$NON-NLS-1$
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-            }
-            else if ( !SchemaUtils.isModifiable( att.getAttributeTypeDescription() ) )
-            {
-                message.append( NLS.bind(
-                    Messages.getString( "DeleteAction.DeleteNonModifiable" ), att.getDescription() ) ); //$NON-NLS-1$
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-            }
-        }
-
-        if ( attributes.size() <= 5 )
-        {
-            message.append( attributes.size() == 1 ? Messages.getString( "DeleteAction.DeleteAttributeQuestion" ) //$NON-NLS-1$
-                : Messages.getString( "DeleteAction.DeleteAttributesQuestion" ) ); //$NON-NLS-1$
-            for ( IAttribute attribute : attributes )
-            {
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( "  - " ); //$NON-NLS-1$
-                message.append( attribute.getDescription() );
-            }
-        }
-        else
-        {
-            message.append( Messages.getString( "DeleteAction.DeleteSelectedAttributesQuestion" ) ); //$NON-NLS-1$
-        }
-        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-    }
-
-
-    /**
-     * Gets the Values
-     *
-     * @return
-     *      the Values
-     * @throws Exception
-     */
-    protected Collection<IValue> getValues() throws Exception
-    {
-        List<IValue> valueList = new ArrayList<IValue>();
 
         // add selected values, but not if there attributes are also selected
-        Set<IAttribute> attributeSet = new HashSet<IAttribute>( getAttributes() );
         for ( IValue value : getSelectedValues() )
         {
-            if ( !attributeSet.contains( value.getAttribute() ) )
-            {
-                valueList.add( value );
-            }
+            valueList.add( value );
         }
 
         return valueList;
@@ -604,10 +465,14 @@ public class DeleteAction extends BrowserAction
 
     protected void appendValuesWarnMessage( StringBuffer message, Collection<IValue> values )
     {
-        Map<String, Integer> attributeNameToSelectedValuesCountMap = new HashMap<String, Integer>();
+        Map<AttributeTypeDescription, Integer> attributeNameToSelectedValuesCountMap = new HashMap<AttributeTypeDescription, Integer>();
         Set<String> selectedObjectClasses = new HashSet<String>();
         for ( IValue value : values )
         {
+            String type = value.getAttribute().getType();
+            AttributeTypeDescription atd = value.getAttribute().getAttributeTypeDescription();
+            AttributeHierarchy ah = value.getAttribute().getEntry().getAttributeWithSubtypes( type );
+
             // check if (part of) RDN is selected
             Iterator<AttributeTypeAndValue> atavIterator = value.getAttribute().getEntry().getRdn().iterator();
             while ( atavIterator.hasNext() )
@@ -629,33 +494,30 @@ public class DeleteAction extends BrowserAction
             }
 
             // check if ALL values of objectClass or a MUST attribute are selected
-            if ( !attributeNameToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
+            if ( !attributeNameToSelectedValuesCountMap.containsKey( atd ) )
             {
-                attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( 0 ) );
+                attributeNameToSelectedValuesCountMap.put( atd, new Integer( 0 ) );
             }
-            int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( value.getAttribute().getDescription() ) )
-                .intValue() + 1;
-            attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( count ) );
-            if ( value.getAttribute().isObjectClassAttribute() && count >= value.getAttribute().getValueSize() )
+            int count = ( attributeNameToSelectedValuesCountMap.get( atd ) ).intValue() + 1;
+            attributeNameToSelectedValuesCountMap.put( atd, new Integer( count ) );
+            if ( value.getAttribute().isObjectClassAttribute() && count >= ah.getValueSize() )
             {
                 message.append( Messages.getString( "DeleteAction.DeleteObjectClass" ) ); //$NON-NLS-1$
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 continue;
             }
-            else if ( value.getAttribute().isMustAttribute() && count >= value.getAttribute().getValueSize() )
+            else if ( value.getAttribute().isMustAttribute() && count >= ah.getValueSize() )
             {
-                message.append( NLS.bind(
-                    Messages.getString( "DeleteAction.DeleteMust" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                message.append( NLS.bind( Messages.getString( "DeleteAction.DeleteMust" ), type ) ); //$NON-NLS-1$
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
 
             // check if a value of an operational attribute is selected
-            if ( !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
+            if ( !SchemaUtils.isModifiable( atd ) )
             {
-                message.append( NLS.bind(
-                    Messages.getString( "DeleteAction.DeleteNonModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                message.append( NLS.bind( Messages.getString( "DeleteAction.DeleteNonModifiable" ), type ) ); //$NON-NLS-1$
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 continue;
@@ -714,8 +576,8 @@ public class DeleteAction extends BrowserAction
 
         if ( values.size() <= 5 )
         {
-            message.append( values.size() == 1 ? Messages.getString( "DeleteAction.DeleteValueQuestion" ) //$NON-NLS-1$
-                : Messages.getString( "DeleteAction.DeleteValuesQuestion" ) ); //$NON-NLS-1$
+            message.append( values.size() == 1 ? Messages.getString( "DeleteAction.DeleteAttributeQuestion" ) //$NON-NLS-1$
+                : Messages.getString( "DeleteAction.DeleteAttributesQuestion" ) ); //$NON-NLS-1$
             for ( IValue value : values )
             {
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -725,7 +587,7 @@ public class DeleteAction extends BrowserAction
         }
         else
         {
-            message.append( Messages.getString( "DeleteAction.DeleteSelectedValuesQuestion" ) ); //$NON-NLS-1$
+            message.append( Messages.getString( "DeleteAction.DeleteSelectedAttributesQuestion" ) ); //$NON-NLS-1$
         }
         message.append( BrowserCoreConstants.LINE_SEPARATOR );
         message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -735,13 +597,46 @@ public class DeleteAction extends BrowserAction
     /**
      * Deletes Attributes and Values
      *
-     * @param attributes
-     *      the Attributes to delete
      * @param values
      *      the Values to delete
      */
-    protected void deleteAttributesAndValues( IAttribute[] attributes, IValue[] values )
+    protected void deleteValues( IValue[] values )
     {
-        new DeleteAttributesValueJob( attributes, values ).execute();
+        // check if all values of an attribute should be removed
+        List<IAttribute> attributeList = new ArrayList<IAttribute>();
+        Map<String, Integer> attributeDescriptionToSelectedValuesCountMap = new HashMap<String, Integer>();
+        for ( IValue value : values )
+        {
+            if ( !attributeDescriptionToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
+            {
+                attributeDescriptionToSelectedValuesCountMap.put( value.getAttribute().getDescription(),
+                    new Integer( 0 ) );
+            }
+            int count = ( ( Integer ) attributeDescriptionToSelectedValuesCountMap.get( value.getAttribute()
+                .getDescription() ) ).intValue() + 1;
+            attributeDescriptionToSelectedValuesCountMap.put( value.getAttribute().getDescription(),
+                new Integer( count ) );
+            if ( count >= value.getAttribute().getValueSize() )
+            {
+                IAttribute attribute = value.getAttribute();
+                if ( attribute != null && !attributeList.contains( attribute ) )
+                {
+                    attributeList.add( attribute );
+                }
+            }
+        }
+
+        // add selected values, but not if there attributes are also selected
+        List<IValue> valueList = new ArrayList<IValue>();
+        for ( IValue value : values )
+        {
+            if ( !attributeList.contains( value.getAttribute() ) )
+            {
+                valueList.add( value );
+            }
+        }
+
+        new DeleteAttributesValueJob( attributeList.toArray( new IAttribute[attributeList.size()] ), valueList
+            .toArray( new IValue[valueList.size()] ) ).execute();
     }
 }

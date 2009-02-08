@@ -21,12 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
@@ -40,8 +40,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class DeleteAllValuesAction extends DeleteAction
 {
-
-    private static Collection<IAttribute> EMPTY_ATTRIBUTES = new HashSet<IAttribute>();
 
     private static Collection<IValue> EMPTY_VALUES = new HashSet<IValue>();
 
@@ -111,27 +109,18 @@ public class DeleteAllValuesAction extends DeleteAction
     /**
      * {@inheritDoc}
      */
-    protected Collection<IAttribute> getAttributes()
+    protected Collection<IValue> getValues()
     {
         if ( getSelectedAttributes().length == 0 && getSelectedValues().length == 1
             && getSelectedValues()[0].getAttribute().getValueSize() > 1 )
         {
-            Collection<IAttribute> attributes = new HashSet<IAttribute>();
-            attributes.add( getSelectedValues()[0].getAttribute() );
-            return attributes;
+            Collection<IValue> values = new HashSet<IValue>();
+            values.addAll( Arrays.asList( getSelectedValues()[0].getAttribute().getValues() ) );
+            return values;
         }
         else
         {
-            return EMPTY_ATTRIBUTES;
+            return EMPTY_VALUES;
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Collection<IValue> getValues()
-    {
-        return EMPTY_VALUES;
     }
 }
