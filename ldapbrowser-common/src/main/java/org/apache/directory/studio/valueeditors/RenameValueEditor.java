@@ -26,26 +26,29 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.common.wizards.EditEntryWizard;
+import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
+import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
 /**
- * Special ValueEditor to edit an entry off-line in the {@link EditEntryWizard}.
+ * Special ValueEditor to rename an entry using the {@link RenameEntryDialog}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryValueEditor extends CellEditor implements IValueEditor
+public class RenameValueEditor extends CellEditor implements IValueEditor
 {
 
     /** The value to handle */
@@ -65,13 +68,13 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
 
 
     /**
-     * Creates a new instance of EntryValueEditor.
+     * Creates a new instance of RenameValueEditor.
      *
      * @param parent the parent composite
      * @param valueEditorManager the value editor manager, used to get
      *                           proper value editors
      */
-    public EntryValueEditor( Composite parent, ValueEditorManager valueEditorManager )
+    public RenameValueEditor( Composite parent, ValueEditorManager valueEditorManager )
     {
         super( parent );
         this.parent = parent;
@@ -125,7 +128,7 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
     /**
      * {@inheritDoc}
      * 
-     * Opens the EditEntryWizard. Expects that an IEntry
+     * Opens the RenameEntryDialog. Expects that an IEntry
      * object is in value member. 
      */
     public void activate()
@@ -135,11 +138,16 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
             IEntry entry = ( IEntry ) getValue();
             if ( entry != null )
             {
-                EditEntryWizard wizard = new EditEntryWizard( entry );
-                WizardDialog dialog = new WizardDialog( parent.getShell(), wizard );
-                dialog.setBlockOnOpen( true );
-                dialog.create();
-                dialog.open();
+                RenameEntryDialog renameDialog = new RenameEntryDialog( parent.getShell(), entry );
+                if ( renameDialog.open() == Dialog.OK )
+                {
+                    Rdn newRdn = renameDialog.getRdn();
+                    if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
+                    {
+                        new RenameEntryJob( entry, newRdn, new SimulateRenameDialogImpl( parent.getShell() ) )
+                            .execute();
+                    }
+                }
             }
         }
 
@@ -175,7 +183,7 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
         StringBuffer sb = new StringBuffer();
         if ( valueList.size() > 1 )
         {
-            sb.append( NLS.bind( Messages.getString("EntryValueEditor.n_values"), valueList.size() ) ); //$NON-NLS-1$
+            sb.append( NLS.bind( Messages.getString( "EntryValueEditor.n_values" ), valueList.size() ) ); //$NON-NLS-1$
         }
         for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
         {
@@ -209,7 +217,7 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
             .getAttribute().getDescription() );
 
         // avoid recursion: unset the user selected value editor
-        if ( vp instanceof EntryValueEditor )
+        if ( vp instanceof RenameValueEditor )
         {
             IValueEditor userSelectedValueEditor = valueEditorManager.getUserSelectedValueEditor();
             valueEditorManager.setUserSelectedValueEditor( null );

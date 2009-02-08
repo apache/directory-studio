@@ -130,7 +130,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenBestEditorAction( viewer,
             configuration.getValueEditorManager( viewer ), this ) );
         openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
-            openBestValueEditorActionProxy, false ) );
+            openBestValueEditorActionProxy ) );
         IValueEditor[] valueEditors = configuration.getValueEditorManager( viewer ).getAllValueEditors();
         openValueEditorActionProxies = new EntryEditorActionProxy[valueEditors.length];
         for ( int i = 0; i < openValueEditorActionProxies.length; i++ )

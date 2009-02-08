@@ -165,7 +165,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         // create OpenDefaultEditorAction with enabled rename action flag
         openDefaultValueEditorActionProxy.dispose();
         openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
-            openBestValueEditorActionProxy, true ) );
+            openBestValueEditorActionProxy ) );
 
         openEntryValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenEntryEditorAction( viewer,
             entryEditor.getConfiguration().getValueEditorManager( viewer ), entryEditor.getConfiguration()

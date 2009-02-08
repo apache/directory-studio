@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -43,9 +42,6 @@ public class OpenDefaultEditorAction extends BrowserAction
     /** The best value editor proxy. */
     private EntryEditorActionProxy bestValueEditorProxy;
 
-    /** The rename proxy. */
-    private EntryEditorActionProxy renameProxy;
-
 
     /**
      * Creates a new instance of OpenDefaultEditorAction.
@@ -54,11 +50,9 @@ public class OpenDefaultEditorAction extends BrowserAction
      * @param bestValueEditorProxy the best value editor proxy
      * @param enableRenameAction true to enable rename action
      */
-    public OpenDefaultEditorAction( TreeViewer viewer, EntryEditorActionProxy bestValueEditorProxy,
-        boolean enableRenameAction )
+    public OpenDefaultEditorAction( TreeViewer viewer, EntryEditorActionProxy bestValueEditorProxy )
     {
         this.bestValueEditorProxy = bestValueEditorProxy;
-        this.renameProxy = enableRenameAction ? new EntryEditorActionProxy( viewer, new RenameAction() ) : null;
     }
 
 
@@ -68,8 +62,6 @@ public class OpenDefaultEditorAction extends BrowserAction
     public void dispose()
     {
         bestValueEditorProxy = null;
-        renameProxy = null;
-
         super.dispose();
     }
 
@@ -92,10 +84,6 @@ public class OpenDefaultEditorAction extends BrowserAction
         {
             return bestValueEditorProxy.getImageDescriptor();
         }
-        else if ( renameProxy != null )
-        {
-            return renameProxy.getImageDescriptor();
-        }
         else
         {
             return null;
@@ -108,7 +96,7 @@ public class OpenDefaultEditorAction extends BrowserAction
      */
     public String getText()
     {
-        return Messages.getString("OpenDefaultEditorAction.EditValue"); //$NON-NLS-1$
+        return Messages.getString( "OpenDefaultEditorAction.EditValue" ); //$NON-NLS-1$
     }
 
 
@@ -117,15 +105,7 @@ public class OpenDefaultEditorAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        if ( bestValueEditorProxy != null && renameProxy != null )
-        {
-            return bestValueEditorProxy.isEnabled() || renameProxy.isEnabled();
-        }
-        else if ( renameProxy != null )
-        {
-            return renameProxy.isEnabled();
-        }
-        else if ( bestValueEditorProxy != null )
+        if ( bestValueEditorProxy != null )
         {
             return bestValueEditorProxy.isEnabled();
         }
@@ -144,10 +124,6 @@ public class OpenDefaultEditorAction extends BrowserAction
         if ( bestValueEditorProxy != null && bestValueEditorProxy.isEnabled() )
         {
             bestValueEditorProxy.run();
-        }
-        else if ( renameProxy != null && renameProxy.isEnabled() )
-        {
-            renameProxy.run();
         }
     }
 

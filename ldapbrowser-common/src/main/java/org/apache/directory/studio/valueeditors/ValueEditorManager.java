@@ -104,6 +104,9 @@ public class ValueEditorManager
     /** The special value editor to edit the entry in an wizard */
     private EntryValueEditor entryValueEditor;
 
+    /** The special value editor to rename the entry */
+    private RenameValueEditor renameValueEditor;
+
     /** The default string editor for single-line values */
     private IValueEditor defaultStringSingleLineValueEditor;
 
@@ -137,15 +140,21 @@ public class ValueEditorManager
 
         // special case: multivalued editor
         multiValuedValueEditor = new MultivaluedValueEditor( this.parent, this );
-        multiValuedValueEditor.setValueEditorName( Messages.getString("ValueEditorManager.MulitivaluedEditor") ); //$NON-NLS-1$
+        multiValuedValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.MulitivaluedEditor" ) ); //$NON-NLS-1$
         multiValuedValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_MULTIVALUEDEDITOR ) );
 
         // special case: entry editor
         entryValueEditor = new EntryValueEditor( this.parent, this );
-        entryValueEditor.setValueEditorName( Messages.getString("ValueEditorManager.EntryEditor") ); //$NON-NLS-1$
+        entryValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.EntryEditor" ) ); //$NON-NLS-1$
         entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY ) );
+
+        // special case: rename editor
+        renameValueEditor = new RenameValueEditor( this.parent, this );
+        renameValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.RenameEditor" ) ); //$NON-NLS-1$
+        renameValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+            BrowserCommonConstants.IMG_RENAME ) );
 
         // get default editors from value editor map
         defaultStringSingleLineValueEditor = class2ValueEditors.get( InPlaceTextValueEditor.class.getName() );
@@ -164,6 +173,7 @@ public class ValueEditorManager
             userSelectedValueEditor = null;
             multiValuedValueEditor.dispose();
             entryValueEditor.dispose();
+            renameValueEditor.dispose();
             defaultStringSingleLineValueEditor.dispose();
             defaultStringMultiLineValueEditor.dispose();
             defaultBinaryValueEditor.dispose();
@@ -298,6 +308,12 @@ public class ValueEditorManager
             && value.getAttribute().getEntry().isDirectoryEntry() )
         {
             return entryValueEditor;
+        }
+
+        // special case RDN attribute: always return rename editor
+        if ( userSelectedValueEditor == null && value.isRdnPart() && value.getAttribute().getEntry().isDirectoryEntry() )
+        {
+            return renameValueEditor;
         }
 
         // here the value is known, we can check for single-line or multi-line
@@ -522,6 +538,7 @@ public class ValueEditorManager
 
         list.add( multiValuedValueEditor );
         list.add( entryValueEditor );
+        list.add( renameValueEditor );
 
         return list.toArray( new IValueEditor[list.size()] );
     }
@@ -728,7 +745,8 @@ public class ValueEditorManager
             catch ( Exception e )
             {
                 BrowserCommonActivator.getDefault().getLog().log(
-                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, 1, Messages.getString("ValueEditorManager.UnableToCreateValueEditor") //$NON-NLS-1$
+                    new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, 1, Messages
+                        .getString( "ValueEditorManager.UnableToCreateValueEditor" ) //$NON-NLS-1$
                         + vee.className, e ) );
             }
         }

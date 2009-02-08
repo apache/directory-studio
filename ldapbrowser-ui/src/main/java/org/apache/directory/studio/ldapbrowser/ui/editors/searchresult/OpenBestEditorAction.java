@@ -21,10 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -128,6 +134,51 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         {
             super.cellEditor = null;
             return false;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void run()
+    {
+        boolean ok = true;
+
+        // validate non-modifiable attributes
+        AttributeHierarchy[] attributeHierarchies = getSelectedAttributeHierarchies();
+        if ( attributeHierarchies.length == 1 )
+        {
+            AttributeHierarchy attributeHierarchy = attributeHierarchies[0];
+            if ( attributeHierarchy.size() == 1
+                && attributeHierarchy.getAttribute().getValueSize() == 1
+                && attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
+                    attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() )
+                && !attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
+            {
+                IValue value = attributeHierarchy.getAttribute().getValues()[0];
+                StringBuffer message = new StringBuffer();
+                if ( !value.isEmpty() && !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
+                {
+                    message
+                        .append( NLS
+                            .bind(
+                                Messages.getString( "OpenBestEditorAction.EditValueNotModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                }
+
+                if ( message.length() > 0 )
+                {
+                    message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
+                    ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
+                }
+            }
+        }
+
+        if ( ok )
+        {
+            super.run();
         }
     }
 

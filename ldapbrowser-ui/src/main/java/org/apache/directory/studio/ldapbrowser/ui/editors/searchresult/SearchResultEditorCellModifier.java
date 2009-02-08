@@ -25,7 +25,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -87,36 +86,6 @@ public class SearchResultEditorCellModifier implements ICellModifier
             {
                 ah = new AttributeHierarchy( result.getEntry(), property, new IAttribute[]
                     { new Attribute( result.getEntry(), property ) } );
-            }
-
-            // check schema modifiable
-            boolean isOneModifiable = false;
-            for ( IAttribute attribute : ah )
-            {
-                if ( SchemaUtils.isModifiable( attribute.getAttributeTypeDescription() ) )
-                {
-                    isOneModifiable = true;
-                    break;
-                }
-            }
-            if ( !isOneModifiable )
-            {
-                return false;
-            }
-
-            // check if property is valid for the entry
-            boolean isOneValid = false;
-            for ( IAttribute attribute : ah )
-            {
-                if ( attribute.isObjectClassAttribute() || attribute.isMustAttribute() || attribute.isMayAttribute() )
-                {
-                    isOneValid = true;
-                    break;
-                }
-            }
-            if ( !isOneValid )
-            {
-                return false;
             }
 
             // call value editor

@@ -21,10 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -121,6 +126,39 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         else
         {
             return false;
+        }
+    }
+    
+    @Override
+    public void run()
+    {
+        boolean ok = true;
+
+        // validate non-modifiable attributes
+        if ( getSelectedValues().length == 1 && getSelectedAttributes().length == 0 )
+        {
+            IValue value = getSelectedValues()[0];
+            StringBuffer message = new StringBuffer();
+            if ( !value.isEmpty() && !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
+            {
+                message
+                    .append( NLS
+                        .bind(
+                            Messages.getString( "OpenBestEditorAction.EditValueNotModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+
+            if ( message.length() > 0 )
+            {
+                message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
+                ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
+            }
+        }
+
+        if ( ok )
+        {
+            super.run();
         }
     }
 

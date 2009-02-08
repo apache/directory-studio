@@ -168,6 +168,7 @@ public interface BrowserCommonConstants
     public static final String IMG_TOP = "resources/icons/top.gif"; //$NON-NLS-1$
     public static final String IMG_NEXT = "resources/icons/next.gif"; //$NON-NLS-1$
     public static final String IMG_PREVIOUS = "resources/icons/previous.gif"; //$NON-NLS-1$
+    public static final String IMG_RENAME = "resources/icons/rename.gif"; //$NON-NLS-1$
 
     public static final String CMD_ADD_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
         "Cmd_AddAttribute_id" ); //$NON-NLS-1$
