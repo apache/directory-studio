@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -34,14 +37,14 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 public class SearchResultDeleteAction extends DeleteAction
 {
 
-    private static IEntry[] EMPTY = new IEntry[0];
+    private static Collection<IEntry> EMPTY = new HashSet<IEntry>();
 
 
     /**
      * Takes care that not the whole selected entry is deleted, but only
      * the selected attribute.
      */
-    protected IEntry[] getEntries()
+    protected Collection<IEntry> getEntries()
     {
         return EMPTY;
     }

@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -38,6 +41,12 @@ import org.eclipse.osgi.util.NLS;
  */
 public class DeleteAllValuesAction extends DeleteAction
 {
+
+    private static Collection<IAttribute> EMPTY_ATTRIBUTES = new HashSet<IAttribute>();
+
+    private static Collection<IValue> EMPTY_VALUES = new HashSet<IValue>();
+
+
     /**
      * Creates a new instance of DeleteAllValuesAction.
      */
@@ -62,11 +71,13 @@ public class DeleteAllValuesAction extends DeleteAction
     {
         if ( getSelectedValues().length == 1 )
         {
-            return NLS.bind( Messages.getString("DeleteAllValuesAction.DeleteAttributeX"), getSelectedValues()[0].getAttribute().getDescription() ); //$NON-NLS-1$
+            return NLS
+                .bind(
+                    Messages.getString( "DeleteAllValuesAction.DeleteAttributeX" ), getSelectedValues()[0].getAttribute().getDescription() ); //$NON-NLS-1$
         }
         else
         {
-            return Messages.getString("DeleteAllValuesAction.DeleteAttribute"); //$NON-NLS-1$
+            return Messages.getString( "DeleteAllValuesAction.DeleteAttribute" ); //$NON-NLS-1$
         }
     }
 
@@ -107,7 +118,7 @@ public class DeleteAllValuesAction extends DeleteAction
     /**
      * {@inheritDoc}
      */
-    protected IAttribute[] getAttributes() throws Exception
+    protected Collection<IAttribute> getAttributes()
     {
         if ( getSelectedAttributes().length == 0 && getSelectedValues().length == 1
             && getSelectedValues()[0].getAttribute().getValueSize() > 1
@@ -115,14 +126,13 @@ public class DeleteAllValuesAction extends DeleteAction
             && !getSelectedValues()[0].getAttribute().isObjectClassAttribute()
             && SchemaUtils.isModifyable( getSelectedValues()[0].getAttribute().getAttributeTypeDescription() ) )
         {
-
-            return new IAttribute[]
-                { getSelectedValues()[0].getAttribute() };
-
+            Collection<IAttribute> attributes = new HashSet<IAttribute>();
+            attributes.add( getSelectedValues()[0].getAttribute() );
+            return attributes;
         }
         else
         {
-            return new IAttribute[0];
+            return EMPTY_ATTRIBUTES;
         }
     }
 
@@ -130,8 +140,8 @@ public class DeleteAllValuesAction extends DeleteAction
     /**
      * {@inheritDoc}
      */
-    protected IValue[] getValues() throws Exception
+    protected Collection<IValue> getValues()
     {
-        return new IValue[0];
+        return EMPTY_VALUES;
     }
 }

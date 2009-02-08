@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +74,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 {
 
     /** The entries to delete. */
-    private IEntry[] entriesToDelete;
+    private Collection<IEntry> entriesToDelete;
 
     /** The deleted entries. */
     private Set<IEntry> deletedEntriesSet;
@@ -93,7 +94,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
      * 
      * @param entriesToDelete the entries to delete
      */
-    public DeleteEntriesJob( final IEntry[] entriesToDelete, boolean useTreeDeleteControl )
+    public DeleteEntriesJob( final Collection<IEntry> entriesToDelete, boolean useTreeDeleteControl )
     {
         this.entriesToDelete = entriesToDelete;
         this.useTreeDeleteControl = useTreeDeleteControl;
@@ -102,17 +103,19 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         this.entriesToUpdateSet = new HashSet<IEntry>();
         this.searchesToUpdateSet = new HashSet<ISearch>();
 
-        setName( entriesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
+        setName( entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_name_1
             : BrowserCoreMessages.jobs__delete_entries_name_n );
     }
 
 
     protected Connection[] getConnections()
     {
-        Connection[] connections = new Connection[entriesToDelete.length];
-        for ( int i = 0; i < connections.length; i++ )
+        Connection[] connections = new Connection[entriesToDelete.size()];
+        int i = 0;
+        for ( IEntry entry : entriesToDelete )
         {
-            connections[i] = entriesToDelete[i].getBrowserConnection().getConnection();
+            connections[i] = entry.getBrowserConnection().getConnection();
+            i++;
         }
         return connections;
     }
@@ -120,27 +123,28 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     protected Object[] getLockedObjects()
     {
-        List<Object> l = new ArrayList<Object>();
-        l.addAll( Arrays.asList( entriesToDelete ) );
+        List<IEntry> l = new ArrayList<IEntry>();
+        l.addAll( entriesToDelete );
         return l.toArray();
     }
 
 
     protected void executeNotificationJob( StudioProgressMonitor monitor )
     {
-        monitor.beginTask( entriesToDelete.length == 1 ? BrowserCoreMessages.bind(
+        monitor.beginTask( entriesToDelete.size() == 1 ? BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__delete_entries_task_1, new String[]
-                { entriesToDelete[0].getDn().getUpName() } ) : BrowserCoreMessages.bind(
+                { entriesToDelete.iterator().next().getDn().getUpName() } ) : BrowserCoreMessages.bind(
             BrowserCoreMessages.jobs__delete_entries_task_n, new String[]
-                { Integer.toString( entriesToDelete.length ) } ), 2 + entriesToDelete.length );
+                { Integer.toString( entriesToDelete.size() ) } ), 2 + entriesToDelete.size() );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
         int num = 0;
         StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
-        for ( int i = 0; !monitor.isCanceled() && !monitor.errorsReported() && i < entriesToDelete.length; i++ )
+        for ( Iterator<IEntry> iterator = entriesToDelete.iterator(); !monitor.isCanceled()
+            && !monitor.errorsReported() && iterator.hasNext(); )
         {
-            IEntry entryToDelete = entriesToDelete[i];
+            IEntry entryToDelete = iterator.next();
             IBrowserConnection browserConnection = entryToDelete.getBrowserConnection();
 
             // delete from directory
@@ -340,7 +344,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     protected String getErrorMessage()
     {
-        return entriesToDelete.length == 1 ? BrowserCoreMessages.jobs__delete_entries_error_1
+        return entriesToDelete.size() == 1 ? BrowserCoreMessages.jobs__delete_entries_error_1
             : BrowserCoreMessages.jobs__delete_entries_error_n;
     }
 

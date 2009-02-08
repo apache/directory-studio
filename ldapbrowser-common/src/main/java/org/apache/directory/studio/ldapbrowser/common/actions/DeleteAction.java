@@ -43,6 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -50,6 +51,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
@@ -70,43 +72,43 @@ public class DeleteAction extends BrowserAction
     {
         try
         {
-            IEntry[] entries = getEntries();
+            Collection<IEntry> entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
-            IAttribute[] attributes = getAttributes();
-            IValue[] values = getValues();
+            Collection<IAttribute> attributes = getAttributes();
+            Collection<IValue> values = getValues();
 
-            if ( entries.length > 0 && searches.length == 0 && bookmarks.length == 0 && attributes.length == 0
-                && values.length == 0 )
+            if ( entries.size() > 0 && searches.length == 0 && bookmarks.length == 0 && attributes.size() == 0
+                && values.size() == 0 )
             {
-                return entries.length > 1 ? Messages.getString("DeleteAction.DeleteEntries") : Messages.getString("DeleteAction.DeleteEntry"); //$NON-NLS-1$ //$NON-NLS-2$
+                return entries.size() > 1 ? Messages.getString( "DeleteAction.DeleteEntries" ) : Messages.getString( "DeleteAction.DeleteEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( searches.length > 0 && entries.length == 0 && bookmarks.length == 0 && attributes.length == 0
-                && values.length == 0 )
+            if ( searches.length > 0 && entries.size() == 0 && bookmarks.length == 0 && attributes.size() == 0
+                && values.size() == 0 )
             {
-                return searches.length > 1 ? Messages.getString("DeleteAction.DeleteSearches") : Messages.getString("DeleteAction.DeleteSearch"); //$NON-NLS-1$ //$NON-NLS-2$
+                return searches.length > 1 ? Messages.getString( "DeleteAction.DeleteSearches" ) : Messages.getString( "DeleteAction.DeleteSearch" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( bookmarks.length > 0 && entries.length == 0 && searches.length == 0 && attributes.length == 0
-                && values.length == 0 )
+            if ( bookmarks.length > 0 && entries.size() == 0 && searches.length == 0 && attributes.size() == 0
+                && values.size() == 0 )
             {
-                return bookmarks.length > 1 ? Messages.getString("DeleteAction.DeleteBookmarks") : Messages.getString("DeleteAction.DeleteBookmark"); //$NON-NLS-1$ //$NON-NLS-2$
+                return bookmarks.length > 1 ? Messages.getString( "DeleteAction.DeleteBookmarks" ) : Messages.getString( "DeleteAction.DeleteBookmark" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( attributes.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
-                && values.length == 0 )
+            if ( attributes.size() > 0 && entries.size() == 0 && searches.length == 0 && bookmarks.length == 0
+                && values.size() == 0 )
             {
-                return attributes.length > 1 ? Messages.getString("DeleteAction.DeleteAttributes") : Messages.getString("DeleteAction.DeleteAttribute"); //$NON-NLS-1$ //$NON-NLS-2$
+                return attributes.size() > 1 ? Messages.getString( "DeleteAction.DeleteAttributes" ) : Messages.getString( "DeleteAction.DeleteAttribute" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( values.length > 0 && entries.length == 0 && searches.length == 0 && bookmarks.length == 0
-                && attributes.length == 0 )
+            if ( values.size() > 0 && entries.size() == 0 && searches.length == 0 && bookmarks.length == 0
+                && attributes.size() == 0 )
             {
-                return values.length > 1 ? Messages.getString("DeleteAction.DeleteValues") : Messages.getString("DeleteAction.DeleteValue"); //$NON-NLS-1$ //$NON-NLS-2$
+                return values.size() > 1 ? Messages.getString( "DeleteAction.DeleteValues" ) : Messages.getString( "DeleteAction.DeleteValue" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         catch ( Exception e )
         {
         }
 
-        return Messages.getString("DeleteAction.Delete"); //$NON-NLS-1$
+        return Messages.getString( "DeleteAction.Delete" ); //$NON-NLS-1$
     }
 
 
@@ -135,37 +137,20 @@ public class DeleteAction extends BrowserAction
     {
         try
         {
-            IEntry[] entries = getEntries();
+            Collection<IEntry> entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
-            IAttribute[] attributes = getAttributes();
-            IValue[] values = getValues();
+            Collection<IAttribute> attributes = getAttributes();
+            Collection<IValue> values = getValues();
 
             StringBuffer message = new StringBuffer();
             boolean askForTreeDeleteControl = false;
 
-            if ( entries.length > 0 )
+            if ( entries.size() > 0 )
             {
-                if ( entries.length <= 5 )
-                {
-                    message
-                        .append( entries.length == 1 ? Messages.getString("DeleteAction.DeleteEntryQuestion") //$NON-NLS-1$
-                            : Messages.getString("DeleteAction.DeleteEntriesQuestion") ); //$NON-NLS-1$
-                    for ( int i = 0; i < entries.length; i++ )
-                    {
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " ); //$NON-NLS-1$
-                        message.append( entries[i].getDn().getUpName() );
-                    }
-                }
-                else
-                {
-                    message.append( Messages.getString("DeleteAction.DeleteSelectedEntriesQuestion") ); //$NON-NLS-1$
-                }
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                appendEntriesWarnMessage( message, entries );
 
-                if ( entries[0].getBrowserConnection().getRootDSE().isControlSupported(
+                if ( entries.iterator().next().getBrowserConnection().getRootDSE().isControlSupported(
                     StudioControl.TREEDELETE_CONTROL.getOid() ) )
                 {
                     askForTreeDeleteControl = true;
@@ -174,103 +159,39 @@ public class DeleteAction extends BrowserAction
 
             if ( searches.length > 0 )
             {
-                if ( searches.length <= 5 )
-                {
-                    message.append( searches.length == 1 ? Messages.getString("DeleteAction.DeleteSearchQuestion") //$NON-NLS-1$
-                        : Messages.getString("DeleteAction.DeleteSearchesQuestion") ); //$NON-NLS-1$
-                    for ( int i = 0; i < searches.length; i++ )
-                    {
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " ); //$NON-NLS-1$
-                        message.append( searches[i].getName() );
-                    }
-                }
-                else
-                {
-                    message.append( Messages.getString("DeleteAction.DeleteSelectedSearchesQuestion") ); //$NON-NLS-1$
-                }
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                appendSearchesWarnMessage( message, searches );
             }
 
             if ( bookmarks.length > 0 )
             {
-                if ( bookmarks.length <= 5 )
-                {
-                    message.append( bookmarks.length == 1 ? Messages.getString("DeleteAction.DeleteBookmarkQuestion") //$NON-NLS-1$
-                        : Messages.getString("DeleteAction.DeleteBookmarksQuestion") ); //$NON-NLS-1$
-                    for ( int i = 0; i < bookmarks.length; i++ )
-                    {
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " ); //$NON-NLS-1$
-                        message.append( bookmarks[i].getName() );
-                    }
-                }
-                else
-                {
-                    message.append( Messages.getString("DeleteAction.DeleteSelectedBookmarksQuestion") ); //$NON-NLS-1$
-                }
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                appendBookmarsWarnMessage( message, bookmarks );
             }
 
-            if ( attributes.length > 0 )
+            if ( attributes.size() > 0 )
             {
-                if ( attributes.length <= 5 )
-                {
-                    message.append( attributes.length == 1 ? Messages.getString("DeleteAction.DeleteAttributeQuestion") //$NON-NLS-1$
-                        : Messages.getString("DeleteAction.DeleteAttributesQuestion") ); //$NON-NLS-1$
-                    for ( int i = 0; i < attributes.length; i++ )
-                    {
-                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                        message.append( "  - " ); //$NON-NLS-1$
-                        message.append( attributes[i].getDescription() );
-                    }
-                }
-                else
-                {
-                    message.append( Messages.getString("DeleteAction.DeleteSelectedAttributesQuestion") ); //$NON-NLS-1$
-                }
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                appendAttributesWarnMessage( message, attributes );
             }
 
-            if ( values.length > 0 )
+            if ( values.size() > 0 )
             {
                 boolean emptyValuesOnly = true;
-                for ( int i = 0; i < values.length; i++ )
+                for ( IValue value : values )
                 {
-                    if ( !values[i].isEmpty() )
+                    if ( !value.isEmpty() )
                     {
                         emptyValuesOnly = false;
                     }
                 }
                 if ( !emptyValuesOnly )
                 {
-                    if ( values.length <= 5 )
-                    {
-                        message.append( values.length == 1 ? Messages.getString("DeleteAction.DeleteValueQuestion") //$NON-NLS-1$
-                            : Messages.getString("DeleteAction.DeleteValuesQuestion") ); //$NON-NLS-1$
-                        for ( int i = 0; i < values.length; i++ )
-                        {
-                            message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                            message.append( "  - " ); //$NON-NLS-1$
-                            message.append( values[i].toString() );
-                        }
-                    }
-                    else
-                    {
-                        message.append( Messages.getString("DeleteAction.DeleteSelectedValuesQuestion") ); //$NON-NLS-1$
-                    }
-                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    appendValuesWarnMessage( message, values );
                 }
             }
 
             DeleteDialog dialog = new DeleteDialog( getShell(), getText(), message.toString(), askForTreeDeleteControl );
             if ( message.length() == 0 || dialog.open() == DeleteDialog.OK )
             {
-                if ( entries.length > 0 )
+                if ( entries.size() > 0 )
                 {
                     deleteEntries( entries, dialog.isUseTreeDeleteControl() );
                 }
@@ -282,10 +203,10 @@ public class DeleteAction extends BrowserAction
                 {
                     deleteBookmarks( bookmarks );
                 }
-                if ( attributes.length + values.length > 0 )
+                if ( attributes.size() + values.size() > 0 )
                 {
-                    List<IAttribute> attributeList = new ArrayList<IAttribute>( Arrays.asList( attributes ) );
-                    List<IValue> valueList = new ArrayList<IValue>( Arrays.asList( values ) );
+                    List<IAttribute> attributeList = new ArrayList<IAttribute>( attributes );
+                    List<IValue> valueList = new ArrayList<IValue>( values );
 
                     // filter empty attributes and values
                     for ( Iterator<IAttribute> it = attributeList.iterator(); it.hasNext(); )
@@ -336,13 +257,13 @@ public class DeleteAction extends BrowserAction
     {
         try
         {
-            IEntry[] entries = getEntries();
+            Collection<IEntry> entries = getEntries();
             ISearch[] searches = getSearches();
             IBookmark[] bookmarks = getBookmarks();
-            IAttribute[] attributes = getAttributes();
-            IValue[] values = getValues();
+            Collection<IAttribute> attributes = getAttributes();
+            Collection<IValue> values = getValues();
 
-            return entries.length + searches.length + bookmarks.length + attributes.length + values.length > 0;
+            return entries.size() + searches.length + bookmarks.length + attributes.size() + values.size() > 0;
 
         }
         catch ( Exception e )
@@ -361,36 +282,67 @@ public class DeleteAction extends BrowserAction
      * @throws Exception
      *      when an Entry has parent Entries
      */
-    protected IEntry[] getEntries() throws Exception
+    protected Collection<IEntry> getEntries()
     {
         LinkedHashSet<IEntry> entriesSet = new LinkedHashSet<IEntry>();
         for ( IEntry entry : getSelectedEntries() )
         {
-            if ( !entry.hasParententry() )
-            {
-                throw new Exception();
-            }
             entriesSet.add( entry );
         }
         for ( ISearchResult sr : getSelectedSearchResults() )
         {
-            if ( !sr.getEntry().hasParententry() )
-            {
-                throw new Exception();
-            }
             entriesSet.add( sr.getEntry() );
         }
 
-        IEntry[] allEntries = entriesSet.toArray( new IEntry[entriesSet.size()] );
-        for ( IEntry entry : allEntries )
+        Iterator<IEntry> iterator = entriesSet.iterator();
+        while ( iterator.hasNext() )
         {
+            IEntry entry = iterator.next();
             if ( entriesSet.contains( entry.getParententry() ) )
             {
-                entriesSet.remove( entry );
+                iterator.remove();
             }
         }
 
-        return entriesSet.toArray( new IEntry[entriesSet.size()] );
+        return entriesSet;
+    }
+
+
+    /**
+     * Appends the entries warn message.
+     * 
+     * @param message the message
+     * @param entries the entries
+     */
+    protected void appendEntriesWarnMessage( StringBuffer message, Collection<IEntry> entries )
+    {
+        for ( IEntry entry : entries )
+        {
+            if ( entry instanceof IRootDSE )
+            {
+                message.append( Messages.getString( "DeleteAction.DeleteRootDSE" ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+        }
+
+        if ( entries.size() <= 5 )
+        {
+            message.append( entries.size() == 1 ? Messages.getString( "DeleteAction.DeleteEntryQuestion" ) //$NON-NLS-1$
+                : Messages.getString( "DeleteAction.DeleteEntriesQuestion" ) ); //$NON-NLS-1$
+            for ( IEntry entry : entries )
+            {
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( "  - " ); //$NON-NLS-1$
+                message.append( entry.getDn().getUpName() );
+            }
+        }
+        else
+        {
+            message.append( Messages.getString( "DeleteAction.DeleteSelectedEntriesQuestion" ) ); //$NON-NLS-1$
+        }
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
     }
 
 
@@ -400,7 +352,7 @@ public class DeleteAction extends BrowserAction
      * @param entries the Entries to delete
      * @param useTreeDeleteControl true to use the tree delete control
      */
-    protected void deleteEntries( IEntry[] entries, boolean useTreeDeleteControl )
+    protected void deleteEntries( Collection<IEntry> entries, boolean useTreeDeleteControl )
     {
         new DeleteEntriesJob( entries, useTreeDeleteControl ).execute();
     }
@@ -413,9 +365,31 @@ public class DeleteAction extends BrowserAction
      *      the Searches
      * @throws Exception
      */
-    protected ISearch[] getSearches() throws Exception
+    protected ISearch[] getSearches()
     {
         return getSelectedSearches();
+    }
+
+
+    protected void appendSearchesWarnMessage( StringBuffer message, ISearch[] searches )
+    {
+        if ( searches.length <= 5 )
+        {
+            message.append( searches.length == 1 ? Messages.getString( "DeleteAction.DeleteSearchQuestion" ) //$NON-NLS-1$
+                : Messages.getString( "DeleteAction.DeleteSearchesQuestion" ) ); //$NON-NLS-1$
+            for ( int i = 0; i < searches.length; i++ )
+            {
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( "  - " ); //$NON-NLS-1$
+                message.append( searches[i].getName() );
+            }
+        }
+        else
+        {
+            message.append( Messages.getString( "DeleteAction.DeleteSelectedSearchesQuestion" ) ); //$NON-NLS-1$
+        }
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
     }
 
 
@@ -440,9 +414,31 @@ public class DeleteAction extends BrowserAction
      * @return
      * @throws Exception
      */
-    protected IBookmark[] getBookmarks() throws Exception
+    protected IBookmark[] getBookmarks()
     {
         return getSelectedBookmarks();
+    }
+
+
+    protected void appendBookmarsWarnMessage( StringBuffer message, IBookmark[] bookmarks )
+    {
+        if ( bookmarks.length <= 5 )
+        {
+            message.append( bookmarks.length == 1 ? Messages.getString( "DeleteAction.DeleteBookmarkQuestion" ) //$NON-NLS-1$
+                : Messages.getString( "DeleteAction.DeleteBookmarksQuestion" ) ); //$NON-NLS-1$
+            for ( int i = 0; i < bookmarks.length; i++ )
+            {
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( "  - " ); //$NON-NLS-1$
+                message.append( bookmarks[i].getName() );
+            }
+        }
+        else
+        {
+            message.append( Messages.getString( "DeleteAction.DeleteSelectedBookmarksQuestion" ) ); //$NON-NLS-1$
+        }
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
     }
 
 
@@ -468,31 +464,8 @@ public class DeleteAction extends BrowserAction
      *      the Attributes
      * @throws Exception
      */
-    protected IAttribute[] getAttributes() throws Exception
+    protected Collection<IAttribute> getAttributes()
     {
-        // check if a non-modifyable, must or objectClass attribute is selected
-        for ( IAttribute att : getSelectedAttributes() )
-        {
-            if ( !SchemaUtils.isModifyable( att.getAttributeTypeDescription() ) || att.isMustAttribute()
-                || att.isObjectClassAttribute() )
-            {
-                throw new Exception();
-            }
-        }
-
-        // check if a non-modifyable, must or objectClass attribute is selected
-        for ( AttributeHierarchy ah : getSelectedAttributeHierarchies() )
-        {
-            for ( IAttribute attribute : ah )
-            {
-                if ( !SchemaUtils.isModifyable( attribute.getAttributeTypeDescription() )
-                    || attribute.isMustAttribute() || attribute.isObjectClassAttribute() )
-                {
-                    throw new Exception();
-                }
-            }
-        }
-
         List<IAttribute> attributeList = new ArrayList<IAttribute>();
 
         // add selected attributes
@@ -516,8 +489,7 @@ public class DeleteAction extends BrowserAction
             }
         }
 
-        // check if ALL values of an attribute are selected -> delete whole
-        // attribute
+        // check if ALL values of an attribute are selected -> delete whole attribute
         Map<String, Integer> attributeNameToSelectedValuesCountMap = new HashMap<String, Integer>();
         for ( IValue value : getSelectedValues() )
         {
@@ -538,7 +510,70 @@ public class DeleteAction extends BrowserAction
             }
         }
 
-        return ( IAttribute[] ) attributeList.toArray( new IAttribute[attributeList.size()] );
+        return attributeList;
+    }
+
+
+    protected void appendAttributesWarnMessage( StringBuffer message, Collection<IAttribute> attributes )
+    {
+        // check if a non-modifyable, must or objectClass attribute is selected
+        for ( IAttribute att : attributes )
+        {
+            Iterator<AttributeTypeAndValue> atavIterator = att.getEntry().getRdn().iterator();
+            while ( atavIterator.hasNext() )
+            {
+                AttributeTypeAndValue atav = atavIterator.next();
+                for ( IValue value : att.getValues() )
+                {
+                    if ( att.getDescription().equals( atav.getUpType() )
+                        && value.getStringValue().equals( atav.getUpValue() ) )
+                    {
+                        message.append( NLS.bind(
+                            Messages.getString( "DeleteAction.DeletePartOfRDN" ), value.toString() ) ); //$NON-NLS-1$
+                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    }
+                }
+            }
+
+            if ( att.isObjectClassAttribute() )
+            {
+                message.append( Messages.getString( "DeleteAction.DeleteObjectClass" ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+            else if ( att.isMustAttribute() )
+            {
+                message.append( NLS.bind( Messages.getString( "DeleteAction.DeleteMust" ), att.getDescription() ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+            else if ( !SchemaUtils.isModifyable( att.getAttributeTypeDescription() ) )
+            {
+                message.append( NLS.bind(
+                    Messages.getString( "DeleteAction.DeleteNonModifyable" ), att.getDescription() ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+        }
+
+        if ( attributes.size() <= 5 )
+        {
+            message.append( attributes.size() == 1 ? Messages.getString( "DeleteAction.DeleteAttributeQuestion" ) //$NON-NLS-1$
+                : Messages.getString( "DeleteAction.DeleteAttributesQuestion" ) ); //$NON-NLS-1$
+            for ( IAttribute attribute : attributes )
+            {
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( "  - " ); //$NON-NLS-1$
+                message.append( attribute.getDescription() );
+            }
+        }
+        else
+        {
+            message.append( Messages.getString( "DeleteAction.DeleteSelectedAttributesQuestion" ) ); //$NON-NLS-1$
+        }
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
     }
 
 
@@ -549,18 +584,30 @@ public class DeleteAction extends BrowserAction
      *      the Values
      * @throws Exception
      */
-    protected IValue[] getValues() throws Exception
+    protected Collection<IValue> getValues() throws Exception
+    {
+        List<IValue> valueList = new ArrayList<IValue>();
+
+        // add selected values, but not if there attributes are also selected
+        Set<IAttribute> attributeSet = new HashSet<IAttribute>( getAttributes() );
+        for ( IValue value : getSelectedValues() )
+        {
+            if ( !attributeSet.contains( value.getAttribute() ) )
+            {
+                valueList.add( value );
+            }
+        }
+
+        return valueList;
+    }
+
+
+    protected void appendValuesWarnMessage( StringBuffer message, Collection<IValue> values )
     {
         Map<String, Integer> attributeNameToSelectedValuesCountMap = new HashMap<String, Integer>();
         Set<String> selectedObjectClasses = new HashSet<String>();
-        for ( IValue value : getSelectedValues() )
+        for ( IValue value : values )
         {
-            // check if a value of an operational attribute is selected
-            if ( !SchemaUtils.isModifyable( value.getAttribute().getAttributeTypeDescription() ) )
-            {
-                throw new Exception();
-            }
-
             // check if (part of) RDN is selected
             Iterator<AttributeTypeAndValue> atavIterator = value.getAttribute().getEntry().getRdn().iterator();
             while ( atavIterator.hasNext() )
@@ -569,7 +616,9 @@ public class DeleteAction extends BrowserAction
                 if ( value.getAttribute().getDescription().equals( atav.getUpType() )
                     && value.getStringValue().equals( atav.getUpValue() ) )
                 {
-                    throw new Exception();
+                    message.append( NLS.bind( Messages.getString( "DeleteAction.DeletePartOfRDN" ), value.toString() ) ); //$NON-NLS-1$
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
             }
 
@@ -579,8 +628,7 @@ public class DeleteAction extends BrowserAction
                 selectedObjectClasses.add( value.getStringValue() );
             }
 
-            // check if ALL values of objectClass or a MUST attribute are
-            // selected
+            // check if ALL values of objectClass or a MUST attribute are selected
             if ( !attributeNameToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
             {
                 attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( 0 ) );
@@ -588,17 +636,36 @@ public class DeleteAction extends BrowserAction
             int count = ( ( Integer ) attributeNameToSelectedValuesCountMap.get( value.getAttribute().getDescription() ) )
                 .intValue() + 1;
             attributeNameToSelectedValuesCountMap.put( value.getAttribute().getDescription(), new Integer( count ) );
-            if ( ( value.getAttribute().isObjectClassAttribute() || value.getAttribute().isMustAttribute() )
-                && count >= value.getAttribute().getValueSize() )
+            if ( value.getAttribute().isObjectClassAttribute() && count >= value.getAttribute().getValueSize() )
             {
-                throw new Exception();
+                message.append( Messages.getString( "DeleteAction.DeleteObjectClass" ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                continue;
+            }
+            else if ( value.getAttribute().isMustAttribute() && count >= value.getAttribute().getValueSize() )
+            {
+                message.append( NLS.bind(
+                    Messages.getString( "DeleteAction.DeleteMust" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+
+            // check if a value of an operational attribute is selected
+            if ( !SchemaUtils.isModifyable( value.getAttribute().getAttributeTypeDescription() ) )
+            {
+                message.append( NLS.bind(
+                    Messages.getString( "DeleteAction.DeleteNonModifyable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                continue;
             }
         }
 
         // check if a required objectClass is selected
-        if ( getSelectedValues().length > 0 && !selectedObjectClasses.isEmpty() )
+        if ( values.size() > 0 && !selectedObjectClasses.isEmpty() )
         {
-            IEntry entry = getSelectedValues()[0].getAttribute().getEntry();
+            IEntry entry = values.iterator().next().getAttribute().getEntry();
             Schema schema = entry.getBrowserConnection().getSchema();
             // get remaining attributes
             String[] ocValues = entry.getSubschema().getObjectClassNames();
@@ -636,25 +703,32 @@ public class DeleteAction extends BrowserAction
                 {
                     if ( !remainingAttributeSet.contains( attribute.getAttributeTypeDescription() ) )
                     {
-                        throw new Exception();
+                        message.append( NLS.bind(
+                            Messages.getString( "DeleteAction.DeleteNeededObjectClass" ), attribute.getDescription() ) ); //$NON-NLS-1$
+                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                        message.append( BrowserCoreConstants.LINE_SEPARATOR );
                     }
                 }
             }
         }
 
-        List<IValue> valueList = new ArrayList<IValue>();
-
-        // add selected values
-        Set<IAttribute> attributeSet = new HashSet<IAttribute>( Arrays.asList( getAttributes() ) );
-        for ( IValue value : getSelectedValues() )
+        if ( values.size() <= 5 )
         {
-            if ( !attributeSet.contains( value.getAttribute() ) )
+            message.append( values.size() == 1 ? Messages.getString( "DeleteAction.DeleteValueQuestion" ) //$NON-NLS-1$
+                : Messages.getString( "DeleteAction.DeleteValuesQuestion" ) ); //$NON-NLS-1$
+            for ( IValue value : values )
             {
-                valueList.add( value );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( "  - " ); //$NON-NLS-1$
+                message.append( value.toString() );
             }
         }
-
-        return valueList.toArray( new IValue[valueList.size()] );
+        else
+        {
+            message.append( Messages.getString( "DeleteAction.DeleteSelectedValuesQuestion" ) ); //$NON-NLS-1$
+        }
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
+        message.append( BrowserCoreConstants.LINE_SEPARATOR );
     }
 
 
