@@ -28,7 +28,6 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 
@@ -106,12 +105,6 @@ public class DeleteAllValuesAction extends DeleteAction
     public boolean isEnabled()
     {
         return super.isEnabled();
-        // return getSelectedAttributes().length == 0 &&
-        // getSelectedValues().length == 1 &&
-        // getSelectedValues()[0].getAttribute().getValueSize() > 1 &&
-        // !getSelectedValues()[0].getAttribute().isMustAttribute() &&
-        // !getSelectedValues()[0].getAttribute().isObjectClassAttribute() &&
-        // !getSelectedValues()[0].getAttribute().isOperationalAttribute();
     }
 
 
@@ -121,10 +114,7 @@ public class DeleteAllValuesAction extends DeleteAction
     protected Collection<IAttribute> getAttributes()
     {
         if ( getSelectedAttributes().length == 0 && getSelectedValues().length == 1
-            && getSelectedValues()[0].getAttribute().getValueSize() > 1
-            && !getSelectedValues()[0].getAttribute().isMustAttribute()
-            && !getSelectedValues()[0].getAttribute().isObjectClassAttribute()
-            && SchemaUtils.isModifyable( getSelectedValues()[0].getAttribute().getAttributeTypeDescription() ) )
+            && getSelectedValues()[0].getAttribute().getValueSize() > 1 )
         {
             Collection<IAttribute> attributes = new HashSet<IAttribute>();
             attributes.add( getSelectedValues()[0].getAttribute() );
