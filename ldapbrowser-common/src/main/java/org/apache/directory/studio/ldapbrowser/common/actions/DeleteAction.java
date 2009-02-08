@@ -516,7 +516,7 @@ public class DeleteAction extends BrowserAction
 
     protected void appendAttributesWarnMessage( StringBuffer message, Collection<IAttribute> attributes )
     {
-        // check if a non-modifyable, must or objectClass attribute is selected
+        // check if a non-modifiable, must or objectClass attribute is selected
         for ( IAttribute att : attributes )
         {
             Iterator<AttributeTypeAndValue> atavIterator = att.getEntry().getRdn().iterator();
@@ -548,10 +548,10 @@ public class DeleteAction extends BrowserAction
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
-            else if ( !SchemaUtils.isModifyable( att.getAttributeTypeDescription() ) )
+            else if ( !SchemaUtils.isModifiable( att.getAttributeTypeDescription() ) )
             {
                 message.append( NLS.bind(
-                    Messages.getString( "DeleteAction.DeleteNonModifyable" ), att.getDescription() ) ); //$NON-NLS-1$
+                    Messages.getString( "DeleteAction.DeleteNonModifiable" ), att.getDescription() ) ); //$NON-NLS-1$
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
@@ -652,10 +652,10 @@ public class DeleteAction extends BrowserAction
             }
 
             // check if a value of an operational attribute is selected
-            if ( !SchemaUtils.isModifyable( value.getAttribute().getAttributeTypeDescription() ) )
+            if ( !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
             {
                 message.append( NLS.bind(
-                    Messages.getString( "DeleteAction.DeleteNonModifyable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                    Messages.getString( "DeleteAction.DeleteNonModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 continue;

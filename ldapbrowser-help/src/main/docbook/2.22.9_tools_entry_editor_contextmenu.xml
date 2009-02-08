@@ -97,7 +97,7 @@
 				<listitem>
 					<para>
 						Enabled: If one attribute or value is selected
-						and the attribute is modifyable and multivalued.
+						and the attribute is modifiable and multivalued.
 					</para>
 				</listitem>
 				<listitem>
@@ -1112,7 +1112,7 @@
 				<listitem>
 					<para>
 						Enabled: If one value is selected and this is
-						modifyable.
+						modifiable.
 					</para>
 				</listitem>
 				<listitem>
@@ -1146,7 +1146,7 @@
 				<listitem>
 					<para>
 						Enabled: If one value is selected and this is
-						modifyable.
+						modifiable.
 					</para>
 				</listitem>
 			</itemizedlist>

@@ -71,7 +71,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
         {
             IValue attributeValue = ( IValue ) element;
 
-            if ( !SchemaUtils.isModifyable( attributeValue.getAttribute().getAttributeTypeDescription() ) )
+            if ( !SchemaUtils.isModifiable( attributeValue.getAttribute().getAttributeTypeDescription() ) )
             {
                 return false;
             }

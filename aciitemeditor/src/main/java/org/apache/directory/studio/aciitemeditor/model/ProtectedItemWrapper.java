@@ -332,7 +332,7 @@ public class ProtectedItemWrapper
     /**
      * Returns the list of values, may be modified.
      * 
-     * @return the modifyable list of values.
+     * @return the modifiable list of values.
      */
     public List<String> getValues()
     {

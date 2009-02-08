@@ -438,7 +438,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
     {
 
         /**
-         * Only GrantAndDenialWrappers and the STATE colum is modifyable.
+         * Only GrantAndDenialWrappers and the STATE colum is modifiable.
          * 
          * @param element the element
          * @param property the property

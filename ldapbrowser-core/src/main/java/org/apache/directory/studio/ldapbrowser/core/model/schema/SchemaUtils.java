@@ -209,7 +209,7 @@ public class SchemaUtils
     }
 
 
-    public static boolean isModifyable( AttributeTypeDescription atd )
+    public static boolean isModifiable( AttributeTypeDescription atd )
     {
         if ( atd == null )
         {
@@ -224,7 +224,7 @@ public class SchemaUtils
         // Check some default no-user-modification attributes
         // e.g. Siemens DirX doesn't provide a good schema.
         // TODO: make default no-user-modification attributes configurable
-        String[] nonModifyableAttributes = new String[]
+        String[] nonModifiableAttributes = new String[]
             { IAttribute.OPERATIONAL_ATTRIBUTE_CREATORS_NAME, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
                 IAttribute.OPERATIONAL_ATTRIBUTE_MODIFIERS_NAME, IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP,
                 IAttribute.OPERATIONAL_ATTRIBUTE_STRUCTURAL_OBJECT_CLASS,
@@ -237,9 +237,9 @@ public class SchemaUtils
                 IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT, IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES
 
             };
-        for ( int i = 0; i < nonModifyableAttributes.length; i++ )
+        for ( int i = 0; i < nonModifiableAttributes.length; i++ )
         {
-            String att = nonModifyableAttributes[i];
+            String att = nonModifiableAttributes[i];
             if ( att.equalsIgnoreCase( atd.getNumericOid() ) )
             {
                 return false;

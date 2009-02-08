@@ -95,7 +95,7 @@
 			</tgroup>
 		</informaltable>
 		<para>
-			The network parameters are only modifiyable if the
+			The network parameters are only modifiable if the
 			connection is closed.
 		</para>
 	</simplesect>
@@ -174,7 +174,7 @@
 			</tgroup>
 		</informaltable>
 		<para>
-			The authentication parameters are only modifiyable if the
+			The authentication parameters are only modifiable if the
 			connection is closed.
 		</para>
 	</simplesect>

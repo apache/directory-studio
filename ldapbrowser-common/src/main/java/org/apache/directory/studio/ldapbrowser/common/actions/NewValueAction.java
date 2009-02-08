@@ -78,9 +78,9 @@ public class NewValueAction extends BrowserAction
 
         // validate non-modifiable and single-valued attributes
         StringBuffer message = new StringBuffer();
-        if ( !SchemaUtils.isModifyable( attribute.getAttributeTypeDescription() ) )
+        if ( !SchemaUtils.isModifiable( attribute.getAttributeTypeDescription() ) )
         {
-            message.append( NLS.bind( Messages.getString( "NewValueAction.NewValueNotModifyable" ), attribute //$NON-NLS-1$
+            message.append( NLS.bind( Messages.getString( "NewValueAction.NewValueNotModifiable" ), attribute //$NON-NLS-1$
                 .getDescription() ) );
             message.append( BrowserCoreConstants.LINE_SEPARATOR );
             message.append( BrowserCoreConstants.LINE_SEPARATOR );

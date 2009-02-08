@@ -99,7 +99,7 @@ public class MultiValuedDialog extends Dialog
      *
      * @param parentShell the shell
      * @param displayName the display name of the edited element
-     * @param values a modifyable list of values
+     * @param values a modifiable list of values
      * @param context the context
      * @param valueEditor the detail value editor
      */

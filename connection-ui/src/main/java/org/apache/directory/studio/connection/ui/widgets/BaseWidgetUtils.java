@@ -132,7 +132,7 @@ public class BaseWidgetUtils
 
     /**
      * Creates a SWT {@link Text} under the given parent.
-     * The created text control is modifyable.
+     * The created text control is modifiable.
      *
      * @param parent the parent
      * @param text the initial text
@@ -152,7 +152,7 @@ public class BaseWidgetUtils
 
     /**
      * Creates a SWT {@link Text} under the given parent.
-     * The created text control is modifyable.
+     * The created text control is modifiable.
      *
      * @param parent the parent
      * @param text the initial text
@@ -196,7 +196,7 @@ public class BaseWidgetUtils
     /**
      * Creates a SWT {@link Text} under the given parent.
      * The created text control is created with the SWT.PASSWORD and 
-     * SWT.READ_ONLY style. So the created controls is not modifyable.
+     * SWT.READ_ONLY style. So the created controls is not modifiable.
      *
      * @param parent the parent
      * @param text the initial text
@@ -219,7 +219,7 @@ public class BaseWidgetUtils
     /**
      * Creates a SWT {@link Text} under the given parent.
      * The created text control behaves like a label: it has no border, 
-     * a grayed background and is not modifyable. 
+     * a grayed background and is not modifiable. 
      * But the text is selectable and could be copied.
      *
      * @param parent the parent
@@ -243,7 +243,7 @@ public class BaseWidgetUtils
     /**
      * Creates a SWT {@link Text} under the given parent.
      * The created text control behaves like a label: it has no border, 
-     * a grayed background and is not modifyable. 
+     * a grayed background and is not modifiable. 
      * But the text is selectable and could be copied.
      *
      * @param parent the parent
@@ -269,7 +269,7 @@ public class BaseWidgetUtils
     /**
      * Creates a SWT {@link Text} under the given parent.
      * The created text control behaves like a label: it has no border, 
-     * a grayed background and is not modifyable. 
+     * a grayed background and is not modifiable. 
      * But the text is selectable and could be copied.
      * The label is created with the SWT.WRAP style to enable line wrapping.
      *
@@ -297,7 +297,7 @@ public class BaseWidgetUtils
     /**
      * Creates a SWT {@link Text} under the given parent.
      * The created text control behaves like a label: it has no border, 
-     * a grayed background and is not modifyable. 
+     * a grayed background and is not modifiable. 
      * But the text is selectable and could be copied.
      * The label is created with the SWT.WRAP style to enable line wrapping.
      *
@@ -325,7 +325,7 @@ public class BaseWidgetUtils
 
     /**
      * Creates a SWT {@link Text} under the given parent.
-     * The text is not modifyable, but the text is selectable 
+     * The text is not modifiable, but the text is selectable 
      * and could be copied.
      *
      * @param parent the parent

@@ -51,7 +51,7 @@
 				<listitem>
 					<para>
 						Enabled: If an attribute is selected and the
-						attribute is modifyable
+						attribute is modifiable
 					</para>
 				</listitem>
 				<listitem>
@@ -988,7 +988,7 @@
 				<listitem>
 					<para>
 						Enabled: If an attribute is selected and this is
-						modifyable.
+						modifiable.
 					</para>
 				</listitem>
 				<listitem>
@@ -1023,7 +1023,7 @@
 				<listitem>
 					<para>
 						Enabled: If an attribute is selected, this is
-						empty or singevalued and this is modifyable.
+						empty or singevalued and this is modifiable.
 					</para>
 				</listitem>
 			</itemizedlist>

@@ -90,16 +90,16 @@ public class SearchResultEditorCellModifier implements ICellModifier
             }
 
             // check schema modifiable
-            boolean isOneModifyable = false;
+            boolean isOneModifiable = false;
             for ( IAttribute attribute : ah )
             {
-                if ( SchemaUtils.isModifyable( attribute.getAttributeTypeDescription() ) )
+                if ( SchemaUtils.isModifiable( attribute.getAttributeTypeDescription() ) )
                 {
-                    isOneModifyable = true;
+                    isOneModifiable = true;
                     break;
                 }
             }
-            if ( !isOneModifyable )
+            if ( !isOneModifiable )
             {
                 return false;
             }

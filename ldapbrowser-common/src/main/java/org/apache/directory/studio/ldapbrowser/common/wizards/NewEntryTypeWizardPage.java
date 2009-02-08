@@ -192,7 +192,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 RunnableContextRunner.execute( initializeAttributesRunnable, getContainer(), true );
             }
 
-            // clone entry and remove non-modifyable attributes
+            // clone entry and remove non-modifiable attributes
             try
             {
                 EventRegistry.suspendEventFireingInCurrentThread();
@@ -202,7 +202,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
                 IAttribute[] attributes = prototypeEntry.getAttributes();
                 for ( int i = 0; i < attributes.length; i++ )
                 {
-                    if ( !SchemaUtils.isModifyable( attributes[i].getAttributeTypeDescription() ) )
+                    if ( !SchemaUtils.isModifiable( attributes[i].getAttributeTypeDescription() ) )
                     {
                         prototypeEntry.deleteAttribute( attributes[i] );
                     }
