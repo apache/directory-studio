@@ -30,8 +30,6 @@ import java.util.Map;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -170,9 +168,15 @@ public class DummyEntry implements IEntry
      */
     public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
-        AttributeDescription ad = new AttributeDescription( attributeDescription );
-
         List<IAttribute> attributeList = new ArrayList<IAttribute>();
+
+        IAttribute myAttribute = getAttribute( attributeDescription );
+        if ( myAttribute != null )
+        {
+            attributeList.add( myAttribute );
+        }
+
+        AttributeDescription ad = new AttributeDescription( attributeDescription );
         for ( IAttribute attribute : attributeMap.values() )
         {
             AttributeDescription other = attribute.getAttributeDescription();
@@ -360,58 +364,6 @@ public class DummyEntry implements IEntry
      */
     public boolean isOperationalAttributesInitialized()
     {
-        return true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isConsistent()
-    {
-        // check empty attributes and empty values
-        for ( IAttribute attribute : attributeMap.values() )
-        {
-            if ( !attribute.isConsistent() )
-            {
-                return false;
-            }
-        }
-
-        // check objectClass attribute
-        if ( !attributeMap.containsKey( IAttribute.OBJECTCLASS_ATTRIBUTE_OID.toLowerCase() ) )
-        {
-            return false;
-        }
-        IAttribute ocAttribute = attributeMap.get( IAttribute.OBJECTCLASS_ATTRIBUTE_OID.toLowerCase() );
-        String[] ocValues = ocAttribute.getStringValues();
-        boolean structuralObjectClassAvailable = false;
-        for ( String ocValue : ocValues )
-        {
-            ObjectClassDescription ocd = this.getBrowserConnection().getSchema().getObjectClassDescription( ocValue );
-            if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
-            {
-                structuralObjectClassAvailable = true;
-                break;
-            }
-        }
-        if ( !structuralObjectClassAvailable )
-        {
-            return false;
-        }
-
-        // check must-attributes
-        String[] mustAttributeNames = getSubschema().getMustAttributeNames();
-        for ( String mustAttributeName : mustAttributeNames )
-        {
-            AttributeDescription ad = new AttributeDescription( mustAttributeName );
-            String oidString = ad.toOidString( getBrowserConnection().getSchema() );
-            if ( !attributeMap.containsKey( oidString.toLowerCase() ) )
-            {
-                return false;
-            }
-        }
-
         return true;
     }
 

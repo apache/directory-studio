@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
@@ -37,7 +38,11 @@ import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -53,11 +58,11 @@ public class SchemaUtils
     {
         public int compare( String s1, String s2 )
         {
-            if ( s1.matches( "[0-9\\.]+" ) && !s2.matches( "[0-9\\.]+" ) )
+            if ( s1.matches( "[0-9\\.]+" ) && !s2.matches( "[0-9\\.]+" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 return 1;
             }
-            else if ( !s1.matches( "[0-9\\.]+" ) && s2.matches( "[0-9\\.]+" ) )
+            else if ( !s1.matches( "[0-9\\.]+" ) && s2.matches( "[0-9\\.]+" ) ) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 return -1;
             }
@@ -67,7 +72,7 @@ public class SchemaUtils
             }
         }
     };
-    
+
     private static final Comparator<AbstractSchemaDescription> schemaElementNameComparator = new Comparator<AbstractSchemaDescription>()
     {
         public int compare( AbstractSchemaDescription s1, AbstractSchemaDescription s2 )
@@ -75,7 +80,8 @@ public class SchemaUtils
             return SchemaUtils.toString( s1 ).compareToIgnoreCase( SchemaUtils.toString( s2 ) );
         }
     };
-    
+
+
     /**
      * Gets the names of the given schema elements.
      * 
@@ -93,7 +99,7 @@ public class SchemaUtils
         return nameSet;
     }
 
-    
+
     /**
      * Gets the names of the given schema elements.
      * 
@@ -105,7 +111,7 @@ public class SchemaUtils
     {
         return getNames( asds ).toArray( new String[0] );
     }
-    
+
 
     /**
      * Get the numeric OIDs of the given schema descriptions.
@@ -118,7 +124,7 @@ public class SchemaUtils
         for ( AbstractSchemaDescription asd : descritpions )
         {
             oids.add( asd.getNumericOid() );
-    
+
         }
         return oids;
     }
@@ -376,8 +382,8 @@ public class SchemaUtils
      * @return all attribute type descriptions using this matching rule for
      * equality, substring or ordering matching
      */
-    public static Collection<AttributeTypeDescription> getUsedFromAttributeTypeDescriptions( MatchingRuleDescription mrd,
-        Schema schema )
+    public static Collection<AttributeTypeDescription> getUsedFromAttributeTypeDescriptions(
+        MatchingRuleDescription mrd, Schema schema )
     {
         Set<AttributeTypeDescription> usedFromSet = new TreeSet<AttributeTypeDescription>( schemaElementNameComparator );
         for ( AttributeTypeDescription atd : schema.getAttributeTypeDescriptions() )
@@ -510,7 +516,7 @@ public class SchemaUtils
         return null;
     }
 
-    
+
     /**
      * Gets the syntax length of the given or the
      * superior attribute type description.
@@ -536,8 +542,8 @@ public class SchemaUtils
 
         return -1;
     }
-    
-    
+
+
     /**
      * Gets all matching rule description names the given attribute type
      * description applies to according to the schema's matchin rul use
@@ -552,7 +558,7 @@ public class SchemaUtils
      */
     public static Collection<String> getOtherMatchingRuleDescriptionNames( AttributeTypeDescription atd, Schema schema )
     {
-        Set<String> otherMatchingRules = new TreeSet<String>( nameAndOidComparator ); 
+        Set<String> otherMatchingRules = new TreeSet<String>( nameAndOidComparator );
         for ( MatchingRuleUseDescription mrud : schema.getMatchingRuleUseDescriptions() )
         {
             Collection<String> atdSet = toLowerCaseSet( mrud.getApplicableAttributes() );
@@ -563,8 +569,8 @@ public class SchemaUtils
         }
         return otherMatchingRules;
     }
-    
-    
+
+
     /**
      * Gets all attribute type descriptions using the given attribute type
      * descriptions as superior.
@@ -575,7 +581,8 @@ public class SchemaUtils
      * @return all attribute type descriptions using this attribute type
      *         description as superior
      */
-    public static Collection<AttributeTypeDescription> getDerivedAttributeTypeDescriptions( AttributeTypeDescription atd, Schema schema )
+    public static Collection<AttributeTypeDescription> getDerivedAttributeTypeDescriptions(
+        AttributeTypeDescription atd, Schema schema )
     {
         Set<AttributeTypeDescription> derivedAtds = new TreeSet<AttributeTypeDescription>( schemaElementNameComparator );
         for ( AttributeTypeDescription derivedAtd : schema.getAttributeTypeDescriptions() )
@@ -588,7 +595,8 @@ public class SchemaUtils
         }
         return derivedAtds;
     }
-    
+
+
     /**
      * Gets all object class description using the given attribute type
      * description as must attribute.
@@ -639,11 +647,10 @@ public class SchemaUtils
         }
         return ocds;
     }
-    
-    
-    
 
-    private static Collection<ObjectClassDescription> getExistingSuperiorObjectClassDescription( ObjectClassDescription ocd, Schema schema )
+
+    private static Collection<ObjectClassDescription> getExistingSuperiorObjectClassDescription(
+        ObjectClassDescription ocd, Schema schema )
     {
         List<ObjectClassDescription> superiorList = new ArrayList<ObjectClassDescription>();
         for ( String superior : ocd.getSuperiorObjectClasses() )
@@ -656,7 +663,7 @@ public class SchemaUtils
         return superiorList;
     }
 
-    
+
     /**
      * Gets the superior object class descriptions of the given object class description.
      * 
@@ -665,7 +672,8 @@ public class SchemaUtils
      * 
      * @return the superior object class descriptions
      */
-    public static List<ObjectClassDescription> getSuperiorObjectClassDescriptions( ObjectClassDescription ocd, Schema schema )
+    public static List<ObjectClassDescription> getSuperiorObjectClassDescriptions( ObjectClassDescription ocd,
+        Schema schema )
     {
         List<ObjectClassDescription> superiorList = new ArrayList<ObjectClassDescription>();
         for ( String superior : ocd.getSuperiorObjectClasses() )
@@ -674,8 +682,8 @@ public class SchemaUtils
         }
         return superiorList;
     }
-    
-    
+
+
     /**
      * Gets the sub object class descriptions of the given object class description.
      * 
@@ -697,7 +705,8 @@ public class SchemaUtils
         }
         return subOcds;
     }
-    
+
+
     /**
      * Gets the must attribute type description names of the given
      * and all superior object class description, transitively.
@@ -708,9 +717,10 @@ public class SchemaUtils
      * @return the must attribute type description names of the given
      *         and all superior object class description, transitively
      */
-    public static Collection<String> getMustAttributeTypeDescriptionNamesTransitive( ObjectClassDescription ocd, Schema schema )
+    public static Collection<String> getMustAttributeTypeDescriptionNamesTransitive( ObjectClassDescription ocd,
+        Schema schema )
     {
-        Set<String> musts = new TreeSet<String>( nameAndOidComparator ); 
+        Set<String> musts = new TreeSet<String>( nameAndOidComparator );
         musts.addAll( ocd.getMustAttributeTypes() );
         Collection<ObjectClassDescription> superiors = getExistingSuperiorObjectClassDescription( ocd, schema );
         for ( ObjectClassDescription superior : superiors )
@@ -719,8 +729,8 @@ public class SchemaUtils
         }
         return musts;
     }
-    
-    
+
+
     /**
      * Gets the may attribute type description names of the given
      * and all superior object class description, transitively.
@@ -731,9 +741,10 @@ public class SchemaUtils
      * @return the may attribute type description names of the given
      *         and all superior object class description, transitively
      */
-    public static Collection<String> getMayAttributeTypeDescriptionNamesTransitive( ObjectClassDescription ocd, Schema schema )
+    public static Collection<String> getMayAttributeTypeDescriptionNamesTransitive( ObjectClassDescription ocd,
+        Schema schema )
     {
-        Set<String> mays= new TreeSet<String>( nameAndOidComparator ); 
+        Set<String> mays = new TreeSet<String>( nameAndOidComparator );
         mays.addAll( ocd.getMayAttributeTypes() );
         Collection<ObjectClassDescription> superiors = getExistingSuperiorObjectClassDescription( ocd, schema );
         for ( ObjectClassDescription superior : superiors )
@@ -742,6 +753,7 @@ public class SchemaUtils
         }
         return mays;
     }
+
 
     /**
      * Gets the LDIF line of the given schema element, may be null.
@@ -755,8 +767,8 @@ public class SchemaUtils
         String ldifLine = ldifLines != null && !ldifLines.isEmpty() ? ldifLines.get( 0 ) : null;
         return ldifLine;
     }
-    
-    
+
+
     private static Collection<String> toLowerCaseSet( Collection<String> names )
     {
         Set<String> set = new HashSet<String>();
@@ -769,7 +781,8 @@ public class SchemaUtils
         }
         return set;
     }
-    
+
+
     /**
      * Gets the string representation of the given schema element.
      * 
@@ -798,7 +811,7 @@ public class SchemaUtils
             {
                 if ( !first )
                 {
-                    sb.append( ", " );
+                    sb.append( ", " ); //$NON-NLS-1$
                 }
                 sb.append( name );
                 first = false;
@@ -806,6 +819,91 @@ public class SchemaUtils
         }
         return sb.toString();
     }
-    
+
+
+    /**
+     * Checks if the given entry with its attributes is complete and return
+     * useful messages if it is not complete. The following checks are performed:
+     * 
+     * <ul>
+     * <li>The objectClass attribute must be present</li>
+     * <li>A structural object class must be present</li>
+     * <li>All mandatory attributes must be present</li>
+     * <li>All attribute must be allowed according to the object classes</li>
+     * <li>There mustn't be any empty value</li>
+     * </ul>
+     * 
+     * @return a collection with warn messages if the entry is complete, empty if the entry is complete
+     */
+    public static Collection<String> getEntryIncompleteMessages( IEntry entry )
+    {
+        Collection<String> messages = new ArrayList<String>();
+        if ( entry != null )
+        {
+            // check objectClass attribute
+            IAttribute ocAttribute = entry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
+            if ( ocAttribute == null )
+            {
+                messages.add( Messages.getString( "SchemaUtils.NoObjectClass" ) ); //$NON-NLS-1$
+            }
+            String[] ocValues = ocAttribute.getStringValues();
+            boolean structuralObjectClassAvailable = false;
+            for ( String ocValue : ocValues )
+            {
+                ObjectClassDescription ocd = entry.getBrowserConnection().getSchema().getObjectClassDescription(
+                    ocValue );
+                if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
+                {
+                    structuralObjectClassAvailable = true;
+                    break;
+                }
+            }
+            if ( !structuralObjectClassAvailable )
+            {
+                messages.add( Messages.getString( "SchemaUtils.NoStructuralObjectClass" ) ); //$NON-NLS-1$
+            }
+
+            // check must-attributes
+            String[] mustAttributeNames = entry.getSubschema().getMustAttributeNames();
+            for ( String must : mustAttributeNames )
+            {
+                AttributeHierarchy ah = entry.getAttributeWithSubtypes( must );
+                if ( ah == null )
+                {
+                    messages.add( NLS.bind( Messages.getString( "SchemaUtils.MandatoryAttributeIsMissing" ), must ) ); //$NON-NLS-1$
+                }
+            }
+
+            // check unallowed attributes
+            Set<AttributeTypeDescription> allAtds = entry.getSubschema().getAllAttributeTypeDescriptions();
+            for ( IAttribute attribute : entry.getAttributes() )
+            {
+                if ( !attribute.isOperationalAttribute() )
+                {
+                    AttributeTypeDescription atd = attribute.getAttributeTypeDescription();
+                    if ( !allAtds.contains( atd ) )
+                    {
+                        messages.add( NLS.bind( Messages.getString( "SchemaUtils.AttributeNotAllowed" ), attribute //$NON-NLS-1$
+                            .getDescription() ) );
+                    }
+                }
+            }
+
+            // check empty attributes and empty values
+            for ( IAttribute attribute : entry.getAttributes() )
+            {
+                for ( IValue value : attribute.getValues() )
+                {
+                    if ( value.isEmpty() )
+                    {
+                        messages.add( NLS.bind( Messages.getString( "SchemaUtils.EmptyValue" ), //$NON-NLS-1$
+                            attribute.getDescription() ) );
+                    }
+                }
+            }
+        }
+
+        return messages;
+    }
 
 }

@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
+import java.util.Collection;
+
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
@@ -36,7 +38,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizardContainer;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -85,13 +92,46 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
     public NewEntryAttributesWizardPage( String pageName, NewEntryWizard wizard )
     {
         super( pageName );
-        setTitle( Messages.getString("NewEntryAttributesWizardPage.Attributes") ); //$NON-NLS-1$
-        setDescription( Messages.getString("NewEntryAttributesWizardPage.PleaseEnterAttributesForEntry") ); //$NON-NLS-1$
+        setTitle( Messages.getString( "NewEntryAttributesWizardPage.Attributes" ) ); //$NON-NLS-1$
+        setDescription( Messages.getString( "NewEntryAttributesWizardPage.PleaseEnterAttributesForEntry" ) ); //$NON-NLS-1$
         setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_ENTRY_WIZARD ) );
         setPageComplete( false );
 
         this.wizard = wizard;
+
+        IWizardContainer container = wizard.getContainer();
+        if ( container instanceof WizardDialog )
+        {
+            WizardDialog dialog = ( WizardDialog ) container;
+            dialog.addPageChangedListener( new IPageChangedListener()
+            {
+                public void pageChanged( PageChangedEvent event )
+                {
+                    if ( getControl().isVisible() )
+                    {
+                        for ( IAttribute attribute : NewEntryAttributesWizardPage.this.wizard.getPrototypeEntry()
+                            .getAttributes() )
+                        {
+                            for ( IValue value : attribute.getValues() )
+                            {
+                                if ( value.isEmpty() )
+                                {
+                                    mainWidget.getViewer().setSelection( new StructuredSelection( value ), true );
+                                    OpenDefaultEditorAction openDefaultEditorAction = actionGroup
+                                        .getOpenDefaultEditorAction();
+                                    if ( openDefaultEditorAction.isEnabled() )
+                                    {
+                                        openDefaultEditorAction.run();
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            } );
+        }
     }
 
 
@@ -138,8 +178,6 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
         if ( visible )
         {
             DummyEntry newEntry = wizard.getPrototypeEntry();
-            IValue editValue = null;
-
             try
             {
                 EventRegistry.suspendEventFireingInCurrentThread();
@@ -172,16 +210,11 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
                 String[] newMust = newEntry.getSubschema().getMustAttributeNames();
                 for ( int i = 0; i < newMust.length; i++ )
                 {
-                    if ( newEntry.getAttribute( newMust[i] ) == null )
+                    if ( newEntry.getAttributeWithSubtypes( newMust[i] ) == null )
                     {
                         IAttribute att = new Attribute( newEntry, newMust[i] );
                         newEntry.addAttribute( att );
                         att.addEmptyValue();
-
-                        if ( editValue == null )
-                        {
-                            editValue = att.getValues()[0];
-                        }
                     }
                 }
             }
@@ -197,17 +230,6 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
 
             // set focus to the viewer
             mainWidget.getViewer().getControl().setFocus();
-
-            // start editing if there is an empty value
-            if ( editValue != null )
-            {
-                mainWidget.getViewer().setSelection( new StructuredSelection( editValue ), true );
-                OpenDefaultEditorAction openDefaultEditorAction = actionGroup.getOpenDefaultEditorAction();
-                if ( openDefaultEditorAction.isEnabled() )
-                {
-                    openDefaultEditorAction.run();
-                }
-            }
         }
         else
         {
@@ -223,8 +245,24 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
      */
     private void validate()
     {
-        if ( wizard.getPrototypeEntry() != null && wizard.getPrototypeEntry().isConsistent() )
+        if ( wizard.getPrototypeEntry() != null )
         {
+            Collection<String> messages = SchemaUtils.getEntryIncompleteMessages( wizard.getPrototypeEntry() );
+            if ( messages != null && !messages.isEmpty() )
+            {
+                StringBuffer sb = new StringBuffer();
+                for ( String message : messages )
+                {
+                    sb.append( message );
+                    sb.append( ' ' );
+                }
+                setMessage( sb.toString(), WizardPage.WARNING );
+            }
+            else
+            {
+                setMessage( null );
+            }
+
             setPageComplete( true );
         }
         else

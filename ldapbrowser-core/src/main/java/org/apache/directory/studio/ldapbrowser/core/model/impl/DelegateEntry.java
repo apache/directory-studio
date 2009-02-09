@@ -542,22 +542,6 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
-    public boolean isConsistent()
-    {
-        if ( getDelegate() != null )
-        {
-            return getDelegate().isConsistent();
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void setAttributesInitialized( boolean b )
     {
         if ( !b )

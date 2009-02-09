@@ -85,21 +85,6 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Checks if this entry with its attributes is consistent. The following
-     * conditions must be fulfilled:
-     * 
-     * <ul>
-     * <li>The objectClass attribute must be present</li>
-     * <li>All must attributes must be present</li>
-     * <li>There mustn't be any empty value</li>
-     * </ul>
-     * 
-     * @return true if this entry is consistent
-     */
-    public abstract boolean isConsistent();
-
-
-    /**
      * Indicates whether this entry exists in directory. Otherwise it
      * is a new entry created from the user and not still written to directory.
      * 

@@ -136,7 +136,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
 
             boolean oai = entry.isOperationalAttributesInitialized();
             boolean ai = entry.isAttributesInitialized();
-            if ( ( !ai || ( !oai && showOperationalAttributes && entry.isConsistent() ) ) && entry.isDirectoryEntry() )
+            if ( ( !ai || ( !oai && showOperationalAttributes ) ) && entry.isDirectoryEntry() )
             {
                 InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
                     { entry }, showOperationalAttributes );

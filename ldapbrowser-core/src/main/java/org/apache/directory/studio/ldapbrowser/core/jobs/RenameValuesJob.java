@@ -102,6 +102,7 @@ public class RenameValuesJob extends AbstractAttributeModificationJob
             if ( attribute == null )
             {
                 attribute = new Attribute( entry, newAttributeDescription );
+                entry.addAttribute( attribute );
             }
 
             newValues[i] = new Value( attribute, oldValues[i].getRawValue() );

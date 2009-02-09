@@ -38,15 +38,12 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
@@ -519,27 +516,6 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
      */
     public Font getFont( Object element )
     {
-
-        IEntry entry = null;
-        if ( element instanceof IEntry )
-        {
-            entry = ( IEntry ) element;
-        }
-        else if ( element instanceof ISearchResult )
-        {
-            entry = ( ( ISearchResult ) element ).getEntry();
-        }
-
-        if ( entry != null )
-        {
-            if ( !entry.isConsistent() )
-            {
-                FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                    .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_ERROR_FONT );
-                return BrowserCommonActivator.getDefault().getFont( fontData );
-            }
-        }
-
         return null;
     }
 
@@ -549,27 +525,6 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
      */
     public Color getForeground( Object element )
     {
-
-        IEntry entry = null;
-        if ( element instanceof IEntry )
-        {
-            entry = ( IEntry ) element;
-        }
-        else if ( element instanceof ISearchResult )
-        {
-            entry = ( ( ISearchResult ) element ).getEntry();
-        }
-
-        if ( entry != null )
-        {
-            if ( !entry.isConsistent() )
-            {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_ERROR_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
-            }
-        }
-
         return null;
     }
 

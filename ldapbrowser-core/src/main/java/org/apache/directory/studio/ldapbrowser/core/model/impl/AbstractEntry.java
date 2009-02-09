@@ -30,9 +30,6 @@ import java.util.Map;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.Rdn;
-import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
@@ -199,67 +196,6 @@ public abstract class AbstractEntry implements IEntry
             throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
                 + attributeToDelete );
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isConsistent()
-    {
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null || ai.attributeMap == null )
-        {
-            return isDirectoryEntry();
-        }
-
-        // check empty attributes and empty values
-        Map<String, IAttribute> aiAttributeMap = new HashMap<String, IAttribute>( ai.attributeMap );
-        for ( IAttribute attribute : aiAttributeMap.values() )
-        {
-            if ( !attribute.isConsistent() )
-            {
-                return false;
-            }
-        }
-
-        if ( !isDirectoryEntry() )
-        {
-            // check objectclass attribute
-            if ( !ai.attributeMap.containsKey( IAttribute.OBJECTCLASS_ATTRIBUTE_OID.toLowerCase() ) )
-            {
-                return false;
-            }
-            IAttribute ocAttribute = ( IAttribute ) ai.attributeMap.get( IAttribute.OBJECTCLASS_ATTRIBUTE_OID
-                .toLowerCase() );
-            String[] ocValues = ocAttribute.getStringValues();
-            boolean structuralObjectClassAvailable = false;
-            for ( int i = 0; i < ocValues.length; i++ )
-            {
-                ObjectClassDescription ocd = getBrowserConnection().getSchema().getObjectClassDescription( ocValues[i] );
-                if ( ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL )
-                {
-                    structuralObjectClassAvailable = true;
-                    break;
-                }
-            }
-            if ( !structuralObjectClassAvailable )
-            {
-                return false;
-            }
-
-            // check must-attributes
-            AttributeTypeDescription[] mustAtds = getSubschema().getMustAttributeTypeDescriptions();
-            for ( AttributeTypeDescription mustAtd : mustAtds )
-            {
-                if ( !ai.attributeMap.containsKey( mustAtd.getNumericOid().toLowerCase() ) )
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
 
