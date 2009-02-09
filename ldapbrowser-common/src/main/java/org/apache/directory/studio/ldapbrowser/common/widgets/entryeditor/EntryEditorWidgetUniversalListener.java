@@ -40,12 +40,15 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 
 
 /**
@@ -157,6 +160,18 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         viewer.getTree().addSelectionListener( viewerSelectionListener );
         viewer.getTree().addMouseListener( viewerMouseListener );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+
+        // Don't invoke Finish' or 'OK' button when pressing 'Enter' in wizard or dialog
+        viewer.getTree().addTraverseListener( new TraverseListener()
+        {
+            public void keyTraversed( TraverseEvent e )
+            {
+                if ( e.detail == SWT.TRAVERSE_RETURN )
+                {
+                    e.doit = false;
+                }
+            }
+        } );
     }
 
 
