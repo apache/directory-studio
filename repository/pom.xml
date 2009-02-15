@@ -501,6 +501,18 @@
       <artifactId>jetty</artifactId>
     </dependency>
     
+    <!-- Eclipse language packs -->
+    <dependency>
+      <groupId>org.eclipse.languagepack</groupId>
+      <artifactId>BabelLanguagePack-eclipse-de</artifactId>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.languagepack</groupId>
+      <artifactId>BabelLanguagePack-eclipse-fr</artifactId>
+      <type>zip</type>
+    </dependency>
+    
     <!-- Testing framework dependencies -->
     <dependency>
       <groupId>org.eclipse.swtbot.eclipse</groupId>
