@@ -902,6 +902,62 @@
           <skip>false</skip>
         </configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-language-packs</id>
+            <!-- Unpack the eclipse language packs -->
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <overWrite>true</overWrite>
+              <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/eclipse-language-packs</markersDirectory>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.eclipse.languagepack</groupId>
+                  <artifactId>BabelLanguagePack-eclipse-de</artifactId>
+                  <type>zip</type>
+                  <outputDirectory>${project.build.directory}/eclipse-language-packs</outputDirectory>
+                  <includes>eclipse/**</includes>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.eclipse.languagepack</groupId>
+                  <artifactId>BabelLanguagePack-eclipse-fr</artifactId>
+                  <type>zip</type>
+                  <outputDirectory>${project.build.directory}/eclipse-language-packs</outputDirectory>
+                  <includes>eclipse/**</includes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-language-packs</id>
+            <phase>process-resources</phase>
+            <configuration>
+              <tasks>
+                <copy todir="${studio-dir}">
+                  <fileset dir="${project.build.directory}/eclipse-language-packs/eclipse" />
+                </copy>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.directory.studio</groupId>

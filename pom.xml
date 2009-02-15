@@ -358,7 +358,7 @@
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.0</version>
+        <version>2.1</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven</groupId>
@@ -927,6 +927,20 @@
       <groupId>org.mortbay</groupId>
       <artifactId>jetty</artifactId>
       <version>5.1.14.v200806031611</version>
+    </dependency>
+    
+    <!-- Eclipse language packs -->
+    <dependency>
+      <groupId>org.eclipse.languagepack</groupId>
+      <artifactId>BabelLanguagePack-eclipse-de</artifactId>
+      <version>3.4.0.v20090208043401</version>
+      <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.languagepack</groupId>
+      <artifactId>BabelLanguagePack-eclipse-fr</artifactId>
+      <version>3.4.0.v20090208043401</version>
+      <type>zip</type>
     </dependency>
     
     <!-- Testing framework dependencies -->
