@@ -605,12 +605,25 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
             parentDN = DnUtils.getParent( aDN );
             if ( parentDN == null )
             {
+                // only the root DSE has a null parent
                 entry = browserConnection.getRootDSE();
             }
-            else if ( browserConnection.getEntryFromCache( parentDN ) != null )
+            else if ( !parentDN.isEmpty() && browserConnection.getEntryFromCache( parentDN ) != null )
             {
-                // check if the entry really exists
-                // if not a base dn entry will be created in then next iteration
+                // a normal entry has a parent but the parent isn't the rootDSE
+                IEntry parentEntry = browserConnection.getEntryFromCache( parentDN );
+                entry = new Entry( parentEntry, aDN.getRdn() );
+                entry.setDirectoryEntry( true );
+                parentEntry.addChild( entry );
+                parentEntry.setChildrenInitialized( true );
+                parentEntry.setHasMoreChildren( true );
+                parentEntry.setHasChildrenHint( true );
+                browserConnection.cacheEntry( entry );
+            }
+            else
+            {
+                // we have a base DN, check if the entry really exists in LDAP
+                // this is to avoid that a node "dc=com" is created for "dc=example,dc=com" context entry
                 SearchParameter searchParameter = new SearchParameter();
                 searchParameter.setSearchBase( aDN );
                 searchParameter.setFilter( null );
@@ -627,31 +640,15 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 {
                     if ( enumeration != null && enumeration.hasMore() )
                     {
-                        // entry exists, create entry and establish parent-child connection
-                        IEntry parentEntry = browserConnection.getEntryFromCache( parentDN );
-                        entry = new Entry( parentEntry, aDN.getRdn() );
-                        entry.setDirectoryEntry( true );
-
-                        parentEntry.addChild( entry );
-                        // parentEntry.setAttributesInitialized(false, this);
-
-                        parentEntry.setChildrenInitialized( true );
-                        parentEntry.setHasMoreChildren( true );
-                        parentEntry.setHasChildrenHint( true );
-
+                        // create base DN entry
+                        entry = new BaseDNEntry( aDN, browserConnection );
+                        browserConnection.getRootDSE().addChild( entry );
                         browserConnection.cacheEntry( entry );
                     }
                 }
                 catch ( NamingException e )
                 {
                 }
-            }
-            else
-            {
-                // create base dn entry
-                entry = new BaseDNEntry( aDN, browserConnection );
-                browserConnection.getRootDSE().addChild( entry );
-                browserConnection.cacheEntry( entry );
             }
         }
 
