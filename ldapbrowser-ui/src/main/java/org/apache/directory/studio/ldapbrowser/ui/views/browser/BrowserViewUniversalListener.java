@@ -485,7 +485,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         // AttributesInitializedEvent is fired. If this causes
         // a refresh of the tree before the children are initialized
         // another InitializeChildrenJob is executed.
-        if ( event instanceof AttributesInitializedEvent )
+        if ( event instanceof AttributesInitializedEvent && !( event.getModifiedEntry() instanceof IRootDSE ) )
         {
             return;
         }

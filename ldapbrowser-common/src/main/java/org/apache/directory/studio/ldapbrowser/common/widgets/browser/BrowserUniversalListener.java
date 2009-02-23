@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEven
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -216,7 +217,7 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
         // AttributesInitializedEvent is fired. If this causes
         // a refresh of the tree before the children are initialized
         // another InitializeChildrenJob is executed.
-        if ( event instanceof AttributesInitializedEvent )
+        if ( event instanceof AttributesInitializedEvent && !( event.getModifiedEntry() instanceof IRootDSE ) )
         {
             return;
         }

@@ -287,8 +287,12 @@ public class ImportLdifJob extends AbstractNotificationJob
                             LdapDN dn = new LdapDN( record.getDnLine().getValueAsString() );
                             IEntry entry = browserConnection.getEntryFromCache( dn );
                             LdapDN parentDn = DnUtils.getParent( dn );
-                            IEntry parentEntry = parentDn != null ? browserConnection.getEntryFromCache( parentDn )
-                                : null;
+                            IEntry parentEntry = null;
+                            while(parentEntry == null && parentDn != null)
+                            {
+                                parentEntry = browserConnection.getEntryFromCache( parentDn );
+                                parentDn = DnUtils.getParent( parentDn );
+                            }
 
                             if ( record instanceof LdifChangeDeleteRecord )
                             {

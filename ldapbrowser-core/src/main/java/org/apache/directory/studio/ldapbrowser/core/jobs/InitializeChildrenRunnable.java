@@ -29,6 +29,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -151,8 +152,10 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
             {
                 if ( entry instanceof IRootDSE )
                 {
-                    // special handling for Root DSE.
-                    InitializeAttributesRunnable.loadRootDSE( browserConnection, monitor );
+                    // special handling for Root DSE
+                    InitializeRootDSERunnable runnable = new InitializeRootDSERunnable( ( IRootDSE ) entry );
+                    StudioConnectionJob job = new StudioConnectionJob( runnable );
+                    job.execute();
                     continue;
                 }
 

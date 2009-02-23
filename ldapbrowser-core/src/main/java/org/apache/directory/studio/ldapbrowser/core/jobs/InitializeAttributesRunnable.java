@@ -24,34 +24,24 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import javax.naming.InvalidNameException;
-
-import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 
@@ -70,14 +60,6 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
 
     /** The flag if operational attributes should be initialized. */
     private boolean initOperationalAttributes;
-
-    /** The requested attributes when reading the Root DSE. */
-    public static final String[] ROOT_DSE_ATTRIBUTES =
-        { IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES, IRootDSE.ROOTDSE_ATTRIBUTE_VENDORNAME,
-            IRootDSE.ROOTDSE_ATTRIBUTE_VENDORVERSION, ISearch.ALL_OPERATIONAL_ATTRIBUTES };
 
 
     /**
@@ -229,10 +211,9 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         if ( entry instanceof IRootDSE )
         {
             // special handling for Root DSE
-            loadRootDSE( entry.getBrowserConnection(), monitor );
-
-            entry.setAttributesInitialized( true );
-            entry.setChildrenInitialized( true );
+            InitializeRootDSERunnable runnable = new InitializeRootDSERunnable( ( IRootDSE ) entry );
+            StudioConnectionJob job = new StudioConnectionJob( runnable );
+            job.execute();
         }
         else
         {
@@ -272,246 +253,6 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
 
             // we requested all attributes, set initialized state
             entry.setAttributesInitialized( true );
-        }
-    }
-
-
-    /**
-     * Loads the Root DSE.
-     * 
-     * @param browserConnection the browser connection
-     * @param monitor the progress monitor
-     * 
-     * @throws Exception the exception
-     */
-    static synchronized void loadRootDSE( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
-    {
-        // delete old children
-        IEntry[] oldChildren = browserConnection.getRootDSE().getChildren();
-        if ( oldChildren != null )
-        {
-            for ( IEntry entry : oldChildren )
-            {
-                if ( entry != null )
-                {
-                    browserConnection.getRootDSE().deleteChild( entry );
-                }
-            }
-        }
-        browserConnection.getRootDSE().setChildrenInitialized( false );
-
-        // delete old attributes
-        IAttribute[] oldAttributes = browserConnection.getRootDSE().getAttributes();
-        if ( oldAttributes != null )
-        {
-            for ( IAttribute oldAttribute : oldAttributes )
-            {
-                browserConnection.getRootDSE().deleteAttribute( oldAttribute );
-            }
-        }
-
-        // load well-known Root DSE attributes and operational attributes
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
-            ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-            Connection.ReferralHandlingMethod.IGNORE, false, null );
-        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-
-        // load all user attributes
-        search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
-            { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-            Connection.ReferralHandlingMethod.IGNORE, false, null );
-        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-
-        // the list of entries under the Root DSE
-        Map<LdapDN, IEntry> rootDseEntries = new HashMap<LdapDN, IEntry>();
-
-        // 1st: add base DNs, either the specified or from the namingContexts attribute
-        if ( !browserConnection.isFetchBaseDNs() && browserConnection.getBaseDN() != null
-            && !"".equals( browserConnection.getBaseDN().toString() ) )
-        {
-            // only add the specified base DN
-            LdapDN dn = browserConnection.getBaseDN();
-            IEntry entry = browserConnection.getEntryFromCache( dn );
-            if ( entry == null )
-            {
-                entry = new BaseDNEntry( ( LdapDN ) dn.clone(), browserConnection );
-                browserConnection.cacheEntry( entry );
-            }
-            rootDseEntries.put( dn, entry );
-        }
-        else
-        {
-            // get base DNs from namingContexts attribute
-            Set<String> namingContextSet = new HashSet<String>();
-            IAttribute attribute = browserConnection.getRootDSE().getAttribute(
-                IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
-            if ( attribute != null )
-            {
-                String[] values = attribute.getStringValues();
-                for ( int i = 0; i < values.length; i++ )
-                {
-                    namingContextSet.add( values[i] );
-                }
-            }
-
-            if ( !namingContextSet.isEmpty() )
-            {
-                for ( String namingContext : namingContextSet )
-                {
-                    if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
-                        try
-                        {
-                            LdapDN dn = new LdapDN( namingContext );
-                            IEntry entry = browserConnection.getEntryFromCache( dn );
-                            if ( entry == null )
-                            {
-                                entry = new BaseDNEntry( dn, browserConnection );
-                                browserConnection.cacheEntry( entry );
-                            }
-                            rootDseEntries.put( dn, entry );
-                        }
-                        catch ( InvalidNameException e )
-                        {
-                            monitor.reportError( BrowserCoreMessages.model__error_setting_base_dn, e );
-                        }
-                    }
-                    else
-                    {
-                        // special handling of empty namingContext (Novell eDirectory): 
-                        // perform a one-level search and add all result DNs to the set
-                        searchRootDseEntries( browserConnection, rootDseEntries, monitor );
-                    }
-                }
-            }
-            else
-            {
-                // special handling of non-existing namingContexts attribute (Oracle Internet Directory)
-                // perform a one-level search and add all result DNs to the set
-                searchRootDseEntries( browserConnection, rootDseEntries, monitor );
-            }
-        }
-
-        // 2nd: add schema sub-entry
-        IEntry[] schemaEntries = getDirectoryMetadataEntries( browserConnection,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY );
-        for ( IEntry entry : schemaEntries )
-        {
-            if ( entry instanceof DirectoryMetadataEntry )
-            {
-                ( ( DirectoryMetadataEntry ) entry ).setSchemaEntry( true );
-            }
-            rootDseEntries.put( entry.getDn(), entry );
-        }
-
-        // get other meta data entries
-        IAttribute[] rootDseAttributes = browserConnection.getRootDSE().getAttributes();
-        if ( rootDseAttributes != null )
-        {
-            for ( IAttribute attribute : rootDseAttributes )
-            {
-                IEntry[] metadataEntries = getDirectoryMetadataEntries( browserConnection, attribute.getDescription() );
-                for ( IEntry entry : metadataEntries )
-                {
-                    rootDseEntries.put( entry.getDn(), entry );
-                }
-            }
-        }
-
-        // try to init entries
-        StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
-        for ( IEntry entry : rootDseEntries.values() )
-        {
-            initBaseEntry( entry, dummyMonitor );
-        }
-
-        // set flags
-        browserConnection.getRootDSE().setHasMoreChildren( false );
-        browserConnection.getRootDSE().setAttributesInitialized( true );
-        browserConnection.getRootDSE().setChildrenInitialized( true );
-        browserConnection.getRootDSE().setHasChildrenHint( true );
-        browserConnection.getRootDSE().setDirectoryEntry( true );
-    }
-
-
-    private static void initBaseEntry( IEntry entry, StudioProgressMonitor monitor )
-    {
-        IBrowserConnection browserConnection = entry.getBrowserConnection();
-        LdapDN dn = entry.getDn();
-
-        // search the entry
-        AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
-        ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
-        ISearch search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
-            SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
-        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-
-        ISearchResult[] results = search.getSearchResults();
-        if ( results != null && results.length == 1 )
-        {
-            // add entry to Root DSE
-            ISearchResult result = results[0];
-            entry = result.getEntry();
-            browserConnection.getRootDSE().addChild( entry );
-        }
-        else
-        {
-            // DN exists in the Root DSE, but doesn't exist in directory
-            browserConnection.uncacheEntryRecursive( entry );
-        }
-    }
-
-
-    private static IEntry[] getDirectoryMetadataEntries( IBrowserConnection browserConnection,
-        String metadataAttributeName )
-    {
-        List<LdapDN> metadataEntryDnList = new ArrayList<LdapDN>();
-        IAttribute attribute = browserConnection.getRootDSE().getAttribute( metadataAttributeName );
-        if ( attribute != null )
-        {
-            String[] values = attribute.getStringValues();
-            for ( String dn : values )
-            {
-                if ( dn != null && !"".equals( dn ) )
-                {
-                    try
-                    {
-                        metadataEntryDnList.add( new LdapDN( dn ) );
-                    }
-                    catch ( InvalidNameException e )
-                    {
-                    }
-                }
-            }
-        }
-
-        IEntry[] metadataEntries = new IEntry[metadataEntryDnList.size()];
-        for ( int i = 0; i < metadataEntryDnList.size(); i++ )
-        {
-            LdapDN dn = metadataEntryDnList.get( i );
-            metadataEntries[i] = browserConnection.getEntryFromCache( dn );
-            if ( metadataEntries[i] == null )
-            {
-                metadataEntries[i] = new DirectoryMetadataEntry( dn, browserConnection );
-                metadataEntries[i].setDirectoryEntry( true );
-                browserConnection.cacheEntry( metadataEntries[i] );
-            }
-        }
-        return metadataEntries;
-    }
-
-
-    private static void searchRootDseEntries( IBrowserConnection browserConnection, Map<LdapDN, IEntry> rootDseEntries,
-        StudioProgressMonitor monitor )
-    {
-        ISearch search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE,
-            ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-            Connection.ReferralHandlingMethod.IGNORE, false, null );
-        SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
-        ISearchResult[] results = search.getSearchResults();
-        for ( ISearchResult searchResult : results )
-        {
-            IEntry entry = searchResult.getEntry();
-            rootDseEntries.put( entry.getDn(), entry );
         }
     }
 }
