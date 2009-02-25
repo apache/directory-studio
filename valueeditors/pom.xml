@@ -59,7 +59,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <skip>false</skip>
-	  <pde>true</pde>
+          <pde>true</pde>
           <buildcommands>
             <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
             <buildcommand>org.eclipse.pde.ManifestBuilder</buildcommand>
@@ -104,7 +104,6 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
-        <version>1.4.3</version>
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>

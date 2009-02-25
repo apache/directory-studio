@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>14</version>
+    <version>15</version>
   </parent>
 
   <groupId>org.apache.directory.studio</groupId>
@@ -53,7 +53,7 @@
   <distributionManagement>
     <site>
       <id>apache.directory.studio</id>
-      <url>${distributionManagement.site.url}</url>
+      <url>${distMgmtSiteUrl}</url>
     </site>
   </distributionManagement>
 
@@ -63,7 +63,7 @@
       Can be overwritten in the settings.xml
     -->
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
-    <distributionManagement.site.url>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distributionManagement.site.url>
+    <distMgmtSiteUrl>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.4.0-SNAPSHOT</aciitemeditor.version>
     <apacheds.launcher.version>1.2.0</apacheds.launcher.version>
@@ -1074,7 +1074,6 @@
         <artifactId>nlog4j</artifactId>
         <version>1.2.25</version>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
 
@@ -1154,35 +1153,6 @@
           <artifactId>studio-maven-plugin</artifactId>
           <version>1.0.2-SNAPSHOT</version>
         </plugin>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>1.4.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.5.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>dependency-maven-plugin</artifactId>
-          <version>1.0</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antlr-plugin</artifactId>
-          <version>2.0-beta-1</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>generate</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -1299,24 +1269,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>1.2</version>
-        <configuration>
-          <xmlOutput>false</xmlOutput>
-          <!--
-            <xmlOutput>true|false</xmlOutput>
-            <xmlOutputDirectory>directory location of xml findbugs report</xmlOutputDirectory>
-            <threshold>High|Normal|Low|Exp|Ignore</threshold>
-            <effort>Min|Default|Max</effort>
-            <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
-            <includeFilterFile>findbugs-include.xml</includeFilterFile>
-            <visitors>FindDeadLocalStores,UnreadFields</visitors>
-            <omitVisitors>FindDeadLocalStores,UnreadFields</omitVisitors>
-            <onlyAnalyze>org.codehaus.mojo.findbugs.*</onlyAnalyze>
-            <pluginList>/libs/fb-contrib/fb-contrib-2.8.0.jar</pluginList>
-            <debug>true|false</debug>
-            <relaxed>true|false</relaxed>
-          -->
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -1330,6 +1282,7 @@
   </reporting>
 
   <repositories>
+    <!-- Remove me when ASF CI can deploy Snapshots -->
     <repository>
       <id>apache.directory.snapshot.repo</id>
       <name>Snapshot repository for the Apache Directory project</name>
@@ -1339,5 +1292,4 @@
       </releases>
     </repository>
   </repositories>
-  
 </project>
