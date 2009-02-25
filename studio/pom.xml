@@ -84,7 +84,7 @@
                 </goals>
                 <configuration>
                   <overWrite>true</overWrite>
-                  <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/linux-x86</markersDirectory>
+                  <markersDirectory>${project.build.directory}/maven-dependency-plugin-markers/linux-x86</markersDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.apache.directory.studio</groupId>
@@ -246,7 +246,7 @@
                 </goals>
                 <configuration>
                   <overWrite>true</overWrite>
-                  <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/linux-x86_64</markersDirectory>
+                  <markersDirectory>${project.build.directory}/maven-dependency-plugin-markers/linux-x86_64</markersDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.apache.directory.studio</groupId>
@@ -408,7 +408,7 @@
                 </goals>
                 <configuration>
                   <overWrite>true</overWrite>
-                  <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/linux-ppc</markersDirectory>
+                  <markersDirectory>${project.build.directory}/maven-dependency-plugin-markers/linux-ppc</markersDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.apache.directory.studio</groupId>
@@ -569,7 +569,7 @@
                 </goals>
                 <configuration>
                   <overWrite>true</overWrite>
-                  <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/win32</markersDirectory>
+                  <markersDirectory>${project.build.directory}/maven-dependency-plugin-markers/win32</markersDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.apache.directory.studio</groupId>
@@ -916,7 +916,7 @@
             </goals>
             <configuration>
               <overWrite>true</overWrite>
-              <markersDirectory>${project.build.directory}/dependency-maven-plugin-markers/eclipse-language-packs</markersDirectory>
+              <markersDirectory>${project.build.directory}/maven-dependency-plugin-markers/eclipse-language-packs</markersDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>org.eclipse.languagepack</groupId>
