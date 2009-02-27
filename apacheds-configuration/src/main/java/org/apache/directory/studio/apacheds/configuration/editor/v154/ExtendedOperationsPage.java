@@ -39,10 +39,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V154.ExtendedOperationsPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V154.ExtendedOperationsPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Extended Operations";
+    private static final String TITLE = Messages.getString("ExtendedOperationsPage.ExtendedOperations"); //$NON-NLS-1$
 
     /** The Master/Details Block */
     private ExtendedOperationsMasterDetailsBlock masterDetailsBlock;
@@ -66,10 +66,10 @@ public class ExtendedOperationsPage extends FormPage implements SaveableFormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
-        form.setText( "Extended Operations" );
+        form.setText( Messages.getString("ExtendedOperationsPage.ExtendedOperations") ); //$NON-NLS-1$
         masterDetailsBlock = new ExtendedOperationsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }

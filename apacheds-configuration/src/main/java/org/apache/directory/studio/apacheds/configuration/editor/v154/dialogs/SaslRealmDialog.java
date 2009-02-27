@@ -71,7 +71,7 @@ public class SaslRealmDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "SASL Realm Dialog" );
+        newShell.setText( Messages.getString("SaslRealmDialog.SaslRealmDialog") ); //$NON-NLS-1$
     }
 
 
@@ -86,7 +86,7 @@ public class SaslRealmDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label saslRealmLabel = new Label( composite, SWT.NONE );
-        saslRealmLabel.setText( "SASL Realm:" );
+        saslRealmLabel.setText( Messages.getString("SaslRealmDialog.SaslRealm") ); //$NON-NLS-1$
 
         saslRealmText = new Text( composite, SWT.BORDER );
         saslRealmText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -103,7 +103,7 @@ public class SaslRealmDialog extends Dialog
      */
     private void initFromInput()
     {
-        saslRealmText.setText( ( initialValue == null ) ? "" : initialValue );
+        saslRealmText.setText( ( initialValue == null ) ? "" : initialValue ); //$NON-NLS-1$
     }
 
 

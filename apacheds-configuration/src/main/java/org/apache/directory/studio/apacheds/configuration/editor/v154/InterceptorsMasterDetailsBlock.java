@@ -106,9 +106,9 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
 
         // Creating the Section
         Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.DESCRIPTION );
-        section.setText( "All Interceptors" );
+        section.setText( Messages.getString("InterceptorsMasterDetailsBlock.AllInterceptors") ); //$NON-NLS-1$
         section
-            .setDescription( " Set the Interceptors used in the server. Use the \"Up\" and \"Down\" buttons to change the order." );
+            .setDescription( Messages.getString("InterceptorsMasterDetailsBlock.SetTheInterceptorsDescription") ); //$NON-NLS-1$
         section.marginWidth = 10;
         section.marginHeight = 5;
         Composite client = toolkit.createComposite( section, SWT.WRAP );
@@ -160,18 +160,18 @@ public class InterceptorsMasterDetailsBlock extends MasterDetailsBlock
         } );
 
         // Creating the button(s)
-        addButton = toolkit.createButton( client, "Add...", SWT.PUSH ); //$NON-NLS-1$
+        addButton = toolkit.createButton( client, Messages.getString("InterceptorsMasterDetailsBlock.Add"), SWT.PUSH ); //$NON-NLS-1$
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
-        deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
+        deleteButton = toolkit.createButton( client, Messages.getString("InterceptorsMasterDetailsBlock.Delete"), SWT.PUSH ); //$NON-NLS-1$
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
-        upButton = toolkit.createButton( client, "Up", SWT.PUSH );
+        upButton = toolkit.createButton( client, Messages.getString("InterceptorsMasterDetailsBlock.Up"), SWT.PUSH ); //$NON-NLS-1$
         upButton.setEnabled( false );
         upButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 
-        downButton = toolkit.createButton( client, "Down", SWT.PUSH );
+        downButton = toolkit.createButton( client, Messages.getString("InterceptorsMasterDetailsBlock.Down"), SWT.PUSH ); //$NON-NLS-1$
         downButton.setEnabled( false );
         downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
 

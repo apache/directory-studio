@@ -88,7 +88,7 @@ public class ExtendedOperationDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Add An Extended Operation" );
+        newShell.setText( Messages.getString("ExtendedOperationDialog.AddAnExtendedOperation") ); //$NON-NLS-1$
     }
 
 
@@ -103,7 +103,7 @@ public class ExtendedOperationDialog extends Dialog
 
         // Choose Label
         Label chooseLabel = new Label( composite, SWT.NONE );
-        chooseLabel.setText( "Choose an extended operation:" );
+        chooseLabel.setText( Messages.getString("ExtendedOperationDialog.ChooseAnExtendedOperation") ); //$NON-NLS-1$
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Interceptors Table Viewer

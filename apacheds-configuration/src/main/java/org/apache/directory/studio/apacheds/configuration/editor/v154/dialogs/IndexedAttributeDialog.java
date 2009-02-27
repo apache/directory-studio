@@ -72,7 +72,7 @@ public class IndexedAttributeDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Indexed Attribute Dialog" );
+        newShell.setText( Messages.getString("IndexedAttributeDialog.IndexedAttributeDialog") ); //$NON-NLS-1$
     }
 
 
@@ -87,13 +87,13 @@ public class IndexedAttributeDialog extends Dialog
         composite.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
         Label attributeIdLabel = new Label( composite, SWT.NONE );
-        attributeIdLabel.setText( "Attribute ID:" );
+        attributeIdLabel.setText( Messages.getString("IndexedAttributeDialog.AttributeID") ); //$NON-NLS-1$
 
         attributeIdText = new Text( composite, SWT.BORDER );
         attributeIdText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         Label cacheSizeLabel = new Label( composite, SWT.NONE );
-        cacheSizeLabel.setText( "Cache Size:" );
+        cacheSizeLabel.setText( Messages.getString("IndexedAttributeDialog.CacheSize") ); //$NON-NLS-1$
 
         cacheSizeText = new Text( composite, SWT.BORDER );
         cacheSizeText.addVerifyListener( new VerifyListener()
@@ -121,8 +121,8 @@ public class IndexedAttributeDialog extends Dialog
     private void initFromInput()
     {
         String attributeId = indexedAttribute.getAttributeId();
-        attributeIdText.setText( ( attributeId == null ) ? "" : attributeId );
-        cacheSizeText.setText( "" + indexedAttribute.getCacheSize() );
+        attributeIdText.setText( ( attributeId == null ) ? "" : attributeId ); //$NON-NLS-1$
+        cacheSizeText.setText( "" + indexedAttribute.getCacheSize() ); //$NON-NLS-1$
     }
 
 

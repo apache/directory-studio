@@ -114,14 +114,14 @@ public class InterceptorDetailsPage implements IDetailsPage
         section.setClient( client );
 
         // Name
-        toolkit.createLabel( client, "Name:" );
-        nameText = toolkit.createText( client, "" );
+        toolkit.createLabel( client, Messages.getString("InterceptorDetailsPage.Name") ); //$NON-NLS-1$
+        nameText = toolkit.createText( client, "" ); //$NON-NLS-1$
         nameText.setEditable( false );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Description
-        toolkit.createLabel( client, "Description:" );
-        descriptionText = toolkit.createText( client, "", SWT.MULTI | SWT.WRAP | SWT.V_SCROLL );
+        toolkit.createLabel( client, Messages.getString("InterceptorDetailsPage.Description") ); //$NON-NLS-1$
+        descriptionText = toolkit.createText( client, "", SWT.MULTI | SWT.WRAP | SWT.V_SCROLL ); //$NON-NLS-1$
         descriptionText.setEditable( false );
         GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         gridData.widthHint = 100;
@@ -198,11 +198,11 @@ public class InterceptorDetailsPage implements IDetailsPage
     {
         // Name
         String name = input.getName();
-        nameText.setText( ( name == null ) ? "" : name );
+        nameText.setText( ( name == null ) ? "" : name ); //$NON-NLS-1$
 
         // Description
         String description = input.getDescription();
-        descriptionText.setText( ( description == null ) ? "" : description );
+        descriptionText.setText( ( description == null ) ? "" : description ); //$NON-NLS-1$
     }
 
 

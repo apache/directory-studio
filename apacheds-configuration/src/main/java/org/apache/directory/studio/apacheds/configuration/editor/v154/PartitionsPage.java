@@ -39,10 +39,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class PartitionsPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V154.PartitionsPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V154.PartitionsPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Partitions";
+    private static final String TITLE = Messages.getString("PartitionsPage.Partitions"); //$NON-NLS-1$
 
     /** The Master/Details block */
     private PartitionsMasterDetailsBlock masterDetailsBlock;
@@ -66,10 +66,10 @@ public class PartitionsPage extends FormPage implements SaveableFormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         ScrolledForm form = managedForm.getForm();
-        form.setText( "Partitions" );
+        form.setText( Messages.getString("PartitionsPage.Partitions") ); //$NON-NLS-1$
         masterDetailsBlock = new PartitionsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }

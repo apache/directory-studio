@@ -88,7 +88,7 @@ public class InterceptorDialog extends Dialog
     protected void configureShell( Shell newShell )
     {
         super.configureShell( newShell );
-        newShell.setText( "Add An Interceptor" );
+        newShell.setText( Messages.getString("InterceptorDialog.AddAnInterceptor") ); //$NON-NLS-1$
     }
 
 
@@ -103,7 +103,7 @@ public class InterceptorDialog extends Dialog
 
         // Choose Label
         Label chooseLabel = new Label( composite, SWT.NONE );
-        chooseLabel.setText( "Choose an interceptor:" );
+        chooseLabel.setText( Messages.getString("InterceptorDialog.ChooseAnInterceptor") ); //$NON-NLS-1$
         chooseLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Interceptors Table Viewer

@@ -103,6 +103,6 @@ public class AttributeValueObject
      */
     public String toString()
     {
-        return "Attribute=\"" + attribute + "\", Value=\"" + value + "\"";
+        return "Attribute=\"" + attribute + "\", Value=\"" + value + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 }

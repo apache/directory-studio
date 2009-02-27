@@ -39,10 +39,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class InterceptorsPage extends FormPage implements SaveableFormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".V154.InterceptorsPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".V154.InterceptorsPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Interceptors";
+    private static final String TITLE = Messages.getString("InterceptorsPage.Interceptors"); //$NON-NLS-1$
 
     /** The Master/Details Block */
     private InterceptorsMasterDetailsBlock masterDetailsBlock;
@@ -66,10 +66,10 @@ public class InterceptorsPage extends FormPage implements SaveableFormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         PlatformUI.getWorkbench().getHelpSystem().setHelp( getPartControl(),
-            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" );
+            ApacheDSConfigurationPluginConstants.PLUGIN_ID + "." + "configuration_editor_154" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         final ScrolledForm form = managedForm.getForm();
-        form.setText( "Interceptors" );
+        form.setText( Messages.getString("InterceptorsPage.Interceptors") ); //$NON-NLS-1$
         masterDetailsBlock = new InterceptorsMasterDetailsBlock( this );
         masterDetailsBlock.createContent( managedForm );
     }

@@ -139,7 +139,7 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            IndexedAttributeDialog dialog = new IndexedAttributeDialog( new IndexedAttribute( "", 0 ) );
+            IndexedAttributeDialog dialog = new IndexedAttributeDialog( new IndexedAttribute( "", 0 ) ); //$NON-NLS-1$
             if ( Dialog.OK == dialog.open() )
             {
                 indexedAttributes.add( dialog.getIndexedAttribute() );
@@ -220,8 +220,8 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 10;
-        section.setText( "Partition Details" ); //$NON-NLS-1$
-        section.setDescription( "Set the properties of the partition." ); //$NON-NLS-1$
+        section.setText( Messages.getString("PartitionDetailsPage.PartitionDetails") ); //$NON-NLS-1$
+        section.setDescription( Messages.getString("PartitionDetailsPage.PartitionsDetailsDescription") ); //$NON-NLS-1$
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;
         section.setLayoutData( td );
@@ -232,13 +232,13 @@ public class PartitionDetailsPage implements IDetailsPage
         section.setClient( client );
 
         // ID
-        toolkit.createLabel( client, "ID:" );
-        idText = toolkit.createText( client, "" );
+        toolkit.createLabel( client, Messages.getString("PartitionDetailsPage.ID") ); //$NON-NLS-1$
+        idText = toolkit.createText( client, "" ); //$NON-NLS-1$
         idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Cache Size
-        toolkit.createLabel( client, "Cache Size:" );
-        cacheSizeText = toolkit.createText( client, "" );
+        toolkit.createLabel( client, Messages.getString("PartitionDetailsPage.CacheSize") ); //$NON-NLS-1$
+        cacheSizeText = toolkit.createText( client, "" ); //$NON-NLS-1$
         cacheSizeText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -252,16 +252,16 @@ public class PartitionDetailsPage implements IDetailsPage
         cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Suffix
-        toolkit.createLabel( client, "Suffix:" );
-        suffixText = toolkit.createText( client, "" );
+        toolkit.createLabel( client, Messages.getString("PartitionDetailsPage.Suffix") ); //$NON-NLS-1$
+        suffixText = toolkit.createText( client, "" ); //$NON-NLS-1$
         suffixText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Enable Optimizer
-        enableOptimizerCheckbox = toolkit.createButton( client, "Enable optimizer", SWT.CHECK );
+        enableOptimizerCheckbox = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.EnableOptimizer"), SWT.CHECK ); //$NON-NLS-1$
         enableOptimizerCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
 
         // Synchronisation On Write
-        synchOnWriteCheckbox = toolkit.createButton( client, "Synchronization on write", SWT.CHECK );
+        synchOnWriteCheckbox = toolkit.createButton( client, Messages.getString("PartitionDetailsPage.SynchronizationOnWrite"), SWT.CHECK ); //$NON-NLS-1$
         synchOnWriteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 3, 1 ) );
     }
 
@@ -278,8 +278,8 @@ public class PartitionDetailsPage implements IDetailsPage
     {
         Section indexedAttributesSection = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         indexedAttributesSection.marginWidth = 10;
-        indexedAttributesSection.setText( "Indexed Attributes" ); //$NON-NLS-1$
-        indexedAttributesSection.setDescription( "Set the indexed attributes of the partition." ); //$NON-NLS-1$
+        indexedAttributesSection.setText( Messages.getString("PartitionDetailsPage.IndexedAttributes") ); //$NON-NLS-1$
+        indexedAttributesSection.setDescription( Messages.getString("PartitionDetailsPage.IndexedAttributesDescription") ); //$NON-NLS-1$
         indexedAttributesSection.setLayoutData( new TableWrapData( TableWrapData.FILL ) );
         Composite indexedAttributesClient = toolkit.createComposite( indexedAttributesSection );
         toolkit.paintBordersFor( indexedAttributesClient );
@@ -297,14 +297,14 @@ public class PartitionDetailsPage implements IDetailsPage
         GridData buttonsGD = new GridData( SWT.FILL, SWT.BEGINNING, false, false );
         buttonsGD.widthHint = IDialogConstants.BUTTON_WIDTH;
 
-        indexedAttributeAddButton = toolkit.createButton( indexedAttributesClient, "Add...", SWT.PUSH );
+        indexedAttributeAddButton = toolkit.createButton( indexedAttributesClient, Messages.getString("PartitionDetailsPage.Add"), SWT.PUSH ); //$NON-NLS-1$
         indexedAttributeAddButton.setLayoutData( buttonsGD );
 
-        indexedAttributeEditButton = toolkit.createButton( indexedAttributesClient, "Edit...", SWT.PUSH );
+        indexedAttributeEditButton = toolkit.createButton( indexedAttributesClient, Messages.getString("PartitionDetailsPage.Edit"), SWT.PUSH ); //$NON-NLS-1$
         indexedAttributeEditButton.setEnabled( false );
         indexedAttributeEditButton.setLayoutData( buttonsGD );
 
-        indexedAttributeDeleteButton = toolkit.createButton( indexedAttributesClient, "Delete", SWT.PUSH );
+        indexedAttributeDeleteButton = toolkit.createButton( indexedAttributesClient, Messages.getString("PartitionDetailsPage.Delete"), SWT.PUSH ); //$NON-NLS-1$
         indexedAttributeDeleteButton.setEnabled( false );
         indexedAttributeDeleteButton.setLayoutData( buttonsGD );
     }
@@ -426,14 +426,14 @@ public class PartitionDetailsPage implements IDetailsPage
 
         // ID
         String id = input.getId();
-        idText.setText( ( id == null ) ? "" : id );
+        idText.setText( ( id == null ) ? "" : id ); //$NON-NLS-1$
 
         // Cache Size
-        cacheSizeText.setText( "" + input.getCacheSize() );
+        cacheSizeText.setText( "" + input.getCacheSize() ); //$NON-NLS-1$
 
         // Suffix
         String suffix = input.getSuffix();
-        suffixText.setText( ( suffix == null ) ? "" : suffix );
+        suffixText.setText( ( suffix == null ) ? "" : suffix ); //$NON-NLS-1$
 
         // Enable Optimizer
         enableOptimizerCheckbox.setSelection( input.isEnableOptimizer() );
