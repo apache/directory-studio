@@ -37,6 +37,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
@@ -51,6 +52,7 @@ import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -231,9 +233,50 @@ public class SWTBotUtils
     {
         SWTBotView view = bot.view( "LDAP Browser" );
         view.show();
-
         Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.getWidget() );
         return new SWTBotTree( tree );
+    }
+
+
+    /**
+     * Gets the search logs text.
+     * 
+     * @param bot
+     *            the bot
+     * 
+     * @return the search logs text
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static SWTBotStyledText getSearchLogsText( SWTEclipseBot bot ) throws Exception
+    {
+        SWTBotView view = bot.view( "Search Logs" );
+        view.show();
+        view.toolbarButton( "Refresh" ).click();
+        StyledText styledText = ( StyledText ) bot.widget( widgetOfType( StyledText.class ), view.getWidget() );
+        return new SWTBotStyledText( styledText );
+    }
+
+
+    /**
+     * Gets the modification logs text.
+     * 
+     * @param bot
+     *            the bot
+     * 
+     * @return the modification logs text
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static SWTBotStyledText getModificationLogsText( SWTEclipseBot bot ) throws Exception
+    {
+        SWTBotView view = bot.view( "Modification Logs" );
+        view.show();
+        view.toolbarButton( "Refresh" ).click();
+        StyledText styledText = ( StyledText ) bot.widget( widgetOfType( StyledText.class ), view.getWidget() );
+        return new SWTBotStyledText( styledText );
     }
 
 

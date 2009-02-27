@@ -61,6 +61,7 @@ public class AutomatedSuite extends TestSuite
         addTest( new TestSuite( ImportExportTest.class ) );
 
         // Test Browser view
+        addTest( new TestSuite( BrowserTest.class ) );
         addTest( new TestSuite( NewEntryWizardTest.class ) );
         addTest( new TestSuite( RenameEntryDialogTest.class ) );
         addTest( new TestSuite( ReferralDialogTest.class ) );
