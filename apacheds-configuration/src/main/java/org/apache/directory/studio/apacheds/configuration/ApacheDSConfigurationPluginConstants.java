@@ -30,22 +30,22 @@ package org.apache.directory.studio.apacheds.configuration;
 public interface ApacheDSConfigurationPluginConstants
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ApacheDSConfigurationPlugin.getDefault().getPluginProperties().getString( "Plugin_id" );
+    public static final String PLUGIN_ID = ApacheDSConfigurationPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
     
     // ------
     // IMAGES
     // ------
-    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif";
-    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif";
-    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif";
-    public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif";
-    public static final String IMG_PARTITION = "resources/icons/partition.gif";
-    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif";
-    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif";
+    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif"; //$NON-NLS-1$
+    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif"; //$NON-NLS-1$
+    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif"; //$NON-NLS-1$
+    public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif"; //$NON-NLS-1$
+    public static final String IMG_PARTITION = "resources/icons/partition.gif"; //$NON-NLS-1$
+    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif"; //$NON-NLS-1$
+    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif"; //$NON-NLS-1$
 
     // -------
     // EDITORS
     // -------
     public static final String EDITOR_SERVER_CONFIGURATION_EDITOR = ApacheDSConfigurationPlugin.getDefault()
-        .getPluginProperties().getString( "Editor_ServerConfigurationEditor_id" );
+        .getPluginProperties().getString( "Editor_ServerConfigurationEditor_id" ); //$NON-NLS-1$
 }

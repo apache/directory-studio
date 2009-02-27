@@ -103,6 +103,6 @@ public class IndexedAttribute
      */
     public String toString()
     {
-        return attributeId + " [" + cacheSize + "]";
+        return attributeId + " [" + cacheSize + "]"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

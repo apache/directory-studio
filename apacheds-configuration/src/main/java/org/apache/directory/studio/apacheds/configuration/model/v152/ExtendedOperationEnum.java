@@ -30,11 +30,11 @@ public enum ExtendedOperationEnum
 {
     /** The Start TLS Extended Operation */
     START_TLS(
-        Messages.getString( "ExtendedOperationEnum.StartTLS" ), Messages.getString( "ExtendedOperationEnum.StartTLSDescription" )), //$NON-NLS-1$
+        Messages.getString( "ExtendedOperationEnum.StartTLS" ), Messages.getString( "ExtendedOperationEnum.StartTLSDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Graceful Shutdown Extended Operation */
     GRACEFUL_SHUTDOWN(
-        Messages.getString( "ExtendedOperationEnum.Shutdown" ), Messages.getString( "ExtendedOperationEnum.ShutdownDescription" )), //$NON-NLS-1$
+        Messages.getString( "ExtendedOperationEnum.Shutdown" ), Messages.getString( "ExtendedOperationEnum.ShutdownDescription" )), //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The Launch Diagnostic UI Extended Operation */
     LAUNCH_DIAGNOSTIC_UI(Messages.getString( "ExtendedOperationEnum.DiagnosticUI" ), //$NON-NLS-1$

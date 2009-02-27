@@ -91,17 +91,17 @@ public class NonExistingServerConfigurationInput implements IEditorInput
         switch ( serverConfiguration.getVersion() )
         {
             case VERSION_1_5_4:
-                return "New Apache DS 1.5.4 Configuration File";
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS154Configuration"); //$NON-NLS-1$
             case VERSION_1_5_3:
-                return "New Apache DS 1.5.3 Configuration File";
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS153Configuration"); //$NON-NLS-1$
             case VERSION_1_5_2:
-                return "New Apache DS 1.5.2 Configuration File";
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS152Configuration"); //$NON-NLS-1$
             case VERSION_1_5_1:
-                return "New Apache DS 1.5.1 Configuration File";
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS151Configuration"); //$NON-NLS-1$
             case VERSION_1_5_0:
-                return "New Apache DS 1.5.0 Configuration File";
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS150Configuration"); //$NON-NLS-1$
             default:
-                return "New Apache DS Configuration File";
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDSConfiguration"); //$NON-NLS-1$
         }
     }
 

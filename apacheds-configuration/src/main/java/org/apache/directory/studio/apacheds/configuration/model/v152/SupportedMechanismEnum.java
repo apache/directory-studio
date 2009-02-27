@@ -29,16 +29,16 @@ package org.apache.directory.studio.apacheds.configuration.model.v152;
 public enum SupportedMechanismEnum
 {
     /** The Simple mechanism */
-    SIMPLE("SIMPLE"),
+    SIMPLE("SIMPLE"), //$NON-NLS-1$
 
     /** The CRAM-MD5 (SASL) mechanism */
-    CRAM_MD5("CRAM-MD5 (SASL)"),
+    CRAM_MD5("CRAM-MD5 (SASL)"), //$NON-NLS-1$
 
     /** The DIGEST-MD5 (SASL) mechanism */
-    DIGEST_MD5("DIGEST-MD5 (SASL)"),
+    DIGEST_MD5("DIGEST-MD5 (SASL)"), //$NON-NLS-1$
 
     /** The GSSAPI (SASL) mechanism */
-    GSSAPI("GSSAPI (SASL)"), ;
+    GSSAPI("GSSAPI (SASL)"), ; //$NON-NLS-1$
 
     /** The name */
     private String name;

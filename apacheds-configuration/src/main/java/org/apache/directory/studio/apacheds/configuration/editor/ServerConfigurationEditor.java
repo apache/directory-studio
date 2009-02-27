@@ -54,6 +54,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.MessageBox;
@@ -200,8 +201,8 @@ public class ServerConfigurationEditor extends FormEditor
         {
             return new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
         }
-        else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-            || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+        else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+            || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
         // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
         // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
         // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
@@ -345,7 +346,7 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        monitor.beginTask( "Saving the Server Configuration", IProgressMonitor.UNKNOWN );
+        monitor.beginTask( Messages.getString("ServerConfigurationEditor.SavingTheServerConfiguration"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
 
         // Saving the editor pages
         saveEditorPages();
@@ -369,8 +370,8 @@ public class ServerConfigurationEditor extends FormEditor
                 saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toOSString() );
                 success = true;
             }
-            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" )
-                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) )
+            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
+                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
             // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
             // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
             // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
@@ -396,8 +397,8 @@ public class ServerConfigurationEditor extends FormEditor
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( "Error!" );
-            messageBox.setMessage( "An error occurred when writing the file to disk." + "\n" + e.getMessage() );
+            messageBox.setText( Messages.getString("ServerConfigurationEditor.Error") ); //$NON-NLS-1$
+            messageBox.setMessage( Messages.getString("ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk") + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
             messageBox.open();
             setDirty( true );
             monitor.done();
@@ -502,7 +503,7 @@ public class ServerConfigurationEditor extends FormEditor
                 {
                     try
                     {
-                        monitor.beginTask( "Saving the Server Configuration", IProgressMonitor.UNKNOWN );
+                        monitor.beginTask( Messages.getString("ServerConfigurationEditor.SavingTheServerConfiguration"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
                         saveEditorPages();
                         boolean success = doSaveAs( monitor );
                         setDirty( !success );
@@ -512,8 +513,8 @@ public class ServerConfigurationEditor extends FormEditor
                     {
                         MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                             .getShell(), SWT.OK | SWT.ICON_ERROR );
-                        messageBox.setText( "Error!" );
-                        messageBox.setMessage( "An error occurred when writing the file to disk." + "\n"
+                        messageBox.setText( Messages.getString("ServerConfigurationEditor.Error") ); //$NON-NLS-1$
+                        messageBox.setMessage( Messages.getString("ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk") + "\n" //$NON-NLS-1$ //$NON-NLS-2$
                             + e.getMessage() );
                         messageBox.open();
                         setDirty( true );
@@ -527,8 +528,8 @@ public class ServerConfigurationEditor extends FormEditor
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( "Error!" );
-            messageBox.setMessage( "An error occurred when saving the file." + "\n" + e.getMessage() );
+            messageBox.setText( Messages.getString("ServerConfigurationEditor.Error") ); //$NON-NLS-1$
+            messageBox.setMessage( Messages.getString("ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk") + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
             messageBox.open();
             return;
         }
@@ -568,7 +569,7 @@ public class ServerConfigurationEditor extends FormEditor
             // Creating the file if it does not exist
             if ( !file.exists() )
             {
-                file.create( new ByteArrayInputStream( "".getBytes() ), true, null );
+                file.create( new ByteArrayInputStream( "".getBytes() ), true, null ); //$NON-NLS-1$
             }
 
             // Creating the new input for the editor
@@ -601,9 +602,8 @@ public class ServerConfigurationEditor extends FormEditor
                 final File externalFile = new File( path );
                 if ( externalFile.exists() )
                 {
-                    String question = "The file '" + path
-                        + "' already exists. Do you want to replace the existing file?";
-                    MessageDialog overwriteDialog = new MessageDialog( shell, "Question", null, question,
+                    String question = NLS.bind( Messages.getString("ServerConfigurationEditor.TheFileAlreadyExistsReplace" ), path ); //$NON-NLS-1$
+                    MessageDialog overwriteDialog = new MessageDialog( shell, Messages.getString("ServerConfigurationEditor.Question"), null, question, //$NON-NLS-1$
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
                     int overwrite = overwriteDialog.open();

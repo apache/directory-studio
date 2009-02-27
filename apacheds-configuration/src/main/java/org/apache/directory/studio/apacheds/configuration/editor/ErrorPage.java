@@ -43,10 +43,10 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 public class ErrorPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".ErrorPage";
+    public static final String ID = ServerConfigurationEditor.ID + ".ErrorPage"; //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Error";
+    private static final String TITLE = Messages.getString("ErrorPage.Error"); //$NON-NLS-1$
 
 
     /**
@@ -76,14 +76,14 @@ public class ErrorPage extends FormPage
         errorImageLabel.setImage( Display.getCurrent().getSystemImage( SWT.ICON_ERROR ) );
 
         // Error Label
-        toolkit.createLabel( parent, "Error opening the editor." );
+        toolkit.createLabel( parent, Messages.getString("ErrorPage.ErrorOpeningTheEditor") ); //$NON-NLS-1$
 
         // Details Label
-        Label detailsLabel = toolkit.createLabel( parent, "Details:" );
+        Label detailsLabel = toolkit.createLabel( parent, Messages.getString("ErrorPage.Details") ); //$NON-NLS-1$
         detailsLabel.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // Details Text
-        Text detailsText = toolkit.createText( parent, "", SWT.MULTI );
+        Text detailsText = toolkit.createText( parent, "", SWT.MULTI ); //$NON-NLS-1$
         detailsText.setEditable( false );
         detailsText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
         detailsText.setText( ( ( ServerConfigurationEditor ) getEditor() ).getErrorMessage() );

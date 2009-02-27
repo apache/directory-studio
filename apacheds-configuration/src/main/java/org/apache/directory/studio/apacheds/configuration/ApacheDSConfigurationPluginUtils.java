@@ -35,7 +35,7 @@ public class ApacheDSConfigurationPluginUtils
     public static boolean isIDEEnvironment()
     {
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            "org.eclipse.ui.perspectives" );
+            "org.eclipse.ui.perspectives" ); //$NON-NLS-1$
         if ( extensionPoint != null )
         {
             IExtension[] extensions = extensionPoint.getExtensions();
@@ -48,9 +48,9 @@ public class ApacheDSConfigurationPluginUtils
                     for ( int j = 0; j < elements.length; j++ )
                     {
                         IConfigurationElement element = elements[j];
-                        if ( element.getName().equals( "perspective" ) )
+                        if ( element.getName().equals( "perspective" ) ) //$NON-NLS-1$
                         {
-                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) )
+                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
                             {
                                 return true;
                             }
