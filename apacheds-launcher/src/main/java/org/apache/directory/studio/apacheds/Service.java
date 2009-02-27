@@ -56,13 +56,13 @@ public class Service implements DaemonApplication
 
         if ( args.length > 0 && new File( args[0] ).exists() ) // hack that takes server.xml file argument
         {
-            LOG.info( Messages.getString( "Service.LoadingSettings" ), args[0] );
+            LOG.info( Messages.getString( "Service.LoadingSettings" ), args[0] ); //$NON-NLS-1$
             factory = new FileSystemXmlApplicationContext( new File( args[0] ).toURI().toURL().toString() );
             apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" ); //$NON-NLS-1$
         }
         else
         {
-            LOG.info( Messages.getString( "Service.UsingDefaultSettings" ) );
+            LOG.info( Messages.getString( "Service.UsingDefaultSettings" ) ); //$NON-NLS-1$
             DirectoryService directoryService = new DefaultDirectoryService();
             directoryService.startup();
             SocketAcceptor socketAcceptor = new SocketAcceptor( null );
@@ -131,7 +131,7 @@ public class Service implements DaemonApplication
 
             while ( workerThread.isAlive() )
             {
-                LOG.info( Messages.getString( "Service.WaitingForSynchWorkerThread" ) );
+                LOG.info( Messages.getString( "Service.WaitingForSynchWorkerThread" ) ); //$NON-NLS-1$
                 workerThread.join( 500 );
             }
         }
@@ -166,7 +166,7 @@ public class Service implements DaemonApplication
                     }
                     catch ( InterruptedException e )
                     {
-                        LOG.warn( Messages.getString( "Service.SynchWorkerFailedToWait" ), e );
+                        LOG.warn( Messages.getString( "Service.SynchWorkerFailedToWait" ), e ); //$NON-NLS-1$
                     }
                 }
 
@@ -176,7 +176,7 @@ public class Service implements DaemonApplication
                 }
                 catch ( Exception e )
                 {
-                    LOG.error( Messages.getString( "Service.SynchWorkerFailedToSynch" ), e );
+                    LOG.error( Messages.getString( "Service.SynchWorkerFailedToSynch" ), e ); //$NON-NLS-1$
                 }
             }
         }

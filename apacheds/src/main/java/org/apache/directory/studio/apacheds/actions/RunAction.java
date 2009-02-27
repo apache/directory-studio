@@ -384,7 +384,7 @@ public class RunAction extends Action implements IWorkbenchWindowActionDelegate
         {
             if ( !AvailablePortFinder.available( serverConfiguration.getNtpPort() ) )
             {
-                alreadyInUseProtocolPortsList.add( NLS.bind( Messages.getString( "RunAction.NTPPort" ), new Object[]
+                alreadyInUseProtocolPortsList.add( NLS.bind( Messages.getString( "RunAction.NTPPort" ), new Object[] //$NON-NLS-1$
                     { serverConfiguration.getNtpPort() } ) );
             }
         }

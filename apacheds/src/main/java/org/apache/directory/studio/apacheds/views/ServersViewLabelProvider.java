@@ -37,9 +37,9 @@ import org.eclipse.swt.graphics.Image;
  */
 public class ServersViewLabelProvider extends LabelProvider implements ITableLabelProvider
 {
-    private static final String THREE_DOTS = "...";
-    private static final String TWO_DOTS = "..";
-    private static final String ONE_DOT = ".";
+    private static final String THREE_DOTS = "..."; //$NON-NLS-1$
+    private static final String TWO_DOTS = ".."; //$NON-NLS-1$
+    private static final String ONE_DOT = "."; //$NON-NLS-1$
     private int count = 1;
 
 

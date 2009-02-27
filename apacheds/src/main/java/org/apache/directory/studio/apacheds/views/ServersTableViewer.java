@@ -60,7 +60,7 @@ import org.eclipse.ui.PlatformUI;
 public class ServersTableViewer extends TreeViewer
 {
     /** The root element */
-    protected static final String ROOT = "root";
+    protected static final String ROOT = "root"; //$NON-NLS-1$
 
     /** The label provider */
     private ServersViewLabelProvider labelProvider;
