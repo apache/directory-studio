@@ -58,7 +58,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 {
-    private static final String OS_MACOSX = "macosx";
+    private static final String OS_MACOSX = "macosx"; //$NON-NLS-1$
     private OpenFileAction openFileAction;
     private IWorkbenchAction closeAction;
     private IWorkbenchAction closeAllAction;
@@ -131,7 +131,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
 
         newAction = ActionFactory.NEW.create( window );
         register( newAction );
-        newAction.setText( "New..." );
+        newAction.setText( Messages.getString("ApplicationActionBarAdvisor.new") ); //$NON-NLS-1$
 
         newDropDownAction = new NewWizardDropDownAction( window );
         //        new NavigationHistoryAction( window, false );
@@ -272,11 +272,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         String os = Platform.getOS();
 
         // Creating menus
-        MenuManager fileMenu = new MenuManager( "&File", IWorkbenchActionConstants.M_FILE ); //$NON-NLS-1$
-        MenuManager editMenu = new MenuManager( "&Edit", IWorkbenchActionConstants.M_EDIT ); //$NON-NLS-1$
-        MenuManager navigateMenu = new MenuManager( "&Navigate", IWorkbenchActionConstants.M_NAVIGATE ); //$NON-NLS-1$
-        MenuManager windowMenu = new MenuManager( "&Window", IWorkbenchActionConstants.M_WINDOW ); //$NON-NLS-1$
-        MenuManager helpMenu = new MenuManager( "&Help", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
+        MenuManager fileMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.file"), IWorkbenchActionConstants.M_FILE ); //$NON-NLS-1$
+        MenuManager editMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.edit"), IWorkbenchActionConstants.M_EDIT ); //$NON-NLS-1$
+        MenuManager navigateMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.navigate"), IWorkbenchActionConstants.M_NAVIGATE ); //$NON-NLS-1$
+        MenuManager windowMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.windows"), IWorkbenchActionConstants.M_WINDOW ); //$NON-NLS-1$
+        MenuManager helpMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.help"), IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
         MenuManager hiddenMenu = new MenuManager( "Hidden", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
         hiddenMenu.setVisible( false );
 
@@ -346,10 +346,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         navigateMenu.add( forwardHistoryAction );
 
         // Window 
-        MenuManager perspectiveMenu = new MenuManager( "Open Perspective", "openPerspective" );
+        MenuManager perspectiveMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.openPerspective"), "openPerspective" ); //$NON-NLS-1$ //$NON-NLS-2$
         perspectiveMenu.add( perspectivesList );
         windowMenu.add( perspectiveMenu );
-        MenuManager viewMenu = new MenuManager( "Show View" );
+        MenuManager viewMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.showView") ); //$NON-NLS-1$
         viewMenu.add( viewsList );
         windowMenu.add( viewMenu );
         windowMenu.add( new Separator() );

@@ -113,15 +113,15 @@ public class Activator extends AbstractUIPlugin
             try
             {
                 properties = new PropertyResourceBundle( FileLocator.openStream( this.getBundle(), new Path(
-                    "plugin.properties" ), false ) );
+                    "plugin.properties" ), false ) ); //$NON-NLS-1$
             }
             catch ( IOException e )
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
                 getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.rcp", Status.OK,
-                        "Unable to get the plugin properties.", e ) );
+                    new Status( Status.ERROR, "org.apache.directory.studio.rcp", Status.OK, //$NON-NLS-1$
+                        "Unable to get the plugin properties.", e ) ); //$NON-NLS-1$
             }
         }
 

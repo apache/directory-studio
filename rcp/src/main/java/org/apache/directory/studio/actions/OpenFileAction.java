@@ -122,7 +122,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
     public void run()
     {
         FileDialog dialog = new FileDialog( window.getShell(), SWT.OPEN | SWT.MULTI );
-        dialog.setText( Messages.getString( "OpenFileAction.Open_File" ) );
+        dialog.setText( Messages.getString( "OpenFileAction.Open_File" ) ); //$NON-NLS-1$
         dialog.setFilterPath( filterPath );
         dialog.open();
         String[] names = dialog.getFileNames();
@@ -146,7 +146,7 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
                     }
                     catch ( PartInitException e )
                     {
-                        MessageDialog.openError( window.getShell(), Messages.getString( "OpenFileAction.Error" ), e
+                        MessageDialog.openError( window.getShell(), Messages.getString( "OpenFileAction.Error" ), e //$NON-NLS-1$
                             .getMessage() );
                     }
                 }
@@ -163,10 +163,10 @@ public class OpenFileAction extends Action implements IWorkbenchWindowActionDele
             if ( numberOfFilesNotFound > 0 )
             {
                 String msg = MessageFormat.format( numberOfFilesNotFound == 1 ? Messages
-                    .getString( "OpenFileAction.File_not_found" ) : Messages
-                    .getString( "OpenFileAction.Files_not_found" ), new Object[]
+                    .getString( "OpenFileAction.File_not_found" ) : Messages //$NON-NLS-1$
+                    .getString( "OpenFileAction.Files_not_found" ), new Object[] //$NON-NLS-1$
                     { notFound.toString() } );
-                MessageDialog.openError( window.getShell(), Messages.getString( "OpenFileAction.Error" ), msg );
+                MessageDialog.openError( window.getShell(), Messages.getString( "OpenFileAction.Error" ), msg ); //$NON-NLS-1$
             }
         }
     }

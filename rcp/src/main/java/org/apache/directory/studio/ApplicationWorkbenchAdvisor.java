@@ -72,7 +72,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
         TrayDialog.setDialogHelpAvailable( true );
         ImageRegistry reg = JFaceResources.getImageRegistry();
         ImageDescriptor helpImage = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
-            "IMGS_LCL_LINKTO_HELP" );
+            "IMGS_LCL_LINKTO_HELP" ); //$NON-NLS-1$
         reg.put( Dialog.DLG_IMG_HELP, helpImage );
     }
 
@@ -102,7 +102,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
      */
     public String getInitialWindowPerspectiveId()
     {
-        return "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective";
+        return "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"; //$NON-NLS-1$
     }
 
 

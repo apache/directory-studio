@@ -31,22 +31,22 @@ public interface PluginConstants
 
     /** The Add Extension Action ID */
     public static final String ACTION_ADD_EXTENSION_ID = Activator.getDefault().getPluginProperties().getString(
-        "Action_AddExtension_id" );
+        "Action_AddExtension_id" ); //$NON-NLS-1$
 
     /** The Manage Configuration Action ID */
     public static final String ACTION_MANAGE_CONFIGURATION_ID = Activator.getDefault().getPluginProperties().getString(
-        "Action_ManageConfiguration_id" );
+        "Action_ManageConfiguration_id" ); //$NON-NLS-1$
 
     /** The Open File Action ID */
     public static final String ACTION_OPEN_FILE_ID = Activator.getDefault().getPluginProperties().getString(
-        "Action_OpenFile_id" );
+        "Action_OpenFile_id" ); //$NON-NLS-1$
 
     /** The Report A Bug Action ID */
     public static final String ACTION_REPORT_A_BUG_ID = Activator.getDefault().getPluginProperties().getString(
-        "Action_ReportABug_id" );
+        "Action_ReportABug_id" ); //$NON-NLS-1$
 
     /** The Update ActionID */
     public static final String ACTION_UPDATE_ID = Activator.getDefault().getPluginProperties().getString(
-        "Action_Update_id" );
+        "Action_Update_id" ); //$NON-NLS-1$
 
 }
