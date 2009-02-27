@@ -20,48 +20,56 @@
 
 package org.apache.directory.studio.test.integration.ui;
 
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
 
+
 /**
  * Test suite to run all tests.
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory
- *         Project</a>
+ * @author <a href="mailto:dev@directory.apache.org">Apache DirectoryProject</a>
  * @version $Rev$, $Date$
  */
-public class AutomatedSuite extends TestSuite {
+public class AutomatedSuite extends TestSuite
+{
 
-	public static Test suite() {
-		return new AutomatedSuite();
-	}
+    public static Test suite()
+    {
+        return new AutomatedSuite();
+    }
 
-	public AutomatedSuite() {
-		// Test Preparation: close welcome view
-		try {
-			SWTEclipseBot bot = new SWTEclipseBot();
-			bot.view("Welcome").close();
-		} catch (Exception e) {
-		}
 
-		// Test Connections view
-		addTest(new TestSuite(NewConnectionWizardTest.class));
-		
-		// Test Import/Export
-		addTest(new TestSuite(ImportExportTest.class));
+    public AutomatedSuite()
+    {
+        // Test Preparation: close welcome view
+        try
+        {
+            SWTEclipseBot bot = new SWTEclipseBot();
+            bot.view( "Welcome" ).close();
+        }
+        catch ( Exception e )
+        {
+        }
 
-		// Test Browser view
-		addTest(new TestSuite(NewEntryWizardTest.class));
-		addTest(new TestSuite(RenameEntryDialogTest.class));
-		addTest(new TestSuite(ReferralDialogTest.class));
+        // Test Connections view
+        addTest( new TestSuite( NewConnectionWizardTest.class ) );
 
-		// Test Entry editor
-		addTest(new TestSuite(EntryEditorTest.class));
+        // Test Import/Export
+        addTest( new TestSuite( ImportExportTest.class ) );
 
-		// Test allocated resources
-		// addTest( new TestSuite( SwtResourcesTest.class ) );
-	}
+        // Test Browser view
+        addTest( new TestSuite( NewEntryWizardTest.class ) );
+        addTest( new TestSuite( RenameEntryDialogTest.class ) );
+        addTest( new TestSuite( ReferralDialogTest.class ) );
+
+        // Test Entry editor
+        addTest( new TestSuite( EntryEditorTest.class ) );
+
+        // Test allocated resources
+        // addTest( new TestSuite( SwtResourcesTest.class ) );
+    }
 
 }

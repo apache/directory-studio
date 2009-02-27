@@ -20,61 +20,68 @@
 
 package org.apache.directory.studio.test.integration.ui;
 
+
 import org.apache.directory.server.unit.AbstractServerTest;
 import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
+
 /**
  * Tests the rename entry dialog.
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory
- *         Project</a>
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class RenameEntryDialogTest extends AbstractServerTest {
-	private SWTEclipseBot bot;
+public class RenameEntryDialogTest extends AbstractServerTest
+{
+    private SWTEclipseBot bot;
 
-	protected void setUp() throws Exception {
-		super.setUp();
-		super.loadTestLdif(true);
-		bot = new SWTEclipseBot();
-		SWTBotUtils.openLdapPerspective(bot);
-		SWTBotUtils.createTestConnection(bot, "RenameEntryDialogTest",
-				ldapService.getPort());
-	}
 
-	protected void tearDown() throws Exception {
-		SWTBotUtils.deleteTestConnections();
-		bot = null;
-		super.tearDown();
-	}
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+        super.loadTestLdif( true );
+        bot = new SWTEclipseBot();
+        SWTBotUtils.openLdapPerspective( bot );
+        SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapService.getPort() );
+    }
 
-	/**
-	 * Test for DIRSTUDIO-318.
-	 * 
-	 * Renames a multi-valued RDN by changing both RDN attributes.
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public void testRenameMultiValuedRdn() throws Exception {
-		final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree(bot);
 
-		SWTBotUtils.selectEntry(bot, browserTree, false, "DIT", "Root DSE",
-				"ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen");
+    protected void tearDown() throws Exception
+    {
+        SWTBotUtils.deleteTestConnections();
+        bot = null;
+        super.tearDown();
+    }
 
-		bot.sleep(2000);
-		SWTBotMenu contextMenu = browserTree.contextMenu("Rename Entry...");
-		contextMenu.click();
 
-		bot.text("Barbara Jensen").setText("Babs Jensen");
-		bot.text("bjensen").setText("babsjens");
-		bot.button("OK").click();
+    /**
+     * Test for DIRSTUDIO-318.
+     * 
+     * Renames a multi-valued RDN by changing both RDN attributes.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public void testRenameMultiValuedRdn() throws Exception
+    {
+        final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
 
-		// ensure that the entry with the new name exists
-		SWTBotUtils.selectEntry(bot, browserTree, false, "DIT", "Root DSE",
-				"ou=system", "ou=users", "cn=Babs Jensen+uid=babsjens");
-	}
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=Barbara Jensen+uid=bjensen" );
+
+        bot.sleep( 2000 );
+        SWTBotMenu contextMenu = browserTree.contextMenu( "Rename Entry..." );
+        contextMenu.click();
+
+        bot.text( "Barbara Jensen" ).setText( "Babs Jensen" );
+        bot.text( "bjensen" ).setText( "babsjens" );
+        bot.button( "OK" ).click();
+
+        // ensure that the entry with the new name exists
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=Babs Jensen+uid=babsjens" );
+    }
 
 }

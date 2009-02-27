@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.test.integration.ui;
 
+
 import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 import static org.hamcrest.Matchers.anything;
@@ -60,433 +61,490 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+
 /**
  * Helpers for using SWTBot.
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory
- *         Project</a>
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SWTBotUtils {
+public class SWTBotUtils
+{
 
-	/**
-	 * Opens the LDAP perspective.
-	 * 
-	 * @param bot
-	 *            the bot
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static void openLdapPerspective(final SWTEclipseBot eBot)
-			throws Exception {
-		// optimization: only open LDAP perspective if not yet opened
-		try {
-			if (eBot.view("Connections") != null) {
-				// LDAP perspective already opened
-				return;
-			}
-		} catch (Exception e) {
-			// no 'Connections' view, continue to open the LDAP perspective
-		}
+    /**
+     * Opens the LDAP perspective.
+     * 
+     * @param bot
+     *            the bot
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static void openLdapPerspective( final SWTEclipseBot eBot ) throws Exception
+    {
+        // optimization: only open LDAP perspective if not yet opened
+        try
+        {
+            if ( eBot.view( "Connections" ) != null )
+            {
+                // LDAP perspective already opened
+                return;
+            }
+        }
+        catch ( Exception e )
+        {
+            // no 'Connections' view, continue to open the LDAP perspective
+        }
 
-		// open "Open Perspective" dialog
-		SWTBotMenu windowMenu = eBot.menu("Window");
-		windowMenu.click();
-		SWTBotMenu perspectiveMenu = windowMenu.menu("Open Perspective");
-		perspectiveMenu.click();
-		SWTBotMenu otherMenu = windowMenu.menu("Other...");
-		otherMenu.click();
+        // open "Open Perspective" dialog
+        SWTBotMenu windowMenu = eBot.menu( "Window" );
+        windowMenu.click();
+        SWTBotMenu perspectiveMenu = windowMenu.menu( "Open Perspective" );
+        perspectiveMenu.click();
+        SWTBotMenu otherMenu = windowMenu.menu( "Other..." );
+        otherMenu.click();
 
-		// select "LDAP" perspective
-		SWTBotTable table = eBot.table();
-		table.select("LDAP");
+        // select "LDAP" perspective
+        SWTBotTable table = eBot.table();
+        table.select( "LDAP" );
 
-		// press "OK"
-		SWTBotButton okButton = eBot.button("OK");
-		okButton.click();
+        // press "OK"
+        SWTBotButton okButton = eBot.button( "OK" );
+        okButton.click();
 
-		// wait till Connections view become visible
-		eBot.waitUntil(new DefaultCondition() {
-			public boolean test() throws Exception {
-				return eBot.view("Connections") != null;
-			}
+        // wait till Connections view become visible
+        eBot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return eBot.view( "Connections" ) != null;
+            }
 
-			public String getFailureMessage() {
-				return "Could not find widget";
-			}
-		});
 
-		// close welcome view, if it is there
-		try {
-			eBot.view("Welcome").close();
-		} catch (Exception e) {
-		}
-	}
+            public String getFailureMessage()
+            {
+                return "Could not find widget";
+            }
+        } );
 
-	/**
-	 * Creates the test connection.
-	 * 
-	 * @param bot
-	 *            the bot
-	 * @param name
-	 *            the name of the connection
-	 * @param port
-	 *            the port to use
-	 * 
-	 * @return the connection
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static Connection createTestConnection(SWTEclipseBot bot,
-			String name, int port) throws Exception {
-		SWTBotTree connectionsTree = getConnectionsTree(bot);
+        // close welcome view, if it is there
+        try
+        {
+            eBot.view( "Welcome" ).close();
+        }
+        catch ( Exception e )
+        {
+        }
+    }
 
-		ConnectionManager connectionManager = ConnectionCorePlugin.getDefault()
-				.getConnectionManager();
-		ConnectionParameter connectionParameter = new ConnectionParameter();
-		connectionParameter.setName(name);
-		connectionParameter.setHost("localhost");
-		connectionParameter.setPort(port);
-		connectionParameter.setEncryptionMethod(EncryptionMethod.NONE);
-		connectionParameter.setAuthMethod(AuthenticationMethod.SIMPLE);
-		connectionParameter.setBindPrincipal("uid=admin,ou=system");
-		connectionParameter.setBindPassword("secret");
-		Connection connection = new Connection(connectionParameter);
-		connectionManager.addConnection(connection);
 
-		ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin
-				.getDefault().getConnectionFolderManager();
-		ConnectionFolder rootConnectionFolder = connectionFolderManager
-				.getRootConnectionFolder();
-		rootConnectionFolder.addConnectionId(connection.getId());
+    /**
+     * Creates the test connection.
+     * 
+     * @param bot
+     *            the bot
+     * @param name
+     *            the name of the connection
+     * @param port
+     *            the port to use
+     * 
+     * @return the connection
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static Connection createTestConnection( SWTEclipseBot bot, String name, int port ) throws Exception
+    {
+        SWTBotTree connectionsTree = getConnectionsTree( bot );
 
-		connectionsTree.select(name);
-		// new OpenConnectionsJob( connection ).execute();
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        ConnectionParameter connectionParameter = new ConnectionParameter();
+        connectionParameter.setName( name );
+        connectionParameter.setHost( "localhost" );
+        connectionParameter.setPort( port );
+        connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
+        connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
+        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
+        connectionParameter.setBindPassword( "secret" );
+        Connection connection = new Connection( connectionParameter );
+        connectionManager.addConnection( connection );
 
-		Thread.sleep(1000);
-		return connection;
-	}
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
+        ConnectionFolder rootConnectionFolder = connectionFolderManager.getRootConnectionFolder();
+        rootConnectionFolder.addConnectionId( connection.getId() );
 
-	/**
-	 * Deletes the test connection.
-	 */
-	public static void deleteTestConnections() {
-		ConnectionManager connectionManager = ConnectionCorePlugin.getDefault()
-				.getConnectionManager();
-		for (Connection connection : connectionManager.getConnections()) {
-			connectionManager.removeConnection(connection);
-		}
-	}
+        connectionsTree.select( name );
+        // new OpenConnectionsJob( connection ).execute();
 
-	/**
-	 * Gets the connections tree.
-	 * 
-	 * @param bot
-	 *            the bot
-	 * 
-	 * @return the connections tree
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static SWTBotTree getConnectionsTree(SWTEclipseBot bot)
-			throws Exception {
-		SWTBotView view = bot.view("Connections");
-		view.show();
+        Thread.sleep( 1000 );
+        return connection;
+    }
 
-		Tree tree = (Tree) bot.widget(widgetOfType(Tree.class), view
-				.getWidget());
-		return new SWTBotTree(tree);
-	}
 
-	/**
-	 * Gets the ldap browser tree.
-	 * 
-	 * @param bot
-	 *            the bot
-	 * 
-	 * @return the ldap browser tree
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static SWTBotTree getLdapBrowserTree(SWTEclipseBot bot)
-			throws Exception {
-		SWTBotView view = bot.view("LDAP Browser");
-		view.show();
+    /**
+     * Deletes the test connection.
+     */
+    public static void deleteTestConnections()
+    {
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        for ( Connection connection : connectionManager.getConnections() )
+        {
+            connectionManager.removeConnection( connection );
+        }
+    }
 
-		Tree tree = (Tree) bot.widget(widgetOfType(Tree.class), view
-				.getWidget());
-		return new SWTBotTree(tree);
-	}
 
-	/**
-	 * Gets the entry editor tree.
-	 * 
-	 * @param bot
-	 *            the bot
-	 * 
-	 * @return the entry editor tree
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static SWTBotTree getEntryEditorTree(final SWTEclipseBot bot)
-			throws Exception {
-		Tree tree = UIThreadRunnable.syncExec(new WidgetResult<Tree>() {
-			public Tree run() {
-				IWorkbench workbench = PlatformUI.getWorkbench();
-				IWorkbenchWindow activeWorkbenchWindow = workbench
-						.getActiveWorkbenchWindow();
-				IWorkbenchPage[] pages = activeWorkbenchWindow.getPages();
-				for (int i = 0; i < pages.length; i++) {
-					IWorkbenchPage page = pages[i];
-					IEditorReference[] editorReferences = page
-							.getEditorReferences();
-					for (int j = 0; j < editorReferences.length; j++) {
-						IEditorReference editorReference = editorReferences[j];
-						if (editorReference.getName().equals("Entry Editor")) {
-							DummyEditor editor = new DummyEditor(
-									editorReference, bot);
-							Tree tree = (Tree) bot.widget(
-									widgetOfType(Tree.class), editor.widget);
-							return tree;
+    /**
+     * Gets the connections tree.
+     * 
+     * @param bot
+     *            the bot
+     * 
+     * @return the connections tree
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static SWTBotTree getConnectionsTree( SWTEclipseBot bot ) throws Exception
+    {
+        SWTBotView view = bot.view( "Connections" );
+        view.show();
 
-						}
-					}
-				}
-				throw new WidgetNotFoundException(
-						"Could not find Entry Editor tree");
-			}
-		});
-		return new SWTBotTree(tree);
-	}
+        Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.getWidget() );
+        return new SWTBotTree( tree );
+    }
 
-	static class DummyEditor extends SWTBotWorkbenchPart<IEditorReference> {
-		public Widget widget;
 
-		public DummyEditor(IEditorReference editorReference, SWTEclipseBot bot) {
-			super(editorReference, bot);
-			widget = findWidget(anything());
-		}
+    /**
+     * Gets the ldap browser tree.
+     * 
+     * @param bot
+     *            the bot
+     * 
+     * @return the ldap browser tree
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static SWTBotTree getLdapBrowserTree( SWTEclipseBot bot ) throws Exception
+    {
+        SWTBotView view = bot.view( "LDAP Browser" );
+        view.show();
 
-		public void setFocus() {
-			syncExec(new VoidResult() {
-				public void run() {
-					((Control) widget).setFocus();
-				}
-			});
-		}
+        Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.getWidget() );
+        return new SWTBotTree( tree );
+    }
 
-		public boolean isActive() {
-			return true;
-		}
-	}
 
-	/**
-	 * Clicks a button asynchronously and waits till the given condition is
-	 * fulfilled.
-	 * 
-	 * @param bot
-	 *            the SWT bot
-	 * @param button
-	 *            the button to click
-	 * @param waitCondition
-	 *            the condition to wait for, may be null
-	 * 
-	 * @throws TimeoutException
-	 */
-	public static void asyncClick(final SWTEclipseBot bot,
-			final SWTBotButton button, final ICondition waitCondition)
-			throws TimeoutException {
-		bot.waitUntil(new DefaultCondition() {
-			public boolean test() throws Exception {
-				return button.isEnabled();
-			}
+    /**
+     * Gets the entry editor tree.
+     * 
+     * @param bot
+     *            the bot
+     * 
+     * @return the entry editor tree
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static SWTBotTree getEntryEditorTree( final SWTEclipseBot bot ) throws Exception
+    {
+        Tree tree = UIThreadRunnable.syncExec( new WidgetResult<Tree>()
+        {
+            public Tree run()
+            {
+                IWorkbench workbench = PlatformUI.getWorkbench();
+                IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+                IWorkbenchPage[] pages = activeWorkbenchWindow.getPages();
+                for ( int i = 0; i < pages.length; i++ )
+                {
+                    IWorkbenchPage page = pages[i];
+                    IEditorReference[] editorReferences = page.getEditorReferences();
+                    for ( int j = 0; j < editorReferences.length; j++ )
+                    {
+                        IEditorReference editorReference = editorReferences[j];
+                        if ( editorReference.getName().equals( "Entry Editor" ) )
+                        {
+                            DummyEditor editor = new DummyEditor( editorReference, bot );
+                            Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), editor.widget );
+                            return tree;
 
-			public String getFailureMessage() {
-				return "Button isn't enabled.";
-			}
-		});
+                        }
+                    }
+                }
+                throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
+            }
+        } );
+        return new SWTBotTree( tree );
+    }
 
-		UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
-			public void run() {
-				button.click();
-			}
-		});
+    static class DummyEditor extends SWTBotWorkbenchPart<IEditorReference>
+    {
+        public Widget widget;
 
-		if (waitCondition != null) {
-			bot.waitUntil(waitCondition);
-		}
-	}
 
-	/**
-	 * Clicks a menu item asynchronously and waits till the given condition is
-	 * fulfilled.
-	 * 
-	 * @param bot
-	 *            the SWT bot
-	 * @param button
-	 *            the button to click
-	 * @param waitCondition
-	 *            the condition to wait for, may be null
-	 * 
-	 * @throws TimeoutException
-	 */
-	public static void asyncClick(final SWTEclipseBot bot,
-			final SWTBotMenu menu, final ICondition waitCondition)
-			throws TimeoutException {
-		UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
-			public void run() {
-				menu.click();
-			}
-		});
+        public DummyEditor( IEditorReference editorReference, SWTEclipseBot bot )
+        {
+            super( editorReference, bot );
+            widget = findWidget( anything() );
+        }
 
-		if (waitCondition != null) {
-			bot.waitUntil(waitCondition);
-		}
-	}
 
-	/**
-	 * Clicks a tree item asynchronously and waits till the given condition is
-	 * fulfilled.
-	 * 
-	 * @param bot
-	 *            the SWT bot
-	 * @param item
-	 *            the tree item to click
-	 * @param waitCondition
-	 *            the condition to wait for, may be null
-	 * 
-	 * @throws TimeoutException
-	 *             the timeout exception
-	 */
-	public static void asyncClick(final SWTEclipseBot bot,
-			final SWTBotTreeItem item, final ICondition waitCondition)
-			throws TimeoutException {
-		UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
-			public void run() {
-				item.click();
-			}
-		});
+        public void setFocus()
+        {
+            syncExec( new VoidResult()
+            {
+                public void run()
+                {
+                    ( ( Control ) widget ).setFocus();
+                }
+            } );
+        }
 
-		if (waitCondition != null) {
-			bot.waitUntil(waitCondition);
-		}
-	}
 
-	/**
-	 * Selects an entry in the browser tree and optionally expands the selected
-	 * entry. Takes care that all attributes and child entries are initialized
-	 * so that there are no pending background actions and event notifications.
-	 * This is necessary to avoid race conditions.
-	 * 
-	 * @param bot
-	 *            the SWT bot
-	 * @param tree
-	 *            the browser tree
-	 * @param expandChild
-	 *            true to expand the child entry
-	 * @param path
-	 *            the path to the entry
-	 * 
-	 * @return the selected entry as SWTBotTreeItem
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static SWTBotTreeItem selectEntry(final SWTEclipseBot bot,
-			final SWTBotTree tree, final boolean expandChild,
-			final String... path) throws Exception {
-		List<String> pathList = new ArrayList<String>(Arrays.asList(path));
-		SWTBotTreeItem entry = null;
+        public boolean isActive()
+        {
+            return true;
+        }
+    }
 
-		while (!pathList.isEmpty()) {
-			String currentPath = pathList.remove(0);
 
-			if (entry == null) {
-				entry = tree.getTreeItem(currentPath);
-			} else {
-				// adjust current path, because the label is decorated with the
-				// number of children
-				currentPath = adjustNodeName(entry, currentPath);
-				entry = entry.getNode(currentPath);
-			}
+    /**
+     * Clicks a button asynchronously and waits till the given condition is
+     * fulfilled.
+     * 
+     * @param bot
+     *            the SWT bot
+     * @param button
+     *            the button to click
+     * @param waitCondition
+     *            the condition to wait for, may be null
+     * 
+     * @throws TimeoutException
+     */
+    public static void asyncClick( final SWTEclipseBot bot, final SWTBotButton button, final ICondition waitCondition )
+        throws TimeoutException
+    {
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                return button.isEnabled();
+            }
 
-			final SWTBotTreeItem tempEntry = entry;
-			UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
-				public void run() {
-					tempEntry.select();
-				}
-			});
 
-			if (!pathList.isEmpty() || expandChild) {
-				// expand entry and wait till
-				// - children are displayed
-				// - next child is visible
-				final String nextName = !pathList.isEmpty() ? pathList.get(0)
-						: null;
-				expandEntry(bot, entry, nextName);
-			}
+            public String getFailureMessage()
+            {
+                return "Button isn't enabled.";
+            }
+        } );
 
-		}
-		return entry;
-	}
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
+        {
+            public void run()
+            {
+                button.click();
+            }
+        } );
 
-	/**
-	 * Expands the entry. Takes care that all attributes and child entries are
-	 * initialized so that there are no pending background actions and event
-	 * notifications. This is necessary to avoid race conditions.
-	 * 
-	 * @param bot
-	 *            the bot
-	 * @param entry
-	 *            the entry to expand
-	 * @param nextName
-	 *            the name of the entry that must become visible, may be null
-	 * 
-	 * @throws Exception
-	 *             the exception
-	 */
-	public static void expandEntry(final SWTEclipseBot bot,
-			final SWTBotTreeItem entry, final String nextName) throws Exception {
-		UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
-			public void run() {
-				entry.expand();
-			}
-		});
+        if ( waitCondition != null )
+        {
+            bot.waitUntil( waitCondition );
+        }
+    }
 
-		bot.waitUntil(new DefaultCondition() {
-			public boolean test() throws Exception {
-				if (nextName != null) {
-					String adjustedNodeName = nextName != null ? adjustNodeName(
-							entry, nextName)
-							: null;
-					SWTBotTreeItem node = entry.getNode(adjustedNodeName);
-					if (node == null) {
-						return false;
-					}
-				}
-				return !entry.getNodes().contains("Fetching Entries...");
-			}
 
-			public String getFailureMessage() {
-				return "Could not find entry " + entry.getText() + " -> "
-						+ nextName;
-			}
-		});
-	}
+    /**
+     * Clicks a menu item asynchronously and waits till the given condition is
+     * fulfilled.
+     * 
+     * @param bot
+     *            the SWT bot
+     * @param button
+     *            the button to click
+     * @param waitCondition
+     *            the condition to wait for, may be null
+     * 
+     * @throws TimeoutException
+     */
+    public static void asyncClick( final SWTEclipseBot bot, final SWTBotMenu menu, final ICondition waitCondition )
+        throws TimeoutException
+    {
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
+        {
+            public void run()
+            {
+                menu.click();
+            }
+        } );
 
-	private static String adjustNodeName(SWTBotTreeItem child, String nodeName) {
-		List<String> nodes = child.getNodes();
-		for (String node : nodes) {
-			if (node.toUpperCase().startsWith(nodeName.toUpperCase())) {
-				return node;
-			}
-		}
-		return null;
-	}
+        if ( waitCondition != null )
+        {
+            bot.waitUntil( waitCondition );
+        }
+    }
+
+
+    /**
+     * Clicks a tree item asynchronously and waits till the given condition is
+     * fulfilled.
+     * 
+     * @param bot
+     *            the SWT bot
+     * @param item
+     *            the tree item to click
+     * @param waitCondition
+     *            the condition to wait for, may be null
+     * 
+     * @throws TimeoutException
+     *             the timeout exception
+     */
+    public static void asyncClick( final SWTEclipseBot bot, final SWTBotTreeItem item, final ICondition waitCondition )
+        throws TimeoutException
+    {
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
+        {
+            public void run()
+            {
+                item.click();
+            }
+        } );
+
+        if ( waitCondition != null )
+        {
+            bot.waitUntil( waitCondition );
+        }
+    }
+
+
+    /**
+     * Selects an entry in the browser tree and optionally expands the selected
+     * entry. Takes care that all attributes and child entries are initialized
+     * so that there are no pending background actions and event notifications.
+     * This is necessary to avoid race conditions.
+     * 
+     * @param bot
+     *            the SWT bot
+     * @param tree
+     *            the browser tree
+     * @param expandChild
+     *            true to expand the child entry
+     * @param path
+     *            the path to the entry
+     * 
+     * @return the selected entry as SWTBotTreeItem
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static SWTBotTreeItem selectEntry( final SWTEclipseBot bot, final SWTBotTree tree,
+        final boolean expandChild, final String... path ) throws Exception
+    {
+        List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
+        SWTBotTreeItem entry = null;
+
+        while ( !pathList.isEmpty() )
+        {
+            String currentPath = pathList.remove( 0 );
+
+            if ( entry == null )
+            {
+                entry = tree.getTreeItem( currentPath );
+            }
+            else
+            {
+                // adjust current path, because the label is decorated with the
+                // number of children
+                currentPath = adjustNodeName( entry, currentPath );
+                entry = entry.getNode( currentPath );
+            }
+
+            final SWTBotTreeItem tempEntry = entry;
+            UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
+            {
+                public void run()
+                {
+                    tempEntry.select();
+                }
+            } );
+
+            if ( !pathList.isEmpty() || expandChild )
+            {
+                // expand entry and wait till
+                // - children are displayed
+                // - next child is visible
+                final String nextName = !pathList.isEmpty() ? pathList.get( 0 ) : null;
+                expandEntry( bot, entry, nextName );
+            }
+
+        }
+        return entry;
+    }
+
+
+    /**
+     * Expands the entry. Takes care that all attributes and child entries are
+     * initialized so that there are no pending background actions and event
+     * notifications. This is necessary to avoid race conditions.
+     * 
+     * @param bot
+     *            the bot
+     * @param entry
+     *            the entry to expand
+     * @param nextName
+     *            the name of the entry that must become visible, may be null
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public static void expandEntry( final SWTEclipseBot bot, final SWTBotTreeItem entry, final String nextName )
+        throws Exception
+    {
+        UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
+        {
+            public void run()
+            {
+                entry.expand();
+            }
+        } );
+
+        bot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                if ( nextName != null )
+                {
+                    String adjustedNodeName = nextName != null ? adjustNodeName( entry, nextName ) : null;
+                    SWTBotTreeItem node = entry.getNode( adjustedNodeName );
+                    if ( node == null )
+                    {
+                        return false;
+                    }
+                }
+                return !entry.getNodes().contains( "Fetching Entries..." );
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "Could not find entry " + entry.getText() + " -> " + nextName;
+            }
+        } );
+    }
+
+
+    private static String adjustNodeName( SWTBotTreeItem child, String nodeName )
+    {
+        List<String> nodes = child.getNodes();
+        for ( String node : nodes )
+        {
+            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
+            {
+                return node;
+            }
+        }
+        return null;
+    }
 
 }
