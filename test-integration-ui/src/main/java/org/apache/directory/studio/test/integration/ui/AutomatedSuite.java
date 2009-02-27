@@ -48,6 +48,9 @@ public class AutomatedSuite extends TestSuite {
 
 		// Test Connections view
 		addTest(new TestSuite(NewConnectionWizardTest.class));
+		
+		// Test Import/Export
+		addTest(new TestSuite(ImportExportTest.class));
 
 		// Test Browser view
 		addTest(new TestSuite(NewEntryWizardTest.class));
@@ -56,9 +59,6 @@ public class AutomatedSuite extends TestSuite {
 
 		// Test Entry editor
 		addTest(new TestSuite(EntryEditorTest.class));
-
-		// Test Import/Export
-		addTest(new TestSuite(ImportExportTest.class));
 
 		// Test allocated resources
 		// addTest( new TestSuite( SwtResourcesTest.class ) );

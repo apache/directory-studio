@@ -188,7 +188,7 @@ public class EntryEditorTest extends AbstractServerTest {
 
 		// delete 1st value/attribute
 		entryEditorTree.select(6);
-		entryEditorTree.contextMenu("Delete Attribute").click();
+		entryEditorTree.contextMenu("Delete Value").click();
 		SWTBotUtils.asyncClick(bot, bot.button("OK"), new DefaultCondition() {
 			public boolean test() throws Exception {
 				return !entryEditorTree.cell(6, 0).equals("description");
