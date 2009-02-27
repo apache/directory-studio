@@ -95,6 +95,7 @@ public class ImportExportTest extends AbstractServerTest {
 		eBot.button("Finish").click();
 
 		// verify that exported LDIF starts with the Base64 encoded DN
+		eBot.sleep(2000);
 		String content = FileUtils.readFileToString(new File(file));
 		assertTrue(
 				"LDIF must start with Base64 encoded DN.",
@@ -180,7 +181,8 @@ public class ImportExportTest extends AbstractServerTest {
 		eBot.button("Finish").click();
 
 		// verify that exported DSML contains the Base64 encoded DN
-		String content = FileUtils.readFileToString(new File(file));
+		eBot.sleep(2000);
+		String content = FileUtils.readFileToString(new File(file), "UTF-8");
 		assertTrue("DSML must contain DN with umlaut.", content
 				.contains("dn=\"cn=Wolfgang K\u00f6lbel,ou=users,ou=system\""));
 
@@ -254,7 +256,6 @@ public class ImportExportTest extends AbstractServerTest {
                     SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE" );
                     final SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( eBot );
                     String text = entryEditorTree.cell( 2, 1 );
-                    System.out.println( text );
                     return "dc=example,dc=com".equals( text );
                 }
 

@@ -208,7 +208,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
             if ( responseFile != null )
             {
                 FileOutputStream fos = new FileOutputStream( responseFile );
-                OutputStreamWriter osw = new OutputStreamWriter( fos );
+                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" );
                 BufferedWriter bufferedWriter = new BufferedWriter( osw );
                 bufferedWriter.write( batchResponseDsml.toDsml() );
                 bufferedWriter.close();

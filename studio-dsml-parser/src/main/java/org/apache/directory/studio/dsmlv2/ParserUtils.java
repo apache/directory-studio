@@ -32,6 +32,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.util.Base64;
+import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.dsmlv2.engine.Dsmlv2Engine;
 import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.dsmlv2.request.BatchRequest.Processing;
@@ -149,7 +150,7 @@ public class ParserUtils
         }
         else if ( value instanceof String )
         {
-            return new String( Base64.encode( ( ( String ) value ).getBytes() ) );
+            return new String( Base64.encode( StringTools.getBytesUtf8( ( String ) value ) ) );
         }
 
         return "";

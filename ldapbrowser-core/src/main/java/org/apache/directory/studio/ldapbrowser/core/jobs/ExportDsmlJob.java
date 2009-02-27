@@ -193,7 +193,7 @@ public class ExportDsmlJob extends AbstractEclipseJob
             if ( dsmlExportString != null )
             {
                 FileOutputStream fos = new FileOutputStream( exportDsmlFilename );
-                OutputStreamWriter osw = new OutputStreamWriter( fos );
+                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" );
                 BufferedWriter bufferedWriter = new BufferedWriter( osw );
                 bufferedWriter.write( dsmlExportString );
                 bufferedWriter.close();
