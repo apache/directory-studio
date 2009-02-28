@@ -21,7 +21,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v150;
 
 
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +32,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 import javax.xml.transform.TransformerException;
 
+import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
@@ -52,42 +52,6 @@ import org.dom4j.io.SAXReader;
  */
 public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
-     */
-    public boolean isValid( InputStream is )
-    {
-        try
-        {
-            SAXReader saxReader = new SAXReader();
-
-            return isValid( saxReader.read( is ) );
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
-     */
-    public boolean isValid( Reader reader )
-    {
-        try
-        {
-            SAXReader saxReader = new SAXReader();
-
-            return isValid( saxReader.read( reader ) );
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
     /**
      * Checks if the Document is valid.
      *
@@ -96,7 +60,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
      * @return
      *      true if the Document is valid, false if not
      */
-    private boolean isValid( Document document )
+    protected boolean isValid( Document document )
     {
         for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
         {
@@ -127,6 +91,7 @@ public class ServerXmlIOV150 extends AbstractServerXmlIO implements ServerXmlIO
         try
         {
             SAXReader reader = new SAXReader();
+            reader.setEntityResolver( new StudioEntityResolver() );
             Document document = reader.read( is );
 
             ServerConfigurationV150 serverConfiguration = new ServerConfigurationV150();

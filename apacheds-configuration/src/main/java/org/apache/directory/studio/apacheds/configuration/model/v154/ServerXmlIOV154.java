@@ -21,13 +21,13 @@ package org.apache.directory.studio.apacheds.configuration.model.v154;
 
 
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.transform.TransformerException;
 
+import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
@@ -143,42 +143,6 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
     private static final String VALUE_EXAMPLE_DOT_COM = "example.com"; //$NON-NLS-1$
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
-     */
-    public boolean isValid( InputStream is )
-    {
-        try
-        {
-            SAXReader saxReader = new SAXReader();
-
-            return isValid( saxReader.read( is ) );
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
-     */
-    public boolean isValid( Reader reader )
-    {
-        try
-        {
-            SAXReader saxReader = new SAXReader();
-
-            return isValid( saxReader.read( reader ) );
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
     /**
      * Checks if the Document is valid.
      *
@@ -187,7 +151,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
      * @return
      *      true if the Document is valid, false if not
      */
-    private boolean isValid( Document document )
+    protected boolean isValid( Document document )
     {
         Element rootElement = document.getRootElement();
 
@@ -222,6 +186,7 @@ public class ServerXmlIOV154 extends AbstractServerXmlIO implements ServerXmlIO
         {
             // Reading and creating the document
             SAXReader reader = new SAXReader();
+            reader.setEntityResolver( new StudioEntityResolver() );
             Document document = reader.read( is );
 
             // Parsing the document

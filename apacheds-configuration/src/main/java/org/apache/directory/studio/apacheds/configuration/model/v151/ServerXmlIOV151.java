@@ -21,7 +21,6 @@ package org.apache.directory.studio.apacheds.configuration.model.v151;
 
 
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +32,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 import javax.xml.transform.TransformerException;
 
-import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
@@ -42,8 +41,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
 
 
 /**
@@ -55,42 +52,6 @@ import org.xml.sax.InputSource;
  */
 public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
 {
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
-     */
-    public boolean isValid( InputStream is )
-    {
-        try
-        {
-            SAXReader saxReader = new SAXReader();
-
-            return isValid( saxReader.read( is ) );
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
-     */
-    public boolean isValid( Reader reader )
-    {
-        try
-        {
-            SAXReader saxReader = new SAXReader();
-
-            return isValid( saxReader.read( reader ) );
-        }
-        catch ( Exception e )
-        {
-            return false;
-        }
-    }
-
-
     /**
      * Checks if the Document is valid.
      *
@@ -99,7 +60,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
      * @return
      *      true if the Document is valid, false if not
      */
-    private boolean isValid( Document document )
+    protected boolean isValid( Document document )
     {
         for ( Iterator<?> i = document.getRootElement().elementIterator( "bean" ); i.hasNext(); ) //$NON-NLS-1$
         {
@@ -129,24 +90,9 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     {
         try
         {
-            // Assigning the Spring Beans DTD to an entity resoler
-            // (This will prevent the parser to try to get it online)
-            EntityResolver resolver = new EntityResolver()
-            {
-                public InputSource resolveEntity( String publicId, String systemId )
-                {
-                    if ( publicId.equalsIgnoreCase( "-//SPRING//DTD BEAN//EN" ) ) //$NON-NLS-1$
-                    {
-                        InputStream in = ApacheDSConfigurationPlugin.class.getResourceAsStream( "spring-beans.dtd" ); //$NON-NLS-1$
-                        return new InputSource( in );
-                    }
-                    return null;
-                }
-            };
-
             // Reading and creating the document
             SAXReader reader = new SAXReader();
-            reader.setEntityResolver( resolver );
+            reader.setEntityResolver( new StudioEntityResolver() );
             Document document = reader.read( is );
 
             // Parsing the document

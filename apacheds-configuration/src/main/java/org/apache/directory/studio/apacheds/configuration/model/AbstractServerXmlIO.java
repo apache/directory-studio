@@ -22,6 +22,8 @@ package org.apache.directory.studio.apacheds.configuration.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -36,10 +38,12 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
+import org.dom4j.io.SAXReader;
 import org.eclipse.osgi.util.NLS;
 
 
@@ -278,4 +282,53 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
         Document transformedDoc = result.getDocument();
         return transformedDoc;
     }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.InputStream)
+     */
+    public final boolean isValid( InputStream is )
+    {
+        try
+        {
+            SAXReader saxReader = new SAXReader();
+            saxReader.setEntityResolver( new StudioEntityResolver() );
+
+            return isValid( saxReader.read( is ) );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#isValid(java.io.Reader)
+     */
+    public final boolean isValid( Reader reader )
+    {
+        try
+        {
+            SAXReader saxReader = new SAXReader();
+            saxReader.setEntityResolver( new StudioEntityResolver() );
+
+            return isValid( saxReader.read( reader ) );
+        }
+        catch ( Exception e )
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * Checks if the Document is valid.
+     *
+     * @param document
+     *      the Document
+     * @return
+     *      true if the Document is valid, false if not
+     */
+    protected abstract boolean isValid( Document document );
 }
