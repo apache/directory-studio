@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserConfiguration;
@@ -220,16 +221,21 @@ public class BrowserView extends ViewPart
             while ( tempEntry.getParententry() != null )
             {
                 IEntry parentEntry = tempEntry.getParententry();
-                entryList.add( 0, parentEntry );
+                entryList.add( 0, tempEntry );
                 tempEntry = parentEntry;
             }
 
-            for ( IEntry parentEntry : entryList )
+            for ( IEntry childEntry : entryList )
             {
+                IEntry parentEntry = childEntry.getParententry();
                 if ( !parentEntry.isChildrenInitialized() )
                 {
                     parentEntry.setChildrenInitialized( true );
                     parentEntry.setHasMoreChildren( true );
+                }
+                if ( !Arrays.asList( parentEntry.getChildren() ).contains( childEntry ) )
+                {
+                    parentEntry.addChild( childEntry );
                 }
 
                 // force refresh of each parent, beginning from the root
