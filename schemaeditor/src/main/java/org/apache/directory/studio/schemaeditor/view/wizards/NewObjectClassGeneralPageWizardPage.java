@@ -345,7 +345,7 @@ public class NewObjectClassGeneralPageWizardPage extends AbstractWizardPage
         }
         if ( aliases.size() == 0 )
         {
-            displayWarningMessage( Messages.getString( "NewObjectClassGeneralPageWizardPage.ErrorAttributeTypeNoName" ) ); //$NON-NLS-1$
+            displayWarningMessage( Messages.getString( "NewObjectClassGeneralPageWizardPage.ErrorObjectClassNoName" ) ); //$NON-NLS-1$
             return;
         }
         else
