@@ -216,19 +216,19 @@ public class BrowserContentProvider implements ITreeContentProvider
                     return null;
                 }
             }
-            else if ( entryToEntryPagesMap.containsKey( parentEntry ) )
+            else if ( parentEntry.getChildrenCount() <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
-                BrowserEntryPage[] entryPages = entryToEntryPagesMap.get( parentEntry );
+                return parentEntry;
+            }
+            else
+            {
+                BrowserEntryPage[] entryPages = getEntryPages( parentEntry );
                 BrowserEntryPage ep = null;
                 for ( int i = 0; i < entryPages.length && ep == null; i++ )
                 {
                     ep = entryPages[i].getParentOf( ( IEntry ) child );
                 }
                 return ep;
-            }
-            else
-            {
-                return parentEntry;
             }
         }
         else if ( child instanceof BrowserSearchResultPage )
@@ -243,19 +243,21 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( child instanceof ISearchResult )
         {
             ISearch parentSearch = ( ( ISearchResult ) child ).getSearch();
-            if ( parentSearch != null && searchToSearchResultPagesMap.containsKey( parentSearch ) )
+
+            if ( parentSearch == null || parentSearch.getSearchResults().length <= preferences.getFoldingSize()
+                || !preferences.isUseFolding() )
             {
-                BrowserSearchResultPage[] srPages = searchToSearchResultPagesMap.get( parentSearch );
+                return parentSearch;
+            }
+            else
+            {
+                BrowserSearchResultPage[] srPages = getSearchResultPages( parentSearch );
                 BrowserSearchResultPage srp = null;
                 for ( int i = 0; i < srPages.length && srp == null; i++ )
                 {
                     srp = srPages[i].getParentOf( ( ISearchResult ) child );
                 }
                 return srp;
-            }
-            else
-            {
-                return parentSearch;
             }
         }
         else if ( child instanceof IBookmark )
@@ -282,7 +284,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             if ( objects == null )
             {
                 return new String[]
-                    { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
+                    { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
             }
             else if ( objects instanceof IEntry[] )
             {
@@ -303,7 +305,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
                     { rootDSE } ) ).execute();
                 return new String[]
-                    { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
+                    { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
             }
 
             // get base entries
@@ -331,11 +333,10 @@ public class BrowserContentProvider implements ITreeContentProvider
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
                     { parentEntry } ) ).execute();
                 return new String[]
-                    { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
+                    { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
             }
 
-            int childrenCount = parentEntry.getChildrenCount();
-            if ( childrenCount <= preferences.getFoldingSize() || !preferences.isUseFolding() )
+            if ( parentEntry.getChildrenCount() <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
                 if ( entryToEntryPagesMap.containsKey( parentEntry ) )
                 {
@@ -363,7 +364,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                 if ( results == null )
                 {
                     return new String[]
-                        { Messages.getString("BrowserContentProvider.FetchingEntries") }; //$NON-NLS-1$
+                        { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
                 }
                 else
                 {
@@ -372,21 +373,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             }
             else
             {
-                BrowserEntryPage[] entryPages = null;
-                if ( !entryToEntryPagesMap.containsKey( parentEntry ) )
-                {
-                    entryPages = getEntryPages( parentEntry, 0, childrenCount - 1 );
-                    entryToEntryPagesMap.put( parentEntry, entryPages );
-                }
-                else
-                {
-                    entryPages = entryToEntryPagesMap.get( parentEntry );
-                    if ( childrenCount - 1 != entryPages[entryPages.length - 1].getLast() )
-                    {
-                        entryPages = getEntryPages( parentEntry, 0, childrenCount - 1 );
-                        entryToEntryPagesMap.put( parentEntry, entryPages );
-                    }
-                }
+                BrowserEntryPage[] entryPages = getEntryPages( parentEntry );;
                 return entryPages;
             }
         }
@@ -397,7 +384,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             if ( objects == null )
             {
                 return new String[]
-                    { Messages.getString("BrowserContentProvider.FetchingSearchResults") }; //$NON-NLS-1$
+                    { Messages.getString( "BrowserContentProvider.FetchingSearchResults" ) }; //$NON-NLS-1$
             }
             else if ( objects instanceof ISearchResult[] )
             {
@@ -417,15 +404,20 @@ public class BrowserContentProvider implements ITreeContentProvider
                 new StudioBrowserJob( new SearchRunnable( new ISearch[]
                     { search } ) ).execute();
                 return new String[]
-                    { Messages.getString("BrowserContentProvider.PerformingSearch") }; //$NON-NLS-1$
+                    { Messages.getString( "BrowserContentProvider.PerformingSearch" ) }; //$NON-NLS-1$
             }
             else if ( search.getSearchResults().length == 0 )
             {
                 return new String[]
-                    { Messages.getString("BrowserContentProvider.NoResults") }; //$NON-NLS-1$
+                    { Messages.getString( "BrowserContentProvider.NoResults" ) }; //$NON-NLS-1$
             }
             else if ( search.getSearchResults().length <= preferences.getFoldingSize() || !preferences.isUseFolding() )
             {
+                if ( searchToSearchResultPagesMap.containsKey( search ) )
+                {
+                    searchToSearchResultPagesMap.remove( search );
+                }
+
                 Object[] results = search.getSearchResults();
                 List<Object> objects = new ArrayList<Object>();
 
@@ -447,21 +439,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             }
             else
             {
-                BrowserSearchResultPage[] srPages = null;
-                if ( !searchToSearchResultPagesMap.containsKey( search ) )
-                {
-                    srPages = getSearchResultPages( search, 0, search.getSearchResults().length - 1 );
-                    searchToSearchResultPagesMap.put( search, srPages );
-                }
-                else
-                {
-                    srPages = searchToSearchResultPagesMap.get( search );
-                    if ( search.getSearchResults().length - 1 != srPages[srPages.length - 1].getLast() )
-                    {
-                        srPages = getSearchResultPages( search, 0, search.getSearchResults().length - 1 );
-                        searchToSearchResultPagesMap.put( search, srPages );
-                    }
-                }
+                BrowserSearchResultPage[] srPages = getSearchResultPages( search );
                 return srPages;
             }
         }
@@ -481,7 +459,7 @@ public class BrowserContentProvider implements ITreeContentProvider
                         new StudioBrowserJob( new OpenConnectionsRunnable( browserConnection.getConnection() ) )
                             .execute();
                         return new String[]
-                            { Messages.getString("BrowserContentProvider.OpeningConnection") }; //$NON-NLS-1$
+                            { Messages.getString( "BrowserContentProvider.OpeningConnection" ) }; //$NON-NLS-1$
                     }
 
                     return new Object[]
@@ -545,6 +523,27 @@ public class BrowserContentProvider implements ITreeContentProvider
     }
 
 
+    private BrowserEntryPage[] getEntryPages( final IEntry parentEntry )
+    {
+        BrowserEntryPage[] entryPages;
+        if ( !entryToEntryPagesMap.containsKey( parentEntry ) )
+        {
+            entryPages = getEntryPages( parentEntry, 0, parentEntry.getChildrenCount() - 1 );
+            entryToEntryPagesMap.put( parentEntry, entryPages );
+        }
+        else
+        {
+            entryPages = entryToEntryPagesMap.get( parentEntry );
+            if ( parentEntry.getChildrenCount() - 1 != entryPages[entryPages.length - 1].getLast() )
+            {
+                entryPages = getEntryPages( parentEntry, 0, parentEntry.getChildrenCount() - 1 );
+                entryToEntryPagesMap.put( parentEntry, entryPages );
+            }
+        }
+        return entryPages;
+    }
+
+
     /**
      * Creates and returns the entry pages for the given entry. The number of pages
      * depends on the number of entries and the paging size. 
@@ -574,6 +573,27 @@ public class BrowserContentProvider implements ITreeContentProvider
         }
 
         return pages;
+    }
+
+
+    private BrowserSearchResultPage[] getSearchResultPages( ISearch search )
+    {
+        BrowserSearchResultPage[] srPages;
+        if ( !searchToSearchResultPagesMap.containsKey( search ) )
+        {
+            srPages = getSearchResultPages( search, 0, search.getSearchResults().length - 1 );
+            searchToSearchResultPagesMap.put( search, srPages );
+        }
+        else
+        {
+            srPages = searchToSearchResultPagesMap.get( search );
+            if ( search.getSearchResults().length - 1 != srPages[srPages.length - 1].getLast() )
+            {
+                srPages = getSearchResultPages( search, 0, search.getSearchResults().length - 1 );
+                searchToSearchResultPagesMap.put( search, srPages );
+            }
+        }
+        return srPages;
     }
 
 

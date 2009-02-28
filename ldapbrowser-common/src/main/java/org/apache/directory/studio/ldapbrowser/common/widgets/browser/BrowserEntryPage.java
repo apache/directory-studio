@@ -101,7 +101,7 @@ public class BrowserEntryPage
             // 2. sort
             sorter.sort( null, children );
 
-            // 3. extraxt range
+            // 3. extract range
             if ( children != null )
             {
                 IEntry[] childrenRange = new IEntry[last - first + 1];

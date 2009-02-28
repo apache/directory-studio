@@ -104,7 +104,7 @@ public class BrowserSearchResultPage
             // 2. sort
             sorter.sort( null, children );
 
-            // 3. extraxt range
+            // 3. extract range
             if ( children != null )
             {
                 ISearchResult[] childrenRange = new ISearchResult[last - first + 1];
