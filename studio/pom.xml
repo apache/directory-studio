@@ -198,6 +198,8 @@
                 <id>deploy-dist-linux-x86</id>
                 <phase>deploy</phase>
                 <configuration>
+                  <repositoryId>apache.snapshots.https</repositoryId>
+                  <url>${distMgmtSnapshotsUrl}</url>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-x86-${pom.version}-dist.tar.gz</file>
                   <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
@@ -360,6 +362,8 @@
                 <id>deploy-dist-linux-x86_64</id>
                 <phase>deploy</phase>
                 <configuration>
+                  <repositoryId>apache.snapshots.https</repositoryId>
+                  <url>${distMgmtSnapshotsUrl}</url>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-x86_64-${pom.version}-dist.tar.gz</file>
                   <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
@@ -522,6 +526,8 @@
                 <id>deploy-dist-linux-ppc</id>
                 <phase>deploy</phase>
                 <configuration>
+                  <repositoryId>apache.snapshots.https</repositoryId>
+                  <url>${distMgmtSnapshotsUrl}</url>
                   <file>../target/distributions/ApacheDirectoryStudio-linux-ppc-${pom.version}-dist.tar.gz</file>
                   <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
@@ -683,6 +689,8 @@
                 <id>deploy-dist-win32</id>
                 <phase>deploy</phase>
                 <configuration>
+                  <repositoryId>apache.snapshots.https</repositoryId>
+                  <url>${distMgmtSnapshotsUrl}</url>
                   <file>../target/distributions/ApacheDirectoryStudio-win32-${pom.version}-dist.zip</file>
                   <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
@@ -790,6 +798,8 @@
                 <id>deploy-dist-macosx</id>
                 <phase>deploy</phase>
                 <configuration>
+                  <repositoryId>apache.snapshots.https</repositoryId>
+                  <url>${distMgmtSnapshotsUrl}</url>
                   <file>../target/distributions/ApacheDirectoryStudio-macosx-${pom.version}-dist.tar.gz</file>
                   <url>${studio.dist.url}</url>
                   <artifactId>ApacheDirectoryStudio</artifactId>
