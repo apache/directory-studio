@@ -101,19 +101,16 @@ public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
         InitializeAttributesRunnable.initializeAttributes( rootDSE, true, monitor );
 
         IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
-        for ( IEntry baseDNEntry : baseDNEntries )
+        if ( baseDNEntries != null )
         {
-            if ( !( baseDNEntry instanceof DirectoryMetadataEntry ) )
+            for ( IEntry baseDNEntry : baseDNEntries )
             {
-                baseDNs.add( baseDNEntry.getDn().getUpName() );
+                if ( !( baseDNEntry instanceof DirectoryMetadataEntry ) )
+                {
+                    baseDNs.add( baseDNEntry.getDn().getUpName() );
+                }
             }
         }
-
-//        IAttribute attribute = rootDSE.getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
-//        if ( attribute != null )
-//        {
-//            baseDNs = attribute.getStringValues();
-//        }
 
         monitor.worked( 1 );
     }
