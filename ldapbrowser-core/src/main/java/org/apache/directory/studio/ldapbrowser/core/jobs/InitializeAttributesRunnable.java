@@ -214,6 +214,13 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
             InitializeRootDSERunnable runnable = new InitializeRootDSERunnable( ( IRootDSE ) entry );
             StudioConnectionJob job = new StudioConnectionJob( runnable );
             job.execute();
+            try
+            {
+                job.join();
+            }
+            catch ( InterruptedException e )
+            {
+            }
         }
         else
         {
