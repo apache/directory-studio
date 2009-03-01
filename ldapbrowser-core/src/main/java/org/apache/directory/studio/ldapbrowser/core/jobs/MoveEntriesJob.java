@@ -182,7 +182,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
                     {
                         // no simulated rename operation
                         // report the exception to the real monitor
-                        Throwable exception = dummyMonitor.getException();
+                        Exception exception = dummyMonitor.getException();
                         monitor.reportError( exception );
                     }
                 }
@@ -190,7 +190,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
                 {
                     // we have another exception
                     // report it to the real monitor
-                    Throwable exception = dummyMonitor.getException();
+                    Exception exception = dummyMonitor.getException();
                     monitor.reportError( exception );
                 }
             }

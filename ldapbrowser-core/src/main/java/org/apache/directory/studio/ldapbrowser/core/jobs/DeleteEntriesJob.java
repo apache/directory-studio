@@ -46,7 +46,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEv
 import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -265,13 +264,8 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                 try
                 {
                     // delete all child entries
-                    while ( !dummyMonitor.isCanceled() && result.hasMore() )
+                    while ( !dummyMonitor.isCanceled() && !dummyMonitor.errorsReported() && result.hasMore() )
                     {
-                        if ( dummyMonitor.errorsReported() )
-                        {
-                            throw dummyMonitor.getException();
-                        }
-
                         SearchResult sr = result.next();
                         LdapDN childDn = JNDIUtils.getDn( sr );
 
@@ -280,17 +274,16 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                         numberInBatch++;
                     }
                 }
-                catch ( Throwable e )
+                catch ( Exception e )
                 {
-                    ConnectionException ce = JNDIUtils.createConnectionException( null, e );
-
-                    if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
+                    int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
+                    if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
                     {
                         // continue with search
                     }
                     else
                     {
-                        dummyMonitor.reportError( ce );
+                        dummyMonitor.reportError( e );
                         break;
                     }
                 }
@@ -312,7 +305,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
         }
         else
         {
-            Throwable exception = dummyMonitor.getException();
+            Exception exception = dummyMonitor.getException();
             // we have another exception
             // report it to the dummy monitor if we are in the recursion
             dummyMonitor.reportError( exception );

@@ -180,7 +180,7 @@ public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
         }
         catch ( Exception e )
         {
-            monitor.reportError( e.getMessage(), e );
+            monitor.reportError( e );
             return null;
         }
     }

@@ -194,7 +194,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         catch ( NamingException ne )
         {
             disconnect();
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
         }
     }
 
@@ -239,7 +239,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         catch ( NamingException ne )
         {
             disconnect();
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
         }
     }
 
@@ -434,13 +434,13 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         catch ( NamingException ne )
         {
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
             return null;
         }
 
         if ( runnable.getException() != null )
         {
-            monitor.reportError( runnable.getException().getMessage(), runnable.getException() );
+            monitor.reportError( runnable.getException() );
             return null;
         }
         else if ( runnable.getResult() != null )
@@ -535,12 +535,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         catch ( NamingException ne )
         {
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
         }
 
         if ( runnable.getException() != null )
         {
-            monitor.reportError( runnable.getException().getMessage(), runnable.getException() );
+            monitor.reportError( runnable.getException() );
         }
     }
 
@@ -636,12 +636,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         catch ( NamingException ne )
         {
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
         }
 
         if ( runnable.getException() != null )
         {
-            monitor.reportError( runnable.getException().getMessage(), runnable.getException() );
+            monitor.reportError( runnable.getException() );
         }
     }
 
@@ -726,12 +726,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         catch ( NamingException ne )
         {
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
         }
 
         if ( runnable.getException() != null )
         {
-            monitor.reportError( runnable.getException().getMessage(), runnable.getException() );
+            monitor.reportError( runnable.getException() );
         }
     }
 
@@ -814,12 +814,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         catch ( NamingException ne )
         {
-            monitor.reportError( ne.getMessage(), ne );
+            monitor.reportError( ne );
         }
 
         if ( runnable.getException() != null )
         {
-            monitor.reportError( runnable.getException().getMessage(), runnable.getException() );
+            monitor.reportError( runnable.getException() );
         }
     }
 

@@ -41,7 +41,6 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
@@ -147,15 +146,14 @@ public class ExportLdifJob extends AbstractEclipseJob
 
 
     private static void export( IBrowserConnection browserConnection, SearchParameter searchParameter,
-        BufferedWriter bufferedWriter, int count, StudioProgressMonitor monitor ) throws IOException,
-        ConnectionException
+        BufferedWriter bufferedWriter, int count, StudioProgressMonitor monitor ) throws IOException
     {
         try
         {
             AttributeComparator comparator = new AttributeComparator( browserConnection );
             JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
 
-            while ( !monitor.isCanceled() && enumeration.hasNext() )
+            while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
 
@@ -186,17 +184,16 @@ public class ExportLdifJob extends AbstractEclipseJob
                 }
             }
         }
-        catch ( ConnectionException ce )
+        catch ( NamingException ne )
         {
-            if ( ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_TIMELIMIT_EXCEEDED
-                || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_SIZELIMIT_EXCEEDED
-                || ce.getLdapStatusCode() == ConnectionException.STAUS_CODE_ADMINLIMIT_EXCEEDED )
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( ne );
+            if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
             {
                 // ignore
             }
             else
             {
-                monitor.reportError( ce );
+                monitor.reportError( ne );
             }
         }
     }
@@ -209,14 +206,9 @@ public class ExportLdifJob extends AbstractEclipseJob
 
 
     static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
-        StudioProgressMonitor monitor ) throws ConnectionException
+        StudioProgressMonitor monitor )
     {
         StudioNamingEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
-
-        if ( monitor.errorsReported() )
-        {
-            throw JNDIUtils.createConnectionException( null, monitor.getException() );
-        }
         return new JndiLdifEnumeration( result, browserConnection, parameter, monitor );
     }
 
@@ -242,92 +234,78 @@ public class ExportLdifJob extends AbstractEclipseJob
         }
 
 
-        public boolean hasNext() throws ConnectionException
+        public boolean hasNext() throws NamingException
         {
-            try
+            if ( enumeration != null )
             {
-                if ( enumeration != null )
+                if ( enumeration.hasMore() )
                 {
-                    if ( enumeration.hasMore() )
-                    {
-                        return true;
-                    }
+                    return true;
+                }
 
-                    Control[] jndiControls = enumeration.getResponseControls();
-                    if ( jndiControls != null )
+                Control[] jndiControls = enumeration.getResponseControls();
+                if ( jndiControls != null )
+                {
+                    for ( Control jndiControl : jndiControls )
                     {
-                        for ( Control jndiControl : jndiControls )
+                        if ( jndiControl instanceof PagedResultsResponseControl )
                         {
-                            if ( jndiControl instanceof PagedResultsResponseControl )
+                            PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
+                            byte[] cookie = prrc.getCookie();
+                            if ( cookie != null )
                             {
-                                PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
-                                byte[] cookie = prrc.getCookie();
-                                if ( cookie != null )
+                                // search again: pass the response cookie to the request control
+                                for ( StudioControl studioControl : parameter.getControls() )
                                 {
-                                    // search again: pass the response cookie to the request control
-                                    for ( StudioControl studioControl : parameter.getControls() )
+                                    if ( studioControl instanceof StudioPagedResultsControl )
                                     {
-                                        if ( studioControl instanceof StudioPagedResultsControl )
-                                        {
-                                            StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
-                                            sprc.setCookie( cookie );
-                                        }
+                                        StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
+                                        sprc.setCookie( cookie );
                                     }
-                                    enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
-                                    return enumeration != null && enumeration.hasMore();
                                 }
+                                enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
+                                return enumeration != null && enumeration.hasMore();
                             }
                         }
                     }
                 }
+            }
 
-                return false;
-            }
-            catch ( NamingException e )
-            {
-                throw JNDIUtils.createConnectionException( parameter, e );
-            }
+            return false;
         }
 
 
-        public LdifContainer next() throws ConnectionException
+        public LdifContainer next() throws NamingException
         {
-            try
-            {
-                SearchResult sr = enumeration.next();
-                LdapDN dn = JNDIUtils.getDn( sr );
-                LdifContentRecord record = LdifContentRecord.create( dn.getUpName() );
+            SearchResult sr = enumeration.next();
+            LdapDN dn = JNDIUtils.getDn( sr );
+            LdifContentRecord record = LdifContentRecord.create( dn.getUpName() );
 
-                NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
-                while ( attributeEnumeration.hasMore() )
+            NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
+            while ( attributeEnumeration.hasMore() )
+            {
+                Attribute attribute = attributeEnumeration.next();
+                String attributeName = attribute.getID();
+                NamingEnumeration<?> valueEnumeration = attribute.getAll();
+                while ( valueEnumeration.hasMore() )
                 {
-                    Attribute attribute = attributeEnumeration.next();
-                    String attributeName = attribute.getID();
-                    NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                    while ( valueEnumeration.hasMore() )
+                    Object o = valueEnumeration.next();
+                    if ( o instanceof String )
                     {
-                        Object o = valueEnumeration.next();
-                        if ( o instanceof String )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
-                        }
-                        if ( o instanceof byte[] )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
-                        }
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                    }
+                    if ( o instanceof byte[] )
+                    {
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
                     }
                 }
-
-                record.finish( LdifSepLine.create() );
-
-                return record;
-
             }
-            catch ( NamingException e )
-            {
-                throw JNDIUtils.createConnectionException( parameter, e );
-            }
+
+            record.finish( LdifSepLine.create() );
+
+            return record;
         }
+
     }
 
 }

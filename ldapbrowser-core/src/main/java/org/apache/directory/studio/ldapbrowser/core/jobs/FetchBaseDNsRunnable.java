@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -98,7 +99,8 @@ public class FetchBaseDNsRunnable implements StudioBulkRunnableWithProgress
         monitor.worked( 1 );
 
         IRootDSE rootDSE = connection.getRootDSE();
-        InitializeAttributesRunnable.initializeAttributes( rootDSE, true, monitor );
+        InitializeRootDSERunnable runnable = new InitializeRootDSERunnable( rootDSE );
+        runnable.run( monitor );
 
         IEntry[] baseDNEntries = connection.getRootDSE().getChildren();
         if ( baseDNEntries != null )

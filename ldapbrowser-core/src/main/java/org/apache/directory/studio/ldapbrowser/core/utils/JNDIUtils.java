@@ -21,17 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
-import java.net.ConnectException;
-import java.net.NoRouteToHostException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
 import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
-import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 
 
 /**
@@ -84,84 +76,32 @@ public class JNDIUtils
 
 
     /**
-     * Creates a connection exception.
+     * Gets the LDAP status code from the exception.
      * 
-     * @param searchParameter the search parameter
-     * @param e the exception
+     * @param exception the exception
      * 
-     * @return the connection exception
+     * @return the LDAP status code, -1 if none
      */
-    public static ConnectionException createConnectionException( SearchParameter searchParameter, Throwable e )
+    public static int getLdapStatusCode( Exception exception )
     {
-        // TODO: remove when improving error handling
-        e.printStackTrace();
+        int ldapStatusCode = -1;
 
-        ConnectionException connectionException = null;
-        ConnectionException lastException = null;
-
-        do
-        {
-            String message = e.getMessage() != null ? e.getMessage() : e.getClass().getName();
-            int ldapStatusCode = -1;
-
-            // get LDAP status code
-            // [LDAP: error code 21 - telephoneNumber: value #0 invalid per syntax]
-            if ( message != null && message.startsWith( "[LDAP: error code " ) ) { //$NON-NLS-1$
-                int begin = "[LDAP: error code ".length(); //$NON-NLS-1$
-                int end = begin + 2;
-                try
-                {
-                    ldapStatusCode = Integer.parseInt( message.substring( begin, end ).trim() );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                }
-            }
-
-            // special causes
-            // java_io_IOException=I/O exception occurred: {0}
-            // java_io_EOFException=End of file encountered: {0}
-            // java_io_FileNotFoundException=File not found: {0}
-            // java_io_InterruptedIOException=I/O has been interrupted.
-            // java_net_UnknownHostException=Cannot locate host: {0}
-            // java_net_ConnectException=Cannot connect to host: {0}
-            // java_net_SocketException=Socket Exception: {0}
-            // java_net_NoRouteToHostException={0}
-            if ( e instanceof ConnectException )
+        // get LDAP status code
+        // [LDAP: error code 21 - telephoneNumber: value #0 invalid per syntax]
+        String message = exception.getMessage();
+        if ( message != null && message.startsWith( "[LDAP: error code " ) ) { //$NON-NLS-1$
+            int begin = "[LDAP: error code ".length(); //$NON-NLS-1$
+            int end = begin + 2;
+            try
             {
-                message = e.getMessage() + " (" + e.getMessage() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                ldapStatusCode = Integer.parseInt( message.substring( begin, end ).trim() );
             }
-            if ( e instanceof NoRouteToHostException )
+            catch ( NumberFormatException nfe )
             {
-                message += e.getMessage() + " (" + e.getMessage() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if ( e instanceof UnknownHostException )
-            {
-                message = BrowserCoreMessages.model__unknown_host + e.getMessage();
-            }
-            if ( e instanceof SocketException )
-            {
-                message = e.getMessage() + " (" + e.getMessage() + ")";; //$NON-NLS-1$ //$NON-NLS-2$
-            }
-
-            ConnectionException ce = new ConnectionException( ldapStatusCode, message, e );
-            if ( lastException != null )
-            {
-                lastException.initCause( ce );
-            }
-            lastException = ce;
-            if ( connectionException == null )
-            {
-                connectionException = lastException;
-            }
-
-            // next cause
-            e = e.getCause();
         }
-        while ( e != null );
 
-        return connectionException;
-
+        return ldapStatusCode;
     }
 
 }

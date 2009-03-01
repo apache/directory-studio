@@ -21,11 +21,16 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.Messages;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -60,7 +65,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                     {
                         StudioProgressMonitor next = it.next();
                         StudioProgressMonitor spm = next;
-    
+
                         do
                         {
                             // check report progress message
@@ -69,7 +74,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                                 spm.subTask( spm.reportProgressMessage );
                                 spm.reportProgressMessage = null;
                             }
-    
+
                             // check if canceled
                             if ( spm.isCanceled() )
                             {
@@ -79,7 +84,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                             {
                                 it.remove();
                             }
-    
+
                             if ( spm.getWrappedProgressMonitor() != null
                                 && spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
                             {
@@ -232,48 +237,35 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     /**
      * Report error.
      * 
-     * @param throwable the throwable
+     * @param exception the exception
      */
-    public void reportError( Throwable throwable )
+    public void reportError( Exception exception )
     {
-        reportError( throwable.getMessage() != null ? throwable.getMessage() : throwable.toString(), throwable );
+        reportError( null, exception );
     }
 
 
     /**
      * Report error.
      * 
-     * @param exception the exception
      * @param message the message
+     * @param exception the exception
      */
-    public void reportError( String message, Throwable exception )
+    public void reportError( String message, Exception exception )
     {
         if ( errorStatusList == null )
         {
             errorStatusList = new ArrayList<Status>( 3 );
         }
 
-        do
+        if ( message == null )
         {
-            if ( message == null )
-            {
-                message = ""; //$NON-NLS-1$
-            }
-
-            Status errorStatus = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, IStatus.ERROR, message,
-                exception );
-            errorStatusList.add( errorStatus );
-
-            if ( exception != null )
-            {
-                exception = exception.getCause();
-            }
-            if ( exception != null )
-            {
-                message = exception.getMessage();
-            }
+            message = ""; //$NON-NLS-1$
         }
-        while ( exception != null );
+
+        Status errorStatus = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, IStatus.ERROR, message,
+            exception );
+        errorStatusList.add( errorStatus );
     }
 
 
@@ -292,36 +284,78 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      * Gets the error status.
      * 
      * @param message the message
+     * @param TODO: context message, e.g. search parameters or mod-ldif
      * 
      * @return the error status
      */
     public IStatus getErrorStatus( String message )
     {
+        // multi: message + für jeden errorStatus (\n + message)
+        // children: alle errorStatus + stacktrace->message
+
         if ( errorStatusList != null && !errorStatusList.isEmpty() )
         {
-            Throwable exception = null;
-            for ( Iterator<Status> it = errorStatusList.iterator(); it.hasNext(); )
+            // append status messages to message
+            for ( Status status : errorStatusList )
             {
-                Status status = it.next();
-                if ( status.getException() != null )
+                String statusMessage = status.getMessage();
+                Throwable exception = status.getException();
+                String exceptionMessage = exception != null ? exception.getMessage() : null;
+
+                // Tweak exception message for some well-know exceptions
+                Throwable e = exception;
+                while ( e != null )
                 {
-                    exception = status.getException();
-                    break;
+                    if ( e instanceof UnknownHostException )
+                    {
+                        exceptionMessage = "Unknown Host: " + e.getMessage(); //$NON-NLS-1$
+                    }
+                    else if ( e instanceof SocketException )
+                    {
+                        exceptionMessage = e.getMessage() + " (" + exceptionMessage + ")";; //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+
+                    // next cause
+                    e = e.getCause();
+                }
+
+                // append explicit status message
+                if ( !StringUtils.isEmpty( statusMessage ) )
+                {
+                    message += "\n - " + statusMessage;
+                }
+                // append exception message if different to status message
+                if ( exception != null && exceptionMessage != null && !exceptionMessage.equals( statusMessage ) )
+                {
+                    // strip control characters
+                    int indexOfAny = StringUtils.indexOfAny( exceptionMessage, "\n\r\t" );
+                    if ( indexOfAny > -1 )
+                    {
+                        exceptionMessage = exceptionMessage.substring( 0, indexOfAny - 1 );
+                    }
+                    message += "\n - " + exceptionMessage;
                 }
             }
 
-            MultiStatus multiStatus = new MultiStatus( ConnectionCoreConstants.PLUGIN_ID, IStatus.ERROR, message,
-                exception );
+            // create main status
+            MultiStatus multiStatus = new MultiStatus( ConnectionCoreConstants.PLUGIN_ID, IStatus.ERROR, message, null );
 
-            for ( Iterator<Status> it = errorStatusList.iterator(); it.hasNext(); )
+            // append child status
+            for ( Status status : errorStatusList )
             {
-                Status status = it.next();
-                multiStatus.add( new Status( status.getSeverity(), status.getPlugin(), status.getCode(), status
-                    .getMessage(), null ) );
+                String statusMessage = status.getMessage();
+                if ( status.getException() != null )
+                {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter( sw );
+                    status.getException().printStackTrace( pw );
+                    statusMessage = sw.toString();
+                }
+                multiStatus.add( new Status( status.getSeverity(), status.getPlugin(), status.getCode(), statusMessage,
+                    status.getException() ) );
             }
 
             return multiStatus;
-
         }
         else
         {
@@ -335,11 +369,11 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      * 
      * @return the exception
      */
-    public Throwable getException()
+    public Exception getException()
     {
         if ( errorStatusList != null )
         {
-            return errorStatusList.get( 0 ).getException();
+            return ( Exception ) errorStatusList.get( 0 ).getException();
         }
         return null;
     }

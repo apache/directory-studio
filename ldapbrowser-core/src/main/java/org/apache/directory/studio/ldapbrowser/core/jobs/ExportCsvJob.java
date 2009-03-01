@@ -29,6 +29,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.NamingException;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
@@ -37,9 +39,9 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
@@ -186,17 +188,16 @@ public class ExportCsvJob extends AbstractEclipseJob
      * @param exportDn the export dn
      * 
      * @throws IOException Signals that an I/O exception has occurred.
-     * @throws ConnectionException the connection exception
      */
     private static void exportToCsv( IBrowserConnection browserConnection, SearchParameter searchParameter,
         BufferedWriter bufferedWriter, int count, StudioProgressMonitor monitor, String[] attributes,
         String attributeDelimiter, String valueDelimiter, String quoteCharacter, String lineSeparator, String encoding,
-        int binaryEncoding, boolean exportDn ) throws IOException, ConnectionException
+        int binaryEncoding, boolean exportDn ) throws IOException
     {
         try
         {
             JndiLdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
-            while ( !monitor.isCanceled() && enumeration.hasNext() )
+            while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
 
@@ -214,10 +215,10 @@ public class ExportCsvJob extends AbstractEclipseJob
                 }
             }
         }
-        catch ( ConnectionException ce )
+        catch ( NamingException ce )
         {
-
-            if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( ce );
+            if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
             {
                 // nothing
             }

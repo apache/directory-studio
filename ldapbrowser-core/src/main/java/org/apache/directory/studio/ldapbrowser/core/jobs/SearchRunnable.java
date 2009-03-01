@@ -53,7 +53,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -362,15 +361,14 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 }
                 catch ( Exception e )
                 {
-                    ConnectionException ce = JNDIUtils.createConnectionException( searchParameter, e );
-
-                    if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
+                    int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
+                    if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
                     {
                         search.setCountLimitExceeded( true );
                     }
                     else
                     {
-                        monitor.reportError( ce );
+                        monitor.reportError( e );
                     }
                 }
 
@@ -407,8 +405,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 }
                 catch ( Exception e )
                 {
-                    ConnectionException ce = JNDIUtils.createConnectionException( searchParameter, e );
-                    monitor.reportError( ce );
+                    monitor.reportError( e );
                 }
 
                 monitor.reportProgress( searchResultList.size() == 1 ? BrowserCoreMessages.model__retrieved_1_entry

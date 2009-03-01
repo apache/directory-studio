@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.naming.NamingException;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
@@ -33,9 +35,9 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifJob.JndiLdifEnumeration;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -211,17 +213,16 @@ public class ExportXlsJob extends AbstractEclipseJob
      * @param exportDn the export dn
      * 
      * @throws IOException Signals that an I/O exception has occurred.
-     * @throws ConnectionException the connection exception
      */
     private static void exportToXls( IBrowserConnection browserConnection, SearchParameter searchParameter,
         HSSFSheet sheet, HSSFRow headerRow, int count, StudioProgressMonitor monitor,
         LinkedHashMap<String, Short> attributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
-        throws IOException, ConnectionException
+        throws IOException
     {
         try
         {
             JndiLdifEnumeration enumeration = ExportLdifJob.search( browserConnection, searchParameter, monitor );
-            while ( !monitor.isCanceled() && enumeration.hasNext() )
+            while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
 
@@ -239,15 +240,16 @@ public class ExportXlsJob extends AbstractEclipseJob
             }
 
         }
-        catch ( ConnectionException ce )
+        catch ( NamingException ne )
         {
-            if ( ce.getLdapStatusCode() == 3 || ce.getLdapStatusCode() == 4 || ce.getLdapStatusCode() == 11 )
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( ne );
+            if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
             {
                 // nothing
             }
             else
             {
-                monitor.reportError( ce );
+                monitor.reportError( ne );
             }
         }
     }

@@ -37,6 +37,7 @@ import java.util.List;
 
 import javax.naming.InvalidNameException;
 import javax.naming.NameAlreadyBoundException;
+import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
@@ -56,7 +57,6 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.ConnectionException;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
@@ -393,14 +393,14 @@ public class ImportLdifJob extends AbstractNotificationJob
      * @param updateIfEntryExists the update if entry exists flag
      * @param monitor the progress monitor
      * 
-     * @throws ConnectionException the connection exception
+     * @throws NamingException the naming exception
      */
     static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, boolean updateIfEntryExists,
-        StudioProgressMonitor monitor ) throws ConnectionException
+        StudioProgressMonitor monitor ) throws NamingException
     {
         if ( !record.isValid() )
         {
-            throw new ConnectionException( BrowserCoreMessages.model__invalid_record );
+            throw new NamingException( BrowserCoreMessages.model__invalid_record );
         }
 
         String dn = record.getDnLine().getValueAsString();
@@ -515,25 +515,20 @@ public class ImportLdifJob extends AbstractNotificationJob
                 String newRdn = modDnRecord.getNewrdnLine().getValueAsString();
                 boolean deleteOldRdn = modDnRecord.getDeloldrdnLine().isDeleteOldRdn();
 
-                try
+                LdapDN newDn;
+                if ( modDnRecord.getNewsuperiorLine() != null )
                 {
-                    LdapDN newDn;
-                    if ( modDnRecord.getNewsuperiorLine() != null )
-                        newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
-                    else
-                    {
-                        LdapDN dnObject = new LdapDN( dn );
-                        LdapDN parent = DnUtils.getParent( dnObject );
-                        newDn = DnUtils.composeDn( newRdn, parent.getUpName() );
-                    }
+                    newDn = DnUtils.composeDn( newRdn, modDnRecord.getNewsuperiorLine().getValueAsString() );
+                }
+                else
+                {
+                    LdapDN dnObject = new LdapDN( dn );
+                    LdapDN parent = DnUtils.getParent( dnObject );
+                    newDn = DnUtils.composeDn( newRdn, parent.getUpName() );
+                }
 
-                    browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( dn, newDn.toString(),
-                        deleteOldRdn, ReferralHandlingMethod.IGNORE, getControls( modDnRecord ), monitor, null );
-                }
-                catch ( InvalidNameException ne )
-                {
-                    throw new ConnectionException( ne );
-                }
+                browserConnection.getConnection().getJNDIConnectionWrapper().renameEntry( dn, newDn.toString(),
+                    deleteOldRdn, ReferralHandlingMethod.IGNORE, getControls( modDnRecord ), monitor, null );
             }
         }
     }
