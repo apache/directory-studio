@@ -83,7 +83,10 @@ public class RunnableContextRunner
                             spm[0].worked( 1 );
 
                             connection.getJNDIConnectionWrapper().connect( spm[0] );
-                            connection.getJNDIConnectionWrapper().bind( spm[0] );
+                            if ( connection.getJNDIConnectionWrapper().isConnected() )
+                            {
+                                connection.getJNDIConnectionWrapper().bind( spm[0] );
+                            }
 
                             if ( connection.getJNDIConnectionWrapper().isConnected() )
                             {
@@ -98,27 +101,39 @@ public class RunnableContextRunner
                     }
                 }
 
-                //runnable.run( spm[0] );
-                if ( runnable instanceof StudioBulkRunnableWithProgress )
+                if ( !spm[0].errorsReported() )
                 {
-                    StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
-                    ConnectionEventRegistry.suspendEventFireingInCurrentThread();
                     try
                     {
-                        bulkRunnable.run( spm[0] );
+                        if ( runnable instanceof StudioBulkRunnableWithProgress )
+                        {
+                            StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
+                            ConnectionEventRegistry.suspendEventFireingInCurrentThread();
+                            try
+                            {
+                                bulkRunnable.run( spm[0] );
+                            }
+                            finally
+                            {
+                                ConnectionEventRegistry.resumeEventFireingInCurrentThread();
+                            }
+                            bulkRunnable.runNotification();
+                        }
+                        else
+                        {
+                            runnable.run( spm[0] );
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                        spm[0].reportError( e );
                     }
                     finally
                     {
-                        ConnectionEventRegistry.resumeEventFireingInCurrentThread();
+                        spm[0].done();
+                        monitor.done();
                     }
-                    bulkRunnable.runNotification();
                 }
-                else
-                {
-                    runnable.run( spm[0] );
-                }
-
-                spm[0].done();
             }
         };
 

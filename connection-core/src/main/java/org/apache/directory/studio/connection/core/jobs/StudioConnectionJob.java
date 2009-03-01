@@ -82,7 +82,10 @@ public class StudioConnectionJob extends Job
                     monitor.worked( 1 );
 
                     connection.getJNDIConnectionWrapper().connect( monitor );
-                    connection.getJNDIConnectionWrapper().bind( monitor );
+                    if ( connection.getJNDIConnectionWrapper().isConnected() )
+                    {
+                        connection.getJNDIConnectionWrapper().bind( monitor );
+                    }
 
                     if ( connection.getJNDIConnectionWrapper().isConnected() )
                     {
