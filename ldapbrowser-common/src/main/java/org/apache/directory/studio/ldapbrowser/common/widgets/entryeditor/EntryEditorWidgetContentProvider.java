@@ -176,24 +176,27 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     private Object[] getValues( IAttribute[] attributes, boolean showOperationalAttributes )
     {
         List<Object> valueList = new ArrayList<Object>();
-        for ( IAttribute attribute : attributes )
+        if ( attributes != null )
         {
-            if ( !attribute.isOperationalAttribute() || showOperationalAttributes
-                || ( attribute.getEntry() instanceof IRootDSE ) )
+            for ( IAttribute attribute : attributes )
             {
-                IValue[] values = attribute.getValues();
-                if ( preferences == null || !preferences.isUseFolding()
-                    || ( values.length <= preferences.getFoldingThreshold() ) )
+                if ( !attribute.isOperationalAttribute() || showOperationalAttributes
+                    || ( attribute.getEntry() instanceof IRootDSE ) )
                 {
-                    for ( IValue value : values )
+                    IValue[] values = attribute.getValues();
+                    if ( preferences == null || !preferences.isUseFolding()
+                        || ( values.length <= preferences.getFoldingThreshold() ) )
                     {
-                        valueList.add( value );
+                        for ( IValue value : values )
+                        {
+                            valueList.add( value );
+                        }
                     }
-                }
-                else
-                {
-                    // if folding threshold is exceeded then return the attribute itself
-                    valueList.add( attribute );
+                    else
+                    {
+                        // if folding threshold is exceeded then return the attribute itself
+                        valueList.add( attribute );
+                    }
                 }
             }
         }
