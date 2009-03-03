@@ -84,7 +84,7 @@ public class LdifChangeModifyRecord extends LdifChangeRecord
             return false;
         }
 
-        return this.getModSpecs().length > 0;
+        return true;
     }
 
 }

@@ -473,7 +473,8 @@ public class LdifScanner
             {
 
                 char c = read( sb );
-                if ( c != word.charAt( i ) )
+                //if ( c != word.charAt( i ) )
+                if ( Character.toUpperCase( c ) != Character.toUpperCase( word.charAt( i ) ) )
                 {
                     matches = false;
                     unread( sb );
@@ -947,6 +948,11 @@ public class LdifScanner
     }
 
 
+    /**
+     * Matches "add", "replace", or "delete"
+     *
+     * @return the LIDF token if matched, null if not matched
+     */
     public LdifToken matchModTypeSpec()
     {
         this.flushBuffer();

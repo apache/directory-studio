@@ -475,117 +475,117 @@ public class LdifParser
 
     private void parseChangeModDnRecord( LdifChangeModDnRecord record )
     {
-        // do {
-        if ( checkAndParseEndOfRecord( record ) )
+        boolean newrdnRead = false;
+        boolean deleteoldrdnRead = false;
+        boolean newsuperiorRead = false;
+
+        do
         {
-            return;
-        }
-
-        // comments
-        checkAndParseComment( record );
-
-        // read newrdn line
-        LdifToken newrdnSpecToken = this.scanner.matchNewrdnSpec();
-        if ( newrdnSpecToken != null )
-        {
-            LdifToken newrdnValueTypeToken = this.scanner.matchValueType();
-            LdifToken newrdnValueToken = this.scanner.matchValue();
-            LdifToken newrdnSepToken = null;
-            if ( newrdnValueTypeToken != null || newrdnValueToken != null )
-            {
-                newrdnSepToken = this.scanner.matchSep();
-            }
-
-            LdifNewrdnLine newrdnLine = new LdifNewrdnLine( newrdnSpecToken.getOffset(),
-                getValueOrNull( newrdnSpecToken ), getValueOrNull( newrdnValueTypeToken ),
-                getValueOrNull( newrdnValueToken ), getValueOrNull( newrdnSepToken ) );
-            record.setNewrdn( newrdnLine );
-
-            if ( newrdnSepToken == null )
-            {
-                this.cleanupLine( record );
-            }
-        }
-
-        if ( newrdnSpecToken == null )
-        {
-            if ( !checkAndParseComment( record ) && !checkAndParseOther( record ) )
+            if ( checkAndParseEndOfRecord( record ) )
             {
                 return;
             }
+
+            // comments
+            checkAndParseComment( record );
+
+            LdifToken newrdnSpecToken = null;
+            LdifToken deleteoldrdnSpecToken = null;
+            LdifToken newsuperiorSpecToken = null;
+            if ( !newrdnRead )
+            {
+                newrdnSpecToken = this.scanner.matchNewrdnSpec();
+            }
+            if ( !deleteoldrdnRead && newrdnSpecToken == null )
+            {
+                deleteoldrdnSpecToken = this.scanner.matchDeleteoldrdnSpec();
+            }
+            if ( !newsuperiorRead && newrdnSpecToken == null && newsuperiorSpecToken == null )
+            {
+                newsuperiorSpecToken = this.scanner.matchNewsuperiorSpec();
+            }
+
+            if ( newrdnSpecToken != null )
+            {
+                // read newrdn line
+                newrdnRead = true;
+                LdifToken newrdnValueTypeToken = this.scanner.matchValueType();
+                LdifToken newrdnValueToken = this.scanner.matchValue();
+                LdifToken newrdnSepToken = null;
+                if ( newrdnValueTypeToken != null || newrdnValueToken != null )
+                {
+                    newrdnSepToken = this.scanner.matchSep();
+                }
+
+                LdifNewrdnLine newrdnLine = new LdifNewrdnLine( newrdnSpecToken.getOffset(),
+                    getValueOrNull( newrdnSpecToken ), getValueOrNull( newrdnValueTypeToken ),
+                    getValueOrNull( newrdnValueToken ), getValueOrNull( newrdnSepToken ) );
+                record.setNewrdn( newrdnLine );
+
+                if ( newrdnSepToken == null )
+                {
+                    this.cleanupLine( record );
+                }
+            }
+            else if ( deleteoldrdnSpecToken != null )
+            {
+                // read deleteoldrdnline
+                deleteoldrdnRead = true;
+                LdifToken deleteoldrdnValueTypeToken = this.scanner.matchValueType();
+                LdifToken deleteoldrdnValueToken = this.scanner.matchValue();
+                LdifToken deleteoldrdnSepToken = null;
+                if ( deleteoldrdnValueTypeToken != null || deleteoldrdnValueToken != null )
+                {
+                    deleteoldrdnSepToken = this.scanner.matchSep();
+                }
+
+                LdifDeloldrdnLine deloldrdnLine = new LdifDeloldrdnLine( deleteoldrdnSpecToken.getOffset(),
+                    getValueOrNull( deleteoldrdnSpecToken ), getValueOrNull( deleteoldrdnValueTypeToken ),
+                    getValueOrNull( deleteoldrdnValueToken ), getValueOrNull( deleteoldrdnSepToken ) );
+                record.setDeloldrdn( deloldrdnLine );
+
+                if ( deleteoldrdnSepToken == null )
+                {
+                    this.cleanupLine( record );
+                }
+            }
+            else if ( newsuperiorSpecToken != null )
+            {
+                // read newsuperior line
+                newsuperiorRead = true;
+                LdifToken newsuperiorValueTypeToken = this.scanner.matchValueType();
+                LdifToken newsuperiorValueToken = this.scanner.matchValue();
+                LdifToken newsuperiorSepToken = null;
+                if ( newsuperiorValueTypeToken != null || newsuperiorValueToken != null )
+                {
+                    newsuperiorSepToken = this.scanner.matchSep();
+                }
+
+                LdifNewsuperiorLine newsuperiorLine = new LdifNewsuperiorLine( newsuperiorSpecToken.getOffset(),
+                    getValueOrNull( newsuperiorSpecToken ), getValueOrNull( newsuperiorValueTypeToken ),
+                    getValueOrNull( newsuperiorValueToken ), getValueOrNull( newsuperiorSepToken ) );
+                record.setNewsuperior( newsuperiorLine );
+
+                if ( newsuperiorSepToken == null )
+                {
+                    this.cleanupLine( record );
+                }
+            }
+            else
+            {
+                if ( !checkAndParseComment( record ) && !checkAndParseOther( record ) )
+                {
+                    return;
+                }
+            }
+
+            // comments
+            checkAndParseComment( record );
+
+            // eor
+            checkAndParseEndOfRecord( record );
         }
-
-        // comments
-        checkAndParseComment( record );
-
-        // read deleteoldrdnline
-        LdifToken deleteoldrdnSpecToken = this.scanner.matchDeleteoldrdnSpec();
-        if ( deleteoldrdnSpecToken != null )
-        {
-            LdifToken deleteoldrdnValueTypeToken = this.scanner.matchValueType();
-            LdifToken deleteoldrdnValueToken = this.scanner.matchValue();
-            LdifToken deleteoldrdnSepToken = null;
-            if ( deleteoldrdnValueTypeToken != null || deleteoldrdnValueToken != null )
-            {
-                deleteoldrdnSepToken = this.scanner.matchSep();
-            }
-
-            LdifDeloldrdnLine deloldrdnLine = new LdifDeloldrdnLine( deleteoldrdnSpecToken.getOffset(),
-                getValueOrNull( deleteoldrdnSpecToken ), getValueOrNull( deleteoldrdnValueTypeToken ),
-                getValueOrNull( deleteoldrdnValueToken ), getValueOrNull( deleteoldrdnSepToken ) );
-            record.setDeloldrdn( deloldrdnLine );
-
-            if ( deleteoldrdnSepToken == null )
-            {
-                this.cleanupLine( record );
-            }
-        }
-
-        if ( deleteoldrdnSpecToken == null )
-        {
-            if ( !checkAndParseComment( record ) && !checkAndParseOther( record ) )
-            {
-                return;
-            }
-        }
-
-        // comments
-        checkAndParseComment( record );
-
-        // read newsuperior line
-        LdifToken newsuperiorSpecToken = this.scanner.matchNewsuperiorSpec();
-        if ( newsuperiorSpecToken != null )
-        {
-            LdifToken newsuperiorValueTypeToken = this.scanner.matchValueType();
-            LdifToken newsuperiorValueToken = this.scanner.matchValue();
-            LdifToken newsuperiorSepToken = null;
-            if ( newsuperiorValueTypeToken != null || newsuperiorValueToken != null )
-            {
-                newsuperiorSepToken = this.scanner.matchSep();
-            }
-
-            LdifNewsuperiorLine newsuperiorLine = new LdifNewsuperiorLine( newsuperiorSpecToken.getOffset(),
-                getValueOrNull( newsuperiorSpecToken ), getValueOrNull( newsuperiorValueTypeToken ),
-                getValueOrNull( newsuperiorValueToken ), getValueOrNull( newsuperiorSepToken ) );
-            record.setNewsuperior( newsuperiorLine );
-
-            if ( newsuperiorSepToken == null )
-            {
-                this.cleanupLine( record );
-            }
-        }
-
-        // comments
-        checkAndParseComment( record );
-
-        // eor
-        checkAndParseEndOfRecord( record );
-
-        // comments
-        // checkAndParseComment(record);
-
-        // }
-        // while(true);
+        while ( true );
     }
 
 
