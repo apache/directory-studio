@@ -26,16 +26,17 @@ import java.util.LinkedHashSet;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
+import org.apache.directory.studio.ldapbrowser.common.dnd.SearchTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldifparser.LdifUtils;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -75,22 +76,28 @@ public class CopyAction extends BrowserAction
      */
     public String getText()
     {
-
         // entry/searchresult/bookmark
         IEntry[] entries = getEntries();
         if ( entries != null )
         {
-            return entries.length > 1 ? Messages.getString("CopyAction.CopyEntriesDNs") : Messages.getString("CopyAction.CopyEntryDN"); //$NON-NLS-1$ //$NON-NLS-2$
+            return entries.length > 1 ? Messages.getString( "CopyAction.CopyEntriesDNs" ) : Messages.getString( "CopyAction.CopyEntryDN" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        // searches
+        ISearch[] searches = getSearches();
+        if ( searches != null )
+        {
+            return searches.length > 1 ? Messages.getString( "CopyAction.CopySearches" ) : Messages.getString( "CopyAction.CopySearch" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // values
         IValue[] values = getValues();
         if ( values != null )
         {
-            return values.length > 1 ? Messages.getString("CopyAction.CopyValues") : Messages.getString("CopyAction.CopyValue"); //$NON-NLS-1$ //$NON-NLS-2$
+            return values.length > 1 ? Messages.getString( "CopyAction.CopyValues" ) : Messages.getString( "CopyAction.CopyValue" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return Messages.getString("CopyAction.Copy"); //$NON-NLS-1$
+        return Messages.getString( "CopyAction.Copy" ); //$NON-NLS-1$
     }
 
 
@@ -118,6 +125,7 @@ public class CopyAction extends BrowserAction
     public void run()
     {
         IEntry[] entries = getEntries();
+        ISearch[] searches = getSearches();
         IValue[] values = getValues();
         String[] stringProperties = getSelectedProperties();
 
@@ -136,6 +144,14 @@ public class CopyAction extends BrowserAction
             copyToClipboard( new Object[]
                 { entries, text.toString() }, new Transfer[]
                 { EntryTransfer.getInstance(), TextTransfer.getInstance() } );
+        }
+
+        // searches
+        if ( searches != null )
+        {
+            copyToClipboard( new Object[]
+                { searches }, new Transfer[]
+                { SearchTransfer.getInstance() } );
         }
 
         // values
@@ -168,7 +184,7 @@ public class CopyAction extends BrowserAction
         else if ( stringProperties != null && stringProperties.length > 0 )
         {
             StringBuffer text = new StringBuffer();
-            
+
             for ( int i = 0; i < stringProperties.length; i++ )
             {
                 text.append( stringProperties[i] );
@@ -177,7 +193,7 @@ public class CopyAction extends BrowserAction
                     text.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
             }
-            
+
             copyToClipboard( new Object[]
                 { text.toString() }, new Transfer[]
                 { TextTransfer.getInstance() } );
@@ -221,9 +237,14 @@ public class CopyAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-
         // entry/searchresult/bookmark
         if ( getEntries() != null )
+        {
+            return true;
+        }
+
+        // searches
+        if ( getSearches() != null )
         {
             return true;
         }
@@ -259,7 +280,6 @@ public class CopyAction extends BrowserAction
             + getSelectedAttributes().length + getSelectedValues().length == 0
             && getSelectedEntries().length + getSelectedSearchResults().length + getSelectedBookmarks().length > 0 )
         {
-
             LinkedHashSet<IEntry> entriesSet = new LinkedHashSet<IEntry>();
             for ( IEntry entry : getSelectedEntries() )
             {
@@ -283,6 +303,33 @@ public class CopyAction extends BrowserAction
 
 
     /**
+     * Get the Searches
+     *
+     * @return
+     *      the Searches
+     */
+    private ISearch[] getSearches()
+    {
+        if ( getSelectedConnections().length + getSelectedEntries().length + getSelectedSearchResults().length
+            + getSelectedBookmarks().length + getSelectedAttributeHierarchies().length + getSelectedAttributes().length
+            + getSelectedValues().length == 0
+            && getSelectedSearches().length > 0 )
+        {
+            LinkedHashSet<ISearch> searchesSet = new LinkedHashSet<ISearch>();
+            for ( ISearch search : getSelectedSearches() )
+            {
+                searchesSet.add( search );
+            }
+            return searchesSet.toArray( new ISearch[searchesSet.size()] );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
      * Get the Values
      *
      * @return
@@ -294,7 +341,6 @@ public class CopyAction extends BrowserAction
             + getSelectedSearches().length == 0
             && getSelectedAttributeHierarchies().length + getSelectedAttributes().length + getSelectedValues().length > 0 )
         {
-
             LinkedHashSet<IValue> valuesSet = new LinkedHashSet<IValue>();
             for ( AttributeHierarchy ah : getSelectedAttributeHierarchies() )
             {

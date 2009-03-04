@@ -21,21 +21,30 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
+import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.EntryExistsCopyStrategyDialogImpl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.ScopeDialog;
 import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
+import org.apache.directory.studio.ldapbrowser.common.dnd.SearchTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CopyEntriesJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
@@ -65,17 +74,24 @@ public class PasteAction extends BrowserAction
         IEntry[] entries = getEntriesToPaste();
         if ( entries != null )
         {
-            return entries.length > 1 ? Messages.getString("PasteAction.PasteEntries") : Messages.getString("PasteAction.PasteEntry"); //$NON-NLS-1$ //$NON-NLS-2$
+            return entries.length > 1 ? Messages.getString( "PasteAction.PasteEntries" ) : Messages.getString( "PasteAction.PasteEntry" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        // searches
+        ISearch[] searches = getSearchesToPaste();
+        if ( searches != null )
+        {
+            return searches.length > 1 ? Messages.getString( "PasteAction.PasteSearches" ) : Messages.getString( "PasteAction.PasteSearch" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // value
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-            return values.length > 1 ? Messages.getString("PasteAction.PasteValues") : Messages.getString("PasteAction.PasteValue"); //$NON-NLS-1$ //$NON-NLS-2$
+            return values.length > 1 ? Messages.getString( "PasteAction.PasteValues" ) : Messages.getString( "PasteAction.PasteValue" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        return Messages.getString("PasteAction.Paste"); //$NON-NLS-1$
+        return Messages.getString( "PasteAction.Paste" ); //$NON-NLS-1$
     }
 
 
@@ -108,6 +124,12 @@ public class PasteAction extends BrowserAction
             return true;
         }
 
+        // search
+        else if ( getSearchesToPaste() != null )
+        {
+            return true;
+        }
+
         // value
         else if ( getValuesToPaste() != null )
         {
@@ -128,6 +150,15 @@ public class PasteAction extends BrowserAction
         if ( entries != null )
         {
             this.pasteEntries( getSelectedEntries()[0], entries );
+            return;
+        }
+
+        // search
+        ISearch[] searches = getSearchesToPaste();
+        if ( searches != null )
+        {
+
+            this.pasteSearches( searches );
             return;
         }
 
@@ -164,7 +195,8 @@ public class PasteAction extends BrowserAction
         }
         if ( askForScope )
         {
-            ScopeDialog scopeDialog = new ScopeDialog( Display.getDefault().getActiveShell(), Messages.getString("PasteAction.SelectCopyDepth"), //$NON-NLS-1$
+            ScopeDialog scopeDialog = new ScopeDialog( Display.getDefault().getActiveShell(), Messages
+                .getString( "PasteAction.SelectCopyDepth" ), //$NON-NLS-1$
                 entriesToPaste.length > 1 );
             scopeDialog.open();
             scope = scopeDialog.getScope();
@@ -172,6 +204,46 @@ public class PasteAction extends BrowserAction
 
         new CopyEntriesJob( parent, entriesToPaste, scope, new EntryExistsCopyStrategyDialogImpl( Display.getDefault()
             .getActiveShell() ) ).execute();
+    }
+
+
+    private void pasteSearches( ISearch[] searches )
+    {
+        IBrowserConnection browserConnection = null;
+        if ( getSelectedBrowserViewCategories().length > 0 )
+        {
+            browserConnection = getSelectedBrowserViewCategories()[0].getParent();
+        }
+        else if ( getSelectedSearches().length > 0 )
+        {
+            browserConnection = getSelectedSearches()[0].getBrowserConnection();
+        }
+
+        if ( browserConnection != null )
+        {
+            ISearch clone = null;
+            for ( ISearch search : searches )
+            {
+                clone = ( ISearch ) search.clone();
+                browserConnection.getSearchManager().addSearch( clone );
+            }
+
+            if ( searches.length == 1 )
+            {
+                IAdaptable element = ( IAdaptable ) clone;
+                String pageId = BrowserCommonConstants.PROP_SEARCH;
+                String title = clone.getName();
+
+                PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), element, pageId, null,
+                    null );
+                if ( dialog != null )
+                {
+                    title = Utils.shorten( title, 30 );
+                }
+                dialog.getShell().setText( NLS.bind( Messages.getString( "PropertiesAction.PropertiesForX" ), title ) ); //$NON-NLS-1$
+                dialog.open();
+            }
+        }
     }
 
 
@@ -207,21 +279,15 @@ public class PasteAction extends BrowserAction
 
         if ( entry != null )
         {
-//            String[] attributeNames = new String[values.length];
-//            Object[] rawValues = new Object[values.length];
-//            for ( int v = 0; v < values.length; v++ )
-//            {
-//                attributeNames[v] = values[v].getAttribute().getDescription();
-//                rawValues[v] = values[v].getRawValue();
-//            }
-//            new CreateValuesJob( entry, attributeNames, rawValues ).execute();
             new CreateValuesJob( entry, values ).execute();
         }
     }
 
 
     /**
-     * Conditions: - an entry is selected - there are entries in clipboard
+     * Conditions: 
+     * <li>an entry is selected</li>
+     * <li>there are entries in clipboard</li>
      * 
      * @return
      */
@@ -245,8 +311,34 @@ public class PasteAction extends BrowserAction
 
 
     /**
-     * Conditions: - an attribute or value is selected - there are values in
-     * clipboard
+     * Conditions: 
+     * <li>a search or category is selected</li> 
+     * <li>there are searches in clipboard</li>
+     * 
+     * @return
+     */
+    private ISearch[] getSearchesToPaste()
+    {
+        if ( getSelectedBookmarks().length + getSelectedSearchResults().length + getSelectedEntries().length
+            + getSelectedConnections().length + getSelectedAttributes().length + getSelectedValues().length == 0
+            && ( getSelectedSearches().length + getSelectedBrowserViewCategories().length > 0 ) )
+        {
+            Object content = this.getFromClipboard( SearchTransfer.getInstance() );
+            if ( content != null && content instanceof ISearch[] )
+            {
+                ISearch[] searches = ( ISearch[] ) content;
+                return searches;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Conditions: 
+     * <li>an attribute or value is selected</li>
+     * <li>there are values in clipboard</li>
      * 
      * @return
      */
