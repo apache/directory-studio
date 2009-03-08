@@ -63,7 +63,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <skip>false</skip>
-	  <projectnatures>
+	      <projectnatures>
             <projectnature>org.eclipse.pde.FeatureNature</projectnature>
           </projectnatures>
           <buildcommands>

@@ -60,7 +60,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <skip>false</skip>
-	  <pde>true</pde>
+          <pde>true</pde>
           <projectnatures>
             <projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
