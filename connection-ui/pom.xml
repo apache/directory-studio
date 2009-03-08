@@ -62,7 +62,7 @@
         <artifactId>maven-eclipse-plugin</artifactId>
         <configuration>
           <skip>false</skip>
-	  <pde>true</pde>
+          <pde>true</pde>
           <additionalProjectnatures>
             <projectnature>org.eclipse.pde.PluginNature</projectnature>
             <projectnature>org.eclipse.jdt.core.javanature</projectnature>
