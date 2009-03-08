@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -446,7 +445,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         ISearch search = searchUpdateEvent.getSearch();
         viewer.refresh();
 
-        if ( Arrays.asList( search.getBrowserConnection().getSearchManager().getSearches() ).contains( search ) )
+        if ( search.getBrowserConnection().getSearchManager().getSearches().contains( search ) )
         {
             viewer.setSelection( new StructuredSelection( search ), true );
         }

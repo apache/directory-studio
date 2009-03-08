@@ -468,7 +468,7 @@ public class BrowserContentProvider implements ITreeContentProvider
 
                 case BrowserCategory.TYPE_SEARCHES:
                 {
-                    return browserConnection.getSearchManager().getSearches();
+                    return browserConnection.getSearchManager().getSearches().toArray();
                 }
 
                 case BrowserCategory.TYPE_BOOKMARKS:

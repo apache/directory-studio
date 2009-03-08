@@ -212,7 +212,7 @@ public class MoveEntriesJob extends AbstractNotificationJob
                 newParent.setHasMoreChildren( hasMoreChildren );
 
                 // reset searches, if the moved entry is a result of a search
-                ISearch[] searches = browserConnection.getSearchManager().getSearches();
+                List<ISearch> searches = browserConnection.getSearchManager().getSearches();
                 for ( ISearch search : searches )
                 {
                     if ( search.getSearchResults() != null )

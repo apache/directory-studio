@@ -436,7 +436,7 @@ public class BrowserConnectionIO
 
         // Searches
         Element searchesElement = browserConnectionElement.addElement( SEARCHES_TAG );
-        ISearch[] searches = browserConnection.getSearchManager().getSearches();
+        List<ISearch> searches = browserConnection.getSearchManager().getSearches();
         for ( ISearch search : searches )
         {
             Element searchParameterElement = searchesElement.addElement( SEARCH_PARAMETER_TAG );

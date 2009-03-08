@@ -80,7 +80,7 @@ public class SearchManager implements Serializable
      */
     public IBrowserConnection getConnection()
     {
-        return this.connection;
+        return connection;
     }
 
 
@@ -92,7 +92,7 @@ public class SearchManager implements Serializable
      */
     public void addSearch( ISearch search )
     {
-        this.addSearch( this.searchList.size(), search );
+        addSearch( searchList.size(), search );
     }
 
 
@@ -119,7 +119,8 @@ public class SearchManager implements Serializable
         }
 
         searchList.add( index, search );
-        EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_ADDED ), this );
+        EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_ADDED ),
+            this );
     }
 
 
@@ -133,7 +134,7 @@ public class SearchManager implements Serializable
      */
     public ISearch getSearch( String name )
     {
-        for ( ISearch search:searchList )
+        for ( ISearch search : searchList )
         {
             if ( search.getName().equals( name ) )
             {
@@ -168,7 +169,8 @@ public class SearchManager implements Serializable
     public void removeSearch( ISearch search )
     {
         searchList.remove( search );
-        EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_REMOVED ), this );
+        EventRegistry.fireSearchUpdated( new SearchUpdateEvent( search, SearchUpdateEvent.EventDetail.SEARCH_REMOVED ),
+            this );
     }
 
 
@@ -180,19 +182,20 @@ public class SearchManager implements Serializable
      */
     public void removeSearch( String name )
     {
-        this.removeSearch( this.getSearch( name ) );
+        removeSearch( getSearch( name ) );
     }
 
 
     /**
-     * Gets an array containing all the Searches
+     * Gets a list containing all the Searches
      *
      * @return
-     *      an array containing all the Searches
+     *      a list containing all the Searches
      */
-    public ISearch[] getSearches()
+    public List<ISearch> getSearches()
     {
-        return searchList.toArray( new ISearch[0] );
+        // clone the internal list
+        return new ArrayList<ISearch>(searchList);
     }
 
 
@@ -206,4 +209,5 @@ public class SearchManager implements Serializable
     {
         return searchList.size();
     }
+
 }

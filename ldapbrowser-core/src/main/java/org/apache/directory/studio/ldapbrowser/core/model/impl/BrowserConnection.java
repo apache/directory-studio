@@ -39,6 +39,7 @@ import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPa
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
@@ -137,9 +138,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
      */
     public void clearCaches()
     {
-        for ( int i = 0; i < getSearchManager().getSearchCount(); i++ )
+        for(ISearch search : getSearchManager().getSearches())
         {
-            getSearchManager().getSearches()[i].setSearchResults( null );
+            search.setSearchResults( null );
         }
 
         dnToEntryCache.clear();

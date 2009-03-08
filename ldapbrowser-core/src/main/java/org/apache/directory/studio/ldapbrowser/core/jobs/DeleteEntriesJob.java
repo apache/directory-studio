@@ -166,7 +166,7 @@ public class DeleteEntriesJob extends AbstractNotificationJob
                     entryToDelete.getParententry().deleteChild( entryToDelete );
 
                     // delete from searches
-                    ISearch[] searches = browserConnection.getSearchManager().getSearches();
+                    List<ISearch> searches = browserConnection.getSearchManager().getSearches();
                     for ( ISearch search : searches )
                     {
                         if ( search.getSearchResults() != null )
