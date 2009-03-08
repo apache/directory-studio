@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -118,19 +117,14 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     {
         if ( mainWidget != null )
         {
-
             openSortDialogAction.dispose();
             openSortDialogAction = null;
             collapseAllAction.dispose();
             collapseAllAction = null;
 
-            for ( Iterator<String> it = browserActionMap.keySet().iterator(); it.hasNext(); )
+            for ( BrowserViewActionProxy action : browserActionMap.values() )
             {
-                String key = ( String ) it.next();
-                BrowserViewActionProxy action = browserActionMap.get( key );
                 action.dispose();
-                action = null;
-                it.remove();
             }
             browserActionMap.clear();
             browserActionMap = null;
@@ -159,10 +153,11 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( ( IAction ) browserActionMap.get( upAction ) );
+        toolBarManager.add( browserActionMap.get( upAction ) );
+        toolBarManager.add( new Separator() );
+        toolBarManager.add( browserActionMap.get( refreshAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( collapseAllAction );
-        toolBarManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
         toolBarManager.update( true );
     }
 
@@ -200,19 +195,19 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     public void menuAboutToShow( IMenuManager menuManager )
     {
         // up
-        menuManager.add( ( IAction ) browserActionMap.get( upAction ) );
+        menuManager.add( browserActionMap.get( upAction ) );
         menuManager.add( new Separator() );
 
         // filter
-        menuManager.add( ( IAction ) browserActionMap.get( filterChildrenAction ) );
-        if ( ( ( IAction ) browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
+        menuManager.add( browserActionMap.get( filterChildrenAction ) );
+        if ( ( browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) browserActionMap.get( unfilterChildrenAction ) );
+            menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
         }
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( ( IAction ) browserActionMap.get( refreshAction ) );
+        menuManager.add( browserActionMap.get( refreshAction ) );
         menuManager.add( new Separator() );
 
         // additions
@@ -220,7 +215,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) browserActionMap.get( propertyDialogAction ) );
+        menuManager.add( browserActionMap.get( propertyDialogAction ) );
     }
 
 
@@ -239,15 +234,15 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         }
         else
         {
-            IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
+            IAction pda = browserActionMap.get( propertyDialogAction );
             pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( pda );
 
-            IAction ra = ( IAction ) browserActionMap.get( refreshAction );
+            IAction ra = browserActionMap.get( refreshAction );
             ActionUtils.activateActionHandler( ra );
         }
 
-        IAction ua = ( IAction ) browserActionMap.get( upAction );
+        IAction ua = browserActionMap.get( upAction );
         ActionUtils.activateActionHandler( ua );
     }
 
@@ -265,14 +260,14 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         }
         else
         {
-            IAction ra = ( IAction ) browserActionMap.get( refreshAction );
+            IAction ra = browserActionMap.get( refreshAction );
             ActionUtils.deactivateActionHandler( ra );
 
-            IAction pda = ( IAction ) browserActionMap.get( propertyDialogAction );
+            IAction pda = browserActionMap.get( propertyDialogAction );
             ActionUtils.deactivateActionHandler( pda );
         }
 
-        IAction ua = ( IAction ) browserActionMap.get( upAction );
+        IAction ua = browserActionMap.get( upAction );
         ActionUtils.deactivateActionHandler( ua );
     }
 
