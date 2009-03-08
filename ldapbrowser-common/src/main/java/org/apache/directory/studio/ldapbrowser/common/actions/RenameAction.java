@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDial
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.eclipse.jface.dialogs.Dialog;
@@ -210,7 +211,7 @@ public class RenameAction extends BrowserAction
      */
     protected ISearch[] getSearches()
     {
-        if ( getSelectedSearches().length == 1 )
+        if ( getSelectedSearches().length == 1 && !( getSelectedSearches()[0] instanceof IQuickSearch ) )
         {
             return getSelectedSearches();
         }

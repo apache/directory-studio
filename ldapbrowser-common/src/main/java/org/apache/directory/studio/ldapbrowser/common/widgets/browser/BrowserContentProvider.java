@@ -30,12 +30,14 @@ import java.util.Map;
 
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -235,6 +237,12 @@ public class BrowserContentProvider implements ITreeContentProvider
         {
             return ( ( BrowserSearchResultPage ) child ).getParent();
         }
+        else if ( child instanceof IQuickSearch )
+        {
+            IQuickSearch quickSearch = ( ( IQuickSearch ) child );
+            IEntry entry = quickSearch.getBrowserConnection().getEntryFromCache( quickSearch.getSearchBase() );
+            return entry;
+        }
         else if ( child instanceof ISearch )
         {
             ISearch search = ( ( ISearch ) child );
@@ -346,6 +354,13 @@ public class BrowserContentProvider implements ITreeContentProvider
                 Object[] results = parentEntry.getChildren();
 
                 List<Object> objects = new ArrayList<Object>();
+
+                SearchManager sm = parentEntry.getBrowserConnection().getSearchManager();
+                IQuickSearch quickSearch = sm.getQuickSearch();
+                if ( quickSearch != null && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
+                {
+                    objects.add( quickSearch );
+                }
 
                 if ( parentEntry.getTopPageChildrenRunnable() != null )
                 {

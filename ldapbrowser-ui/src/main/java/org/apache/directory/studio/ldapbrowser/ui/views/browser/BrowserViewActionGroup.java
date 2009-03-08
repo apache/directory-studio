@@ -228,7 +228,6 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
         browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
-
     }
 
 
@@ -258,7 +257,6 @@ public class BrowserViewActionGroup extends BrowserActionGroup
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-
         toolBarManager.add( browserActionMap.get( upAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( browserActionMap.get( refreshAction ) );
@@ -266,7 +264,6 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         toolBarManager.add( collapseAllAction );
         toolBarManager.add( linkWithEditorAction );
         toolBarManager.update( true );
-
     }
 
 
@@ -275,8 +272,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
      */
     public void fillMenu( IMenuManager menuManager )
     {
-
         menuManager.add( openSortDialogAction );
+        menuManager.add( new Separator() );
+        menuManager.add( showQuickSearchAction );
         menuManager.add( new Separator() );
         menuManager.add( showDITAction );
         menuManager.add( showSearchesAction );
@@ -365,7 +363,6 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         // properties
         menuManager.add( browserActionMap.get( propertyDialogAction ) );
-
     }
 
 

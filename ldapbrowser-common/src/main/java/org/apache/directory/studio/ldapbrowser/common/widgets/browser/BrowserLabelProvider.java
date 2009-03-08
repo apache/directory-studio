@@ -31,6 +31,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -282,6 +283,10 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         else if ( obj instanceof BrowserSearchResultPage )
         {
             return PlatformUI.getWorkbench().getSharedImages().getImage( ISharedImages.IMG_OBJ_FOLDER );
+        }
+        else if ( obj instanceof IQuickSearch )
+        {
+            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_QUICKSEARCH );
         }
         else if ( obj instanceof ISearch )
         {

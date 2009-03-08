@@ -78,8 +78,7 @@ public class ListContentProposalProvider implements IContentProposalProvider
         for ( int k = 0; k < proposals.size(); k++ )
         {
             final String proposal = proposals.get( k );
-            if ( proposal.toUpperCase().startsWith( string.toUpperCase() ) && !proposal.equalsIgnoreCase( string )
-                && !"".equals( string ) ) //$NON-NLS-1$
+            if ( proposal.toUpperCase().startsWith( string.toUpperCase() ) && !"".equals( string ) ) //$NON-NLS-1$
             {
                 IContentProposal p = new IContentProposal()
                 {

@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -101,14 +102,21 @@ public class SearchTransfer extends ByteArrayTransfer
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 DataOutputStream writeOut = new DataOutputStream( out );
 
-                for ( int i = 0; i < searches.length; i++ )
+                for ( ISearch search : searches )
                 {
-                    byte[] connectionId = searches[i].getBrowserConnection().getConnection().getId().getBytes( "UTF-8" ); //$NON-NLS-1$
+                    byte[] connectionId = search.getBrowserConnection().getConnection().getId().getBytes( "UTF-8" ); //$NON-NLS-1$
                     writeOut.writeInt( connectionId.length );
                     writeOut.write( connectionId );
-                    byte[] searchName = searches[i].getName().getBytes( "UTF-8" ); //$NON-NLS-1$
-                    writeOut.writeInt( searchName.length );
-                    writeOut.write( searchName );
+                    if ( search instanceof IQuickSearch )
+                    {
+                        writeOut.writeInt( 0 );
+                    }
+                    else
+                    {
+                        byte[] searchName = search.getName().getBytes( "UTF-8" ); //$NON-NLS-1$
+                        writeOut.writeInt( searchName.length );
+                        writeOut.write( searchName );
+                    }
                 }
 
                 byte[] buffer = out.toByteArray();
@@ -167,9 +175,16 @@ public class SearchTransfer extends ByteArrayTransfer
                         if ( readIn.available() > 1 && connection != null )
                         {
                             int size = readIn.readInt();
-                            byte[] searchName = new byte[size];
-                            readIn.read( searchName );
-                            search = connection.getSearchManager().getSearch( new String( searchName, "UTF-8" ) ); //$NON-NLS-1$
+                            if(size == 0)
+                            {
+                                search = connection.getSearchManager().getQuickSearch();
+                            }
+                            else
+                            {
+                                byte[] searchName = new byte[size];
+                                readIn.read( searchName );
+                                search = connection.getSearchManager().getSearch( new String( searchName, "UTF-8" ) ); //$NON-NLS-1$
+                            }
                         }
                         else
                         {

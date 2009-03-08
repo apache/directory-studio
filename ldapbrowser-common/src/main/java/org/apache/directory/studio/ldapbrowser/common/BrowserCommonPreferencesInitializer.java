@@ -122,6 +122,7 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL, BrowserCommonConstants.SHOW_DN );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH, 50 );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_QUICK_SEARCH, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_DIT, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_SEARCHES, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS, true );

@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
+import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ViewFormWidget;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -50,6 +51,9 @@ public class BrowserWidget extends ViewFormWidget
     /** The widget's configuration with the content provider, label provider and menu manager */
     private BrowserConfiguration configuration;
 
+    /** The quick search widget. */
+    private BrowserQuickSearchWidget quickSearchWidget;
+    
     /** The action bars. */
     private IActionBars actionBars;
 
@@ -142,7 +146,9 @@ public class BrowserWidget extends ViewFormWidget
      */
     protected Control createContent( Composite parent )
     {
-
+        quickSearchWidget = new BrowserQuickSearchWidget( this );
+        quickSearchWidget.createComposite( parent );
+        
         // create tree widget and viewer
         tree = new Tree( parent, SWT.VIRTUAL | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
         GridData data = new GridData( GridData.FILL_BOTH );
@@ -194,10 +200,27 @@ public class BrowserWidget extends ViewFormWidget
             this.configuration.dispose();
             this.configuration = null;
 
+            if ( quickSearchWidget != null )
+            {
+                quickSearchWidget.dispose();
+                quickSearchWidget = null;
+            }
+            
             this.tree.dispose();
             this.tree = null;
             this.viewer = null;
         }
+    }
+
+
+    /**
+     * Gets the quick search widget.
+     * 
+     * @return the quick search widget
+     */
+    public BrowserQuickSearchWidget getQuickSearchWidget()
+    {
+        return quickSearchWidget;
     }
 
 

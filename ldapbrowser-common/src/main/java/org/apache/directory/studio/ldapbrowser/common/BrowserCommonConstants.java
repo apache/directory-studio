@@ -70,6 +70,7 @@ public interface BrowserCommonConstants
     public static final String PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST = "browserLeafEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST = "browserContainerEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_META_ENTRIES_LAST = "browserMetaEntriesLast"; //$NON-NLS-1$
+    public static final String PREFERENCE_BROWSER_SHOW_QUICK_SEARCH = "browserShowQuickSearch"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_DIT = "browserShowDIT"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_SEARCHES = "browserShowSearches"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_BOOKMARKS = "browserShowBookmarks"; //$NON-NLS-1$
@@ -136,6 +137,7 @@ public interface BrowserCommonConstants
     public static final String IMG_ENTRY_ALIAS = "resources/icons/entry_alias.gif"; //$NON-NLS-1$
     public static final String IMG_SEARCHES = "resources/icons/searches.gif"; //$NON-NLS-1$
     public static final String IMG_SEARCH = "resources/icons/search.gif"; //$NON-NLS-1$
+    public static final String IMG_QUICKSEARCH = "resources/icons/quicksearch.gif"; //$NON-NLS-1$
     public static final String IMG_SEARCH_UNPERFORMED = "resources/icons/search_unperformed.gif"; //$NON-NLS-1$
     public static final String IMG_BOOKMARKS = "resources/icons/bookmarks.gif"; //$NON-NLS-1$
     public static final String IMG_BOOKMARK = "resources/icons/bookmark.gif"; //$NON-NLS-1$

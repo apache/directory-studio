@@ -58,6 +58,9 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     /** The open sort dialog action. */
     protected OpenSortDialogAction openSortDialogAction;
 
+    /** The show quick search action. */
+    protected ShowQuickSearchAction showQuickSearchAction;
+    
     /** The collapse all action. */
     protected CollapseAllAction collapseAllAction;
 
@@ -98,7 +101,8 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         this.browserActionMap = new HashMap<String, BrowserViewActionProxy>();
 
         TreeViewer viewer = mainWidget.getViewer();
-        openSortDialogAction = new OpenSortDialogAction( ( BrowserPreferences ) configuration.getPreferences() );
+        openSortDialogAction = new OpenSortDialogAction( configuration.getPreferences() );
+        showQuickSearchAction = new ShowQuickSearchAction( mainWidget.getQuickSearchWidget() );
         collapseAllAction = new CollapseAllAction( viewer );
 
         browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
@@ -119,6 +123,8 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         {
             openSortDialogAction.dispose();
             openSortDialogAction = null;
+            showQuickSearchAction.dispose();
+            showQuickSearchAction = null;
             collapseAllAction.dispose();
             collapseAllAction = null;
 
@@ -170,6 +176,8 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     public void fillMenu( IMenuManager menuManager )
     {
         menuManager.add( openSortDialogAction );
+        menuManager.add( new Separator() );
+        menuManager.add( showQuickSearchAction );
         menuManager.add( new Separator() );
         menuManager.update( true );
     }
@@ -230,6 +238,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
                 .get( refreshAction ) );
             actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) browserActionMap
                 .get( propertyDialogAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickSearchAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
             actionBars.updateActionBars();
         }
         else
@@ -240,6 +249,9 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
 
             IAction ra = browserActionMap.get( refreshAction );
             ActionUtils.activateActionHandler( ra );
+
+            showQuickSearchAction.setActionDefinitionId( BrowserCommonConstants.CMD_FIND );
+            ActionUtils.activateActionHandler( showQuickSearchAction );
         }
 
         IAction ua = browserActionMap.get( upAction );

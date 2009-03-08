@@ -378,6 +378,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             // change input
             viewer.setInput( connection );
             view.getActionGroup().setInput( connection );
+            view.getMainWidget().getQuickSearchWidget().setInput( connection );
 
             // restore expanded elements and selection
             if ( view != null && connection != null )
@@ -446,6 +447,10 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         viewer.refresh();
 
         if ( search.getBrowserConnection().getSearchManager().getSearches().contains( search ) )
+        {
+            viewer.setSelection( new StructuredSelection( search ), true );
+        }
+        else if ( search.getBrowserConnection().getSearchManager().getQuickSearch() == search )
         {
             viewer.setSelection( new StructuredSelection( search ), true );
         }
