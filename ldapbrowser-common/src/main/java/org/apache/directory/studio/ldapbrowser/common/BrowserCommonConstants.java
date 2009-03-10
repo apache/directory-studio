@@ -138,6 +138,7 @@ public interface BrowserCommonConstants
     public static final String IMG_SEARCHES = "resources/icons/searches.gif"; //$NON-NLS-1$
     public static final String IMG_SEARCH = "resources/icons/search.gif"; //$NON-NLS-1$
     public static final String IMG_QUICKSEARCH = "resources/icons/quicksearch.gif"; //$NON-NLS-1$
+    public static final String IMG_SUBTREE = "resources/icons/subtree.gif"; //$NON-NLS-1$
     public static final String IMG_SEARCH_UNPERFORMED = "resources/icons/search_unperformed.gif"; //$NON-NLS-1$
     public static final String IMG_BOOKMARKS = "resources/icons/bookmarks.gif"; //$NON-NLS-1$
     public static final String IMG_BOOKMARK = "resources/icons/bookmark.gif"; //$NON-NLS-1$

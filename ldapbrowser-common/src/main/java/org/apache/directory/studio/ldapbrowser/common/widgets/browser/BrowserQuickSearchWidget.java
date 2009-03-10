@@ -37,9 +37,13 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -48,6 +52,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -98,6 +104,9 @@ public class BrowserQuickSearchWidget
 
     /** The quick search value proposal provider. */
     private ListContentProposalProvider quickSearchValuePP;
+
+    /** The quick search scope button. */
+    private Button quickSearchScopeButton;
 
     /** The quick search run button. */
     private Button quickSearchRunButton;
@@ -159,7 +168,7 @@ public class BrowserQuickSearchWidget
     {
         this.browserWidget.getViewer().addPostSelectionChangedListener( selectionListener );
 
-        innerComposite = BaseWidgetUtils.createColumnContainer( composite, 4, 1 );
+        innerComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 1 );
 
         quickSearchAttributeCombo = BaseWidgetUtils.createCombo( innerComposite, EMPTY, -1, 1 );
         quickSearchAttributePP = new ListContentProposalProvider( EMPTY );
@@ -179,24 +188,16 @@ public class BrowserQuickSearchWidget
                 performSearch();
             }
         } );
-        //        quickSearchAttributeCombo.addKeyListener( new KeyListener()
-        //        {
-        //            public void keyPressed( KeyEvent e )
-        //            {
-        //                if ( e.character == SWT.CR || e.character == SWT.LF )
-        //                {
-        //                    e.doit = false;
-        //                }
-        //            }
-        //            public void keyReleased( KeyEvent e )
-        //            {
-        //            }
-        //        });
 
         String[] operators = new String[]
             { "=", "!=", "<=", ">=", "~=" };
         quickSearchOperatorCombo = BaseWidgetUtils.createReadonlyCombo( innerComposite, operators, 0, 1 );
-        GridData data = new GridData( 50, SWT.DEFAULT );
+        GC gc = new GC( parent );
+        gc.setFont( JFaceResources.getDialogFont() );
+        FontMetrics fontMetrics = gc.getFontMetrics();
+        gc.dispose();
+        int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH / 2 );
+        GridData data = new GridData( width, SWT.DEFAULT );
         quickSearchOperatorCombo.setLayoutData( data );
 
         String[] values = HistoryUtils.load( VALUE_HISTORY_DIALOGSETTING_KEY );
@@ -209,6 +210,21 @@ public class BrowserQuickSearchWidget
             public void widgetDefaultSelected( SelectionEvent e )
             {
                 performSearch();
+            }
+        } );
+
+        quickSearchScopeButton = new Button( innerComposite, SWT.TOGGLE );
+        quickSearchScopeButton.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.ScopeOneLevelToolTip" ) ); //$NON-NLS-1$
+        quickSearchScopeButton.setImage( BrowserCommonActivator.getDefault().getImage(
+            BrowserCommonConstants.IMG_SUBTREE ) );
+        quickSearchScopeButton.setEnabled( true );
+        quickSearchScopeButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                String one = Messages.getString( "BrowserQuickSearchWidget.ScopeOneLevelToolTip" ); //$NON-NLS-1$
+                String sub = Messages.getString( "BrowserQuickSearchWidget.ScopeSubtreeToolTip" ); //$NON-NLS-1$
+                quickSearchScopeButton.setToolTipText( quickSearchScopeButton.getSelection() ? sub : one );
             }
         } );
 
@@ -254,6 +270,7 @@ public class BrowserQuickSearchWidget
         IBrowserConnection conn = entry.getBrowserConnection();
 
         QuickSearch quickSearch = new QuickSearch();
+        quickSearch.setName( "Quick Search" );
         quickSearch.setBrowserConnection( conn );
         quickSearch.setSearchBase( entry.getDn() );
         quickSearch.setReturningAttributes( ISearch.NO_ATTRIBUTES );
@@ -261,11 +278,7 @@ public class BrowserQuickSearchWidget
         quickSearch.setReferralsHandlingMethod( conn.getReferralsHandlingMethod() );
         quickSearch.setCountLimit( conn.getCountLimit() );
         quickSearch.setTimeLimit( conn.getTimeLimit() );
-
-        // TODO: externalize string
-        quickSearch.setName( "Quick Search" );
-        // TODO: select search scope
-        quickSearch.setScope( ISearch.SearchScope.SUBTREE );
+        quickSearch.setScope( quickSearchScopeButton.getSelection() ? SearchScope.SUBTREE : SearchScope.ONELEVEL );
 
         StringBuffer filter = new StringBuffer();
         filter.append( "(" );
@@ -379,6 +392,10 @@ public class BrowserQuickSearchWidget
             if ( input != null && input instanceof IBrowserConnection )
             {
                 setInput( ( IBrowserConnection ) input );
+            }
+            else if ( input != null && input instanceof IEntry[] )
+            {
+                setInput( ( ( IEntry[] ) input )[0].getBrowserConnection() );
             }
             quickSearchAttributeCombo.setFocus();
         }

@@ -26,6 +26,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCon
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserUniversalListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -193,6 +194,10 @@ public class SelectEntryDialog extends Dialog
                     if ( o instanceof IEntry )
                     {
                         initialEntry = ( IEntry ) o;
+                    }
+                    else if ( o instanceof ISearchResult )
+                    {
+                        initialEntry = ( ( ISearchResult ) o ).getEntry();
                     }
                 }
             }

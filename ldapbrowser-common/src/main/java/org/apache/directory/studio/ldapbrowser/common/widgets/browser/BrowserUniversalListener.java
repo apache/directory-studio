@@ -31,13 +31,17 @@ import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitialized
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.ITreeViewerListener;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeExpansionEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 
@@ -48,7 +52,7 @@ import org.eclipse.jface.viewers.TreeViewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserUniversalListener implements ConnectionUpdateListener, EntryUpdateListener
+public class BrowserUniversalListener implements ConnectionUpdateListener, EntryUpdateListener, SearchUpdateListener
 {
 
     /** The tree viewer */
@@ -126,6 +130,7 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        EventRegistry.addSearchUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
 
@@ -141,6 +146,7 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
             ConnectionEventRegistry.removeConnectionUpdateListener( this );
             EventRegistry.removeEntryUpdateListener( this );
+            EventRegistry.removeSearchUpdateListener( this );
 
             viewer = null;
         }
@@ -223,7 +229,24 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
         }
 
         viewer.refresh( event.getModifiedEntry(), true );
+    }
 
+
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation refreshes the tree and selects the search.
+     */
+    public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
+    {
+        ISearch search = searchUpdateEvent.getSearch();
+        viewer.refresh();
+
+        if ( search.getBrowserConnection().getSearchManager().getQuickSearch() == search )
+        {
+            viewer.setSelection( new StructuredSelection( search ), true );
+            viewer.expandToLevel( search, 1 );
+        }
     }
 
 }
