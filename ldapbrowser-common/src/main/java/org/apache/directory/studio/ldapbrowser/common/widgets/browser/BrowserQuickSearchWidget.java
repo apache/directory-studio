@@ -218,7 +218,6 @@ public class BrowserQuickSearchWidget
         quickSearchScopeButton.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.ScopeOneLevelToolTip" ) ); //$NON-NLS-1$
         quickSearchScopeButton.setImage( BrowserCommonActivator.getDefault().getImage(
             BrowserCommonConstants.IMG_SUBTREE ) );
-        quickSearchScopeButton.setEnabled( true );
         quickSearchScopeButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -233,7 +232,6 @@ public class BrowserQuickSearchWidget
         quickSearchRunButton.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.RunQuickSearch" ) ); //$NON-NLS-1$
         quickSearchRunButton.setImage( BrowserCommonActivator.getDefault().getImage(
             BrowserCommonConstants.IMG_QUICKSEARCH ) );
-        quickSearchRunButton.setEnabled( true );
         quickSearchRunButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -374,7 +372,22 @@ public class BrowserQuickSearchWidget
             quickSearchAttributeCombo.setEnabled( enabled );
             quickSearchOperatorCombo.setEnabled( enabled );
             quickSearchValueCombo.setEnabled( enabled );
+            quickSearchScopeButton.setEnabled( enabled );
             quickSearchRunButton.setEnabled( enabled && !"".equals( quickSearchAttributeCombo.getText() ) );
+        }
+        if ( !enabled )
+        {
+            quickSearchAttributeCombo.setToolTipText( null );
+            quickSearchOperatorCombo.setToolTipText( null );
+            quickSearchValueCombo.setToolTipText( null );
+            parent.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.DisabledToolTipText" ) ); //$NON-NLS-1$
+        }
+        else
+        {
+            quickSearchAttributeCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchAttribute" ) ); //$NON-NLS-1$
+            quickSearchOperatorCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchOperator" ) ); //$NON-NLS-1$
+            quickSearchValueCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchValue" ) ); //$NON-NLS-1$
+            parent.setToolTipText( null );
         }
     }
 
