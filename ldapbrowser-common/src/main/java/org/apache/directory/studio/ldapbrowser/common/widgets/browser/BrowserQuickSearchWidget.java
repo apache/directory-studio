@@ -40,6 +40,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.LdapFilterUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -288,7 +289,7 @@ public class BrowserQuickSearchWidget
         }
         filter.append( quickSearchAttributeCombo.getText() );
         filter.append( "!=".equals( quickSearchOperatorCombo.getText() ) ? "=" : quickSearchOperatorCombo.getText() );
-        filter.append( quickSearchValueCombo.getText() );
+        filter.append( LdapFilterUtils.getEncodedValue( quickSearchValueCombo.getText() ) );
         if ( "!=".equals( quickSearchOperatorCombo.getText() ) )
         {
             filter.append( ")" );
