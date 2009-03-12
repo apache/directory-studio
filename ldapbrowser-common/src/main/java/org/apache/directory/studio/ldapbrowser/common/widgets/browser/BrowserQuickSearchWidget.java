@@ -374,20 +374,21 @@ public class BrowserQuickSearchWidget
             quickSearchValueCombo.setEnabled( enabled );
             quickSearchScopeButton.setEnabled( enabled );
             quickSearchRunButton.setEnabled( enabled && !"".equals( quickSearchAttributeCombo.getText() ) );
-        }
-        if ( !enabled )
-        {
-            quickSearchAttributeCombo.setToolTipText( null );
-            quickSearchOperatorCombo.setToolTipText( null );
-            quickSearchValueCombo.setToolTipText( null );
-            parent.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.DisabledToolTipText" ) ); //$NON-NLS-1$
-        }
-        else
-        {
-            quickSearchAttributeCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchAttribute" ) ); //$NON-NLS-1$
-            quickSearchOperatorCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchOperator" ) ); //$NON-NLS-1$
-            quickSearchValueCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchValue" ) ); //$NON-NLS-1$
-            parent.setToolTipText( null );
+
+            if ( !enabled )
+            {
+                quickSearchAttributeCombo.setToolTipText( null );
+                quickSearchOperatorCombo.setToolTipText( null );
+                quickSearchValueCombo.setToolTipText( null );
+                parent.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.DisabledToolTipText" ) ); //$NON-NLS-1$
+            }
+            else
+            {
+                quickSearchAttributeCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchAttribute" ) ); //$NON-NLS-1$
+                quickSearchOperatorCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchOperator" ) ); //$NON-NLS-1$
+                quickSearchValueCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchValue" ) ); //$NON-NLS-1$
+                parent.setToolTipText( null );
+            }
         }
     }
 
@@ -428,7 +429,7 @@ public class BrowserQuickSearchWidget
      */
     public void setInput( IBrowserConnection connection )
     {
-        if ( quickSearchAttributeCombo != null && quickSearchAttributePP != null )
+        if ( innerComposite != null && !innerComposite.isDisposed() )
         {
             String[] atdNames;
             if ( connection != null )
