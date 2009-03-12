@@ -352,7 +352,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
     /**
      * Gets the selected entry.
      * 
-     * @return the selected entry
+     * @return the selected entry, may be null
      */
     public IEntry getSelectedEntry()
     {

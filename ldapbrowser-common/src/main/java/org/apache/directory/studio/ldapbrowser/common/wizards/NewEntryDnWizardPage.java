@@ -184,7 +184,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             String[] attributeNames = subschema.getAllAttributeNames();
 
             LdapDN parentDn = null;
-            if ( newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
+            if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )
                 && DnUtils.getParent( newEntry.getDn() ) != null )
             {
                 parentDn = DnUtils.getParent( newEntry.getDn() );
