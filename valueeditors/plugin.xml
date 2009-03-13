@@ -34,9 +34,9 @@
        <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.28"/>
     </valueEditor>
     <valueEditor
-          class="org.apache.directory.studio.valueeditors.time.InPlaceGeneralizedTimeValueEditor"
+          class="org.apache.directory.studio.valueeditors.time.GeneralizedTimeValueEditor"
           icon="resources/icons/generalizedtimeeditor.gif"
-          name="%ValueEditor_InPlaceGeneralizedTimeValueEditor_name">
+          name="%ValueEditor_GeneralizedTimeValueEditor_name">
        <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.24"/>
     </valueEditor>
     <valueEditor

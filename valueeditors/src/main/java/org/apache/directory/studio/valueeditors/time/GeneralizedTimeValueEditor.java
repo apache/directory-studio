@@ -26,8 +26,10 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.directory.shared.ldap.util.GeneralizedTime;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor;
+import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
+import org.eclipse.swt.widgets.Shell;
 
 
 /**
@@ -40,9 +42,8 @@ import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValueEditor
+public class GeneralizedTimeValueEditor extends AbstractDialogStringValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -72,4 +73,32 @@ public class InPlaceGeneralizedTimeValueEditor extends AbstractInPlaceStringValu
         return displayValue;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    protected boolean openDialog( Shell shell )
+    {
+        Object value = getValue();
+        if ( value != null && value instanceof String )
+        {
+            try
+            {
+                GeneralizedTime generalizedTime = new GeneralizedTime( ( String ) value );
+                GeneralizedTimeValueDialog dialog = new GeneralizedTimeValueDialog( shell,
+                    generalizedTime );
+                if ( dialog.open() == TextDialog.OK )
+                {
+                    setValue( dialog.getGeneralizedTime().toGeneralizedTime() );
+                    return true;
+                }
+            }
+            catch ( ParseException pe )
+            {
+                return false;
+            }
+
+        }
+        return false;
+    }
 }

@@ -45,7 +45,7 @@ public interface ValueEditorsConstants
     public static final String IMG_PASSWORDEDITOR = "resources/icons/passwordeditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the generalized time editor icon */
-    public static final String IMG_INPLACE_GENERALIZEDTIMEEDITOR = "resources/icons/inplace_generalizedtimeeditor.gif"; //$NON-NLS-1$
+    public static final String IMG_GENERALIZEDTIMEEDITOR = "resources/icons/generalizedtimeeditor.gif"; //$NON-NLS-1$
 
     /** The relative path to the object class editor icon */
     public static final String IMG_OCDEDITOR = "resources/icons/objectclasseditor.png"; //$NON-NLS-1$
@@ -56,4 +56,9 @@ public interface ValueEditorsConstants
     /** The relative path to the administrative role editor icon */
     public static final String IMG_ADMINISTRATIVEROLEEDITOR = "resources/icons/administrativeroleeditor.gif"; //$NON-NLS-1$
 
+    /** The relative path to the text field error icon */
+    public static final String IMG_TEXTFIELD_ERROR = "resources/icons/textfield_error.png"; //$NON-NLS-1$
+
+    /** The relative path to the text field ok icon */
+    public static final String IMG_TEXTFIELD_OK = "resources/icons/textfield_ok.png"; //$NON-NLS-1$
 }
