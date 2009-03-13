@@ -190,6 +190,7 @@ public class Schema
         }
         catch ( Exception e )
         {
+            // TODO: exception handling
             System.out.println( "Schema#loadFromLdif: " + e.toString() );
         }
     }
@@ -208,6 +209,7 @@ public class Schema
         }
         catch ( Exception e )
         {
+            // TODO: exception handling
             System.out.println( "Schema#loadFromRecord: " + e.toString() );
         }
     }
@@ -226,6 +228,7 @@ public class Schema
         }
         catch ( Exception e )
         {
+            // TODO: exception handling
             System.out.println( "Schema#saveToLdif: " + e.toString() );
         }
     }
@@ -305,6 +308,7 @@ public class Schema
             }
             catch ( Exception e )
             {
+                // TODO: exception handling
                 System.out.println( "Error reading schema: " + attributeName + " = " + value );
                 System.out.println( e.getMessage() );
             }

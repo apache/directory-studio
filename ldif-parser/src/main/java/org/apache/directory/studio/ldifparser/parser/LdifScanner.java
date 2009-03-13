@@ -547,10 +547,6 @@ public class LdifScanner
 
     private void flushBuffer()
     {
-
-        // System.out.println("flushBuffer():
-        // before("+this.pos+","+this.ldifBufferOffset+")");
-
         if ( this.ldifBufferOffset < this.pos && this.ldifBuffer.length() > 0 )
         {
             int delta = Math.min( pos - this.ldifBufferOffset, this.ldifBuffer.length() );
@@ -558,9 +554,6 @@ public class LdifScanner
             this.ldifBuffer.delete( 0, delta );
             this.ldifBufferOffset += delta;
         }
-
-        // System.out.println("flushBuffer():
-        // after("+this.pos+","+this.ldifBufferOffset+")");
     }
 
 

@@ -114,7 +114,6 @@ public abstract class AbstractEclipseJob extends Job
         // error handling
         if ( monitor.isCanceled() )
         {
-            // System.out.println("Job: CANCEL+CANCEL");
             externalResult = Status.CANCEL_STATUS;
             return Status.CANCEL_STATUS;
         }
@@ -123,18 +122,15 @@ public abstract class AbstractEclipseJob extends Job
             externalResult = monitor.getErrorStatus( getErrorMessage() );
             if ( externalProgressMonitor == null )
             {
-                // System.out.println("Job: ERROR+ERROR");
                 return externalResult;
             }
             else
             {
-                // System.out.println("Job: ERROR+OK");
                 return Status.OK_STATUS;
             }
         }
         else
         {
-            // System.out.println("Job: OK+OK");
             externalResult = Status.OK_STATUS;
             return Status.OK_STATUS;
         }
@@ -190,39 +186,15 @@ public abstract class AbstractEclipseJob extends Job
                     for ( int k = 0; k < myLockedObjectsIdentifiers.length; k++ )
                     {
                         String my = myLockedObjectsIdentifiers[k];
-
-                        System.out.print( "other:" + other + ", my: " + my );
-
                         if ( other.startsWith( my ) || my.startsWith( other ) )
                         {
-                            System.out.println( ", shouldSchedule() = " + false );
                             return false;
                         }
-                        else
-                        {
-                            System.out.println();
-                        }
-
                     }
                 }
-
             }
         }
         return super.shouldSchedule();
-
-        // // Doesn't work
-        // Job[] jobs = getJobManager().find(null);
-        // for (int i = 0; i < jobs.length; i++) {
-        // Job job = jobs[i];
-        // if(job instanceof AbstractEclipseJob) {
-        // System.out.println("shouldSchedule() = " + false);
-        // return false;
-        // }
-        // }
-        // System.out.println("shouldSchedule() = " + true);
-        // return true;
-
-        // return super.shouldSchedule();
     }
 
 

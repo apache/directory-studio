@@ -100,7 +100,6 @@ public class FilterWidgetAutoEditStrategyAdapter
      */
     public void prepareComboCustomization( VerifyEvent e )
     {
-        //System.out.println(e);
         if ( !inApplyComboCustomization )
         {
             String oldText = combo.getText();
@@ -124,7 +123,6 @@ public class FilterWidgetAutoEditStrategyAdapter
      */
     public void applyComboCustomization( ModifyEvent e )
     {
-        //System.out.println(e);
         if ( !inApplyComboCustomization && !verifyEvents.isEmpty() )
         {
             String oldText = oldTexts.remove( 0 );

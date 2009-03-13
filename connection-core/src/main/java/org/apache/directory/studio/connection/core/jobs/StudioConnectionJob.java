@@ -138,7 +138,6 @@ public class StudioConnectionJob extends Job
         // error handling
         if ( monitor.isCanceled() )
         {
-            // System.out.println("Job: CANCEL+CANCEL");
             externalResult = Status.CANCEL_STATUS;
             return Status.CANCEL_STATUS;
         }
@@ -147,18 +146,15 @@ public class StudioConnectionJob extends Job
             externalResult = monitor.getErrorStatus( runnable.getErrorMessage() );
             if ( externalProgressMonitor == null )
             {
-                // System.out.println("Job: ERROR+ERROR");
                 return externalResult;
             }
             else
             {
-                // System.out.println("Job: ERROR+OK");
                 return Status.OK_STATUS;
             }
         }
         else
         {
-            // System.out.println("Job: OK+OK");
             externalResult = Status.OK_STATUS;
             return Status.OK_STATUS;
         }

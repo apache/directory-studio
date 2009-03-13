@@ -161,9 +161,6 @@ public class StudioControl implements Serializable
         s = s.substring( line.getRawControlSpec().length(), s.length() );
         s = s.substring( line.getRawControlType().length(), s.length() );
         s = s.substring( 0, s.length() - line.getRawNewLine().length() );
-
-        //System.out.println( s );
-
         return s;
     }
 

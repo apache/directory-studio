@@ -515,11 +515,6 @@ class SubtreeSpecificationDialog extends Dialog
         {
             getButton( IDialogConstants.OK_ID ).setEnabled( valid );
         }
-
-        //System.out.println("1:"  + ss);
-        //StringBuffer sb = new StringBuffer();
-        //subtreeSpecification.printToBuffer( sb );
-        //System.out.println("2:"  + sb.toString());
     }
 
 
