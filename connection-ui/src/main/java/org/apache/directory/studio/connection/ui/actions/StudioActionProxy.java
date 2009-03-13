@@ -228,7 +228,6 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
      */
     public void run()
     {
-        System.out.println( "StudioActionProxy.run" );
         if ( !isDisposed() )
         {
             // deactivate global actions
