@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.valueeditors.time;
 
 
@@ -94,10 +93,10 @@ public class GeneralizedTimeValueDialog extends Dialog
     private ComboViewer timezoneComboViewer;
 
     // Raw value
-    private Text rawText;
+    private Text rawValueText;
 
     // Raw validator
-    private Label rawValidatorImage;
+    private Label rawValueValidatorImage;
 
     /** The OK button of the dialog */
     private Button okButton;
@@ -184,13 +183,13 @@ public class GeneralizedTimeValueDialog extends Dialog
     /**
      * The modify listener of the raw field.
      */
-    private ModifyListener rawModifyListener = new ModifyListener()
+    private ModifyListener rawValueModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
             try
             {
-                value = new GeneralizedTime( rawText.getText() );
+                value = new GeneralizedTime( rawValueText.getText() );
 
                 removeListeners();
                 updateNonRawFields();
@@ -264,7 +263,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         createTimeDialogArea( dualComposite );
         createDateDialogArea( dualComposite );
         createTimeZoneDialogArea( dualComposite );
-        createRawDialogArea( dualComposite );
+        createRawValueDialogArea( dualComposite );
 
         // Initializing with initial value
         initWithInitialValue();
@@ -484,28 +483,28 @@ public class GeneralizedTimeValueDialog extends Dialog
 
 
     /**
-     * Creates the "Raw" dialog area.
+     * Creates the "Raw value" dialog area.
      *
      * @param parent
      *      the parent composite
      */
-    private void createRawDialogArea( Composite parent )
+    private void createRawValueDialogArea( Composite parent )
     {
         // Separator
         Label separatorLabel = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
         separatorLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
         // Label
-        BaseWidgetUtils.createLabel( parent, Messages.getString( "GeneralizedTimeValueDialog.Raw" ), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( parent, Messages.getString( "GeneralizedTimeValueDialog.RawValue" ), 1 ); //$NON-NLS-1$
 
         // Raw composite
-        Composite rawComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
+        Composite rawValueComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
 
         // Text
-        rawText = BaseWidgetUtils.createText( rawComposite, "", 1 ); //$NON-NLS-1$
+        rawValueText = BaseWidgetUtils.createText( rawValueComposite, "", 1 ); //$NON-NLS-1$
 
         // Validator image
-        rawValidatorImage = new Label( rawComposite, SWT.NONE );
+        rawValueValidatorImage = new Label( rawValueComposite, SWT.NONE );
         validateRawValue( true );
     }
 
@@ -554,8 +553,8 @@ public class GeneralizedTimeValueDialog extends Dialog
      */
     private void updateRawFields()
     {
-        // Raw
-        rawText.setText( value.toGeneralizedTime() );
+        // Raw value
+        rawValueText.setText( value.toGeneralizedTime() );
 
         validateRawValue( true );
     }
@@ -572,12 +571,12 @@ public class GeneralizedTimeValueDialog extends Dialog
     {
         if ( bool )
         {
-            rawValidatorImage.setImage( ValueEditorsActivator.getDefault().getImage(
+            rawValueValidatorImage.setImage( ValueEditorsActivator.getDefault().getImage(
                 ValueEditorsConstants.IMG_TEXTFIELD_OK ) );
         }
         else
         {
-            rawValidatorImage.setImage( ValueEditorsActivator.getDefault().getImage(
+            rawValueValidatorImage.setImage( ValueEditorsActivator.getDefault().getImage(
                 ValueEditorsConstants.IMG_TEXTFIELD_ERROR ) );
         }
 
@@ -609,7 +608,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         timezoneComboViewer.addSelectionChangedListener( timezoneSelectionChangedListener );
 
         // Raw value
-        rawText.addModifyListener( rawModifyListener );
+        rawValueText.addModifyListener( rawValueModifyListener );
     }
 
 
@@ -634,7 +633,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         timezoneComboViewer.removeSelectionChangedListener( timezoneSelectionChangedListener );
 
         // Raw value
-        rawText.removeModifyListener( rawModifyListener );
+        rawValueText.removeModifyListener( rawValueModifyListener );
     }
 
 
