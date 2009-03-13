@@ -82,11 +82,11 @@ public class GeneralizedTimeValueEditor extends AbstractDialogStringValueEditor
         Object value = getValue();
         if ( value != null && value instanceof String )
         {
+            String s = ( String ) value;
             try
             {
-                GeneralizedTime generalizedTime = new GeneralizedTime( ( String ) value );
-                GeneralizedTimeValueDialog dialog = new GeneralizedTimeValueDialog( shell,
-                    generalizedTime );
+                GeneralizedTime generalizedTime = "".equals( s ) ? null : new GeneralizedTime( s ); //$NON-NLS-1$
+                GeneralizedTimeValueDialog dialog = new GeneralizedTimeValueDialog( shell, generalizedTime );
                 if ( dialog.open() == TextDialog.OK )
                 {
                     setValue( dialog.getGeneralizedTime().toGeneralizedTime() );
