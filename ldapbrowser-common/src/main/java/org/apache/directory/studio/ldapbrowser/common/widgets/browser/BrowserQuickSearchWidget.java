@@ -41,10 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.LdapFilterUtils;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -53,8 +50,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -193,12 +188,7 @@ public class BrowserQuickSearchWidget
         String[] operators = new String[]
             { "=", "!=", "<=", ">=", "~=" };
         quickSearchOperatorCombo = BaseWidgetUtils.createReadonlyCombo( innerComposite, operators, 0, 1 );
-        GC gc = new GC( parent );
-        gc.setFont( JFaceResources.getDialogFont() );
-        FontMetrics fontMetrics = gc.getFontMetrics();
-        gc.dispose();
-        int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH / 2 );
-        GridData data = new GridData( width, SWT.DEFAULT );
+        GridData data = new GridData();
         quickSearchOperatorCombo.setLayoutData( data );
 
         String[] values = HistoryUtils.load( VALUE_HISTORY_DIALOGSETTING_KEY );
