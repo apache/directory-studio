@@ -741,7 +741,7 @@ public class ImageDialog extends Dialog
             text = typePrefix
                 + NLS
                     .bind(
-                        Messages.getString( "ImageDialog.Pixel" ), new Object[] { imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-1$
+                        Messages.getString( "ImageDialog.Pixel" ), new Object[] { imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-1$
         }
         catch ( SWTException swte )
         {
