@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.actions;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -45,7 +46,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
 
     /** The selected connection folders */
     private ConnectionFolder[] selectedConnectionFolders;
-    
+
     /** The input */
     private Object input;
 
@@ -56,6 +57,17 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     protected StudioAction()
     {
         this.init();
+    }
+
+
+    /**
+     * Gets the style.
+     * 
+     * @return the style
+     */
+    public int getStyle()
+    {
+        return Action.AS_PUSH_BUTTON;
     }
 
 
@@ -147,6 +159,18 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
 
 
     /**
+     * Returns weather this action is checked.
+     * The default implementations returns false.
+     *
+     * @return
+     */
+    public boolean isChecked()
+    {
+        return false;
+    }
+
+
+    /**
      * Initializes this action
      */
     private void init()
@@ -216,8 +240,8 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     {
         return selectedConnectionFolders;
     }
-    
-    
+
+
     /**
      * Sets the selected connection folders.
      *
@@ -228,7 +252,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     {
         this.selectedConnectionFolders = selectedConnectionFolders;
     }
-    
+
 
     /**
      * Gets the input.

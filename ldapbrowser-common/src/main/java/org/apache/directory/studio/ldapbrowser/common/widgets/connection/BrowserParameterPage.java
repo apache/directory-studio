@@ -89,6 +89,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     private static final String X_FETCH_SUBENTRIES = "X-FETCH-SUBENTRIES"; //$NON-NLS-1$
 
+    private static final String X_FETCH_OPERATIONAL_ATTRIBUTES = "X-FETCH-OPERATIONAL-ATTRIBUTES"; //$NON-NLS-1$
+
     private static final String X_PAGED_SEARCH = "X-PAGED-SEARCH"; //$NON-NLS-1$
 
     private static final String X_PAGED_SEARCH_SIZE = "X-PAGED-SEARCH-SIZE"; //$NON-NLS-1$
@@ -127,6 +129,9 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
     /** The paged search scroll mode button. */
     protected Button pagedSearchScrollModeButton;
+
+    /** The fetch operational attributes button. */
+    private Button fetchOperationalAttributesButton;
 
 
     /**
@@ -217,6 +222,18 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
 
 
     /**
+     * Returns true if operational attributes should be fetched
+     * while browsing.
+     * 
+     * @return true, if operational attributes should be fetched
+     */
+    private boolean isFetchOperationalAttributes()
+    {
+        return fetchOperationalAttributesButton.getSelection();
+    }
+
+
+    /**
      * Returns true if paged search should be used
      * while browsing.
      * 
@@ -282,6 +299,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         addBaseDNInput( parent );
         addLimitInput( parent );
         addControlInput( parent );
+        addFeaturesInput( parent );
     }
 
 
@@ -294,21 +312,23 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("BrowserParameterPage.BaseDNGroup"), 1 ); //$NON-NLS-1$
+        Group group = BaseWidgetUtils.createGroup( composite,
+            Messages.getString( "BrowserParameterPage.BaseDNGroup" ), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
         GridData gd;
 
-        autoFetchBaseDnsButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages.getString("BrowserParameterPage.GetBaseDNsFromRootDSE"), 2 ); //$NON-NLS-1$
+        autoFetchBaseDnsButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages
+            .getString( "BrowserParameterPage.GetBaseDNsFromRootDSE" ), 2 ); //$NON-NLS-1$
         autoFetchBaseDnsButton.setSelection( true );
 
         fetchBaseDnsButton = new Button( groupComposite, SWT.PUSH );
-        fetchBaseDnsButton.setText( Messages.getString("BrowserParameterPage.FetchBaseDNs") ); //$NON-NLS-1$
+        fetchBaseDnsButton.setText( Messages.getString( "BrowserParameterPage.FetchBaseDNs" ) ); //$NON-NLS-1$
         fetchBaseDnsButton.setEnabled( true );
         gd = new GridData();
         gd.horizontalAlignment = SWT.RIGHT;
         fetchBaseDnsButton.setLayoutData( gd );
 
-        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("BrowserParameterPage.BaseDN"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "BrowserParameterPage.BaseDN" ), 1 ); //$NON-NLS-1$
         baseDNCombo = BaseWidgetUtils.createCombo( groupComposite, new String[0], 0, 2 );
     }
 
@@ -322,27 +342,50 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString("BrowserParameterPage.Controls"), 1 ); //$NON-NLS-1$
+        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString( "BrowserParameterPage.Controls" ), 1 ); //$NON-NLS-1$
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
 
         // fetch subentries control
-        fetchSubentriesButton = BaseWidgetUtils.createCheckbox( groupComposite,
-            Messages.getString("BrowserParameterPage.FetchSubentriesWhileBrowsing"), 1 ); //$NON-NLS-1$
-        fetchSubentriesButton
-            .setToolTipText( Messages.getString("BrowserParameterPage.FetchSubentriesWhileBrowsingTooltip") ); //$NON-NLS-1$
+        fetchSubentriesButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages
+            .getString( "BrowserParameterPage.FetchSubentriesWhileBrowsing" ), 1 ); //$NON-NLS-1$
+        fetchSubentriesButton.setToolTipText( Messages
+            .getString( "BrowserParameterPage.FetchSubentriesWhileBrowsingTooltip" ) ); //$NON-NLS-1$
         fetchSubentriesButton.setSelection( false );
 
         // paged search control
         Composite sprcComposite = BaseWidgetUtils.createColumnContainer( groupComposite, 4, 1 );
-        pagedSearchButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("BrowserParameterPage.PagedSearch"), 1 ); //$NON-NLS-1$
-        pagedSearchButton.setToolTipText( Messages.getString("BrowserParameterPage.PagedSearchTooltip") ); //$NON-NLS-1$
+        pagedSearchButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages
+            .getString( "BrowserParameterPage.PagedSearch" ), 1 ); //$NON-NLS-1$
+        pagedSearchButton.setToolTipText( Messages.getString( "BrowserParameterPage.PagedSearchTooltip" ) ); //$NON-NLS-1$
 
-        pagedSearchSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, Messages.getString("BrowserParameterPage.PageSize"), 1 ); //$NON-NLS-1$
+        pagedSearchSizeLabel = BaseWidgetUtils.createLabel( sprcComposite, Messages
+            .getString( "BrowserParameterPage.PageSize" ), 1 ); //$NON-NLS-1$
         pagedSearchSizeText = BaseWidgetUtils.createText( sprcComposite, "100", 5, 1 ); //$NON-NLS-1$
-        pagedSearchScrollModeButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages.getString("BrowserParameterPage.ScrollMode"), 1 ); //$NON-NLS-1$
-        pagedSearchScrollModeButton
-            .setToolTipText( Messages.getString("BrowserParameterPage.ScrollModeTooltip") ); //$NON-NLS-1$
+        pagedSearchScrollModeButton = BaseWidgetUtils.createCheckbox( sprcComposite, Messages
+            .getString( "BrowserParameterPage.ScrollMode" ), 1 ); //$NON-NLS-1$
+        pagedSearchScrollModeButton.setToolTipText( Messages.getString( "BrowserParameterPage.ScrollModeTooltip" ) ); //$NON-NLS-1$
         pagedSearchScrollModeButton.setSelection( true );
+    }
+
+
+    /**
+     * Adds the features input.
+     * 
+     * @param parent the parent
+     */
+    private void addFeaturesInput( Composite parent )
+    {
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
+
+        Group group = BaseWidgetUtils.createGroup( composite, Messages.getString( "BrowserParameterPage.Features" ), 1 ); //$NON-NLS-1$
+        Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 1, 1 );
+
+        // fetch operational attributes feature
+        fetchOperationalAttributesButton = BaseWidgetUtils.createCheckbox( groupComposite, Messages
+            .getString( "BrowserParameterPage.FetchOperationalAttributesWhileBrowsing" ), 1 ); //$NON-NLS-1$
+        fetchOperationalAttributesButton.setToolTipText( Messages
+            .getString( "BrowserParameterPage.FetchOperationalAttributesWhileBrowsingTooltip" ) ); //$NON-NLS-1$
+        fetchOperationalAttributesButton.setSelection( false );
     }
 
 
@@ -385,7 +428,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         {
             if ( !LdapDN.isValid( getBaseDN() ) )
             {
-                message = Messages.getString("BrowserParameterPage.EnterValidBaseDN"); //$NON-NLS-1$
+                message = Messages.getString( "BrowserParameterPage.EnterValidBaseDN" ); //$NON-NLS-1$
             }
         }
     }
@@ -420,7 +463,6 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         Connection.AliasDereferencingMethod aliasesDereferencingMethod = Connection.AliasDereferencingMethod
             .getByOrdinal( aliasesDereferencingMethodOrdinal );
         aliasesDereferencingWidget.setAliasesDereferencingMethod( aliasesDereferencingMethod );
-
         boolean fetchSubentries = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES );
         fetchSubentriesButton.setSelection( fetchSubentries );
@@ -433,6 +475,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         boolean pagedSearchScrollMode = parameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
         pagedSearchScrollModeButton.setSelection( pagedSearch ? pagedSearchScrollMode : true );
+
+        boolean fetchOperationalAttributes = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES );
+        fetchOperationalAttributesButton.setSelection( fetchOperationalAttributes );
     }
 
 
@@ -466,17 +512,19 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                         baseDNCombo.setItems( baseDNs.toArray( new String[baseDNs.size()] ) );
                         baseDNCombo.select( 0 );
 
-                        String msg = Messages.getString("BrowserParameterPage.BaseDNResult"); //$NON-NLS-1$
+                        String msg = Messages.getString( "BrowserParameterPage.BaseDNResult" ); //$NON-NLS-1$
                         for ( String baseDN : baseDNs )
                         {
                             msg += "\n  - " + baseDN; //$NON-NLS-1$
                         }
-                        MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages.getString("BrowserParameterPage.FetchBaseDNs"), msg ); //$NON-NLS-1$
+                        MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages
+                            .getString( "BrowserParameterPage.FetchBaseDNs" ), msg ); //$NON-NLS-1$
                     }
                     else
                     {
-                        MessageDialog.openWarning( Display.getDefault().getActiveShell(), Messages.getString("BrowserParameterPage.FetchBaseDNs"), //$NON-NLS-1$
-                            Messages.getString("BrowserParameterPage.NoBaseDNReturnedFromServer") ); //$NON-NLS-1$
+                        MessageDialog.openWarning( Display.getDefault().getActiveShell(), Messages
+                            .getString( "BrowserParameterPage.FetchBaseDNs" ), //$NON-NLS-1$
+                            Messages.getString( "BrowserParameterPage.NoBaseDNReturnedFromServer" ) ); //$NON-NLS-1$
                         autoFetchBaseDnsButton.setSelection( false );
                     }
                 }
@@ -523,6 +571,14 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
                 connectionPageModified();
             }
         } );
+
+        fetchOperationalAttributesButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent arg0 )
+            {
+                connectionPageModified();
+            }
+        } );
     }
 
 
@@ -547,6 +603,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             getPagedSearchSize() );
         parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
             isPagedSearchScrollMode() );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES,
+            isFetchOperationalAttributes() );
     }
 
 
@@ -609,12 +667,15 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             .getExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE );
         boolean pagedSearchScrollMode = connectionParameter
             .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE );
+        boolean fetchOperationalAttributes = connectionParameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES );
 
         return fetchBaseDns != isAutoFetchBaseDns() || !StringUtils.equals( baseDn, getBaseDN() )
             || referralsHandlingMethod != getReferralsHandlingMethod()
             || aliasesDereferencingMethod != getAliasesDereferencingMethod() || fetchSubentries != isFetchSubentries()
             || pagedSearch != isPagedSearch() || pagedSearchSize != getPagedSearchSize()
-            || pagedSearchScrollMode != isPagedSearchScrollMode();
+            || pagedSearchScrollMode != isPagedSearchScrollMode()
+            || fetchOperationalAttributes != isFetchOperationalAttributes();
     }
 
 
@@ -693,8 +754,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         }
 
         // paged search
-        boolean pagedSearch = parameter
-            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
+        boolean pagedSearch = parameter.getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH );
         if ( pagedSearch )
         {
             ldapUrl.getExtensions().add( new Extension( false, X_PAGED_SEARCH, null ) );
@@ -707,6 +767,14 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             {
                 ldapUrl.getExtensions().add( new Extension( false, X_PAGED_SEARCH_SCROLL_MODE, null ) );
             }
+        }
+
+        // fetch operational attributes
+        boolean fetchOperationalAttributes = parameter
+            .getExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES );
+        if ( fetchOperationalAttributes )
+        {
+            ldapUrl.getExtensions().add( new Extension( false, X_FETCH_OPERATIONAL_ATTRIBUTES, null ) );
         }
     }
 
@@ -819,5 +887,10 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
                 pagedSearchScrollMode != null );
         }
+
+        // fetch operational attributes
+        Extension fetchOperationalAttributes = ldapUrl.getExtension( X_FETCH_OPERATIONAL_ATTRIBUTES );
+        parameter.setExtendedBoolProperty( IBrowserConnection.CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES,
+            fetchOperationalAttributes != null );
     }
 }

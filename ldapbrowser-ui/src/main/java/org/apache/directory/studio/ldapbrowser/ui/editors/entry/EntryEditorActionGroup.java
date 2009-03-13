@@ -25,6 +25,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.CollapseAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAllValuesAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RefreshAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
@@ -151,6 +152,9 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     /** The Constant showLsdAction. */
     private static final String showLsdAction = "showLsdAction"; //$NON-NLS-1$
 
+    /** The Constant fetchOperationalAttributesAction. */
+    private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction";
+
 
     /**
      * Creates a new instance of EntryEditorActionGroup.
@@ -224,6 +228,8 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
         entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer,
             new DeleteAllValuesAction() ) );
+        entryEditorActionMap.put( fetchOperationalAttributesAction, new EntryEditorActionProxy( viewer,
+            new FetchOperationalAttributesAction() ) );
     }
 
 
@@ -361,6 +367,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
         // refresh
         menuManager.add( entryEditorActionMap.get( refreshAttributesAction ) );
+        if ( entryEditorActionMap.get( fetchOperationalAttributesAction ).isEnabled() )
+        {
+            menuManager.add( entryEditorActionMap.get( fetchOperationalAttributesAction ) );
+        }
         menuManager.add( new Separator() );
 
         // additions

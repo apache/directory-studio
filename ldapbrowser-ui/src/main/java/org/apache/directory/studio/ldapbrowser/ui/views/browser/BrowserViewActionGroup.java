@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
@@ -158,6 +159,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
     /** The Constant exportExcelAction. */
     private static final String exportExcelAction = "exportExcelAction"; //$NON-NLS-1$
+    
+    /** The Constant fetchOperationalAttributesAction. */
+    private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction"; //$NON-NLS-1$
 
 
     /**
@@ -228,6 +232,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
         browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
+
+        browserActionMap.put( fetchOperationalAttributesAction, new BrowserViewActionProxy( viewer,
+            new FetchOperationalAttributesAction() ) );
     }
 
 
@@ -355,6 +362,10 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         // refresh
         menuManager.add( browserActionMap.get( refreshAction ) );
+        if ( browserActionMap.get( fetchOperationalAttributesAction ).isEnabled() )
+        {
+            menuManager.add( browserActionMap.get( fetchOperationalAttributesAction ) );
+        }
         menuManager.add( new Separator() );
 
         // additions

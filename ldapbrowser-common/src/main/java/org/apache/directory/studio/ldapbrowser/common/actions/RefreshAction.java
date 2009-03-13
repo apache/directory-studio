@@ -130,12 +130,12 @@ public class RefreshAction extends BrowserAction
         ISearch[] searches = getSearches();
         IEntry entryInput = getEntryInput();
         ISearch searchInput = getSearchInput();
-        boolean soa = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
 
         if ( entries.length > 0 )
         {
-            new StudioBrowserJob( new InitializeAttributesRunnable( entries, soa ) ).execute();
+            boolean foa = entries[0].getBrowserConnection().isFetchOperationalAttributes()
+                || entries[0].isOperationalAttributesInitialized();
+            new StudioBrowserJob( new InitializeAttributesRunnable( entries, foa ) ).execute();
             // avoid duplicate search on Root DSE
             if ( entries.length > 1 || !( entries[0] instanceof IRootDSE ) )
             {
@@ -153,8 +153,10 @@ public class RefreshAction extends BrowserAction
 
         if ( entryInput != null )
         {
+            boolean foa = entryInput.getBrowserConnection().isFetchOperationalAttributes()
+                || entryInput.isOperationalAttributesInitialized();
             new StudioBrowserJob( new InitializeAttributesRunnable( new IEntry[]
-                { entryInput }, soa ) ).execute();
+                { entryInput }, foa ) ).execute();
         }
         if ( searchInput != null )
         {
@@ -197,7 +199,7 @@ public class RefreshAction extends BrowserAction
         {
             entriesList.add( getSelectedBookmarks()[i].getEntry() );
         }
-        return ( IEntry[] ) entriesList.toArray( new IEntry[entriesList.size()] );
+        return entriesList.toArray( new IEntry[entriesList.size()] );
     }
 
 

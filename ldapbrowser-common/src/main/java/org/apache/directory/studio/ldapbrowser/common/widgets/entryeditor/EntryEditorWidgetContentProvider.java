@@ -134,12 +134,13 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             IEntry entry = ( IEntry ) inputElement;
 
+            boolean fetchOperationalAttributes = entry.getBrowserConnection().isFetchOperationalAttributes(); 
             boolean oai = entry.isOperationalAttributesInitialized();
             boolean ai = entry.isAttributesInitialized();
-            if ( ( !ai || ( !oai && showOperationalAttributes ) ) && entry.isDirectoryEntry() )
+            if ( ( !ai || ( !oai && fetchOperationalAttributes ) ) && entry.isDirectoryEntry() )
             {
                 InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
-                    { entry }, showOperationalAttributes );
+                    { entry }, fetchOperationalAttributes );
                 StudioBrowserJob job = new StudioBrowserJob( runnable );
                 job.execute();
                 return new Object[0];

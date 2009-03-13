@@ -65,6 +65,9 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     /** The key for the connection parameter "Referrals Handling". */
     public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod";
 
+    /** The key for the connection parameter "Fetch Operational Attributes. */
+    public static String CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES = "ldapbrowser.fetchOperationalAttributes";
+
     /** The key for the connection parameter "Fetch Sub-entries". */
     public static String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries";
 
@@ -203,6 +206,22 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @param fetchSubentries true to fetch subentries
      */
     public abstract void setFetchSubentries( boolean fetchSubentries );
+
+
+    /**
+     * Checks if operational attributes should be fetched.
+     * 
+     * @return the true if operational attributes should be fetched
+     */
+    public abstract boolean isFetchOperationalAttributes();
+
+
+    /**
+     * Sets if operational attributes should be fetched.
+     * 
+     * @param fetchSubentries true to fetch operational attributes
+     */
+    public abstract void setFetchOperationalAttributes( boolean fetchOperationalAttributes );
 
 
     /**

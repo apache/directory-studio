@@ -138,7 +138,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
      */
     public void clearCaches()
     {
-        for(ISearch search : getSearchManager().getSearches())
+        for ( ISearch search : getSearchManager().getSearches() )
         {
             search.setSearchResults( null );
         }
@@ -320,6 +320,27 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     {
         connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_SUBENTRIES,
             fetchSubentries );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchOperationalAttributes()
+    {
+        return connection.getConnectionParameter().getExtendedBoolProperty(
+            CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchOperationalAttributes( boolean fetchOperationalAttribures )
+    {
+        connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES,
+            fetchOperationalAttribures );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 

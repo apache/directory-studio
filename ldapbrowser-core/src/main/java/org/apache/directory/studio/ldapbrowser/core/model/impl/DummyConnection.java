@@ -254,6 +254,23 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
+    public boolean isFetchOperationalAttributes()
+    {
+        return false;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setFetchOperationalAttributes( boolean fetchOperationalAttributes )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
     public boolean isPagedSearch()
     {
         return false;

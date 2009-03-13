@@ -92,10 +92,9 @@ public class EditEntryWizard extends NewEntryWizard
 
     private void initAttributes()
     {
-        boolean soa = BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES );
+        boolean foa = selectedEntry.getBrowserConnection().isFetchOperationalAttributes();
         InitializeAttributesRunnable iar = new InitializeAttributesRunnable( new IEntry[]
-            { selectedEntry }, soa );
+            { selectedEntry }, foa );
         RunnableContextRunner.execute( iar, getContainer(), true );
     }
 

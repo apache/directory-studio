@@ -76,7 +76,7 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
 
     protected BrowserActionProxy( ISelectionProvider selectionProvider, BrowserAction action )
     {
-        this( selectionProvider, action, Action.AS_PUSH_BUTTON );
+        this( selectionProvider, action, action.getStyle() );
     }
 
 
@@ -86,43 +86,43 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
         EventRegistry.removeEntryUpdateListener( this );
         EventRegistry.removeSearchUpdateListener( this );
         EventRegistry.removeBookmarkUpdateListener( this );
-        this.selectionProvider.removeSelectionChangedListener( this );
+        selectionProvider.removeSelectionChangedListener( this );
         // PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().removeSelectionListener(this);
 
-        this.action.dispose();
-        this.action = null;
+        action.dispose();
+        action = null;
     }
 
 
     public boolean isDisposed()
     {
-        return this.action == null;
+        return action == null;
     }
 
 
     public final void entryUpdated( EntryModificationEvent entryModificationEvent )
     {
-        if ( !this.isDisposed() )
+        if ( !isDisposed() )
         {
-            this.updateAction();
+            updateAction();
         }
     }
 
 
     public void searchUpdated( SearchUpdateEvent searchUpdateEvent )
     {
-        if ( !this.isDisposed() )
+        if ( !isDisposed() )
         {
-            this.updateAction();
+            updateAction();
         }
     }
 
 
     public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent )
     {
-        if ( !this.isDisposed() )
+        if ( !isDisposed() )
         {
-            this.updateAction();
+            updateAction();
         }
     }
 
@@ -188,8 +188,8 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !this.isDisposed() )
         {
-            this.action.setInput( input );
-            this.selectionChanged( new SelectionChangedEvent( this.selectionProvider, new StructuredSelection() ) );
+            action.setInput( input );
+            selectionChanged( new SelectionChangedEvent( selectionProvider, new StructuredSelection() ) );
             // this.updateAction();
         }
     }
@@ -197,39 +197,39 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
 
     public void selectionChanged( SelectionChangedEvent event )
     {
-        if ( !this.isDisposed() )
+        if ( !isDisposed() )
         {
             ISelection selection = event.getSelection();
 
-            this.action.setSelectedBrowserViewCategories( BrowserSelectionUtils.getBrowserViewCategories( selection ) );
-            this.action.setSelectedEntries( BrowserSelectionUtils.getEntries( selection ) );
-            this.action.setSelectedBrowserEntryPages( BrowserSelectionUtils.getBrowserEntryPages( selection ) );
-            this.action.setSelectedSearchResults( BrowserSelectionUtils.getSearchResults( selection ) );
-            this.action.setSelectedBrowserSearchResultPages( BrowserSelectionUtils
-                .getBrowserSearchResultPages( selection ) );
-            this.action.setSelectedBookmarks( BrowserSelectionUtils.getBookmarks( selection ) );
+            action.setSelectedBrowserViewCategories( BrowserSelectionUtils.getBrowserViewCategories( selection ) );
+            action.setSelectedEntries( BrowserSelectionUtils.getEntries( selection ) );
+            action.setSelectedBrowserEntryPages( BrowserSelectionUtils.getBrowserEntryPages( selection ) );
+            action.setSelectedSearchResults( BrowserSelectionUtils.getSearchResults( selection ) );
+            action.setSelectedBrowserSearchResultPages( BrowserSelectionUtils.getBrowserSearchResultPages( selection ) );
+            action.setSelectedBookmarks( BrowserSelectionUtils.getBookmarks( selection ) );
 
-            this.action.setSelectedSearches( BrowserSelectionUtils.getSearches( selection ) );
+            action.setSelectedSearches( BrowserSelectionUtils.getSearches( selection ) );
 
-            this.action.setSelectedAttributes( BrowserSelectionUtils.getAttributes( selection ) );
-            this.action.setSelectedAttributeHierarchies( BrowserSelectionUtils.getAttributeHierarchie( selection ) );
-            this.action.setSelectedValues( BrowserSelectionUtils.getValues( selection ) );
+            action.setSelectedAttributes( BrowserSelectionUtils.getAttributes( selection ) );
+            action.setSelectedAttributeHierarchies( BrowserSelectionUtils.getAttributeHierarchie( selection ) );
+            action.setSelectedValues( BrowserSelectionUtils.getValues( selection ) );
 
-            this.action.setSelectedProperties( BrowserSelectionUtils.getProperties( selection ) );
+            action.setSelectedProperties( BrowserSelectionUtils.getProperties( selection ) );
 
-            this.updateAction();
+            updateAction();
         }
     }
 
 
     public void updateAction()
     {
-        if ( !this.isDisposed() )
+        if ( !isDisposed() )
         {
-            this.setText( this.action.getText() );
-            this.setToolTipText( this.action.getText() );
-            this.setEnabled( this.action.isEnabled() );
-            this.setImageDescriptor( this.action.getImageDescriptor() );
+            setText( action.getText() );
+            setToolTipText( action.getText() );
+            setEnabled( action.isEnabled() );
+            setImageDescriptor( action.getImageDescriptor() );
+            setChecked( action.isChecked() );
         }
     }
 
