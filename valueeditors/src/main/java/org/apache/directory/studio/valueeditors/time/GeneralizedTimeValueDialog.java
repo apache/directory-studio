@@ -22,10 +22,14 @@ package org.apache.directory.studio.valueeditors.time;
 
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import org.apache.directory.shared.ldap.util.GeneralizedTime;
@@ -68,9 +72,11 @@ public class GeneralizedTimeValueDialog extends Dialog
     /** The value */
     private GeneralizedTime value;
 
-    private List<GeneralizedTimeTimeZones> timezonesList = null;
+    /** The list, containing all time zones, bound to the combo viewer */
+    private ArrayList<TimeZone> allTimezonesList = new ArrayList<TimeZone>();
 
-    private Map<Integer, GeneralizedTimeTimeZones> timezonesMap = null;
+    /** The UTC times zones map */
+    private Map<Integer, TimeZone> utcTimezonesMap = new HashMap<Integer, TimeZone>();
 
     //
     // UI Fields
@@ -100,6 +106,9 @@ public class GeneralizedTimeValueDialog extends Dialog
     // Listeners
     //
 
+    /**
+     * The modify listener of the hours field.
+     */
     private ModifyListener hoursModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -112,6 +121,9 @@ public class GeneralizedTimeValueDialog extends Dialog
         }
     };
 
+    /**
+     * The modify listener of the minutes field.
+     */
     private ModifyListener minutesModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -124,6 +136,9 @@ public class GeneralizedTimeValueDialog extends Dialog
         }
     };
 
+    /**
+     * The modify listener of the seconds field.
+     */
     private ModifyListener secondsModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -136,6 +151,9 @@ public class GeneralizedTimeValueDialog extends Dialog
         }
     };
 
+    /**
+     * The selection listener of the calendar.
+     */
     private SelectionListener dateSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -148,6 +166,9 @@ public class GeneralizedTimeValueDialog extends Dialog
         }
     };
 
+    /**
+     * The selection changed listener of the time zone combo.
+     */
     private ISelectionChangedListener timezoneSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -160,6 +181,9 @@ public class GeneralizedTimeValueDialog extends Dialog
         }
     };
 
+    /**
+     * The modify listener of the raw field.
+     */
     private ModifyListener rawModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -212,7 +236,7 @@ public class GeneralizedTimeValueDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "Generalized Time Editor" );
+        shell.setText( Messages.getString( "GeneralizedTimeValueDialog.DateAndTimeEditor" ) ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_GENERALIZEDTIMEEDITOR ) );
     }
 
@@ -224,15 +248,6 @@ public class GeneralizedTimeValueDialog extends Dialog
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void okPressed()
-    {
-        super.okPressed();
     }
 
 
@@ -272,7 +287,7 @@ public class GeneralizedTimeValueDialog extends Dialog
     {
         // Label
         Label timeLabel = new Label( parent, SWT.NONE );
-        timeLabel.setText( "Time:" );
+        timeLabel.setText( Messages.getString( "GeneralizedTimeValueDialog.Time" ) ); //$NON-NLS-1$
 
         Composite rightComposite = BaseWidgetUtils.createColumnContainer( parent, 5, 1 );
 
@@ -283,7 +298,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         hoursSpinner.setTextLimit( 2 );
         hoursSpinner.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false ) );
 
-        Label label1 = BaseWidgetUtils.createLabel( rightComposite, ":", 1 );
+        Label label1 = BaseWidgetUtils.createLabel( rightComposite, ":", 1 ); //$NON-NLS-1$
         label1.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, false ) );
 
         // Minutes
@@ -293,7 +308,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         minutesSpinner.setTextLimit( 2 );
         minutesSpinner.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false ) );
 
-        Label label2 = BaseWidgetUtils.createLabel( rightComposite, ":", 1 );
+        Label label2 = BaseWidgetUtils.createLabel( rightComposite, ":", 1 ); //$NON-NLS-1$
         label2.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, false ) );
 
         // Seconds
@@ -314,7 +329,8 @@ public class GeneralizedTimeValueDialog extends Dialog
     private void createDateDialogArea( Composite parent )
     {
         // Label
-        Label dateLabel = BaseWidgetUtils.createLabel( parent, "Date:", 1 );
+        Label dateLabel = BaseWidgetUtils.createLabel( parent,
+            Messages.getString( "GeneralizedTimeValueDialog.Date" ), 1 ); //$NON-NLS-1$
         dateLabel.setLayoutData( new GridData( SWT.NONE, SWT.TOP, false, false ) );
 
         Composite rightComposite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
@@ -334,7 +350,7 @@ public class GeneralizedTimeValueDialog extends Dialog
     private void createTimeZoneDialogArea( Composite parent )
     {
         // Label
-        BaseWidgetUtils.createLabel( parent, "Time zone:", 1 );
+        BaseWidgetUtils.createLabel( parent, Messages.getString( "GeneralizedTimeValueDialog.Timezone" ), 1 ); //$NON-NLS-1$
 
         // Combo viewer
         timezoneComboViewer = new ComboViewer( parent );
@@ -346,24 +362,129 @@ public class GeneralizedTimeValueDialog extends Dialog
         {
             public String getText( Object element )
             {
-                return ( ( GeneralizedTimeTimeZones ) element ).getName();
+                return ( ( TimeZone ) element ).getID();
             }
         } );
 
         // Initializing the time zones list and map
-        timezonesList = GeneralizedTimeTimeZones.getAllTimezones();
-        timezonesMap = new HashMap<Integer, GeneralizedTimeTimeZones>();
-        for ( GeneralizedTimeTimeZones timezone : timezonesList )
-        {
-            timezonesMap.put( new Integer( timezone.getRawOffset() ), timezone );
-        }
+        initAllTimezones();
 
-        timezoneComboViewer.setInput( timezonesList );
+        timezoneComboViewer.setInput( allTimezonesList );
     }
 
 
     /**
-     * Creates the "Time Zone" dialog area.
+     * Initializes all the time zones.
+     */
+    private void initAllTimezones()
+    {
+        initUtcTimezones();
+        initContinentsAndCitiesTimezones();
+    }
+
+
+    /**
+     * Initializes all the "UTC+/-xxxx" time zones.
+     */
+    private void initUtcTimezones()
+    {
+        addUtcTimezone( "UTC-12", -1 * ( 12 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-11", -1 * ( 11 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-10", -1 * ( 10 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-9:30", -1 * ( ( ( 9 * 60 ) + 30 ) * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-9", -1 * ( 9 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-8", -1 * ( 8 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-7", -1 * ( 7 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-6", -1 * ( 6 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-5", -1 * ( 5 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-4:30", -1 * ( ( ( 4 * 60 ) + 30 ) * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-4", -1 * ( 4 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-3:30", -1 * ( ( ( 3 * 60 ) + 30 ) * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-3", -1 * ( 3 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-2", -1 * ( 2 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC-1", -1 * ( 1 * 60 * 60 * 1000 ) ); //$NON-NLS-1$
+        addUtcTimezone( "UTC", 0 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+1", 1 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+2", 2 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+3", 3 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+3:30", ( ( 3 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+4", 4 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+4:30", ( ( 4 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+5", 5 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+5:30", ( ( 5 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+5:45", ( ( 5 * 60 ) + 45 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+6", 6 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+6:30", ( ( 6 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+7", 7 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+8", 8 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+8:45", ( ( 8 * 60 ) + 45 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+9", 9 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+9:30", ( ( 9 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+10", 10 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+10:30", ( ( 10 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+11", 11 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+11:30", ( ( 11 * 60 ) + 30 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+12", 12 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+12:45", ( ( 12 * 60 ) + 45 ) * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+13", 13 * 60 * 60 * 1000 ); //$NON-NLS-1$
+        addUtcTimezone( "UTC+14", 14 * 60 * 60 * 1000 ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Adds an UTC time zone.
+     *
+     * @param tz
+     *      a time zone to add
+     */
+    private void addUtcTimezone( String id, int rawOffset )
+    {
+        TimeZone tz = new SimpleTimeZone( rawOffset, id );
+
+        allTimezonesList.add( tz );
+        utcTimezonesMap.put( rawOffset, tz );
+    }
+
+
+    /**
+     * Initializes all the continents and cities time zones.
+     */
+    private void initContinentsAndCitiesTimezones()
+    {
+        List<TimeZone> continentsAndCitiesTimezonesList = new ArrayList<TimeZone>();
+
+        // Getting all e time zones from the following continents :
+        //     * Africa
+        //     * America
+        //     * Asia
+        //     * Atlantic
+        //     * Australia
+        //     * Europe
+        //     * Indian
+        //     * Pacific
+        for ( String timezoneId : TimeZone.getAvailableIDs() )
+        {
+            if ( timezoneId.matches( "^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*" ) ) //$NON-NLS-1$
+            {
+                continentsAndCitiesTimezonesList.add( TimeZone.getTimeZone( timezoneId ) );
+            }
+        }
+
+        // Sorting the list by ID
+        Collections.sort( continentsAndCitiesTimezonesList, new Comparator<TimeZone>()
+        {
+            public int compare( final TimeZone a, final TimeZone b )
+            {
+                return a.getID().compareTo( b.getID() );
+            }
+        } );
+
+        allTimezonesList.addAll( continentsAndCitiesTimezonesList );
+    }
+
+
+    /**
+     * Creates the "Raw" dialog area.
      *
      * @param parent
      *      the parent composite
@@ -375,13 +496,13 @@ public class GeneralizedTimeValueDialog extends Dialog
         separatorLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
         // Label
-        BaseWidgetUtils.createLabel( parent, "Raw:", 1 );
+        BaseWidgetUtils.createLabel( parent, Messages.getString( "GeneralizedTimeValueDialog.Raw" ), 1 ); //$NON-NLS-1$
 
         // Raw composite
         Composite rawComposite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
 
         // Text
-        rawText = BaseWidgetUtils.createText( rawComposite, "", 1 );
+        rawText = BaseWidgetUtils.createText( rawComposite, "", 1 ); //$NON-NLS-1$
 
         // Validator image
         rawValidatorImage = new Label( rawComposite, SWT.NONE );
@@ -416,7 +537,7 @@ public class GeneralizedTimeValueDialog extends Dialog
             .get( Calendar.DAY_OF_MONTH ) );
 
         // Time zone
-        GeneralizedTimeTimeZones timezone = timezonesMap.get( new Integer( calendar.getTimeZone().getRawOffset() ) );
+        TimeZone timezone = utcTimezonesMap.get( new Integer( calendar.getTimeZone().getRawOffset() ) );
         if ( timezone == null )
         {
             timezoneComboViewer.setSelection( null );
@@ -538,12 +659,7 @@ public class GeneralizedTimeValueDialog extends Dialog
         StructuredSelection selection = ( StructuredSelection ) timezoneComboViewer.getSelection();
         if ( ( selection != null ) && ( !selection.isEmpty() ) )
         {
-            GeneralizedTimeTimeZones timezone = ( GeneralizedTimeTimeZones ) selection.getFirstElement();
-            String[] timezoneIds = TimeZone.getAvailableIDs( timezone.getRawOffset() );
-            if ( ( timezoneIds != null ) && ( timezoneIds.length > 0 ) )
-            {
-                calendar.setTimeZone( TimeZone.getTimeZone( timezoneIds[0] ) );
-            }
+            calendar.setTimeZone( ( TimeZone ) selection.getFirstElement() );
         }
         else
         {
@@ -556,9 +672,10 @@ public class GeneralizedTimeValueDialog extends Dialog
 
 
     /**
-     * Gets the {@link GeneralizedTime}.
+     * Gets the {@link GeneralizedTime} value.
      *
      * @return
+     *      the {@link GeneralizedTime} value
      */
     public GeneralizedTime getGeneralizedTime()
     {
