@@ -438,7 +438,7 @@ public class GeneralizedTimeValueDialog extends Dialog
      */
     private void addUtcTimezone( String id, int rawOffset )
     {
-        TimeZone tz = new SimpleTimeZone( rawOffset, id );
+        TimeZone tz = rawOffset == 0 ? TimeZone.getTimeZone( "UTC" ) : new SimpleTimeZone( rawOffset, id ); //$NON-NLS-1$
 
         allTimezonesList.add( tz );
         utcTimezonesMap.put( rawOffset, tz );
@@ -642,7 +642,9 @@ public class GeneralizedTimeValueDialog extends Dialog
      */
     private void updateValueFromNonRawFields()
     {
-        Calendar calendar = Calendar.getInstance();
+        // Retain the format of the GeneralizedTime value 
+        // by only updating its calendar object.
+        Calendar calendar = value.getCalendar();
 
         // Time
         calendar.set( Calendar.HOUR_OF_DAY, hoursSpinner.getSelection() );
@@ -660,13 +662,6 @@ public class GeneralizedTimeValueDialog extends Dialog
         {
             calendar.setTimeZone( ( TimeZone ) selection.getFirstElement() );
         }
-        else
-        {
-            calendar.setTimeZone( value.getCalendar().getTimeZone() );
-        }
-
-        // Replacing the value
-        value = new GeneralizedTime( calendar );
     }
 
 
