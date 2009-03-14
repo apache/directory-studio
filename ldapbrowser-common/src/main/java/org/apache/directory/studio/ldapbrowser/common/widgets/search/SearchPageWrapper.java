@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
@@ -756,7 +757,7 @@ public class SearchPageWrapper extends BrowserWidget
                 {
                     if ( returnAllAttributesButton.getSelection() )
                     {
-                        raList.add( ISearch.ALL_USER_ATTRIBUTES );
+                        raList.add( SchemaConstants.ALL_USER_ATTRIBUTES );
                     }
                     if ( returnAllAttributesButton.getSelection() != isActive( RETURN_ALLATTRIBUTES_CHECKED ) )
                     {
@@ -772,7 +773,7 @@ public class SearchPageWrapper extends BrowserWidget
                                 .getSchema() );
                         Collection<String> opAtdNames = SchemaUtils.getNames( opAtds );
                         raList.addAll( opAtdNames );
-                        raList.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
+                        raList.add( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
                     }
                     if ( returnOperationalAttributesButton.getSelection() != isActive( RETURN_OPERATIONALATTRIBUTES_CHECKED ) )
                     {

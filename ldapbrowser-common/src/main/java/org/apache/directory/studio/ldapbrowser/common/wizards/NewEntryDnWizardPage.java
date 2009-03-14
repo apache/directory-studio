@@ -27,6 +27,7 @@ import java.util.Iterator;
 import javax.naming.InvalidNameException;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
@@ -43,7 +44,6 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -160,7 +160,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         if ( wizard.isNewContextEntry() )
         {
             IAttribute attribute = wizard.getSelectedConnection().getRootDSE().getAttribute(
-                IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
+                SchemaConstants.NAMING_CONTEXTS_AT );
             if ( attribute != null )
             {
                 String[] values = attribute.getStringValues();

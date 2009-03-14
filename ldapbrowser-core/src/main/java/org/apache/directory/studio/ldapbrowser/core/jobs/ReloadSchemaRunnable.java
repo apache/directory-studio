@@ -34,7 +34,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -263,7 +262,7 @@ public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
             sp.setSearchBase( new LdapDN() );
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
-                { IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY } );
+                { SchemaConstants.SUBSCHEMA_SUBENTRY_AT } );
             NamingEnumeration<SearchResult> enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
@@ -272,7 +271,7 @@ public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
                 while ( attributes.hasMore() )
                 {
                     Attribute attribute = attributes.next();
-                    if ( attribute.getID().equalsIgnoreCase( IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY ) )
+                    if ( attribute.getID().equalsIgnoreCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) )
                     {
                         String value = ( String ) attribute.get();
                         if ( LdapDN.isValid( value ) )

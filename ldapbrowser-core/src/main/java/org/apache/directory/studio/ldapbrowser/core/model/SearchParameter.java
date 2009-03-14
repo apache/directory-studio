@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.naming.InvalidNameException;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
@@ -211,7 +212,7 @@ public class SearchParameter implements Serializable
         if ( returningAttributes == null )
         {
             returningAttributes = new String[]
-                { ISearch.ALL_USER_ATTRIBUTES };
+                { SchemaConstants.ALL_USER_ATTRIBUTES };
         }
         this.returningAttributes = returningAttributes;
     }

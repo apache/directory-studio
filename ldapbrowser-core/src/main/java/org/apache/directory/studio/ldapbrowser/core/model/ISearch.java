@@ -46,12 +46,6 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     /** Constant for empty search base */
     public static final LdapDN EMPTY_SEARCH_BASE = new LdapDN(); //$NON-NLS-1$
 
-    /** The returning attribute shortcut for all user attributes '*' */
-    public static final String ALL_USER_ATTRIBUTES = "*"; //$NON-NLS-1$
-
-    /** The returning attribute shortcut for all operational attributes '+' */
-    public static final String ALL_OPERATIONAL_ATTRIBUTES = "+"; //$NON-NLS-1$
-
     /** Constant for no returning attributes, an empty array */
     public static final String[] NO_ATTRIBUTES = new String[0];
 

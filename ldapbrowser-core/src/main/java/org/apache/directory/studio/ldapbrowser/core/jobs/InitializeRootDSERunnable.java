@@ -30,6 +30,7 @@ import java.util.Set;
 
 import javax.naming.InvalidNameException;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -62,11 +63,11 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
 
     /** The requested attributes when reading the Root DSE. */
     public static final String[] ROOT_DSE_ATTRIBUTES =
-        { IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS, IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION, IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES, IRootDSE.ROOTDSE_ATTRIBUTE_VENDORNAME,
-            IRootDSE.ROOTDSE_ATTRIBUTE_VENDORVERSION, ISearch.ALL_OPERATIONAL_ATTRIBUTES };
+        { SchemaConstants.NAMING_CONTEXTS_AT, SchemaConstants.SUBSCHEMA_SUBENTRY_AT,
+            SchemaConstants.SUPPORTED_LDAP_VERSION_AT, SchemaConstants.SUPPORTED_SASL_MECHANISMS_AT,
+            SchemaConstants.SUPPORTED_EXTENSION_AT, SchemaConstants.SUPPORTED_CONTROL_AT,
+            SchemaConstants.SUPPORTED_FEATURES_AT, SchemaConstants.VENDOR_NAME_AT, SchemaConstants.VENDOR_VERSION_AT,
+            SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES };
 
     private IRootDSE rootDSE;
 
@@ -191,7 +192,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
 
         // load all user attributes
         search = new Search( null, browserConnection, LdapDN.EMPTY_LDAPDN, ISearch.FILTER_TRUE, new String[]
-            { ISearch.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
+            { SchemaConstants.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
             Connection.ReferralHandlingMethod.IGNORE, false, null );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
@@ -216,8 +217,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
         {
             // get base DNs from namingContexts attribute
             Set<String> namingContextSet = new HashSet<String>();
-            IAttribute attribute = browserConnection.getRootDSE().getAttribute(
-                IRootDSE.ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS );
+            IAttribute attribute = browserConnection.getRootDSE().getAttribute( SchemaConstants.NAMING_CONTEXTS_AT );
             if ( attribute != null )
             {
                 String[] values = attribute.getStringValues();
@@ -265,8 +265,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
         }
 
         // 2nd: add schema sub-entry
-        IEntry[] schemaEntries = getDirectoryMetadataEntries( browserConnection,
-            IRootDSE.ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY );
+        IEntry[] schemaEntries = getDirectoryMetadataEntries( browserConnection, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
         for ( IEntry entry : schemaEntries )
         {
             if ( entry instanceof DirectoryMetadataEntry )

@@ -30,49 +30,6 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 public interface IRootDSE extends IEntry
 {
 
-    /** The namingContexts attribute */
-    public static final String ROOTDSE_ATTRIBUTE_NAMINGCONTEXTS = "namingContexts"; //$NON-NLS-1$
-
-    /** The subschemaSubentry attribute */
-    public static final String ROOTDSE_ATTRIBUTE_SUBSCHEMASUBENTRY = "subschemaSubentry"; //$NON-NLS-1$
-
-    /** The monitorContext attribute */
-    public static final String ROOTDSE_ATTRIBUTE_MONITORCONTEXT = "monitorContext"; //$NON-NLS-1$
-
-    /** The configContext attribute */
-    public static final String ROOTDSE_ATTRIBUTE_CONFIGCONTEXT = "configContext"; //$NON-NLS-1$
-
-    /** The dsaName attribute */
-    public static final String ROOTDSE_ATTRIBUTE_DSANAME = "dsaName"; //$NON-NLS-1$
-
-    /** The supportedExtension attribute */
-    public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION = "supportedExtension"; //$NON-NLS-1$
-
-    /** The supportedControl attribute */
-    public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL = "supportedControl"; //$NON-NLS-1$
-
-    /** The supportedFeatures attribute */
-    public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES = "supportedFeatures"; //$NON-NLS-1$
-
-    /** The supportedLDAPVersion attribute */
-    public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDLDAPVERSION = "supportedLDAPVersion"; //$NON-NLS-1$
-
-    /** The altServer attribute */
-    public static final String ROOTDSE_ATTRIBUTE_ALTSERVER = "altServer"; //$NON-NLS-1$
-
-    /** The supportedSASLMechanisms attribute */
-    public static final String ROOTDSE_ATTRIBUTE_SUPPORTEDSASLMECHANISM = "supportedSASLMechanisms"; //$NON-NLS-1$
-    
-    /** The vendorName attribute */
-    public static final String ROOTDSE_ATTRIBUTE_VENDORNAME = "vendorName"; //$NON-NLS-1$
-
-    /** The vendorVersion attribute */
-    public static final String ROOTDSE_ATTRIBUTE_VENDORVERSION = "vendorVersion"; //$NON-NLS-1$
-    
-    /** The OID of feature 'All Operational Attributes' */
-    public static final String FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID = "1.3.6.1.4.1.4203.1.5.1"; //$NON-NLS-1$
-
-
     /**
      * Gets the supported extensions.
      * 

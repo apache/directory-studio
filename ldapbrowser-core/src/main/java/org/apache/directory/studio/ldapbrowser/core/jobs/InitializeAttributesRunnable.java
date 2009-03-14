@@ -169,13 +169,13 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         // get user attributes or both user and operational attributes
         String[] returningAttributes = null;
         LinkedHashSet<String> raSet = new LinkedHashSet<String>();
-        raSet.add( ISearch.ALL_USER_ATTRIBUTES );
+        raSet.add( SchemaConstants.ALL_USER_ATTRIBUTES );
         if ( initOperationalAttributes )
         {
             if ( entry.getBrowserConnection().getRootDSE().isFeatureSupported(
-                IRootDSE.FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID ) )
+                SchemaConstants.FEATURE_ALL_OPERATIONAL_ATTRIBUTES ) )
             {
-                raSet.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
+                raSet.add( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
             }
             else
             {

@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -230,13 +231,14 @@ public class AttributeDescription implements Serializable
         AttributeTypeDescription otherAtd = schema.getAttributeTypeDescription( other.getParsedAttributeType() );
 
         // special case *: all user attributes (RFC4511)
-        if ( ISearch.ALL_USER_ATTRIBUTES.equals( other.description ) && !SchemaUtils.isOperational( myAtd ) )
+        if ( SchemaConstants.ALL_USER_ATTRIBUTES.equals( other.description ) && !SchemaUtils.isOperational( myAtd ) )
         {
             return true;
         }
 
         // special case +: all operational attributes (RFC3673)
-        if ( ISearch.ALL_OPERATIONAL_ATTRIBUTES.equals( other.description ) && SchemaUtils.isOperational( myAtd ) )
+        if ( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES.equals( other.description )
+            && SchemaUtils.isOperational( myAtd ) )
         {
             return true;
         }

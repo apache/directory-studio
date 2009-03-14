@@ -56,7 +56,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -532,7 +531,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
             SchemaConstants.OBJECT_CLASS_AT )
             && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-                ISearch.ALL_USER_ATTRIBUTES ) )
+                SchemaConstants.ALL_USER_ATTRIBUTES ) )
         {
             String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
             System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
@@ -547,10 +546,9 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
             IBrowserConnection connection = search.getBrowserConnection();
             Set<String> supportedConrolSet = new HashSet<String>();
             if ( connection.getRootDSE() != null
-                && connection.getRootDSE().getAttribute( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL ) != null )
+                && connection.getRootDSE().getAttribute( SchemaConstants.SUPPORTED_CONTROL_AT ) != null )
             {
-                IAttribute scAttribute = connection.getRootDSE().getAttribute(
-                    IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL );
+                IAttribute scAttribute = connection.getRootDSE().getAttribute( SchemaConstants.SUPPORTED_CONTROL_AT );
                 String[] supportedControls = scAttribute.getStringValues();
                 for ( int i = 0; i < supportedControls.length; i++ )
                 {
@@ -752,7 +750,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 String[] ras = searchParameter.getReturningAttributes();
 
                 // special case *
-                if ( Arrays.asList( ras ).contains( ISearch.ALL_USER_ATTRIBUTES ) )
+                if ( Arrays.asList( ras ).contains( SchemaConstants.ALL_USER_ATTRIBUTES ) )
                 {
                     // clear all user attributes
                     IAttribute[] oldAttributes = entry.getAttributes();
@@ -766,7 +764,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                 }
 
                 // special case +
-                if ( Arrays.asList( ras ).contains( ISearch.ALL_OPERATIONAL_ATTRIBUTES ) )
+                if ( Arrays.asList( ras ).contains( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES ) )
                 {
                     // clear all operational attributes
                     IAttribute[] oldAttributes = entry.getAttributes();

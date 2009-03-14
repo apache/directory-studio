@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.Arrays;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -72,7 +73,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
      */
     public String[] getSupportedExtensions()
     {
-        return getAttributeValues( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDEXTENSION );
+        return getAttributeValues( SchemaConstants.SUPPORTED_EXTENSION_AT );
     }
 
 
@@ -81,7 +82,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
      */
     public String[] getSupportedControls()
     {
-        return getAttributeValues( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDCONTROL );
+        return getAttributeValues( SchemaConstants.SUPPORTED_CONTROL_AT );
     }
 
 
@@ -90,7 +91,7 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
      */
     public String[] getSupportedFeatures()
     {
-        return getAttributeValues( IRootDSE.ROOTDSE_ATTRIBUTE_SUPPORTEDFEATURES );
+        return getAttributeValues( SchemaConstants.SUPPORTED_FEATURES_AT );
     }
 
 

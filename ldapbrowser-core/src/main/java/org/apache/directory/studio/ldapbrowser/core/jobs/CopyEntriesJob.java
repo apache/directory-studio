@@ -210,7 +210,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
         SearchControls searchControls = new SearchControls();
         searchControls.setCountLimit( 1 );
         searchControls.setReturningAttributes( new String[]
-            { ISearch.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
+            { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
         Control[] controls = null;
         NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection()
@@ -373,7 +373,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         SearchControls searchControls = new SearchControls();
                         searchControls.setCountLimit( 0 );
                         searchControls.setReturningAttributes( new String[]
-                            { ISearch.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
+                            { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                         NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
                             .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE,
