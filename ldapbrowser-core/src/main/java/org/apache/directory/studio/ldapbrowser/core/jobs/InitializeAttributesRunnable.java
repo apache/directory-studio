@@ -171,14 +171,17 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         raSet.add( ISearch.ALL_USER_ATTRIBUTES );
         if ( initOperationalAttributes )
         {
-            Collection<AttributeTypeDescription> opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry
-                .getBrowserConnection().getSchema() );
-            Collection<String> atdNames = SchemaUtils.getNames( opAtds );
-            raSet.addAll( atdNames );
             if ( entry.getBrowserConnection().getRootDSE().isFeatureSupported(
                 IRootDSE.FEATURE_ALL_OPERATIONAL_ATTRIBUTES_OID ) )
             {
                 raSet.add( ISearch.ALL_OPERATIONAL_ATTRIBUTES );
+            }
+            else
+            {
+                Collection<AttributeTypeDescription> opAtds = SchemaUtils.getOperationalAttributeDescriptions( entry
+                    .getBrowserConnection().getSchema() );
+                Collection<String> atdNames = SchemaUtils.getNames( opAtds );
+                raSet.addAll( atdNames );
             }
         }
         if ( entry.isReferral() )
