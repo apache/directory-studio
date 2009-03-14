@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemComponent;
@@ -350,7 +350,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
                 }
 
                 // case A3: editing objectClass attribute: show matching object classes
-                if ( attributeType != null && IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeType ) )
+                if ( attributeType != null && SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeType ) )
                 {
                     if ( ( fc.getValueToken() != null && fc.getValueToken().getOffset() <= offset || fc
                         .getFilterToken() != null )

@@ -103,8 +103,50 @@ public class SchemaUtils
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.NUM_SUBORDINATES_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBORDINATE_COUNT_AT.toLowerCase() );
+
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_NAME_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_NAME_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_VERSION_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_VERSION_AT_OID.toLowerCase() );
     }
 
+    /** The well-known non-modifiable attributes */
+    public static final Set<String> NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES = new HashSet<String>();
+    static
+    {
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATE_TIMESTAMP_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATE_TIMESTAMP_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATORS_NAME_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATORS_NAME_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFY_TIMESTAMP_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFY_TIMESTAMP_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFIERS_NAME_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFIERS_NAME_AT_OID.toLowerCase() );
+        
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID.toLowerCase() );
+        
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_CSN_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT_OID.toLowerCase() );
+        
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.NUM_SUBORDINATES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBORDINATE_COUNT_AT.toLowerCase() );
+        
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_NAME_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_NAME_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_VERSION_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_VERSION_AT_OID.toLowerCase() );
+    }
+    
     private static final Comparator<String> nameAndOidComparator = new Comparator<String>()
     {
         public int compare( String s1, String s2 )
@@ -286,33 +328,9 @@ public class SchemaUtils
         // Check some default no-user-modification attributes
         // e.g. Siemens DirX doesn't provide a good schema.
         // TODO: make default no-user-modification attributes configurable
-        String[] nonModifiableAttributes = new String[]
-            { IAttribute.OPERATIONAL_ATTRIBUTE_CREATORS_NAME, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                IAttribute.OPERATIONAL_ATTRIBUTE_MODIFIERS_NAME, IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP,
-                IAttribute.OPERATIONAL_ATTRIBUTE_STRUCTURAL_OBJECT_CLASS,
-                IAttribute.OPERATIONAL_ATTRIBUTE_GOVERNING_STRUCTURE_RULE,
-
-                IAttribute.OPERATIONAL_ATTRIBUTE_SUBSCHEMA_SUBENTRY, IAttribute.OPERATIONAL_ATTRIBUTE_VENDOR_NAME,
-                IAttribute.OPERATIONAL_ATTRIBUTE_VENDOR_VERSION,
-
-                IAttribute.OPERATIONAL_ATTRIBUTE_ENTRY_UUID, IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES,
-                IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT, IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES
-
-            };
-        for ( int i = 0; i < nonModifiableAttributes.length; i++ )
+        if ( CollectionUtils.containsAny( NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES, getLowerCaseIdentifiers( atd ) ) )
         {
-            String att = nonModifiableAttributes[i];
-            if ( att.equalsIgnoreCase( atd.getNumericOid() ) )
-            {
-                return false;
-            }
-            for ( String name : atd.getNames() )
-            {
-                if ( att.equalsIgnoreCase( name ) )
-                {
-                    return false;
-                }
-            }
+            return false;
         }
 
         return true;
@@ -897,7 +915,7 @@ public class SchemaUtils
         if ( entry != null )
         {
             // check objectClass attribute
-            IAttribute ocAttribute = entry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
+            IAttribute ocAttribute = entry.getAttribute( SchemaConstants.OBJECT_CLASS_AT );
             if ( ocAttribute == null )
             {
                 messages.add( Messages.getString( "SchemaUtils.NoObjectClass" ) ); //$NON-NLS-1$

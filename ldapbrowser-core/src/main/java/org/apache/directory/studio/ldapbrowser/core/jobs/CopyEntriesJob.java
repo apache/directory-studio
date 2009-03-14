@@ -38,6 +38,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
@@ -49,7 +50,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.EntryExistsCopyStrategyDialog.EntryExistsCopyStrategy;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -210,7 +210,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
         SearchControls searchControls = new SearchControls();
         searchControls.setCountLimit( 1 );
         searchControls.setReturningAttributes( new String[]
-            { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
+            { ISearch.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
         Control[] controls = null;
         NamingEnumeration<SearchResult> result = entryToCopy.getBrowserConnection().getConnection()
@@ -373,7 +373,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
                         SearchControls searchControls = new SearchControls();
                         searchControls.setCountLimit( 0 );
                         searchControls.setReturningAttributes( new String[]
-                            { ISearch.ALL_USER_ATTRIBUTES, IAttribute.REFERRAL_ATTRIBUTE } );
+                            { ISearch.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                         NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection.getConnection()
                             .getJNDIConnectionWrapper().search( oldLdapDn.getUpName(), ISearch.FILTER_TRUE,

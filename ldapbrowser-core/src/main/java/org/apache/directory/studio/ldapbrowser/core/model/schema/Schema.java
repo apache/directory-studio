@@ -38,17 +38,16 @@ import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
-import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
-import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
-import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
 import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
@@ -67,16 +66,6 @@ public class Schema
 {
 
     public static final String SCHEMA_FILTER = "(objectClass=subschema)";
-
-    public static final String SCHEMA_ATTRIBUTE_OBJECTCLASSES = "objectClasses";
-
-    public static final String SCHEMA_ATTRIBUTE_ATTRIBUTETYPES = "attributeTypes";
-
-    public static final String SCHEMA_ATTRIBUTE_LDAPSYNTAXES = "ldapSyntaxes";
-
-    public static final String SCHEMA_ATTRIBUTE_MATCHINGRULES = "matchingRules";
-
-    public static final String SCHEMA_ATTRIBUTE_MATCHINGRULEUSE = "matchingRuleUse";
 
     public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE";
 
@@ -257,7 +246,7 @@ public class Schema
 
             try
             {
-                if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES ) )
+                if ( attributeName.equalsIgnoreCase( SchemaConstants.OBJECT_CLASSES_AT ) )
                 {
                     ObjectClassDescriptionSchemaParser parser = new ObjectClassDescriptionSchemaParser();
                     parser.setQuirksMode( true );
@@ -265,7 +254,7 @@ public class Schema
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addObjectClassDescription( ocd );
                 }
-                else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES ) )
+                else if ( attributeName.equalsIgnoreCase( SchemaConstants.ATTRIBUTE_TYPES_AT ) )
                 {
                     AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
                     parser.setQuirksMode( true );
@@ -273,7 +262,7 @@ public class Schema
                     atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addAttributeTypeDescription( atd );
                 }
-                else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES ) )
+                else if ( attributeName.equalsIgnoreCase( SchemaConstants.LDAP_SYNTAXES_AT ) )
                 {
                     LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
                     parser.setQuirksMode( true );
@@ -281,7 +270,7 @@ public class Schema
                     lsd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addLdapSyntaxDescription( lsd );
                 }
-                else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES ) )
+                else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULES_AT ) )
                 {
                     MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
                     parser.setQuirksMode( true );
@@ -289,7 +278,7 @@ public class Schema
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleDescription( mrd );
                 }
-                else if ( attributeName.equalsIgnoreCase( Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE ) )
+                else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULE_USE_AT ) )
                 {
                     MatchingRuleUseDescriptionSchemaParser parser = new MatchingRuleUseDescriptionSchemaParser();
                     parser.setQuirksMode( true );
@@ -297,11 +286,11 @@ public class Schema
                     mrud.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleUseDescription( mrud );
                 }
-                else if ( attributeName.equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) )
+                else if ( attributeName.equalsIgnoreCase(  SchemaConstants.CREATE_TIMESTAMP_AT ) )
                 {
                     setCreateTimestamp( value );
                 }
-                else if ( attributeName.equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) )
+                else if ( attributeName.equalsIgnoreCase(  SchemaConstants.MODIFY_TIMESTAMP_AT ) )
                 {
                     setModifyTimestamp( value );
                 }

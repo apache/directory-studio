@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -166,7 +167,7 @@ public class Attribute implements IAttribute
      */
     public boolean isObjectClassAttribute()
     {
-        return OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( getDescription() );
+        return SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( getDescription() );
     }
 
 

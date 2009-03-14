@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.dialogs.properties;
 
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
@@ -327,14 +328,10 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
 
             dnText.setText( entry.getDn().getUpName() );
             urlText.setText( entry.getUrl().toString() );
-            ctText.setText( getNonNullStringValue( entry
-                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) ) );
-            cnText
-                .setText( getNonNullStringValue( entry.getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_CREATORS_NAME ) ) );
-            mtText.setText( getNonNullStringValue( entry
-                .getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) ) );
-            mnText
-                .setText( getNonNullStringValue( entry.getAttribute( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFIERS_NAME ) ) );
+            ctText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.CREATE_TIMESTAMP_AT ) ) );
+            cnText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.CREATORS_NAME_AT ) ) );
+            mtText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.MODIFIERS_NAME_AT ) ) );
+            mnText.setText( getNonNullStringValue( entry.getAttribute( SchemaConstants.MODIFIERS_NAME_AT ) ) );
             reloadCmiButton.setText( Messages.getString( "EntryPropertyPage.Refresh" ) ); //$NON-NLS-1$
 
             int attCount = 0;

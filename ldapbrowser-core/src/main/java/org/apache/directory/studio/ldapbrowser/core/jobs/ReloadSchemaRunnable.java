@@ -25,6 +25,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
@@ -32,7 +33,6 @@ import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -168,10 +168,10 @@ public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
                 sp.setFilter( Schema.SCHEMA_FILTER );
                 sp.setScope( SearchScope.OBJECT );
                 sp.setReturningAttributes( new String[]
-                    { Schema.SCHEMA_ATTRIBUTE_OBJECTCLASSES, Schema.SCHEMA_ATTRIBUTE_ATTRIBUTETYPES,
-                        Schema.SCHEMA_ATTRIBUTE_LDAPSYNTAXES, Schema.SCHEMA_ATTRIBUTE_MATCHINGRULES,
-                        Schema.SCHEMA_ATTRIBUTE_MATCHINGRULEUSE, IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                        IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP, } );
+                    { SchemaConstants.OBJECT_CLASSES_AT, SchemaConstants.ATTRIBUTE_TYPES_AT,
+                        SchemaConstants.LDAP_SYNTAXES_AT, SchemaConstants.MATCHING_RULES_AT,
+                        SchemaConstants.MATCHING_RULE_USE_AT, SchemaConstants.CREATE_TIMESTAMP_AT,
+                        SchemaConstants.MODIFY_TIMESTAMP_AT } );
 
                 LdifEnumeration le = ExportLdifJob.search( browserConnection, sp, monitor );
                 if ( le.hasNext() )
@@ -212,10 +212,8 @@ public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
             sp.setSearchBase( schemaLocation );
             sp.setFilter( Schema.SCHEMA_FILTER );
             sp.setScope( SearchScope.OBJECT );
-            sp
-                .setReturningAttributes( new String[]
-                    { IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP,
-                        IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP } );
+            sp.setReturningAttributes( new String[]
+                { SchemaConstants.CREATE_TIMESTAMP_AT, SchemaConstants.MODIFY_TIMESTAMP_AT } );
             NamingEnumeration<SearchResult> enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
@@ -227,11 +225,11 @@ public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
                 while ( attributes.hasMore() )
                 {
                     Attribute attribute = attributes.next();
-                    if ( attribute.getID().equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_MODIFY_TIMESTAMP ) )
+                    if ( attribute.getID().equalsIgnoreCase( SchemaConstants.MODIFY_TIMESTAMP_AT ) )
                     {
                         modifyTimestamp = ( String ) attribute.get();
                     }
-                    if ( attribute.getID().equalsIgnoreCase( IAttribute.OPERATIONAL_ATTRIBUTE_CREATE_TIMESTAMP ) )
+                    if ( attribute.getID().equalsIgnoreCase( SchemaConstants.CREATE_TIMESTAMP_AT ) )
                     {
                         createTimestamp = ( String ) attribute.get();
                     }

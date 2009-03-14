@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -186,7 +187,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         }
         if ( entry.isReferral() )
         {
-            raSet.add( IAttribute.REFERRAL_ATTRIBUTE );
+            raSet.add( SchemaConstants.REF_AT );
         }
         returningAttributes = ( String[] ) raSet.toArray( new String[raSet.size()] );
 

@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterExtensibleComponent;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemComponent;
@@ -101,7 +101,7 @@ public class FilterTextHover implements ITextHover
                     return ldifLine;
                 }
                 if ( fc.getAttributeToken() != null
-                    && IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( fc.getAttributeToken().getValue() )
+                    && SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( fc.getAttributeToken().getValue() )
                     && fc.getValueToken() != null && fc.getValueToken().getOffset() <= hoverRegion.getOffset()
                     && hoverRegion.getOffset() <= fc.getValueToken().getOffset() + fc.getValueToken().getLength() )
                 {

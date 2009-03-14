@@ -491,36 +491,36 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         if ( search.isInitHasChildrenFlag() )
         {
             if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES )
+                SchemaConstants.HAS_SUBORDINATES_AT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-                    IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES ) )
+                    SchemaConstants.HAS_SUBORDINATES_AT ) )
             {
                 String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
                 System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
                     .getReturningAttributes().length );
-                returningAttributes[returningAttributes.length - 1] = IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES;
+                returningAttributes[returningAttributes.length - 1] = SchemaConstants.HAS_SUBORDINATES_AT;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
             else if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES )
+                SchemaConstants.NUM_SUBORDINATES_AT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-                    IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES ) )
+                    SchemaConstants.NUM_SUBORDINATES_AT ) )
             {
                 String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
                 System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
                     .getReturningAttributes().length );
-                returningAttributes[returningAttributes.length - 1] = IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES;
+                returningAttributes[returningAttributes.length - 1] = SchemaConstants.NUM_SUBORDINATES_AT;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
             else if ( search.getBrowserConnection().getSchema().hasAttributeTypeDescription(
-                IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT )
+                SchemaConstants.SUBORDINATE_COUNT_AT )
                 && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-                    IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT ) )
+                    SchemaConstants.SUBORDINATE_COUNT_AT ) )
             {
                 String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
                 System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
                     .getReturningAttributes().length );
-                returningAttributes[returningAttributes.length - 1] = IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT;
+                returningAttributes[returningAttributes.length - 1] = SchemaConstants.SUBORDINATE_COUNT_AT;
                 searchParameter.setReturningAttributes( returningAttributes );
             }
         }
@@ -530,14 +530,14 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
         // - to determine the entry's icon
         // - to determine must and may attributes
         if ( !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
-            IAttribute.OBJECTCLASS_ATTRIBUTE )
+            SchemaConstants.OBJECT_CLASS_AT )
             && !Utils.containsIgnoreCase( Arrays.asList( searchParameter.getReturningAttributes() ),
                 ISearch.ALL_USER_ATTRIBUTES ) )
         {
             String[] returningAttributes = new String[searchParameter.getReturningAttributes().length + 1];
             System.arraycopy( searchParameter.getReturningAttributes(), 0, returningAttributes, 0, searchParameter
                 .getReturningAttributes().length );
-            returningAttributes[returningAttributes.length - 1] = IAttribute.OBJECTCLASS_ATTRIBUTE;
+            returningAttributes[returningAttributes.length - 1] = SchemaConstants.OBJECT_CLASS_AT;
             searchParameter.setReturningAttributes( returningAttributes );
         }
 
@@ -685,19 +685,19 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                     if ( searchParameter.isInitHasChildrenFlag() )
                     {
                         // hasChildren flag
-                        if ( IAttribute.OPERATIONAL_ATTRIBUTE_HAS_SUBORDINATES.equalsIgnoreCase( attributeDescription ) )
+                        if ( SchemaConstants.HAS_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
                         {
                             if ( "FALSE".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
                                 entry.setHasChildrenHint( false );
                             }
                         }
-                        if ( IAttribute.OPERATIONAL_ATTRIBUTE_NUM_SUBORDINATES.equalsIgnoreCase( attributeDescription ) )
+                        if ( SchemaConstants.NUM_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
                         {
                             if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
                                 entry.setHasChildrenHint( false );
                             }
                         }
-                        if ( IAttribute.OPERATIONAL_ATTRIBUTE_SUBORDINATE_COUNT.equalsIgnoreCase( attributeDescription ) )
+                        if ( SchemaConstants.SUBORDINATE_COUNT_AT.equalsIgnoreCase( attributeDescription ) )
                         {
                             if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
                                 entry.setHasChildrenHint( false );
@@ -705,7 +705,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                         }
                     }
 
-                    if ( IAttribute.OBJECTCLASS_ATTRIBUTE.equalsIgnoreCase( attributeDescription ) )
+                    if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
                     {
                         if ( SchemaConstants.ALIAS_OC.equalsIgnoreCase( value ) )
                         {

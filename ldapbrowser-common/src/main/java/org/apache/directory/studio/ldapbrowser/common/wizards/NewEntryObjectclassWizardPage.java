@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
@@ -224,7 +225,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             availableObjectClasses.addAll( wizard.getSelectedConnection().getSchema().getObjectClassDescriptions() );
 
             DummyEntry newEntry = wizard.getPrototypeEntry();
-            IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
+            IAttribute ocAttribute = newEntry.getAttribute( SchemaConstants.OBJECT_CLASS_AT );
             if ( ocAttribute != null )
             {
                 for ( IValue ocValue : ocAttribute.getValues() )
@@ -257,10 +258,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             EventRegistry.suspendEventFireingInCurrentThread();
 
             // set new objectClass values
-            IAttribute ocAttribute = newEntry.getAttribute( IAttribute.OBJECTCLASS_ATTRIBUTE );
+            IAttribute ocAttribute = newEntry.getAttribute( SchemaConstants.OBJECT_CLASS_AT );
             if ( ocAttribute == null )
             {
-                ocAttribute = new Attribute( newEntry, IAttribute.OBJECTCLASS_ATTRIBUTE );
+                ocAttribute = new Attribute( newEntry, SchemaConstants.OBJECT_CLASS_AT );
                 newEntry.addAttribute( ocAttribute );
             }
             IValue[] values = ocAttribute.getValues();
