@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.shared.ldap.schema.parsers.AbstractSchemaDescription;
@@ -53,6 +55,55 @@ import org.eclipse.osgi.util.NLS;
  */
 public class SchemaUtils
 {
+
+    /** The well-known operational attributes */
+    public static final Set<String> OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES = new HashSet<String>();
+    static
+    {
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATE_TIMESTAMP_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATE_TIMESTAMP_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATORS_NAME_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.CREATORS_NAME_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFY_TIMESTAMP_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFY_TIMESTAMP_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFIERS_NAME_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFIERS_NAME_AT_OID.toLowerCase() );
+
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID.toLowerCase() );
+
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_CSN_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT_OID.toLowerCase() );
+
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.OBJECT_CLASSES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.OBJECT_CLASSES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ATTRIBUTE_TYPES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ATTRIBUTE_TYPES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.LDAP_SYNTAXES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.LDAP_SYNTAXES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MATCHING_RULES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MATCHING_RULES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MATCHING_RULE_USE_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MATCHING_RULE_USE_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.DIT_CONTENT_RULES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.DIT_CONTENT_RULES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.DIT_STRUCTURE_RULES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.DIT_STRUCTURE_RULES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.NAME_FORMS_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.NAME_FORMS_AT_OID.toLowerCase() );
+
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.NUM_SUBORDINATES_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBORDINATE_COUNT_AT.toLowerCase() );
+    }
 
     private static final Comparator<String> nameAndOidComparator = new Comparator<String>()
     {
@@ -202,8 +253,12 @@ public class SchemaUtils
 
     /**
      * An attribute type is marked as operational if either
-     * <li>the usage differs from USER_APPLICATIONS or
-     * <li>if is not declared in the schema and contains the dummy extension
+     * <ul>
+     * <li>the usage differs from userApplications or</li>
+     * <li>it is a well-known operational attribute or 
+     *     (we need this because M$ AD and Samba4 don't set the USAGE flag)</li>
+     * <li>it is not declared in the schema and contains the dummy extension</li>
+     * </ul>
      * 
      * @param atd the attribute type description
      * 
@@ -211,7 +266,8 @@ public class SchemaUtils
      */
     public static boolean isOperational( AttributeTypeDescription atd )
     {
-        return atd.getUsage() != UsageEnum.USER_APPLICATIONS || atd.getExtensions() == Schema.DUMMY_EXTENSIONS;
+        return atd.getUsage() != UsageEnum.USER_APPLICATIONS || atd.getExtensions() == Schema.DUMMY_EXTENSIONS
+            || CollectionUtils.containsAny( OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES, getLowerCaseIdentifiers( atd ) );
     }
 
 
