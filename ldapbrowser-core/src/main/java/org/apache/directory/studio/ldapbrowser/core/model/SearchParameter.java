@@ -25,8 +25,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.InvalidNameException;
-
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -304,29 +302,6 @@ public class SearchParameter implements Serializable
     {
         assert searchBase != null;
         this.searchBase = searchBase;
-    }
-
-
-    /**
-     * Sets the search base, a null search base is not allowed.
-     * 
-     * @deprecated This method will be removed in the next version. The DN/RDN/RDNPart 
-     * classes are replaced with the shared-ldap LdapDN/Rdn/ATAV. This method just 
-     * remains to provide backward compatibility of the old browserconnections.xml
-     * file that stores searches and bookmarks.
-     * 
-     * @param searchBase the search base
-     */
-    public void setSearchBase( DN searchBase )
-    {
-        assert searchBase != null;
-        try
-        {
-            setSearchBase( new LdapDN( searchBase.toString() ) );
-        }
-        catch ( InvalidNameException e )
-        {
-        }
     }
 
 

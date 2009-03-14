@@ -23,8 +23,6 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import javax.naming.InvalidNameException;
-
 import org.apache.directory.shared.ldap.name.LdapDN;
 
 
@@ -91,28 +89,6 @@ public class BookmarkParameter implements Serializable
     }
 
 
-    /**
-     * Sets the target DN.
-     * 
-     *  * @deprecated This method will be removed in the next version. The DN/RDN/RDNPart 
-     * classes are replaced with the shared-ldap LdapDN/Rdn/ATAV. This method just 
-     * remains to provide backward compatibility of the old browserconnections.xml
-     * file that stores searches and bookmarks.
-     * 
-     * @param dn the target DN
-     */
-    public void setDn( DN dn )
-    {
-        try
-        {
-            setDn( new LdapDN( dn.toString() ) );
-        }
-        catch ( InvalidNameException e )
-        {
-        }
-    }
-    
-    
     /**
      * Gets the symbolic name.
      * 
