@@ -139,16 +139,16 @@
                     <mkdir dir="target/test-sandbox"/>
                     <mkdir dir="target/test-sandbox/workspace"/>
                     
-                    <!-- copy previous build of of apache directory studio binaries to test-sandbox -->
+                    <!-- copy complete eclipse distribution to test-sandbox -->
+                    <copy todir="target/test-sandbox">
+                      <fileset dir="${eclipse-home}">
+                      </fileset>
+                    </copy>
+                    
+                    <!-- copy apache directory studio plugins to test-sandbox -->
                     <copy todir="target/test-sandbox">
                       <fileset dir="../target/distributions">
-                        <include name="ApacheDirectoryStudio-*/**" />
-                        <!-- 
-                          To run the tests we need the full org.eclipse.ui.ide plugins 
-                          including the Resouce perspective, so we can't use the 
-                          adapted studio plugin.
-                        -->
-                        <exclude name="**/*org.eclipse.ui.ide*"/>
+                        <include name="ApacheDirectoryStudio-*/**/plugins/org.apache.directory*"/>
                       </fileset>
                       <regexpmapper from="${integration-regexp}" to="\2"/>
                     </copy>
@@ -167,47 +167,16 @@
                       </fileset>
                     </copy>
                     
-                    <!-- copy additional eclipse dependencies to test-sandbox -->
-                    <copy todir="target/test-sandbox/${integration-plugins-folder}">
-                      <fileset dir="${eclipse-home}/plugins">
-                        <include name="org.apache.commons.collections_*.jar" />
-                        <include name="org.apache.log4j_*.jar" />
-                        <include name="org.eclipse.ant.core_*.jar" />
-                        <include name="org.eclipse.ant.ui_*.jar" />
-                        <include name="org.eclipse.compare_*.jar" />
-                        <include name="org.eclipse.core.variables_*.jar" />
-                        <include name="org.eclipse.debug.core_*.jar" />
-                        <include name="org.eclipse.debug.ui_*.jar" />
-                        <include name="org.eclipse.team.core_*.jar" />
-                        <include name="org.eclipse.team.ui_*.jar" />
-                        <include name="org.eclipse.ui.browser_*.jar" />
-                        <include name="org.eclipse.ui.cheatsheets_*.jar" />
-                        <include name="org.eclipse.ui.console_*.jar" />
-                        <include name="org.eclipse.ui.externaltools_*.jar" />
-                        <include name="org.eclipse.ui.ide_*.jar" />
-                        <include name="org.eclipse.ui.ide.application_*.jar" />
-                        <include name="org.eclipse.ui.navigator_*.jar" />
-                        <include name="org.eclipse.ui.navigator.resources_*.jar" />
-                        <include name="org.eclipse.ui.net_*.jar" />
-                        <include name="org.eclipse.ui.presentations_*.jar" />
-                        <include name="org.eclipse.ui.views.properties.tabbed_*.jar" />
-                        <include name="org.eclipse.jdt*" />
-                        <include name="org.eclipse.ltk*" />
-                        <include name="org.eclipse.pde*" />
-                        <include name="org.eclipse.ui.intro.universal_*/**" />
-                        <include name="org.apache.ant_*/**" />
-                        <include name="org.junit_*/**" />
-                        <include name="org.junit4_*/**" />
-                      </fileset>
-                    </copy>
-                    
                     <!-- launch the tests -->
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
                       <arg line="${integration-cmdline-params} -nl en -debug debugoptions -application net.sf.swtbot.eclipse.headless.swtbottestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.ui -className org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
                       <classpath>
-                        <pathelement location="target/test-sandbox/${integration-plugins-folder}/org.eclipse.equinox.launcher_1.0.100.v20080509-1800.jar" />
+                        <fileset dir="target/test-sandbox">
+                          <include name="**/org.eclipse.equinox.launcher_*.jar"/>
+                        </fileset>
                       </classpath>
                     </java>
+                    
                   </tasks>
                 </configuration>
                 <goals>
