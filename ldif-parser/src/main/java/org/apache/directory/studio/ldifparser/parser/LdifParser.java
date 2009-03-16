@@ -581,9 +581,6 @@ public class LdifParser
 
             // comments
             checkAndParseComment( record );
-
-            // eor
-            checkAndParseEndOfRecord( record );
         }
         while ( true );
     }
@@ -775,9 +772,13 @@ public class LdifParser
         LdifToken commentToken = this.scanner.matchComment();
         if ( commentToken != null )
         {
-            LdifToken sepToken = this.scanner.matchSep();
-            record.addComment( new LdifCommentLine( commentToken.getOffset(), getValueOrNull( commentToken ),
-                getValueOrNull( sepToken ) ) );
+            while ( commentToken != null )
+            {
+                LdifToken sepToken = this.scanner.matchSep();
+                record.addComment( new LdifCommentLine( commentToken.getOffset(), getValueOrNull( commentToken ),
+                    getValueOrNull( sepToken ) ) );
+                commentToken = this.scanner.matchComment();
+            }
             return true;
         }
         else
