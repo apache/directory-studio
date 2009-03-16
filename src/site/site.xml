@@ -22,7 +22,7 @@
 
   <skin>
     <groupId>org.apache.directory.skins</groupId>
-    <artifactId>studio-skin</artifactId>
+    <artifactId>directory-studio-skin</artifactId>
     <version>${skin.version}</version>
   </skin>
   <publishDate position="navigation-bottom" format="dd-MM-yyyy HH:mm"/>
