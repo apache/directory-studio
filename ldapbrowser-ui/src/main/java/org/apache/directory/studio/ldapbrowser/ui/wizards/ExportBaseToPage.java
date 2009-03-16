@@ -64,9 +64,8 @@ public abstract class ExportBaseToPage extends WizardPage
     {
         super( pageName );
         setPageComplete( false );
-        setTitle( getFileType() + Messages.getString( "ExportBaseToPage.FileType" ) ); //$NON-NLS-1$
-        setDescription( NLS.bind(
-            Messages.getString( "ExportBaseToPage.PleaseEnterTargetFile" ), new String[] { getFileType() } ) ); //$NON-NLS-1$
+        setTitle( NLS.bind( Messages.getString( "ExportBaseToPage.FileType" ), getFileType() ) ); //$NON-NLS-1$
+        setDescription( NLS.bind( Messages.getString( "ExportBaseToPage.PleaseEnterTargetFile" ), getFileType() ) ); //$NON-NLS-1$
 
         this.wizard = wizard;
     }
