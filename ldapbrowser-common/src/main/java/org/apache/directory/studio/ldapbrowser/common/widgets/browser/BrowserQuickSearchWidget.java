@@ -135,11 +135,7 @@ public class BrowserQuickSearchWidget
     {
         this.browserWidget = browserWidget;
 
-        if ( BrowserCommonActivator.getDefault().getDialogSettings().get( VALUE_HISTORY_DIALOGSETTING_KEY ) == null )
-        {
-            BrowserCommonActivator.getDefault().getDialogSettings().put( VALUE_HISTORY_DIALOGSETTING_KEY, EMPTY );
-        }
-        if ( BrowserCommonActivator.getDefault().getDialogSettings().get( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY ) == null )
+        if ( HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY ).length == 0 )
         {
             BrowserCommonActivator.getDefault().getDialogSettings().put( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY,
                 new String[]
