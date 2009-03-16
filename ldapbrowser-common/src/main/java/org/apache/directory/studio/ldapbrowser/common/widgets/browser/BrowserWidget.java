@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ViewFormWidget;
 import org.eclipse.jface.action.IMenuManager;
@@ -28,6 +29,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
@@ -146,11 +148,19 @@ public class BrowserWidget extends ViewFormWidget
      */
     protected Control createContent( Composite parent )
     {
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
+        GridLayout gl = new GridLayout( 1, false );
+        gl.marginHeight = gl.marginWidth = 0;
+        gl.verticalSpacing = gl.horizontalSpacing = 0;
+        composite.setLayout( gl );
+        GridData gd = new GridData( GridData.FILL_BOTH );
+        composite.setLayoutData( gd );
+
         quickSearchWidget = new BrowserQuickSearchWidget( this );
-        quickSearchWidget.createComposite( parent );
-        
+        quickSearchWidget.createComposite( composite );
+
         // create tree widget and viewer
-        tree = new Tree( parent, SWT.VIRTUAL | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
+        tree = new Tree( composite, SWT.VIRTUAL | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.widthHint = 450;
         data.heightHint = 250;
