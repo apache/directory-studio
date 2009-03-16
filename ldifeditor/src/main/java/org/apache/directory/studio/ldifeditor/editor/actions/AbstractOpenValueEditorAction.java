@@ -177,8 +177,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
         {
             LdifRecord record = ( LdifRecord ) selectedLdifContainers[0];
             LdifDnLine dnLine = record.getDnLine();
-            dn = dnLine.getUnfoldedDn();
-
+            dn = dnLine.getValueAsString();
         }
         return dn;
     }
