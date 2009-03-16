@@ -52,11 +52,6 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If attributes or values are selected.
-					</para>
-				</listitem>
-				<listitem>
-					<para>
 						Shortcut:
 						<shortcut>
 							<keycombo>
@@ -96,8 +91,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If one attribute or value is selected
-						and the attribute is modifiable and multivalued.
+						Enabled: If one attribute or value is selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -649,8 +643,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If attributes and values are selected
-						and they are deletable.
+						Enabled: If attributes and values are selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -1041,8 +1034,7 @@
 				<listitem>
 					<para>
 						Enabled: If values of multi-valued attributes
-						are selected and these attributes are
-						deleteable.
+						are selected.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -1079,8 +1071,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If one attribut or value is selected
-						and the attribute description is editable.
+						Enabled: If one attribut or value is selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -1111,8 +1102,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If one value is selected and this is
-						modifiable.
+						Enabled: If one value is selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -1145,8 +1135,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If one value is selected and this is
-						modifiable.
+						Enabled: If one value is selected.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -1204,6 +1193,19 @@
 						<shortcut>
 							<keycap>F5</keycap>
 						</shortcut>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect id="tools_entry_editor_contextmenu_fetch_operational_attributes">
+		<title>Fetch Operational Attributes</title>
+		<para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						Loads the operational attributes of the current entry.
 					</para>
 				</listitem>
 			</itemizedlist>

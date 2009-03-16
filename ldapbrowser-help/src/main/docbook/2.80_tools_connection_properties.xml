@@ -94,10 +94,6 @@
 				</tbody>
 			</tgroup>
 		</informaltable>
-		<para>
-			The network parameters are only modifiable if the
-			connection is closed.
-		</para>
 	</simplesect>
 	<simplesect id="tools_connection_properties_authentication">
 		<title>Authentication</title>
@@ -173,10 +169,6 @@
 				</tbody>
 			</tgroup>
 		</informaltable>
-		<para>
-			The authentication parameters are only modifiable if the
-			connection is closed.
-		</para>
 	</simplesect>
 	<simplesect id="tools_connection_properties_options">
 		<title>Options</title>
@@ -268,13 +260,52 @@
 						<entry>
 							Specifies the referral handling. 
 							Follow means that the LDAP Browser will follow 
-							referrals returned from server. 
+							referrals returned from server, you are asked which
+							connection to use when following the referral.
 							Ignore means that referrals returned from server 
 							are ignored. 
 							Select Manage to be able to manage (create,
 							modify, delete) referral entries. In that case
 							the browser sends the Manage DSA IT control
-							in each request.  
+							in each request.
+						</entry>
+					</row>
+					<row>
+						<entry>Fetch subentries while browsing</entry>
+						<entry>
+							If enabled enabled both, normal and subentries 
+							according to RFC 3672 are fetched. This causes 
+							additional search requests while browsing the
+							directory.
+						</entry>
+					</row>
+					<row>
+						<entry>Paged Search</entry>
+						<entry>
+							If enabled the simple paged result control is used
+							while browsing the directory. 
+							With the page size you could define how many entries 
+							should be retrieved	in one request. 
+							If Scroll Mode is enabled only one page is fetched
+							from the server at once while browsing, you could 
+							'scroll' through the pages by using the 'next page' 
+							and 'top page' items. If disabled 
+							<emphasis role="strong">all</emphasis>
+							entries are fetched from the server, the paged 
+							result control is only used in background to 
+							avoid server-side limits.
+						</entry>
+					</row>
+					<row>
+						<entry>Fetch operational attributes while browsing</entry>
+						<entry>
+							If enabled enabled both, user attributes and
+							operational attributes are retrieved while browsing.
+							If the server supports the feature 
+							'All Operational Attributes' then a '+' is used to 
+							retrieve operational attributes, otherwise all
+							operational attributes defined in the schema are 
+							requested.
 						</entry>
 					</row>
 				</tbody>

@@ -255,9 +255,9 @@
 				</listitem>
 				<listitem>
 					<para>
-						Show Raw Values: If checked the raw values (as
-						stored in directory) are displayed. By default
-						some attributes have a special display value:
+						Show Decorated Values: If checked decorated 
+						values are displayed, this means some additional
+						information is displayed:
 						<itemizedlist>
 							<listitem>
 								Images: Image format, width, height, and
@@ -272,6 +272,8 @@
 								time format.
 							</listitem>
 						</itemizedlist>
+						If unchecked the raw values (as stored in directory)
+						are displayed.
 					</para>
 				</listitem>
 				<listitem>

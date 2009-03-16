@@ -60,6 +60,7 @@
 		&tools_filter_editor_dialog;
 		&tools_rename_entry_dialog;
 		&tools_move_entries_dialog;
+		&tools_goto_dn_dialog;
 
 	</section>
 	

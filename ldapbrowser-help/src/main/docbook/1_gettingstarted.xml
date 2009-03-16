@@ -316,14 +316,16 @@
 	
 	<section  id="gettingstarted_search">
 		<title>Search the directory</title>
-		
 		<para>
-			To search the directory you may use the Eclipse search function. 
+			For a basic search you could use the <link linkend="tools_browser_view_quicksearch">Quick Search</link>.
+		</para>
+		<para>
+			For a more advanced serach you may use the search function. 
 		</para>
 		<orderedlist numeration="arabic">
 			<listitem>
 				<para>
-					In the Workbench toolbar, click the 
+					In the toolbar click the 
 					<inlinemediaobject><imageobject><imagedata contentdepth="1em" fileref="icons/search.gif" format="GIF"/></imageobject></inlinemediaobject>
 					<emphasis role="strong">Search</emphasis> button.
 				</para>

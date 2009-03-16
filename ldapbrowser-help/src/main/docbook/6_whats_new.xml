@@ -19,6 +19,119 @@
 <chapter id="whats_new">
 	<title>What's new</title>
 
+
+	<simplesect>
+		<title>What's new in 1.4.0</title>
+		<para>
+			<emphasis role="strong">Internationalization</emphasis>
+		</para>
+		<para>
+			Apache Directory Studio is now fully internationalized.
+			Out of the box English, French and German translations are provided.			
+		</para>
+		<para>
+			<emphasis role="strong">Quick Search</emphasis>
+		</para>
+		<para>
+			The Quick Search could be used to search the DIT without
+			opening a search dialog an filling all the input fields.
+			See <link linkend="tools_browser_view_quicksearch">Quick Search</link> for details.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_browser_view_12.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>	
+		</para>
+		<para>
+			<emphasis role="strong">A number of bug fixes and improvements</emphasis>
+		</para>
+		<para>
+			Besides these key new features, the LDAP Browser plugin has
+			received a number of bug fixes and improvements. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
+
+
+	<simplesect>
+		<title>What's new in 1.3.0</title>
+		<para>
+			<emphasis role="strong">Edit Entry wizard</emphasis>
+		</para>
+		<para>
+			Using this wizard it is possible to edit an entry offline and make 
+			multiple modifications and submit all modification in one request 
+			to the server.
+			For instance this is necessary when adding a new object class which
+			contains some mandatory attributes. 
+			Please see <link linkend="tools_editentry_wizard">Edit Entry wizard</link>
+			for details.			
+		</para>
+		<para>
+			<emphasis role="strong">Paged Results control</emphasis>
+		</para>
+		<para>
+			The paged results control is supported. It could be used to fetch
+			only a limited number of entries from the server while browsing
+			in the DIT. 
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_browser_view_13.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>	
+		</para>
+		
+		<para>
+			<emphasis role="strong">LDIF Import: Overwrite existing Entries</emphasis>
+		</para>
+		<para>
+			Now it is possible to select weather existing entries should be 
+			overwritten during an LDIF import.
+			This is useful if you already imported LDIF data into your directory
+			and you want to import some modified LDIF.
+		</para>
+		<para>
+			<emphasis role="strong">Go to DN Dialog</emphasis>
+		</para>
+		<para>
+			There's a new DN which could be used to find an entry in DIT
+			by its distinguished name.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_goto_dn_1.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>	
+		</para>
+		<para>
+			<emphasis role="strong">A number of bug fixes and improvements</emphasis>
+		</para>
+		<para>
+			Besides these key new features, the LDAP Browser plugin has
+			received a number of bug fixes and improvements. A detailed report is
+			provided in the
+			<link linkend="release_notes">Release Notes</link>
+			section.
+		</para>
+	</simplesect>
+
+
 	<simplesect>
 		<title>What's new in 1.2.0</title>
 		<para>

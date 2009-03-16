@@ -166,10 +166,32 @@
 							)
 						</entry>
 					</row>
+					
 					<row>
-						<entry>Subentries Control</entry>
+						<entry>Subentries</entry>
 						<entry>
-							Activates the subentries control.
+							If enabled enabled the subentries control
+							(RFC 3672) is sent to the server.
+						</entry>
+						<entry>
+							disabled
+						</entry>
+					</row>
+					<row>
+						<entry>Paged Search</entry>
+						<entry>
+							If enabled the simple paged result control
+							is sent to the server.
+							With the page size you could define how many entries 
+							should be retrieved	in one request.
+							If Scroll Mode is enabled only one page is fetched
+							from the server at once, you could 
+							'scroll' through the pages by using the 'next page' 
+							and 'top page' items. If disabled 
+							<emphasis role="strong">all</emphasis>
+							entries are fetched from the server, the paged 
+							result control is only used in background to 
+							avoid server-side limits.
 						</entry>
 						<entry>
 							disabled
@@ -224,8 +246,12 @@
 					<row>
 						<entry>Alias Dereferencing</entry>
 						<entry>
-							An indicator whether aliases should be
-							dereferenced during search or not.
+							Specifies whether aliases should be
+							dereferenced while finding the search base
+							entry or when performing the search or
+							both.
+							To manage (create, modify, delete) aliases
+							you have to uncheck both options. 
 						</entry>
 						<entry>
 							<superscript>*</superscript>
@@ -235,8 +261,14 @@
 					<row>
 						<entry>Referrals Handling</entry>
 						<entry>
-							An indicator whether to follow referrals
-							or not.
+							Follow means to follow 
+							referrals returned from server, you are asked which
+							connection to use when following the referral.
+							Ignore means that referrals returned from server 
+							are ignored. 
+							Select Manage to be able to manage (create,
+							modify, delete) referral entries. In that case
+							the Manage DSA IT control is sent to the server.
 						</entry>
 						<entry>
 							<superscript>*</superscript>

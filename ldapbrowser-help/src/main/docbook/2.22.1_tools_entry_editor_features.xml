@@ -158,11 +158,18 @@
 				Entry editor preferences
 			</link>
 			it is possible to define which classes of attributes (must,
-			may, operational) are displayed. If you are interested in
-			operational attributes enable the option "Show operational
-			attributes" in Entry editor toolbar menu. Note: When
-			changing these settings please refresh attributes to ensure
-			that the attributes are fetched from directory.
+			may, operational) are displayed. 
+			Note: Operational attributes must be requested from the 
+			directory. You could define to request operational attributes
+			for each entry for the whole connection, see 
+			<link linkend="tools_connection_properties_options">
+				Connection properties
+			</link>
+			for details. 
+			Another way is to request operational attributes for the selected
+			entry only, choose 
+			<emphasis role="strong">Fetch Operational Attributes</emphasis>
+			from the context menu.
 		</para>
 	</simplesect>
 

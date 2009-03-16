@@ -331,8 +331,15 @@
 						Sorting...: Opens the
 						<link linkend="tools_browser_view_sortdialog">
 							Sort Dialog
-						</link>
-						.
+						</link>.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Show Quick Search: Shows/Hides the .
+						<link linkend="tools_browser_view_quicksearch">
+							Quick Search
+						</link>.
 					</para>
 				</listitem>
 				<listitem>
@@ -369,6 +376,80 @@
 	</simplesect>
 
 
+	<simplesect id="tools_browser_view_quicksearch">
+		<title>Quick Search</title>
+		<para>
+			The Quick Search allows searching the DIT with specifying only a single
+			search attribute and value.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_browser_view_12.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>
+		</para>
+		<para>
+			To use the quick search select an entry in the DIT first. It is used
+			as search base.
+		</para>
+		<para>
+			In the left input field you could type in the search attribute. 
+			There is an auto-completion of known attributes. 
+			You could also select a recently used attribute from the drop-down box.
+		</para>
+		<para>
+			In the next drop-down box you could select the search operations. 
+		</para>
+		<para>
+			In the right input field you could type in the search value.
+			You could use '*' as wildcard.
+			You could also select a recently used value from the drop-down box. 
+		</para>
+		<para>
+			The 
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="icons/subtree.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			icon toggles the search scope:
+			To search only the direct descendants of the selected entry uncheck the button.
+			Check the button to search the whole subtree. 
+		</para>
+		<para>
+			When pressing the 
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="icons/quicksearch.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			button the search is executed. You could also press 
+			<emphasis role="strong">Enter</emphasis> in one of the input fields
+			to execute the search.
+		</para>
+		<para>
+			The search result is presented directly under the selected entry using a 
+			<guiicon>
+				<inlinemediaobject>
+					<imageobject>
+						<imagedata contentdepth="1em"
+							fileref="icons/quicksearch.gif" format="GIF" />
+					</imageobject>
+				</inlinemediaobject>
+			</guiicon>
+			<emphasis role="strong">Quick Search</emphasis> icon.
+		</para>
+	</simplesect>
 
 	<simplesect id="tools_browser_view_sortdialog">
 		<title>Sort dialog</title>

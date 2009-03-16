@@ -50,8 +50,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If an attribute is selected and the
-						attribute is modifiable
+						Enabled: If an attribute is selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -626,8 +625,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If an attributes is selected and this
-						is deletable.
+						Enabled: If an attributes is selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -987,8 +985,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If an attribute is selected and this is
-						modifiable.
+						Enabled: If an attribute is selected.
 					</para>
 				</listitem>
 				<listitem>
@@ -1022,8 +1019,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						Enabled: If an attribute is selected, this is
-						empty or singevalued and this is modifiable.
+						Enabled: If an attribute is selected.
 					</para>
 				</listitem>
 			</itemizedlist>
