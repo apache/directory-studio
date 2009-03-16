@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 
 
@@ -33,4 +34,24 @@ import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 public class QuickSearch extends Search implements IQuickSearch
 {
     private static final long serialVersionUID = 4387604973869066354L;
+
+    /** The search base entry. */
+    private IEntry searchBaseEntry;
+
+
+    /**
+     * Instantiates a new quick search.
+     * 
+     * @param searchBaseEntry the search base entry
+     */
+    public QuickSearch( IEntry searchBaseEntry )
+    {
+        this.searchBaseEntry = searchBaseEntry;
+    }
+
+
+    public IEntry getSearchBaseEntry()
+    {
+        return searchBaseEntry;
+    }
 }

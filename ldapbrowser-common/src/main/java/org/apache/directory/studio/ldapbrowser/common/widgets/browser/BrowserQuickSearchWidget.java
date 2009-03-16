@@ -36,11 +36,11 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.QuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.apache.directory.studio.ldapbrowser.core.utils.LdapFilterUtils;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -70,6 +70,10 @@ public class BrowserQuickSearchWidget
     /** The Constant VALUE_HISTORY_DIALOGSETTING_KEY. */
     public static final String VALUE_HISTORY_DIALOGSETTING_KEY = BrowserQuickSearchWidget.class.getName()
         + ".valueHistory"; //$NON-NLS-1$
+
+    /** The Constant ATTRIBUTE_HISTORY_DIALOGSETTING_KEY. */
+    public static final String ATTRIBUTE_HISTORY_DIALOGSETTING_KEY = BrowserQuickSearchWidget.class.getName()
+        + ".attributeHistory"; //$NON-NLS-1$
 
     /** An empty string array */
     private static final String[] EMPTY = new String[0];
@@ -135,6 +139,21 @@ public class BrowserQuickSearchWidget
         {
             BrowserCommonActivator.getDefault().getDialogSettings().put( VALUE_HISTORY_DIALOGSETTING_KEY, EMPTY );
         }
+        if ( BrowserCommonActivator.getDefault().getDialogSettings().get( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY ) == null )
+        {
+            BrowserCommonActivator.getDefault().getDialogSettings().put( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY,
+                new String[]
+                    { "cn", //$NON-NLS-1$
+                        "sn", //$NON-NLS-1$
+                        "givenName", //$NON-NLS-1$
+                        "mail", //$NON-NLS-1$
+                        "uid", //$NON-NLS-1$
+                        "description", //$NON-NLS-1$
+                        "o", //$NON-NLS-1$
+                        "ou", //$NON-NLS-1$
+                        "member" //$NON-NLS-1$
+                    } );
+        }
     }
 
 
@@ -166,8 +185,9 @@ public class BrowserQuickSearchWidget
 
         innerComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 1 );
 
-        quickSearchAttributeCombo = BaseWidgetUtils.createCombo( innerComposite, EMPTY, -1, 1 );
-        quickSearchAttributePP = new ListContentProposalProvider( EMPTY );
+        String[] attributes = HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
+        quickSearchAttributeCombo = BaseWidgetUtils.createCombo( innerComposite, attributes, -1, 1 );
+        quickSearchAttributePP = new ListContentProposalProvider( attributes );
         new ExtendedContentAssistCommandAdapter( quickSearchAttributeCombo, new ComboContentAdapter(),
             quickSearchAttributePP, null, null, true );
         quickSearchAttributeCombo.addModifyListener( new ModifyListener()
@@ -250,6 +270,10 @@ public class BrowserQuickSearchWidget
             return;
         }
 
+        HistoryUtils.save( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY, quickSearchAttributeCombo.getText() );
+        String[] attributes = HistoryUtils.load( ATTRIBUTE_HISTORY_DIALOGSETTING_KEY );
+        quickSearchAttributeCombo.setItems( attributes );
+        quickSearchAttributeCombo.select( 0 );
         HistoryUtils.save( VALUE_HISTORY_DIALOGSETTING_KEY, quickSearchValueCombo.getText() );
         String[] values = HistoryUtils.load( VALUE_HISTORY_DIALOGSETTING_KEY );
         quickSearchValueCombo.setItems( values );
@@ -258,7 +282,7 @@ public class BrowserQuickSearchWidget
 
         IBrowserConnection conn = entry.getBrowserConnection();
 
-        QuickSearch quickSearch = new QuickSearch();
+        QuickSearch quickSearch = new QuickSearch( entry );
         quickSearch.setName( "Quick Search" );
         quickSearch.setBrowserConnection( conn );
         quickSearch.setSearchBase( entry.getDn() );
@@ -277,7 +301,15 @@ public class BrowserQuickSearchWidget
         }
         filter.append( quickSearchAttributeCombo.getText() );
         filter.append( "!=".equals( quickSearchOperatorCombo.getText() ) ? "=" : quickSearchOperatorCombo.getText() );
-        filter.append( LdapFilterUtils.getEncodedValue( quickSearchValueCombo.getText() ) );
+
+        // only escape '\', '(', ')', and '\u0000'
+        // don't escape '*' to allow substring search
+        String value = quickSearchValueCombo.getText();
+        value = value.replaceAll( "\\\\", "\\\\5c" );
+        value = value.replaceAll( "\u0000", "\\\\00" );
+        value = value.replaceAll( "\\(", "\\\\28" );
+        value = value.replaceAll( "\\)", "\\\\29" );
+        filter.append( value );
         if ( "!=".equals( quickSearchOperatorCombo.getText() ) )
         {
             filter.append( ")" );
@@ -298,9 +330,16 @@ public class BrowserQuickSearchWidget
     {
         ISelection selection = browserWidget.getViewer().getSelection();
         IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+        ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
         if ( entries != null && entries.length == 1 )
         {
             IEntry entry = entries[0];
+            return entry;
+        }
+        else if ( searches != null && searches.length == 1 && ( searches[0] instanceof IQuickSearch ) )
+        {
+            IQuickSearch quickSearch = ( IQuickSearch ) searches[0];
+            IEntry entry = quickSearch.getSearchBaseEntry();
             return entry;
         }
         else
@@ -350,7 +389,7 @@ public class BrowserQuickSearchWidget
      * 
      * @param enabled true to enable this quick search widget, false to disable it
      */
-    public void setEnabled( boolean enabled )
+    private void setEnabled( boolean enabled )
     {
         if ( composite != null && !composite.isDisposed() )
         {
@@ -374,8 +413,10 @@ public class BrowserQuickSearchWidget
             }
             else
             {
-                quickSearchAttributeCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchAttribute" ) ); //$NON-NLS-1$
-                quickSearchOperatorCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchOperator" ) ); //$NON-NLS-1$
+                quickSearchAttributeCombo.setToolTipText( Messages
+                    .getString( "BrowserQuickSearchWidget.SearchAttribute" ) ); //$NON-NLS-1$
+                quickSearchOperatorCombo
+                    .setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchOperator" ) ); //$NON-NLS-1$
                 quickSearchValueCombo.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.SearchValue" ) ); //$NON-NLS-1$
                 parent.setToolTipText( null );
             }
@@ -432,7 +473,6 @@ public class BrowserQuickSearchWidget
                 atdNames = EMPTY;
                 setEnabled( false );
             }
-            quickSearchAttributeCombo.setItems( atdNames );
             quickSearchAttributePP.setProposals( Arrays.asList( atdNames ) );
         }
     }
