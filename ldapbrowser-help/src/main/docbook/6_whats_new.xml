@@ -48,6 +48,23 @@
 			</screenshot>	
 		</para>
 		<para>
+			<emphasis role="strong">Date &amp; Time Editor</emphasis>
+		</para>
+		<para>
+			The new Date &amp; Time Editor help you to view and edit
+			attributes with generalized time syntax.
+		</para>
+		<para>
+			<screenshot>
+				<mediaobject>
+					<imageobject>
+						<imagedata scale="50"
+							fileref="images/tools_value_editors_9b.png" format="PNG" />
+					</imageobject>
+				</mediaobject>
+			</screenshot>	
+		</para>
+		<para>
 			<emphasis role="strong">A number of bug fixes and improvements</emphasis>
 		</para>
 		<para>
@@ -97,7 +114,7 @@
 			<emphasis role="strong">LDIF Import: Overwrite existing Entries</emphasis>
 		</para>
 		<para>
-			Now it is possible to select weather existing entries should be 
+			Now it is possible to select whether existing entries should be 
 			overwritten during an LDIF import.
 			This is useful if you already imported LDIF data into your directory
 			and you want to import some modified LDIF.

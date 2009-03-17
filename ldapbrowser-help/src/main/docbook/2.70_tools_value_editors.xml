@@ -489,12 +489,12 @@
 		</simplesect>
 	</section>	
 		
-	<section id="tools_value_editors_timestampeditor">
-		<title>Timestamp Editor</title>
+	<section id="tools_value_editors_datetimeeditor">
+		<title>Date &amp; Time Editor</title>
 		<para>
-			The Timestamp Editor is the default editor for attributes with generalized time syntax.
+			The Date &amp; Time Editor is the default editor for attributes with generalized time syntax.
 		</para>
-		<simplesect id="tools_value_editors_timestampeditor_display">
+		<simplesect id="tools_value_editors_datetimeeditor_display">
 			<title>Display value</title>
 			<para>
 				The values are converted to local time.
@@ -504,16 +504,42 @@
 					<mediaobject>
 						<imageobject>
 							<imagedata contentdepth="1em"
-								fileref="images/tools_value_editors_10a.png" format="PNG" />
+								fileref="images/tools_value_editors_9a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
 				</screenshot>
 			</para>
 		</simplesect>
-		<simplesect id="tools_value_editors_timestampeditor_edit">
+		<simplesect id="tools_value_editors_datetimeeditor_edit">
 			<title>Edit value</title>
 			<para>
-				The In-Place Text Editor is used to edit values.
+				The edit dialog looks as follows:
+			</para>
+			<para>
+				<screenshot>
+					<mediaobject>
+						<imageobject>
+							<imagedata scale="50"
+								fileref="images/tools_value_editors_9b.png" format="PNG" />
+						</imageobject>
+					</mediaobject>
+				</screenshot>
+			</para>
+			<para>
+				To edit date and time you have the following options:
+				<itemizedlist>
+					<listitem>
+						<para>
+							You could set the time, pick a date from the 
+							calendar and choose a time zone.
+						</para>
+					</listitem>
+					<listitem>
+						<para>
+							You could manually edit the raw value in the input field.
+						</para>
+					</listitem>
+				</itemizedlist>
 			</para>
 		</simplesect>		
 	</section>		
