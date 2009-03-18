@@ -58,6 +58,7 @@ public class UserClassWrapper
         Map<Class, String> map = new HashMap<Class, String>();
         map.put( UserClass.AllUsers.class, "allUsers" ); //$NON-NLS-1$
         map.put( UserClass.ThisEntry.class, "thisEntry" ); //$NON-NLS-1$
+        map.put( UserClass.ParentOfEntry.class, "parentOfEntry" ); //$NON-NLS-1$
         map.put( UserClass.Name.class, "name" ); //$NON-NLS-1$
         map.put( UserClass.UserGroup.class, "userGroup" ); //$NON-NLS-1$
         map.put( UserClass.Subtree.class, "subtree" ); //$NON-NLS-1$
@@ -71,6 +72,7 @@ public class UserClassWrapper
         Map<Class, String> map = new HashMap<Class, String>();
         map.put( UserClass.AllUsers.class, Messages.getString( "UserClassWrapper.userClass.allUsers.label" ) ); //$NON-NLS-1$
         map.put( UserClass.ThisEntry.class, Messages.getString( "UserClassWrapper.userClass.thisEntry.label" ) ); //$NON-NLS-1$
+        map.put( UserClass.ParentOfEntry.class, Messages.getString( "UserClassWrapper.userClass.parentOfEntry.label" ) ); //$NON-NLS-1$
         map.put( UserClass.Name.class, Messages.getString( "UserClassWrapper.userClass.name.label" ) ); //$NON-NLS-1$
         map.put( UserClass.UserGroup.class, Messages.getString( "UserClassWrapper.userClass.userGroup.label" ) ); //$NON-NLS-1$
         map.put( UserClass.Subtree.class, Messages.getString( "UserClassWrapper.userClass.subtree.label" ) ); //$NON-NLS-1$

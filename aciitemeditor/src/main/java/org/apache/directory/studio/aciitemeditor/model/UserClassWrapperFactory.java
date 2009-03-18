@@ -54,6 +54,11 @@ public class UserClassWrapperFactory
                     "", //$NON-NLS-1$
                     null ),
 
+                // parentOfEntry
+                new UserClassWrapper( UserClass.ParentOfEntry.class, "", //$NON-NLS-1$
+                    "", //$NON-NLS-1$
+                    null ),
+
                 // name
                 new UserClassWrapper( UserClass.Name.class, "\"", //$NON-NLS-1$
                     "\"", //$NON-NLS-1$
