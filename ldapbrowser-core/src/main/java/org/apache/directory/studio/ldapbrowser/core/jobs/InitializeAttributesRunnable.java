@@ -148,7 +148,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
     {
         for ( IEntry entry : entries )
         {
-            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() )
+            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() && entry.isAttributesInitialized() )
             {
                 EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( entry ), this );
             }

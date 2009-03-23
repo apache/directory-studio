@@ -185,7 +185,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     {
         for ( IEntry entry : entries )
         {
-            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() )
+            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() && entry.isChildrenInitialized() )
             {
                 EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( entry ), this );
             }
