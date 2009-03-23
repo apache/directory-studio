@@ -180,11 +180,11 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             .getString( "NetworkParameterPage.NetworkParameter" ), 1 ); //$NON-NLS-1$
 
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group, 3, 1 );
-        BaseWidgetUtils.createLabel( groupComposite, "Hostname:", 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("NetworkParameterPage.HostName"), 1 ); //$NON-NLS-1$
         String[] hostHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY );
         hostCombo = BaseWidgetUtils.createCombo( groupComposite, hostHistory, -1, 2 );
 
-        BaseWidgetUtils.createLabel( groupComposite, "Port:", 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( groupComposite, Messages.getString("NetworkParameterPage.Port"), 1 ); //$NON-NLS-1$
         String[] portHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_PORT_HISTORY );
         portCombo = BaseWidgetUtils.createCombo( groupComposite, portHistory, -1, 2 );
         portCombo.setTextLimit( 5 );

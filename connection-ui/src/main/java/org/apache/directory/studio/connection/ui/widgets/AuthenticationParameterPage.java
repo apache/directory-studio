@@ -203,7 +203,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         BaseWidgetUtils.createLabel( composite, Messages.getString("AuthenticationParameterPage.BindPassword"), 1 ); //$NON-NLS-1$
         bindPasswordText = BaseWidgetUtils.createPasswordText( composite, "", 2 ); //$NON-NLS-1$
 
-        BaseWidgetUtils.createLabel( composite, "SASL Realm:", 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( composite, Messages.getString("AuthenticationParameterPage.SASLRealm"), 1 ); //$NON-NLS-1$
         String[] saslHistory = HistoryUtils.load( ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY );
         saslRealmText = BaseWidgetUtils.createCombo( composite, saslHistory, -1, 2 );
 
