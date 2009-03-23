@@ -372,6 +372,7 @@ public class PasswordDialog extends Dialog
         newPasswordPreviewText = BaseWidgetUtils.createReadonlyText( newPasswordContainer, "", 1 ); //$NON-NLS-1$
 
         newSaltButton = BaseWidgetUtils.createButton( newPasswordContainer, Messages.getString("PasswordDialog.NewSalt"), 1 ); //$NON-NLS-1$
+        newSaltButton.setLayoutData( new GridData() );
         newSaltButton.setEnabled( false );
         newSaltButton.addSelectionListener( new SelectionAdapter()
         {
