@@ -25,12 +25,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -58,6 +61,15 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     /** The editor it is attached to */
     private EntryEditor entryEditor;
 
+    /** This listener updates the viewer if an property (e.g. is operational attributes visible) has been changed */
+    protected IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
+    {
+        public void propertyChange( PropertyChangeEvent event )
+        {
+            refresh();
+        }
+    };
+
 
     /**
      * Creates a new instance of EntryEditorOutlinePage.
@@ -68,6 +80,7 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
     public EntryEditorOutlinePage( EntryEditor entryEditor )
     {
         this.entryEditor = entryEditor;
+        BrowserCommonActivator.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
     }
 
 
@@ -211,6 +224,8 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         super.dispose();
         if ( entryEditor != null )
         {
+            BrowserCommonActivator.getDefault().getPreferenceStore().removePropertyChangeListener(
+                propertyChangeListener );
             entryEditor = null;
         }
     }

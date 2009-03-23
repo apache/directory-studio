@@ -24,8 +24,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -36,7 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryEditorWidgetPreferences implements IPropertyChangeListener
+public class EntryEditorWidgetPreferences
 {
 
     /** The viewer. */
@@ -48,7 +46,6 @@ public class EntryEditorWidgetPreferences implements IPropertyChangeListener
      */
     public EntryEditorWidgetPreferences()
     {
-        BrowserCommonActivator.getDefault().getPreferenceStore().addPropertyChangeListener( this );
     }
 
 
@@ -68,7 +65,6 @@ public class EntryEditorWidgetPreferences implements IPropertyChangeListener
      */
     public void dispose()
     {
-        BrowserCommonActivator.getDefault().getPreferenceStore().removePropertyChangeListener( this );
         viewer = null;
     }
 
@@ -208,18 +204,6 @@ public class EntryEditorWidgetPreferences implements IPropertyChangeListener
     {
         return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void propertyChange( PropertyChangeEvent event )
-    {
-        if ( this.viewer != null )
-        {
-            this.viewer.refresh();
-        }
     }
 
 }

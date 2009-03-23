@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -96,7 +97,11 @@ public class EntryEditorWidgetFilter extends ViewerFilter
                 return false;
             }
 
-            return true;
+            // check attribute category
+            if ( !goesThroughtCategoryFilter( attribute ) )
+            {
+                return false;
+            }
         }
         else if ( element instanceof IValue )
         {
@@ -108,32 +113,14 @@ public class EntryEditorWidgetFilter extends ViewerFilter
                 return false;
             }
 
-            // filter attribute types
-            if ( value.getAttribute().isObjectClassAttribute() )
+            // check attribute category
+            if ( !goesThroughtCategoryFilter( value.getAttribute() ) )
             {
-                return isShowObjectClassAttribute() || ( value.getAttribute().getEntry() instanceof IRootDSE );
-            }
-            else if ( value.getAttribute().isMustAttribute() )
-            {
-                return isShowMustAttributes() || ( value.getAttribute().getEntry() instanceof IRootDSE );
-            }
-            else if ( value.getAttribute().isMayAttribute() )
-            {
-                return isShowMayAttributes() || ( value.getAttribute().getEntry() instanceof IRootDSE );
-            }
-            else if ( value.getAttribute().isOperationalAttribute() )
-            {
-                return isShowOperationalAttributes() || ( value.getAttribute().getEntry() instanceof IRootDSE );
-            }
-            else
-            {
-                return true;
+                return false;
             }
         }
-        else
-        {
-            return true;
-        }
+
+        return true;
     }
 
 
@@ -174,6 +161,38 @@ public class EntryEditorWidgetFilter extends ViewerFilter
 
 
     /**
+     * Checks if the given attribute goes through attribute category filter.
+     * 
+     * @param attribute the attribute
+     * 
+     * @return true, if goes through attribute category filter
+     */
+    private boolean goesThroughtCategoryFilter( IAttribute attribute )
+    {
+        if ( attribute.isObjectClassAttribute() )
+        {
+            return isShowObjectClassAttribute() || ( attribute.getEntry() instanceof IRootDSE );
+        }
+        else if ( attribute.isMustAttribute() )
+        {
+            return isShowMustAttributes() || ( attribute.getEntry() instanceof IRootDSE );
+        }
+        else if ( attribute.isMayAttribute() )
+        {
+            return isShowMayAttributes() || ( attribute.getEntry() instanceof IRootDSE );
+        }
+        else if ( attribute.isOperationalAttribute() )
+        {
+            return isShowOperationalAttributes() || ( attribute.getEntry() instanceof IRootDSE );
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+
+    /**
      * Disposes this filter.
      */
     public void dispose()
@@ -202,11 +221,10 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     {
         if ( !this.quickFilterAttribute.equals( quickFilterAttribute ) )
         {
+            String oldValue = this.quickFilterAttribute;
             this.quickFilterAttribute = quickFilterAttribute;
-            if ( viewer != null )
-            {
-                viewer.refresh();
-            }
+            BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
+                "QuickFilterAttributeChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
     }
 
@@ -231,11 +249,10 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     {
         if ( !this.quickFilterValue.equals( quickFilterValue ) )
         {
+            String oldValue = this.quickFilterValue;
             this.quickFilterValue = quickFilterValue;
-            if ( viewer != null )
-            {
-                viewer.refresh();
-            }
+            BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
+                "QuickFilterValueChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
     }
 

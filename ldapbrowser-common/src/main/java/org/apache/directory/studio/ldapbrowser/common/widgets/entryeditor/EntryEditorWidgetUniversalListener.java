@@ -38,6 +38,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -139,6 +141,18 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         }
     };
 
+    /** This listener updates the viewer if an property (e.g. is operational attributes visible) has been changed */
+    protected IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
+    {
+        public void propertyChange( PropertyChangeEvent event )
+        {
+            if ( viewer != null )
+            {
+                viewer.refresh();
+            }
+        }
+    };
+
 
     /**
      * Creates a new instance of EntryEditorWidgetUniversalListener.
@@ -160,6 +174,7 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         viewer.getTree().addSelectionListener( viewerSelectionListener );
         viewer.getTree().addMouseListener( viewerMouseListener );
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
+        BrowserCommonActivator.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
 
         // Don't invoke Finish' or 'OK' button when pressing 'Enter' in wizard or dialog
         viewer.getTree().addTraverseListener( new TraverseListener()
@@ -183,6 +198,8 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         if ( viewer != null )
         {
             EventRegistry.removeEntryUpdateListener( this );
+            BrowserCommonActivator.getDefault().getPreferenceStore().removePropertyChangeListener(
+                propertyChangeListener );
 
             startEditAction = null;
             viewer = null;
