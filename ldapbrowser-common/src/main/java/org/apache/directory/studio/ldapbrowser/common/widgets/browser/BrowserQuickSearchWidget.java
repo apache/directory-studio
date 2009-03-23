@@ -200,6 +200,9 @@ public class BrowserQuickSearchWidget
                 performSearch();
             }
         } );
+        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.widthHint = 50;
+        quickSearchAttributeCombo.setLayoutData( gd );
 
         String[] operators = new String[]
             { "=", "!=", "<=", ">=", "~=" };
@@ -219,6 +222,9 @@ public class BrowserQuickSearchWidget
                 performSearch();
             }
         } );
+        gd = new GridData( GridData.FILL_HORIZONTAL );
+        gd.widthHint = 50;
+        quickSearchValueCombo.setLayoutData( gd );
 
         quickSearchScopeButton = new Button( innerComposite, SWT.TOGGLE );
         quickSearchScopeButton.setToolTipText( Messages.getString( "BrowserQuickSearchWidget.ScopeOneLevelToolTip" ) ); //$NON-NLS-1$
