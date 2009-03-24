@@ -104,7 +104,7 @@ public class NewObjectClassContentWizardPage extends WizardPage
 
         // Superiors
         Group superiorsGroup = new Group( composite, SWT.NONE );
-        superiorsGroup.setText( Messages.getString( "NewObjectClassContentWizardPage.3" ) ); //$NON-NLS-1$
+        superiorsGroup.setText( Messages.getString( "NewObjectClassContentWizardPage.Superiors" ) ); //$NON-NLS-1$
         superiorsGroup.setLayout( new GridLayout( 2, false ) );
         superiorsGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 

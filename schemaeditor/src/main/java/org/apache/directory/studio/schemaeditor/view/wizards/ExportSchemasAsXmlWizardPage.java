@@ -382,7 +382,7 @@ public class ExportSchemasAsXmlWizardPage extends AbstractWizardPage
             .setFilterNames( new String[]
                 {
                     Messages.getString( "ExportSchemasAsXmlWizardPage.XMLFiles" ), Messages.getString( "ExportSchemasAsXmlWizardPage.AllFiles" ) } ); //$NON-NLS-1$ //$NON-NLS-2$
-        if ( Messages.getString( "ExportSchemasAsXmlWizardPage.24" ).equals( exportSingleFileText.getText() ) ) //$NON-NLS-1$
+        if ( "".equals( exportSingleFileText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( Activator.getDefault().getPreferenceStore().getString(
                 PluginConstants.FILE_DIALOG_EXPORT_SCHEMAS_XML ) );
