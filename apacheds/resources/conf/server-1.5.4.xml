@@ -19,7 +19,6 @@
   under the License.
 -->
 
-
 <spring:beans xmlns:spring="http://xbean.apache.org/schemas/spring/1.0" 
 			  xmlns:s="http://www.springframework.org/schema/beans"
 			  xmlns="http://apacheds.org/config/1.0">
