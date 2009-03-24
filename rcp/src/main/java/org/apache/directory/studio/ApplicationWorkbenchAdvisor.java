@@ -26,6 +26,7 @@ import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -72,7 +73,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
         TrayDialog.setDialogHelpAvailable( true );
         ImageRegistry reg = JFaceResources.getImageRegistry();
         ImageDescriptor helpImage = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(
-            "IMGS_LCL_LINKTO_HELP" ); //$NON-NLS-1$
+            ISharedImages.IMG_LCL_LINKTO_HELP );
         reg.put( Dialog.DLG_IMG_HELP, helpImage );
     }
 
