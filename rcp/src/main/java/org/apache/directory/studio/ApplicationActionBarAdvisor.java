@@ -277,7 +277,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         MenuManager navigateMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.navigate"), IWorkbenchActionConstants.M_NAVIGATE ); //$NON-NLS-1$
         MenuManager windowMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.windows"), IWorkbenchActionConstants.M_WINDOW ); //$NON-NLS-1$
         MenuManager helpMenu = new MenuManager( Messages.getString("ApplicationActionBarAdvisor.help"), IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
-        MenuManager hiddenMenu = new MenuManager( "Hidden", IWorkbenchActionConstants.M_HELP ); //$NON-NLS-1$
+        MenuManager hiddenMenu = new MenuManager( "Hidden", "org.apache.directory.studio.rcp.hidden" ); //$NON-NLS-1$ //$NON-NLS-2$
         hiddenMenu.setVisible( false );
 
         // Adding menus
@@ -317,8 +317,16 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         fileMenu.add( propertiesAction );
         fileMenu.add( reopenEditorsList );
         fileMenu.add( new GroupMarker( IWorkbenchActionConstants.MRU ) );
-        fileMenu.add( new Separator() );
-        fileMenu.add( exitAction );
+        if ( ApplicationActionBarAdvisor.OS_MACOSX.equalsIgnoreCase( os ) )
+        {
+            // We hide the exit (quit) action, it will be added by the "Carbon" plugin
+            hiddenMenu.add( exitAction );
+        }
+        else
+        {
+            fileMenu.add( new Separator() );
+            fileMenu.add( exitAction );
+        }
 
         // Populating Edit Menu
         editMenu.add( undoAction );
