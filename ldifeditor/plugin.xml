@@ -107,7 +107,123 @@
             class="org.eclipse.jface.text.templates.TemplateContextType"
             id="%CtxType_LdifModdnRecord_id"
             name="%CtxType_LdifModdnRecord_name"/>
-      <include file="resources/templates/templates.xml"/>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifFile_id"
+            description="%Template_LdifContentRecord_description"
+            icon="resources/icons/entry.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifContentRecord"
+            name="dn: ">
+         <pattern>dn: ${dn}
+objectClass: ${objectClass}
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifFile_id"
+            description="%Template_LdifAddRecord_description"
+            icon="resources/icons/ldif_add.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifChangeAddRecord"
+            name="changetype: add">
+         <pattern>dn: ${dn}
+changetype: add
+objectClass: ${objectClass}
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifFile_id"
+            description="%Template_LdifModifyRecord_description"
+            icon="resources/icons/ldif_modify.gif"
+            id="org.apache.directory.studio.ldifeditor.templatesldifChangeModifyRecord"
+            name="changetype: modify">
+         <pattern>dn: ${dn}
+changetype: modify
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifFile_id"
+            description="%Template_LdifDeleteRecord_description"
+            icon="resources/icons/ldif_delete.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifChangeDeleteRecord"
+            name="changetype: modify">
+         <pattern>dn: ${dn}
+changetype: delete
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifFile_id"
+            description="%Template_LdifModdnRecord_description"
+            icon="resources/icons/ldif_rename.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifChangeModdnRecord"
+            name="changetype: modify">
+         <pattern>dn: ${dn}
+changetype: moddn
+newrdn: ${newrdn}
+deleteoldrdn: 1
+newsuperior: ${newsuperior}
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifModificationRecord_id"
+            description="%Template_LdifModifyRecord_AddValue_description"
+            icon="resources/icons/ldif_mod_add.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordAddModification"
+            name="add: ">
+         <pattern>add: ${attribute}
+${attribute}: ${value}
+-
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifModificationRecord_id"
+            description="%Template_LdifModifyRecord_ReplaceValue_description"
+            icon="resources/icons/ldif_mod_replace.gif"
+            id="org.apache.directory.studio.ldifeditor.ui.templates.ldifModificationRecordReplaceModification"
+            name="replace: ">
+         <pattern>replace: ${attribute}
+${attribute}: ${value}
+-
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifModificationRecord_id"
+            description="%Template_LdifModifyRecord_DeleteValue_description"
+            icon="resources/icons/ldif_mod_delete.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordDeleteModification"
+            name="delete: ">
+         <pattern>delete: ${attribute}
+${attribute}: ${value}
+-
+${cursor}
+</pattern>
+      </template>
+      <template
+            autoinsert="true"
+            contextTypeId="%CtxType_LdifModificationRecord_id"
+            description="%Template_LdifModifyRecord_DeleteAttribute_description"
+            icon="resources/icons/ldif_mod_delete.gif"
+            id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordDeleteAttributeModification"
+            name="delete: ">
+         <pattern>delete: ${attribute}
+-
+${cursor}
+</pattern>
+      </template>
+      
+      
    </extension>
 
 </plugin>
