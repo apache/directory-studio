@@ -77,10 +77,26 @@ public interface ConnectionUpdateListener extends EventListener
 
 
     /**
-     * Called when {@link ConnectionFolder}s were modified.
+     * Called when an {@link ConnectionFolder} was modified.
      *
      * @param connectionFolder the modified connection folder 
      */
     public void connectionFolderModified( ConnectionFolder connectionFolder );
+    
+    
+    /**
+     * Called when an {@link ConnectionFolder} was added.
+     *
+     * @param connectionFolder the added connection folder 
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder );
+    
+    
+    /**
+     * Called when an {@link ConnectionFolder} was removed.
+     *
+     * @param connectionFolder the removed connection folder 
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder );
 
 }

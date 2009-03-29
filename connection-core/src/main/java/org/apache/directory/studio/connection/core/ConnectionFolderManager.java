@@ -106,7 +106,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
         }
 
         folderList.add( connectionFolder );
-        ConnectionEventRegistry.fireConnectonFolderModified( connectionFolder, this );
+        ConnectionEventRegistry.fireConnectonFolderAdded( connectionFolder, this );
     }
 
 
@@ -119,7 +119,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     public void removeConnectionFolder( ConnectionFolder connectionFolder )
     {
         folderList.remove( connectionFolder );
-        ConnectionEventRegistry.fireConnectonFolderModified( connectionFolder, this );
+        ConnectionEventRegistry.fireConnectonFolderRemoved( connectionFolder, this );
     }
 
 
@@ -338,6 +338,24 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
      * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderModified( ConnectionFolder connectionFolder )
+    {
+        saveConnectionFolders();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder )
+    {
+        saveConnectionFolders();
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder )
     {
         saveConnectionFolders();
     }

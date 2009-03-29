@@ -332,5 +332,75 @@ public class ConnectionEventRegistry
             }
         }
     }
+    /**
+     * Notifies each {@link ConnectionUpdateListener} about the added connection folder.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param connectionFolder the added connection folder
+     * @param source the source
+     */
+    public static void fireConnectonFolderAdded( final ConnectionFolder connectionFolder, final Object source )
+    {
+        if ( isEventFireingSuspendedInCurrentThread() )
+        {
+            return;
+        }
+        
+        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
+            connectionUpdateListeners );
+        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
+        while ( it.hasNext() )
+        {
+            final ConnectionUpdateListener listener = it.next();
+            EventRunnable runnable = new EventRunnable()
+            {
+                public void run()
+                {
+                    listener.connectionFolderAdded( connectionFolder );
+                }
+            };
+            
+            EventRunner runner = listeners.get( listener );
+            synchronized ( lock )
+            {
+                runner.execute( runnable );
+            }
+        }
+    }
+    /**
+     * Notifies each {@link ConnectionUpdateListener} about the removed connection folder.
+     * Uses the {@link EventRunner}s.
+     *
+     * @param connectionFolder the removed connection folder
+     * @param source the source
+     */
+    public static void fireConnectonFolderRemoved( final ConnectionFolder connectionFolder, final Object source )
+    {
+        if ( isEventFireingSuspendedInCurrentThread() )
+        {
+            return;
+        }
+        
+        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
+            connectionUpdateListeners );
+        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
+        while ( it.hasNext() )
+        {
+            final ConnectionUpdateListener listener = it.next();
+            EventRunnable runnable = new EventRunnable()
+            {
+                public void run()
+                {
+                    listener.connectionFolderRemoved( connectionFolder );
+                }
+            };
+            
+            EventRunner runner = listeners.get( listener );
+            synchronized ( lock )
+            {
+                runner.execute( runnable );
+            }
+        }
+    }
 
 }

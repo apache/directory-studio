@@ -207,6 +207,22 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
 
     /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
      * {@inheritDoc}
      *
      * This implementation refreshes the tree.

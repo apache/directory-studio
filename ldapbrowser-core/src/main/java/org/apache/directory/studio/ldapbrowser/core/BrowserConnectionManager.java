@@ -275,6 +275,22 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
 
 
     /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
      * @see org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateListener#browserConnectionUpdated(org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent)
      */
     public void browserConnectionUpdated( BrowserConnectionUpdateEvent browserConnectionUpdateEvent )

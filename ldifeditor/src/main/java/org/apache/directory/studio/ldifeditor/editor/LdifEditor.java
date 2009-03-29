@@ -640,6 +640,22 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
 
     /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder )
+    {
+    }
+
+
+    /**
      * This implementation checks if the input is of type
      * NonExistingLdifEditorInput. In that case doSaveAs() is
      * called to prompt for a new file name and location.

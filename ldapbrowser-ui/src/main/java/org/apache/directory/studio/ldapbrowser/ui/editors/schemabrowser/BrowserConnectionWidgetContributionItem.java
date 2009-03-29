@@ -254,4 +254,23 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem im
     {
         // Nothing to do
     }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder )
+    {
+        // Nothing to do
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder )
+    {
+        // Nothing to do
+    }
+
 }

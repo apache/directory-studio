@@ -177,6 +177,24 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderAdded( ConnectionFolder connectionFolder )
+    {
+        connectionUpdated( null );
+    }
+
+
+    /**
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     */
+    public void connectionFolderRemoved( ConnectionFolder connectionFolder )
+    {
+        connectionUpdated( null );
+    }
+
+
+    /**
      * Input changed.
      * 
      * @param input the input
