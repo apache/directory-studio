@@ -123,9 +123,18 @@ public class CopyAction extends StudioAction
         // copy to clipboard
         if ( objects != null )
         {
-            copyToClipboard( new Object[]
-                { objects.toArray(), urls }, new Transfer[]
-                { ConnectionTransfer.getInstance(), TextTransfer.getInstance() } );
+            if ( urls != null && urls.length() > 0 )
+            {
+                copyToClipboard( new Object[]
+                    { objects.toArray(), urls }, new Transfer[]
+                    { ConnectionTransfer.getInstance(), TextTransfer.getInstance() } );
+            }
+            else
+            {
+                copyToClipboard( new Object[]
+                    { objects.toArray() }, new Transfer[]
+                    { ConnectionTransfer.getInstance() } );
+            }
         }
 
         // update paste action
