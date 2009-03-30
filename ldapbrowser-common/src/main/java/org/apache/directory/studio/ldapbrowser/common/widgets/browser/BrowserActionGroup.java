@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.connection.ui.actions.CollapseAllAction;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.actions.CollapseAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FilterChildrenAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PropertiesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RefreshAction;

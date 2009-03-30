@@ -56,7 +56,6 @@ public interface BrowserUIConstants
     public static final String PREFERENCEPAGEID_TEXTFORMATS = BrowserUIPlugin.getDefault().getPluginProperties()
     .getString( "PrefPage_TextFormatsPreferencePage_id" ); //$NON-NLS-1$
 
-    public static final String IMG_EXPANDALL = "resources/icons/expandall.gif"; //$NON-NLS-1$
     public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif"; //$NON-NLS-1$
     public static final String IMG_BATCH = "resources/icons/batch.gif"; //$NON-NLS-1$
     public static final String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$

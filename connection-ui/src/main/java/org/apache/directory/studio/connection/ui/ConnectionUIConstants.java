@@ -78,6 +78,12 @@ public interface ConnectionUIConstants
     /** The image to add a connection folder. */
     public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.gif"; //$NON-NLS-1$
 
+    /** The expand all image */
+    public static final String IMG_EXPANDALL = "resources/icons/expandall.gif"; //$NON-NLS-1$
+
+    /** The collapse all image */
+    public static final String IMG_COLLAPSEALL = "resources/icons/collapseall.gif"; //$NON-NLS-1$
+
     public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties().getString(
         "ConnectionTransfert_Typename" ); //$NON-NLS-1$
 

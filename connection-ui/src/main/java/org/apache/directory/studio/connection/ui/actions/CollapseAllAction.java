@@ -18,11 +18,11 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.common.actions;
+package org.apache.directory.studio.connection.ui.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 
@@ -46,7 +46,7 @@ public class CollapseAllAction extends Action
      */
     public CollapseAllAction( TreeViewer viewer )
     {
-        super( Messages.getString("CollapseAllAction.CollapseAll"), BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
+        super( Messages.getString("CollapseAllAction.CollapseAll"), ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 

@@ -28,9 +28,11 @@ import java.util.Map;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.actions.ActionHandlerManager;
 import org.apache.directory.studio.connection.ui.actions.CloseConnectionAction;
+import org.apache.directory.studio.connection.ui.actions.CollapseAllAction;
 import org.apache.directory.studio.connection.ui.actions.ConnectionViewActionProxy;
 import org.apache.directory.studio.connection.ui.actions.CopyAction;
 import org.apache.directory.studio.connection.ui.actions.DeleteAction;
+import org.apache.directory.studio.connection.ui.actions.ExpandAllAction;
 import org.apache.directory.studio.connection.ui.actions.NewConnectionAction;
 import org.apache.directory.studio.connection.ui.actions.NewConnectionFolderAction;
 import org.apache.directory.studio.connection.ui.actions.OpenConnectionAction;
@@ -63,6 +65,11 @@ import org.eclipse.ui.actions.ActionFactory;
  */
 public class ConnectionActionGroup implements ActionHandlerManager, IMenuListener
 {
+    /** The collapse all action. */
+    private CollapseAllAction collapseAllAction;
+
+    /** The expand all action. */
+    private ExpandAllAction expandAllAction;
 
     /** The Constant newConnectionAction. */
     protected static final String newConnectionAction = "newConnectionAction"; //$NON-NLS-1$
@@ -116,9 +123,13 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     public ConnectionActionGroup( ConnectionWidget mainWidget, ConnectionConfiguration configuration )
     {
         this.mainWidget = mainWidget;
-        this.connectionActionMap = new HashMap<String, ConnectionViewActionProxy>();
-
         TreeViewer viewer = mainWidget.getViewer();
+
+        collapseAllAction = new CollapseAllAction( viewer );
+        expandAllAction = new ExpandAllAction( viewer );
+
+        connectionActionMap = new HashMap<String, ConnectionViewActionProxy>();
+        
         connectionActionMap.put( newConnectionAction, new ConnectionViewActionProxy( viewer, this,
             new NewConnectionAction() ) );
         connectionActionMap.put( newConnectionFolderAction, new ConnectionViewActionProxy( viewer, this,
@@ -164,6 +175,13 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
                 action = null;
                 it.remove();
             }
+
+            collapseAllAction.dispose();
+            collapseAllAction = null;
+
+            expandAllAction.dispose();
+            expandAllAction = null;
+
             connectionActionMap.clear();
             connectionActionMap = null;
 
@@ -199,6 +217,9 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         toolBarManager.add( new Separator() );
         toolBarManager.add( ( IAction ) this.connectionActionMap.get( openConnectionAction ) );
         toolBarManager.add( ( IAction ) this.connectionActionMap.get( closeConnectionAction ) );
+        toolBarManager.add( new Separator() );
+        toolBarManager.add( expandAllAction );
+        toolBarManager.add( collapseAllAction );
 
         toolBarManager.update( true );
     }

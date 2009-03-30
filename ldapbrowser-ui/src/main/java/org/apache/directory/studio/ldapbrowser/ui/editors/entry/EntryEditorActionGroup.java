@@ -21,9 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import org.apache.directory.studio.connection.ui.actions.CollapseAllAction;
+import org.apache.directory.studio.connection.ui.actions.ExpandAllAction;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.actions.CollapseAllAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAllValuesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction;
@@ -37,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopySearchFilterAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyUrlAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyValueAction;
-import org.apache.directory.studio.ldapbrowser.ui.actions.ExpandAllAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.LocateDnInDitAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;

@@ -150,7 +150,6 @@ public interface BrowserCommonConstants
     public static final String IMG_CONNECTION_DISCONNECT = "resources/icons/connection_disconnect.gif"; //$NON-NLS-1$
     public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.gif"; //$NON-NLS-1$
     public static final String IMG_REFRESH = "resources/icons/refresh.gif"; //$NON-NLS-1$
-    public static final String IMG_COLLAPSEALL = "resources/icons/collapseall.gif"; //$NON-NLS-1$
     public static final String IMG_FILTER_DIT = "resources/icons/filter_dit.gif"; //$NON-NLS-1$
     public static final String IMG_FILTER_EDITOR = "resources/icons/filtereditor.gif"; //$NON-NLS-1$
     public static final String IMG_PARENT = "resources/icons/parent.gif"; //$NON-NLS-1$

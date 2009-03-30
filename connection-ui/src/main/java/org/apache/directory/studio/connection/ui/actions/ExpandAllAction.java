@@ -18,11 +18,11 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.actions;
+package org.apache.directory.studio.connection.ui.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 
@@ -47,7 +47,7 @@ public class ExpandAllAction extends Action
     public ExpandAllAction( TreeViewer viewer )
     {
         super(
-            Messages.getString( "ExpandAllAction.ExpandAll" ), BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPANDALL ) ); //$NON-NLS-1$
+            Messages.getString( "ExpandAllAction.ExpandAll" ), ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_EXPANDALL ) ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 
