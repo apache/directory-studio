@@ -131,7 +131,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                                     Messages.getString( "ImportSchemasFromXmlWizard.Error" ), //$NON-NLS-1$
                                     NLS
                                         .bind(
-                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorSavingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
+                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
                         }
                         catch ( FileNotFoundException e )
                         {
@@ -145,7 +145,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                                     Messages.getString( "ImportSchemasFromXmlWizard.Error" ), //$NON-NLS-1$
                                     NLS
                                         .bind(
-                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorSavingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
+                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
                         }
                         monitor.worked( 1 );
                     }
