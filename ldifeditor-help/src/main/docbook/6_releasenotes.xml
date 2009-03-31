@@ -19,7 +19,40 @@
 <chapter id="releasenotes">
 	<title>Release notes</title>
 	<simplesect>
-        <title>Apache Directory Studio 1.3.0 RC1 - (2008, October 13th)</title>
+		<title>Apache Directory Studio 1.4.0 - (2009, April XXth)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-468] - The LDIF parser does not correctly parse changes</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-451] - [I18n] Templates not I18ned in LdifEditor</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
 		</para>
