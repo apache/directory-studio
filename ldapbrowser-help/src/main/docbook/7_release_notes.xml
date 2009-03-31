@@ -27,20 +27,50 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-472] - SWTException (Widget is disposed) when disabling DIT Quick Search</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-470] - Schema Browser view is not bring to front when using the 'Open Schema Browser' menu item while the view is already opened but not the frontmost view</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-469] - Added wrong AttributeTypes can't be deleted</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-465] - Context entry created from an LDIF import is not shown in the Browser view</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-463] - Browsing the directory produce too many search requests</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-460] - Pressing 'Enter' in New Entry wizard should edit the attribute</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-457] - Unknown schema causes attributes to be treated as operational</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-456] - Cannot create an entry with mandatory binary attribute</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-430] - NullPointer exception when fetching children of a node</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-427] - Operational attributes turned on by itself</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-423] - Outline view does not respect the settings of the Entry Editor on displaying or not the operational attributes</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-420] - Unable to locate in DIT (f3)</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-419] - Problems switching between connections</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-396] - Custom LDAP attributes not shown in entry editor</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-395] - Problems with special chars (german Umlauts)</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-373] - Can't delete a tagged attribute if the non tagged attribute belong to the DN</para>
 				</listitem>
 			</itemizedlist>
@@ -52,13 +82,29 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-455] - Cannot copy/past an existing search</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-412] - Add expand all and collapse all actions to the connections view</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-411] - Select a new created folder in the connection view</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-241] - The "New Value" action (in the Entry Editor) should be disabled if the AT is defined as single valued</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-234] - Greyed out menu items should have a tool tip explaining *why* they're greyed out</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-207] - Operationnal attributes cannot be shown entirely</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-150] - mprove error handling</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-115] - Unable to edit operational attribute values</para>
 				</listitem>
 			</itemizedlist>
@@ -70,7 +116,11 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-449] - Add a new GeneralizedTime Value Editor</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-335] - DIT Quick Search</para>
 				</listitem>
 			</itemizedlist>
