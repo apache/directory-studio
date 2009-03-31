@@ -1288,6 +1288,7 @@
             <locale>de</locale>
             <locale>fr</locale>
           </locales>
+          <aggregate>true</aggregate>
         </configuration>
       </plugin>
     </plugins>
