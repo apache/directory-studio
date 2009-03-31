@@ -27,6 +27,8 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-466] - Incorrect error message when importing a bad XML schema file</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-442] - Typo in a warning of the New ObjectClass wizard ('attribute type' instead of 'object class')</para>
 				</listitem>
 			</itemizedlist>
