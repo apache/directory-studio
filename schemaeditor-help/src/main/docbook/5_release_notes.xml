@@ -28,6 +28,15 @@
 				<listitem>
 					<para>[DIRSTUDIO-466] - Incorrect error message when importing a bad XML schema file</para>
 					<para>[DIRSTUDIO-442] - Typo in a warning of the New ObjectClass wizard ('attribute type' instead of 'object class')</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
 					<para>[DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()</para>
 				</listitem>
 			</itemizedlist>
