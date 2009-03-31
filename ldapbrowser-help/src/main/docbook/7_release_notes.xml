@@ -19,7 +19,65 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
-        <title>Apache Directory Studio 1.3.0 RC1 - (2008, October 13th)</title>
+		<title>Apache Directory Studio 1.4.0 - (2009, April XXth)</title>
+		<para>
+			<emphasis>Bug</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-472] - SWTException (Widget is disposed) when disabling DIT Quick Search</para>
+					<para>[DIRSTUDIO-470] - Schema Browser view is not bring to front when using the 'Open Schema Browser' menu item while the view is already opened but not the frontmost view</para>
+					<para>[DIRSTUDIO-469] - Added wrong AttributeTypes can't be deleted</para>
+					<para>[DIRSTUDIO-465] - Context entry created from an LDIF import is not shown in the Browser view</para>
+					<para>[DIRSTUDIO-463] - Browsing the directory produce too many search requests</para>
+					<para>[DIRSTUDIO-460] - Pressing 'Enter' in New Entry wizard should edit the attribute</para>
+					<para>[DIRSTUDIO-457] - Unknown schema causes attributes to be treated as operational</para>
+					<para>[DIRSTUDIO-456] - Cannot create an entry with mandatory binary attribute</para>
+					<para>[DIRSTUDIO-430] - NullPointer exception when fetching children of a node</para>
+					<para>[DIRSTUDIO-427] - Operational attributes turned on by itself</para>
+					<para>[DIRSTUDIO-423] - Outline view does not respect the settings of the Entry Editor on displaying or not the operational attributes</para>
+					<para>[DIRSTUDIO-420] - Unable to locate in DIT (f3)</para>
+					<para>[DIRSTUDIO-419] - Problems switching between connections</para>
+					<para>[DIRSTUDIO-396] - Custom LDAP attributes not shown in entry editor</para>
+					<para>[DIRSTUDIO-395] - Problems with special chars (german Umlauts)</para>
+					<para>[DIRSTUDIO-373] - Can't delete a tagged attribute if the non tagged attribute belong to the DN</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-455] - Cannot copy/past an existing search</para>
+					<para>[DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()</para>
+					<para>[DIRSTUDIO-412] - Add expand all and collapse all actions to the connections view</para>
+					<para>[DIRSTUDIO-411] - Select a new created folder in the connection view</para>
+					<para>[DIRSTUDIO-241] - The "New Value" action (in the Entry Editor) should be disabled if the AT is defined as single valued</para>
+					<para>[DIRSTUDIO-234] - Greyed out menu items should have a tool tip explaining *why* they're greyed out</para>
+					<para>[DIRSTUDIO-207] - Operationnal attributes cannot be shown entirely</para>
+					<para>[DIRSTUDIO-150] - mprove error handling</para>
+					<para>[DIRSTUDIO-115] - Unable to edit operational attribute values</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-449] - Add a new GeneralizedTime Value Editor</para>
+					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+					<para>[DIRSTUDIO-335] - DIT Quick Search</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
 			<emphasis>Bug</emphasis>
 		</para>
