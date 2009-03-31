@@ -27,6 +27,8 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-478] - The 'Exit' menu item from the 'File' menu should be removed when running on Mac OS X</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-477] - Update Eclipse dependencies to version 3.4.2</para>
 				</listitem>
 			</itemizedlist>
@@ -48,6 +50,8 @@
 			<itemizedlist spacing="normal" mark="bullet">
 				<listitem>
 					<para>[DIRSTUDIO-480] - Update copyright year in the splash screen to 2009</para>
+				</listitem>
+				<listitem>
 					<para>[DIRSTUDIO-458] - [I18n] Bundle Eclipse language packs</para>
 				</listitem>
 			</itemizedlist>
