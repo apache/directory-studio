@@ -19,7 +19,42 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
-        <title>Apache Directory Studio 1.3.0 RC1 - (2008, October 13th)</title>
+		<title>Apache Directory Studio 1.4.0 - (2009, April XXth)</title>
+		<para>
+			<emphasis>Improvement</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-478] - The 'Exit' menu item from the 'File' menu should be removed when running on Mac OS X</para>
+					<para>[DIRSTUDIO-477] - Update Eclipse dependencies to version 3.4.2</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>New Feature</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis>Task</emphasis>
+		</para>
+		<para>
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>
+					<para>[DIRSTUDIO-480] - Update copyright year in the splash screen to 2009</para>
+					<para>[DIRSTUDIO-458] - [I18n] Bundle Eclipse language packs</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+	<simplesect>
+		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
 			<emphasis>Improvement</emphasis>
 		</para>
