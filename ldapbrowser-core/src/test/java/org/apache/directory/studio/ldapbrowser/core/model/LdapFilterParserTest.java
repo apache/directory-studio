@@ -259,7 +259,7 @@ public class LdapFilterParserTest extends TestCase
      * Tests an filter with escaped assertion value.
      * 
      * From RFC4515:
-     * The sixth and final example demonstrates assertion of a BER-encoded�
+     * The sixth and final example demonstrates assertion of a BER-encoded
      * value.
      */
     public void testEscapeRFC4515_6()

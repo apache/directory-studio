@@ -201,7 +201,6 @@ public class ACICodeScanner extends RuleBasedScanner
 
         rules.add( wr );
 
-        // Conversion de la List en tableau pour la passer à la méthode setRules
         IRule[] param = new IRule[rules.size()];
         rules.toArray( param );
         setRules( param );

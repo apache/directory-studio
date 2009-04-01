@@ -44,7 +44,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /** The shared plugin instance. */
     private static ConnectionUIPlugin plugin;
 
-    /** The event dispatcher */
+    /** The event dispatcher */
     private ExceptionHandler exceptionHandler;
 
     /** The event runner. */

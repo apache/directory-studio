@@ -290,9 +290,6 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public IStatus getErrorStatus( String message )
     {
-        // multi: message + für jeden errorStatus (\n + message)
-        // children: alle errorStatus + stacktrace->message
-
         if ( errorStatusList != null && !errorStatusList.isEmpty() )
         {
             // append status messages to message

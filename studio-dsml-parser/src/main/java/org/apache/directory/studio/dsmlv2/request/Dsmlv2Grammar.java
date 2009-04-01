@@ -237,7 +237,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [ABANDON_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [ABANDON_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ) );
@@ -281,7 +281,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [ADD_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [ADD_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, null ) );
@@ -353,7 +353,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [AUTH_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [AUTH_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ) );
@@ -395,7 +395,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ) );
@@ -462,7 +462,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [DEL_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [DEL_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, null ) );
@@ -503,7 +503,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [EXTENDED_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [EXTENDED_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ) );
@@ -572,7 +572,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [MODIFY_DN_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [MODIFY_DN_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ) );
@@ -618,7 +618,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [MODIFY_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [MODIFY_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ) );
@@ -702,7 +702,7 @@ public class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ) );
 
-        // State: [SEARCH_REQUEST_CONTROL_START_TAG] - Tag: </control>
+        // State: [SEARCH_REQUEST_CONTROL_START_TAG] - Tag: </control>
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG].put( new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ) );
