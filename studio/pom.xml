@@ -995,7 +995,7 @@
                   <artifactId>BabelLanguagePack-eclipse-fr</artifactId>
                   <type>zip</type>
                   <outputDirectory>${project.build.directory}/eclipse-language-packs</outputDirectory>
-                  <includes>eclipse/**</includes>
+                  <includes>eclipse/plugins/**</includes>
                   <excludes>
                     eclipse/plugins/org.junit4.nl*,
                     eclipse/plugins/org.eclipse.update.tests.core.nl*,
