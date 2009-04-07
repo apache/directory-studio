@@ -28,7 +28,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.4.0.v20090407</version>
+  <version>1.4.1-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
   <packaging>pom</packaging>
 
@@ -45,9 +45,9 @@
   </organization>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/tags/1.4.0.v20090407</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/tags/1.4.0.v20090407</developerConnection>
-    <url>https://svn.apache.org/repos/asf/directory/studio/tags/1.4.0.v20090407</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
+    <url>https://svn.apache.org/repos/asf/directory/studio/trunk/</url>
   </scm>
 
   <distributionManagement>
@@ -65,36 +65,36 @@
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.4.0.v20090407</aciitemeditor.version>
-    <apacheds.launcher.version>1.4.0.v20090407</apacheds.launcher.version>
-    <apacheds.version>1.4.0.v20090407</apacheds.version>
-    <apacheds.help.version>1.4.0.v20090407</apacheds.help.version>
-    <apacheds.feature.version>1.4.0.v20090407</apacheds.feature.version>
-    <apacheds.configuration.version>1.4.0.v20090407</apacheds.configuration.version>
-    <apacheds.configuration.feature.version>1.4.0.v20090407</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.4.0.v20090407</apacheds.configuration.help.version>
-    <connection.core.version>1.4.0.v20090407</connection.core.version>
-    <connection.ui.version>1.4.0.v20090407</connection.ui.version>
-    <jars.version>1.4.0.v20090407</jars.version>
-    <ldapbrowser.common.version>1.4.0.v20090407</ldapbrowser.common.version>
-    <ldapbrowser.core.version>1.4.0.v20090407</ldapbrowser.core.version>
-    <ldapbrowser.feature.version>1.4.0.v20090407</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.4.0.v20090407</ldapbrowser.help.version>
-    <ldapbrowser.ui.version>1.4.0.v20090407</ldapbrowser.ui.version>
-    <ldifeditor.version>1.4.0.v20090407</ldifeditor.version>
-    <ldifeditor.feature.version>1.4.0.v20090407</ldifeditor.feature.version>
-    <ldifeditor.help.version>1.4.0.v20090407</ldifeditor.help.version>
-    <ldifparser.version>1.4.0.v20090407</ldifparser.version>
-    <rcp.version>1.4.0.v20090407</rcp.version>
-    <rcp.feature.version>1.4.0.v20090407</rcp.feature.version>
-    <rcp.help.version>1.4.0.v20090407</rcp.help.version>
+    <aciitemeditor.version>1.4.1-SNAPSHOT</aciitemeditor.version>
+    <apacheds.launcher.version>1.4.1-SNAPSHOT</apacheds.launcher.version>
+    <apacheds.version>1.4.1-SNAPSHOT</apacheds.version>
+    <apacheds.help.version>1.4.1-SNAPSHOT</apacheds.help.version>
+    <apacheds.feature.version>1.4.1-SNAPSHOT</apacheds.feature.version>
+    <apacheds.configuration.version>1.4.1-SNAPSHOT</apacheds.configuration.version>
+    <apacheds.configuration.feature.version>1.4.1-SNAPSHOT</apacheds.configuration.feature.version>
+    <apacheds.configuration.help.version>1.4.1-SNAPSHOT</apacheds.configuration.help.version>
+    <connection.core.version>1.4.1-SNAPSHOT</connection.core.version>
+    <connection.ui.version>1.4.1-SNAPSHOT</connection.ui.version>
+    <jars.version>1.4.1-SNAPSHOT</jars.version>
+    <ldapbrowser.common.version>1.4.1-SNAPSHOT</ldapbrowser.common.version>
+    <ldapbrowser.core.version>1.4.1-SNAPSHOT</ldapbrowser.core.version>
+    <ldapbrowser.feature.version>1.4.1-SNAPSHOT</ldapbrowser.feature.version>
+    <ldapbrowser.help.version>1.4.1-SNAPSHOT</ldapbrowser.help.version>
+    <ldapbrowser.ui.version>1.4.1-SNAPSHOT</ldapbrowser.ui.version>
+    <ldifeditor.version>1.4.1-SNAPSHOT</ldifeditor.version>
+    <ldifeditor.feature.version>1.4.1-SNAPSHOT</ldifeditor.feature.version>
+    <ldifeditor.help.version>1.4.1-SNAPSHOT</ldifeditor.help.version>
+    <ldifparser.version>1.4.1-SNAPSHOT</ldifparser.version>
+    <rcp.version>1.4.1-SNAPSHOT</rcp.version>
+    <rcp.feature.version>1.4.1-SNAPSHOT</rcp.feature.version>
+    <rcp.help.version>1.4.1-SNAPSHOT</rcp.help.version>
     <repository.version>1.4.0-SNAPSHOT</repository.version>
-    <schemaeditor.version>1.4.0.v20090407</schemaeditor.version>
-    <schemaeditor.feature.version>1.4.0.v20090407</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.4.0.v20090407</schemaeditor.help.version>
+    <schemaeditor.version>1.4.1-SNAPSHOT</schemaeditor.version>
+    <schemaeditor.feature.version>1.4.1-SNAPSHOT</schemaeditor.feature.version>
+    <schemaeditor.help.version>1.4.1-SNAPSHOT</schemaeditor.help.version>
     <studio.dsml.parser.version>0.4.5-SNAPSHOT</studio.dsml.parser.version>
     <updatesite.version>1.4.0-SNAPSHOT</updatesite.version>
-    <valueeditors.version>1.4.0.v20090407</valueeditors.version>
+    <valueeditors.version>1.4.1-SNAPSHOT</valueeditors.version>
     <test.integration.core.version>1.4.0-SNAPSHOT</test.integration.core.version>
     <test.integration.ui.version>1.4.0-SNAPSHOT</test.integration.ui.version>
 
@@ -216,7 +216,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>studio-dsml-parser</artifactId>
-        <version>0.4.5</version>
+        <version>0.4.6-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
