@@ -1,6 +1,61 @@
 Release Notes
 
-Apache Directory Studio 1.3.0 RC1
+Apache Directory Studio 1.4.0
+
+Bug
+  * [DIRSTUDIO-373] - Can't delete a tagged attribute if the non tagged attribute belong to the DN
+  * [DIRSTUDIO-395] - Problems with special chars (german Umlauts)
+  * [DIRSTUDIO-396] - Custom LDAP attributes not shown in entry editor
+  * [DIRSTUDIO-419] - Problems switching between connections
+  * [DIRSTUDIO-420] - Unable to locate in DIT (f3)
+  * [DIRSTUDIO-423] - Outline view does not respect the settings of the Entry Editor on displaying or not the operational attributes
+  * [DIRSTUDIO-427] - Operational attributes turned on by itself
+  * [DIRSTUDIO-430] - NullPointer exception when fetching children of a node
+  * [DIRSTUDIO-436] - Eclipse Hangs on Startup
+  * [DIRSTUDIO-440] - Multiple user permissions precedence issue
+  * [DIRSTUDIO-442] - Typo in a warning of the New ObjectClass wizard ('attribute type' instead of 'object class')
+  * [DIRSTUDIO-456] - Cannot create an entry with mandatory binary attribute
+  * [DIRSTUDIO-457] - Unknown schema causes attributes to be treated as operational
+  * [DIRSTUDIO-460] - Pressing 'Enter' in New Entry wizard should edit the attribute
+  * [DIRSTUDIO-463] - Browsing the directory produce too many search requests
+  * [DIRSTUDIO-465] - Context entry created from an LDIF import is not shown in the Browser view
+  * [DIRSTUDIO-466] - Incorrect error message when importing a bad XML schema file
+  * [DIRSTUDIO-468] - The LDIF parser does not correctly parse changes
+  * [DIRSTUDIO-469] - Added wrong AttributeTypes can't be deleted
+  * [DIRSTUDIO-470] - Schema Browser view is not bring to front when using the 'Open Schema Browser' menu item while the view is already opened but not the frontmost view
+  * [DIRSTUDIO-472] - SWTException (Widget is disposed) when disabling DIT Quick Search
+  
+Improvement
+  * [DIRSTUDIO-115] - Unable to edit operational attribute values
+  * [DIRSTUDIO-150] - Improve error handling
+  * [DIRSTUDIO-207] - Operationnal attributes cannot be shown entirely
+  * [DIRSTUDIO-234] - Greyed out menu items should have a tool tip explaining *why* they're greyed out
+  * [DIRSTUDIO-241] - The "New Value" action (in the Entry Editor) should be disabled if the AT is defined as single valued
+  * [DIRSTUDIO-411] - Select a new created folder in the connection view
+  * [DIRSTUDIO-412] - Add expand all and collapse all actions to the connections view
+  * [DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()
+  * [DIRSTUDIO-455] - Cannot copy/past an existing search
+  * [DIRSTUDIO-477] - Update Eclipse dependencies to version 3.4.2
+  * [DIRSTUDIO-478] - The 'Exit' menu item from the 'File' menu should be removed when running on Mac OS X
+  
+New Feature
+  * [DIRSTUDIO-335] - DIT Quick Search
+  * [DIRSTUDIO-397] - Request for multi-language GUI
+  * [DIRSTUDIO-449] - Add a new GeneralizedTime Value Editor
+  * [DIRSTUDIO-474] - Support for parentOfEntry userClass in ACI Editor
+  
+Task
+  * [DIRSTUDIO-451] - [I18n] Templates not I18ned in LdifEditor
+  * [DIRSTUDIO-458] - [I18n] Bundle Eclipse language packs
+  * [DIRSTUDIO-480] - Update copyright year in the splash screen to 2009
+  
+Wish
+  * [DIRSTUDIO-439] - Ldif importer should be case-insensitive in the changeType attribute
+
+
+--------------------------------------------------------------------------------
+
+Apache Directory Studio 1.3.0
 
 Sub-task
   * [DIRSTUDIO-398] - Improve the DSML decorated classes by adding an empty constructor and linking the methods of the underlying ldapmessage
@@ -58,7 +113,6 @@ Task
   * [DIRSTUDIO-374] - Clean duplicated dependencies in plugins
   * [DIRSTUDIO-375] - Move each plugin IDs in a plugin.properties file
   * [DIRSTUDIO-376] - Move to the latest Eclipse 3.4 dependencies
-
 
 
 --------------------------------------------------------------------------------
