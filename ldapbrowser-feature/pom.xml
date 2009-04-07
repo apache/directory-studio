@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0.v20090407</version>
   </parent>
   
   <artifactId>ldapbrowser.feature</artifactId>
-  <version>${ldapbrowser.feature.version}</version>
+  <version>1.4.0.v20090407</version>
   <name>Apache Directory Studio LDAP Browser Feature</name>
   <packaging>jar</packaging>
 
