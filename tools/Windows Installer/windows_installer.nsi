@@ -17,218 +17,182 @@
 #  under the License.
 #
 
-!define AppName "Apache Directory Studio"
-!define AppVersion "1.2.0.v20080724"
-!define OutFile "Apache_Directory_Studio_1.2.0.v20080724_Windows"
-!define ShortName "Apache Directory Studio"
-!define JRE_VERSION "1.5.0"
-!define Vendor "Apache Software Foundation"
-!define Project "Apache Directory"
+#
+# Modules inclusions
+#
+    # Modern UI module
+    !include "MUI.nsh"
 
-!define JAVA_URL "http://java.sun.com/javase/downloads/index_jdk5.jsp"
+#
+# Constants and variables
+#
+    !define Application "Apache Directory Studio"
+    !define Version "1.4.0.v20090407"
+    !define Vendor "Apache Software Foundation"
+    !define Icon "utils\studio-installer.ico"
+    !define WelcomeImage "utils\welcome_studio.bmp"
+    !define HeaderImage "utils\header_studio.bmp"
+    !define OutFile "ApacheDirectoryStudio-win32-${Version}.exe"
+    !define SourceFolder "release"
+    Var APPLICATION_HOME_DIR
 
-!macro CreateInternetShortcut FILENAME URL ;ICONFILE ICONINDEX
-WriteINIStr "${FILENAME}.url" "InternetShortcut" "URL" "${URL}"
-!macroend
+#
+# Configuration
+#
+    # Name of the application
+    Name "${Application}"
+    
+    # Output installer file
+    OutFile "${OutFile}"
+    
+    # Default install directory
+    InstallDir "$PROGRAMFILES\${Application}"
+    
+    # Branding text
+    BrandingText "${Application} - ${Version}"
 
-!include "MUI.nsh"
-!include "Sections.nsh"
+    # Activating XPStyle
+    XPStyle on
 
-;--------------------------------
-;Configuration
+    # Installer icon
+    !define MUI_ICON "${Icon}"
+    
+    # Uninstaller icon
+    !define MUI_UNICON "${Icon}"
+    
+    # Welcome image
+    !define MUI_WELCOMEFINISHPAGE_BITMAP "${WelcomeImage}"
+    
+    # Activating header image
+    !define MUI_HEADERIMAGE
+    !define MUI_HEADERIMAGE_BITMAP "${HeaderImage}"
 
-  ;General
-  Name "${AppName}"
-  OutFile "${OutFile}.exe"
+    # Activating small description for the components page
+    !define MUI_COMPONENTSPAGE_SMALLDESC
+    
+    # Activating a confirmation when aborting the installation
+    !define MUI_ABORTWARNING
 
-  ;Folder selection page
-  InstallDir "$PROGRAMFILES\${AppName}"
+#
+# Pages
+#
+    #
+    # Installer pages
+    #
+    
+    # Welcome page
+    !insertmacro MUI_PAGE_WELCOME
+    
+    # License page
+    !insertmacro MUI_PAGE_LICENSE "release\LICENSE.txt"
+    
+    # Components page
+    #!insertmacro MUI_PAGE_COMPONENTS
+    
+    # Directory page
+    #!define MUI_DIRECTORYPAGE_VARIABLE $APPLICATION_HOME_DIR
+    !insertmacro MUI_PAGE_DIRECTORY
+    
+    # Installation page
+    !insertmacro MUI_PAGE_INSTFILES
+    
+    # Finish page
+    !insertmacro MUI_PAGE_FINISH
+    
+    #
+    # Uninstaller pages
+    #
+    
+    # Confirmation page
+    !insertmacro MUI_UNPAGE_CONFIRM
+    
+    # Uninstallation page
+    !insertmacro MUI_UNPAGE_INSTFILES
 
-  ;Get install folder from registry if available
-  InstallDirRegKey HKLM "SOFTWARE\${Vendor}\${ShortName}" ""
+#
+# Languages (the first one is the default one)
+#
+    !insertmacro MUI_LANGUAGE "English"
+    !insertmacro MUI_LANGUAGE "French"
+    !insertmacro MUI_LANGUAGE "German"
+    
+#
+# Initialization function (launched just before the installer)
+#
+    # Internationalized strings
+    LangString message ${LANG_ENGLISH} "${Application} is already installed.$\n$\nClick 'OK' to remove the previous version$\nor 'Cancel' to cancel this installation."
+    LangString message ${LANG_FRENCH} "${Application} est déjà installé.$\n$\nCliquez sur 'OK' pour supprimer la version précédente$\nou sur 'Annuler' pour annuler cette installation."
+    LangString message ${LANG_GERMAN} "${Application} ist bereits installiert.$\n$\nKlicke 'OK' um die frühere Version zu entfernen$\noder 'Abbruch' um die Installation abzubrechen."
 
-; Installation types
-;InstType "Studio Only"
+    # onInit function
+    Function .onInit
+        # Preventing the window to close automatically at the end of the (un)installation
+        SetAutoClose false
+    
+        # Verifying if the application is already installed
+        ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "UninstallString"
+        StrCmp $R0 "" done
+    
+        # The application is already installed
+        # Asking before running the uninstaller
+        MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(message)" \
+        IDOK uninst
+        Abort
+      
+        # Running the uninstaller
+        uninst:
+            ExecWait '$R0 _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
+            
+        done:
+            # Nothing to do
+    FunctionEnd
 
-BrandingText "${AppName} - ${AppVersion}"
-XPStyle on
+#
+# Sections
+#
+    # Installer section
+    Section
+        SetOutPath "$INSTDIR"
+        File /r "${SourceFolder}\*"
 
-!define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "utils\header_studio.bmp"
-!define MUI_COMPONENTSPAGE_SMALLDESC
-!define MUI_WELCOMEFINISHPAGE_BITMAP "utils\welcome_studio.bmp"
-!define iconfile "utils\studio-installer.ico"
-!define MUI_ICON "${iconfile}"
-!define MUI_UNICON "${iconfile}"
+        # Storing install path in registries
+        WriteRegStr HKLM "SOFTWARE\${Vendor}\${Application}" "InstallDir" "$INSTDIR"
 
-;--------------------------------
-;Pages
+        # Creating directories in the start menu
+        CreateDirectory "$SMPROGRAMS\Apache Directory Studio"
+        
+        # Creating a shortcut to the application
+        CreateShortCut "$SMPROGRAMS\Apache Directory Studio\Apache Directory Studio.lnk" "$INSTDIR\Apache Directory Studio.exe" "" "$INSTDIR\Apache Directory Studio.exe" 0
+        
+        # Creating an internet shortcut to the documentation
+        WriteINIStr "$SMPROGRAMS\Apache Directory Studio\Documentation.url" "InternetShortcut" "URL" "http://directory.apache.org/studio/users-guide.html"
 
-  ; License page
-  !insertmacro MUI_PAGE_WELCOME
-  !insertmacro MUI_PAGE_LICENSE "release\LICENSE.txt"
+        # Configuring registries for the uninstaller
+        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "DisplayName" "${Application} - (remove only)"
+        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "DisplayIcon" "$INSTDIR\uninstall.exe"
+        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "UninstallString" '"$INSTDIR\uninstall.exe"'
+        WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "NoModify" "1"
+        WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "NoRepair" "1"
 
-  !define MUI_INSTFILESPAGE_FINISHHEADER_TEXT "Installation complete"
-  !define MUI_PAGE_HEADER_TEXT "Installing"
-  !define MUI_PAGE_HEADER_SUBTEXT "Please wait while ${AppName} is being installed."
+        # Creating the uninstaller
+        WriteUninstaller "$INSTDIR\Uninstall.exe"
+        
+        # Creating a shortcut to the uninstaller
+        CreateShortCut "$SMPROGRAMS\Apache Directory Studio\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
+    SectionEnd
+    
+    # Uninstaller section
+    Section Uninstall
+        # Getting installation directory
+        ReadRegStr $APPLICATION_HOME_DIR HKLM "SOFTWARE\${Vendor}\${Application}" "InstallDir"
 
-  !insertmacro MUI_PAGE_COMPONENTS
+        # Removing registry keys
+        DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}"
+        DeleteRegKey HKLM  "SOFTWARE\${Vendor}\${Application}"
 
-  # The main installation directory
+        # Remove shortcuts and folders in the start menu
+        RMDir /r "$SMPROGRAMS\Apache Directory Studio"
 
-  Var STUDIO_HOME_DIR
-  !define MUI_DIRECTORYPAGE_VARIABLE          $STUDIO_HOME_DIR  ;selected by user
-  !define MUI_DIRECTORYPAGE_TEXT_DESTINATION  "Apache Directory Studio Install Directory"     ;descriptive text
-  !define MUI_DIRECTORYPAGE_TEXT_TOP          "This is the location where you would like to install Apache Directory Studio."
-  !insertmacro MUI_PAGE_DIRECTORY  ; this pops-up the GUI page
-
-  !insertmacro MUI_PAGE_INSTFILES
-  !insertmacro MUI_PAGE_FINISH
-
-; Uninstall  
-  !insertmacro MUI_UNPAGE_CONFIRM
-  !insertmacro MUI_UNPAGE_INSTFILES
-
-
-;--------------------------------
-;Modern UI Configuration
-
-  !define MUI_ABORTWARNING
-
-;--------------------------------
-;Languages
-
-!insertmacro MUI_LANGUAGE "English"
-
-
-;--------------------------------
-;Language Strings
-
-  ;Description
-  LangString DESC_SecServerFiles ${LANG_ENGLISH} "Apache Directory Server Application Files"
-  LangString DESC_SecStudioFiles ${LANG_ENGLISH} "Apache Directory Studio Application Files"
-  LangString DESC_SecStudioConnections ${LANG_ENGLISH} "Example connections to locally installed server"
-  LangString DESC_SecInstanceFiles ${LANG_ENGLISH} "Example server instance"
-
-  ;Header
-  LangString TEXT_JRE_TITLE ${LANG_ENGLISH} "Java Runtime Environment"
-  LangString TEXT_JRE_SUBTITLE ${LANG_ENGLISH} "Installation"
-  LangString TEXT_PRODVER_TITLE ${LANG_ENGLISH} "Installed version of ${AppName}"
-  LangString TEXT_PRODVER_SUBTITLE ${LANG_ENGLISH} "Installation cancelled"
-
-;--------------------------------
-;Installer Sections
-
-
-SectionGroup "Apache Directory Studio"
-Section "Application Files" SecStudioFiles
-  SectionIn 1 3
-  SetOutPath "$STUDIO_HOME_DIR"
-  File /r "release\*"
-
-  ;Store install folder
-  WriteRegStr HKLM "SOFTWARE\${Vendor}\${Project}\Studio" "InstallDir" "$STUDIO_HOME_DIR"
-
-  CreateDirectory "$SMPROGRAMS\Apache Directory Suite\Studio"
-  CreateShortCut "$SMPROGRAMS\Apache Directory Suite\Studio\Studio.lnk" "$STUDIO_HOME_DIR\Apache Directory Studio.exe" "" "$STUDIO_HOME_DIR\Apache Directory Studio.exe" 0
-
-  # Probably need to filter the file here (put in instance home)
-
-  ;Store install folder
-  WriteRegStr HKLM "SOFTWARE\${Vendor}\${Project}\Studio" "InstallDir" $STUDIO_HOME_DIR
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" "DisplayName" "${AppName} - (remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" "DisplayIcon" "$STUDIO_HOME_DIR\uninstall.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" "UninstallString" '"$STUDIO_HOME_DIR\uninstall.exe"'
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" "NoModify" "1"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" "NoRepair" "1"
-
-  ;Create uninstaller
-  WriteUninstaller "$STUDIO_HOME_DIR\Uninstall.exe"
-
-  CreateDirectory "$SMPROGRAMS\Apache Directory Suite\Studio"
-
-  CreateShortCut "$SMPROGRAMS\Apache Directory Suite\Studio\Uninstall.lnk" "$STUDIO_HOME_DIR\uninstall.exe" "" "$STUDIO_HOME_DIR\uninstall.exe" 0
-
-
-SectionEnd
-Section "Example Connections" SecStudioConnections
-  SectionIn 1 3
-
-  IfFileExists "$PROFILE\.ApacheDirectoryStudio\.metadata\.plugins\org.apache.directory.studio.ldapbrowser.core\browserconnections.xml" End 0
-  SetOutPath "$PROFILE\.ApacheDirectoryStudio\.metadata\.plugins\org.apache.directory.studio.ldapbrowser.core"
-  File "utils\browserconnections.xml"
-
-  IfFileExists "$PROFILE\.ApacheDirectoryStudio\.metadata\.plugins\org.apache.directory.studio.connection.core\connections.xml" End 0
-  SetOutPath "$PROFILE\.ApacheDirectoryStudio\.metadata\.plugins\org.apache.directory.studio.connection.core"
-  File "utils\connections.xml"
-End:
-
-SectionEnd
-SectionGroupEnd
-
-;--------------------------------
-;Descriptions
-
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStudioFiles} $(DESC_SecStudioFiles)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStudioConnections} $(DESC_SecStudioConnections)
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
-
-;---------------------------------
-; Functions
-
-;--------------------------------
-;Installer Functions
-
-Function .onInit
-    SetCurInstType 0
-    SetAutoClose false
-    StrCpy $STUDIO_HOME_DIR "$PROGRAMFILES\Apache Directory Studio"
-
-    ;Verifying if Studio is already installed
-    ReadRegStr $R0 HKLM \
-    "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio" \
-    "UninstallString"
-    StrCmp $R0 "" done
-
-    ;Studio is already installed
-    ;Asking before running the uninstaller
-    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION \
-    "${AppName} is already installed. $\n$\nClick 'OK' to remove the \
-    previous version $\nor 'Cancel' to cancel this installation." \
-    IDOK uninst
-    Abort
-  
-    ;Running the uninstaller
-    uninst:
-        ClearErrors
-        ExecWait '$R0 _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
- 
-        IfErrors no_remove_uninstaller
-        ;You can either use Delete /REBOOTOK in the uninstaller or add some code
-        ;here to remove the uninstaller. Use a registry key to check
-        ;whether the user has chosen to uninstall. If you are using an uninstaller
-        ;components page, make sure all sections are uninstalled.
-        no_remove_uninstaller:
-  
-    done:
-FunctionEnd
-
-;--------------------------------
-;Uninstaller Section
-
-Section "Uninstall"
-  ReadRegStr $STUDIO_HOME_DIR HKLM "SOFTWARE\${Vendor}\${Project}\Studio" "InstallDir"
-
-  ; remove registry keys
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Project} Studio"
-  DeleteRegKey HKLM  "SOFTWARE\${Vendor}\${Project}\Studio"
-
-  ; remove shortcuts, if any.
-  RMDir /r "$SMPROGRAMS\Apache Directory Suite\Studio"
-
-  ; remove files in root, then all dirs created by the installer.... leave user added or instance dirs.
-  RMDir /r "$STUDIO_HOME_DIR"  ;Studio install dir
-
-SectionEnd
-
+        # Removing installed files
+        RMDir /r "$APPLICATION_HOME_DIR"
+    SectionEnd
