@@ -18,24 +18,27 @@
 #
 
 #
-# Modules inclusions
-#
-    # Modern UI module
-    !include "MUI.nsh"
-
-#
 # Constants and variables
 #
     !define Application "Apache Directory Studio"
     !define Version "1.4.0.v20090407"
-    !define Vendor "Apache Software Foundation"
     !define Icon "utils\studio-installer.ico"
     !define WelcomeImage "utils\welcome_studio.bmp"
     !define HeaderImage "utils\header_studio.bmp"
     !define OutFile "ApacheDirectoryStudio-win32-${Version}.exe"
     !define SourceFolder "release"
-    Var APPLICATION_HOME_DIR
+    !define INSTDIR_REG_ROOT "HKLM"
+    !define INSTDIR_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}"
 
+#
+# Modules inclusions
+#
+    # Modern UI module
+    !include "MUI.nsh"
+    
+    # Uninstall log module
+    !include AdvUninstLog.nsh
+    
 #
 # Configuration
 #
@@ -72,6 +75,9 @@
     
     # Activating a confirmation when aborting the installation
     !define MUI_ABORTWARNING
+    
+    # Interactive uninstallation
+    !insertmacro INTERACTIVE_UNINSTALL
 
 #
 # Pages
@@ -117,7 +123,7 @@
     !insertmacro MUI_LANGUAGE "German"
     
 #
-# Initialization function (launched just before the installer)
+# Functions
 #
     # Internationalized strings
     LangString message ${LANG_ENGLISH} "${Application} is already installed.$\n$\nClick 'OK' to remove the previous version$\nor 'Cancel' to cancel this installation."
@@ -144,7 +150,20 @@
             ExecWait '$R0 _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
             
         done:
-            # Nothing to do
+            # Preparing the uninstall log
+            !insertmacro UNINSTALL.LOG_PREPARE_INSTALL
+    FunctionEnd
+
+    # onInstSuccess function
+    Function .onInstSuccess
+         # Updating the uninstall log
+         !insertmacro UNINSTALL.LOG_UPDATE_INSTALL
+    FunctionEnd
+    
+    # UN.onInit function
+    Function UN.onInit 
+         # Begin uninstall
+         !insertmacro UNINSTALL.LOG_BEGIN_UNINSTALL
     FunctionEnd
 
 #
@@ -153,10 +172,15 @@
     # Installer section
     Section
         SetOutPath "$INSTDIR"
+        
+        # Opening uninstall log
+        !insertmacro UNINSTALL.LOG_OPEN_INSTALL
+        
+        # Adding installer source files
         File /r "${SourceFolder}\*"
-
-        # Storing install path in registries
-        WriteRegStr HKLM "SOFTWARE\${Vendor}\${Application}" "InstallDir" "$INSTDIR"
+        
+        # Closing uninstall log
+        !insertmacro UNINSTALL.LOG_CLOSE_INSTALL
 
         # Creating directories in the start menu
         CreateDirectory "$SMPROGRAMS\Apache Directory Studio"
@@ -168,11 +192,11 @@
         WriteINIStr "$SMPROGRAMS\Apache Directory Studio\Documentation.url" "InternetShortcut" "URL" "http://directory.apache.org/studio/users-guide.html"
 
         # Configuring registries for the uninstaller
-        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "DisplayName" "${Application} - (remove only)"
-        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "DisplayIcon" "$INSTDIR\uninstall.exe"
-        WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "UninstallString" '"$INSTDIR\uninstall.exe"'
-        WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "NoModify" "1"
-        WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "NoRepair" "1"
+        WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "DisplayName" "${Application} - (remove only)"
+        WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "DisplayIcon" "$INSTDIR\uninstall.exe"
+        WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
+        WriteRegDWORD "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "NoModify" "1"
+        WriteRegDWORD "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "NoRepair" "1"
 
         # Creating the uninstaller
         WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -183,16 +207,15 @@
     
     # Uninstaller section
     Section Uninstall
-        # Getting installation directory
-        ReadRegStr $APPLICATION_HOME_DIR HKLM "SOFTWARE\${Vendor}\${Application}" "InstallDir"
-
-        # Removing registry keys
-        DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}"
-        DeleteRegKey HKLM  "SOFTWARE\${Vendor}\${Application}"
-
+        # Removing installed files
+        !insertmacro UNINSTALL.LOG_UNINSTALL "$INSTDIR"
+         
+        # Finishing uninstall
+        !insertmacro UNINSTALL.LOG_END_UNINSTALL
+        
         # Remove shortcuts and folders in the start menu
         RMDir /r "$SMPROGRAMS\Apache Directory Studio"
-
-        # Removing installed files
-        RMDir /r "$APPLICATION_HOME_DIR"
+        
+        # Removing registry keys
+        DeleteRegKey "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}"
     SectionEnd
