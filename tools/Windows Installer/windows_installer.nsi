@@ -76,8 +76,8 @@
     # Activating a confirmation when aborting the installation
     !define MUI_ABORTWARNING
     
-    # Interactive uninstallation
-    !insertmacro INTERACTIVE_UNINSTALL
+    # Unattended uninstallation
+    !insertmacro UNATTENDED_UNINSTALL
 
 #
 # Pages
