@@ -136,8 +136,12 @@
         SetAutoClose false
     
         # Verifying if the application is already installed
-        ReadRegStr $R0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}" "UninstallString"
+        ReadRegStr $R0 "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "UninstallString"
         StrCmp $R0 "" done
+        
+        # Getting install location
+        ReadRegStr $R1 "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir"
+        StrCmp $R1 "" done
     
         # The application is already installed
         # Asking before running the uninstaller
@@ -147,7 +151,7 @@
       
         # Running the uninstaller
         uninst:
-            ExecWait '$R0 _?=$INSTDIR' ;Do not copy the uninstaller to a temp file
+            ExecWait '$R0 _?=$R1'
             
         done:
             # Preparing the uninstall log
@@ -181,6 +185,9 @@
         
         # Closing uninstall log
         !insertmacro UNINSTALL.LOG_CLOSE_INSTALL
+        
+        # Storing install location
+        WriteRegStr "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir" "$INSTDIR"
 
         # Creating directories in the start menu
         CreateDirectory "$SMPROGRAMS\Apache Directory Studio"
