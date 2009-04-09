@@ -183,11 +183,8 @@
         # Adding installer source files
         File /r "${SourceFolder}\*"
         
-        # Closing uninstall log
-        !insertmacro UNINSTALL.LOG_CLOSE_INSTALL
-        
         # Storing install location
-        WriteRegStr "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir" "$INSTDIR"
+        WriteRegStr "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir" $INSTDIR
 
         # Creating directories in the start menu
         CreateDirectory "$SMPROGRAMS\Apache Directory Studio"
@@ -210,12 +207,19 @@
         
         # Creating a shortcut to the uninstaller
         CreateShortCut "$SMPROGRAMS\Apache Directory Studio\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
+        
+        # Closing uninstall log
+        !insertmacro UNINSTALL.LOG_CLOSE_INSTALL
     SectionEnd
     
     # Uninstaller section
     Section Uninstall
-        # Removing installed files
+        # Removing installed files (one line per directory is mandatory)
         !insertmacro UNINSTALL.LOG_UNINSTALL "$INSTDIR"
+        !insertmacro UNINSTALL.LOG_UNINSTALL "$INSTDIR\configuration"
+        !insertmacro UNINSTALL.LOG_UNINSTALL "$INSTDIR\plugins"
+        !insertmacro UNINSTALL.LOG_UNINSTALL "$INSTDIR\features"
+        Delete "$INSTDIR\Uninstall.exe"
          
         # Finishing uninstall
         !insertmacro UNINSTALL.LOG_END_UNINSTALL
