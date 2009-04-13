@@ -673,6 +673,15 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
             Attribute attribute = attributeEnumeration.next();
             String attributeDescription = attribute.getID();
             NamingEnumeration<?> valueEnumeration = attribute.getAll();
+            if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
+            {
+                if ( entry.getAttribute( attributeDescription ) != null )
+                {
+                    entry.deleteAttribute( entry.getAttribute( attributeDescription ) );
+                }
+                entry.addAttribute( new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
+                    attributeDescription ) );
+            }
             while ( valueEnumeration.hasMore() )
             {
                 Object o = valueEnumeration.next();
@@ -716,6 +725,10 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
                             entry.setReferral( true );
                             entry.setHasChildrenHint( false );
                         }
+                        
+                        IAttribute ocAttribute = entry.getAttribute( attributeDescription );
+                        Value ocValue = new Value( ocAttribute, value );
+                        ocAttribute.addValue( ocValue );
                     }
                 }
             }

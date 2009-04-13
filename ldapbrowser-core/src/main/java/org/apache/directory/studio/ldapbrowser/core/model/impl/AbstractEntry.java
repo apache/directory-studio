@@ -22,14 +22,14 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
@@ -48,7 +48,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -78,6 +78,8 @@ public abstract class AbstractEntry implements IEntry
     private static final int IS_SUBENTRY_FLAG = 16;
 
     private volatile int flags;
+
+    protected IAttribute objectClassAttribute;
 
 
     /**
@@ -150,27 +152,40 @@ public abstract class AbstractEntry implements IEntry
      */
     public void addAttribute( IAttribute attributeToAdd ) throws IllegalArgumentException
     {
-        String oidString = attributeToAdd.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null )
-        {
-            ai = new AttributeInfo();
-            getBrowserConnectionImpl().setAttributeInfo( this, ai );
-        }
-
         if ( !equals( attributeToAdd.getEntry() ) )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__attributes_entry_is_not_myself );
         }
-        else if ( ai.attributeMap.containsKey( oidString.toLowerCase() ) )
+
+        if ( attributeToAdd.isObjectClassAttribute() )
         {
-            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_already_exists );
+            if ( objectClassAttribute != null )
+            {
+                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_already_exists );
+            }
+
+            objectClassAttribute = attributeToAdd;
         }
         else
         {
+            String oidString = attributeToAdd.getAttributeDescription()
+                .toOidString( getBrowserConnection().getSchema() );
+            AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
+            if ( ai == null )
+            {
+                ai = new AttributeInfo();
+                getBrowserConnectionImpl().setAttributeInfo( this, ai );
+            }
+
+            if ( ai.attributeMap.containsKey( oidString.toLowerCase() ) )
+            {
+                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_already_exists );
+            }
+
             ai.attributeMap.put( oidString.toLowerCase(), attributeToAdd );
-            entryModified( new AttributeAddedEvent( getBrowserConnectionImpl(), this, attributeToAdd ) );
         }
+
+        entryModified( new AttributeAddedEvent( getBrowserConnectionImpl(), this, attributeToAdd ) );
     }
 
 
@@ -179,23 +194,38 @@ public abstract class AbstractEntry implements IEntry
      */
     public void deleteAttribute( IAttribute attributeToDelete ) throws IllegalArgumentException
     {
-        String oidString = attributeToDelete.getAttributeDescription().toOidString( getBrowserConnection().getSchema() );
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( oidString.toLowerCase() ) )
+        if ( attributeToDelete.isObjectClassAttribute() )
         {
-            IAttribute attribute = ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
-            ai.attributeMap.remove( oidString.toLowerCase() );
-            if ( ai.attributeMap.isEmpty() )
+            if ( objectClassAttribute == null )
             {
-                getBrowserConnectionImpl().setAttributeInfo( this, null );
+                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
+                    + attributeToDelete );
             }
-            entryModified( new AttributeDeletedEvent( getBrowserConnectionImpl(), this, attribute ) );
+
+            objectClassAttribute = null;
         }
         else
         {
-            throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
-                + attributeToDelete );
+            String oidString = attributeToDelete.getAttributeDescription().toOidString(
+                getBrowserConnection().getSchema() );
+            AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
+            if ( ai != null && ai.attributeMap != null && ai.attributeMap.containsKey( oidString.toLowerCase() ) )
+            {
+                attributeToDelete = ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
+                ai.attributeMap.remove( oidString.toLowerCase() );
+                if ( ai.attributeMap.isEmpty() )
+                {
+                    getBrowserConnectionImpl().setAttributeInfo( this, null );
+                }
+            }
+            else
+            {
+                throw new IllegalArgumentException( BrowserCoreMessages.model__attribute_does_not_exist + ": "
+                    + attributeToDelete );
+            }
         }
+
+        entryModified( new AttributeDeletedEvent( getBrowserConnectionImpl(), this, attributeToDelete ) );
     }
 
 
@@ -237,7 +267,8 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.ALIAS_OC );
+            return getObjectClassDescriptions().contains(
+                getBrowserConnection().getSchema().getObjectClassDescription( SchemaConstants.ALIAS_OC ) );
         }
 
         return false;
@@ -273,7 +304,8 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.REFERRAL_OC );
+            return getObjectClassDescriptions().contains(
+                getBrowserConnection().getSchema().getObjectClassDescription( SchemaConstants.REFERRAL_OC ) );
         }
 
         return false;
@@ -309,7 +341,8 @@ public abstract class AbstractEntry implements IEntry
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
         if ( ai != null )
         {
-            return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.SUBENTRY_OC );
+            return getObjectClassDescriptions().contains(
+                getBrowserConnection().getSchema().getObjectClassDescription( SchemaConstants.SUBENTRY_OC ) );
         }
 
         return false;
@@ -424,15 +457,19 @@ public abstract class AbstractEntry implements IEntry
      */
     public IAttribute[] getAttributes()
     {
+        Collection<IAttribute> attributes = new HashSet<IAttribute>();
+
         AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null || ai.attributeMap == null )
+        if ( ai != null && ai.attributeMap != null )
         {
-            return null;
+            attributes.addAll( ai.attributeMap.values() );
         }
-        else
+        if ( objectClassAttribute != null )
         {
-            return ( IAttribute[] ) ai.attributeMap.values().toArray( new IAttribute[0] );
+            attributes.add( objectClassAttribute );
         }
+
+        return attributes.toArray( new IAttribute[0] );
     }
 
 
@@ -441,16 +478,23 @@ public abstract class AbstractEntry implements IEntry
      */
     public IAttribute getAttribute( String attributeDescription )
     {
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null || ai.attributeMap == null )
+        AttributeDescription ad = new AttributeDescription( attributeDescription );
+        String oidString = ad.toOidString( getBrowserConnection().getSchema() );
+        if ( oidString.equals( SchemaConstants.OBJECT_CLASS_AT_OID ) )
         {
-            return null;
+            return objectClassAttribute;
         }
         else
         {
-            AttributeDescription ad = new AttributeDescription( attributeDescription );
-            String oidString = ad.toOidString( getBrowserConnection().getSchema() );
-            return ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
+            AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
+            if ( ai == null || ai.attributeMap == null )
+            {
+                return null;
+            }
+            else
+            {
+                return ( IAttribute ) ai.attributeMap.get( oidString.toLowerCase() );
+            }
         }
     }
 
@@ -460,64 +504,35 @@ public abstract class AbstractEntry implements IEntry
      */
     public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription )
     {
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null || ai.attributeMap == null )
+        List<IAttribute> attributeList = new ArrayList<IAttribute>();
+
+        IAttribute myAttribute = getAttribute( attributeDescription );
+        if ( myAttribute != null )
+        {
+            attributeList.add( myAttribute );
+        }
+
+        AttributeDescription ad = new AttributeDescription( attributeDescription );
+        IAttribute[] allAttributes = getAttributes();
+        for ( IAttribute attribute : allAttributes )
+        {
+            AttributeDescription other = attribute.getAttributeDescription();
+            if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
+            {
+                attributeList.add( attribute );
+            }
+        }
+
+        if ( attributeList.isEmpty() )
         {
             return null;
         }
         else
         {
-            List<IAttribute> attributeList = new ArrayList<IAttribute>();
-
-            IAttribute myAttribute = getAttribute( attributeDescription );
-            if ( myAttribute != null )
-            {
-                attributeList.add( myAttribute );
-            }
-
-            AttributeDescription ad = new AttributeDescription( attributeDescription );
-            Map<String, IAttribute> clonedAttributeMap = new HashMap<String, IAttribute>( ai.attributeMap );
-            for ( IAttribute attribute : clonedAttributeMap.values() )
-            {
-                AttributeDescription other = attribute.getAttributeDescription();
-                if ( other.isSubtypeOf( ad, getBrowserConnection().getSchema() ) )
-                {
-                    attributeList.add( attribute );
-                }
-            }
-
-            if ( attributeList.isEmpty() )
-            {
-                return null;
-            }
-            else
-            {
-                IAttribute[] attributes = attributeList.toArray( new IAttribute[attributeList.size()] );
-                AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, attributes );
-                return ah;
-            }
+            IAttribute[] attributes = attributeList.toArray( new IAttribute[attributeList.size()] );
+            AttributeHierarchy ah = new AttributeHierarchy( this, attributeDescription, attributes );
+            return ah;
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Subschema getSubschema()
-    {
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null )
-        {
-            ai = new AttributeInfo();
-            getBrowserConnectionImpl().setAttributeInfo( this, ai );
-        }
-        if ( ai.subschema == null || ai.subschema.getObjectClassNames() == null
-            || ai.subschema.getObjectClassNames().length == 0 )
-        {
-            ai.subschema = new Subschema( this );
-        }
-
-        return ai.subschema;
     }
 
 
@@ -822,6 +837,23 @@ public abstract class AbstractEntry implements IEntry
     public LdapURL getUrl()
     {
         return Utils.getLdapURL( this );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    {
+        Collection<ObjectClassDescription> ocds = new ArrayList<ObjectClassDescription>();
+        String[] ocNames = getAttribute( SchemaConstants.OBJECT_CLASS_AT ).getStringValues();
+        Schema schema = getBrowserConnection().getSchema();
+        for ( String ocName : ocNames )
+        {
+            ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
+            ocds.add( ocd );
+        }
+        return ocds;
     }
 
 }

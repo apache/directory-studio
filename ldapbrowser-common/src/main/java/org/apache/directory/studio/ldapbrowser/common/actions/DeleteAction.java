@@ -466,7 +466,7 @@ public class DeleteAction extends BrowserAction
     protected void appendValuesWarnMessage( StringBuffer message, Collection<IValue> values )
     {
         Map<AttributeTypeDescription, Integer> attributeNameToSelectedValuesCountMap = new HashMap<AttributeTypeDescription, Integer>();
-        Set<String> selectedObjectClasses = new HashSet<String>();
+        Set<ObjectClassDescription> selectedObjectClasses = new HashSet<ObjectClassDescription>();
         for ( IValue value : values )
         {
             String type = value.getAttribute().getType();
@@ -490,7 +490,8 @@ public class DeleteAction extends BrowserAction
             // check if a required objectClass is selected
             if ( value.getAttribute().isObjectClassAttribute() )
             {
-                selectedObjectClasses.add( value.getStringValue() );
+                selectedObjectClasses.add( value.getAttribute().getEntry().getBrowserConnection().getSchema()
+                    .getObjectClassDescription( value.getStringValue() ) );
             }
 
             // check if ALL values of objectClass or a MUST attribute are selected
@@ -530,14 +531,11 @@ public class DeleteAction extends BrowserAction
             IEntry entry = values.iterator().next().getAttribute().getEntry();
             Schema schema = entry.getBrowserConnection().getSchema();
             // get remaining attributes
-            String[] ocValues = entry.getSubschema().getObjectClassNames();
-            Set<String> remainingObjectClassesSet = new HashSet<String>( Arrays.asList( ocValues ) );
-            remainingObjectClassesSet.removeAll( selectedObjectClasses );
+            Collection<ObjectClassDescription> remainingObjectClasses = entry.getObjectClassDescriptions();
+            remainingObjectClasses.removeAll( selectedObjectClasses );
             Set<AttributeTypeDescription> remainingAttributeSet = new HashSet<AttributeTypeDescription>();
-            for ( String oc : remainingObjectClassesSet )
+            for ( ObjectClassDescription ocd : remainingObjectClasses )
             {
-                ObjectClassDescription ocd = schema.getObjectClassDescription( oc );
-                if ( ocd != null )
                 {
                     Collection<String> mustAttrs = SchemaUtils.getMustAttributeTypeDescriptionNamesTransitive( ocd,
                         schema );

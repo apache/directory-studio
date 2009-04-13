@@ -121,10 +121,13 @@ public class AttributeTypeWizardPage extends WizardPage
         Collection<String> atdNames = SchemaUtils.getNames( atds );
         possibleAttributeTypes = atdNames.toArray( new String[atdNames.size()] );
         Arrays.sort( possibleAttributeTypes );
-        possibleAttributeTypesSubschemaOnly = initialEntry.getSubschema().getAllAttributeNames();
+        
+        Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( initialEntry );
+        Collection<String> names = SchemaUtils.getNames( allAtds );
+        possibleAttributeTypesSubschemaOnly  = names.toArray(new String[0]);
         Arrays.sort( possibleAttributeTypesSubschemaOnly );
 
-        Set<String> set = new HashSet<String>( Arrays.asList( initialEntry.getSubschema().getAllAttributeNames() ) );
+        Set<String> set = new HashSet<String>( Arrays.asList( possibleAttributeTypesSubschemaOnly ) );
         IAttribute[] existingAttributes = initialEntry.getAttributes();
         for ( int i = 0; existingAttributes != null && i < existingAttributes.length; i++ )
         {

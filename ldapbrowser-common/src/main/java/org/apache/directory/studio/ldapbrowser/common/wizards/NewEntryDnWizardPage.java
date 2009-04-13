@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.naming.InvalidNameException;
@@ -31,6 +32,7 @@ import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
@@ -48,7 +50,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
@@ -180,8 +182,8 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         }
         else
         {
-            Subschema subschema = newEntry.getSubschema();
-            String[] attributeNames = subschema.getAllAttributeNames();
+            Collection<AttributeTypeDescription> atds = SchemaUtils.getAllAttributeTypeDescriptions( newEntry );
+            String[] attributeNames = SchemaUtils.getNames( atds ).toArray(ArrayUtils.EMPTY_STRING_ARRAY);
 
             LdapDN parentDn = null;
             if ( wizard.getSelectedEntry() != null && newEntry.getDn().equals( wizard.getSelectedEntry().getDn() )

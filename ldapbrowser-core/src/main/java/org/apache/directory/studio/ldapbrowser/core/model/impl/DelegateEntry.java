@@ -21,8 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
+import java.util.Collection;
+
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -44,7 +47,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -435,22 +437,6 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         if ( getDelegate() != null )
         {
             return getDelegate().getChildrenFilter();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Subschema getSubschema()
-    {
-        if ( getDelegate() != null )
-        {
-            return getDelegate().getSubschema();
         }
         else
         {
@@ -916,4 +902,21 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
             e.getBrowserConnection() ) );
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().getObjectClassDescriptions();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

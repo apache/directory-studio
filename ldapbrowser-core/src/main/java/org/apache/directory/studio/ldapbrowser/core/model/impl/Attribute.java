@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -131,15 +132,8 @@ public class Attribute implements IAttribute
         }
         else
         {
-            String[] mustAttributeNames = getEntry().getSubschema().getMustAttributeNames();
-            for ( String must : mustAttributeNames )
-            {
-                if ( must.equalsIgnoreCase( getType() ) )
-                {
-                    return true;
-                }
-            }
-            return false;
+            Collection<AttributeTypeDescription> mustAtds = SchemaUtils.getMustAttributeTypeDescriptions( entry );
+            return mustAtds.contains( getAttributeTypeDescription() );
         }
     }
 

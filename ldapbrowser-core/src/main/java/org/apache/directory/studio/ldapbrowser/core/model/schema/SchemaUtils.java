@@ -122,31 +122,31 @@ public class SchemaUtils
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFY_TIMESTAMP_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFIERS_NAME_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.MODIFIERS_NAME_AT_OID.toLowerCase() );
-        
+
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBSCHEMA_SUBENTRY_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID.toLowerCase() );
-        
+
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_CSN_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT_OID.toLowerCase() );
-        
+
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.HAS_SUBORDINATES_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.NUM_SUBORDINATES_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.SUBORDINATE_COUNT_AT.toLowerCase() );
-        
+
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_NAME_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_NAME_AT_OID.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_VERSION_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.VENDOR_VERSION_AT_OID.toLowerCase() );
     }
-    
+
     private static final Comparator<String> nameAndOidComparator = new Comparator<String>()
     {
         public int compare( String s1, String s2 )
@@ -211,7 +211,7 @@ public class SchemaUtils
      * 
      * @return the numeric OIDs of the given schema descriptions
      */
-    public Collection<String> getNumericOids( Collection<? extends AbstractSchemaDescription> descritpions )
+    public static Collection<String> getNumericOids( Collection<? extends AbstractSchemaDescription> descritpions )
     {
         Set<String> oids = new HashSet<String>();
         for ( AbstractSchemaDescription asd : descritpions )
@@ -226,7 +226,7 @@ public class SchemaUtils
     /**
      * Gets the identifiers of the given schema descriptions.
      * 
-     * @param asd the the schema description
+     * @param asd the schema descriptions
      * 
      * @return the identifiers
      */
@@ -248,6 +248,24 @@ public class SchemaUtils
             }
         }
         return identiers;
+    }
+
+
+    /**
+     * Gets the friendly identifier of the given schema description.
+     * This is the first name, if there is no name the numeric OID is returned.
+     * 
+     * @param asd the schema description
+     * 
+     * @return the friendly identifier
+     */
+    public static String getFriendlyIdentifier( AbstractSchemaDescription asd )
+    {
+        if ( asd.getNames() != null && !asd.getNames().isEmpty() )
+        {
+            return asd.getNames().get( 0 );
+        }
+        return asd.getNumericOid();
     }
 
 
@@ -334,6 +352,70 @@ public class SchemaUtils
         }
 
         return true;
+    }
+
+
+    /**
+     * Gets the must attribute type descriptions of all object class descriptions of the given entry.
+     * 
+     * param entry the entry
+     * 
+     * @return the must attribute type descriptions of all object class descriptions of the given entry.
+     */
+    public static Collection<AttributeTypeDescription> getMustAttributeTypeDescriptions( IEntry entry )
+    {
+        Schema schema = entry.getBrowserConnection().getSchema();
+        Collection<AttributeTypeDescription> atds = new HashSet<AttributeTypeDescription>();
+        for ( ObjectClassDescription ocd : entry.getObjectClassDescriptions() )
+        {
+            Collection<String> musts = getMustAttributeTypeDescriptionNamesTransitive( ocd, schema );
+            for ( String must : musts )
+            {
+                AttributeTypeDescription atd = schema.getAttributeTypeDescription( must );
+                atds.add( atd );
+            }
+        }
+        return atds;
+    }
+
+
+    /**
+     * Gets the may attribute type descriptions of all object class descriptions of the given entry.
+     * 
+     * @param entry the entry
+     * 
+     * @return the may attribute type descriptions of all object class descriptions of the given entry.
+     */
+    public static Collection<AttributeTypeDescription> getMayAttributeTypeDescriptions( IEntry entry )
+    {
+        Schema schema = entry.getBrowserConnection().getSchema();
+        Collection<AttributeTypeDescription> atds = new HashSet<AttributeTypeDescription>();
+        for ( ObjectClassDescription ocd : entry.getObjectClassDescriptions() )
+        {
+            Collection<String> mays = getMayAttributeTypeDescriptionNamesTransitive( ocd, schema );
+            for ( String may : mays )
+            {
+                AttributeTypeDescription atd = schema.getAttributeTypeDescription( may );
+                atds.add( atd );
+            }
+        }
+        return atds;
+    }
+
+
+    /**
+     * Gets all attribute type descriptions of all object class descriptions of the given entry.
+     * 
+     * @param entry the entry
+     * 
+     * @return all attribute type descriptions of all object class descriptions of the given entry.
+     */
+    public static Collection<AttributeTypeDescription> getAllAttributeTypeDescriptions( IEntry entry )
+    {
+        Collection<AttributeTypeDescription> atds = new HashSet<AttributeTypeDescription>();
+        atds.addAll( getMustAttributeTypeDescriptions( entry ) );
+        atds.addAll( getMayAttributeTypeDescriptions( entry ) );
+        return atds;
     }
 
 
@@ -938,18 +1020,19 @@ public class SchemaUtils
             }
 
             // check must-attributes
-            String[] mustAttributeNames = entry.getSubschema().getMustAttributeNames();
-            for ( String must : mustAttributeNames )
+            Collection<AttributeTypeDescription> mustAtds = getMustAttributeTypeDescriptions( entry );
+            for ( AttributeTypeDescription mustAtd : mustAtds )
             {
-                AttributeHierarchy ah = entry.getAttributeWithSubtypes( must );
+                AttributeHierarchy ah = entry.getAttributeWithSubtypes( mustAtd.getNumericOid() );
                 if ( ah == null )
                 {
-                    messages.add( NLS.bind( Messages.getString( "SchemaUtils.MandatoryAttributeIsMissing" ), must ) ); //$NON-NLS-1$
+                    messages.add( NLS.bind( Messages.getString( "SchemaUtils.MandatoryAttributeIsMissing" ), //$NON-NLS-1$ 
+                        getLowerCaseIdentifiers( mustAtd ) ) );
                 }
             }
 
             // check unallowed attributes
-            Set<AttributeTypeDescription> allAtds = entry.getSubschema().getAllAttributeTypeDescriptions();
+            Collection<AttributeTypeDescription> allAtds = getAllAttributeTypeDescriptions( entry );
             for ( IAttribute attribute : entry.getAttributes() )
             {
                 if ( !attribute.isOperationalAttribute() )

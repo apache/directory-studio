@@ -21,13 +21,18 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
+import java.util.Collection;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -142,7 +147,9 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
         dnBuilderWidget = new DnBuilderWidget( true, false );
         dnBuilderWidget.addWidgetModifyListener( this );
         dnBuilderWidget.createContents( composite );
-        dnBuilderWidget.setInput( entry.getBrowserConnection(), entry.getSubschema().getAllAttributeNames(), entry
+        Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
+        String[] allAttributeNames = SchemaUtils.getNames( allAtds ).toArray( ArrayUtils.EMPTY_STRING_ARRAY );
+        dnBuilderWidget.setInput( entry.getBrowserConnection(), allAttributeNames, entry
             .getRdn(), null );
 
         applyDialogFont( composite );

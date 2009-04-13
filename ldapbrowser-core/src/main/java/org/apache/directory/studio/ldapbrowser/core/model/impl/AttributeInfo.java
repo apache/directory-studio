@@ -26,7 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 
 
 /**
@@ -48,9 +47,6 @@ public class AttributeInfo implements Serializable
     
     /** The attribute map. */
     protected volatile Map<String, IAttribute> attributeMap = new LinkedHashMap<String, IAttribute>();
-
-    /** The subschema. */
-    protected volatile Subschema subschema = null;
 
 
     /**

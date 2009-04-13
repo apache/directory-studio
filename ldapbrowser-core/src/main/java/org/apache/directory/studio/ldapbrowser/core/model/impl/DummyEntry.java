@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +30,7 @@ import java.util.Map;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -41,7 +42,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 
 
@@ -288,15 +289,6 @@ public class DummyEntry implements IEntry
 
 
     /**
-     * {@inheritDoc}
-     */
-    public Subschema getSubschema()
-    {
-        return new Subschema( this );
-    }
-
-
-    /**
      * This implementation always returns false.
      */
     public boolean hasMoreChildren()
@@ -346,7 +338,8 @@ public class DummyEntry implements IEntry
      */
     public boolean isAlias()
     {
-        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.ALIAS_OC );
+        return getObjectClassDescriptions().contains(
+            getBrowserConnection().getSchema().getObjectClassDescription( SchemaConstants.ALIAS_OC ) );
     }
 
 
@@ -382,7 +375,8 @@ public class DummyEntry implements IEntry
      */
     public boolean isReferral()
     {
-        return Arrays.asList( getSubschema().getObjectClassNames() ).contains( SchemaConstants.REFERRAL_OC );
+        return getObjectClassDescriptions().contains(
+            getBrowserConnection().getSchema().getObjectClassDescription( SchemaConstants.REFERRAL_OC ) );
     }
 
 
@@ -391,7 +385,8 @@ public class DummyEntry implements IEntry
      */
     public boolean isSubentry()
     {
-        return Arrays.asList( this.getSubschema().getObjectClassNames() ).contains( SchemaConstants.SUBENTRY_OC );
+        return getObjectClassDescriptions().contains(
+            getBrowserConnection().getSchema().getObjectClassDescription( SchemaConstants.SUBENTRY_OC ) );
     }
 
 
@@ -507,6 +502,20 @@ public class DummyEntry implements IEntry
     public Object getAdapter( Class adapter )
     {
         return null;
+    }
+
+
+    public Collection<ObjectClassDescription> getObjectClassDescriptions()
+    {
+        Collection<ObjectClassDescription> ocds = new ArrayList<ObjectClassDescription>();
+        String[] ocNames = getAttribute( SchemaConstants.OBJECT_CLASS_AT ).getStringValues();
+        Schema schema = getBrowserConnection().getSchema();
+        for ( String ocName : ocNames )
+        {
+            ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
+            ocds.add( ocd );
+        }
+        return ocds;
     }
 
 }

@@ -40,6 +40,8 @@ public interface BrowserCoreConstants
 
     public static final String PREFERENCE_BINARY_ATTRIBUTES = "binaryAttributes"; //$NON-NLS-1$
 
+    public static final String PREFERENCE_OBJECT_CLASS_ICONS = "objectClassIcons"; //$NON-NLS-1$
+
     public static final String BINARY = "BINARY"; //$NON-NLS-1$
 
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$

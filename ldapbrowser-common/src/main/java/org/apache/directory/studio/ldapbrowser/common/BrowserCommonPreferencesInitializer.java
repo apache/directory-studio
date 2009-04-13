@@ -24,8 +24,11 @@ package org.apache.directory.studio.ldapbrowser.common;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.AttributeValueEditorRelation;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassIconPair;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SyntaxValueEditorRelation;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.apache.directory.studio.valueeditors.ValueEditorManager.ValueEditorExtension;
@@ -134,6 +137,53 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST, false );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_META_ENTRIES_LAST, true );
 
+        // default icons
+        ObjectClassIconPair[] objectClassIcons = new ObjectClassIconPair[]
+            {
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.PERSON_OC_OID, SchemaConstants.ORGANIZATIONAL_PERSON_OC_OID,
+                        SchemaConstants.INET_ORG_PERSON_OC_OID }, BrowserCommonConstants.IMG_ENTRY_PERSON ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.POSIX_ACCOUNT_OC_OID }, BrowserCommonConstants.IMG_ENTRY_PERSON ),
+
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.ORGANIZATION_OC_OID }, BrowserCommonConstants.IMG_ENTRY_ORG ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.ORGANIZATIONAL_UNIT_OC_OID }, BrowserCommonConstants.IMG_ENTRY_ORG ),
+
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.COUNTRY_OC_OID }, BrowserCommonConstants.IMG_ENTRY_DC ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.LOCALITY_OC_OID }, BrowserCommonConstants.IMG_ENTRY_DC ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.DC_OBJECT_OC_OID }, BrowserCommonConstants.IMG_ENTRY_DC ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.DOMAIN_OC_OID }, BrowserCommonConstants.IMG_ENTRY_DC ),
+
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.GROUP_OF_NAMES_OC_OID }, BrowserCommonConstants.IMG_ENTRY_GROUP ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.GROUP_OF_UNIQUE_NAMES_OC_OID }, BrowserCommonConstants.IMG_ENTRY_GROUP ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.POSIX_GROUP_OC_OID }, BrowserCommonConstants.IMG_ENTRY_GROUP ),
+
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.SUBENTRY_OC_OID }, BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.REFERRAL_OC_OID }, BrowserCommonConstants.IMG_ENTRY_REF ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.ALIAS_OC_OID }, BrowserCommonConstants.IMG_ENTRY_ALIAS ),
+
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_SCHEMA_OC_OID }, BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_OBJECT_CLASS_OC_OID }, BrowserCommonConstants.IMG_OCD ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_ATTRIBUTE_TYPE_OC_OID }, BrowserCommonConstants.IMG_ATD ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_MATCHING_RULE_OC_OID }, BrowserCommonConstants.IMG_MRD ), };
+        BrowserCorePlugin.getDefault().getCorePreferences().setDefaultObjectClassIcons( objectClassIcons );
+
         // Entry Editor
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD, 10 );
@@ -148,8 +198,6 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
             BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION );
         store.setDefault( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER,
             BrowserCoreConstants.SORT_ORDER_ASCENDING );
-
-        
 
         // Text Format
         store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER, "\t" ); //$NON-NLS-1$

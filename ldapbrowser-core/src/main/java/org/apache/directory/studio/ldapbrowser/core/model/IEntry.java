@@ -22,13 +22,14 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
 
@@ -270,15 +271,6 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Returns the subschema of the entry.
-     * 
-     * @return The subschema of the entry or null if the attributes aren't
-     *         initialized
-     */
-    public abstract Subschema getSubschema();
-
-
-    /**
      * Indicates whether the entry's children are initialized.
      * 
      * True means that the entry's children are completely initialized
@@ -368,16 +360,16 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @param moreChildrenRunnable the runnable used to fetch the top page of children
      */
     public abstract void setTopPageChildrenRunnable( StudioBulkRunnableWithProgress topPageChildrenRunnable );
-    
-    
+
+
     /**
      * Gets the runnable used to fetch the next page of children.
      * 
      * @return the runnable used to fetch the next page of children, null if none
      */
     public abstract StudioBulkRunnableWithProgress getNextPageChildrenRunnable();
-    
-    
+
+
     /**
      * Sets the runnable used to fetch the next page of children.
      * 
@@ -433,5 +425,13 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @return the  LDAP URL of this entry
      */
     public abstract LdapURL getUrl();
+
+
+    /**
+     * Gets the object class descriptions of this entry.
+     * 
+     * @return the object class descriptions of this entry
+     */
+    public Collection<ObjectClassDescription> getObjectClassDescriptions();
 
 }

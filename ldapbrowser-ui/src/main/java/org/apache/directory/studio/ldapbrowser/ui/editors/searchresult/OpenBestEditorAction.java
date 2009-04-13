@@ -21,14 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -159,8 +159,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
             {
                 // validate if value is allowed
-                Subschema subschema = attributeHierarchy.getAttribute().getEntry().getSubschema();
-                Set<AttributeTypeDescription> allAtds = subschema.getAllAttributeTypeDescriptions();
+                IEntry entry = attributeHierarchy.getAttribute().getEntry();
+                Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
                 AttributeTypeDescription atd = attributeHierarchy.getAttribute().getAttributeTypeDescription();
                 if ( !allAtds.contains( atd ) )
                 {

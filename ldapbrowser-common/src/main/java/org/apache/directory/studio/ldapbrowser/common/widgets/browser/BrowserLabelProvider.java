@@ -21,14 +21,18 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
+import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
@@ -39,6 +43,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.AliasBaseEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BaseDNEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.ReferralBaseEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassIconPair;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -274,7 +281,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         if ( obj instanceof IEntry )
         {
             IEntry entry = ( IEntry ) obj;
-            return getImageByRdn( entry );
+            return getImageByObjectClass( entry );
         }
         else if ( obj instanceof BrowserEntryPage )
         {
@@ -308,7 +315,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         {
             ISearchResult sr = ( ISearchResult ) obj;
             IEntry entry = sr.getEntry();
-            return getImageByRdn( entry );
+            return getImageByObjectClass( entry );
         }
         else if ( obj instanceof StudioRunnableWithProgress )
         {
@@ -434,87 +441,63 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
     }
 
 
-    // private Image getImageByObjectclass(IEntry entry) {
-    // IAttribute oc = entry.getAttribute(IAttribute.OBJECTCLASS_ATTRIBUTE);
-    // if(oc != null && oc.getStringValues() != null) {
-    // String[] ocValues = oc.getStringValues();
-    // Set ocSet = new HashSet();
-    // for(int i=0; i<ocValues.length; i++) {
-    // ocSet.add(ocValues[i].toUpperCase());
-    // }
-    //			
-    // if(entry instanceof IRootDSE) {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY_ROOT);
-    // }
-    // else
-    // if(entry.getDn().equals(entry.getConnection().getSchema().getDn()))
-    // {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_BROWSER_SCHEMABROWSEREDITOR);
-    // }
-    // else if(ocSet.contains(ObjectClassDescription.OC_ALIAS.toUpperCase())
-    // || ocSet.contains(ObjectClassDescription.OC_REFERRAL.toUpperCase()))
-    // {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY_REF);
-    // }
-    // else
-    // if(ocSet.contains(ObjectClassDescription.OC_PERSON.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_ORGANIZATIONALPERSON.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_INETORGPERSON.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_RESIDENTIALPERSON.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_PILOTPERSON.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_NEWPILOTPERSON.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_ORGANIZATIONALROLE.toUpperCase())
-    // || ocSet.contains(ObjectClassDescription.OC_ACCOUNT.toUpperCase())) {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY_PERSON);
-    // }
-    // else
-    // if(ocSet.contains(ObjectClassDescription.OC_ORGANIZATION.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_ORGANIZATIONALUNIT.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_PILOTORGANIZATION.toUpperCase())
-    // || ocSet.contains(ObjectClassDescription.OC_DMD.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_APPLICATIONPROCESS.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_APPLICATIONENTITY.toUpperCase()))
-    // {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY_ORG);
-    // }
-    // else
-    // if(ocSet.contains(ObjectClassDescription.OC_COUNTRY.toUpperCase())
-    // || ocSet.contains(ObjectClassDescription.OC_LOCALITY.toUpperCase())
-    // || ocSet.contains(ObjectClassDescription.OC_DCOBJECT.toUpperCase())
-    // || ocSet.contains(ObjectClassDescription.OC_DOMAIN.toUpperCase())) {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY_DC);
-    // }
-    // else
-    // if(ocSet.contains(ObjectClassDescription.OC_GROUPOFNAMES.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_GROUPOFUNIQUENAMES.toUpperCase())
-    // ||
-    // ocSet.contains(ObjectClassDescription.OC_POSIXGROUP.toUpperCase())) {
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY_GROUP);
-    // }
-    //			
-    // }
-    //		
-    // return
-    // Activator.getDefault().getImage(BrowserWidgetsConstants.IMG_ENTRY);
-    // }
+    private Image getImageByObjectClass(IEntry entry) {
+        
+        if(entry instanceof IRootDSE) {
+            return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
+        }
+        else if ( entry instanceof DirectoryMetadataEntry && ( ( DirectoryMetadataEntry ) entry ).isSchemaEntry() )
+        {
+            return BrowserCommonActivator.getDefault()
+                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+        }
+        else if ( entry.getDn().equals( entry.getBrowserConnection().getSchema().getDn() ) )
+        {
+            return BrowserCommonActivator.getDefault()
+                .getImage( BrowserCommonConstants.IMG_BROWSER_SCHEMABROWSEREDITOR );
+        }
+        
+        Schema schema = entry.getBrowserConnection().getSchema();
+        Collection<ObjectClassDescription> ocds = entry.getObjectClassDescriptions();
+        if ( ocds != null )
+        {
+            Collection<String> numericOids = SchemaUtils.getNumericOids( ocds );
+            ObjectClassIconPair[] objectClassIcons = BrowserCorePlugin.getDefault().getCorePreferences().getObjectClassIcons();
+            int maxWeight = 0;
+            ObjectClassIconPair maxObjectClassIconPair = null;
+            for ( ObjectClassIconPair objectClassIconPair : objectClassIcons )
+            {
+                int weight = 0;
+                String[] ocNumericOids = objectClassIconPair.getOcNumericOids();
+                for ( String ocNumericOid : ocNumericOids )
+                {
+                    if(numericOids.contains( ocNumericOid ))
+                    {
+                        ObjectClassDescription ocd = schema.getObjectClassDescription( ocNumericOid );
+                        if(ocd.getKind() == ObjectClassTypeEnum.STRUCTURAL)
+                        {
+                            weight += 3;
+                        }
+                        else if(ocd.getKind() == ObjectClassTypeEnum.AUXILIARY)
+                        {
+                            weight += 2;
+                        }
+                    }
+                }
+                if(weight > maxWeight)
+                {
+                    maxObjectClassIconPair = objectClassIconPair;
+                }
+            }
+            
+            if(maxObjectClassIconPair != null)
+            {
+                return BrowserCommonActivator.getDefault().getImage( maxObjectClassIconPair.getIconPath() );   
+            }
+        }
+
+        return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY );
+    }
 
     /**
      * {@inheritDoc}

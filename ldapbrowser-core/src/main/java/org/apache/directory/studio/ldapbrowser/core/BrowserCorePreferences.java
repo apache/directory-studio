@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.ObjectClassIconPair;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.core.runtime.Preferences;
 
@@ -189,6 +190,52 @@ public class BrowserCorePreferences
     public void setDefaultBinarySyntaxes( BinarySyntax[] defaultBinarySyntaxes )
     {
         storeDefault( BrowserCoreConstants.PREFERENCE_BINARY_SYNTAXES, defaultBinarySyntaxes );
+    }
+
+
+    /**
+     * Gets the object class icons.
+     * 
+     * @return the object class icons
+     */
+    public ObjectClassIconPair[] getObjectClassIcons()
+    {
+        ObjectClassIconPair[] ocIcons = ( ObjectClassIconPair[] ) load( BrowserCoreConstants.PREFERENCE_OBJECT_CLASS_ICONS );
+        return ocIcons;
+    }
+
+
+    /**
+     * Sets the object class icons.
+     * 
+     * @param ocIcons the new object class icons
+     */
+    public void setObjectClassIcons( ObjectClassIconPair[] ocIcons )
+    {
+        store( BrowserCoreConstants.PREFERENCE_OBJECT_CLASS_ICONS, ocIcons );
+    }
+
+
+    /**
+     * Gets the default object class icon.
+     * 
+     * @return the default object class icon
+     */
+    public ObjectClassIconPair[] getDefaultObjectClassIcon()
+    {
+        ObjectClassIconPair[] ocIcons = ( ObjectClassIconPair[] ) loadDefault( BrowserCoreConstants.PREFERENCE_OBJECT_CLASS_ICONS );
+        return ocIcons;
+    }
+
+
+    /**
+     * Sets the default object class icons.
+     * 
+     * @param ocIcons the new default object class icons
+     */
+    public void setDefaultObjectClassIcons( ObjectClassIconPair[] ocIcons )
+    {
+        storeDefault( BrowserCoreConstants.PREFERENCE_OBJECT_CLASS_ICONS, ocIcons );
     }
 
 

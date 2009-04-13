@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Subschema;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -157,8 +157,8 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
                 }
 
                 // validate if value is allowed
-                Subschema subschema = value.getAttribute().getEntry().getSubschema();
-                Set<AttributeTypeDescription> allAtds = subschema.getAllAttributeTypeDescriptions();
+                IEntry entry = value.getAttribute().getEntry();
+                Collection<AttributeTypeDescription> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
                 AttributeTypeDescription atd = value.getAttribute().getAttributeTypeDescription();
                 if ( !allAtds.contains( atd ) )
                 {
