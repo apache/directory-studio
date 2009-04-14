@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.4.0.v20090407</version>
+    <version>1.4.1-SNAPSHOT</version>
   </parent>
   
   <artifactId>apacheds.configuration.feature</artifactId>
-  <version>1.4.0.v20090407</version>
+  <version>${apacheds.configuration.feature.version}</version>
   <name>Apache Directory Studio Apache DS Configuration Feature</name>
   <packaging>jar</packaging>
 

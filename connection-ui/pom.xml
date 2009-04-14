@@ -23,11 +23,11 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent</artifactId>
-    <version>1.4.0.v20090407</version>
+    <version>1.4.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>connection.ui</artifactId>
-  <version>1.4.0.v20090407</version>
+  <version>${connection.ui.version}</version>
   <name>Apache Directory Studio Connection UI</name>
   <packaging>jar</packaging>
 
