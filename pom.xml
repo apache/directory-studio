@@ -28,7 +28,7 @@
 
   <groupId>org.apache.directory.studio</groupId>
   <artifactId>parent</artifactId>
-  <version>1.4.1-SNAPSHOT</version>
+  <version>1.5.0-SNAPSHOT</version>
   <name>Apache Directory Studio</name>
   <packaging>pom</packaging>
 
@@ -65,38 +65,38 @@
     <studio.dist.url>${pom.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
-    <aciitemeditor.version>1.4.1-SNAPSHOT</aciitemeditor.version>
-    <apacheds.launcher.version>1.4.1-SNAPSHOT</apacheds.launcher.version>
-    <apacheds.version>1.4.1-SNAPSHOT</apacheds.version>
-    <apacheds.help.version>1.4.1-SNAPSHOT</apacheds.help.version>
-    <apacheds.feature.version>1.4.1-SNAPSHOT</apacheds.feature.version>
-    <apacheds.configuration.version>1.4.1-SNAPSHOT</apacheds.configuration.version>
-    <apacheds.configuration.feature.version>1.4.1-SNAPSHOT</apacheds.configuration.feature.version>
-    <apacheds.configuration.help.version>1.4.1-SNAPSHOT</apacheds.configuration.help.version>
-    <connection.core.version>1.4.1-SNAPSHOT</connection.core.version>
-    <connection.ui.version>1.4.1-SNAPSHOT</connection.ui.version>
-    <jars.version>1.4.1-SNAPSHOT</jars.version>
-    <ldapbrowser.common.version>1.4.1-SNAPSHOT</ldapbrowser.common.version>
-    <ldapbrowser.core.version>1.4.1-SNAPSHOT</ldapbrowser.core.version>
-    <ldapbrowser.feature.version>1.4.1-SNAPSHOT</ldapbrowser.feature.version>
-    <ldapbrowser.help.version>1.4.1-SNAPSHOT</ldapbrowser.help.version>
-    <ldapbrowser.ui.version>1.4.1-SNAPSHOT</ldapbrowser.ui.version>
-    <ldifeditor.version>1.4.1-SNAPSHOT</ldifeditor.version>
-    <ldifeditor.feature.version>1.4.1-SNAPSHOT</ldifeditor.feature.version>
-    <ldifeditor.help.version>1.4.1-SNAPSHOT</ldifeditor.help.version>
-    <ldifparser.version>1.4.1-SNAPSHOT</ldifparser.version>
-    <rcp.version>1.4.1-SNAPSHOT</rcp.version>
-    <rcp.feature.version>1.4.1-SNAPSHOT</rcp.feature.version>
-    <rcp.help.version>1.4.1-SNAPSHOT</rcp.help.version>
-    <repository.version>1.4.0-SNAPSHOT</repository.version>
-    <schemaeditor.version>1.4.1-SNAPSHOT</schemaeditor.version>
-    <schemaeditor.feature.version>1.4.1-SNAPSHOT</schemaeditor.feature.version>
-    <schemaeditor.help.version>1.4.1-SNAPSHOT</schemaeditor.help.version>
-    <studio.dsml.parser.version>0.4.5-SNAPSHOT</studio.dsml.parser.version>
-    <updatesite.version>1.4.0-SNAPSHOT</updatesite.version>
-    <valueeditors.version>1.4.1-SNAPSHOT</valueeditors.version>
-    <test.integration.core.version>1.4.0-SNAPSHOT</test.integration.core.version>
-    <test.integration.ui.version>1.4.0-SNAPSHOT</test.integration.ui.version>
+    <aciitemeditor.version>1.5.0-SNAPSHOT</aciitemeditor.version>
+    <apacheds.launcher.version>1.5.0-SNAPSHOT</apacheds.launcher.version>
+    <apacheds.version>1.5.0-SNAPSHOT</apacheds.version>
+    <apacheds.help.version>1.5.0-SNAPSHOT</apacheds.help.version>
+    <apacheds.feature.version>1.5.0-SNAPSHOT</apacheds.feature.version>
+    <apacheds.configuration.version>1.5.0-SNAPSHOT</apacheds.configuration.version>
+    <apacheds.configuration.feature.version>1.5.0-SNAPSHOT</apacheds.configuration.feature.version>
+    <apacheds.configuration.help.version>1.5.0-SNAPSHOT</apacheds.configuration.help.version>
+    <connection.core.version>1.5.0-SNAPSHOT</connection.core.version>
+    <connection.ui.version>1.5.0-SNAPSHOT</connection.ui.version>
+    <jars.version>1.5.0-SNAPSHOT</jars.version>
+    <ldapbrowser.common.version>1.5.0-SNAPSHOT</ldapbrowser.common.version>
+    <ldapbrowser.core.version>1.5.0-SNAPSHOT</ldapbrowser.core.version>
+    <ldapbrowser.feature.version>1.5.0-SNAPSHOT</ldapbrowser.feature.version>
+    <ldapbrowser.help.version>1.5.0-SNAPSHOT</ldapbrowser.help.version>
+    <ldapbrowser.ui.version>1.5.0-SNAPSHOT</ldapbrowser.ui.version>
+    <ldifeditor.version>1.5.0-SNAPSHOT</ldifeditor.version>
+    <ldifeditor.feature.version>1.5.0-SNAPSHOT</ldifeditor.feature.version>
+    <ldifeditor.help.version>1.5.0-SNAPSHOT</ldifeditor.help.version>
+    <ldifparser.version>1.5.0-SNAPSHOT</ldifparser.version>
+    <rcp.version>1.5.0-SNAPSHOT</rcp.version>
+    <rcp.feature.version>1.5.0-SNAPSHOT</rcp.feature.version>
+    <rcp.help.version>1.5.0-SNAPSHOT</rcp.help.version>
+    <repository.version>1.5.0-SNAPSHOT</repository.version>
+    <schemaeditor.version>1.5.0-SNAPSHOT</schemaeditor.version>
+    <schemaeditor.feature.version>1.5.0-SNAPSHOT</schemaeditor.feature.version>
+    <schemaeditor.help.version>1.5.0-SNAPSHOT</schemaeditor.help.version>
+    <studio.dsml.parser.version>0.4.6-SNAPSHOT</studio.dsml.parser.version>
+    <test.integration.core.version>1.5.0-SNAPSHOT</test.integration.core.version>
+    <test.integration.ui.version>1.5.0-SNAPSHOT</test.integration.ui.version>
+    <updatesite.version>1.5.0-SNAPSHOT</updatesite.version>
+    <valueeditors.version>1.5.0-SNAPSHOT</valueeditors.version>
 
     <!-- Set versions for depending projects -->
     <org.apache.directory.shared.version>0.9.14</org.apache.directory.shared.version>
@@ -163,15 +163,6 @@
       -Pintegration-tests
       to the commandline to launch them.
     -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
-    -->
-    <!--
     <profile>
       <id>integration-tests</id>
       <modules>
@@ -179,22 +170,12 @@
         <module>test-integration-ui</module>
       </modules>
     </profile>
-    -->
     <!--
       Add the dist modules as profile to force them being built
       AFTER the help modules, otherwise we run into a backlog
       of at least 1 iteration because the dist modules would be
       built before the help modules ...
     -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
-    -->
-    <!--
     <profile>
       <id>build-dist-modules</id>
       <activation>
@@ -207,7 +188,6 @@
         <module>studio</module>
       </modules>
     </profile>
-    -->
   </profiles>
 
   <dependencyManagement>
@@ -216,7 +196,7 @@
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>studio-dsml-parser</artifactId>
-        <version>0.4.6-SNAPSHOT</version>
+        <version>${studio.dsml.parser.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>

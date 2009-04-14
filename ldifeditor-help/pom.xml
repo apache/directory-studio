@@ -23,12 +23,12 @@
   <parent>
     <groupId>org.apache.directory.studio</groupId>
     <artifactId>parent-help</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <relativePath>../help-pom.xml</relativePath>
   </parent>
 
   <artifactId>ldifeditor.help</artifactId>
-  <version>1.4.1-SNAPSHOT</version>
+  <version>${ldifeditor.help.version}</version>
   <name>Apache Directory Studio LDIF Editor Help</name>
   <packaging>jar</packaging>
 
