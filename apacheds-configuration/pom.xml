@@ -114,10 +114,10 @@
             <Require-Bundle>org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.forms,
- org.apache.directory.studio.jars,
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.apache.directory.studio.jars
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.apacheds.configuration.*</Export-Package>
             <Import-Package>!</Import-Package>
