@@ -148,11 +148,29 @@
   </build>
 
   <dependencies>
+  	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
       <artifactId>ldifparser</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>ldapbrowser.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>connection.ui</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+	<!-- Eclipse plugins dependencies -->
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>jface</artifactId>
@@ -231,21 +249,6 @@
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-ldap</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>ldapbrowser.core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>connection.ui</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
