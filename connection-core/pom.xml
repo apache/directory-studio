@@ -180,7 +180,6 @@
       <artifactId>preferences</artifactId>
       <scope>provided</scope>
     </dependency>
-    
   </dependencies>
 
 </project>
