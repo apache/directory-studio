@@ -30,11 +30,6 @@
   <version>${repository.version}</version>
   <name>Apache Directory Studio Repository</name>
   <packaging>pom</packaging>
-
-  <organization>
-    <name>Apache Software Foundation</name>
-    <url>http://www.apache.org</url>
-  </organization>
   
   <build>
     <plugins>
