@@ -45,8 +45,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.StudioPagedResultsControl;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
@@ -150,7 +152,6 @@ public class ExportLdifJob extends AbstractEclipseJob
     {
         try
         {
-            AttributeComparator comparator = new AttributeComparator( browserConnection );
             JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
 
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
@@ -165,6 +166,8 @@ public class ExportLdifJob extends AbstractEclipseJob
                     LdifSepLine sepLine = record.getSepLine();
 
                     // sort and format
+                    DummyEntry entry = ModelConverter.ldifContentRecordToEntry( record, browserConnection );
+                    AttributeComparator comparator = new AttributeComparator( entry );
                     Arrays.sort( attrValLines, comparator );
                     LdifContentRecord newRecord = new LdifContentRecord( dnLine );
                     for ( int i = 0; i < attrValLines.length; i++ )
