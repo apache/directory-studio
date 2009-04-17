@@ -255,7 +255,6 @@
             <Bundle-SymbolicName>${groupId}.${artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
             <Require-Bundle>org.eclipse.core.runtime,
- org.apache.directory.studio.jars,
  org.apache.directory.studio.connection.core,
  org.junit
             </Require-Bundle>
@@ -298,6 +297,16 @@
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-integ</artifactId>
       <version>1.5.5-SNAPSHOT</version>
+    </dependency> 
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-ldap</artifactId>
+      <version>0.9.15-SNAPSHOT</version>
+    </dependency> 
+    <dependency>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-asn1</artifactId>
+      <version>0.9.15-SNAPSHOT</version>
     </dependency> 
     <dependency>
       <groupId>junit</groupId>
