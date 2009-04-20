@@ -66,7 +66,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
             DnDialog dialog = new DnDialog( shell, Messages.getString("DnValueEditor.DNEditor"), null, wrapper.connection, dn ); //$NON-NLS-1$
             if ( dialog.open() == TextDialog.OK && dialog.getDn() != null )
             {
-                setValue( dialog.getDn().toString() );
+                setValue( dialog.getDn().getUpName() );
                 return true;
             }
         }

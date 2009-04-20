@@ -431,6 +431,8 @@ public class NewEntryWizardTest extends AbstractServerTest
 
         SWTBotTree tree = bot.tree( 0 );
         SWTBotTreeItem krbNode = tree.getTreeItem( "krb5PrincipalName" );
+        // click to cancel editing attribute when pages becomes visible
+        krbNode.click();
 
         // enter cn value
         tree.select( "cn" );

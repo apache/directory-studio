@@ -493,6 +493,7 @@ public class SWTBotUtils
 
             if ( entry == null )
             {
+                currentPath = adjustNodeName( tree, currentPath );
                 entry = tree.getTreeItem( currentPath );
             }
             else
@@ -582,6 +583,21 @@ public class SWTBotUtils
         List<String> nodes = child.getNodes();
         for ( String node : nodes )
         {
+            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
+            {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+    private static String adjustNodeName( SWTBotTree tree, String nodeName )
+    {
+        SWTBotTreeItem[] allItems = tree.getAllItems();
+        for ( SWTBotTreeItem item : allItems )
+        {
+            String node = item.getText();
             if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
             {
                 return node;

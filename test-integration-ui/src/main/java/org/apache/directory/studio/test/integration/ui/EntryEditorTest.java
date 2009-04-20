@@ -28,7 +28,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
 
 /**
- * Tests the new entry wizard.
+ * Tests the entry editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -41,7 +41,7 @@ public class EntryEditorTest extends AbstractServerTest
     protected void setUp() throws Exception
     {
         super.setUp();
-        super.loadTestLdif( true );
+        super.loadTestLdif( false );
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "EntryEditorTest", ldapService.getPort() );
@@ -57,7 +57,7 @@ public class EntryEditorTest extends AbstractServerTest
 
 
     /**
-     * Test to create a single organization entry.
+     * Test adding, editing and deleting of attributes in the entry editor.
      * 
      * @throws Exception
      *             the exception
@@ -230,7 +230,52 @@ public class EntryEditorTest extends AbstractServerTest
                 return "Attribute 'description' is still there.";
             }
         } );
+    }
 
+
+    /**
+     * DIRSTUDIO-483: DN Editor escapes all non-ascii characters 
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public void testDnValueEditor() throws Exception
+    {
+        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=groups", "cn=My Group" );
+
+        SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot );
+        entryEditorTree.contextMenu( "New Attribute..." ).click();
+        bot.shell( "New Attribute" );
+        bot.comboBoxWithLabel( "Attribute type:" ).setText( "member" );
+        bot.button( "Finish" ).click();
+
+        // DN Editor automatically opened
+        bot.shell( "DN Editor" );
+        bot.button( "Browse..." ).click();
+
+        // select value from DN picker
+        bot.shell( "Select DN" );
+        SWTBotTree tree = bot.tree( 0 );
+        SWTBotUtils.selectEntry( bot, tree, false, "Root DSE", "ou=system", "ou=users",
+            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        bot.button( "OK" ).click();
+
+        // assert value after selection
+        assertEquals( "Unexpected value", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", bot.comboBox()
+            .getText() );
+
+        // save value
+        bot.button( "OK" ).click();
+        bot.sleep( 1000 );
+
+        // assert value after saved and reloaded from server
+        entryEditorTree.select( 3 );
+        assertEquals( "Unexpected value", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", bot.comboBox()
+            .getText() );
+        bot.button( "Cancel" ).click();
     }
 
 }
