@@ -25,12 +25,10 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -257,18 +255,16 @@ public class Utils
     }
 
 
-    public static boolean containsIgnoreCase( Collection c, String s )
+    public static boolean containsIgnoreCase( Collection<String> c, String s )
     {
         if ( c == null || s == null )
         {
             return false;
         }
 
-        Iterator it = c.iterator();
-        while ( it.hasNext() )
+        for ( String string : c )
         {
-            Object o = it.next();
-            if ( o instanceof String && ( ( String ) o ).equalsIgnoreCase( s ) )
+            if ( string.equalsIgnoreCase( s ) )
             {
                 return true;
             }
