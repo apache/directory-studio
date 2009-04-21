@@ -734,7 +734,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
             }
         }
 
-        if ( ( searchParameter.getControls() != null && Arrays.asList( searchParameter.getControls() ).contains(
+        if ( ( searchParameter.getControls() != null && searchParameter.getControls().contains(
             StudioControl.SUBENTRIES_CONTROL ) )
             || ISearch.FILTER_SUBENTRY.equalsIgnoreCase( searchParameter.getFilter() ) )
         {
