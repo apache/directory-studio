@@ -410,7 +410,7 @@ public class CopyEntriesJob extends AbstractNotificationJob
             Attribute attribute = attributes.get( atav.getUpType() );
             if ( attribute != null )
             {
-                attribute.remove( atav.getUpValue() );
+                attribute.remove( atav.getNormValue() );
                 if ( attribute.size() == 0 )
                 {
                     attributes.remove( atav.getUpType() );
@@ -428,9 +428,9 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 attribute = new BasicAttribute( atav.getUpType() );
                 attributes.put( attribute );
             }
-            if ( !attribute.contains( atav.getUpValue() ) )
+            if ( !attribute.contains( atav.getNormValue() ) )
             {
-                attribute.add( atav.getUpValue() );
+                attribute.add( atav.getNormValue() );
             }
         }
     }

@@ -175,7 +175,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                     AttributeTypeAndValue atav = atavIterator.next();
                     addRdnLine( rdnComposite, i );
                     rdnLineList.get( i ).rdnTypeCombo.setText( atav.getUpType() );
-                    rdnLineList.get( i ).rdnValueText.setText( ( String ) atav.getUpValue() );
+                    rdnLineList.get( i ).rdnValueText.setText( ( String ) atav.getNormValue() );
                     if ( i == 0 )
                     {
                         if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) ) //$NON-NLS-1$

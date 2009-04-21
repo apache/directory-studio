@@ -8,3 +8,14 @@ sn: Jensen
 givenName: Barbara
 uid: bjensen
 
+# cn=\#\\\+\, \"öé\",ou=users,ou=system
+dn:: Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn:: I1wrLCAiw7bDqSI=
+sn:: I1wrLCAiw7bDqSI=
+givenName:: I1wrLCAiw7bDqSI=
+uid:: I1wrLCAiw7bDqSI=
+

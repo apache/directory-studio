@@ -41,7 +41,7 @@ public class RenameEntryDialogTest extends AbstractServerTest
     protected void setUp() throws Exception
     {
         super.setUp();
-        super.loadTestLdif( true );
+        super.loadTestLdif( false );
         bot = new SWTEclipseBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapService.getPort() );
@@ -82,6 +82,34 @@ public class RenameEntryDialogTest extends AbstractServerTest
         // ensure that the entry with the new name exists
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=Babs Jensen+uid=babsjens" );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-484.
+     * 
+     * Renames a RDN with escaped characters.
+     * 
+     * @throws Exception
+     *             the exception
+     */
+    public void testRenameRdnWithEscapedCharacters() throws Exception
+    {
+        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
+
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+
+        SWTBotMenu contextMenu = browserTree.contextMenu( "Rename Entry..." );
+        contextMenu.click();
+
+        // ensure that the unescaped value is in the text field
+        bot.text( "#\\+, \"\u00F6\u00E9\"" ).setText( "#\\+, \"\u00F6\u00E9\"2" );
+        bot.button( "OK" ).click();
+
+        // ensure that the entry with the new name exists
+        SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"2" );
     }
 
 }

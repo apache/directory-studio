@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
@@ -474,17 +473,11 @@ public class DeleteAction extends BrowserAction
             AttributeHierarchy ah = value.getAttribute().getEntry().getAttributeWithSubtypes( type );
 
             // check if (part of) RDN is selected
-            Iterator<AttributeTypeAndValue> atavIterator = value.getAttribute().getEntry().getRdn().iterator();
-            while ( atavIterator.hasNext() )
+            if ( value.isRdnPart() )
             {
-                AttributeTypeAndValue atav = atavIterator.next();
-                if ( value.getAttribute().getDescription().equals( atav.getUpType() )
-                    && value.getStringValue().equals( atav.getUpValue() ) )
-                {
-                    message.append( NLS.bind( Messages.getString( "DeleteAction.DeletePartOfRDN" ), value.toString() ) ); //$NON-NLS-1$
-                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                    message.append( BrowserCoreConstants.LINE_SEPARATOR );
-                }
+                message.append( NLS.bind( Messages.getString( "DeleteAction.DeletePartOfRDN" ), value.toString() ) ); //$NON-NLS-1$
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
 
             // check if a required objectClass is selected
