@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
+import javax.naming.NamingException;
+
+import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
@@ -190,6 +193,32 @@ public class ConnectionCorePlugin extends Plugin
      */
     public IAuthHandler getAuthHandler()
     {
+        if(authHandler == null)
+        {
+            // if no authentication handler was set a default authentication handler is used
+            // that only works if the bind password is stored within the connection parameters.
+            authHandler = new IAuthHandler()
+            {
+                public ICredentials getCredentials( ConnectionParameter connectionParameter )
+                {
+                    if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
+                    {
+                        return new Credentials( "", "", connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    else if ( connectionParameter.getBindPassword() != null && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
+                    {
+                        return new Credentials( connectionParameter.getBindPrincipal(), connectionParameter.getBindPassword(),
+                            connectionParameter );
+                    }
+                    else
+                    {
+                        // no credentials provided in connection parameters
+                        // returning null cancel the authentication
+                        return null;
+                    }
+                }
+            };
+        }
         return authHandler;
     }
 
@@ -214,6 +243,19 @@ public class ConnectionCorePlugin extends Plugin
      */
     public IReferralHandler getReferralHandler()
     {
+        if(referralHandler == null)
+        {
+            // if no referral handler was set a default referral handler is used
+            // that just cancels referral chasing
+            referralHandler = new IReferralHandler()
+            {
+                public Connection getReferralConnection( LdapURL referralURL )
+                {
+                    // null cancels referral chasing
+                    return null;
+                }  
+            };
+        }
         return referralHandler;
     }
 

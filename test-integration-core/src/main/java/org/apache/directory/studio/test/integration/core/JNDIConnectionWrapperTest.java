@@ -33,17 +33,13 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.directory.server.unit.AbstractServerTest;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.core.Credentials;
-import org.apache.directory.studio.connection.core.IAuthHandler;
-import org.apache.directory.studio.connection.core.ICredentials;
-import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 
@@ -138,8 +134,6 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true, null );
         Connection connection = new Connection( connectionParameter );
         JNDIConnectionWrapper connectionWrapper = connection.getJNDIConnectionWrapper();
-        IAuthHandler authHandler = getAuthHandler();
-        ConnectionCorePlugin.getDefault().setAuthHandler( authHandler );
 
         assertFalse( connectionWrapper.isConnected() );
 
@@ -168,7 +162,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
         // simple auth without principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, null, null, null, true, null );
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getJNDIConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -232,20 +226,6 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     {
         StudioProgressMonitor monitor = new StudioProgressMonitor( new NullProgressMonitor() );
         return monitor;
-    }
-
-
-    private IAuthHandler getAuthHandler()
-    {
-        IAuthHandler authHandler = new IAuthHandler()
-        {
-            public ICredentials getCredentials( ConnectionParameter connectionParameter )
-            {
-                return new Credentials( connectionParameter.getBindPrincipal(), connectionParameter.getBindPassword(),
-                    connectionParameter );
-            }
-        };
-        return authHandler;
     }
 
 }

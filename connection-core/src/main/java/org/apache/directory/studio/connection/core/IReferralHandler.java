@@ -41,7 +41,7 @@ public interface IReferralHandler
      * to select a proper connection.
      * 
      * @param referralURL the referral URL
-     * @return the target connection
+     * @return the target connection, null to cancel referral chasing
      */
     public Connection getReferralConnection( LdapURL referralURL );
 
