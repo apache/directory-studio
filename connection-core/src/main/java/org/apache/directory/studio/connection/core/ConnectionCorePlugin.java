@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
-import javax.naming.NamingException;
-
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
