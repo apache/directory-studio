@@ -104,11 +104,13 @@ public class ImportExportTest extends AbstractServerTest
         eBot.comboBoxWithLabel( "LDIF File:" ).setText( file );
         eBot.button( "Finish" ).click();
 
-        // verify that exported LDIF starts with the Base64 encoded DN
         eBot.sleep( 2000 );
-        String content = FileUtils.readFileToString( new File( file ) );
-        assertTrue( "LDIF must start with Base64 encoded DN.", content
-            .startsWith( "dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT11c2VycyxvdT1zeXN0ZW0=" ) );
+        List<String> lines = FileUtils.readLines( new File( file ) );
+        // verify that the first line of exported LDIF is "version: 1"
+        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        // verify that the third line of exported LDIF is the Base64 encoded DN
+        assertEquals( "Expected Base64 encoded DN", lines.get( 2 ),
+            "dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT11c2VycyxvdT1zeXN0ZW0=" );
 
         // delete entry
         SWTBotUtils.asyncClick( eBot, browserTree.contextMenu( "Delete Entry" ), new DefaultCondition()

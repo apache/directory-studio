@@ -50,12 +50,14 @@ import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifVersionLine;
 
 
 /**
@@ -153,7 +155,17 @@ public class ExportLdifJob extends AbstractEclipseJob
         try
         {
             JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
+            LdifFormatParameters ldifFormatParameters = Utils.getLdifFormatParameters();
 
+            // add version spec
+            LdifVersionLine ldifVersionLine = LdifVersionLine.create();
+            String ldifVersionLineString = ldifVersionLine.toFormattedString( ldifFormatParameters );
+            bufferedWriter.write( ldifVersionLineString );
+            LdifSepLine ldifSepLine = LdifSepLine.create();
+            String ldifSepLineString = ldifSepLine.toFormattedString( ldifFormatParameters );
+            bufferedWriter.write( ldifSepLineString );
+
+            // add the records
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
@@ -175,7 +187,7 @@ public class ExportLdifJob extends AbstractEclipseJob
                         newRecord.addAttrVal( attrValLines[i] );
                     }
                     newRecord.finish( sepLine );
-                    String s = newRecord.toFormattedString( Utils.getLdifFormatParameters() );
+                    String s = newRecord.toFormattedString( ldifFormatParameters );
 
                     // String s = record.toFormattedString();
                     bufferedWriter.write( s );
