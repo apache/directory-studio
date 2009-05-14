@@ -143,11 +143,11 @@ public class DeleteAction extends StudioAction
             List<Connection> connectionsToDelete = getConnectionsToDelete();
             List<ConnectionFolder> connectionsFoldersToDelete = getConnectionsFoldersToDelete();
             
-            if ( connections.length > 0 )
+            if ( !connectionsToDelete.isEmpty() )
             {
                 deleteConnections( connectionsToDelete );
             }
-            if ( connectionFolders.length > 0 )
+            if ( !connectionsFoldersToDelete.isEmpty() )
             {
                 deleteConnectionFolders( connectionsFoldersToDelete );
             }
