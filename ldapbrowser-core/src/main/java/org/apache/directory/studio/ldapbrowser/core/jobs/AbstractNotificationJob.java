@@ -36,7 +36,7 @@ public abstract class AbstractNotificationJob extends AbstractEclipseJob
 
     protected final void executeAsyncJob( StudioProgressMonitor pm )
     {
-        EventRegistry.suspendEventFireingInCurrentThread();
+        EventRegistry.suspendEventFiringInCurrentThread();
 
         try
         {
@@ -44,7 +44,7 @@ public abstract class AbstractNotificationJob extends AbstractEclipseJob
         }
         finally
         {
-            EventRegistry.resumeEventFireingInCurrentThread();
+            EventRegistry.resumeEventFiringInCurrentThread();
         }
 
         runNotification();

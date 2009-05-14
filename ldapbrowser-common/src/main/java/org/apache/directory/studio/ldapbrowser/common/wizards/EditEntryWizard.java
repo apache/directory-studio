@@ -75,7 +75,7 @@ public class EditEntryWizard extends NewEntryWizard
 
         try
         {
-            EventRegistry.suspendEventFireingInCurrentThread();
+            EventRegistry.suspendEventFiringInCurrentThread();
             LdifContentRecord record = ModelConverter.entryToLdifContentRecord( selectedEntry );
             prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, selectedConnection );
         }
@@ -85,7 +85,7 @@ public class EditEntryWizard extends NewEntryWizard
         }
         finally
         {
-            EventRegistry.resumeEventFireingInCurrentThread();
+            EventRegistry.resumeEventFiringInCurrentThread();
         }
     }
 

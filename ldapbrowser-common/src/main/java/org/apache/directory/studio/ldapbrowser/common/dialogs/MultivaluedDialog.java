@@ -317,11 +317,11 @@ public class MultivaluedDialog extends Dialog
             attributeHierarchie = entry.getAttributeWithSubtypes( attributeDescription );
             if ( attributeHierarchie == null )
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
                 IAttribute attribute = new Attribute( entry, attributeDescription );
                 entry.addAttribute( attribute );
                 attribute.addEmptyValue();
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
                 attributeHierarchie = entry.getAttributeWithSubtypes( attributeDescription );
             }
             viewer.setInput( attributeHierarchie );

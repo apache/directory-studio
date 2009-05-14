@@ -22,10 +22,8 @@ package org.apache.directory.studio.ldapbrowser.core.events;
 
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 
@@ -37,46 +35,8 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EventRegistry
+public class EventRegistry extends ConnectionEventRegistry
 {
-
-    /** The list of threads with suspended event fireing. */
-    private static Set<Thread> suspendedEventFireringThreads = new HashSet<Thread>();;
-
-    /** The lock used to synchronize event fireings */
-    private static Object lock = new Object();
-
-
-    /**
-     * Checks if event fireing is suspended in the current thread.
-     *
-     * @return true, if event fireing is suspended in the current thread
-     */
-    public static boolean isEventFireingSuspendedInCurrentThread()
-    {
-        return suspendedEventFireringThreads.contains( Thread.currentThread() )
-            || ConnectionEventRegistry.isEventFireingSuspendedInCurrentThread();
-    }
-
-
-    /**
-     * Resumes event fireing in the current thread.
-     */
-    public static void resumeEventFireingInCurrentThread()
-    {
-        suspendedEventFireringThreads.remove( Thread.currentThread() );
-    }
-
-
-    /**
-     * Suspends event fireing in the current thread.
-     */
-    public static void suspendEventFireingInCurrentThread()
-    {
-        suspendedEventFireringThreads.add( Thread.currentThread() );
-    }
-
-
 
     /** The map with search update listeners and their runners */
     private static Map<SearchUpdateListener, EventRunner> searchUpdateListeners = new HashMap<SearchUpdateListener, EventRunner>();
@@ -123,13 +83,13 @@ public class EventRegistry
      */
     public static void fireSearchUpdated( final SearchUpdateEvent searchUpdateEvent, final Object source )
     {
-        if( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
 
         Iterator<SearchUpdateListener> it = searchUpdateListeners.keySet().iterator();
-        while( it.hasNext() )
+        while ( it.hasNext() )
         {
             final SearchUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
@@ -142,13 +102,12 @@ public class EventRegistry
 
             EventRunner runner = searchUpdateListeners.get( listener );
 
-            synchronized( lock )
+            synchronized ( lock )
             {
                 runner.execute( runnable );
             }
         }
     }
-
 
     /** The map with bookmark update listeners and their runners */
     private static Map<BookmarkUpdateListener, EventRunner> bookmarkUpdateListeners = new HashMap<BookmarkUpdateListener, EventRunner>();
@@ -195,13 +154,13 @@ public class EventRegistry
      */
     public static void fireBookmarkUpdated( final BookmarkUpdateEvent bookmarkUpdateEvent, final Object source )
     {
-        if( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
 
         Iterator<BookmarkUpdateListener> it = bookmarkUpdateListeners.keySet().iterator();
-        while( it.hasNext() )
+        while ( it.hasNext() )
         {
             final BookmarkUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
@@ -213,7 +172,7 @@ public class EventRegistry
             };
 
             EventRunner runner = bookmarkUpdateListeners.get( listener );
-            synchronized( lock )
+            synchronized ( lock )
             {
                 runner.execute( runnable );
             }
@@ -266,13 +225,13 @@ public class EventRegistry
     public static void fireBrowserConnectionUpdated( final BrowserConnectionUpdateEvent browserConnectionUpdateEvent,
         final Object source )
     {
-        if( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
 
         Iterator<BrowserConnectionUpdateListener> it = browserConnectionUpdateListeners.keySet().iterator();
-        while( it.hasNext() )
+        while ( it.hasNext() )
         {
             final BrowserConnectionUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
@@ -284,18 +243,17 @@ public class EventRegistry
             };
 
             EventRunner runner = browserConnectionUpdateListeners.get( listener );
-            synchronized( lock )
+            synchronized ( lock )
             {
                 runner.execute( runnable );
             }
         }
     }
 
-
     /** The map with entry update listeners and their runners */
     private static Map<EntryUpdateListener, EventRunner> entryUpdateListeners = new HashMap<EntryUpdateListener, EventRunner>();
-    
-    
+
+
     /**
      * Adds the entry update listener.
      *
@@ -306,14 +264,14 @@ public class EventRegistry
     {
         assert listener != null;
         assert runner != null;
-        
+
         if ( !entryUpdateListeners.containsKey( listener ) )
         {
             entryUpdateListeners.put( listener, runner );
         }
     }
-    
-    
+
+
     /**
      * Removes the entry update listener.
      *
@@ -326,8 +284,8 @@ public class EventRegistry
             entryUpdateListeners.remove( listener );
         }
     }
-    
-    
+
+
     /**
      * Notifies each {@link EntryUpdateListener} about the the given {@link EntryModificationEvent}.
      * Uses the {@link EventRunner}s.
@@ -337,13 +295,13 @@ public class EventRegistry
      */
     public static void fireEntryUpdated( final EntryModificationEvent entryUpdateEvent, final Object source )
     {
-        if( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
-        
+
         Iterator<EntryUpdateListener> it = entryUpdateListeners.keySet().iterator();
-        while( it.hasNext() )
+        while ( it.hasNext() )
         {
             final EntryUpdateListener listener = it.next();
             EventRunnable runnable = new EventRunnable()
@@ -353,14 +311,13 @@ public class EventRegistry
                     listener.entryUpdated( entryUpdateEvent );
                 }
             };
-            
+
             EventRunner runner = entryUpdateListeners.get( listener );
-            synchronized( lock )
+            synchronized ( lock )
             {
                 runner.execute( runnable );
             }
         }
     }
-    
-    
+
 }

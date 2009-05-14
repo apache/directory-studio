@@ -255,7 +255,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         try
         {
-            EventRegistry.suspendEventFireingInCurrentThread();
+            EventRegistry.suspendEventFiringInCurrentThread();
 
             // set new objectClass values
             IAttribute ocAttribute = newEntry.getAttribute( SchemaConstants.OBJECT_CLASS_AT );
@@ -276,7 +276,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         }
         finally
         {
-            EventRegistry.resumeEventFireingInCurrentThread();
+            EventRegistry.resumeEventFiringInCurrentThread();
         }
     }
 

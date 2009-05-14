@@ -108,14 +108,14 @@ public class RunnableContextRunner
                         if ( runnable instanceof StudioBulkRunnableWithProgress )
                         {
                             StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
-                            ConnectionEventRegistry.suspendEventFireingInCurrentThread();
+                            ConnectionEventRegistry.suspendEventFiringInCurrentThread();
                             try
                             {
                                 bulkRunnable.run( spm[0] );
                             }
                             finally
                             {
-                                ConnectionEventRegistry.resumeEventFireingInCurrentThread();
+                                ConnectionEventRegistry.resumeEventFiringInCurrentThread();
                             }
                             bulkRunnable.runNotification();
                         }

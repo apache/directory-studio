@@ -181,7 +181,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
             DummyEntry newEntry = wizard.getPrototypeEntry();
             try
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
 
                 // remove empty must attributes
                 // necessary when navigating back, modifying object classes
@@ -222,7 +222,7 @@ public class NewEntryAttributesWizardPage extends WizardPage implements EntryUpd
             }
             finally
             {
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
             }
 
             // set the input

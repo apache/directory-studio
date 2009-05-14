@@ -1077,7 +1077,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 {
                     if ( monitor.isCanceled() )
                     {
-                        if ( jobThread.isAlive() )
+                        if ( jobThread != null && jobThread.isAlive() )
                         {
                             jobThread.interrupt();
                         }

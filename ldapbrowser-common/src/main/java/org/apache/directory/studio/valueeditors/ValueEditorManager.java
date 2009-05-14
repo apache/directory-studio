@@ -622,10 +622,10 @@ public class ValueEditorManager
             }
             else
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
                 IAttribute attribute = new Attribute( entry, attributeDescription );
                 entry.addAttribute( attribute );
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
 
                 Object newValue;
                 if ( SchemaUtils.isString( entry.getBrowserConnection().getSchema().getAttributeTypeDescription(
@@ -694,9 +694,9 @@ public class ValueEditorManager
         {
             if ( oldValue.isEmpty() )
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
                 attribute.deleteEmptyValue();
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
                 new CreateValuesJob( attribute, newRawValue ).execute();
             }
             else

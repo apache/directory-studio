@@ -35,14 +35,14 @@ public class StudioBrowserJob extends StudioConnectionJob
     @Override
     protected void suspendEventFireingInCurrentThread()
     {
-        EventRegistry.suspendEventFireingInCurrentThread();
+        EventRegistry.suspendEventFiringInCurrentThread();
         super.suspendEventFireingInCurrentThread();
     }
     
     @Override
     protected void resumeEventFireingInCurrentThread()
     {
-        EventRegistry.resumeEventFireingInCurrentThread();
+        EventRegistry.resumeEventFiringInCurrentThread();
         super.resumeEventFireingInCurrentThread();
     }
 }

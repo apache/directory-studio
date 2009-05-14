@@ -338,6 +338,7 @@ public class ImportLdifJob extends AbstractNotificationJob
                                 if ( parentEntry != null )
                                 {
                                     parentEntry.setChildrenInitialized( false );
+                                    parentEntry.setHasChildrenHint( true );
                                 }
                             }
                             else

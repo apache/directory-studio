@@ -216,7 +216,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
         try
         {
-            EventRegistry.suspendEventFireingInCurrentThread();
+            EventRegistry.suspendEventFiringInCurrentThread();
 
             // remove old RDN
             if ( newEntry.getRdn().size() > 0 )
@@ -293,7 +293,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
         }
         finally
         {
-            EventRegistry.resumeEventFireingInCurrentThread();
+            EventRegistry.resumeEventFiringInCurrentThread();
         }
     }
 

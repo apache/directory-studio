@@ -108,7 +108,7 @@ public class ModelConverter
     {
         LdifPart[] parts = ldifRecord.getParts();
 
-        EventRegistry.suspendEventFireingInCurrentThread();
+        EventRegistry.suspendEventFiringInCurrentThread();
 
         DummyEntry entry = new DummyEntry( new LdapDN( ldifRecord.getDnLine().getValueAsString() ), connection );
 
@@ -138,7 +138,7 @@ public class ModelConverter
             }
         }
 
-        EventRegistry.resumeEventFireingInCurrentThread();
+        EventRegistry.resumeEventFiringInCurrentThread();
 
         return entry;
     }

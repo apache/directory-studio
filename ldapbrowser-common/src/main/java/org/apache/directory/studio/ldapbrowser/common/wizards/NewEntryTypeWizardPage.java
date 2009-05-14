@@ -195,7 +195,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             // clone entry and remove non-modifiable attributes
             try
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
 
                 LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntries[0] );
                 DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, browserConnection );
@@ -215,7 +215,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             }
             finally
             {
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
             }
         }
         else

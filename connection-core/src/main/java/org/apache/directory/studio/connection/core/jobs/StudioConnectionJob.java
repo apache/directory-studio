@@ -166,7 +166,7 @@ public class StudioConnectionJob extends Job
      */
     protected void suspendEventFireingInCurrentThread()
     {
-        ConnectionEventRegistry.suspendEventFireingInCurrentThread();
+        ConnectionEventRegistry.suspendEventFiringInCurrentThread();
     }
 
 
@@ -175,7 +175,7 @@ public class StudioConnectionJob extends Job
      */
     protected void resumeEventFireingInCurrentThread()
     {
-        ConnectionEventRegistry.resumeEventFireingInCurrentThread();
+        ConnectionEventRegistry.resumeEventFiringInCurrentThread();
     }
 
 

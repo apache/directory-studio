@@ -61,13 +61,13 @@ public class BrowserConnectionListener implements IConnectionListener
         {
             try
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
                 openBrowserConnection( browserConnection, monitor );
                 setBinaryAttributes( browserConnection, monitor );
             }
             finally
             {
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
                 BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
                     browserConnection, BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED );
                 EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );
@@ -90,12 +90,12 @@ public class BrowserConnectionListener implements IConnectionListener
         {
             try
             {
-                EventRegistry.suspendEventFireingInCurrentThread();
+                EventRegistry.suspendEventFiringInCurrentThread();
                 browserConnection.clearCaches();
             }
             finally
             {
-                EventRegistry.resumeEventFireingInCurrentThread();
+                EventRegistry.resumeEventFiringInCurrentThread();
                 BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
                     browserConnection, BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_CLOSED );
                 EventRegistry.fireBrowserConnectionUpdated( browserConnectionUpdateEvent, this );

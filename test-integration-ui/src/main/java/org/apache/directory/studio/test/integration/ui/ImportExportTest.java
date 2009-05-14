@@ -22,13 +22,16 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.directory.server.core.partition.Partition;
 import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
 import org.apache.directory.server.unit.AbstractServerTest;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -334,6 +337,42 @@ public class ImportExportTest extends AbstractServerTest
 
         // ensure context entry is there now, without a manual refresh
         SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "dc=example,dc=com" );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-489.
+     * 
+     * Verify that there are no UI updates when importing an LDIF.
+     *
+     * @throws Exception
+     */
+    public void testImportDontUptateUI() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + "ImportDontUpdateUiTest.ldif";
+        InputStream is = getClass().getResourceAsStream( "ImportExportTest_ImportDontUpdateUI.ldif" );
+        String ldifContent = IOUtils.toString( is );
+        FileUtils.writeStringToFile( new File( destFile ), ldifContent );
+
+        SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
+        SWTBotUtils.selectEntry( eBot, browserTree, true, "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        long fireCount0 = EventRegistry.getFireCount();
+
+        // import the LDIF
+        browserTree.contextMenu( "LDIF Import..." ).click();
+        eBot.shell( "LDIF Import" );
+        eBot.comboBoxWithLabel( "LDIF File:" ).setText( destFile );
+        eBot.button( "Finish" ).click();
+
+        long fireCount1 = EventRegistry.getFireCount();
+
+        SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+
+        // verify that only three two events were fired between Import 
+        long fireCount = fireCount1 - fireCount0;
+        assertEquals( "Only 2 event firings expected when importing LDIF.", 2, fireCount );
     }
 
 }

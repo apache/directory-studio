@@ -21,14 +21,18 @@
 package org.apache.directory.studio.connection.core.event;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 
 /**
@@ -41,39 +45,100 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 public class ConnectionEventRegistry
 {
 
-    /** The list of threads with suspended event fireing. */
-    private static Set<Thread> suspendedEventFireringThreads = new HashSet<Thread>();;
+    /** The list of threads with suspended event firing. */
+    private static List<Long> suspendedEventFiringThreads = new ArrayList<Long>();
 
-    /** The lock used to synchronize event fireings */
-    private static Object lock = new Object();
+    /** The lock used to synchronize event firings */
+    protected static Object lock = new Object();
+
+    /** The list with time stamps of recent event firings */
+    private static List<Long> fireTimeStamps = new ArrayList<Long>();
+
+    /** A counter for fired events */
+    private static long fireCount = 0L;
 
 
     /**
-     * Checks if event fireing is suspended in the current thread.
+     * Checks if event firing is suspended in the current thread.
      *
-     * @return true, if event fireing is suspended in the current thread
+     * @return true, if event firing is suspended in the current thread
      */
-    public static boolean isEventFireingSuspendedInCurrentThread()
+    protected static boolean isEventFiringSuspendedInCurrentThread()
     {
-        return suspendedEventFireringThreads.contains( Thread.currentThread() );
+        boolean suspended = suspendedEventFiringThreads.contains( Thread.currentThread().getId() );
+
+        // count the number of fired event in the last second
+        // if more then five per second: print a warning
+        if ( !suspended )
+        {
+            fireCount++;
+
+            synchronized ( fireTimeStamps )
+            {
+                long now = System.currentTimeMillis();
+
+                // remove all time stamps older than one second
+                for ( Iterator<Long> it = fireTimeStamps.iterator(); it.hasNext(); )
+                {
+                    Long ts = it.next();
+                    if ( ts + 1000 < now )
+                    {
+                        it.remove();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                fireTimeStamps.add( now );
+
+                if ( fireTimeStamps.size() > 5 )
+                {
+                    String message = "Warning: More then " + fireTimeStamps.size() + " events were fired per second!";
+                    ConnectionCorePlugin.getDefault().getLog().log(
+                        new Status( IStatus.WARNING, ConnectionCoreConstants.PLUGIN_ID, message,
+                            new Exception( message ) ) );
+                }
+            }
+        }
+
+        return suspended;
     }
 
 
     /**
-     * Resumes event fireing in the current thread.
+     * Gets the number of fired events.
+     * 
+     * @return the number of fired events
      */
-    public static void resumeEventFireingInCurrentThread()
+    public static long getFireCount()
     {
-        suspendedEventFireringThreads.remove( Thread.currentThread() );
+        return fireCount;
     }
 
 
     /**
-     * Suspends event fireing in the current thread.
+     * Resumes event firing in the current thread.
      */
-    public static void suspendEventFireingInCurrentThread()
+    public static void resumeEventFiringInCurrentThread()
     {
-        suspendedEventFireringThreads.add( Thread.currentThread() );
+        synchronized ( suspendedEventFiringThreads )
+        {
+            suspendedEventFiringThreads.remove( Thread.currentThread().getId() );
+        }
+    }
+
+
+    /**
+     * Suspends event firing in the current thread.
+     */
+    public static void suspendEventFiringInCurrentThread()
+    {
+        synchronized ( suspendedEventFiringThreads )
+        {
+            suspendedEventFiringThreads.add( Thread.currentThread().getId() );
+        }
     }
 
     /** The map with connection update listeners and their runners */
@@ -121,7 +186,7 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionOpened( final Connection connection, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
@@ -158,7 +223,7 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionClosed( final Connection connection, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
@@ -195,7 +260,7 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionUpdated( final Connection connection, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
@@ -232,7 +297,7 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionAdded( final Connection connection, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
@@ -269,7 +334,7 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionRemoved( final Connection connection, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
@@ -295,8 +360,8 @@ public class ConnectionEventRegistry
             }
         }
     }
-    
-    
+
+
     /**
      * Notifies each {@link ConnectionUpdateListener} about the modified connection folder.
      * Uses the {@link EventRunner}s.
@@ -306,11 +371,11 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectonFolderModified( final ConnectionFolder connectionFolder, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
-        
+
         Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
             connectionUpdateListeners );
         Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
@@ -324,7 +389,7 @@ public class ConnectionEventRegistry
                     listener.connectionFolderModified( connectionFolder );
                 }
             };
-            
+
             EventRunner runner = listeners.get( listener );
             synchronized ( lock )
             {
@@ -332,6 +397,8 @@ public class ConnectionEventRegistry
             }
         }
     }
+
+
     /**
      * Notifies each {@link ConnectionUpdateListener} about the added connection folder.
      * Uses the {@link EventRunner}s.
@@ -341,11 +408,11 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectonFolderAdded( final ConnectionFolder connectionFolder, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
-        
+
         Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
             connectionUpdateListeners );
         Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
@@ -359,7 +426,7 @@ public class ConnectionEventRegistry
                     listener.connectionFolderAdded( connectionFolder );
                 }
             };
-            
+
             EventRunner runner = listeners.get( listener );
             synchronized ( lock )
             {
@@ -367,6 +434,8 @@ public class ConnectionEventRegistry
             }
         }
     }
+
+
     /**
      * Notifies each {@link ConnectionUpdateListener} about the removed connection folder.
      * Uses the {@link EventRunner}s.
@@ -376,11 +445,11 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectonFolderRemoved( final ConnectionFolder connectionFolder, final Object source )
     {
-        if ( isEventFireingSuspendedInCurrentThread() )
+        if ( isEventFiringSuspendedInCurrentThread() )
         {
             return;
         }
-        
+
         Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
             connectionUpdateListeners );
         Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
@@ -394,7 +463,7 @@ public class ConnectionEventRegistry
                     listener.connectionFolderRemoved( connectionFolder );
                 }
             };
-            
+
             EventRunner runner = listeners.get( listener );
             synchronized ( lock )
             {
