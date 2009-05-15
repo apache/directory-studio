@@ -33,7 +33,7 @@ import org.eclipse.core.runtime.jobs.Job;
 
 
 /**
- * Job to run a {@link StudioRunnableWithProgress}.
+ * Job to run {@link StudioRunnableWithProgress} runnables.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -41,23 +41,19 @@ import org.eclipse.core.runtime.jobs.Job;
 public class StudioConnectionJob extends Job
 {
 
-    /** The runnable. */
-    private StudioRunnableWithProgress runnable;
-
-    /** The external progress monitor. */
-    private IProgressMonitor externalProgressMonitor;
-
-    /** The external result. */
-    private IStatus externalResult;
+    /** The runnables. */
+    private StudioRunnableWithProgress[] runnables;
 
 
     /**
-     * Creates a new instance of AbstractConnectionJob.
+     * Creates a new instance of StudioConnectionJob.
+     * 
+     * @param runnables the runnables to run
      */
-    public StudioConnectionJob( StudioRunnableWithProgress runnable )
+    public StudioConnectionJob( StudioRunnableWithProgress... runnables )
     {
-        super( runnable.getName() ); //$NON-NLS-1$
-        this.runnable = runnable;
+        super( runnables[0].getName() );
+        this.runnables = runnables;
     }
 
 
@@ -66,34 +62,37 @@ public class StudioConnectionJob extends Job
      */
     protected final IStatus run( IProgressMonitor ipm )
     {
-        StudioProgressMonitor monitor = new StudioProgressMonitor( externalProgressMonitor == null ? ipm
-            : externalProgressMonitor );
+        StudioProgressMonitor monitor = new StudioProgressMonitor( ipm );
 
         // ensure that connections are opened
-        Connection[] connections = runnable.getConnections();
-        if ( connections != null )
+        for ( StudioRunnableWithProgress runnable : runnables )
         {
-            for ( Connection connection : connections )
+            Connection[] connections = runnable.getConnections();
+            if ( connections != null )
             {
-                if ( connection != null && !connection.getJNDIConnectionWrapper().isConnected() )
+                for ( Connection connection : connections )
                 {
-                    monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
-                        { connection.getName() } ) );
-                    monitor.worked( 1 );
-
-                    connection.getJNDIConnectionWrapper().connect( monitor );
-                    if ( connection.getJNDIConnectionWrapper().isConnected() )
+                    if ( connection != null && !connection.getJNDIConnectionWrapper().isConnected() )
                     {
-                        connection.getJNDIConnectionWrapper().bind( monitor );
-                    }
+                        monitor.setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
+                            { connection.getName() } ) );
+                        monitor.worked( 1 );
 
-                    if ( connection.getJNDIConnectionWrapper().isConnected() )
-                    {
-                        for ( IConnectionListener listener : ConnectionCorePlugin.getDefault().getConnectionListeners() )
+                        connection.getJNDIConnectionWrapper().connect( monitor );
+                        if ( connection.getJNDIConnectionWrapper().isConnected() )
                         {
-                            listener.connectionOpened( connection, monitor );
+                            connection.getJNDIConnectionWrapper().bind( monitor );
                         }
-                        ConnectionEventRegistry.fireConnectionOpened( connection, this );
+
+                        if ( connection.getJNDIConnectionWrapper().isConnected() )
+                        {
+                            for ( IConnectionListener listener : ConnectionCorePlugin.getDefault()
+                                .getConnectionListeners() )
+                            {
+                                listener.connectionOpened( connection, monitor );
+                            }
+                            ConnectionEventRegistry.fireConnectionOpened( connection, this );
+                        }
                     }
                 }
             }
@@ -104,25 +103,27 @@ public class StudioConnectionJob extends Job
         {
             try
             {
-                if ( runnable instanceof StudioBulkRunnableWithProgress )
+                for ( StudioRunnableWithProgress runnable : runnables )
                 {
-                    StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
-                    suspendEventFireingInCurrentThread();
-                    try
+                    if ( runnable instanceof StudioBulkRunnableWithProgress )
                     {
-                        bulkRunnable.run( monitor );
+                        StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
+                        suspendEventFiringInCurrentThread();
+                        try
+                        {
+                            bulkRunnable.run( monitor );
+                        }
+                        finally
+                        {
+                            resumeEventFiringInCurrentThread();
+                        }
+                        bulkRunnable.runNotification();
                     }
-                    finally
+                    else
                     {
-                        resumeEventFireingInCurrentThread();
+                        runnable.run( monitor );
                     }
-                    bulkRunnable.runNotification();
                 }
-                else
-                {
-                    runnable.run( monitor );
-                }
-
             }
             catch ( Exception e )
             {
@@ -138,68 +139,36 @@ public class StudioConnectionJob extends Job
         // error handling
         if ( monitor.isCanceled() )
         {
-            externalResult = Status.CANCEL_STATUS;
             return Status.CANCEL_STATUS;
         }
         else if ( monitor.errorsReported() )
         {
-            externalResult = monitor.getErrorStatus( runnable.getErrorMessage() );
-            if ( externalProgressMonitor == null )
-            {
-                return externalResult;
-            }
-            else
-            {
-                return Status.OK_STATUS;
-            }
+            return Status.OK_STATUS;
         }
         else
         {
-            externalResult = Status.OK_STATUS;
             return Status.OK_STATUS;
         }
+
     }
 
 
     /**
-     * Suspends event fireing in current thread.
+     * Suspends event firing in current thread.
      */
-    protected void suspendEventFireingInCurrentThread()
+    protected void suspendEventFiringInCurrentThread()
     {
         ConnectionEventRegistry.suspendEventFiringInCurrentThread();
     }
 
 
     /**
-     * Resumes event fireing in current thread.
+     * Resumes event firing in current thread.
      */
-    protected void resumeEventFireingInCurrentThread()
+    protected void resumeEventFiringInCurrentThread()
     {
         ConnectionEventRegistry.resumeEventFiringInCurrentThread();
     }
-
-
-//    /**
-//     * Sets the external progress monitor.
-//     * 
-//     * @param externalProgressMonitor the external progress monitor
-//     */
-//    public void setExternalProgressMonitor( IProgressMonitor externalProgressMonitor )
-//    {
-//        this.externalProgressMonitor = externalProgressMonitor;
-//    }
-//
-//
-//    /**
-//     * Gets the result of the executed job. Either Status.OK_STATUS, 
-//     * Status.CANCEL_STATUS or an error status.
-//     * 
-//     * @return the result of the executed job
-//     */
-//    public IStatus getExternalResult()
-//    {
-//        return this.externalResult;
-//    }
 
 
     /**
@@ -220,30 +189,36 @@ public class StudioConnectionJob extends Job
         // We don't schedule a job if the same type of runnable should run
         // that works on the same entry as the current runnable.
 
-        Object[] myLockedObjects = runnable.getLockedObjects();
-        String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
-
-        Job[] jobs = getJobManager().find( null );
-        for ( int i = 0; i < jobs.length; i++ )
+        for ( StudioRunnableWithProgress runnable : runnables )
         {
-            Job job = jobs[i];
-            if ( job instanceof StudioConnectionJob )
-            {
-                StudioConnectionJob otherJob = ( StudioConnectionJob ) job;
-                if ( this.runnable.getClass() == otherJob.runnable.getClass() && this.runnable != otherJob.runnable )
-                {
-                    Object[] otherLockedObjects = otherJob.runnable.getLockedObjects();
-                    String[] otherLockedObjectIdentifiers = getLockIdentifiers( otherLockedObjects );
+            Object[] myLockedObjects = runnable.getLockedObjects();
+            String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
 
-                    for ( int j = 0; j < otherLockedObjectIdentifiers.length; j++ )
+            Job[] jobs = getJobManager().find( null );
+            for ( int i = 0; i < jobs.length; i++ )
+            {
+                Job job = jobs[i];
+                if ( job instanceof StudioConnectionJob )
+                {
+                    StudioConnectionJob otherJob = ( StudioConnectionJob ) job;
+                    for ( StudioRunnableWithProgress otherRunnable : otherJob.runnables )
                     {
-                        String other = otherLockedObjectIdentifiers[j];
-                        for ( int k = 0; k < myLockedObjectsIdentifiers.length; k++ )
+                        if ( runnable.getClass() == otherRunnable.getClass() && runnable != otherRunnable )
                         {
-                            String my = myLockedObjectsIdentifiers[k];
-                            if ( other.startsWith( my ) || my.startsWith( other ) )
+                            Object[] otherLockedObjects = otherRunnable.getLockedObjects();
+                            String[] otherLockedObjectIdentifiers = getLockIdentifiers( otherLockedObjects );
+
+                            for ( int j = 0; j < otherLockedObjectIdentifiers.length; j++ )
                             {
-                                return false;
+                                String other = otherLockedObjectIdentifiers[j];
+                                for ( int k = 0; k < myLockedObjectsIdentifiers.length; k++ )
+                                {
+                                    String my = myLockedObjectsIdentifiers[k];
+                                    if ( other.startsWith( my ) || my.startsWith( other ) )
+                                    {
+                                        return false;
+                                    }
+                                }
                             }
                         }
                     }

@@ -23,17 +23,21 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
+import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
@@ -59,16 +63,16 @@ public class RefreshAction extends BrowserAction
      */
     public String getText()
     {
-        IEntry[] entries = getEntries();
+        List<IEntry> entries = getEntries();
         ISearch[] searches = getSearches();
         IEntry entryInput = getEntryInput();
         ISearch searchInput = getSearchInput();
 
-        if ( entries.length > 0 && searches.length == 0 && entryInput == null && searchInput == null )
+        if ( entries.size() > 0 && searches.length == 0 && entryInput == null && searchInput == null )
         {
-            return Messages.getString("RefreshAction.ReloadAttributesAndChildren"); //$NON-NLS-1$
+            return Messages.getString( "RefreshAction.ReloadAttributesAndChildren" ); //$NON-NLS-1$
         }
-        else if ( searches.length > 0 && entries.length == 0 && entryInput == null && searchInput == null )
+        else if ( searches.length > 0 && entries.size() == 0 && entryInput == null && searchInput == null )
         {
             boolean searchAgain = true;
             for ( int i = 0; i < searches.length; i++ )
@@ -81,24 +85,24 @@ public class RefreshAction extends BrowserAction
             }
             if ( searchAgain )
             {
-                return Messages.getString("RefreshAction.SearchAgain"); //$NON-NLS-1$
+                return Messages.getString( "RefreshAction.SearchAgain" ); //$NON-NLS-1$
             }
             else
             {
-                return searches.length == 1 ? Messages.getString("RefreshAction.PerformSearch") : Messages.getString("RefreshAction.PerformSearches"); //$NON-NLS-1$ //$NON-NLS-2$
+                return searches.length == 1 ? Messages.getString( "RefreshAction.PerformSearch" ) : Messages.getString( "RefreshAction.PerformSearches" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
-        else if ( entryInput != null && searches.length == 0 && entries.length == 0 && searchInput == null )
+        else if ( entryInput != null && searches.length == 0 && entries.size() == 0 && searchInput == null )
         {
-            return Messages.getString("RefreshAction.RelaodAttributes"); //$NON-NLS-1$
+            return Messages.getString( "RefreshAction.RelaodAttributes" ); //$NON-NLS-1$
         }
         else if ( searchInput != null && searches.length == 0 && entryInput == null )
         {
-            return searchInput.getSearchResults() == null ? Messages.getString("RefreshAction.PerformSearch") : Messages.getString("RefreshAction.SearchAgain"); //$NON-NLS-1$ //$NON-NLS-2$
+            return searchInput.getSearchResults() == null ? Messages.getString( "RefreshAction.PerformSearch" ) : Messages.getString( "RefreshAction.SearchAgain" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
-            return Messages.getString("RefreshAction.Refresh"); //$NON-NLS-1$
+            return Messages.getString( "RefreshAction.Refresh" ); //$NON-NLS-1$
         }
     }
 
@@ -126,21 +130,32 @@ public class RefreshAction extends BrowserAction
      */
     public void run()
     {
-        IEntry[] entries = getEntries();
+        List<IEntry> entries = getEntries();
         ISearch[] searches = getSearches();
         IEntry entryInput = getEntryInput();
         ISearch searchInput = getSearchInput();
 
-        if ( entries.length > 0 )
+        if ( entries.size() > 0 )
         {
-            boolean foa = entries[0].getBrowserConnection().isFetchOperationalAttributes()
-                || entries[0].isOperationalAttributesInitialized();
-            new StudioBrowserJob( new InitializeAttributesRunnable( entries, foa ) ).execute();
+            boolean foa = entries.get( 0 ).getBrowserConnection().isFetchOperationalAttributes()
+                || entries.get( 0 ).isOperationalAttributesInitialized();
+
             // avoid duplicate search on Root DSE
-            if ( entries.length > 1 || !( entries[0] instanceof IRootDSE ) )
+            for ( Iterator<IEntry> it = entries.iterator(); it.hasNext(); )
             {
-                new StudioBrowserJob( new InitializeChildrenRunnable( entries ) ).execute();
+                IEntry entry = it.next();
+                if ( entry instanceof IRootDSE )
+                {
+                    new StudioBrowserJob( new InitializeRootDSERunnable( ( IRootDSE ) entry ) ).execute();
+                    it.remove();
+                }
             }
+
+            InitializeAttributesRunnable initializeAttributesRunnable = new InitializeAttributesRunnable( entries
+                .toArray( new IEntry[0] ), foa );
+            InitializeChildrenRunnable initializeChildrenRunnable = new InitializeChildrenRunnable( entries
+                .toArray( new IEntry[0] ) );
+            new StudioBrowserJob( initializeAttributesRunnable, initializeChildrenRunnable ).execute();
         }
         if ( searches.length > 0 )
         {
@@ -172,12 +187,12 @@ public class RefreshAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        IEntry[] entries = getEntries();
+        List<IEntry> entries = getEntries();
         ISearch[] searches = getSearches();
         IEntry entryInput = getEntryInput();
         ISearch searchInput = getSearchInput();
 
-        return entries.length > 0 || searches.length > 0 || entryInput != null || searchInput != null;
+        return entries.size() > 0 || searches.length > 0 || entryInput != null || searchInput != null;
     }
 
 
@@ -187,19 +202,19 @@ public class RefreshAction extends BrowserAction
      * @return
      *      the entries
      */
-    protected IEntry[] getEntries()
+    protected List<IEntry> getEntries()
     {
-        List<IEntry> entriesList = new ArrayList<IEntry>();
-        entriesList.addAll( Arrays.asList( getSelectedEntries() ) );
-        for ( int i = 0; i < getSelectedSearchResults().length; i++ )
+        List<IEntry> entries = new ArrayList<IEntry>();
+        entries.addAll( Arrays.asList( getSelectedEntries() ) );
+        for ( ISearchResult searchResult : getSelectedSearchResults() )
         {
-            entriesList.add( getSelectedSearchResults()[i].getEntry() );
+            entries.add( searchResult.getEntry() );
         }
-        for ( int i = 0; i < getSelectedBookmarks().length; i++ )
+        for ( IBookmark bookmark : getSelectedBookmarks() )
         {
-            entriesList.add( getSelectedBookmarks()[i].getEntry() );
+            entries.add( bookmark.getEntry() );
         }
-        return entriesList.toArray( new IEntry[entriesList.size()] );
+        return entries;
     }
 
 

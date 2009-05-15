@@ -19,30 +19,44 @@
  */
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
+
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 
+
+/**
+ * Job to run {@link StudioRunnableWithProgress} runnables.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
+ */
 public class StudioBrowserJob extends StudioConnectionJob
 {
 
-    public StudioBrowserJob( StudioRunnableWithProgress runnable )
+    /**
+     * Creates a new instance of StudioBrowserJob.
+     * 
+     * @param runnables the runnables to run
+     */
+    public StudioBrowserJob( StudioRunnableWithProgress... runnables )
     {
-        super( runnable );
+        super( runnables );
     }
 
-    
+
     @Override
-    protected void suspendEventFireingInCurrentThread()
+    protected void suspendEventFiringInCurrentThread()
     {
         EventRegistry.suspendEventFiringInCurrentThread();
-        super.suspendEventFireingInCurrentThread();
+        super.suspendEventFiringInCurrentThread();
     }
-    
+
+
     @Override
-    protected void resumeEventFireingInCurrentThread()
+    protected void resumeEventFiringInCurrentThread()
     {
         EventRegistry.resumeEventFiringInCurrentThread();
-        super.resumeEventFireingInCurrentThread();
+        super.resumeEventFiringInCurrentThread();
     }
 }
