@@ -22,14 +22,12 @@ package org.apache.directory.studio.connection.core.event;
 
 
 /**
- * The <code>EventRunnable</code> interface should be implemented by any
- * class whose instances are intended to be executed by an {@link EventRunner}.
- * The class must define a method of no arguments called <code>run</code>.
- * <p>
+ * An <code>EventRunnable</code> is used to notify a listener
+ * about an event.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface EventRunnable<T> extends Runnable
+public interface EventRunnable extends Runnable
 {
 }

@@ -36,7 +36,7 @@ public class CoreEventRunner implements EventRunner
      * This implementation executes the given {@link EventRunnable} within
      * the current thread.
      */
-    public void execute( EventRunnable<?> runnable )
+    public void execute( EventRunnable runnable )
     {
         runnable.run();
     }

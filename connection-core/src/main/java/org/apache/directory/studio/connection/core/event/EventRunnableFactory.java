@@ -22,15 +22,20 @@ package org.apache.directory.studio.connection.core.event;
 
 
 /**
- * The <code>EventRunnable</code> interface should be implemented by any
- * class whose instances are intended to be executed by an {@link EventRunner}.
- * The class must define a method of no arguments called <code>run</code>.
- * <p>
+ * Factory to create {@link EventRunnable} objects.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
 public interface EventRunnableFactory<L>
 {
-    EventRunnable<L> createEventRunnable( L listener );
+    
+    /**
+     * Creates a new {@link EventRunnable} object.
+     * 
+     * @param listener the listener receiving the event notification
+     * 
+     * @return the {@link EventRunnable} object
+     */
+    EventRunnable createEventRunnable( L listener );
 }

@@ -178,9 +178,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -204,9 +204,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -230,9 +230,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -256,9 +256,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -282,9 +282,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -308,9 +308,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -334,9 +334,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -360,9 +360,9 @@ public class ConnectionEventRegistry
     {
         EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final ConnectionUpdateListener listener )
             {
-                return new EventRunnable<ConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -437,7 +437,7 @@ public class ConnectionEventRegistry
                 EventRunner runner = clone.get( listener );
                 synchronized ( lock )
                 {
-                    EventRunnable<L> runnable = factory.createEventRunnable( listener );
+                    EventRunnable runnable = factory.createEventRunnable( listener );
                     runner.execute( runnable );
                 }
             }

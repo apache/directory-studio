@@ -74,9 +74,9 @@ public class EventRegistry extends ConnectionEventRegistry
     {
         EventRunnableFactory<SearchUpdateListener> factory = new EventRunnableFactory<SearchUpdateListener>()
         {
-            public EventRunnable<SearchUpdateListener> createEventRunnable( final SearchUpdateListener listener )
+            public EventRunnable createEventRunnable( final SearchUpdateListener listener )
             {
-                return new EventRunnable<SearchUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -125,9 +125,9 @@ public class EventRegistry extends ConnectionEventRegistry
     {
         EventRunnableFactory<BookmarkUpdateListener> factory = new EventRunnableFactory<BookmarkUpdateListener>()
         {
-            public EventRunnable<BookmarkUpdateListener> createEventRunnable( final BookmarkUpdateListener listener )
+            public EventRunnable createEventRunnable( final BookmarkUpdateListener listener )
             {
-                return new EventRunnable<BookmarkUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -177,10 +177,9 @@ public class EventRegistry extends ConnectionEventRegistry
     {
         EventRunnableFactory<BrowserConnectionUpdateListener> factory = new EventRunnableFactory<BrowserConnectionUpdateListener>()
         {
-            public EventRunnable<BrowserConnectionUpdateListener> createEventRunnable(
-                final BrowserConnectionUpdateListener listener )
+            public EventRunnable createEventRunnable( final BrowserConnectionUpdateListener listener )
             {
-                return new EventRunnable<BrowserConnectionUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {
@@ -229,9 +228,9 @@ public class EventRegistry extends ConnectionEventRegistry
     {
         EventRunnableFactory<EntryUpdateListener> factory = new EventRunnableFactory<EntryUpdateListener>()
         {
-            public EventRunnable<EntryUpdateListener> createEventRunnable( final EntryUpdateListener listener )
+            public EventRunnable createEventRunnable( final EntryUpdateListener listener )
             {
-                return new EventRunnable<EntryUpdateListener>()
+                return new EventRunnable()
                 {
                     public void run()
                     {

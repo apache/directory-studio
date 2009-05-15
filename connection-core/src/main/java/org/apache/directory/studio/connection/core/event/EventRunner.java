@@ -34,6 +34,6 @@ public interface EventRunner
      *
      * @param runnable the event runnable to run
      */
-    public void execute( EventRunnable<?> runnable );
+    public void execute( EventRunnable runnable );
 
 }
