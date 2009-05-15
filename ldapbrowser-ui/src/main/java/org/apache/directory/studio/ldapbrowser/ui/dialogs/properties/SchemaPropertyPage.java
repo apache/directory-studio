@@ -158,16 +158,16 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
     /**
      * Updates the text fields.
      * 
-     * @param connection the connection
+     * @param browserConnection the connection
      */
-    private void update( IBrowserConnection connection )
+    private void update( IBrowserConnection browserConnection )
     {
         if ( !dnText.isDisposed() )
         {
             Schema schema = null;
-            if ( connection != null )
+            if ( browserConnection != null )
             {
-                schema = connection.getSchema();
+                schema = browserConnection.getSchema();
             }
 
             if ( schema != null && schema.getDn() != null )
@@ -206,9 +206,10 @@ public class SchemaPropertyPage extends PropertyPage implements IWorkbenchProper
                 reloadSchemaButton.setText( Messages.getString( "SchemaPropertyPage.LoadSchema" ) ); //$NON-NLS-1$
             }
 
-            if ( connection != null )
+            if ( browserConnection != null )
             {
-                String cacheFileName = BrowserConnectionManager.getSchemaCacheFileName( connection );
+                String cacheFileName = BrowserConnectionManager.getSchemaCacheFileName( browserConnection
+                    .getConnection().getId() );
                 File cacheFile = new File( cacheFileName );
                 if ( cacheFile.exists() )
                 {

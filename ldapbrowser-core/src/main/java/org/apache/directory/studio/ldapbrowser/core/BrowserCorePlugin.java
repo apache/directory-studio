@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core;
 import java.io.IOException;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.studio.ldapbrowser.core.events.CoreEventRunner;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
+import org.apache.directory.studio.connection.core.event.CoreEventRunner;
+import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;

@@ -21,11 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.core.events;
 
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.EventRunnable;
+import org.apache.directory.studio.connection.core.event.EventRunnableFactory;
+import org.apache.directory.studio.connection.core.event.EventRunner;
 
 
 /**
@@ -38,8 +37,7 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
 public class EventRegistry extends ConnectionEventRegistry
 {
 
-    /** The map with search update listeners and their runners */
-    private static Map<SearchUpdateListener, EventRunner> searchUpdateListeners = new HashMap<SearchUpdateListener, EventRunner>();
+    static final EventManager<SearchUpdateListener, EventRunner> searchUpdateEventManager = new EventManager<SearchUpdateListener, EventRunner>();
 
 
     /**
@@ -50,13 +48,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void addSearchUpdateListener( SearchUpdateListener listener, EventRunner runner )
     {
-        assert listener != null;
-        assert runner != null;
-
-        if ( !searchUpdateListeners.containsKey( listener ) )
-        {
-            searchUpdateListeners.put( listener, runner );
-        }
+        searchUpdateEventManager.addListener( listener, runner );
     }
 
 
@@ -67,10 +59,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void removeSearchUpdateListener( SearchUpdateListener listener )
     {
-        if ( searchUpdateListeners.containsKey( listener ) )
-        {
-            searchUpdateListeners.remove( listener );
-        }
+        searchUpdateEventManager.removeListener( listener );
     }
 
 
@@ -83,34 +72,23 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void fireSearchUpdated( final SearchUpdateEvent searchUpdateEvent, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<SearchUpdateListener> factory = new EventRunnableFactory<SearchUpdateListener>()
         {
-            return;
-        }
-
-        Iterator<SearchUpdateListener> it = searchUpdateListeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final SearchUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<SearchUpdateListener> createEventRunnable( final SearchUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<SearchUpdateListener>()
                 {
-                    listener.searchUpdated( searchUpdateEvent );
-                }
-            };
-
-            EventRunner runner = searchUpdateListeners.get( listener );
-
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.searchUpdated( searchUpdateEvent );
+                    }
+                };
             }
-        }
+        };
+        searchUpdateEventManager.fire( factory );
     }
 
-    /** The map with bookmark update listeners and their runners */
-    private static Map<BookmarkUpdateListener, EventRunner> bookmarkUpdateListeners = new HashMap<BookmarkUpdateListener, EventRunner>();
+    static final EventManager<BookmarkUpdateListener, EventRunner> bookmarkUpdateEventManager = new EventManager<BookmarkUpdateListener, EventRunner>();
 
 
     /**
@@ -121,13 +99,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void addBookmarkUpdateListener( BookmarkUpdateListener listener, EventRunner runner )
     {
-        assert listener != null;
-        assert runner != null;
-
-        if ( !bookmarkUpdateListeners.containsKey( listener ) )
-        {
-            bookmarkUpdateListeners.put( listener, runner );
-        }
+        bookmarkUpdateEventManager.addListener( listener, runner );
     }
 
 
@@ -138,10 +110,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void removeBookmarkUpdateListener( BookmarkUpdateListener listener )
     {
-        if ( bookmarkUpdateListeners.containsKey( listener ) )
-        {
-            bookmarkUpdateListeners.remove( listener );
-        }
+        bookmarkUpdateEventManager.removeListener( listener );
     }
 
 
@@ -154,33 +123,23 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void fireBookmarkUpdated( final BookmarkUpdateEvent bookmarkUpdateEvent, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<BookmarkUpdateListener> factory = new EventRunnableFactory<BookmarkUpdateListener>()
         {
-            return;
-        }
-
-        Iterator<BookmarkUpdateListener> it = bookmarkUpdateListeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final BookmarkUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<BookmarkUpdateListener> createEventRunnable( final BookmarkUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<BookmarkUpdateListener>()
                 {
-                    listener.bookmarkUpdated( bookmarkUpdateEvent );
-                }
-            };
-
-            EventRunner runner = bookmarkUpdateListeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.bookmarkUpdated( bookmarkUpdateEvent );
+                    }
+                };
             }
-        }
+        };
+        bookmarkUpdateEventManager.fire( factory );
     }
 
-    /** The map with entry update listeners and their runners */
-    private static Map<BrowserConnectionUpdateListener, EventRunner> browserConnectionUpdateListeners = new HashMap<BrowserConnectionUpdateListener, EventRunner>();
+    static final EventManager<BrowserConnectionUpdateListener, EventRunner> browserConnectionUpdateEventManager = new EventManager<BrowserConnectionUpdateListener, EventRunner>();
 
 
     /**
@@ -191,13 +150,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void addBrowserConnectionUpdateListener( BrowserConnectionUpdateListener listener, EventRunner runner )
     {
-        assert listener != null;
-        assert runner != null;
-
-        if ( !browserConnectionUpdateListeners.containsKey( listener ) )
-        {
-            browserConnectionUpdateListeners.put( listener, runner );
-        }
+        browserConnectionUpdateEventManager.addListener( listener, runner );
     }
 
 
@@ -208,10 +161,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void removeBrowserConnectionUpdateListener( BrowserConnectionUpdateListener listener )
     {
-        if ( browserConnectionUpdateListeners.containsKey( listener ) )
-        {
-            browserConnectionUpdateListeners.remove( listener );
-        }
+        browserConnectionUpdateEventManager.removeListener( listener );
     }
 
 
@@ -225,33 +175,24 @@ public class EventRegistry extends ConnectionEventRegistry
     public static void fireBrowserConnectionUpdated( final BrowserConnectionUpdateEvent browserConnectionUpdateEvent,
         final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<BrowserConnectionUpdateListener> factory = new EventRunnableFactory<BrowserConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Iterator<BrowserConnectionUpdateListener> it = browserConnectionUpdateListeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final BrowserConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<BrowserConnectionUpdateListener> createEventRunnable(
+                final BrowserConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<BrowserConnectionUpdateListener>()
                 {
-                    listener.browserConnectionUpdated( browserConnectionUpdateEvent );
-                }
-            };
-
-            EventRunner runner = browserConnectionUpdateListeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.browserConnectionUpdated( browserConnectionUpdateEvent );
+                    }
+                };
             }
-        }
+        };
+        browserConnectionUpdateEventManager.fire( factory );
     }
 
-    /** The map with entry update listeners and their runners */
-    private static Map<EntryUpdateListener, EventRunner> entryUpdateListeners = new HashMap<EntryUpdateListener, EventRunner>();
+    static final EventManager<EntryUpdateListener, EventRunner> entryUpdateEventManager = new EventManager<EntryUpdateListener, EventRunner>();
 
 
     /**
@@ -262,13 +203,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void addEntryUpdateListener( EntryUpdateListener listener, EventRunner runner )
     {
-        assert listener != null;
-        assert runner != null;
-
-        if ( !entryUpdateListeners.containsKey( listener ) )
-        {
-            entryUpdateListeners.put( listener, runner );
-        }
+        entryUpdateEventManager.addListener( listener, runner );
     }
 
 
@@ -279,10 +214,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void removeEntryUpdateListener( EntryUpdateListener listener )
     {
-        if ( entryUpdateListeners.containsKey( listener ) )
-        {
-            entryUpdateListeners.remove( listener );
-        }
+        entryUpdateEventManager.removeListener( listener );
     }
 
 
@@ -295,29 +227,20 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void fireEntryUpdated( final EntryModificationEvent entryUpdateEvent, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<EntryUpdateListener> factory = new EventRunnableFactory<EntryUpdateListener>()
         {
-            return;
-        }
-
-        Iterator<EntryUpdateListener> it = entryUpdateListeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final EntryUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<EntryUpdateListener> createEventRunnable( final EntryUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<EntryUpdateListener>()
                 {
-                    listener.entryUpdated( entryUpdateEvent );
-                }
-            };
-
-            EventRunner runner = entryUpdateListeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.entryUpdated( entryUpdateEvent );
+                    }
+                };
             }
-        }
+        };
+        entryUpdateEventManager.fire( factory );
     }
 
 }

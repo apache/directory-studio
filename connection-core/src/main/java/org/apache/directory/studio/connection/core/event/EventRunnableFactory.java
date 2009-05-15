@@ -18,7 +18,7 @@
  *
  */
 
-package org.apache.directory.studio.ldapbrowser.core.events;
+package org.apache.directory.studio.connection.core.event;
 
 
 /**
@@ -30,6 +30,7 @@ package org.apache.directory.studio.ldapbrowser.core.events;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface EventRunnable extends Runnable
+public interface EventRunnableFactory<L>
 {
+    EventRunnable<L> createEventRunnable( L listener );
 }

@@ -40,7 +40,7 @@ public class UiThreadEventRunner implements EventRunner
      * This implementation executes the given {@link EventRunnable} within
      * the SWT UI thread.
      */
-    public void execute( EventRunnable runnable )
+    public void execute( EventRunnable<?> runnable )
     {
         Display.getDefault().asyncExec( runnable );
     }

@@ -24,7 +24,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.studio.ldapbrowser.core.events.EventRunner;
+import org.apache.directory.studio.connection.core.event.EventRunner;
+import org.apache.directory.studio.connection.ui.UiThreadEventRunner;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;

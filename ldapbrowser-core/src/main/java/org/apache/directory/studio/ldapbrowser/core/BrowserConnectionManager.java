@@ -99,9 +99,8 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      * @return
      *      the Schema Cache filename for the corresponding browser connection
      */
-    public static final String getSchemaCacheFileName( IBrowserConnection browserConnection )
+    public static final String getSchemaCacheFileName( String id )
     {
-        String id = browserConnection.getConnection() != null ? browserConnection.getConnection().getId() : "null";
         return BrowserCorePlugin.getDefault().getStateLocation().append(
             "schema-" + Utils.getFilenameString( id ) + ".ldif" ).toOSString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -212,10 +211,10 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
     public void connectionRemoved( Connection connection )
     {
         // update connection list
-        IBrowserConnection browserConnection = connectionMap.remove( connection.getId() );
+        connectionMap.remove( connection.getId() );
 
         // remove schema file
-        File schemaFile = new File( getSchemaCacheFileName( browserConnection ) );
+        File schemaFile = new File( getSchemaCacheFileName( connection.getId() ) );
         if ( schemaFile.exists() )
         {
             schemaFile.delete();
@@ -400,16 +399,16 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
     /**
      * Saves the Schema of the Connection
      *
-     * @param connection
+     * @param browserConnection
      *      the Connection
      */
-    private void saveSchema( IBrowserConnection connection )
+    private void saveSchema( IBrowserConnection browserConnection )
     {
         try
         {
-            String filename = getSchemaCacheFileName( connection );
+            String filename = getSchemaCacheFileName( browserConnection.getConnection().getId() );
             FileWriter writer = new FileWriter( filename );
-            connection.getSchema().saveToLdif( writer );
+            browserConnection.getSchema().saveToLdif( writer );
             writer.close();
         }
         catch ( Exception e )
@@ -433,7 +432,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
             
             try
             {
-                String schemaFilename = getSchemaCacheFileName( browserConnection );
+                String schemaFilename = getSchemaCacheFileName( connection.getId() );
                 FileReader reader = new FileReader( schemaFilename );
                 Schema schema = new Schema();
                 schema.loadFromLdif( reader );

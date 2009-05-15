@@ -141,8 +141,7 @@ public class ConnectionEventRegistry
         }
     }
 
-    /** The map with connection update listeners and their runners */
-    private static Map<ConnectionUpdateListener, EventRunner> connectionUpdateListeners = new HashMap<ConnectionUpdateListener, EventRunner>();
+    private static final EventManager<ConnectionUpdateListener, EventRunner> connectionUpdateEventManager = new EventManager<ConnectionUpdateListener, EventRunner>();
 
 
     /**
@@ -153,13 +152,7 @@ public class ConnectionEventRegistry
      */
     public static void addConnectionUpdateListener( ConnectionUpdateListener listener, EventRunner runner )
     {
-        assert listener != null;
-        assert runner != null;
-
-        if ( !connectionUpdateListeners.containsKey( listener ) )
-        {
-            connectionUpdateListeners.put( listener, runner );
-        }
+        connectionUpdateEventManager.addListener( listener, runner );
     }
 
 
@@ -170,10 +163,7 @@ public class ConnectionEventRegistry
      */
     public static void removeConnectionUpdateListener( ConnectionUpdateListener listener )
     {
-        if ( connectionUpdateListeners.containsKey( listener ) )
-        {
-            connectionUpdateListeners.remove( listener );
-        }
+        connectionUpdateEventManager.removeListener( listener );
     }
 
 
@@ -186,31 +176,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionOpened( final Connection connection, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionOpened( connection );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionOpened( connection );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -223,31 +202,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionClosed( final Connection connection, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionClosed( connection );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionClosed( connection );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -260,31 +228,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionUpdated( final Connection connection, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionUpdated( connection );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionUpdated( connection );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -297,31 +254,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionAdded( final Connection connection, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionAdded( connection );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionAdded( connection );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -334,31 +280,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectionRemoved( final Connection connection, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionRemoved( connection );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionRemoved( connection );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -371,31 +306,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectonFolderModified( final ConnectionFolder connectionFolder, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionFolderModified( connectionFolder );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionFolderModified( connectionFolder );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -408,31 +332,20 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectonFolderAdded( final ConnectionFolder connectionFolder, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
-        }
-
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
             {
-                public void run()
+                return new EventRunnable<ConnectionUpdateListener>()
                 {
-                    listener.connectionFolderAdded( connectionFolder );
-                }
-            };
-
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
-            {
-                runner.execute( runnable );
+                    public void run()
+                    {
+                        listener.connectionFolderAdded( connectionFolder );
+                    }
+                };
             }
-        }
+        };
+        connectionUpdateEventManager.fire( factory );
     }
 
 
@@ -445,31 +358,89 @@ public class ConnectionEventRegistry
      */
     public static void fireConnectonFolderRemoved( final ConnectionFolder connectionFolder, final Object source )
     {
-        if ( isEventFiringSuspendedInCurrentThread() )
+        EventRunnableFactory<ConnectionUpdateListener> factory = new EventRunnableFactory<ConnectionUpdateListener>()
         {
-            return;
+            public EventRunnable<ConnectionUpdateListener> createEventRunnable( final ConnectionUpdateListener listener )
+            {
+                return new EventRunnable<ConnectionUpdateListener>()
+                {
+                    public void run()
+                    {
+                        listener.connectionFolderRemoved( connectionFolder );
+                    }
+                };
+            }
+        };
+        connectionUpdateEventManager.fire( factory );
+    }
+
+    public static class EventManager<L, R extends EventRunner>
+    {
+        private Map<L, EventRunner> listeners = new HashMap<L, EventRunner>();
+
+
+        /**
+         * Adds the listener.
+         *
+         * @param listener the listener
+         * @param runner the runner
+         */
+        public void addListener( L listener, R runner )
+        {
+            assert listener != null;
+            assert runner != null;
+
+            synchronized ( listeners )
+            {
+                if ( !listeners.containsKey( listener ) )
+                {
+                    listeners.put( listener, runner );
+                }
+            }
         }
 
-        Map<ConnectionUpdateListener, EventRunner> listeners = new HashMap<ConnectionUpdateListener, EventRunner>(
-            connectionUpdateListeners );
-        Iterator<ConnectionUpdateListener> it = listeners.keySet().iterator();
-        while ( it.hasNext() )
-        {
-            final ConnectionUpdateListener listener = it.next();
-            EventRunnable runnable = new EventRunnable()
-            {
-                public void run()
-                {
-                    listener.connectionFolderRemoved( connectionFolder );
-                }
-            };
 
-            EventRunner runner = listeners.get( listener );
-            synchronized ( lock )
+        /**
+         * Removes the listener.
+         *
+         * @param listener the listener
+         */
+        public void removeListener( L listener )
+        {
+            synchronized ( listeners )
             {
-                runner.execute( runnable );
+                if ( listeners.containsKey( listener ) )
+                {
+                    listeners.remove( listener );
+                }
+            }
+        }
+
+
+        /**
+         * Notifies each {@link ConnectionUpdateListener} about the removed connection.
+         * Uses the {@link EventRunner}s.
+         *
+         * @param connection the removed connection
+         * @param source the source
+         */
+        public void fire( EventRunnableFactory<L> factory )
+        {
+            if ( isEventFiringSuspendedInCurrentThread() )
+            {
+                return;
+            }
+
+            Map<L, EventRunner> clone = new HashMap<L, EventRunner>( listeners );
+            for ( final L listener : clone.keySet() )
+            {
+                EventRunner runner = clone.get( listener );
+                synchronized ( lock )
+                {
+                    EventRunnable<L> runnable = factory.createEventRunnable( listener );
+                    runner.execute( runnable );
+                }
             }
         }
     }
-
 }

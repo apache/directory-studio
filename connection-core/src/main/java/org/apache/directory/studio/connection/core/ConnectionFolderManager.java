@@ -404,6 +404,8 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
      */
     private synchronized void loadConnectionFolders()
     {
+        ConnectionEventRegistry.suspendEventFiringInCurrentThread();
+
         try
         {
             folderList = ConnectionIO.loadConnectionFolders( new FileInputStream( getConnectionFolderStoreFileName() ) );
@@ -445,6 +447,7 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
             }
         }
 
+        ConnectionEventRegistry.resumeEventFiringInCurrentThread();
     }
 
 }

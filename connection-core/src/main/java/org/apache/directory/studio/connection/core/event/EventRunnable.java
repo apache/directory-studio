@@ -30,6 +30,6 @@ package org.apache.directory.studio.connection.core.event;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface EventRunnable extends Runnable
+public interface EventRunnable<T> extends Runnable
 {
 }
