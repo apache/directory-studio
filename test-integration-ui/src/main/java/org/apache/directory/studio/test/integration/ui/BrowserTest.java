@@ -84,7 +84,5 @@ public class BrowserTest extends AbstractServerTest
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
-
-        Thread.sleep( 10000 );
     }
 }

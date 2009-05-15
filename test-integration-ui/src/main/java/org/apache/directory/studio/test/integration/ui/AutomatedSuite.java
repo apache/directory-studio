@@ -65,6 +65,7 @@ public class AutomatedSuite extends TestSuite
         addTest( new TestSuite( NewEntryWizardTest.class ) );
         addTest( new TestSuite( RenameEntryDialogTest.class ) );
         addTest( new TestSuite( ReferralDialogTest.class ) );
+        addTest( new TestSuite( SearchTest.class ) );
 
         // Test Entry editor
         addTest( new TestSuite( EntryEditorTest.class ) );

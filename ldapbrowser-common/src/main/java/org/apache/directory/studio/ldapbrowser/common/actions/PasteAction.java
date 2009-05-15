@@ -34,7 +34,9 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -149,7 +151,7 @@ public class PasteAction extends BrowserAction
         IEntry[] entries = getEntriesToPaste();
         if ( entries != null )
         {
-            this.pasteEntries( getSelectedEntries()[0], entries );
+            pasteEntries( getSelectedEntries()[0], entries );
             return;
         }
 
@@ -157,8 +159,7 @@ public class PasteAction extends BrowserAction
         ISearch[] searches = getSearchesToPaste();
         if ( searches != null )
         {
-
-            this.pasteSearches( searches );
+            pasteSearches( searches );
             return;
         }
 
@@ -166,7 +167,7 @@ public class PasteAction extends BrowserAction
         IValue[] values = getValuesToPaste();
         if ( values != null )
         {
-            this.pasteValues( values );
+            pasteValues( values );
             return;
         }
 
@@ -224,7 +225,8 @@ public class PasteAction extends BrowserAction
             ISearch clone = null;
             for ( ISearch search : searches )
             {
-                clone = ( ISearch ) search.clone();
+                SearchParameter searchParameter = ( SearchParameter ) search.getSearchParameter().clone();
+                clone = new Search( browserConnection, searchParameter );
                 browserConnection.getSearchManager().addSearch( clone );
             }
 
