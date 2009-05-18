@@ -838,8 +838,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
         environment = new Hashtable<String, String>();
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+        final boolean validateCertificates = preferences.getBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
         String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
-        environment.put( Context.INITIAL_CONTEXT_FACTORY, ldapCtxFactory ); //$NON-NLS-1$
+        environment.put( Context.INITIAL_CONTEXT_FACTORY, ldapCtxFactory );
         environment.put( JAVA_NAMING_LDAP_VERSION, "3" ); //$NON-NLS-1$
 
         // timeouts
@@ -857,7 +858,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             environment.put( Context.PROVIDER_URL, LdapURL.LDAPS_SCHEME + host + ':' + port );
             environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
-            environment.put( JAVA_NAMING_LDAP_FACTORY_SOCKET, DummySSLSocketFactory.class.getName() );
+            // TODO: host name validation
+            environment.put( JAVA_NAMING_LDAP_FACTORY_SOCKET, validateCertificates ? StudioSSLSocketFactory.class
+                .getName() : DummySSLSocketFactory.class.getName() );
         }
         else
         {
@@ -883,15 +886,22 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         {
                             StartTlsResponse tls = ( StartTlsResponse ) context
                                 .extendedOperation( new StartTlsRequest() );
+                            // TODO: host name validation
                             tls.setHostnameVerifier( new HostnameVerifier()
                             {
-                                public boolean verify( String arg0, SSLSession arg1 )
+                                public boolean verify( String hostname, SSLSession session )
                                 {
                                     return true;
                                 }
                             } );
-                            tls.negotiate( new DummySSLSocketFactory() );
-
+                            if ( validateCertificates )
+                            {
+                                tls.negotiate( StudioSSLSocketFactory.getDefault() );
+                            }
+                            else
+                            {
+                                tls.negotiate( DummySSLSocketFactory.getDefault() );
+                            }
                         }
                         catch ( Exception e )
                         {

@@ -28,6 +28,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -47,6 +48,8 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
     private Text jndiLdapContextProvider;
 
+    private Button verifyCertificatesButton;
+
 
     /**
      * 
@@ -54,9 +57,9 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
      */
     public MainPreferencePage()
     {
-        super( Messages.getString("MainPreferencePage.LDAP") ); //$NON-NLS-1$
+        super( Messages.getString( "MainPreferencePage.LDAP" ) ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserCommonActivator.getDefault().getPreferenceStore() );
-        super.setDescription( Messages.getString("MainPreferencePage.GeneralSettings") ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "MainPreferencePage.GeneralSettings" ) ); //$NON-NLS-1$
     }
 
 
@@ -78,17 +81,24 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            Messages.getString("MainPreferencePage.ContextProvider"), 1 ); //$NON-NLS-1$
+        Group group = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages
+            .getString( "MainPreferencePage.ContextProvider" ), 1 ); //$NON-NLS-1$
 
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
         String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
         String defaultLdapCtxFactory = preferences
             .getDefaultString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
-        String note = NLS.bind(Messages.getString("MainPreferencePage.SystemDetectedContextFactory"), defaultLdapCtxFactory); //$NON-NLS-1$
+        String note = NLS.bind(
+            Messages.getString( "MainPreferencePage.SystemDetectedContextFactory" ), defaultLdapCtxFactory ); //$NON-NLS-1$
 
         jndiLdapContextProvider = BaseWidgetUtils.createText( group, ldapCtxFactory, 1 );
         BaseWidgetUtils.createWrappedLabel( group, note, 1 );
+
+        boolean validateCertificates = preferences
+            .getBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
+        verifyCertificatesButton = BaseWidgetUtils.createCheckbox( composite, Messages
+            .getString( "MainPreferencePage.ValidateCertificates" ), 1 ); //$NON-NLS-1$
+        verifyCertificatesButton.setSelection( validateCertificates );
 
         return composite;
     }
@@ -101,6 +111,8 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
     {
         jndiLdapContextProvider.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
             ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY ) );
+        verifyCertificatesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
+            .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES ) );
         super.performDefaults();
     }
 
@@ -112,6 +124,8 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, jndiLdapContextProvider.getText() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES, verifyCertificatesButton.getSelection() );
         return true;
     }
 

@@ -59,6 +59,7 @@ public class Messages extends NLS
     public static String error__unable_to_get_plugin_properties;
     public static String error__loop_detected;
     public static String error__connection_is_readonly;
+    public static String error__untrusted_certificate;
 
     public static String model__no_auth_handler;
     public static String model__no_credentials;

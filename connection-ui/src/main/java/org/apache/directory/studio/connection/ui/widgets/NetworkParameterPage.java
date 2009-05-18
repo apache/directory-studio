@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.LdapURL.Extension;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -197,9 +198,15 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         int index = 0;
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.EncryptionMethod" ), 1 ); //$NON-NLS-1$
         encryptionMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, encMethods, index, 2 );
-        BaseWidgetUtils.createSpacer( groupComposite, 1 );
-        BaseWidgetUtils.createLabel( groupComposite, Messages
-            .getString( "NetworkParameterPage.WarningCertificateValidation" ), 2 ); //$NON-NLS-1$
+        
+        boolean validateCertificates = ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
+            ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
+        if ( !validateCertificates )
+        {
+            BaseWidgetUtils.createSpacer( groupComposite, 1 );
+            BaseWidgetUtils.createLabel( groupComposite, Messages
+                .getString( "NetworkParameterPage.WarningCertificateValidation" ), 2 ); //$NON-NLS-1$
+        }
 
         BaseWidgetUtils.createSpacer( groupComposite, 2 );
         checkConnectionButton = new Button( groupComposite, SWT.PUSH );

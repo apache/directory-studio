@@ -25,34 +25,33 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import java.security.KeyStore;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 
 /**
- * A SSLSocketFactory that accepts every certificate without validation.
+ * A {@link SSLSocketFactory} that uses a custom {@link TrustManager} ({@link StudioTrustManager}).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DummySSLSocketFactory extends SSLSocketFactory
+public class StudioSSLSocketFactory extends SSLSocketFactory
 {
 
     /** The default instance. */
-    private static SSLSocketFactory instance;
+    private static StudioSSLSocketFactory instance;
 
 
     /**
      * Gets the default instance.
      * 
-     * Note: This method is invoked from the JNDI framework when 
-     * creating a ldaps:// connection.
+     * Note: This method is invoked from the JNDI (Sun) when 
+     * creating a ldaps:// connection. Must be public static!
      * 
      * @return the default instance
      */
@@ -60,7 +59,7 @@ public class DummySSLSocketFactory extends SSLSocketFactory
     {
         if ( instance == null )
         {
-            instance = new DummySSLSocketFactory();
+            instance = new StudioSSLSocketFactory();
         }
         return instance;
     }
@@ -70,36 +69,29 @@ public class DummySSLSocketFactory extends SSLSocketFactory
 
 
     /**
-     * Creates a new instance of DummySSLSocketFactory.
+     * Creates a new instance of StudioSSLSocketFactory.
      * 
-     * Note: This method is invoked from the JNDI (Apache Harmony) 
-     * when creating a ldaps:// connection. Must be public!
+     * Note: This method is invoked from the JNDI (Apache Harmony) when 
+     * creating a ldaps:// connection. Must be public!
      */
-    public DummySSLSocketFactory()
+    public StudioSSLSocketFactory()
     {
         try
         {
-            TrustManager tm = new X509TrustManager()
+            // get default trust managers (using JVM "cacerts" key store)
+            TrustManagerFactory factory = TrustManagerFactory.getInstance( TrustManagerFactory.getDefaultAlgorithm() );
+            factory.init( ( KeyStore ) null );
+            TrustManager[] defaultTrustManagers = factory.getTrustManagers();
+
+            // create wrappers around the trust managers
+            for ( int i = 0; i < defaultTrustManagers.length; i++ )
             {
-                public X509Certificate[] getAcceptedIssuers()
-                {
-                    return new X509Certificate[0];
-                }
+                defaultTrustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
+            }
 
-
-                public void checkClientTrusted( X509Certificate[] arg0, String arg1 ) throws CertificateException
-                {
-                }
-
-
-                public void checkServerTrusted( X509Certificate[] arg0, String arg1 ) throws CertificateException
-                {
-                }
-            };
-            TrustManager[] tma =
-                { tm };
+            // create the real socket factory
             SSLContext sc = SSLContext.getInstance( "TLS" ); //$NON-NLS-1$
-            sc.init( null, tma, new SecureRandom() );
+            sc.init( null, defaultTrustManagers, null );
             delegate = sc.getSocketFactory();
         }
         catch ( Exception e )

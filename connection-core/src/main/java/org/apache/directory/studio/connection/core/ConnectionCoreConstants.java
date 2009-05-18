@@ -38,7 +38,10 @@ public interface ConnectionCoreConstants
     /** The date format of the modification logger */
     public static final String DATEFORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"; //$NON-NLS-1$
 
-    /** The constant used to preferred LDAP context factory */
+    /** The constant used to identify if certificates for secure connections should be validated */
+    public static final String PREFERENCE_VALIDATE_CERTIFICATES = "validateCertificates"; //$NON-NLS-1$
+
+    /** The constant used to identify the preferred LDAP context factory */
     public static final String PREFERENCE_LDAP_CONTEXT_FACTORY = "ldapContextFactory"; //$NON-NLS-1$
 
     /** The constant used to identify the "enable modification logs" preference  */

@@ -21,6 +21,7 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
@@ -64,6 +65,9 @@ public class ConnectionCorePlugin extends Plugin
 
     /** The referral handler */
     private IReferralHandler referralHandler;
+
+    /** The certificate handler */
+    private ICertificateHandler certificateHandler;
 
     /** The JNDI loggers. */
     private List<IJndiLogger> jndiLoggers;
@@ -269,6 +273,42 @@ public class ConnectionCorePlugin extends Plugin
         this.referralHandler = referralHandler;
     }
 
+
+    /**
+     * Gets the certificate handler
+     *
+     * @return
+     *      the certificate handler
+     */
+    public ICertificateHandler getCertificateHandler()
+    {
+        if ( certificateHandler == null )
+        {
+            // if no certificate handler was set a default certificate handler is used
+            // that just returns "No"
+            certificateHandler = new ICertificateHandler()
+            {
+                public TrustLevel verifyTrustLevel( X509Certificate[] certChain )
+                {
+                    return TrustLevel.Not;
+                }
+            };
+        }
+        return certificateHandler;
+    }
+
+
+    /**
+     * Sets the certificate handler
+     *
+     * @param certificateHandler
+     *      the certificate handler to set
+     */
+    public void setCertificateHandler( ICertificateHandler certificateHandler )
+    {
+        this.certificateHandler = certificateHandler;
+    }
+    
 
     /**
      * Gets the LDIF modification logger.

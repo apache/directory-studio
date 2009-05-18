@@ -143,7 +143,7 @@ public class StudioConnectionJob extends Job
         }
         else if ( monitor.errorsReported() )
         {
-            return Status.OK_STATUS;
+            return monitor.getErrorStatus( runnables[0].getErrorMessage() );
         }
         else
         {

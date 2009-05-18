@@ -42,6 +42,7 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
 
         // LDAP context factory
         String defaultLdapContextFactory = ConnectionCorePlugin.getDefault().getDefaultLdapContextFactory();
+        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES, true );
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, defaultLdapContextFactory );
 
         // Modification Logs

@@ -82,6 +82,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
 
         ConnectionCorePlugin.getDefault().setAuthHandler( new UIAuthHandler() );
         ConnectionCorePlugin.getDefault().setReferralHandler( new ConnectionUIReferralHandler() );
+        ConnectionCorePlugin.getDefault().setCertificateHandler( new ConnectionUICertificateHandler() );
     }
 
 
