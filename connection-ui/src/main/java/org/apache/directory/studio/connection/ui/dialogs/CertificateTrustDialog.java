@@ -122,15 +122,33 @@ public class CertificateTrustDialog extends Dialog
         BaseWidgetUtils.createWrappedLabel( composite, Messages.getString( "CertificateTrustDialog.Description" ), 1 ); //$NON-NLS-1$
         BaseWidgetUtils.createWrappedLabel( composite, Messages.getString( "CertificateTrustDialog.TheDnIs" ), 1 ); //$NON-NLS-1$
 
-        Label issuerDNLabel = BaseWidgetUtils.createWrappedLabel( composite, "", 1 ); //$NON-NLS-1$
+        Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
+        Label issuerDNLabel = BaseWidgetUtils.createWrappedLabel( innerComposite, "", 1 ); //$NON-NLS-1$
         if ( ( certificateChain != null ) && ( certificateChain.length > 0 ) )
         {
             issuerDNLabel.setText( certificateChain[0].getIssuerX500Principal().getName() );
         }
         else
         {
-            issuerDNLabel.setText( "Unknown" ); //$NON-NLS-1$
+            issuerDNLabel.setText( " - " ); //$NON-NLS-1$
         }
+        Button showCertificateDetailsButton = BaseWidgetUtils.createButton( innerComposite, Messages
+            .getString( "CertificateTrustDialog.ViewCertificate" ), 1 );//$NON-NLS-1$
+        showCertificateDetailsButton.addSelectionListener( new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected( SelectionEvent e )
+            {
+                new CertificateInfoDialog( getShell(), certificateChain ).open();
+            }
+
+
+            @Override
+            public void widgetDefaultSelected( SelectionEvent e )
+            {
+                new CertificateInfoDialog( getShell(), certificateChain ).open();
+            }
+        } );
 
         trustNotButton = BaseWidgetUtils.createRadiobutton( composite, Messages
             .getString( "CertificateTrustDialog.DoNotTrust" ), 1 ); //$NON-NLS-1$
