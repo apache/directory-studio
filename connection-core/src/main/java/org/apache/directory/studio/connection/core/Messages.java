@@ -85,4 +85,10 @@ public class Messages extends NLS
     public static String jobs__close_connections_error_1;
     public static String jobs__close_connections_error_n;
 
+    public static String StudioTrustManager_CantAddCertificateToPermanentTrustStore;
+
+    public static String StudioTrustManager_CantCreatePermanentTrustManager;
+
+    public static String StudioTrustManager_CantLoadPermanentTrustStore;
+
 }

@@ -97,6 +97,7 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
         catch ( Exception e )
         {
             e.printStackTrace();
+            throw new RuntimeException( e );
         }
     }
 
