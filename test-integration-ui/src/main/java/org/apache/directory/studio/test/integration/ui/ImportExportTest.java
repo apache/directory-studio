@@ -285,7 +285,7 @@ public class ImportExportTest extends AbstractServerTest
 
         // refresh root DSE and ensure that the partition is in root DSE
         SWTBotTreeItem rootDSE = SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE" );
-        SWTBotUtils.asyncClick( eBot, browserTree.contextMenu( "Reload Attributes and Children" ),
+        SWTBotUtils.asyncClick( eBot, browserTree.contextMenu( "Reload Entry" ),
             new DefaultCondition()
             {
                 public boolean test() throws Exception
