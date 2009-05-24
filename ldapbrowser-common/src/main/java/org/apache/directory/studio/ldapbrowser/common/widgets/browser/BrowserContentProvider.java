@@ -311,7 +311,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             if ( !rootDSE.isChildrenInitialized() && rootDSE.isDirectoryEntry() )
             {
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
-                    { rootDSE } ) ).execute();
+                    { rootDSE }, false ) ).execute();
                 return new String[]
                     { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
             }
@@ -339,7 +339,7 @@ public class BrowserContentProvider implements ITreeContentProvider
             if ( !parentEntry.isChildrenInitialized() && parentEntry.isDirectoryEntry() )
             {
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
-                    { parentEntry } ) ).execute();
+                    { parentEntry }, false ) ).execute();
                 return new String[]
                     { Messages.getString( "BrowserContentProvider.FetchingEntries" ) }; //$NON-NLS-1$
             }

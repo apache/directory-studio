@@ -258,7 +258,7 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
         InitializeChildrenRunnable runnable1 = new InitializeChildrenRunnable( new IEntry[]
-            { entry } );
+            { entry }, false );
         InitializeAttributesRunnable runnable2 = new InitializeAttributesRunnable( new IEntry[]
             { entry }, true );
         RunnableContextRunner.execute( runnable1, null, true );

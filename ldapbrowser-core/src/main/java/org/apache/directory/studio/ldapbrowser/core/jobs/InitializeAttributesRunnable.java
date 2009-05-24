@@ -215,16 +215,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         if ( entry instanceof IRootDSE )
         {
             // special handling for Root DSE
-            InitializeRootDSERunnable runnable = new InitializeRootDSERunnable( ( IRootDSE ) entry );
-            StudioConnectionJob job = new StudioConnectionJob( runnable );
-            job.execute();
-            try
-            {
-                job.join();
-            }
-            catch ( InterruptedException e )
-            {
-            }
+            InitializeRootDSERunnable.loadRootDSE( entry.getBrowserConnection(), monitor );
         }
         else
         {

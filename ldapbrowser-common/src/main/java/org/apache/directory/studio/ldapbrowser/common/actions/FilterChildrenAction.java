@@ -73,7 +73,7 @@ public class FilterChildrenAction extends BrowserAction
                     getSelectedEntries()[0].setChildrenFilter( newFilter.trim() );
                 }
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
-                    { getSelectedEntries()[0] } ) ).execute();
+                    { getSelectedEntries()[0] }, true ) ).execute();
 
             }
         }

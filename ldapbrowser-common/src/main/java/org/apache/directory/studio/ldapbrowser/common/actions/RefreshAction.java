@@ -23,19 +23,16 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -70,7 +67,7 @@ public class RefreshAction extends BrowserAction
 
         if ( entries.size() > 0 && searches.length == 0 && entryInput == null && searchInput == null )
         {
-            return Messages.getString( "RefreshAction.ReloadAttributesAndChildren" ); //$NON-NLS-1$
+            return entries.size() == 1 ? Messages.getString( "RefreshAction.ReloadEntry" ) : Messages.getString( "RefreshAction.ReloadEntries" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else if ( searches.length > 0 && entries.size() == 0 && entryInput == null && searchInput == null )
         {
@@ -137,25 +134,9 @@ public class RefreshAction extends BrowserAction
 
         if ( entries.size() > 0 )
         {
-            boolean foa = entries.get( 0 ).getBrowserConnection().isFetchOperationalAttributes()
-                || entries.get( 0 ).isOperationalAttributesInitialized();
-
-            // avoid duplicate search on Root DSE
-            for ( Iterator<IEntry> it = entries.iterator(); it.hasNext(); )
-            {
-                IEntry entry = it.next();
-                if ( entry instanceof IRootDSE )
-                {
-                    new StudioBrowserJob( new InitializeRootDSERunnable( ( IRootDSE ) entry ) ).execute();
-                    it.remove();
-                }
-            }
-
-            InitializeAttributesRunnable initializeAttributesRunnable = new InitializeAttributesRunnable( entries
-                .toArray( new IEntry[0] ), foa );
             InitializeChildrenRunnable initializeChildrenRunnable = new InitializeChildrenRunnable( entries
-                .toArray( new IEntry[0] ) );
-            new StudioBrowserJob( initializeAttributesRunnable, initializeChildrenRunnable ).execute();
+                .toArray( new IEntry[0] ), true );
+            new StudioBrowserJob( initializeChildrenRunnable ).execute();
         }
         if ( searches.length > 0 )
         {

@@ -28,6 +28,7 @@ import org.apache.directory.studio.connection.core.event.ConnectionUpdateListene
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -244,7 +245,20 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
             return;
         }
 
-        viewer.refresh( event.getModifiedEntry(), true );
+        if ( event instanceof ChildrenInitializedEvent )
+        {
+            boolean expandedState = viewer.getExpandedState( event.getModifiedEntry() );
+            viewer.collapseToLevel( event.getModifiedEntry(), TreeViewer.ALL_LEVELS );
+            if ( expandedState )
+            {
+                viewer.expandToLevel( event.getModifiedEntry(), 1 );
+            }
+            viewer.refresh( event.getModifiedEntry(), true );
+        }
+        else
+        {
+            viewer.refresh( event.getModifiedEntry(), true );
+        }
     }
 
 

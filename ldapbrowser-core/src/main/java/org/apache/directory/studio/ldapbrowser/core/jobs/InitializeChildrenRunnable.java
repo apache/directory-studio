@@ -29,7 +29,6 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -60,6 +59,9 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     /** The entries. */
     private IEntry[] entries;
 
+    /** The purge all caches flag. */
+    boolean purgeAllCaches;
+
     /** The paged search control, only used internally. */
     private StudioControl pagedSearchControl;
 
@@ -68,10 +70,12 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
      * Creates a new instance of InitializeChildrenRunnable.
      * 
      * @param entries the entries
+     * @param purgeAllCaches true to purge all caches
      */
-    public InitializeChildrenRunnable( IEntry[] entries )
+    public InitializeChildrenRunnable( IEntry[] entries, boolean purgeAllCaches )
     {
         this.entries = entries;
+        this.purgeAllCaches = purgeAllCaches;
     }
 
 
@@ -153,16 +157,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
                 if ( entry instanceof IRootDSE )
                 {
                     // special handling for Root DSE
-                    InitializeRootDSERunnable runnable = new InitializeRootDSERunnable( ( IRootDSE ) entry );
-                    StudioConnectionJob job = new StudioConnectionJob( runnable );
-                    job.execute();
-                    try
-                    {
-                        job.join();
-                    }
-                    catch ( InterruptedException e )
-                    {
-                    }
+                    InitializeRootDSERunnable.loadRootDSE( browserConnection, monitor );
                     continue;
                 }
 
@@ -200,7 +195,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
      * @param monitor the progress monitor
      * @param pagedSearchControl the paged search control
      */
-    private static void initializeChildren( IEntry parent, StudioProgressMonitor monitor,
+    private void initializeChildren( IEntry parent, StudioProgressMonitor monitor,
         StudioControl pagedSearchControl )
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
@@ -208,7 +203,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
                 { parent.getDn().getUpName() } ) );
 
         // clear old children
-        clearParent( parent );
+        clearCaches( parent, purgeAllCaches );
 
         // create search
         ISearch search = createSearch( parent, pagedSearchControl, false );
@@ -221,7 +216,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         {
             // clearing old children before filling new children is
             // necessary to handle aliases and referrals.
-            clearParent( parent );
+            clearCaches( parent, false );
 
             do
             {
@@ -382,19 +377,34 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     }
 
 
-    private static void clearParent( IEntry parent )
+    static void clearCaches( IEntry entry, boolean purgeAllCaches )
     {
-        IEntry[] oldChildren = parent.getChildren();
-        for ( int i = 0; oldChildren != null && i < oldChildren.length; i++ )
+        // clear the parent-child relationship, recursively
+        IEntry[] children = entry.getChildren();
+        if ( children != null )
         {
-            if ( oldChildren[i] != null )
+            for ( IEntry child : children )
             {
-                parent.deleteChild( oldChildren[i] );
+                if ( child != null )
+                {
+                    entry.deleteChild( child );
+                    clearCaches( child, purgeAllCaches );
+                }
             }
         }
-        parent.setChildrenInitialized( false );
-        parent.setTopPageChildrenRunnable( null );
-        parent.setNextPageChildrenRunnable( null );
+        entry.setChildrenInitialized( false );
+
+        // reset paging runnables
+        entry.setTopPageChildrenRunnable( null );
+        entry.setNextPageChildrenRunnable( null );
+
+        // reset attributes and additional flags
+        if ( purgeAllCaches )
+        {
+            entry.setAttributesInitialized( false );
+            entry.setHasChildrenHint( true );
+            entry.setHasMoreChildren( false );
+        }
     }
 
 }

@@ -77,7 +77,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
      * 
      * @param rootDSE the root DSE
      */
-    public InitializeRootDSERunnable( IRootDSE rootDSE )
+    private InitializeRootDSERunnable( IRootDSE rootDSE )
     {
         this.rootDSE = rootDSE;
     }
@@ -158,21 +158,10 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
      * 
      * @throws Exception the exception
      */
-    private static synchronized void loadRootDSE( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
+    public static synchronized void loadRootDSE( IBrowserConnection browserConnection, StudioProgressMonitor monitor )
     {
-        // delete old children
-        IEntry[] oldChildren = browserConnection.getRootDSE().getChildren();
-        if ( oldChildren != null )
-        {
-            for ( IEntry entry : oldChildren )
-            {
-                if ( entry != null )
-                {
-                    browserConnection.getRootDSE().deleteChild( entry );
-                }
-            }
-        }
-        browserConnection.getRootDSE().setChildrenInitialized( false );
+        // clear old children
+        InitializeChildrenRunnable.clearCaches( browserConnection.getRootDSE(), true );
 
         // delete old attributes
         IAttribute[] oldAttributes = browserConnection.getRootDSE().getAttributes();
@@ -231,7 +220,8 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
             {
                 for ( String namingContext : namingContextSet )
                 {
-                    if ( !"".equals( namingContext ) ) { //$NON-NLS-1$
+                    if ( !"".equals( namingContext ) ) //$NON-NLS-1$
+                    {
                         try
                         {
                             LdapDN dn = new LdapDN( namingContext );

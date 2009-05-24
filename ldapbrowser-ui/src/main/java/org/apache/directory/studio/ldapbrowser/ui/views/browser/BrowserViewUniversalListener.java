@@ -36,6 +36,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitialized
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.BookmarkUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
@@ -60,6 +61,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
@@ -529,6 +531,16 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         else if ( event instanceof BulkModificationEvent )
         {
             viewer.refresh();
+        }
+        else if ( event instanceof ChildrenInitializedEvent )
+        {
+            boolean expandedState = viewer.getExpandedState( event.getModifiedEntry() );
+            viewer.collapseToLevel( event.getModifiedEntry(), TreeViewer.ALL_LEVELS );
+            if ( expandedState )
+            {
+                viewer.expandToLevel( event.getModifiedEntry(), 1 );
+            }
+            viewer.refresh( event.getModifiedEntry(), true );
         }
         else
         {
