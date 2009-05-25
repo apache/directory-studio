@@ -80,6 +80,12 @@
              syntaxOID="1.3.6.1.4.1.18060.0.4.0.0.2">
        </syntax>
     </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
+          icon="resources/icons/passwordeditor.gif"
+          name="%ValueEditor_InPlaceEntryUUIDValueEditor_name">
+       <attribute attributeType="entryUUID"/>
+    </valueEditor>
    </extension>
 
 </plugin>
