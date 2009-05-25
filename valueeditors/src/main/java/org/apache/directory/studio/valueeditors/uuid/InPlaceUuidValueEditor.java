@@ -29,8 +29,8 @@ import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor
 
 
 /**
- * Implementation of IValueEditor for attribute 'entryUUID' with syntax 1.3.6.1.4.1.18060.0.4.1.2.29 
- * . 
+ * Implementation of IValueEditor for attribute 'entryUUID' with syntax 1.3.6.1.1.16.1.
+ * 
  * 
  * Currently only the getDisplayXXX() methods are implemented.
  * For modification the raw string must be edited.
