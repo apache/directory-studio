@@ -21,13 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -108,22 +105,13 @@ public class HexDialog extends Dialog
                 try
                 {
                     File file = new File( returnedFileName );
-                    FileOutputStream out = new FileOutputStream( file );
-                    out.write( currentData );
-                    out.flush();
-                    out.close();
-                }
-                catch ( FileNotFoundException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
-                            Messages.getString("HexDialog.CantWriteToFile"), e ) ); //$NON-NLS-1$
+                    FileUtils.writeByteArrayToFile( file, currentData );
                 }
                 catch ( IOException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR,
-                            Messages.getString("HexDialog.CantWriteToFile"), e ) ); //$NON-NLS-1$
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                            .getString( "HexDialog.CantWriteToFile" ), e ) ); //$NON-NLS-1$
                 }
             }
         }
@@ -137,30 +125,14 @@ public class HexDialog extends Dialog
                 try
                 {
                     File file = new File( returnedFileName );
-                    FileInputStream in = new FileInputStream( file );
-                    ByteArrayOutputStream out = new ByteArrayOutputStream( ( int ) file.length() );
-                    byte[] buf = new byte[4096];
-                    int len;
-                    while ( ( len = in.read( buf ) ) > 0 )
-                    {
-                        out.write( buf, 0, len );
-                    }
-                    currentData = out.toByteArray();
+                    currentData = FileUtils.readFileToByteArray( file );
                     hexText.setText( toFormattedHex( currentData ) );
-                    out.close();
-                    in.close();
-                }
-                catch ( FileNotFoundException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages.getString("HexDialog.CantReadFile"), //$NON-NLS-1$
-                            e ) );
                 }
                 catch ( IOException e )
                 {
                     ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages.getString("HexDialog.CantReadFile"), //$NON-NLS-1$
-                            e ) );
+                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                            .getString( "HexDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
                 }
             }
         }
