@@ -48,6 +48,13 @@ import org.osgi.framework.BundleContext;
  */
 public class ConnectionCorePlugin extends Plugin
 {
+
+    /** The file name of the permanent trust store */
+    private static final String PERMANENT_TRUST_STORE = "permanent.jks"; //$NON-NLS-1$
+
+    /** The password of the permanent trust store */
+    private static final String PERMANENT_TRUST_STORE_PASSWORD = "changeit"; //$NON-NLS-1$
+
     /** The shared instance */
     private static ConnectionCorePlugin plugin;
 
@@ -56,6 +63,12 @@ public class ConnectionCorePlugin extends Plugin
 
     /** The connection folder manager */
     private ConnectionFolderManager connectionFolderManager;
+
+    /** The permanent trust store */
+    private StudioKeyStoreManager permanentTrustStoreManager;
+
+    /** The session trust store */
+    private StudioKeyStoreManager sessionTrustStoreManager;
 
     /** The event runner. */
     private EventRunner eventRunner;
@@ -109,6 +122,17 @@ public class ConnectionCorePlugin extends Plugin
         {
             connectionFolderManager = new ConnectionFolderManager();
         }
+
+        if ( permanentTrustStoreManager == null )
+        {
+            permanentTrustStoreManager = StudioKeyStoreManager.createFileKeyStoreManager( PERMANENT_TRUST_STORE,
+                PERMANENT_TRUST_STORE_PASSWORD );
+        }
+
+        if ( sessionTrustStoreManager == null )
+        {
+            sessionTrustStoreManager = StudioKeyStoreManager.createMemoryKeyStoreManager();
+        }
     }
 
 
@@ -138,6 +162,16 @@ public class ConnectionCorePlugin extends Plugin
         if ( connectionFolderManager != null )
         {
             connectionFolderManager = null;
+        }
+
+        if ( permanentTrustStoreManager != null )
+        {
+            permanentTrustStoreManager = null;
+        }
+
+        if ( sessionTrustStoreManager != null )
+        {
+            sessionTrustStoreManager = null;
         }
     }
 
@@ -188,6 +222,28 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
+     * Gets the permanent trust store manager.
+     *
+     * @return the permanent trust store manager
+     */
+    public StudioKeyStoreManager getPermanentTrustStoreManager()
+    {
+        return permanentTrustStoreManager;
+    }
+
+
+    /**
+     * Gets the session trust store manager.
+     *
+     * @return the session trust store manager
+     */
+    public StudioKeyStoreManager getSessionTrustStoreManager()
+    {
+        return sessionTrustStoreManager;
+    }
+
+
+    /**
      * Gets the authentication handler
      *
      * @return
@@ -195,7 +251,7 @@ public class ConnectionCorePlugin extends Plugin
      */
     public IAuthHandler getAuthHandler()
     {
-        if(authHandler == null)
+        if ( authHandler == null )
         {
             // if no authentication handler was set a default authentication handler is used
             // that only works if the bind password is stored within the connection parameters.
@@ -203,14 +259,16 @@ public class ConnectionCorePlugin extends Plugin
             {
                 public ICredentials getCredentials( ConnectionParameter connectionParameter )
                 {
-                    if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
+                    if ( connectionParameter.getBindPrincipal() == null
+                        || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
                     {
                         return new Credentials( "", "", connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
                     }
-                    else if ( connectionParameter.getBindPassword() != null && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
+                    else if ( connectionParameter.getBindPassword() != null
+                        && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
                     {
-                        return new Credentials( connectionParameter.getBindPrincipal(), connectionParameter.getBindPassword(),
-                            connectionParameter );
+                        return new Credentials( connectionParameter.getBindPrincipal(), connectionParameter
+                            .getBindPassword(), connectionParameter );
                     }
                     else
                     {
@@ -245,7 +303,7 @@ public class ConnectionCorePlugin extends Plugin
      */
     public IReferralHandler getReferralHandler()
     {
-        if(referralHandler == null)
+        if ( referralHandler == null )
         {
             // if no referral handler was set a default referral handler is used
             // that just cancels referral chasing
@@ -255,7 +313,7 @@ public class ConnectionCorePlugin extends Plugin
                 {
                     // null cancels referral chasing
                     return null;
-                }  
+                }
             };
         }
         return referralHandler;
@@ -308,7 +366,7 @@ public class ConnectionCorePlugin extends Plugin
     {
         this.certificateHandler = certificateHandler;
     }
-    
+
 
     /**
      * Gets the LDIF modification logger.
@@ -440,9 +498,8 @@ public class ConnectionCorePlugin extends Plugin
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
-                getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.connection.core", Status.OK, //$NON-NLS-1$
-                        Messages.error__unable_to_get_plugin_properties, e ) );
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.connection.core", Status.OK, //$NON-NLS-1$
+                    Messages.error__unable_to_get_plugin_properties, e ) );
             }
         }
 

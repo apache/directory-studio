@@ -21,9 +21,6 @@
 package org.apache.directory.studio.connection.core.io.jndi;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -47,8 +44,6 @@ import org.apache.directory.studio.connection.core.Messages;
  */
 class StudioTrustManager implements X509TrustManager
 {
-    private static final char[] PERMANENT_TRUST_STORE_PASSWORD = "changeit".toCharArray(); //$NON-NLS-1$
-    private static final String PERMANENT_TRUST_STORE = "permanent.jks"; //$NON-NLS-1$
     private X509TrustManager jvmTrustManager;
 
 
@@ -96,19 +91,31 @@ class StudioTrustManager implements X509TrustManager
             }
             catch ( CertificateException e2 )
             {
-                // ask for confirmation
-                ICertificateHandler ch = ConnectionCorePlugin.getDefault().getCertificateHandler();
-                ICertificateHandler.TrustLevel trustLevel = ch.verifyTrustLevel( chain );
-                switch ( trustLevel )
+                try
                 {
-                    case Permanent:
-                        addToPermanentTrustStore( chain );
-                        break;
-                    case Session:
-                        // TODO: put to session trust store???
-                        break;
-                    case Not:
-                        throw new CertificateException( Messages.error__untrusted_certificate, e1 );
+                    X509TrustManager sessionTrustManager = getSessionTrustManager();
+                    if ( sessionTrustManager == null )
+                    {
+                        throw e2;
+                    }
+                    sessionTrustManager.checkServerTrusted( chain, authType );
+                }
+                catch ( CertificateException e3 )
+                {
+                    // ask for confirmation
+                    ICertificateHandler ch = ConnectionCorePlugin.getDefault().getCertificateHandler();
+                    ICertificateHandler.TrustLevel trustLevel = ch.verifyTrustLevel( chain );
+                    switch ( trustLevel )
+                    {
+                        case Permanent:
+                            ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( chain[0] );
+                            break;
+                        case Session:
+                            ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().addCertificate( chain[0] );
+                            break;
+                        case Not:
+                            throw new CertificateException( Messages.error__untrusted_certificate, e1 );
+                    }
                 }
             }
         }
@@ -127,21 +134,43 @@ class StudioTrustManager implements X509TrustManager
     /**
      * Gets the permanent trust manager, based on the permanent trust store.
      * 
-     * @return the permanent trust manager
+     * @return the permanent trust manager, null if the trust store is empty
      * 
      * @throws CertificateException the certificate exception
      */
     private X509TrustManager getPermanentTrustManager() throws CertificateException
     {
-        KeyStore permanentKeyStore = loadPermanentTrustStore();
+        KeyStore permanentTrustStore = ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getKeyStore();
+        X509TrustManager permanentTrustManager = getTrustManager( permanentTrustStore );
+        return permanentTrustManager;
+    }
+
+
+    /**
+     * Gets the session trust manager, based on the session trust store.
+     * 
+     * @return the session trust manager, null if the trust store is empty
+     * 
+     * @throws CertificateException the certificate exception
+     */
+    private X509TrustManager getSessionTrustManager() throws CertificateException
+    {
+        KeyStore sessionTrustStore = ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getKeyStore();
+        X509TrustManager sessionTrustManager = getTrustManager( sessionTrustStore );
+        return sessionTrustManager;
+    }
+
+
+    private X509TrustManager getTrustManager( KeyStore trustStore ) throws CertificateException
+    {
         try
         {
-            Enumeration<String> aliases = permanentKeyStore.aliases();
+            Enumeration<String> aliases = trustStore.aliases();
             if ( aliases.hasMoreElements() )
             {
                 TrustManagerFactory factory = TrustManagerFactory.getInstance( TrustManagerFactory
                     .getDefaultAlgorithm() );
-                factory.init( permanentKeyStore );
+                factory.init( trustStore );
                 TrustManager[] permanentTrustManagers = factory.getTrustManagers();
                 TrustManager permanentTrustManager = permanentTrustManagers[0];
                 return ( X509TrustManager ) permanentTrustManager;
@@ -149,61 +178,10 @@ class StudioTrustManager implements X509TrustManager
         }
         catch ( Exception e )
         {
-            throw new CertificateException( Messages.StudioTrustManager_CantCreatePermanentTrustManager, e );
+            throw new CertificateException( Messages.StudioTrustManager_CantCreateTrustManager, e );
         }
 
         return null;
-    }
-
-
-    /**
-     * Loads the permanent trust store.
-     * 
-     * @return the permanent trust store
-     */
-    private KeyStore loadPermanentTrustStore() throws CertificateException
-    {
-        try
-        {
-            KeyStore permanentKeyStore = KeyStore.getInstance( "JKS" ); //$NON-NLS-1$
-            File file = ConnectionCorePlugin.getDefault().getStateLocation().append( PERMANENT_TRUST_STORE ).toFile();
-            if ( file.exists() && file.isFile() && file.canRead() )
-            {
-                permanentKeyStore.load( new FileInputStream( file ), PERMANENT_TRUST_STORE_PASSWORD );
-            }
-            else
-            {
-                permanentKeyStore.load( null, null );
-            }
-
-            return permanentKeyStore;
-        }
-        catch ( Exception e )
-        {
-            throw new CertificateException( Messages.StudioTrustManager_CantLoadPermanentTrustStore, e );
-        }
-    }
-
-
-    /**
-     * Adds the certificate to the permanent trust store.
-     * 
-     * @param chain the certificate chain
-     */
-    private void addToPermanentTrustStore( X509Certificate[] chain ) throws CertificateException
-    {
-        try
-        {
-            KeyStore permanentKeyStore = loadPermanentTrustStore();
-            String alias = chain[0].getSubjectX500Principal().getName();
-            permanentKeyStore.setCertificateEntry( alias, chain[0] );
-            File file = ConnectionCorePlugin.getDefault().getStateLocation().append( PERMANENT_TRUST_STORE ).toFile();
-            permanentKeyStore.store( new FileOutputStream( file ), PERMANENT_TRUST_STORE_PASSWORD );
-        }
-        catch ( Exception e )
-        {
-            throw new CertificateException( Messages.StudioTrustManager_CantAddCertificateToPermanentTrustStore, e );
-        }
     }
 
 }

@@ -248,7 +248,6 @@ public class CertificateInfoComposite extends Composite
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
-                event.getSelection();
                 populateCertificateTree();
             }
         } );

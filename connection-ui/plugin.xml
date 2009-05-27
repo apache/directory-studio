@@ -56,5 +56,20 @@
             description="%ConnectionParameterPage_AuthenticationParameterPage_description"
             id="%ConnectionParameterPage_AuthenticationParameterPage_id"
             name="%ConnectionParameterPage_AuthenticationParameterPage_name"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="%PrefPage_MainPreferencePage_id"
+            class="org.apache.directory.studio.connection.ui.preferences.ConnectionsPreferencePage"
+            id="%PrefPage_ConnectionsPreferencePage_id"
+            name="%PrefPage_ConnectionsPreferencePage_name">
+      </page>
+      <page
+            category="%PrefPage_ConnectionsPreferencePage_id"
+            class="org.apache.directory.studio.connection.ui.preferences.CertificateValidationPreferencePage"
+            id="%PrefPage_CertificateValidationPreferencePage_id"
+            name="%PrefPage_CertificateValidationPreferencePage_name">
+      </page>
    </extension>  
 </plugin>

@@ -141,13 +141,6 @@ public class CertificateTrustDialog extends Dialog
             {
                 new CertificateInfoDialog( getShell(), certificateChain ).open();
             }
-
-
-            @Override
-            public void widgetDefaultSelected( SelectionEvent e )
-            {
-                new CertificateInfoDialog( getShell(), certificateChain ).open();
-            }
         } );
 
         trustNotButton = BaseWidgetUtils.createRadiobutton( composite, Messages
