@@ -56,9 +56,13 @@ public interface ValueEditorsConstants
     /** The relative path to the administrative role editor icon */
     public static final String IMG_ADMINISTRATIVEROLEEDITOR = "resources/icons/administrativeroleeditor.gif"; //$NON-NLS-1$
 
+    /** The relative path to the certificate editor icon */
+    public static final String IMG_CERTIFICATEEDITOR = "resources/icons/certificateeditor.png"; //$NON-NLS-1$
+
     /** The relative path to the text field error icon */
     public static final String IMG_TEXTFIELD_ERROR = "resources/icons/textfield_error.png"; //$NON-NLS-1$
 
     /** The relative path to the text field ok icon */
     public static final String IMG_TEXTFIELD_OK = "resources/icons/textfield_ok.png"; //$NON-NLS-1$
+
 }
