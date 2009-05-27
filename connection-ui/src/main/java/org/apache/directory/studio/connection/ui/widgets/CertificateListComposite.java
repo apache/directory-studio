@@ -26,6 +26,8 @@ import java.util.Iterator;
 
 import org.apache.directory.studio.connection.core.StudioKeyStoreManager;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateInfoDialog;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -88,7 +90,10 @@ public class CertificateListComposite extends Composite
     private void createTreeViewer()
     {
         tableViewer = new TableViewer( container, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER );
-        tableViewer.getTable().setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
+        GridData gd = new GridData( GridData.FILL, GridData.FILL, true, true );
+        gd.widthHint = 360;
+        gd.heightHint = 10;
+        tableViewer.getTable().setLayoutData( gd );
         tableViewer.setContentProvider( new KeyStoreContentProvider() );
         tableViewer.setLabelProvider( new KeyStoreLabelProvider() );
         tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
@@ -97,6 +102,16 @@ public class CertificateListComposite extends Composite
             {
                 viewButton.setEnabled( !event.getSelection().isEmpty() );
                 removeButton.setEnabled( !event.getSelection().isEmpty() );
+            }
+        } );
+        tableViewer.addDoubleClickListener( new IDoubleClickListener()
+        {
+            public void doubleClick( DoubleClickEvent event )
+            {
+                IStructuredSelection selection = ( IStructuredSelection ) event.getSelection();
+                X509Certificate certificate = ( X509Certificate ) selection.getFirstElement();
+                new CertificateInfoDialog( getShell(), new X509Certificate[]
+                    { certificate } ).open();
             }
         } );
     }
