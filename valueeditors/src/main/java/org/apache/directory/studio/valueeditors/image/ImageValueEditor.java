@@ -21,7 +21,6 @@
 package org.apache.directory.studio.valueeditors.image;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogBinaryValueEditor;
 import org.eclipse.swt.SWT;
@@ -52,7 +51,7 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
             byte[] currentImageData = ( byte[] ) value;
 
             ImageDialog dialog = new ImageDialog( shell, currentImageData, SWT.IMAGE_JPEG );
-            if ( dialog.open() == TextDialog.OK && dialog.getNewImageRawData() != null )
+            if ( dialog.open() == ImageDialog.OK && dialog.getNewImageRawData() != null )
             {
                 setValue( dialog.getNewImageRawData() );
                 return true;
