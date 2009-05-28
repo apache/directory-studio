@@ -346,7 +346,8 @@ public class ConnectionCorePlugin extends Plugin
             // that just returns "No"
             certificateHandler = new ICertificateHandler()
             {
-                public TrustLevel verifyTrustLevel( X509Certificate[] certChain )
+                public TrustLevel verifyTrustLevel( String host, X509Certificate[] certChain,
+                    List<ICertificateHandler.FailCause> failCauses )
                 {
                     return TrustLevel.Not;
                 }

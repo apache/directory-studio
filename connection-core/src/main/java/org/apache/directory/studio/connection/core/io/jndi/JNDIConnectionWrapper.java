@@ -858,7 +858,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             environment.put( Context.PROVIDER_URL, LdapURL.LDAPS_SCHEME + host + ':' + port );
             environment.put( Context.SECURITY_PROTOCOL, "ssl" ); //$NON-NLS-1$
-            // TODO: host name validation
+            // host name verification is done in StudioTrustManager
             environment.put( JAVA_NAMING_LDAP_FACTORY_SOCKET, validateCertificates ? StudioSSLSocketFactory.class
                 .getName() : DummySSLSocketFactory.class.getName() );
         }
@@ -886,7 +886,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         {
                             StartTlsResponse tls = ( StartTlsResponse ) context
                                 .extendedOperation( new StartTlsRequest() );
-                            // TODO: host name validation
+                            // deactivate host name verification at this level,
+                            // host name verification is done in StudioTrustManager
                             tls.setHostnameVerifier( new HostnameVerifier()
                             {
                                 public boolean verify( String hostname, SSLSession session )

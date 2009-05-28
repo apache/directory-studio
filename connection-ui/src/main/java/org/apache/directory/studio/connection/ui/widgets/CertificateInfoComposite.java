@@ -146,8 +146,8 @@ public class CertificateInfoComposite extends Composite
     {
         tabFolder = new TabFolder( this, SWT.TOP );
         GridLayout mainLayout = new GridLayout();
-        mainLayout.marginWidth = 0;
-        mainLayout.marginHeight = 0;
+        mainLayout.marginWidth = 50;
+        mainLayout.marginHeight = 50;
         tabFolder.setLayout( mainLayout );
         tabFolder.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
     }
@@ -161,6 +161,8 @@ public class CertificateInfoComposite extends Composite
         // create inner container
         Composite generalContainer = new Composite( tabFolder, SWT.NONE );
         GridLayout currentLayout = new GridLayout( 1, false );
+        currentLayout.marginHeight = 10;
+        currentLayout.marginWidth = 10;
         generalContainer.setLayout( currentLayout );
         generalContainer.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
@@ -237,7 +239,10 @@ public class CertificateInfoComposite extends Composite
         detailsForm.setLayout( new FillLayout() );
 
         Composite hierarchyContainer = new Composite( detailsForm, SWT.NONE );
-        hierarchyContainer.setLayout( new GridLayout( 1, false ) );
+        GridLayout hierarchyLayout = new GridLayout( 1, false );
+        hierarchyLayout.marginTop = 10;
+        hierarchyLayout.marginWidth = 10;
+        hierarchyContainer.setLayout( hierarchyLayout );
         BaseWidgetUtils.createLabel( hierarchyContainer, Messages
             .getString( "CertificateInfoComposite.CertificateHierarchyLabel" ), 1 ); //$NON-NLS-1$
         hierarchyTreeViewer = new TreeViewer( hierarchyContainer );
@@ -253,7 +258,9 @@ public class CertificateInfoComposite extends Composite
         } );
 
         Composite certificateContainer = new Composite( detailsForm, SWT.NONE );
-        certificateContainer.setLayout( new GridLayout( 1, false ) );
+        GridLayout certificateLayout = new GridLayout( 1, false );
+        certificateLayout.marginWidth = 10;
+        certificateContainer.setLayout( certificateLayout );
         BaseWidgetUtils.createLabel( certificateContainer, Messages
             .getString( "CertificateInfoComposite.CertificateFieldsLabel" ), 1 ); //$NON-NLS-1$
         certificateTree = new Tree( certificateContainer, SWT.BORDER );
@@ -275,7 +282,10 @@ public class CertificateInfoComposite extends Composite
         } );
 
         Composite valueContainer = new Composite( detailsForm, SWT.NONE );
-        valueContainer.setLayout( new GridLayout( 1, false ) );
+        GridLayout valueLayout = new GridLayout( 1, false );
+        valueLayout.marginWidth = 10;
+        valueLayout.marginBottom = 10;
+        valueContainer.setLayout( valueLayout );
         BaseWidgetUtils.createLabel( valueContainer,
             Messages.getString( "CertificateInfoComposite.FieldValuesLabel" ), 1 ); //$NON-NLS-1$
         valueText = new Text( valueContainer, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY );

@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.ui;
 
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import org.apache.directory.studio.connection.core.ICertificateHandler;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateTrustDialog;
@@ -40,7 +41,8 @@ public class ConnectionUICertificateHandler implements ICertificateHandler
     /**
      * {@inheritDoc}
      */
-    public TrustLevel verifyTrustLevel( final X509Certificate[] certChain )
+    public TrustLevel verifyTrustLevel( final String host, final X509Certificate[] certChain,
+        final List<ICertificateHandler.FailCause> failCauses )
     {
         // open dialog
         final TrustLevel[] trustLevel = new TrustLevel[1];
@@ -49,7 +51,7 @@ public class ConnectionUICertificateHandler implements ICertificateHandler
             public void run()
             {
                 CertificateTrustDialog dialog = new CertificateTrustDialog( PlatformUI.getWorkbench().getDisplay()
-                    .getActiveShell(), certChain );
+                    .getActiveShell(), host, certChain, failCauses );
                 dialog.open();
                 trustLevel[0] = dialog.getTrustLevel();
             }

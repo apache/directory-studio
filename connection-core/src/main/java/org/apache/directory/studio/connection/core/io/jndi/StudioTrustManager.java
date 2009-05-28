@@ -23,16 +23,24 @@ package org.apache.directory.studio.connection.core.io.jndi;
 
 import java.security.KeyStore;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import javax.security.auth.x500.X500Principal;
 
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ICertificateHandler;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.ICertificateHandler.FailCause;
+import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
 
 
 /**
@@ -45,6 +53,7 @@ import org.apache.directory.studio.connection.core.Messages;
 class StudioTrustManager implements X509TrustManager
 {
     private X509TrustManager jvmTrustManager;
+    private String host;
 
 
     /**
@@ -57,6 +66,17 @@ class StudioTrustManager implements X509TrustManager
     StudioTrustManager( X509TrustManager jvmTrustManager ) throws Exception
     {
         this.jvmTrustManager = jvmTrustManager;
+    }
+
+
+    /**
+     * Sets the host, used to verify the hostname of the certificate.
+     * 
+     * @param host the new host
+     */
+    void setHost( String host )
+    {
+        this.host = host;
     }
 
 
@@ -74,49 +94,94 @@ class StudioTrustManager implements X509TrustManager
      */
     public void checkServerTrusted( X509Certificate[] chain, String authType ) throws CertificateException
     {
+        // check permanent trusted certificates, return on success
+        try
+        {
+            X509TrustManager permanentTrustManager = getPermanentTrustManager();
+            if ( permanentTrustManager != null )
+            {
+                permanentTrustManager.checkServerTrusted( chain, authType );
+                return;
+            }
+        }
+        catch ( CertificateException ce )
+        {
+        }
+
+        // check temporary trusted certificates, return on success
+        try
+        {
+            X509TrustManager sessionTrustManager = getSessionTrustManager();
+            if ( sessionTrustManager != null )
+            {
+                sessionTrustManager.checkServerTrusted( chain, authType );
+                return;
+            }
+        }
+        catch ( CertificateException ce )
+        {
+        }
+
+        // below here no manually trusted certificate (either permanent or temporary) matched
+        List<ICertificateHandler.FailCause> failCauses = new ArrayList<ICertificateHandler.FailCause>();
+
+        // perform trust check of JVM trust manager
         try
         {
             jvmTrustManager.checkServerTrusted( chain, authType );
         }
-        catch ( CertificateException e1 )
+        catch ( CertificateException ce )
         {
-            try
+            if ( ce instanceof CertificateExpiredException )
             {
-                X509TrustManager permanentTrustManager = getPermanentTrustManager();
-                if ( permanentTrustManager == null )
-                {
-                    throw e1;
-                }
-                permanentTrustManager.checkServerTrusted( chain, authType );
+                failCauses.add( FailCause.CertificateExpired );
             }
-            catch ( CertificateException e2 )
+            else if ( ce instanceof CertificateNotYetValidException )
             {
-                try
+                failCauses.add( FailCause.CertificateNotYetValid );
+            }
+            else
+            {
+                X500Principal issuerX500Principal = chain[0].getIssuerX500Principal();
+                X500Principal subjectX500Principal = chain[0].getSubjectX500Principal();
+                if ( issuerX500Principal.equals( subjectX500Principal ) )
                 {
-                    X509TrustManager sessionTrustManager = getSessionTrustManager();
-                    if ( sessionTrustManager == null )
-                    {
-                        throw e2;
-                    }
-                    sessionTrustManager.checkServerTrusted( chain, authType );
+                    failCauses.add( FailCause.SelfSignedCertificate );
                 }
-                catch ( CertificateException e3 )
+                else
                 {
-                    // ask for confirmation
-                    ICertificateHandler ch = ConnectionCorePlugin.getDefault().getCertificateHandler();
-                    ICertificateHandler.TrustLevel trustLevel = ch.verifyTrustLevel( chain );
-                    switch ( trustLevel )
-                    {
-                        case Permanent:
-                            ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( chain[0] );
-                            break;
-                        case Session:
-                            ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().addCertificate( chain[0] );
-                            break;
-                        case Not:
-                            throw new CertificateException( Messages.error__untrusted_certificate, e1 );
-                    }
+                    failCauses.add( FailCause.NoValidCertificationPath );
                 }
+            }
+        }
+
+        // perform host name verification
+        try
+        {
+            BrowserCompatHostnameVerifier hostnameVerifier = new BrowserCompatHostnameVerifier();
+            hostnameVerifier.verify( host, chain[0] );
+        }
+        catch ( SSLException ce )
+        {
+            failCauses.add( FailCause.HostnameVerificationFailed );
+        }
+
+        if ( !failCauses.isEmpty() )
+        {
+            // either trust check or host name verification
+            // ask for confirmation
+            ICertificateHandler ch = ConnectionCorePlugin.getDefault().getCertificateHandler();
+            ICertificateHandler.TrustLevel trustLevel = ch.verifyTrustLevel( host, chain, failCauses );
+            switch ( trustLevel )
+            {
+                case Permanent:
+                    ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( chain[0] );
+                    break;
+                case Session:
+                    ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().addCertificate( chain[0] );
+                    break;
+                case Not:
+                    throw new CertificateException( Messages.error__untrusted_certificate );
             }
         }
     }

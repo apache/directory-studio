@@ -21,20 +21,20 @@ package org.apache.directory.studio.connection.ui.dialogs;
 
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import org.apache.directory.studio.connection.core.ICertificateHandler;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -53,8 +53,14 @@ public class CertificateTrustDialog extends Dialog
     /** The trust level. */
     private ICertificateHandler.TrustLevel trustLevel;
 
+    /** The host */
+    private String host;
+
     /** The certificate chain. */
     private X509Certificate[] certificateChain;
+
+    /** The causes of failed certificate validation. */
+    private List<ICertificateHandler.FailCause> failCauses;
 
     /** The "Don't trust" button. */
     private Button trustNotButton;
@@ -70,14 +76,19 @@ public class CertificateTrustDialog extends Dialog
      * Creates a new instance of CertificateTrustDialog.
      * 
      * @param parentShell the parent shell
+     * @param host the host
      * @param certificateChain the certificate chain
+     * @param failCauses the causes of failed certificate validation
      */
-    public CertificateTrustDialog( Shell parentShell, X509Certificate[] certificateChain )
+    public CertificateTrustDialog( Shell parentShell, String host, X509Certificate[] certificateChain,
+        List<ICertificateHandler.FailCause> failCauses )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         this.title = Messages.getString( "CertificateTrustDialog.CertificateTrust" ); //$NON-NLS-1$
+        this.host = host;
         this.certificateChain = certificateChain;
+        this.failCauses = failCauses;
         this.trustLevel = null;
     }
 
@@ -93,18 +104,20 @@ public class CertificateTrustDialog extends Dialog
     @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
+        createButton( parent, IDialogConstants.DETAILS_ID, Messages
+            .getString( "CertificateTrustDialog.ViewCertificate" ), false );
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
     }
 
 
-    /**
-     * Gets the trust level.
-     * 
-     * @return the trust level
-     */
-    public ICertificateHandler.TrustLevel getTrustLevel()
+    @Override
+    protected void buttonPressed( int buttonId )
     {
-        return trustLevel;
+        if ( buttonId == IDialogConstants.DETAILS_ID )
+        {
+            new CertificateInfoDialog( getShell(), certificateChain ).open();
+        }
+        super.buttonPressed( buttonId );
     }
 
 
@@ -112,36 +125,49 @@ public class CertificateTrustDialog extends Dialog
     protected Control createDialogArea( final Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        GridLayout gl = new GridLayout();
-        composite.setLayout( gl );
         GridData gd = new GridData( GridData.FILL_BOTH );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
         gd.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
         composite.setLayoutData( gd );
 
-        BaseWidgetUtils.createWrappedLabel( composite, Messages.getString( "CertificateTrustDialog.Description" ), 1 ); //$NON-NLS-1$
-        BaseWidgetUtils.createWrappedLabel( composite, Messages.getString( "CertificateTrustDialog.TheDnIs" ), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createWrappedLabel( composite, NLS.bind( Messages
+            .getString( "CertificateTrustDialog.InvalidCertificate" ), host ), 1 ); //$NON-NLS-1$
 
-        Composite innerComposite = BaseWidgetUtils.createColumnContainer( composite, 2, 1 );
-        Label issuerDNLabel = BaseWidgetUtils.createWrappedLabel( innerComposite, "", 1 ); //$NON-NLS-1$
-        if ( ( certificateChain != null ) && ( certificateChain.length > 0 ) )
+        // failed cause
+        Composite failedCauseContainer = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
+        for ( ICertificateHandler.FailCause failCause : failCauses )
         {
-            issuerDNLabel.setText( certificateChain[0].getIssuerX500Principal().getName() );
-        }
-        else
-        {
-            issuerDNLabel.setText( " - " ); //$NON-NLS-1$
-        }
-        Button showCertificateDetailsButton = BaseWidgetUtils.createButton( innerComposite, Messages
-            .getString( "CertificateTrustDialog.ViewCertificate" ), 1 );//$NON-NLS-1$
-        showCertificateDetailsButton.addSelectionListener( new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected( SelectionEvent e )
+            // BaseWidgetUtils.createRadioIndent( failedCauseContainer, 1 );
+            switch ( failCause )
             {
-                new CertificateInfoDialog( getShell(), certificateChain ).open();
+                case SelfSignedCertificate:
+                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                        .getString( "CertificateTrustDialog.SelfSignedCertificate" ), 1 ); //$NON-NLS-1$
+                    break;
+                case CertificateExpired:
+                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                        .getString( "CertificateTrustDialog.CertificateExpired" ), 1 ); //$NON-NLS-1$
+                    break;
+                case CertificateNotYetValid:
+                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                        .getString( "CertificateTrustDialog.CertificateNotYetValid" ), 1 ); //$NON-NLS-1$
+                    break;
+                case NoValidCertificationPath:
+                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                        .getString( "CertificateTrustDialog.NoValidCertificationPath" ), 1 ); //$NON-NLS-1$
+                    break;
+                case HostnameVerificationFailed:
+                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                        .getString( "CertificateTrustDialog.HostnameVerificationFailed" ), 1 ); //$NON-NLS-1$
+                    break;
             }
-        } );
+        }
+
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+
+        BaseWidgetUtils.createWrappedLabel( composite, NLS.bind( Messages
+            .getString( "CertificateTrustDialog.ChooseTrustLevel" ), host ), 1 ); //$NON-NLS-1$
 
         trustNotButton = BaseWidgetUtils.createRadiobutton( composite, Messages
             .getString( "CertificateTrustDialog.DoNotTrust" ), 1 ); //$NON-NLS-1$
@@ -179,6 +205,17 @@ public class CertificateTrustDialog extends Dialog
         trustLevel = ICertificateHandler.TrustLevel.Not;
 
         return composite;
+    }
+
+
+    /**
+     * Gets the trust level.
+     * 
+     * @return the trust level
+     */
+    public ICertificateHandler.TrustLevel getTrustLevel()
+    {
+        return trustLevel;
     }
 
 }

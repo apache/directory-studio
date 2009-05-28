@@ -22,6 +22,7 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 
 /**
@@ -35,34 +36,51 @@ public interface ICertificateHandler
 {
 
     /**
-     * The trust level of a certificate
+     * The trust level of a certificate.
      */
     enum TrustLevel
     {
-        /**
-         * Don't trust a certificate.
-         */
+        /** Don't trust a certificate. */
         Not,
 
-        /**
-         * Trust a certificate within the current session.
-         */
+        /** Trust a certificate within the current session. */
         Session,
 
-        /**
-         * Trust a certificate permanently.
-         */
+        /** Trust a certificate permanently. */
         Permanent;
+    }
+
+    /**
+     * The cause of certificate verification failure.
+     */
+    enum FailCause
+    {
+        /** No valid certification path, i.e. unknown issuer.  */
+        NoValidCertificationPath,
+
+        /** Certificate is not valid yet */
+        CertificateNotYetValid,
+
+        /** Certificate is expired */
+        CertificateExpired,
+
+        /** Certificate is self signed */
+        SelfSignedCertificate,
+
+        /** The host name of the server doesn't match the host name in certificate */
+        HostnameVerificationFailed
     }
 
 
     /**
      * Verifies the trust level of the given certificate chain.
      * 
-     * @param cert the certificate chain
+     * @param certChain the certificate chain
+     * @param failCauses the causes of failed certificate validation
      * 
      * @return the trust level
      */
-    TrustLevel verifyTrustLevel( X509Certificate[] certChain );
+    TrustLevel verifyTrustLevel( String host, X509Certificate[] certChain,
+        List<ICertificateHandler.FailCause> failCauses );
 
 }

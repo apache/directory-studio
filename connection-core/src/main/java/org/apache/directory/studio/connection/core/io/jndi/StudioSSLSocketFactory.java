@@ -67,6 +67,9 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     /** The delegate. */
     private SSLSocketFactory delegate;
 
+    /** The trust managers. */
+    private StudioTrustManager[] trustManagers;
+
 
     /**
      * Creates a new instance of StudioSSLSocketFactory.
@@ -84,14 +87,15 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
             TrustManager[] defaultTrustManagers = factory.getTrustManagers();
 
             // create wrappers around the trust managers
+            trustManagers = new StudioTrustManager[defaultTrustManagers.length];
             for ( int i = 0; i < defaultTrustManagers.length; i++ )
             {
-                defaultTrustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
+                trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
             }
 
             // create the real socket factory
             SSLContext sc = SSLContext.getInstance( "TLS" ); //$NON-NLS-1$
-            sc.init( null, defaultTrustManagers, null );
+            sc.init( null, trustManagers, null );
             delegate = sc.getSocketFactory();
         }
         catch ( Exception e )
@@ -127,6 +131,7 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     {
         try
         {
+            updateTrustManagers( host );
             return delegate.createSocket( s, host, port, autoClose );
         }
         catch ( IOException e )
@@ -144,6 +149,7 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     {
         try
         {
+            updateTrustManagers( host );
             return delegate.createSocket( host, port );
         }
         catch ( IOException e )
@@ -161,6 +167,7 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     {
         try
         {
+            updateTrustManagers( host );
             return delegate.createSocket( host, port );
         }
         catch ( IOException e )
@@ -179,6 +186,7 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     {
         try
         {
+            updateTrustManagers( host );
             return delegate.createSocket( host, port, localHost, localPort );
         }
         catch ( IOException e )
@@ -192,12 +200,13 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     /**
      * {@inheritDoc}
      */
-    public Socket createSocket( InetAddress address, int port, InetAddress localhAddress, int localPort )
+    public Socket createSocket( InetAddress address, int port, InetAddress localAddress, int localPort )
         throws IOException
     {
         try
         {
-            return delegate.createSocket( address, port, localhAddress, localPort );
+            updateTrustManagers( address );
+            return delegate.createSocket( address, port, localAddress, localPort );
         }
         catch ( IOException e )
         {
@@ -206,4 +215,18 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
         }
     }
 
+
+    private void updateTrustManagers( InetAddress address )
+    {
+        updateTrustManagers( address.getHostName() );
+    }
+
+
+    private void updateTrustManagers( String host )
+    {
+        for ( StudioTrustManager trustManager : trustManagers )
+        {
+            trustManager.setHost( host );
+        }
+    }
 }
