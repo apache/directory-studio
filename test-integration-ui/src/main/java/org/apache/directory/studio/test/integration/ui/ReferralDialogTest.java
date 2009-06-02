@@ -21,19 +21,30 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+
 import org.apache.directory.server.core.entry.DefaultServerEntry;
 import org.apache.directory.server.core.entry.ServerEntry;
-import org.apache.directory.server.unit.AbstractServerTest;
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -42,26 +53,30 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class ReferralDialogTest extends AbstractServerTest
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+public class ReferralDialogTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
     private Connection connection;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -73,6 +88,7 @@ public class ReferralDialogTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testBrowseAndFollowContinuationReference() throws Exception
     {
         // ensure that referrals handling method is FOLLOW
@@ -123,6 +139,7 @@ public class ReferralDialogTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testBrowseAndCancelFollowingContinuationReference() throws Exception
     {
         // ensure that referrals handling method is FOLLOW
@@ -174,6 +191,7 @@ public class ReferralDialogTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testBrowseAndIgnoreReferral() throws Exception
     {
         // ensure that referrals handling method is IGNORE
@@ -221,6 +239,7 @@ public class ReferralDialogTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testBrowseAndManageReferralEntry() throws Exception
     {
         // ensure that referrals handling method is MANAGE
@@ -247,11 +266,11 @@ public class ReferralDialogTest extends AbstractServerTest
 
     private void createReferralEntry() throws Exception
     {
-        ServerEntry entry = new DefaultServerEntry( rootDSE.getDirectoryService().getRegistries() );
+        ServerEntry entry = new DefaultServerEntry( ldapService.getDirectoryService().getRegistries() );
         entry.setDn( new LdapDN( "cn=referralDialogTest,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
         entry.add( "ref", "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
-        rootDSE.add( entry );
+        ldapService.getDirectoryService().getAdminSession().add( entry );
     }
 }

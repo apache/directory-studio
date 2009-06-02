@@ -21,19 +21,29 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static junit.framework.Assert.assertEquals;
+import static org.apache.directory.server.integ.ServerIntegrationUtils.getWiredContext;
+
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
-import org.apache.directory.server.unit.AbstractServerTest;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -42,16 +52,20 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewEntryWizardTest extends AbstractServerTest
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+public class NewEntryWizardTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-
         // check if krb5kdc is disabled
+        DirContext schemaRoot = ( DirContext ) getWiredContext( ldapService ).lookup( "ou=schema" );
         Attributes krb5kdcAttrs = schemaRoot.getAttributes( "cn=Krb5kdc" );
         boolean isKrb5KdcDisabled = false;
         if ( krb5kdcAttrs.get( "m-disabled" ) != null )
@@ -67,17 +81,17 @@ public class NewEntryWizardTest extends AbstractServerTest
             schemaRoot.modifyAttributes( "cn=Krb5kdc", mods );
         }
 
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -87,6 +101,7 @@ public class NewEntryWizardTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testCreateOrganizationEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -158,6 +173,7 @@ public class NewEntryWizardTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testCreatePersonEntry() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -208,8 +224,10 @@ public class NewEntryWizardTest extends AbstractServerTest
 
         // enter sn value
         SWTBotTree tree = bot.tree( 0 );
-        tree.select( "sn" );
-        bot.text( "" ).setText( "test" );
+        tree.getTreeItem( "sn" ).doubleClick();
+
+        SWTBotText text = bot.text( "" );
+        text.setText( "test" );
         // click to finish editing of sn
         SWTBotTreeItem snNode = tree.getTreeItem( "sn" );
         snNode.click();
@@ -240,6 +258,7 @@ public class NewEntryWizardTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testCreateUpperCaseOrganizationEntries() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -379,6 +398,7 @@ public class NewEntryWizardTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testCreateEntryWithSlash() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -435,13 +455,13 @@ public class NewEntryWizardTest extends AbstractServerTest
         krbNode.click();
 
         // enter cn value
-        tree.select( "cn" );
+        tree.getTreeItem( "cn" ).doubleClick();
         bot.text( "" ).setText( "test" );
         // click to finish editing of cn
         krbNode.click();
 
         // enter sn value
-        tree.select( "sn" );
+        tree.getTreeItem( "sn" ).doubleClick();
         bot.text( "" ).setText( "test" );
         // click to finish editing of sn
         krbNode.click();

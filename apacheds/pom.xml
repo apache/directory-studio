@@ -112,6 +112,7 @@
             <Eclipse-RegisterBuddy>org.apache.directory.studio.jars</Eclipse-RegisterBuddy>
             <Require-Bundle>org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
  org.eclipse.ui.console,
  org.eclipse.ui.ide,
  org.eclipse.jface.text,

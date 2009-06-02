@@ -21,10 +21,18 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.server.unit.AbstractServerTest;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -33,26 +41,30 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class RenameEntryDialogTest extends AbstractServerTest
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+@ApplyLdifFiles("RenameEntryDialogTest.ldif")
+public class RenameEntryDialogTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        super.loadTestLdif( false );
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -64,6 +76,7 @@ public class RenameEntryDialogTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testRenameMultiValuedRdn() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -93,6 +106,7 @@ public class RenameEntryDialogTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testRenameRdnWithEscapedCharacters() throws Exception
     {
         SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );

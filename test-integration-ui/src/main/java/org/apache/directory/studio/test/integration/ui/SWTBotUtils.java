@@ -41,7 +41,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
@@ -82,12 +82,12 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static void openLdapPerspective( final SWTEclipseBot eBot ) throws Exception
+    public static void openLdapPerspective( final SWTWorkbenchBot eBot ) throws Exception
     {
         // optimization: only open LDAP perspective if not yet opened
         try
         {
-            if ( eBot.view( "Connections" ) != null )
+            if ( eBot.viewByTitle( "Connections" ) != null )
             {
                 // LDAP perspective already opened
                 return;
@@ -119,7 +119,7 @@ public class SWTBotUtils
         {
             public boolean test() throws Exception
             {
-                return eBot.view( "Connections" ) != null;
+                return eBot.viewByTitle( "Connections" ) != null;
             }
 
 
@@ -132,7 +132,7 @@ public class SWTBotUtils
         // close welcome view, if it is there
         try
         {
-            eBot.view( "Welcome" ).close();
+            eBot.viewByTitle( "Welcome" ).close();
         }
         catch ( Exception e )
         {
@@ -155,7 +155,7 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static Connection createTestConnection( SWTEclipseBot bot, String name, int port ) throws Exception
+    public static Connection createTestConnection( SWTWorkbenchBot bot, String name, int port ) throws Exception
     {
         SWTBotTree connectionsTree = getConnectionsTree( bot );
 
@@ -208,9 +208,9 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotTree getConnectionsTree( SWTEclipseBot bot ) throws Exception
+    public static SWTBotTree getConnectionsTree( SWTWorkbenchBot bot ) throws Exception
     {
-        SWTBotView view = bot.view( "Connections" );
+        SWTBotView view = bot.viewByTitle( "Connections" );
         view.show();
 
         Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.getWidget() );
@@ -229,9 +229,9 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotTree getLdapBrowserTree( SWTEclipseBot bot ) throws Exception
+    public static SWTBotTree getLdapBrowserTree( SWTWorkbenchBot bot ) throws Exception
     {
-        SWTBotView view = bot.view( "LDAP Browser" );
+        SWTBotView view = bot.viewByTitle( "LDAP Browser" );
         view.show();
         Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), view.getWidget() );
         return new SWTBotTree( tree );
@@ -249,9 +249,9 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotStyledText getSearchLogsText( SWTEclipseBot bot ) throws Exception
+    public static SWTBotStyledText getSearchLogsText( SWTWorkbenchBot bot ) throws Exception
     {
-        SWTBotView view = bot.view( "Search Logs" );
+        SWTBotView view = bot.viewByTitle( "Search Logs" );
         view.show();
         view.toolbarButton( "Refresh" ).click();
         StyledText styledText = ( StyledText ) bot.widget( widgetOfType( StyledText.class ), view.getWidget() );
@@ -270,9 +270,9 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotStyledText getModificationLogsText( SWTEclipseBot bot ) throws Exception
+    public static SWTBotStyledText getModificationLogsText( SWTWorkbenchBot bot ) throws Exception
     {
-        SWTBotView view = bot.view( "Modification Logs" );
+        SWTBotView view = bot.viewByTitle( "Modification Logs" );
         view.show();
         view.toolbarButton( "Refresh" ).click();
         StyledText styledText = ( StyledText ) bot.widget( widgetOfType( StyledText.class ), view.getWidget() );
@@ -291,7 +291,7 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotTree getEntryEditorTree( final SWTEclipseBot bot ) throws Exception
+    public static SWTBotTree getEntryEditorTree( final SWTWorkbenchBot bot ) throws Exception
     {
         Tree tree = UIThreadRunnable.syncExec( new WidgetResult<Tree>()
         {
@@ -327,7 +327,7 @@ public class SWTBotUtils
         public Widget widget;
 
 
-        public DummyEditor( IEditorReference editorReference, SWTEclipseBot bot )
+        public DummyEditor( IEditorReference editorReference, SWTWorkbenchBot bot )
         {
             super( editorReference, bot );
             widget = findWidget( anything() );
@@ -366,7 +366,7 @@ public class SWTBotUtils
      * 
      * @throws TimeoutException
      */
-    public static void asyncClick( final SWTEclipseBot bot, final SWTBotButton button, final ICondition waitCondition )
+    public static void asyncClick( final SWTWorkbenchBot bot, final SWTBotButton button, final ICondition waitCondition )
         throws TimeoutException
     {
         bot.waitUntil( new DefaultCondition()
@@ -411,7 +411,7 @@ public class SWTBotUtils
      * 
      * @throws TimeoutException
      */
-    public static void asyncClick( final SWTEclipseBot bot, final SWTBotMenu menu, final ICondition waitCondition )
+    public static void asyncClick( final SWTWorkbenchBot bot, final SWTBotMenu menu, final ICondition waitCondition )
         throws TimeoutException
     {
         UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
@@ -443,7 +443,7 @@ public class SWTBotUtils
      * @throws TimeoutException
      *             the timeout exception
      */
-    public static void asyncClick( final SWTEclipseBot bot, final SWTBotTreeItem item, final ICondition waitCondition )
+    public static void asyncClick( final SWTWorkbenchBot bot, final SWTBotTreeItem item, final ICondition waitCondition )
         throws TimeoutException
     {
         UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
@@ -481,7 +481,7 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotTreeItem selectEntry( final SWTEclipseBot bot, final SWTBotTree tree,
+    public static SWTBotTreeItem selectEntry( final SWTWorkbenchBot bot, final SWTBotTree tree,
         final boolean expandChild, final String... path ) throws Exception
     {
         List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
@@ -542,7 +542,7 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static void expandEntry( final SWTEclipseBot bot, final SWTBotTreeItem entry, final String nextName )
+    public static void expandEntry( final SWTWorkbenchBot bot, final SWTBotTreeItem entry, final String nextName )
         throws Exception
     {
         UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()

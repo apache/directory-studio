@@ -21,10 +21,20 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.server.unit.AbstractServerTest;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import static junit.framework.Assert.assertEquals;
+
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -33,26 +43,31 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryEditorTest extends AbstractServerTest
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+@ApplyLdifFiles(
+    { "EntryEditorTest.ldif" })
+public class EntryEditorTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        super.loadTestLdif( false );
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "EntryEditorTest", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -62,6 +77,7 @@ public class EntryEditorTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testAddEditDeleteAttribute() throws Exception
     {
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -239,6 +255,7 @@ public class EntryEditorTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testDnValueEditor() throws Exception
     {
         SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -273,6 +290,7 @@ public class EntryEditorTest extends AbstractServerTest
 
         // assert value after saved and reloaded from server
         entryEditorTree.select( 3 );
+        entryEditorTree.getTreeItem( "member" ).doubleClick();
         assertEquals( "Unexpected value", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", bot.comboBox()
             .getText() );
         bot.button( "Cancel" ).click();

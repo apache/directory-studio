@@ -17,61 +17,30 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.studio.test.integration.ui;
 
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.SetupMode;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.core.integ.annotations.Mode;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 
 /**
- * Test suite to run all tests.
+ * Test suite.
  * 
- * @author <a href="mailto:dev@directory.apache.org">Apache DirectoryProject</a>
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class AutomatedSuite extends TestSuite
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
+    { BrowserTest.class, EntryEditorTest.class, ImportExportTest.class, NewConnectionWizardTest.class,
+        NewEntryWizardTest.class, ReferralDialogTest.class, RenameEntryDialogTest.class, SearchTest.class })
+@CleanupLevel(Level.SUITE)
+@Mode(SetupMode.ROLLBACK)
+public class AutomatedSuite
 {
-
-    public static Test suite()
-    {
-        return new AutomatedSuite();
-    }
-
-
-    public AutomatedSuite()
-    {
-        // Test Preparation: close welcome view
-        try
-        {
-            SWTEclipseBot bot = new SWTEclipseBot();
-            bot.view( "Welcome" ).close();
-        }
-        catch ( Exception e )
-        {
-        }
-
-        // Test Connections view
-        addTest( new TestSuite( NewConnectionWizardTest.class ) );
-
-        // Test Import/Export
-        addTest( new TestSuite( ImportExportTest.class ) );
-
-        // Test Browser view
-        addTest( new TestSuite( BrowserTest.class ) );
-        addTest( new TestSuite( NewEntryWizardTest.class ) );
-        addTest( new TestSuite( RenameEntryDialogTest.class ) );
-        addTest( new TestSuite( ReferralDialogTest.class ) );
-        addTest( new TestSuite( SearchTest.class ) );
-
-        // Test Entry editor
-        addTest( new TestSuite( EntryEditorTest.class ) );
-
-        // Test allocated resources
-        // addTest( new TestSuite( SwtResourcesTest.class ) );
-    }
 
 }

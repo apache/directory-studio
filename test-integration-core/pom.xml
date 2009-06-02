@@ -155,7 +155,7 @@
                     
                     <!-- copy SWTbot and eclipse testing plugins to test-sandbox -->
                     <copy todir="target/test-sandbox/${integration-plugins-folder}">
-                      <fileset dir="../test-integration-ui/resources/test-plugins">
+                      <fileset dir="resources/test-plugins">
                         <include name="**/*" />
                       </fileset>
                     </copy>

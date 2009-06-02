@@ -169,7 +169,7 @@
                     
                     <!-- launch the tests -->
                     <java fork="true" failonerror="true" classname="org.eclipse.core.launcher.Main">
-                      <arg line="${integration-cmdline-params} -nl en -debug debugoptions -application net.sf.swtbot.eclipse.headless.swtbottestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.ui -className org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
+                      <arg line="${integration-cmdline-params} -nl en -debug debugoptions -application org.eclipse.swtbot.eclipse.junit4.headless.swtbottestapplication -data target/test-sandbox/workspace formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,target/test-sandbox/workspace/test-result.xml -testPluginName org.apache.directory.studio.test.integration.ui -className org.apache.directory.studio.test.integration.ui.AutomatedSuite"/>
                       <classpath>
                         <fileset dir="target/test-sandbox">
                           <include name="**/org.eclipse.equinox.launcher_*.jar"/>
@@ -262,7 +262,8 @@
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.ui,
- org.junit,
+ org.junit4,
+ org.eclipse.swtbot.junit4_x,
  org.eclipse.swtbot.swt.finder,
  org.eclipse.swtbot.eclipse.finder,
  org.hamcrest
@@ -305,6 +306,11 @@
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-integ</artifactId>
+      <version>1.5.5-SNAPSHOT</version>
+    </dependency> 
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-server-integ</artifactId>
       <version>1.5.5-SNAPSHOT</version>
     </dependency> 
     <dependency>

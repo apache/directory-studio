@@ -21,15 +21,25 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.server.unit.AbstractServerTest;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
 import org.eclipse.swt.graphics.DeviceData;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.IntResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -38,25 +48,29 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SwtResourcesTest extends AbstractServerTest
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+public class SwtResourcesTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "SwtResourcesTest", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -69,6 +83,7 @@ public class SwtResourcesTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testSwtResourcesDelta() throws Exception
     {
         SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
@@ -103,6 +118,7 @@ public class SwtResourcesTest extends AbstractServerTest
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testSwtResourcesCount() throws Exception
     {
         int swtObjectCount = getSwtObjectCount();

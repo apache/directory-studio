@@ -112,6 +112,7 @@
             <Bundle-Activator>org.apache.directory.studio.aciitemeditor.Activator</Bundle-Activator>
             <Require-Bundle>org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
  org.eclipse.jface.text,
  org.eclipse.core.resources,
  org.eclipse.ui.editors,

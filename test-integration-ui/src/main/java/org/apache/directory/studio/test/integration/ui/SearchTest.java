@@ -21,12 +21,21 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.server.unit.AbstractServerTest;
+import static junit.framework.Assert.assertEquals;
+
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -35,26 +44,31 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SearchTest extends AbstractServerTest
+//@RunWith(SWTBotJunit4ClassRunner.class)
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+public class SearchTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "SearchTest1", ldapService.getPort() );
         SWTBotUtils.createTestConnection( bot, "SearchTest2", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -65,6 +79,7 @@ public class SearchTest extends AbstractServerTest
      *
      * @throws Exception
      */
+    @Test
     public void testCopyPasteSearchBetweenConnections() throws Exception
     {
         BrowserConnectionManager browserConnectionManager = BrowserCorePlugin.getDefault().getConnectionManager();

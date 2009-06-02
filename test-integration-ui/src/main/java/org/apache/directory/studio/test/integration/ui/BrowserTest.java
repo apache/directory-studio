@@ -21,11 +21,20 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static junit.framework.Assert.assertEquals;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.server.unit.AbstractServerTest;
-import org.eclipse.swtbot.eclipse.finder.SWTEclipseBot;
+import org.apache.directory.server.core.integ.Level;
+import org.apache.directory.server.core.integ.annotations.CleanupLevel;
+import org.apache.directory.server.integ.SiRunner;
+import org.apache.directory.server.ldap.LdapService;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -34,25 +43,29 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class BrowserTest extends AbstractServerTest
+@RunWith(SiRunner.class)
+@CleanupLevel(Level.SUITE)
+public class BrowserTest
 {
-    private SWTEclipseBot bot;
+    public static LdapService ldapService;
+
+    private SWTWorkbenchBot bot;
 
 
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        bot = new SWTEclipseBot();
+        bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
         SWTBotUtils.createTestConnection( bot, "BrowserTest", ldapService.getPort() );
     }
 
 
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         SWTBotUtils.deleteTestConnections();
         bot = null;
-        super.tearDown();
     }
 
 
@@ -64,6 +77,7 @@ public class BrowserTest extends AbstractServerTest
      *
      * @throws Exception
      */
+    @Test
     public void testOnlyOneSearchRequestWhenExpandingEntry() throws Exception
     {
         SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( bot );
