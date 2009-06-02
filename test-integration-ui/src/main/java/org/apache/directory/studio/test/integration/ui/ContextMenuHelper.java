@@ -58,6 +58,11 @@ public class ContextMenuHelper
      */
     public static void clickContextMenu( final AbstractSWTBot<?> bot, final String... texts )
     {
+        final Matcher<?>[] matchers = new Matcher<?>[texts.length];
+        for ( int i = 0; i < texts.length; i++ )
+        {
+            matchers[i] = allOf( instanceOf( MenuItem.class ), withMnemonic( texts[i] ) );
+        }
 
         // show
         final MenuItem menuItem = UIThreadRunnable.syncExec( new WidgetResult<MenuItem>()
@@ -67,10 +72,9 @@ public class ContextMenuHelper
                 MenuItem menuItem = null;
                 Control control = ( Control ) bot.widget;
                 Menu menu = control.getMenu();
-                for ( String text : texts )
+                for ( int i = 0; i < matchers.length; i++ )
                 {
-                    Matcher<?> matcher = allOf( instanceOf( MenuItem.class ), withMnemonic( text ) );
-                    menuItem = show( menu, matcher );
+                    menuItem = show( menu, matchers[i] );
                     if ( menuItem != null )
                     {
                         menu = menuItem.getMenu();

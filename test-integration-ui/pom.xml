@@ -142,6 +142,7 @@
                     <!-- copy complete eclipse distribution to test-sandbox -->
                     <copy todir="target/test-sandbox">
                       <fileset dir="${eclipse-home}">
+                        <exclude name="plugins/org.junit4*/**"/>
                       </fileset>
                     </copy>
                     
