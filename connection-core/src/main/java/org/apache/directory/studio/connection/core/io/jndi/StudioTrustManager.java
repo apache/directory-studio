@@ -152,6 +152,22 @@ class StudioTrustManager implements X509TrustManager
                 {
                     failCauses.add( FailCause.NoValidCertificationPath );
                 }
+                
+                try
+                {
+                    chain[0].checkValidity();
+                }
+                catch ( CertificateException ve )
+                {
+                    if ( ve instanceof CertificateExpiredException )
+                    {
+                        failCauses.add( FailCause.CertificateExpired );
+                    }
+                    else if ( ve instanceof CertificateNotYetValidException )
+                    {
+                        failCauses.add( FailCause.CertificateNotYetValid );
+                    }
+                }
             }
         }
 

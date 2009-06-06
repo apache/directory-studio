@@ -42,6 +42,7 @@ import org.apache.directory.server.ldap.LdapService;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.After;
@@ -99,7 +100,7 @@ public class ImportExportTest
     public void testExportImportLdifWithGermanUmlautInDN() throws Exception
     {
         URL url = Platform.getInstanceLocation().getURL();
-        String file = url.getFile() + "ImportExportTest.ldif";
+        final String file = url.getFile() + "ImportExportTest.ldif";
 
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
 
@@ -112,6 +113,22 @@ public class ImportExportTest
         eBot.button( "Next >" ).click();
         eBot.comboBoxWithLabel( "LDIF File:" ).setText( file );
         eBot.button( "Finish" ).click();
+
+        // wait till LDIF file exists
+        eBot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                File f = new File( file );
+                return f.exists() && f.length() > 200; // is actually 217 bytes
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "LDIF File " + file + " not found.";
+            }
+        } );
 
         List<String> lines = FileUtils.readLines( new File( file ) );
         // verify that the first line of exported LDIF is "version: 1"
@@ -151,7 +168,7 @@ public class ImportExportTest
     public void testExportImportDsmlWithGermanUmlautInDN() throws Exception
     {
         URL url = Platform.getInstanceLocation().getURL();
-        String file = url.getFile() + "ImportExportTest.dsml";
+        final String file = url.getFile() + "ImportExportTest.dsml";
 
         final SWTBotTree browserTree = SWTBotUtils.getLdapBrowserTree( eBot );
 
@@ -165,6 +182,22 @@ public class ImportExportTest
         eBot.comboBoxWithLabel( "DSML File:" ).setText( file );
         eBot.radio( "DSML Request" ).click();
         eBot.button( "Finish" ).click();
+
+        // wait till DSML file exists
+        eBot.waitUntil( new DefaultCondition()
+        {
+            public boolean test() throws Exception
+            {
+                File f = new File( file );
+                return f.exists() && f.length() > 600; // is actually 651 bytes
+            }
+
+
+            public String getFailureMessage()
+            {
+                return "DSML File " + file + " not found.";
+            }
+        } );
 
         // verify that exported DSML contains the Base64 encoded DN
         String content = FileUtils.readFileToString( new File( file ), "UTF-8" );

@@ -43,25 +43,19 @@ import javax.net.ssl.X509TrustManager;
 public class StudioSSLSocketFactory extends SSLSocketFactory
 {
 
-    /** The default instance. */
-    private static StudioSSLSocketFactory instance;
-
-
     /**
-     * Gets the default instance.
+     * Gets the default instance. In fact just creates a new
+     * instance on each call to make sure the underlying
+     * TrustManagers are newly initialized. 
      * 
-     * Note: This method is invoked from the JNDI (Sun) when 
+     * Note: This method is invoked from Sun JNDI when 
      * creating a ldaps:// connection. Must be public static!
      * 
      * @return the default instance
      */
     public static SSLSocketFactory getDefault()
     {
-        if ( instance == null )
-        {
-            instance = new StudioSSLSocketFactory();
-        }
-        return instance;
+        return new StudioSSLSocketFactory();
     }
 
     /** The delegate. */
@@ -74,8 +68,8 @@ public class StudioSSLSocketFactory extends SSLSocketFactory
     /**
      * Creates a new instance of StudioSSLSocketFactory.
      * 
-     * Note: This method is invoked from the JNDI (Apache Harmony) when 
-     * creating a ldaps:// connection. Must be public!
+     * Note: This default constructor is invoked from Apache Harmony JNDI 
+     * when creating a ldaps:// connection. Must be public!
      */
     public StudioSSLSocketFactory()
     {
