@@ -66,7 +66,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     public void testConnect()
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null );
         Connection connection = new Connection( connectionParameter );
         JNDIConnectionWrapper connectionWrapper = connection.getJNDIConnectionWrapper();
@@ -96,7 +96,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort() + 1,
+        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort() + 1,
             EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getJNDIConnectionWrapper();
@@ -109,7 +109,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // unknown host
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapService.getPort(),
+        connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getJNDIConnectionWrapper();
@@ -130,7 +130,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     public void testBind()
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true, null );
         Connection connection = new Connection( connectionParameter );
         JNDIConnectionWrapper connectionWrapper = connection.getJNDIConnectionWrapper();
@@ -161,7 +161,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // simple auth without principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort(),
+        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getJNDIConnectionWrapper();
@@ -173,7 +173,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort(),
+        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getJNDIConnectionWrapper();
@@ -197,7 +197,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // simple auth without principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapService.getPort(),
+        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getJNDIConnectionWrapper();

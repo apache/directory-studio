@@ -25,7 +25,7 @@ import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -46,7 +46,7 @@ import org.junit.runner.RunWith;
 @ApplyLdifFiles("RenameEntryDialogTest.ldif")
 public class RenameEntryDialogTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot bot;
 
@@ -56,7 +56,7 @@ public class RenameEntryDialogTest
     {
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapService.getPort() );
+        SWTBotUtils.createTestConnection( bot, "RenameEntryDialogTest", ldapServer.getPort() );
     }
 
 

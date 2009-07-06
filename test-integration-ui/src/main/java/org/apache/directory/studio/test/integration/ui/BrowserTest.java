@@ -27,7 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
@@ -47,7 +47,7 @@ import org.junit.runner.RunWith;
 @CleanupLevel(Level.SUITE)
 public class BrowserTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot bot;
 
@@ -57,7 +57,7 @@ public class BrowserTest
     {
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "BrowserTest", ldapService.getPort() );
+        SWTBotUtils.createTestConnection( bot, "BrowserTest", ldapServer.getPort() );
     }
 
 

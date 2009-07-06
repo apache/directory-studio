@@ -33,7 +33,7 @@ import javax.naming.directory.ModificationItem;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
@@ -56,7 +56,7 @@ import org.junit.runner.RunWith;
 @CleanupLevel(Level.SUITE)
 public class NewEntryWizardTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot bot;
 
@@ -65,7 +65,7 @@ public class NewEntryWizardTest
     public void setUp() throws Exception
     {
         // check if krb5kdc is disabled
-        DirContext schemaRoot = ( DirContext ) getWiredContext( ldapService ).lookup( "ou=schema" );
+        DirContext schemaRoot = ( DirContext ) getWiredContext( ldapServer ).lookup( "ou=schema" );
         Attributes krb5kdcAttrs = schemaRoot.getAttributes( "cn=Krb5kdc" );
         boolean isKrb5KdcDisabled = false;
         if ( krb5kdcAttrs.get( "m-disabled" ) != null )
@@ -83,7 +83,7 @@ public class NewEntryWizardTest
 
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapService.getPort() );
+        SWTBotUtils.createTestConnection( bot, "NewEntryWizardTest", ldapServer.getPort() );
     }
 
 

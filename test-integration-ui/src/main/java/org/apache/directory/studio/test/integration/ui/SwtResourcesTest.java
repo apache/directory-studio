@@ -27,7 +27,7 @@ import static junit.framework.Assert.fail;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -52,7 +52,7 @@ import org.junit.runner.RunWith;
 @CleanupLevel(Level.SUITE)
 public class SwtResourcesTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot bot;
 
@@ -62,7 +62,7 @@ public class SwtResourcesTest
     {
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "SwtResourcesTest", ldapService.getPort() );
+        SWTBotUtils.createTestConnection( bot, "SwtResourcesTest", ldapServer.getPort() );
     }
 
 

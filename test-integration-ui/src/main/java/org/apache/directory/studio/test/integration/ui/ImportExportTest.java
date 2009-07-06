@@ -38,7 +38,7 @@ import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.core.partition.Partition;
 import org.apache.directory.server.core.partition.impl.btree.jdbm.JdbmPartition;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -63,7 +63,7 @@ import org.junit.runner.RunWith;
     { "ImportExportTest.ldif" })
 public class ImportExportTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot eBot;
 
@@ -73,7 +73,7 @@ public class ImportExportTest
     {
         eBot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( eBot );
-        SWTBotUtils.createTestConnection( eBot, "ImportExportTest", ldapService.getPort() );
+        SWTBotUtils.createTestConnection( eBot, "ImportExportTest", ldapServer.getPort() );
     }
 
 
@@ -238,7 +238,7 @@ public class ImportExportTest
         Partition partition = new JdbmPartition();
         partition.setId( "example" );
         partition.setSuffix( "dc=example,dc=com" );
-        ldapService.getDirectoryService().addPartition( partition );
+        ldapServer.getDirectoryService().addPartition( partition );
 
         // refresh root DSE and ensure that the partition is in root DSE
         SWTBotTreeItem rootDSE = SWTBotUtils.selectEntry( eBot, browserTree, false, "DIT", "Root DSE" );

@@ -50,8 +50,7 @@ import org.apache.directory.server.core.entry.ClonedServerEntry;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
-import org.apache.directory.server.protocol.shared.transport.TcpTransport;
+import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.entry.client.ClientModification;
@@ -66,7 +65,6 @@ import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.mina.util.AvailablePortFinder;
 import org.bouncycastle.x509.X509V1CertificateGenerator;
 import org.junit.After;
 import org.junit.Before;
@@ -85,8 +83,8 @@ import org.junit.runner.RunWith;
 @CleanupLevel(Level.CLASS)
 public class NewConnectionWizardTest
 {
-    public static LdapService ldapService;
-    public static LdapService ldapsService;
+    public static LdapServer ldapServer;
+    public static LdapServer ldapsService;
     private File ksFile;
 
     private StudioBot studioBot;
@@ -97,17 +95,18 @@ public class NewConnectionWizardTest
     @Before
     public void setUpLdaps() throws Exception
     {
-        if ( ldapsService == null )
-        {
-            ldapsService = new LdapService();
-            ldapsService.setDirectoryService( ldapService.getDirectoryService() );
-            int port = AvailablePortFinder.getNextAvailable( ldapService.getPort() + 10 );
-            ldapsService.setTcpTransport( new TcpTransport( port ) );
-            ldapsService.setEnabled( true );
-            ldapsService.setEnableLdaps( true );
-            ldapsService.setConfidentialityRequired( true );
-            ldapsService.start();
-        }
+        // TODO: setup LDAPS
+//        if ( ldapsService == null )
+//        {
+//            ldapsService = new LdapServer();
+//            ldapsService.setDirectoryService( ldapService.getDirectoryService() );
+//            int port = AvailablePortFinder.getNextAvailable( ldapService.getPort() + 10 );
+//            ldapsService.setTcpTransport( new TcpTransport( port ) );
+//            ldapsService.setEnabled( true );
+//            ldapsService.setEnableLdaps( true );
+//            ldapsService.setConfidentialityRequired( true );
+//            ldapsService.start();
+//        }
     }
 
 
@@ -177,7 +176,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         // ensure "Next >" button is enabled
         assertFalse( wizardBot.isBackButtonEnabled() );
         assertTrue( wizardBot.isNextButtonEnabled() );
@@ -311,7 +310,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
 
         // jump to auth page
         wizardBot.clickNextButton();
@@ -331,7 +330,7 @@ public class NewConnectionWizardTest
         Connection connection = connectionManager.getConnections()[0];
         assertEquals( "NewConnectionWizardTest", connection.getName() );
         assertEquals( "localhost", connection.getHost() );
-        assertEquals( ldapService.getPort(), connection.getPort() );
+        assertEquals( ldapServer.getPort(), connection.getPort() );
         assertEquals( AuthenticationMethod.SIMPLE, connection.getAuthMethod() );
         assertEquals( "uid=admin,ou=system", connection.getBindPrincipal() );
         assertEquals( "secret", connection.getBindPassword() );
@@ -353,7 +352,7 @@ public class NewConnectionWizardTest
         // enter connection parameter with host name
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
 
         // click "Check Network Parameter" button
         String result1 = wizardBot.clickCheckNetworkParameterButton();
@@ -361,7 +360,7 @@ public class NewConnectionWizardTest
 
         // enter connection parameter with IPv4 address
         wizardBot.typeHost( "127.0.0.1" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
 
         // click "Check Network Parameter" button
         String result2 = wizardBot.clickCheckNetworkParameterButton();
@@ -391,7 +390,7 @@ public class NewConnectionWizardTest
     {
         // enter connection parameter with invalid port
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
-        int port = ldapService.getPort() + 1;
+        int port = ldapServer.getPort() + 1;
         wizardBot.typeHost( "localhost" );
         wizardBot.typePort( port );
 
@@ -404,7 +403,7 @@ public class NewConnectionWizardTest
         // enter connection parameter with invalid host name
         String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
         wizardBot.typeHost( hostname );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
 
         // click "Check Network Parameter" button and get the result
         String result2 = wizardBot.clickCheckNetworkParameterButton();
@@ -415,7 +414,7 @@ public class NewConnectionWizardTest
         // enter connection parameter with non-routed IP address
         String ipAddress = "10.11.12.13";
         wizardBot.typeHost( ipAddress );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
 
         // click "Check Network Parameter" button and get the result
         String result3 = wizardBot.clickCheckNetworkParameterButton();
@@ -436,7 +435,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.clickNextButton();
 
         // enter correct authentication parameter
@@ -460,7 +459,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.clickNextButton();
 
         // enter incorrect authentication parameter
@@ -501,7 +500,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check the certificate, should be OK
@@ -536,7 +535,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check the certificate, expecting the trust dialog
@@ -571,7 +570,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check the certificate, expecting the trust dialog
@@ -606,7 +605,7 @@ public class NewConnectionWizardTest
         // enter connection parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check the certificate, expecting the trust dialog
@@ -642,7 +641,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -683,7 +682,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check trust, expect trust dialog, select don't trust
@@ -750,7 +749,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -796,7 +795,7 @@ public class NewConnectionWizardTest
         // enter connection parameter and authentication parameter
         wizardBot.typeConnectionName( "NewConnectionWizardTest" );
         wizardBot.typeHost( "localhost" );
-        wizardBot.typePort( ldapService.getPort() );
+        wizardBot.typePort( ldapServer.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check trust, expect trust dialog, select trust temporary
@@ -1079,7 +1078,7 @@ public class NewConnectionWizardTest
         List<Modification> modifications = new ArrayList<Modification>();
 
         // Get old key algorithm
-        ClonedServerEntry entry = ldapService.getDirectoryService().getAdminSession().lookup( dn );
+        ClonedServerEntry entry = ldapServer.getDirectoryService().getAdminSession().lookup( dn );
         String keyAlgo = entry.get( KEY_ALGORITHM_AT ).getString();
 
         // Generate key pair
@@ -1118,7 +1117,7 @@ public class NewConnectionWizardTest
             USER_CERTIFICATE_AT, cert.getEncoded() ) ) );
 
         // Write the modifications
-        ldapService.getDirectoryService().getAdminSession().modify( dn, modifications );
+        ldapServer.getDirectoryService().getAdminSession().modify( dn, modifications );
         
         // TODO: activate when DIRSERVER-1373 is fixed
         //ldapService.reloadSslContext();
@@ -1134,7 +1133,7 @@ public class NewConnectionWizardTest
         }
         ksFile = File.createTempFile( "testStore", "ks" );
 
-        CoreSession session = ldapService.getDirectoryService().getAdminSession();
+        CoreSession session = ldapServer.getDirectoryService().getAdminSession();
         ClonedServerEntry entry = session.lookup( new LdapDN( "uid=admin,ou=system" ), new String[]
             { USER_CERTIFICATE_AT } );
         byte[] userCertificate = entry.get( USER_CERTIFICATE_AT ).getBytes();

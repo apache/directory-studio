@@ -30,7 +30,7 @@ import org.apache.directory.server.core.entry.ServerEntry;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
@@ -57,7 +57,7 @@ import org.junit.runner.RunWith;
 @CleanupLevel(Level.SUITE)
 public class ReferralDialogTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot bot;
     private Connection connection;
@@ -68,7 +68,7 @@ public class ReferralDialogTest
     {
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
-        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapService.getPort() );
+        connection = SWTBotUtils.createTestConnection( bot, "ReferralDialogTest", ldapServer.getPort() );
     }
 
 
@@ -121,11 +121,11 @@ public class ReferralDialogTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // ensure that the referral URL and target is visible
-        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getPort()
+        SWTBotTreeItem referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getPort()
             + "/ou=users,ou=system" );
         assertNotNull( referralNode );
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ldap://localhost:"
-            + ldapService.getPort() + "/ou=users,ou=system" );
+            + ldapServer.getPort() + "/ou=users,ou=system" );
 
     }
 
@@ -175,7 +175,7 @@ public class ReferralDialogTest
         SWTBotTreeItem referralNode = null;
         try
         {
-            referralNode = systemNode.getNode( "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
+            referralNode = systemNode.getNode( "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
         }
         catch ( WidgetNotFoundException wnfe )
         {
@@ -213,7 +213,7 @@ public class ReferralDialogTest
         SWTBotTreeItem referralNode1 = null;
         try
         {
-            referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
+            referralNode1 = systemNode.getNode( "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
         }
         catch ( WidgetNotFoundException wnfe )
         {
@@ -266,11 +266,11 @@ public class ReferralDialogTest
 
     private void createReferralEntry() throws Exception
     {
-        ServerEntry entry = new DefaultServerEntry( ldapService.getDirectoryService().getRegistries() );
+        ServerEntry entry = new DefaultServerEntry( ldapServer.getDirectoryService().getRegistries() );
         entry.setDn( new LdapDN( "cn=referralDialogTest,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapService.getPort() + "/ou=users,ou=system" );
-        ldapService.getDirectoryService().getAdminSession().add( entry );
+        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
+        ldapServer.getDirectoryService().getAdminSession().add( entry );
     }
 }

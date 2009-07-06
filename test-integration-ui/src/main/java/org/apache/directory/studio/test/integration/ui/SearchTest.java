@@ -26,7 +26,7 @@ import static junit.framework.Assert.assertEquals;
 import org.apache.directory.server.core.integ.Level;
 import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
-import org.apache.directory.server.ldap.LdapService;
+import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -49,7 +49,7 @@ import org.junit.runner.RunWith;
 @CleanupLevel(Level.SUITE)
 public class SearchTest
 {
-    public static LdapService ldapService;
+    public static LdapServer ldapServer;
 
     private SWTWorkbenchBot bot;
 
@@ -59,8 +59,8 @@ public class SearchTest
     {
         bot = new SWTWorkbenchBot();
         SWTBotUtils.openLdapPerspective( bot );
-        SWTBotUtils.createTestConnection( bot, "SearchTest1", ldapService.getPort() );
-        SWTBotUtils.createTestConnection( bot, "SearchTest2", ldapService.getPort() );
+        SWTBotUtils.createTestConnection( bot, "SearchTest1", ldapServer.getPort() );
+        SWTBotUtils.createTestConnection( bot, "SearchTest2", ldapServer.getPort() );
     }
 
 
