@@ -159,6 +159,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
     /** The Constant exportExcelAction. */
     private static final String exportExcelAction = "exportExcelAction"; //$NON-NLS-1$
+
+    /** The Constant exportOdfAction. */
+    private static final String exportOdfAction = "exportOdfAction"; //$NON-NLS-1$
     
     /** The Constant fetchOperationalAttributesAction. */
     private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction"; //$NON-NLS-1$
@@ -232,6 +235,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
         browserActionMap.put( exportExcelAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
             ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
+        browserActionMap.put( exportOdfAction, new BrowserViewActionProxy( viewer, new ImportExportAction(
+            ImportExportAction.TYPE_EXPORT_ODF ) ) );
 
         browserActionMap.put( fetchOperationalAttributesAction, new BrowserViewActionProxy( viewer,
             new FetchOperationalAttributesAction() ) );
@@ -357,6 +362,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         exportMenuManager.add( new Separator() );
         exportMenuManager.add( browserActionMap.get( exportCsvAction ) );
         exportMenuManager.add( browserActionMap.get( exportExcelAction ) );
+        exportMenuManager.add( browserActionMap.get( exportOdfAction ) );
         menuManager.add( exportMenuManager );
         menuManager.add( new Separator() );
 

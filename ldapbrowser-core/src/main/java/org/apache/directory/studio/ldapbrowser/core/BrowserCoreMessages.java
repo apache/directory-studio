@@ -310,6 +310,12 @@ public class BrowserCoreMessages extends NLS
 
     public static String jobs__export_xls_error;
 
+    public static String jobs__export_odf_name;
+
+    public static String jobs__export_odf_task;
+
+    public static String jobs__export_odf_error;
+
     public static String jobs__import_ldif_name;
 
     public static String jobs__import_ldif_task;

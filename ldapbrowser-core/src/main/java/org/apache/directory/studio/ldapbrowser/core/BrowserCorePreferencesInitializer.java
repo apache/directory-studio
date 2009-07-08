@@ -57,6 +57,10 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
         store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_XLS_BINARYENCODING,
             BrowserCoreConstants.BINARYENCODING_IGNORE );
 
+        store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_ODF_VALUEDELIMITER, "|" );
+        store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_ODF_BINARYENCODING,
+            BrowserCoreConstants.BINARYENCODING_IGNORE );
+
         store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, 76 );
         store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR, BrowserCoreConstants.LINE_SEPARATOR );
         store.setDefault( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON, true );

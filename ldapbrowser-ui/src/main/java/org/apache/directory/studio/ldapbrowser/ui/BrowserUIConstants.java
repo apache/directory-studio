@@ -70,6 +70,7 @@ public interface BrowserUIConstants
     public static final String IMG_EXPORT_CSV_WIZARD = "resources/icons/export_csv_wizard.gif"; //$NON-NLS-1$
     public static final String IMG_IMPORT_XLS_WIZARD = "resources/icons/import_xls_wizard.gif"; //$NON-NLS-1$
     public static final String IMG_EXPORT_XLS_WIZARD = "resources/icons/export_xls_wizard.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPORT_ODF_WIZARD = "resources/icons/export_odf_wizard.gif"; //$NON-NLS-1$
     public static final String IMG_IMPORT_DSML = "resources/icons/import_dsml.gif"; //$NON-NLS-1$
     public static final String IMG_EXPORT_DSML = "resources/icons/export_dsml.gif"; //$NON-NLS-1$
     public static final String IMG_IMPORT_LDIF = "resources/icons/import_ldif.gif"; //$NON-NLS-1$
@@ -80,6 +81,7 @@ public interface BrowserUIConstants
     public static final String IMG_EXPORT_CSV = "resources/icons/export_csv.gif"; //$NON-NLS-1$
     public static final String IMG_IMPORT_XLS = "resources/icons/import_xls.gif"; //$NON-NLS-1$
     public static final String IMG_EXPORT_XLS = "resources/icons/export_xls.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPORT_ODF = "resources/icons/export_odf.gif"; //$NON-NLS-1$
     public static final String IMG_BROWSER_CONNECTIONVIEW = "resources/icons/browser_connectionview.gif"; //$NON-NLS-1$
     public static final String IMG_BROWSER_BROWSERVIEW = "resources/icons/browser_browserview.gif"; //$NON-NLS-1$
     public static final String IMG_DIT = "resources/icons/dit.gif"; //$NON-NLS-1$
@@ -189,6 +191,8 @@ public interface BrowserUIConstants
         "ExportWizard_ExportDdsmlWizard_id" ); //$NON-NLS-1$
     public static final String WIZARD_EXPORT_EXCEL = BrowserUIPlugin.getDefault().getPluginProperties().getString(
         "ExportWizard_ExportExcelWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_ODF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
+    "ExportWizard_ExportOdfWizard_id" ); //$NON-NLS-1$
     public static final String WIZARD_EXPORT_LDIF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
         "ExportWizard_ExportLdifWizard_id" ); //$NON-NLS-1$
     public static final String WIZARD_IMPORT_CONNECTIONS = BrowserUIPlugin.getDefault().getPluginProperties()

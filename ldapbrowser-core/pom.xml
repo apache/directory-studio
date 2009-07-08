@@ -150,6 +150,15 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.openoffice</groupId>
+      <artifactId>odfdom</artifactId>
+      <version>0.6.16</version>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+    </dependency>
   
   	<!-- Apache Directory Studio plugins dependencies -->
     <dependency>

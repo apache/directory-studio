@@ -70,6 +70,9 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
 
     /** The constant used to preselect the 'Excel Export' tab */
     public static final String XLS_TAB = "XLS"; //$NON-NLS-1$
+    
+    /** The constant used to preselect the 'ODF Export' tab */
+    public static final String ODF_TAB = "ODF"; //$NON-NLS-1$
 
     /** The constant used to preselect the 'CSV Copy' tab */
     public static final String TABLE_TAB = "TABLE"; //$NON-NLS-1$
@@ -85,6 +88,8 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private TabItem csvTab;
 
     private TabItem xlsTab;
+
+    private TabItem odfTab;
 
     private Text ldifLineLengthText;
 
@@ -117,6 +122,10 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
     private OptionsInput xlsValueDelimiterWidget;
 
     private OptionsInput xlsBinaryEncodingWidget;
+
+    private OptionsInput odfValueDelimiterWidget;
+
+    private OptionsInput odfBinaryEncodingWidget;
 
 
     /**
@@ -161,6 +170,10 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
             {
                 tabFolder.setSelection( 3 );
             }
+            else if ( ODF_TAB.equals( data ) )
+            {
+                tabFolder.setSelection( 4 );
+            }
         }
     }
 
@@ -177,6 +190,7 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         createTableTab();
         createCsvTab();
         createXlsTab();
+        createOdfTab();
 
         validate();
 
@@ -317,6 +331,37 @@ public class TextFormatsPreferencePage extends PreferencePage implements IWorkbe
         xlsBinaryEncodingWidget.addWidgetModifyListener( this );
 
         xlsTab.setControl( xlsComposite );
+    }
+
+   
+    private void createOdfTab()
+    {
+        odfTab = new TabItem( tabFolder, SWT.NONE );
+        odfTab.setText( Messages.getString( "TextFormatsPreferencePage.OdfExport" ) ); //$NON-NLS-1$
+
+        Composite odfComposite = new Composite( tabFolder, SWT.NONE );
+        odfComposite.setLayout( new GridLayout( 1, false ) );
+        Composite odfInnerComposite = BaseWidgetUtils.createColumnContainer( odfComposite, 3, 1 );
+
+        BaseWidgetUtils.createLabel( odfInnerComposite,
+            Messages.getString( "TextFormatsPreferencePage.OdfExportLabel" ), 3 ); //$NON-NLS-1$
+        BaseWidgetUtils.createSpacer( odfInnerComposite, 3 );
+
+        odfValueDelimiterWidget = new OptionsInput(
+            Messages.getString( "TextFormatsPreferencePage.ValueDelimiter" ), Messages.getString( "TextFormatsPreferencePage.Pipe" ), "|", new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                {
+                    Messages.getString( "TextFormatsPreferencePage.Pipe" ), Messages.getString( "TextFormatsPreferencePage.Comma" ), Messages.getString( "TextFormatsPreferencePage.Semicolon" ), Messages.getString( "TextFormatsPreferencePage.Newline" ) }, new String[] //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                { "|", ",", ";", "\n" }, coreStore.getString( BrowserCoreConstants.PREFERENCE_FORMAT_ODF_VALUEDELIMITER ), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            false, true );
+        odfValueDelimiterWidget.createWidget( odfInnerComposite );
+        odfValueDelimiterWidget.addWidgetModifyListener( this );
+
+        odfBinaryEncodingWidget = new BinaryEncodingInput( coreStore
+            .getString( BrowserCoreConstants.PREFERENCE_FORMAT_ODF_BINARYENCODING ), false );
+        odfBinaryEncodingWidget.createWidget( odfInnerComposite );
+        odfBinaryEncodingWidget.addWidgetModifyListener( this );
+
+        odfTab.setControl( odfComposite );
     }
 
 

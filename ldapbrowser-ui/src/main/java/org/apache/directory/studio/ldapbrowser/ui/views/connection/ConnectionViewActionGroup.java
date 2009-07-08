@@ -68,6 +68,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant exportExcelAction. */
     private static final String exportExcelAction = "exportExcelAction"; //$NON-NLS-1$
 
+    /** The Constant exportOdfAction. */
+    private static final String exportOdfAction = "exportOdfAction"; //$NON-NLS-1$
+
     /** The Constant importConnectionsAction. */
     private static final String importConnectionsAction = "importConnectionsAction"; //$NON-NLS-1$
 
@@ -103,6 +106,8 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
         connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, this,
             new ImportExportAction( ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
+        connectionActionMap.put( exportOdfAction, new ConnectionViewActionProxy( viewer, this,
+            new ImportExportAction( ImportExportAction.TYPE_EXPORT_ODF ) ) );
         connectionActionMap.put( importConnectionsAction, new ConnectionViewActionProxy( viewer, this,
             new ImportConnectionsAction() ) );
         connectionActionMap.put( exportConnectionsAction, new ConnectionViewActionProxy( viewer, this,
@@ -174,6 +179,7 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         exportMenuManager.add( new Separator() );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportCsvAction ) );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportExcelAction ) );
+        exportMenuManager.add( ( IAction ) connectionActionMap.get( exportOdfAction ) );
         exportMenuManager.add( new Separator() );
         exportMenuManager.add( ( IAction ) connectionActionMap.get( exportConnectionsAction ) );
         exportMenuManager.add( new Separator() );

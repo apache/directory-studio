@@ -66,6 +66,10 @@ public interface BrowserCoreConstants
 
     public static final String PREFERENCE_FORMAT_XLS_BINARYENCODING = "formatXlsBinaryEncoding"; //$NON-NLS-1$
 
+    public static final String PREFERENCE_FORMAT_ODF_VALUEDELIMITER = "formatOdfValueDelimiter"; //$NON-NLS-1$
+
+    public static final String PREFERENCE_FORMAT_ODF_BINARYENCODING = "formatOdfBinaryEncoding"; //$NON-NLS-1$
+
     public static final String PREFERENCE_LDIF_LINE_WIDTH = "ldifLineWidth"; //$NON-NLS-1$
 
     public static final String PREFERENCE_LDIF_LINE_SEPARATOR = "ldifLineSeparator"; //$NON-NLS-1$

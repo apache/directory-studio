@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.ui.wizards.ExportCsvWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDsmlWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.ExportExcelWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.ExportLdifWizard;
+import org.apache.directory.studio.ldapbrowser.ui.wizards.ExportOdfWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.ImportDsmlWizard;
 import org.apache.directory.studio.ldapbrowser.ui.wizards.ImportLdifWizard;
 
@@ -42,7 +43,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 
 
 /**
- * This class implements Import/Export Actions for LDIF, CSV, EXCEL and DSML.
+ * This class implements Import/Export Actions for LDIF, CSV, EXCEL, ODF and DSML.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -78,6 +79,11 @@ public class ImportExportAction extends BrowserAction
      * DSML Export Type
      */
     public static final int TYPE_EXPORT_DSML = 5;
+
+    /**
+     * ODF Export Type
+     */
+    public static final int TYPE_EXPORT_ODF = 6;
 
     private int type;
 
@@ -116,6 +122,10 @@ public class ImportExportAction extends BrowserAction
         {
             return Messages.getString( "ImportExportAction.ExcelExport" ); //$NON-NLS-1$
         }
+        else if ( this.type == TYPE_EXPORT_ODF )
+        {
+            return Messages.getString( "ImportExportAction.OdfExport" ); //$NON-NLS-1$
+        }
         else if ( this.type == TYPE_IMPORT_DSML )
         {
             return Messages.getString( "ImportExportAction.DSMLImport" ); //$NON-NLS-1$
@@ -151,6 +161,10 @@ public class ImportExportAction extends BrowserAction
         else if ( this.type == TYPE_EXPORT_EXCEL )
         {
             return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_XLS );
+        }
+        else if ( this.type == TYPE_EXPORT_ODF )
+        {
+            return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_EXPORT_ODF );
         }
         else if ( this.type == TYPE_IMPORT_DSML )
         {
@@ -242,6 +256,10 @@ public class ImportExportAction extends BrowserAction
         else if ( this.type == TYPE_EXPORT_EXCEL )
         {
             wizard = new ExportExcelWizard();
+        }
+        else if ( this.type == TYPE_EXPORT_ODF )
+        {
+            wizard = new ExportOdfWizard();
         }
         else if ( this.type == TYPE_EXPORT_DSML )
         {

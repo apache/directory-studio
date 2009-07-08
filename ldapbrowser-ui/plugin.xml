@@ -209,6 +209,18 @@
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
        <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
     </wizard>
+    <wizard
+          category="%ExportWizards_Category_id"
+          class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportOdfWizard"
+          icon="resources/icons/export_odf.gif"
+          id="%ExportWizard_ExportOdfWizard_id"
+          name="%ExportWizard_ExportOdfWizard_name">
+       <description>
+          %ExportWizard_ExportOdfWizard_description
+       </description>
+       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IConnection"/>
+       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+    </wizard>
  </extension>
 
    <extension point="org.eclipse.search.searchPages">
