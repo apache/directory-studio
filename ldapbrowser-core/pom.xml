@@ -153,7 +153,6 @@
     <dependency>
       <groupId>org.openoffice</groupId>
       <artifactId>odfdom</artifactId>
-      <version>0.6.16</version>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
