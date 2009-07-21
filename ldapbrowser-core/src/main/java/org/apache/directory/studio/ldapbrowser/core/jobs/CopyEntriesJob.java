@@ -218,9 +218,14 @@ public class CopyEntriesJob extends AbstractNotificationJob
                 entryToCopy.getBrowserConnection().getAliasesDereferencingMethod(),
                 entryToCopy.getBrowserConnection().getReferralsHandlingMethod(), controls, monitor, null );
 
+        // In case the parent is the RootDSE: use the parent DN of the old entry
+        LdapDN parentDn = parent.getDn();
+        if ( parentDn.isEmpty() )
+        {
+            parentDn = DnUtils.getParent( entryToCopy.getDn() );
+        }
         numberOfCopiedEntries = copyEntryRecursive( entryToCopy.getBrowserConnection(), result, parent
-            .getBrowserConnection(), parent.getDn(), newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor,
-            monitor );
+            .getBrowserConnection(), parentDn, newRdn, scope, numberOfCopiedEntries, dialog, dummyMonitor, monitor );
 
         return numberOfCopiedEntries;
     }
