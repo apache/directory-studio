@@ -989,13 +989,6 @@
         <artifactId>shared-dsml-parser</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
-      
-      <!-- Apache Directory Server -->
-      <dependency>
-        <groupId>org.apache.directory.server</groupId>
-        <artifactId>apacheds-core-constants</artifactId>
-        <version>1.5.5-SNAPSHOT</version>
-      </dependency>
 
       <!-- Other dependencies -->
       <dependency>

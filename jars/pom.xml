@@ -188,9 +188,5 @@
       <artifactId>bcprov-jdk15</artifactId>
       <version>140</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-core-constants</artifactId>
-    </dependency>
   </dependencies>
 </project>
