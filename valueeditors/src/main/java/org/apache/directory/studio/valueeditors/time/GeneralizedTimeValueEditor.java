@@ -23,13 +23,17 @@ package org.apache.directory.studio.valueeditors.time;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.directory.shared.ldap.util.GeneralizedTime;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -83,22 +87,42 @@ public class GeneralizedTimeValueEditor extends AbstractDialogStringValueEditor
         if ( value != null && value instanceof String )
         {
             String s = ( String ) value;
+
+            // Trying to parse the value
+            GeneralizedTime generalizedTime = null;
             try
             {
-                GeneralizedTime generalizedTime = "".equals( s ) ? null : new GeneralizedTime( s ); //$NON-NLS-1$
-                GeneralizedTimeValueDialog dialog = new GeneralizedTimeValueDialog( shell, generalizedTime );
-                if ( dialog.open() == TextDialog.OK )
-                {
-                    setValue( dialog.getGeneralizedTime().toGeneralizedTime() );
-                    return true;
-                }
+                generalizedTime = "".equals( s ) ? null : new GeneralizedTime( s ); //$NON-NLS-1$
             }
             catch ( ParseException pe )
             {
-                return false;
+                // The value could not be parsed correctly
+
+                // Displaying an error window indicating to the user that the value is bogus
+                // and asking him if he wants to continue to edit the value with current date and time selected
+                if ( MessageDialog.openConfirm( PlatformUI.getWorkbench().getDisplay().getActiveShell(), Messages
+                    .getString( "GeneralizedTimeValueEditor.BogusDateAndTimeValue" ), NLS.bind( //$NON-NLS-1$
+                    Messages.getString( "GeneralizedTimeValueEditor.TheValueIsBogus" ), new String[] //$NON-NLS-1$
+                    { s } ) ) )
+                {
+                    // Generating today's date and time
+                    generalizedTime = new GeneralizedTime( Calendar.getInstance() );
+                }
+                else
+                {
+                    return false;
+                }
             }
 
+            // Creating and opening the dialog
+            GeneralizedTimeValueDialog dialog = new GeneralizedTimeValueDialog( shell, generalizedTime );
+            if ( dialog.open() == TextDialog.OK )
+            {
+                setValue( dialog.getGeneralizedTime().toGeneralizedTime() );
+                return true;
+            }
         }
+
         return false;
     }
 }
