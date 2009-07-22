@@ -92,14 +92,13 @@
     <schemaeditor.version>1.5.0-SNAPSHOT</schemaeditor.version>
     <schemaeditor.feature.version>1.5.0-SNAPSHOT</schemaeditor.feature.version>
     <schemaeditor.help.version>1.5.0-SNAPSHOT</schemaeditor.help.version>
-    <studio.dsml.parser.version>0.4.6-SNAPSHOT</studio.dsml.parser.version>
     <test.integration.core.version>1.5.0-SNAPSHOT</test.integration.core.version>
     <test.integration.ui.version>1.5.0-SNAPSHOT</test.integration.ui.version>
     <updatesite.version>1.5.0-SNAPSHOT</updatesite.version>
     <valueeditors.version>1.5.0-SNAPSHOT</valueeditors.version>
 
     <!-- Set versions for depending projects -->
-    <org.apache.directory.shared.version>0.9.14</org.apache.directory.shared.version>
+    <org.apache.directory.shared.version>0.9.15-SNAPSHOT</org.apache.directory.shared.version>
     <skin.version>1.0.0</skin.version>
   </properties>
 
@@ -193,11 +192,6 @@
   <dependencyManagement>
     <dependencies>
       <!-- Apache Directory Studio -->
-      <dependency>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-dsml-parser</artifactId>
-        <version>${studio.dsml.parser.version}</version>
-      </dependency>
       <dependency>
         <groupId>org.apache.directory.studio</groupId>
         <artifactId>ldapbrowser.core</artifactId>
@@ -990,6 +984,18 @@
         <artifactId>shared-converter</artifactId>
         <version>${org.apache.directory.shared.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.directory.shared</groupId>
+        <artifactId>shared-dsml-parser</artifactId>
+        <version>${org.apache.directory.shared.version}</version>
+      </dependency>
+      
+      <!-- Apache Directory Server -->
+      <dependency>
+        <groupId>org.apache.directory.server</groupId>
+        <artifactId>apacheds-core-constants</artifactId>
+        <version>1.5.5-SNAPSHOT</version>
+      </dependency>
 
       <!-- Other dependencies -->
       <dependency>
@@ -1091,7 +1097,6 @@
     <module>repository</module>
     <module>ldif-parser</module>
     <module>connection-core</module>
-    <module>studio-dsml-parser</module>
     <module>ldapbrowser-core</module>
     <module>connection-ui</module>
     <module>ldapbrowser-common</module>

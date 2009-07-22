@@ -173,12 +173,6 @@
           <groupId>commons-lang</groupId>
           <artifactId>commons-lang</artifactId>
         </exclusion>
-        <!--
-          <exclusion>
-          <groupId>org.apache.directory.shared</groupId>
-          <artifactId>shared-ldap-constants</artifactId>
-          </exclusion>
-        -->
         <exclusion>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
@@ -186,23 +180,17 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.directory.studio</groupId>
-      <artifactId>studio-dsml-parser</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>xpp3</groupId>
-      <artifactId>xpp3</artifactId>
+      <groupId>org.apache.directory.shared</groupId>
+      <artifactId>shared-dsml-parser</artifactId>
     </dependency>
     <dependency>
       <groupId>bouncycastle</groupId>
       <artifactId>bcprov-jdk15</artifactId>
       <version>140</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-core-constants</artifactId>
     </dependency>
   </dependencies>
 </project>

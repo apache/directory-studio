@@ -33,18 +33,29 @@ import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
+import javax.naming.ldap.ExtendedRequest;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.shared.dsmlv2.reponse.AddResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.AuthResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.CompareResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.DelResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
+import org.apache.directory.shared.dsmlv2.request.BatchRequest;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
-import org.apache.directory.shared.ldap.codec.LdapResult;
-import org.apache.directory.shared.ldap.codec.add.AddRequest;
-import org.apache.directory.shared.ldap.codec.bind.BindRequest;
-import org.apache.directory.shared.ldap.codec.compare.CompareRequest;
-import org.apache.directory.shared.ldap.codec.del.DelRequest;
-import org.apache.directory.shared.ldap.codec.extended.ExtendedRequest;
-import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
-import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequest;
-import org.apache.directory.shared.ldap.codec.search.SearchRequest;
+import org.apache.directory.shared.ldap.codec.LdapResultCodec;
+import org.apache.directory.shared.ldap.codec.add.AddRequestCodec;
+import org.apache.directory.shared.ldap.codec.bind.BindRequestCodec;
+import org.apache.directory.shared.ldap.codec.compare.CompareRequestCodec;
+import org.apache.directory.shared.ldap.codec.del.DelRequestCodec;
+import org.apache.directory.shared.ldap.codec.extended.ExtendedRequestCodec;
+import org.apache.directory.shared.ldap.codec.modify.ModifyRequestCodec;
+import org.apache.directory.shared.ldap.codec.modifyDn.ModifyDNRequestCodec;
+import org.apache.directory.shared.ldap.codec.search.SearchRequestCodec;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
@@ -60,16 +71,6 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.dsmlv2.Dsmlv2Parser;
-import org.apache.directory.studio.dsmlv2.reponse.AddResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.AuthResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.CompareResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.DelResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.ExtendedResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.ModDNResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.ModifyResponseDsml;
-import org.apache.directory.studio.dsmlv2.request.BatchRequest;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -244,37 +245,37 @@ public class ImportDsmlJob extends AbstractNotificationJob
     private void processRequest( Object request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
         throws NamingException, LdapURLEncodingException
     {
-        if ( request instanceof BindRequest )
+        if ( request instanceof BindRequestCodec )
         {
-            processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
+            processBindRequest( ( BindRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof AddRequest )
+        else if ( request instanceof AddRequestCodec )
         {
-            processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
+            processAddRequest( ( AddRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof CompareRequest )
+        else if ( request instanceof CompareRequestCodec )
         {
-            processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
+            processCompareRequest( ( CompareRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof DelRequest )
+        else if ( request instanceof DelRequestCodec )
         {
-            processDelRequest( ( DelRequest ) request, batchResponseDsml, monitor );
+            processDelRequest( ( DelRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof ExtendedRequest )
+        else if ( request instanceof ExtendedRequestCodec )
         {
-            processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
+            processExtendedRequest( ( ExtendedRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof ModifyRequest )
+        else if ( request instanceof ModifyRequestCodec )
         {
-            processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
+            processModifyRequest( ( ModifyRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof ModifyDNRequest )
+        else if ( request instanceof ModifyDNRequestCodec )
         {
-            processModifyDNRequest( ( ModifyDNRequest ) request, batchResponseDsml, monitor );
+            processModifyDNRequest( ( ModifyDNRequestCodec ) request, batchResponseDsml, monitor );
         }
-        else if ( request instanceof SearchRequest )
+        else if ( request instanceof SearchRequestCodec )
         {
-            processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
+            processSearchRequest( ( SearchRequestCodec ) request, batchResponseDsml, monitor );
         }
     }
 
@@ -287,7 +288,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processBindRequest( BindRequest request, BatchResponseDsml batchResponseDsml,
+    private void processBindRequest( BindRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -297,7 +298,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
         if ( batchResponseDsml != null )
         {
             AuthResponseDsml authResponseDsml = new AuthResponseDsml();
-            LdapResult ldapResult = new LdapResult();
+            LdapResultCodec ldapResult = new LdapResultCodec();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
             authResponseDsml.setLdapResult( ldapResult );
@@ -314,7 +315,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processAddRequest( AddRequest request, BatchResponseDsml batchResponseDsml,
+    private void processAddRequest( AddRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Executing the add request
@@ -355,7 +356,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processCompareRequest( CompareRequest request, BatchResponseDsml batchResponseDsml,
+    private void processCompareRequest( CompareRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -365,7 +366,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
         if ( batchResponseDsml != null )
         {
             CompareResponseDsml compareResponseDsml = new CompareResponseDsml();
-            LdapResult ldapResult = new LdapResult();
+            LdapResultCodec ldapResult = new LdapResultCodec();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
             compareResponseDsml.setLdapResult( ldapResult );
@@ -382,7 +383,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processDelRequest( DelRequest request, BatchResponseDsml batchResponseDsml,
+    private void processDelRequest( DelRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Executing the del request
@@ -424,7 +425,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
+    private void processExtendedRequest( ExtendedRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -434,7 +435,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
         if ( batchResponseDsml != null )
         {
             ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml();
-            LdapResult ldapResult = new LdapResult();
+            LdapResultCodec ldapResult = new LdapResultCodec();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
             ldapResult.setErrorMessage( "This kind of request is not yet supported." );
             extendedResponseDsml.setLdapResult( ldapResult );
@@ -451,7 +452,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processModifyRequest( ModifyRequest request, BatchResponseDsml batchResponseDsml,
+    private void processModifyRequest( ModifyRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Creating the modification items
@@ -516,7 +517,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processModifyDNRequest( ModifyDNRequest request, BatchResponseDsml batchResponseDsml,
+    private void processModifyDNRequest( ModifyDNRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // Executing the modify DN request
@@ -570,7 +571,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @throws NamingException 
      * @throws LdapURLEncodingException 
      */
-    private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
+    private void processSearchRequest( SearchRequestCodec request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException
     {
         // Creating the response
@@ -596,7 +597,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @return
      *      the associated {@link SearchControls} object
      */
-    private SearchControls getSearchControls( SearchRequest request )
+    private SearchControls getSearchControls( SearchRequestCodec request )
     {
         SearchControls controls = new SearchControls();
 
@@ -651,7 +652,7 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @return
      *      the associated {@link AliasDereferencingMethod} object
      */
-    private AliasDereferencingMethod getAliasDereferencingMethod( SearchRequest request )
+    private AliasDereferencingMethod getAliasDereferencingMethod( SearchRequestCodec request )
     {
         switch ( request.getDerefAliases() )
         {
@@ -677,9 +678,9 @@ public class ImportDsmlJob extends AbstractNotificationJob
      * @return
      *      the corresponding LDAP Result
      */
-    private LdapResult getLdapResult( StudioProgressMonitor monitor, MessageTypeEnum messageType )
+    private LdapResultCodec getLdapResult( StudioProgressMonitor monitor, MessageTypeEnum messageType )
     {
-        LdapResult ldapResult = new LdapResult();
+        LdapResultCodec ldapResult = new LdapResultCodec();
 
         if ( !monitor.errorsReported() )
         {

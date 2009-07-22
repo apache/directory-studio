@@ -36,8 +36,16 @@ import javax.naming.directory.InvalidAttributeIdentifierException;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.ldap.codec.LdapResult;
-import org.apache.directory.shared.ldap.codec.search.SearchResultDone;
+import org.apache.directory.shared.dsmlv2.DsmlDecorator;
+import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.SearchResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.SearchResultDoneDsml;
+import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
+import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
+import org.apache.directory.shared.dsmlv2.request.AddRequestDsml;
+import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.shared.ldap.codec.LdapResultCodec;
+import org.apache.directory.shared.ldap.codec.search.SearchResultDoneCodec;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
@@ -50,14 +58,6 @@ import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.jndi.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.dsmlv2.DsmlDecorator;
-import org.apache.directory.studio.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.SearchResponseDsml;
-import org.apache.directory.studio.dsmlv2.reponse.SearchResultDoneDsml;
-import org.apache.directory.studio.dsmlv2.reponse.SearchResultEntryDsml;
-import org.apache.directory.studio.dsmlv2.reponse.SearchResultReferenceDsml;
-import org.apache.directory.studio.dsmlv2.request.AddRequestDsml;
-import org.apache.directory.studio.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
@@ -265,8 +265,8 @@ public class ExportDsmlJob extends AbstractEclipseJob
         }
 
         // Creating and adding a search result done at the end of the results
-        SearchResultDone srd = new SearchResultDone();
-        LdapResult ldapResult = new LdapResult();
+        SearchResultDoneCodec srd = new SearchResultDoneCodec();
+        LdapResultCodec ldapResult = new LdapResultCodec();
         if ( !monitor.errorsReported() )
         {
             ldapResult.setResultCode( ResultCodeEnum.SUCCESS );

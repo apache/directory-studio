@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.directory.server.constants.ApacheSchemaConstants;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
@@ -76,9 +77,9 @@ public class SchemaUtils
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID.toLowerCase() );
 
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT.toLowerCase() );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_CSN_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( ApacheSchemaConstants.ENTRY_UUID_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( ApacheSchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( ApacheSchemaConstants.ENTRY_CSN_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT_OID.toLowerCase() );
 
@@ -130,9 +131,9 @@ public class SchemaUtils
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID.toLowerCase() );
 
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT.toLowerCase() );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_CSN_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( ApacheSchemaConstants.ENTRY_UUID_AT.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( ApacheSchemaConstants.ENTRY_UUID_AT_OID.toLowerCase() );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( ApacheSchemaConstants.ENTRY_CSN_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT.toLowerCase() );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( SchemaConstants.ENTRY_DN_AT_OID.toLowerCase() );
 
