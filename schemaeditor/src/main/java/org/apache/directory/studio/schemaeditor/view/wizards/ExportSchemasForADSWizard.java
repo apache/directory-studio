@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -349,7 +350,8 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "\n" ); //$NON-NLS-1$
 
         // Generating LDIF for Object Classes
-        for ( ObjectClassImpl oc : schema.getObjectClasses() )
+        List<ObjectClassImpl> sortedObjectClasses = getSortedObjectClasses( schema.getObjectClasses() );
+        for ( ObjectClassImpl oc : sortedObjectClasses )
         {
             ObjectClassHolder holder = new ObjectClassHolder( oc.getOid() );
             holder.setClassType( oc.getType() );
@@ -396,6 +398,66 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
         sb.append( "objectclass: top\n" ); //$NON-NLS-1$
         sb.append( "ou: syntaxes\n" ); //$NON-NLS-1$
         sb.append( "\n" ); //$NON-NLS-1$
+    }
+
+
+    /**
+     * Sorts the object classes by hierarchy.
+     *
+     * @param objectClasses the unsorted object classes
+     * @return the sorted object classes
+     */
+    private List<ObjectClassImpl> getSortedObjectClasses( List<ObjectClassImpl> objectClasses )
+    {
+        // clone the unsorted list
+        List<ObjectClassImpl> unsortedObjectClasses = new ArrayList<ObjectClassImpl>( objectClasses );
+
+        // list of all existing names
+        Set<String> objectClassNames = new HashSet<String>();
+        for ( ObjectClassImpl oc : unsortedObjectClasses )
+        {
+            for ( String name : oc.getNamesRef() )
+            {
+                objectClassNames.add( name.toLowerCase() );
+            }
+        }
+
+        // sort object classes
+        List<ObjectClassImpl> sortedObjectClasses = new ArrayList<ObjectClassImpl>();
+        Set<String> movedObjectClasses = new HashSet<String>();
+        boolean moved = true;
+        while ( !unsortedObjectClasses.isEmpty() && moved )
+        {
+            moved = false;
+            Iterator<ObjectClassImpl> unsortedIterator = unsortedObjectClasses.iterator();
+            while ( unsortedIterator.hasNext() )
+            {
+                ObjectClassImpl oc = unsortedIterator.next();
+                for ( String superName : oc.getSuperClassesNames() )
+                {
+                    if ( !objectClassNames.contains( superName.toLowerCase() )
+                        || movedObjectClasses.contains( superName.toLowerCase() ) )
+                    {
+                        unsortedIterator.remove();
+                        sortedObjectClasses.add( oc );
+                        for ( String name : oc.getNamesRef() )
+                        {
+                            movedObjectClasses.add( name.toLowerCase() );
+                        }
+                        moved = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // add the rest
+        for ( ObjectClassImpl oc : unsortedObjectClasses )
+        {
+            sortedObjectClasses.add( oc );
+        }
+
+        return sortedObjectClasses;
     }
 
 
