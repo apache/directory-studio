@@ -220,7 +220,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
             {
                 for ( String namingContext : namingContextSet )
                 {
-                    if ( namingContext.charAt( namingContext.length() - 1 ) == '\u0000' )
+                    if ( namingContext.length() > 0 && namingContext.charAt( namingContext.length() - 1 ) == '\u0000' )
                     {
                         namingContext = namingContext.substring( 0, namingContext.length() - 1 );
                     }
