@@ -70,8 +70,8 @@ public abstract class AbstractWizardPage extends WizardPage
      */
     protected void displayErrorMessage( String message )
     {
-        setErrorMessage( message );
         setMessage( null, DialogPage.NONE );
+        setErrorMessage( message );
         setPageComplete( message == null );
     }
 
