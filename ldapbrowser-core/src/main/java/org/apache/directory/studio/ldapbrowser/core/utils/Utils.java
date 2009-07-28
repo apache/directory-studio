@@ -156,7 +156,7 @@ public class Utils
     {
         String oid = schema != null ? schema.getAttributeTypeDescription( atav.getNormType() ).getNumericOid() : atav
             .getNormType();
-        return oid.trim().toLowerCase() + "=" + ( ( String ) atav.getUpValue() ).trim().toLowerCase(); //$NON-NLS-1$
+        return oid.trim().toLowerCase() + "=" + atav.getUpValue().getString().trim().toLowerCase(); //$NON-NLS-1$
     }
 
 

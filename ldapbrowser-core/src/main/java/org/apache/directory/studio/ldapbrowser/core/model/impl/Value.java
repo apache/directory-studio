@@ -311,7 +311,7 @@ public class Value implements IValue
         {
             AttributeTypeAndValue atav = atavIterator.next();
             if ( getAttribute().getDescription().equals( atav.getUpType() )
-                && getStringValue().equals( atav.getNormValue() ) )
+                && getStringValue().equals( atav.getNormValue().getString() ) )
             {
                 return true;
             }
