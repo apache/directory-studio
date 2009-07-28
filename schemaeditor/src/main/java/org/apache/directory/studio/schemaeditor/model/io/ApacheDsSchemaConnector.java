@@ -215,21 +215,25 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     case ATTRIBUTE_TYPE:
                         AttributeTypeImpl at = createAttributeType( searchResult );
                         at.setSchema( name );
+                        at.setSchemaObject( schema );
                         schema.addAttributeType( at );
                         break;
                     case OBJECT_CLASS:
                         ObjectClassImpl oc = createObjectClass( searchResult );
                         oc.setSchema( name );
+                        oc.setSchemaObject( schema );
                         schema.addObjectClass( oc );
                         break;
                     case MATCHING_RULE:
                         MatchingRuleImpl mr = createMatchingRule( searchResult );
                         mr.setSchema( name );
+                        mr.setSchemaObject( schema );
                         schema.addMatchingRule( mr );
                         break;
                     case SYNTAX:
                         SyntaxImpl syntax = createSyntax( searchResult );
                         syntax.setSchema( name );
+                        syntax.setSchemaObject( schema );
                         schema.addSyntax( syntax );
                         break;
                     default:

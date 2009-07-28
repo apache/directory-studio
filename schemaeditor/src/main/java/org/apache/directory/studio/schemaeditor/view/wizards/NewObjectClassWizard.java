@@ -79,6 +79,7 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
         // Creating the new object class
         ObjectClassImpl newOC = new ObjectClassImpl( generalPage.getOidValue() );
         newOC.setSchema( generalPage.getSchemaValue() );
+        newOC.setSchemaObject( Activator.getDefault().getSchemaHandler().getSchema( generalPage.getSchemaValue() ) );
         newOC.setNames( generalPage.getAliasesValue() );
         newOC.setDescription( generalPage.getDescriptionValue() );
         newOC.setSuperClassesNames( contentPage.getSuperiorsNameValue() );

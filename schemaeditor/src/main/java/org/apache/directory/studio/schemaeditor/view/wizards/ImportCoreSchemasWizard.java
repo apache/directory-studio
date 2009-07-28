@@ -76,6 +76,7 @@ public class ImportCoreSchemasWizard extends Wizard implements IImportWizard
                     Schema schema = PluginUtils.loadCoreSchema( serverType, selectedSchema );
                     if ( schema != null )
                     {
+                        schema.setProject( project );
                         schemaHandler.addSchema( schema );
                     }
                 }

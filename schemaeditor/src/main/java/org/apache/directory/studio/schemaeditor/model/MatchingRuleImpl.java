@@ -43,6 +43,8 @@ public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSch
     /** The OID of the syntax */
     private String syntaxOid;
 
+    /** The schema object */
+    private Schema schemaObject;
 
     /**
      * Gets the OID of the syntax.
@@ -131,5 +133,17 @@ public class MatchingRuleImpl extends AbstractMatchingRule implements MutableSch
     public void setObsolete( boolean obsolete )
     {
         super.setObsolete( obsolete );
+    }
+
+
+    public Schema getSchemaObject()
+    {
+        return schemaObject;
+    }
+
+
+    public void setSchemaObject( Schema schemaObject )
+    {
+        this.schemaObject = schemaObject;
     }
 }

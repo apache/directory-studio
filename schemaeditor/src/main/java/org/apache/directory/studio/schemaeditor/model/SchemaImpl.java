@@ -35,6 +35,9 @@ public class SchemaImpl implements Schema
     /** The name */
     private String name;
 
+    /** The project */
+    private Project project;
+
     /** The AttributeType List */
     private List<AttributeTypeImpl> attributeTypes = new ArrayList<AttributeTypeImpl>();
 
@@ -180,6 +183,15 @@ public class SchemaImpl implements Schema
 
 
     /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.model.Schema#getProject()
+     */
+    public Project getProject()
+    {
+        return project;
+    }
+
+
+    /* (non-Javadoc)
      * @see org.apache.directory.studio.schemaeditor.model.Schema#getObjectClass(java.lang.String)
      */
     public ObjectClassImpl getObjectClass( String id )
@@ -295,6 +307,15 @@ public class SchemaImpl implements Schema
     public void setName( String name )
     {
         this.name = name;
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.apache.directory.studio.schemaeditor.model.Schema#setProject(org.apache.directory.studio.schemaeditor.model.Project)
+     */
+    public void setProject( Project project )
+    {
+        this.project = project;
     }
 
 

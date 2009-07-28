@@ -324,6 +324,7 @@ public class XMLSchemaFileImporter
 
         // Schema
         at.setSchema( schema.getName() );
+        at.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -494,6 +495,7 @@ public class XMLSchemaFileImporter
 
         // Schema
         oc.setSchema( schema.getName() );
+        oc.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -640,6 +642,7 @@ public class XMLSchemaFileImporter
 
         // Schema
         mr.setSchema( schema.getName() );
+        mr.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );
@@ -731,6 +734,7 @@ public class XMLSchemaFileImporter
 
         // Schema
         syntax.setSchema( schema.getName() );
+        syntax.setSchemaObject( schema );
 
         // Aliases
         Element aliasesElement = element.element( ALIASES_TAG );

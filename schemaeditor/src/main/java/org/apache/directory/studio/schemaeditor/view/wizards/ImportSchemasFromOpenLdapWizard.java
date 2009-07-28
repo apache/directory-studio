@@ -102,6 +102,7 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
                         {
                             Schema schema = OpenLdapSchemaFileImporter.getSchema( new FileInputStream( schemaFile ),
                                 schemaFile.getAbsolutePath() );
+                            schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
                             schemaHandler.addSchema( schema );
                         }
                         catch ( OpenLdapSchemaFileImportException e )

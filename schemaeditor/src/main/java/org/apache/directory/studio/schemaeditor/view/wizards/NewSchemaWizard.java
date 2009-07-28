@@ -62,6 +62,7 @@ public class NewSchemaWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         SchemaImpl schema = new SchemaImpl( page.getSchemaName() );
+        schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
         Activator.getDefault().getSchemaHandler().addSchema( schema );
 
         return true;

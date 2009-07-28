@@ -36,6 +36,8 @@ public class SyntaxImpl extends AbstractSyntax
 {
     private static final long serialVersionUID = 1L;
 
+    /** The schema object */
+    private Schema schemaObject;
 
     /**
      * Creates a new instance of SyntaxImpl.
@@ -91,5 +93,17 @@ public class SyntaxImpl extends AbstractSyntax
     public SyntaxChecker getSyntaxChecker() throws NamingException
     {
         return null;
+    }
+
+
+    public Schema getSchemaObject()
+    {
+        return schemaObject;
+    }
+
+
+    public void setSchemaObject( Schema schemaObject )
+    {
+        this.schemaObject = schemaObject;
     }
 }

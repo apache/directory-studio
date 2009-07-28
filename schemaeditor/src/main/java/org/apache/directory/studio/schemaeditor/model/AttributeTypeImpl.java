@@ -58,6 +58,8 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     /** The name of the substr matching rule */
     private String substrName;
 
+    /** The schema object */
+    private Schema schemaObject;
 
     /**
      * Creates a new instance of AttributeTypeImpl.
@@ -327,6 +329,18 @@ public class AttributeTypeImpl extends AbstractAttributeType implements MutableS
     public MatchingRule getSubstr() throws NamingException
     {
         return null;
+    }
+
+
+    public Schema getSchemaObject()
+    {
+        return schemaObject;
+    }
+
+
+    public void setSchemaObject( Schema schemaObject )
+    {
+        this.schemaObject = schemaObject;
     }
 
 

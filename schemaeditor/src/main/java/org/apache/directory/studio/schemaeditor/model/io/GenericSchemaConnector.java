@@ -206,6 +206,13 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setOrderingName( atd.getOrderingMatchingRule() );
                     impl.setSubstrName( atd.getSubstringsMatchingRule() );
                     impl.setSchema( schema.getName() );
+                    impl.setSchemaObject( schema );
+
+                    // Active Directory hack
+                    if ( impl.getSyntaxOid() != null && "OctetString".equalsIgnoreCase( impl.getSyntaxOid() ) )
+                    {
+                        impl.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.40" );
+                    }
 
                     schema.addAttributeType( impl );
                 }
@@ -235,6 +242,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setMustNamesList( ocd.getMustAttributeTypes().toArray( new String[0] ) );
                     impl.setMayNamesList( ocd.getMayAttributeTypes().toArray( new String[0] ) );
                     impl.setSchema( schema.getName() );
+                    impl.setSchemaObject( schema );
 
                     schema.addObjectClass( impl );
                 }
@@ -261,34 +269,27 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     //impl.setObsolete( lsd.isObsolete() );
                     impl.setHumanReadable( true );
                     impl.setSchema( schema.getName() );
+                    impl.setSchemaObject( schema );
 
                     schema.addSyntax( impl );
                 }
             }
         }
-        // TODO: if online -> all received syntaxes in attributes are valid -> create dummy syntaxes if missing
-        try
+        // if online: assume all received syntaxes in attributes are valid -> create dummy syntaxes if missing
+        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
         {
-            for ( AttributeTypeImpl at : schema.getAttributeTypes() )
+            String syntaxOid = at.getSyntaxOid();
+            if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
             {
-                String syntaxOid = at.getSyntaxOid();
-
-                if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
-                {
-                    SyntaxImpl impl = new SyntaxImpl( syntaxOid );
-                    impl.setSchema( schema.getName() );
-                    // TODO: lookup description/name
-                    impl.setDescription( "Dummy" );
-                    impl.setNames( new String[]
-                        { "Dummy" } );
-                    schema.addSyntax( impl );
-                }
+                SyntaxImpl impl = new SyntaxImpl( syntaxOid );
+                impl.setSchema( schema.getName() );
+                impl.setSchemaObject( schema );
+                // TODO: lookup description/name
+                impl.setDescription( "Dummy" );
+                impl.setNames( new String[]
+                    { "Dummy" } );
+                schema.addSyntax( impl );
             }
-        }
-        catch ( Exception e1 )
-        {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
         }
 
         Attribute matchingRulesAttribute = searchResult.getAttributes().get( "matchingRules" );
@@ -310,26 +311,19 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     impl.setObsolete( mrd.isObsolete() );
                     impl.setSyntaxOid( mrd.getSyntax() );
                     impl.setSchema( schema.getName() );
+                    impl.setSchemaObject( schema );
 
                     schema.addMatchingRule( impl );
                 }
             }
         }
-        // TODO: if online -> all received matching rules in attributes are valid -> create dummy matching rules if missing
-        try
+        // if online: assume all received matching rules in attributes are valid -> create dummy matching rules if missing
+        for ( AttributeTypeImpl at : schema.getAttributeTypes() )
         {
-            for ( AttributeTypeImpl at : schema.getAttributeTypes() )
-            {
-                String equalityName = at.getEqualityName();
-                String orderingName = at.getOrderingName();
-                String substrName = at.getSubstrName();
-                checkMatchingRules( schema, equalityName, orderingName, substrName );
-            }
-        }
-        catch ( Exception e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            String equalityName = at.getEqualityName();
+            String orderingName = at.getOrderingName();
+            String substrName = at.getSubstrName();
+            checkMatchingRules( schema, equalityName, orderingName, substrName );
         }
 
         return schema;
@@ -344,14 +338,14 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             {
                 MatchingRuleImpl impl = new MatchingRuleImpl( matchingRuleName );
                 impl.setSchema( schema.getName() );
+                impl.setSchemaObject( schema );
                 // TODO: lookup description/name
                 impl.setDescription( "Dummy" );
                 impl.setNames( new String[]
                     { matchingRuleName } );
                 schema.addMatchingRule( impl );
             }
-
         }
-
     }
+
 }

@@ -50,6 +50,24 @@ public interface Schema
 
 
     /**
+     * Gets the project of the Schema.
+     * 
+     * @return
+     * 		the project of the Schema
+     */
+    public Project getProject();
+
+
+    /**
+     * Sets the project of the Schema.
+     * 
+     * @param name
+     * 		the project of the schema
+     */
+    public void setProject( Project project );
+
+
+    /**
      * Gets all the ObjectClassImpl objects contained in the Schema.
      * 
      * @return

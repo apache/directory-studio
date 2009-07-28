@@ -35,6 +35,7 @@ import org.apache.directory.studio.schemaeditor.controller.actions.ImportCoreSch
 import org.apache.directory.studio.schemaeditor.controller.actions.ImportSchemasFromOpenLdapAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.ImportSchemasFromXmlAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.LinkWithEditorSchemaViewAction;
+import org.apache.directory.studio.schemaeditor.controller.actions.MergeSchemasAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.NewAttributeTypeAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.NewObjectClassAction;
 import org.apache.directory.studio.schemaeditor.controller.actions.NewSchemaAction;
@@ -239,6 +240,7 @@ public class SchemaViewController
     private SwitchSchemaPresentationToHierarchicalAction switchSchemaPresentationToHierarchical;
     private OpenSchemaViewPreferenceAction openSchemaViewPreference;
     private LinkWithEditorSchemaViewAction linkWithEditor;
+    private MergeSchemasAction mergeSchema;
 
 
     //    private CommitChangesAction commitChanges;
@@ -290,6 +292,7 @@ public class SchemaViewController
         switchSchemaPresentationToHierarchical = new SwitchSchemaPresentationToHierarchicalAction();
         openSchemaViewPreference = new OpenSchemaViewPreferenceAction();
         linkWithEditor = new LinkWithEditorSchemaViewAction( view );
+        mergeSchema = new MergeSchemasAction();
         //        commitChanges = new CommitChangesAction();
     }
 
@@ -360,6 +363,8 @@ public class SchemaViewController
                 importManager.add( new Separator() );
                 importManager.add( importSchemasFromOpenLdap );
                 importManager.add( importSchemasFromXml );
+                importManager.add( new Separator() );
+                importManager.add( mergeSchema );
                 manager.add( exportManager );
                 exportManager.add( exportSchemasAsOpenLdap );
                 exportManager.add( exportSchemasAsXml );

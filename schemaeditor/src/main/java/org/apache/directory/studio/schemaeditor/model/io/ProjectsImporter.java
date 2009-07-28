@@ -233,6 +233,10 @@ public class ProjectsImporter
                     try
                     {
                         schemas = XMLSchemaFileImporter.readSchemas( schemasElement, path );
+                        for ( Schema schema : schemas )
+                        {
+                            schema.setProject( project );
+                        }
                     }
                     catch ( XMLSchemaFileImportException e )
                     {
@@ -259,6 +263,7 @@ public class ProjectsImporter
             }
             for ( Schema schema : schemas )
             {
+                schema.setProject( project );
                 project.getSchemaHandler().addSchema( schema );
             }
         }

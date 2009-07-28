@@ -107,6 +107,8 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                                 case SINGLE:
                                     Schema importedSchema = XMLSchemaFileImporter.getSchema( new FileInputStream(
                                         schemaFile ), schemaFile.getAbsolutePath() );
+                                    importedSchema.setProject( Activator.getDefault().getProjectsHandler()
+                                        .getOpenProject() );
                                     schemaHandler.addSchema( importedSchema );
                                     break;
                                 case MULTIPLE:
@@ -114,6 +116,7 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
                                         schemaFile ), schemaFile.getAbsolutePath() );
                                     for ( Schema schema : schemas )
                                     {
+                                        schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
                                         schemaHandler.addSchema( schema );
                                     }
                                     break;

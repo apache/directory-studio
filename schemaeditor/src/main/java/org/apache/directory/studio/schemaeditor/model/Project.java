@@ -256,6 +256,10 @@ public class Project
         if ( ( !hasOnlineSchemaBeenFetched ) && ( connection != null ) && ( schemaConnector != null ) )
         {
             schemaBackup = schemaConnector.importSchema( connection, monitor );
+            for ( Schema schema : schemaBackup )
+            {
+                schema.setProject( this );
+            }
 
             if ( schemaBackup != null )
             {

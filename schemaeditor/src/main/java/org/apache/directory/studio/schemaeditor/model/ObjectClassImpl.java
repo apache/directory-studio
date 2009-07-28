@@ -54,6 +54,8 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     /** The super class names list */
     private String[] superClassesNames = new String[0];
 
+    /** The schema object */
+    private Schema schemaObject;
 
     /**
      * Creates a new instance of ObjectClassImpl.
@@ -275,6 +277,18 @@ public class ObjectClassImpl extends AbstractSchemaObject implements MutableSche
     public AttributeType[] getMayList() throws NamingException
     {
         return null;
+    }
+
+
+    public Schema getSchemaObject()
+    {
+        return schemaObject;
+    }
+
+
+    public void setSchemaObject( Schema schemaObject )
+    {
+        this.schemaObject = schemaObject;
     }
 
 
