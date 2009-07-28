@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
 import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.eclipse.swt.SWT;
@@ -31,6 +32,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -89,41 +91,41 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
             }
         } );
 
-        //        if ( PluginUtils.getSchemaConnectors().size() > 0 )
-        //        {
-        //            // Type Group
-        //            Group typeGroup = new Group( composite, SWT.NONE );
-        //            typeGroup.setText( "Type" );
-        //            typeGroup.setLayout( new GridLayout() );
-        //            typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        //
-        //            typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
-        //            typeOfflineRadio.setText( "Offline Schema" );
-        //            typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        //            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
-        //            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
-        //            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        //        }
+        if ( PluginUtils.getSchemaConnectors().size() > 0 )
+        {
+            // Type Group
+            Group typeGroup = new Group( composite, SWT.NONE );
+            typeGroup.setText( "Type" );
+            typeGroup.setLayout( new GridLayout() );
+            typeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
-        //        initFields();
+            typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
+            typeOfflineRadio.setText( "Offline Schema" );
+            typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+            typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
+            typeOnlineRadio.setText( "Online Schema from a Directory Server" );
+            typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        }
+
+        initFields();
 
         setControl( composite );
     }
 
 
-    //    /**
-    //     * Initializes the UI Fields.
-    //     */
-    //    private void initFields()
-    //    {
-    //        if ( typeOfflineRadio != null )
-    //        {
-    //            typeOfflineRadio.setSelection( true );
-    //        }
-    //
-    //        displayErrorMessage( null );
-    //        setPageComplete( false );
-    //    }
+    /**
+     * Initializes the UI Fields.
+     */
+    private void initFields()
+    {
+        if ( typeOfflineRadio != null )
+        {
+            typeOfflineRadio.setSelection( true );
+        }
+
+        displayErrorMessage( null );
+        setPageComplete( false );
+    }
 
     /**
      * This method is called when the user modifies something in the UI.
