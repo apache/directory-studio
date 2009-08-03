@@ -41,6 +41,8 @@ import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditorInput;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -381,9 +383,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     };
 
     /** The listener for the Sup Combo Widget */
-    private ModifyListener supComboListener = new ModifyListener()
+    private ISelectionChangedListener supComboViewerListener = new ISelectionChangedListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void selectionChanged( SelectionChangedEvent event )
         {
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
@@ -443,9 +445,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     };
 
     /** The listener for the Syntax Combo Widget */
-    private ModifyListener syntaxComboListener = new ModifyListener()
+    private ISelectionChangedListener syntaxComboViewerListener = new ISelectionChangedListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void selectionChanged( SelectionChangedEvent event )
         {
             Object selectedItem = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
 
@@ -540,9 +542,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     };
 
     /** The listener for the Equality Combo Widget */
-    private ModifyListener equalityComboListener = new ModifyListener()
+    private ISelectionChangedListener equalityComboViewerListener = new ISelectionChangedListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void selectionChanged( SelectionChangedEvent event )
         {
             Object selectedItem = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
 
@@ -568,9 +570,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     };
 
     /** The listener for the Ordering Combo Widget */
-    private ModifyListener orderingComboListener = new ModifyListener()
+    private ISelectionChangedListener orderingComboViewerListener = new ISelectionChangedListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void selectionChanged( SelectionChangedEvent event )
         {
             Object selectedItem = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
 
@@ -596,9 +598,9 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     };
 
     /** The listener for the Substring Combo Widget */
-    private ModifyListener substringComboListener = new ModifyListener()
+    private ISelectionChangedListener substringComboViewerListener = new ISelectionChangedListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void selectionChanged( SelectionChangedEvent event )
         {
             Object selectedItem = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
 
@@ -1129,18 +1131,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         schemaLink.addHyperlinkListener( schemaLinkListener );
         descriptionText.addModifyListener( descriptionTextListener );
         supLabel.addHyperlinkListener( supLabelListener );
-        supCombo.addModifyListener( supComboListener );
+        supComboViewer.addSelectionChangedListener( supComboViewerListener );
         usageCombo.addModifyListener( usageComboListener );
-        syntaxCombo.addModifyListener( syntaxComboListener );
+        syntaxComboViewer.addSelectionChangedListener( syntaxComboViewerListener );
         syntaxLengthText.addModifyListener( syntaxLengthTextModifyListener );
         syntaxLengthText.addVerifyListener( syntaxLengthTextVerifyListener );
         obsoleteCheckbox.addSelectionListener( obsoleteCheckboxListener );
         singleValueCheckbox.addSelectionListener( singleValueCheckboxListener );
         collectiveCheckbox.addSelectionListener( collectiveCheckboxListener );
         noUserModificationCheckbox.addSelectionListener( noUserModificationCheckboxListener );
-        equalityCombo.addModifyListener( equalityComboListener );
-        orderingCombo.addModifyListener( orderingComboListener );
-        substringCombo.addModifyListener( substringComboListener );
+        equalityComboViewer.addSelectionChangedListener( equalityComboViewerListener );
+        orderingComboViewer.addSelectionChangedListener( orderingComboViewerListener );
+        substringComboViewer.addSelectionChangedListener( substringComboViewerListener );
     }
 
 
@@ -1155,18 +1157,18 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         schemaLink.removeHyperlinkListener( schemaLinkListener );
         descriptionText.removeModifyListener( descriptionTextListener );
         supLabel.removeHyperlinkListener( supLabelListener );
-        supCombo.removeModifyListener( supComboListener );
+        supComboViewer.removeSelectionChangedListener( supComboViewerListener );
         usageCombo.removeModifyListener( usageComboListener );
-        syntaxCombo.removeModifyListener( syntaxComboListener );
+        syntaxComboViewer.removeSelectionChangedListener( syntaxComboViewerListener );
         syntaxLengthText.removeModifyListener( syntaxLengthTextModifyListener );
         syntaxLengthText.removeVerifyListener( syntaxLengthTextVerifyListener );
         obsoleteCheckbox.removeSelectionListener( obsoleteCheckboxListener );
         singleValueCheckbox.removeSelectionListener( singleValueCheckboxListener );
         collectiveCheckbox.removeSelectionListener( collectiveCheckboxListener );
         noUserModificationCheckbox.removeSelectionListener( noUserModificationCheckboxListener );
-        equalityCombo.removeModifyListener( equalityComboListener );
-        orderingCombo.removeModifyListener( orderingComboListener );
-        substringCombo.removeModifyListener( substringComboListener );
+        equalityComboViewer.removeSelectionChangedListener( equalityComboViewerListener );
+        orderingComboViewer.removeSelectionChangedListener( orderingComboViewerListener );
+        substringComboViewer.removeSelectionChangedListener( substringComboViewerListener );
     }
 
 

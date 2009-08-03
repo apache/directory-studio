@@ -874,7 +874,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
         section_general_information.setDescription( Messages
             .getString( "ObjectClassEditorOverviewPage.SpecifyGeneralInformation" ) );
         section_general_information.setText( Messages.getString( "ObjectClassEditorOverviewPage.GeneralInformation" ) );
-        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, true ) );
+        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Creating the layout of the section
         Composite client_general_information = toolkit.createComposite( section_general_information );

@@ -34,7 +34,7 @@ import org.apache.directory.studio.schemaeditor.view.wrappers.TreeNode;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
@@ -176,7 +176,7 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
          */
         public void selectionChanged( IWorkbenchPart part, ISelection selection )
         {
-            ITreeSelection iSelection = ( ITreeSelection ) selection;
+            IStructuredSelection iSelection = ( IStructuredSelection ) selection;
 
             Object selectedObject = iSelection.getFirstElement();
 
