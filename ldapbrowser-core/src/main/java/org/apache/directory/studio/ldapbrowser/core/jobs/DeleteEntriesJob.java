@@ -43,7 +43,6 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -319,10 +318,9 @@ public class DeleteEntriesJob extends AbstractNotificationJob
 
     protected void runNotification()
     {
-        for ( IEntry entry : deletedEntriesSet )
-        {
-            EventRegistry.fireEntryUpdated( new EntryDeletedEvent( entry.getBrowserConnection(), entry ), this );
-        }
+        // don't fire an EntryDeletedEvent for each deleted entry
+        // that would cause massive UI updates
+        // instead we fire a ChildrenInitializedEvent for each parent
         for ( IEntry parent : entriesToUpdateSet )
         {
             EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( parent ), this );
