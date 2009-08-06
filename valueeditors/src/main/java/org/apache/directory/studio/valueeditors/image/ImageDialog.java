@@ -421,8 +421,8 @@ public class ImageDialog extends Dialog
                     currentImageLabel.setImage( currentImage );
                     currentImageTypeText.setText( getImageType( imageData.type ) );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
-                    currentImageWidthText.setText( imageData.width + Messages.getString( "ImageDialog.Pixel" ) ); //$NON-NLS-1$
-                    currentImageHeightText.setText( imageData.height + Messages.getString( "ImageDialog.Pixel" ) ); //$NON-NLS-1$
+                    currentImageWidthText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.width ) ); //$NON-NLS-1$
+                    currentImageHeightText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.height ) ); //$NON-NLS-1$
                 }
                 catch ( SWTException swte )
                 {
@@ -527,8 +527,8 @@ public class ImageDialog extends Dialog
                                     Messages.getString( "ImageDialog.WillBeConverted" ), new String[] { getImageType( requiredImageType ) } ) ); //$NON-NLS-1$
                 }
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
-                newImageWidthText.setText( imageData.width + Messages.getString( "ImageDialog.Pixel" ) ); //$NON-NLS-1$
-                newImageHeightText.setText( imageData.height + Messages.getString( "ImageDialog.Pixel" ) ); //$NON-NLS-1$
+                newImageWidthText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.width ) ); //$NON-NLS-1$
+                newImageHeightText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.height ) ); //$NON-NLS-1$
             }
             catch ( SWTException swte )
             {
@@ -698,12 +698,12 @@ public class ImageDialog extends Dialog
     {
         if ( length > 1000000 )
         {
-            return ( length / 1000000 ) + NLS.bind( Messages.getString( "ImageDialog.MB" ), new int[] //$NON-NLS-1$
+            return ( length / 1000000 ) + NLS.bind( Messages.getString( "ImageDialog.MB" ), new Integer[] //$NON-NLS-1$
                 { length } ); //$NON-NLS-1$
         }
         else if ( length > 1000 )
         {
-            return ( length / 1000 ) + NLS.bind( Messages.getString( "ImageDialog.KB" ), new int[] //$NON-NLS-1$
+            return ( length / 1000 ) + NLS.bind( Messages.getString( "ImageDialog.KB" ), new Integer[] //$NON-NLS-1$
                 { length } ); //$NON-NLS-1$
         }
         else
@@ -728,20 +728,18 @@ public class ImageDialog extends Dialog
             return "NULL"; //$NON-NLS-1$
         }
 
-        String text = NLS.bind( Messages.getString( "ImageDialog.Image" ), new Object[] { imageRawData.length } ); //$NON-NLS-1$
+        String text;
         try
         {
             ByteArrayInputStream bais = new ByteArrayInputStream( imageRawData );
             ImageData imageData = new ImageData( bais );
-
             String typePrefix = getImageType( imageData.type );
             if ( !"".equals( typePrefix ) ) //$NON-NLS-1$
                 typePrefix += "-"; //$NON-NLS-1$
 
-            text = typePrefix
-                + NLS
-                    .bind(
-                        Messages.getString( "ImageDialog.Pixel" ), new Object[] { imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-1$
+            text = NLS
+                .bind(
+                    Messages.getString( "ImageDialog.Image" ), new Object[] { typePrefix, imageData.width, imageData.height, imageRawData.length } ); //$NON-NLS-1$
         }
         catch ( SWTException swte )
         {
