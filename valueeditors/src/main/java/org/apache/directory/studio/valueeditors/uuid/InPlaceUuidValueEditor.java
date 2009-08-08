@@ -46,6 +46,12 @@ public class InPlaceUuidValueEditor extends AbstractInPlaceStringValueEditor
      */
     public String getDisplayValue( IValue value )
     {
+    	// OpenLDAP returns entryUUID as a String instead of byte[]
+    	if( value.getRawValue() instanceof String )
+    	{
+    		return ( String ) value.getRawValue();	
+    	}
+    	
         byte[] displayValue = value.getBinaryValue();
 
         if ( !showRawValues() )
