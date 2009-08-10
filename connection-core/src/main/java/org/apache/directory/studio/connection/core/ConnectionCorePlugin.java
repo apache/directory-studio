@@ -545,4 +545,42 @@ public class ConnectionCorePlugin extends Plugin
         return defaultLdapContextFactory;
     }
 
+
+    /**
+     * Gets the default KRB5 login module.
+     * 
+     * Right now the following context factories are supported:
+     * <ul>
+     * <li>com.sun.security.auth.module.Krb5LoginModule</li>
+     * <li>org.apache.harmony.auth.module.Krb5LoginModule</li>
+     * </ul>
+     * 
+     * @return the default KRB5 login module
+     */
+    public String getDefaultKrb5LoginModule()
+    {
+        String defaultKrb5LoginModule = ""; //$NON-NLS-1$
+
+        try
+        {
+            String sun = "com.sun.security.auth.module.Krb5LoginModule"; //$NON-NLS-1$
+            Class.forName( sun );
+            defaultKrb5LoginModule = sun;
+        }
+        catch ( ClassNotFoundException e )
+        {
+        }
+        try
+        {
+            String apache = "org.apache.harmony.auth.module.Krb5LoginModule"; //$NON-NLS-1$
+            Class.forName( apache );
+            defaultKrb5LoginModule = apache;
+        }
+        catch ( ClassNotFoundException e )
+        {
+        }
+
+        return defaultKrb5LoginModule;
+    }
+
 }

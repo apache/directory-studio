@@ -20,7 +20,11 @@
 package org.apache.directory.studio.connection.core.io.jndi;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.security.PrivilegedAction;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -48,7 +52,19 @@ import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.login.AppConfigurationEntry;
+import javax.security.auth.login.Configuration;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
+import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.name.LdapDN;
@@ -63,8 +79,10 @@ import org.apache.directory.studio.connection.core.ICredentials;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.Messages;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo.UrlAndDn;
@@ -838,7 +856,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
         environment = new Hashtable<String, String>();
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
-        final boolean validateCertificates = preferences.getBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
+        final boolean validateCertificates = preferences
+            .getBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
         String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
         environment.put( Context.INITIAL_CONTEXT_FACTORY, ldapCtxFactory );
         environment.put( JAVA_NAMING_LDAP_VERSION, "3" ); //$NON-NLS-1$
@@ -997,16 +1016,72 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         context.removeFromEnvironment( Context.SECURITY_CREDENTIALS );
                         context.removeFromEnvironment( JAVA_NAMING_SECURITY_SASL_REALM );
 
-                        context.addToEnvironment( Context.SECURITY_PRINCIPAL, bindPrincipal );
-                        context.addToEnvironment( Context.SECURITY_CREDENTIALS, bindCredentials );
                         context.addToEnvironment( Context.SECURITY_AUTHENTICATION, authMethod );
 
-                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5
-                            && StringUtils.isNotEmpty( saslRealm ) )
+                        // SASL options
+                        if ( connection.getConnectionParameter().getAuthMethod() == AuthenticationMethod.SASL_CRAM_MD5
+                            || connection.getConnectionParameter().getAuthMethod() == AuthenticationMethod.SASL_DIGEST_MD5
+                            || connection.getConnectionParameter().getAuthMethod() == AuthenticationMethod.SASL_GSSAPI )
                         {
-                            context.addToEnvironment( JAVA_NAMING_SECURITY_SASL_REALM, saslRealm );
+                            // Request quality of protection
+                            switch ( connection.getConnectionParameter().getSaslQop() )
+                            {
+                                case AUTH:
+                                    context.addToEnvironment( "javax.security.sasl.qop", "auth" );
+                                    break;
+                                case AUTH_INT:
+                                    context.addToEnvironment( "javax.security.sasl.qop", "auth-int" );
+                                    break;
+                                case AUTH_INT_PRIV:
+                                    context.addToEnvironment( "javax.security.sasl.qop", "auth-conf" );
+                                    break;
+                            }
+
+                            // Request mutual authentication
+                            if ( connection.getConnectionParameter().isSaslMutualAuthentication() )
+                            {
+                                context.addToEnvironment( "javax.security.sasl.server.authentication", "true" );
+                            }
+                            else
+                            {
+                                context.removeFromEnvironment( "javax.security.sasl.server.authentication" );
+                            }
+
+                            // Request cryptographic protection strength
+                            switch ( connection.getConnectionParameter().getSaslSecurityStrength() )
+                            {
+                                case HIGH:
+                                    context.addToEnvironment( "javax.security.sasl.strength", "high" );
+                                    break;
+                                case MEDIUM:
+                                    context.addToEnvironment( "javax.security.sasl.strength", "medium" );
+                                    break;
+                                case LOW:
+                                    context.addToEnvironment( "javax.security.sasl.strength", "low" );
+                                    break;
+                            }
                         }
-                        context.reconnect( context.getConnectControls() );
+
+                        // Bind
+                        if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
+                        {
+                            // GSSAPI
+                            doGssapiBind( this );
+                        }
+                        else
+                        {
+                            // no GSSAPI
+                            context.addToEnvironment( Context.SECURITY_PRINCIPAL, bindPrincipal );
+                            context.addToEnvironment( Context.SECURITY_CREDENTIALS, bindCredentials );
+
+                            if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5
+                                && StringUtils.isNotEmpty( saslRealm ) )
+                            {
+                                context.addToEnvironment( JAVA_NAMING_SECURITY_SASL_REALM, saslRealm );
+                            }
+
+                            context.reconnect( context.getConnectControls() );
+                        }
                     }
                     catch ( NamingException ne )
                     {
@@ -1029,11 +1104,109 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             {
                 throw new NamingException( "???" ); //$NON-NLS-1$
             }
-
         }
         else
         {
             throw new NamingException( NO_CONNECTION );
+        }
+    }
+
+
+    private void doGssapiBind( final InnerRunnable innerRunnable ) throws NamingException
+    {
+        File configFile = null;
+        try
+        {
+            Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+            boolean useKrb5SystemProperties = preferences
+                .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
+            String krb5LoginModule = preferences.getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
+
+            if ( !useKrb5SystemProperties )
+            {
+
+                // Kerberos Configuration
+                switch ( connection.getConnectionParameter().getKrb5Configuration() )
+                {
+                    case DEFAULT:
+                        // nothing 
+                        System.clearProperty( "java.security.krb5.conf" );
+                        break;
+                    case FILE:
+                        // use specified krb5.conf
+                        System.setProperty( "java.security.krb5.conf", connection.getConnectionParameter()
+                            .getKrb5ConfigurationFile() );
+                        break;
+                    case MANUAL:
+                        // write manual config parameters to connection specific krb5.conf file
+                        String fileName = Utils.getFilenameString( connection.getId() ) + ".krb5.conf";
+                        configFile = ConnectionCorePlugin.getDefault().getStateLocation().append( fileName ).toFile();
+                        String realm = connection.getConnectionParameter().getKrb5Realm();
+                        String host = connection.getConnectionParameter().getKrb5KdcHost();
+                        int port = connection.getConnectionParameter().getKrb5KdcPort();
+                        StringBuilder sb = new StringBuilder();
+                        sb.append( "[libdefaults]" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
+                        sb.append( "default_realm = " ).append( realm ).append( ConnectionCoreConstants.LINE_SEPARATOR );
+                        sb.append( "[realms]" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
+                        sb.append( realm ).append( " = {" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
+                        sb.append( "kdc = " ).append( host ).append( ":" ).append( port ).append(
+                            ConnectionCoreConstants.LINE_SEPARATOR );
+                        sb.append( "}" ).append( ConnectionCoreConstants.LINE_SEPARATOR );
+                        try
+                        {
+                            FileUtils.writeStringToFile( configFile, sb.toString() );
+                        }
+                        catch ( IOException ioe )
+                        {
+                            NamingException ne = new NamingException();
+                            ne.setRootCause( ioe );
+                            throw ne;
+                        }
+                        System.setProperty( "java.security.krb5.conf", configFile.getAbsolutePath() );
+                }
+
+                // Use our custom configuration so we don't need to mess with external configuration
+                Configuration.setConfiguration( new InnerConfiguration( krb5LoginModule ) );
+            }
+
+            // Gets the TGT, either from native ticket cache or obtain new from KDC
+            LoginContext lc = null;
+            try
+            {
+                lc = new LoginContext( this.getClass().getName(), new InnerCallbackHandler() );
+                lc.login();
+            }
+            catch ( LoginException le )
+            {
+                NamingException ne = new NamingException();
+                ne.setRootCause( le );
+                throw ne;
+            }
+
+            // Login to LDAP server, obtains a service ticket from KDC
+            Subject.doAs( lc.getSubject(), new PrivilegedAction<Object>()
+            {
+                public Object run()
+                {
+                    try
+                    {
+                        context.reconnect( context.getConnectControls() );
+                    }
+                    catch ( NamingException ne )
+                    {
+                        innerRunnable.namingException = ne;
+                    }
+                    return null;
+                }
+            } );
+        }
+        finally
+        {
+            // delete temporary config file
+            if ( configFile != null && configFile.exists() )
+            {
+                configFile.delete();
+            }
         }
     }
 
@@ -1135,6 +1308,77 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             if ( monitor.isCanceled() )
             {
                 throw new CancelException();
+            }
+        }
+    }
+
+    private final class InnerConfiguration extends Configuration
+    {
+        private String krb5LoginModule;
+        private AppConfigurationEntry[] configList = null;
+
+
+        public InnerConfiguration( String krb5LoginModule )
+        {
+            this.krb5LoginModule = krb5LoginModule;
+        }
+
+
+        public AppConfigurationEntry[] getAppConfigurationEntry( String applicationName )
+        {
+            if ( configList == null )
+            {
+                HashMap<String, Object> options = new HashMap<String, Object>();
+
+                // TODO: this only works for Sun JVM
+                options.put( "refreshKrb5Config", "true" );
+                switch ( connection.getConnectionParameter().getKrb5CredentialConfiguration() )
+                {
+                    case USE_NATIVE:
+                        options.put( "useTicketCache", "true" );
+                        options.put( "doNotPrompt", "true" );
+                        break;
+                    case OBTAIN_TGT:
+                        options.put( "doNotPrompt", "false" );
+                        break;
+                }
+
+                configList = new AppConfigurationEntry[1];
+                configList[0] = new AppConfigurationEntry( krb5LoginModule, LoginModuleControlFlag.REQUIRED, options );
+            }
+            return configList;
+        }
+
+
+        public void refresh()
+        {
+        }
+    }
+
+    private final class InnerCallbackHandler implements CallbackHandler
+    {
+        public void handle( Callback[] callbacks ) throws UnsupportedCallbackException, IOException
+        {
+            for ( int ii = 0; ii < callbacks.length; ii++ )
+            {
+                Callback callBack = callbacks[ii];
+
+                if ( callBack instanceof NameCallback )
+                {
+                    // Handles username callback.
+                    NameCallback nameCallback = ( NameCallback ) callBack;
+                    nameCallback.setName( bindPrincipal );
+                }
+                else if ( callBack instanceof PasswordCallback )
+                {
+                    // Handles password callback.
+                    PasswordCallback passwordCallback = ( PasswordCallback ) callBack;
+                    passwordCallback.setPassword( bindCredentials.toCharArray() );
+                }
+                else
+                {
+                    throw new UnsupportedCallbackException( callBack, "Callback not supported" );
+                }
             }
         }
     }

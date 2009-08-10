@@ -33,6 +33,10 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
+import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
+import org.apache.directory.studio.connection.core.ConnectionParameter.SaslQop;
+import org.apache.directory.studio.connection.core.ConnectionParameter.SaslSecurityStrength;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -62,6 +66,17 @@ public class ConnectionIO
     private static final String AUTH_METHOD_TAG = "authMethod"; //$NON-NLS-1$
     private static final String BIND_PRINCIPAL_TAG = "bindPrincipal"; //$NON-NLS-1$
     private static final String BIND_PASSWORD_TAG = "bindPassword"; //$NON-NLS-1$
+    private static final String SASL_REALM_TAG = "saslRealm"; //$NON-NLS-1$
+    private static final String SASL_QOP_TAG = "saslQop"; //$NON-NLS-1$
+    private static final String SASL_SEC_STRENGTH_TAG = "saslSecStrenght"; //$NON-NLS-1$
+    private static final String SASL_MUTUAL_AUTH_TAG = "saslMutualAuth"; //$NON-NLS-1$
+    private static final String KRB5_CREDENTIALS_CONF_TAG = "krb5CredentialsConf"; //$NON-NLS-1$
+    private static final String KRB5_CONFIG_TAG = "krb5Config"; //$NON-NLS-1$
+    private static final String KRB5_CONFIG_FILE_TAG = "krb5ConfigFile"; //$NON-NLS-1$
+    private static final String KRB5_REALM_TAG = "krb5Realm"; //$NON-NLS-1$
+    private static final String KRB5_KDC_HOST_TAG = "krb5KdcHost"; //$NON-NLS-1$
+    private static final String KRB5_KDC_PORT_TAG = "krb5KdcPort"; //$NON-NLS-1$
+
     private static final String EXTENDED_PROPERTIES_TAG = "extendedProperties"; //$NON-NLS-1$
     private static final String EXTENDED_PROPERTY_TAG = "extendedProperty"; //$NON-NLS-1$
     private static final String KEY_TAG = "key"; //$NON-NLS-1$
@@ -71,6 +86,7 @@ public class ConnectionIO
     private static final String CONNECTION_FOLDER_TAG = "connectionFolder"; //$NON-NLS-1$
     private static final String SUB_FOLDERS_TAG = "subFolders"; //$NON-NLS-1$
     private static final String SUB_FOLDER_TAG = "subFolder"; //$NON-NLS-1$
+
 
     /**
      * Loads the connections using the reader
@@ -210,6 +226,77 @@ public class ConnectionIO
             connection.setBindPassword( bindPasswordAttribute.getValue() );
         }
 
+        // SASL Realm
+        Attribute saslRealmAttribute = element.attribute( SASL_REALM_TAG );
+        if ( saslRealmAttribute != null )
+        {
+            connection.setSaslRealm( saslRealmAttribute.getValue() );
+        }
+
+        // SASL Quality of Protection
+        Attribute saslQopAttribute = element.attribute( SASL_QOP_TAG );
+        if ( saslQopAttribute != null )
+        {
+            connection.setSaslQop( SaslQop.valueOf( saslQopAttribute.getValue() ) );
+        }
+
+        // SASL Security Strength
+        Attribute saslSecStrengthAttribute = element.attribute( SASL_SEC_STRENGTH_TAG );
+        if ( saslSecStrengthAttribute != null )
+        {
+            connection.setSaslSecurityStrength( SaslSecurityStrength.valueOf( saslSecStrengthAttribute.getValue() ) );
+        }
+
+        // SASL Mutual Authentication
+        Attribute saslMutualAuthAttribute = element.attribute( SASL_MUTUAL_AUTH_TAG );
+        if ( saslMutualAuthAttribute != null )
+        {
+            connection.setSaslMutualAuthentication( Boolean.parseBoolean( saslMutualAuthAttribute.getValue() ) );
+        }
+
+        // KRB5 Credentials Conf
+        Attribute krb5CredentialsConf = element.attribute( KRB5_CREDENTIALS_CONF_TAG );
+        if ( krb5CredentialsConf != null )
+        {
+            connection.setKrb5CredentialConfiguration( Krb5CredentialConfiguration.valueOf( krb5CredentialsConf
+                .getValue() ) );
+        }
+
+        // KRB5 Configuration
+        Attribute krb5Config = element.attribute( KRB5_CONFIG_TAG );
+        if ( krb5Config != null )
+        {
+            connection.setKrb5Configuration( Krb5Configuration.valueOf( krb5Config.getValue() ) );
+        }
+
+        // KRB5 Configuration File
+        Attribute krb5ConfigFile = element.attribute( KRB5_CONFIG_FILE_TAG );
+        if ( krb5ConfigFile != null )
+        {
+            connection.setKrb5ConfigurationFile( krb5ConfigFile.getValue() );
+        }
+
+        // KRB5 REALM
+        Attribute krb5Realm = element.attribute( KRB5_REALM_TAG );
+        if ( krb5Realm != null )
+        {
+            connection.setKrb5Realm( krb5Realm.getValue() );
+        }
+
+        // KRB5 KDC Host
+        Attribute krb5KdcHost = element.attribute( KRB5_KDC_HOST_TAG );
+        if ( krb5KdcHost != null )
+        {
+            connection.setKrb5KdcHost( krb5KdcHost.getValue() );
+        }
+
+        // KRB5 KDC Port
+        Attribute krb5KdcPort = element.attribute( KRB5_KDC_PORT_TAG );
+        if ( krb5KdcPort != null )
+        {
+            connection.setKrb5KdcPort( Integer.valueOf( krb5KdcPort.getValue() ) );
+        }
+
         // Extended Properties
         Element extendedPropertiesElement = element.element( EXTENDED_PROPERTIES_TAG );
         if ( extendedPropertiesElement != null )
@@ -302,6 +389,37 @@ public class ConnectionIO
 
         // Bind Password
         connectionElement.addAttribute( BIND_PASSWORD_TAG, connection.getBindPassword() );
+
+        // SASL Realm
+        connectionElement.addAttribute( SASL_REALM_TAG, connection.getSaslRealm() );
+
+        // SASL Quality of Protection
+        connectionElement.addAttribute( SASL_QOP_TAG, connection.getSaslQop().toString() );
+        
+        // SASL Security Strength
+        connectionElement.addAttribute( SASL_SEC_STRENGTH_TAG, connection.getSaslSecurityStrength().toString() );
+
+        // SASL Mutual Authentication
+        connectionElement.addAttribute( SASL_MUTUAL_AUTH_TAG, "" + connection.isSaslMutualAuthentication() ); //$NON-NLS-1$
+
+        // KRB5 Credentials Conf
+        connectionElement.addAttribute( KRB5_CREDENTIALS_CONF_TAG, connection.getKrb5CredentialConfiguration()
+            .toString() );
+
+        // KRB5 Configuration
+        connectionElement.addAttribute( KRB5_CONFIG_TAG, connection.getKrb5Configuration().toString() );
+
+        // KRB5 Configuration File
+        connectionElement.addAttribute( KRB5_CONFIG_FILE_TAG, connection.getKrb5ConfigurationFile() );
+
+        // KRB5 REALM
+        connectionElement.addAttribute( KRB5_REALM_TAG, connection.getKrb5Realm() );
+
+        // KRB5 KDC Host
+        connectionElement.addAttribute( KRB5_KDC_HOST_TAG, connection.getKrb5KdcHost() );
+
+        // KRB5 KDC Port
+        connectionElement.addAttribute( KRB5_KDC_PORT_TAG, "" + connection.getKrb5KdcPort() ); //$NON-NLS-1$
 
         // Extended Properties
         Element extendedPropertiesElement = connectionElement.addElement( EXTENDED_PROPERTIES_TAG );
@@ -414,9 +532,9 @@ public class ConnectionIO
             for ( Iterator<?> i = foldersElement.elementIterator( SUB_FOLDER_TAG ); i.hasNext(); )
             {
                 Element folderElement = ( Element ) i.next();
-                
+
                 Attribute folderIdAttribute = folderElement.attribute( ID_TAG );
-                
+
                 if ( folderIdAttribute != null )
                 {
                     connectionFolder.addSubFolderId( folderIdAttribute.getValue() );
@@ -438,7 +556,8 @@ public class ConnectionIO
      * @throws IOException
      *      if an I/O error occurs
      */
-    public static void saveConnectionFolders( Set<ConnectionFolder> connectionFolders, OutputStream stream ) throws IOException
+    public static void saveConnectionFolders( Set<ConnectionFolder> connectionFolders, OutputStream stream )
+        throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -488,7 +607,7 @@ public class ConnectionIO
             Element connectionElement = connectionsElement.addElement( CONNECTION_TAG );
             connectionElement.addAttribute( ID_TAG, connectionId );
         }
-        
+
         // Sub-folders
         Element foldersElement = connectionFolderElement.addElement( SUB_FOLDERS_TAG );
         for ( String folderId : connectionFolder.getSubFolderIds() )

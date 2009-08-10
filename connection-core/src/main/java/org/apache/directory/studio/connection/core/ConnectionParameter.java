@@ -81,6 +81,26 @@ public class ConnectionParameter
 
     }
 
+    public enum SaslQop
+    {
+        AUTH, AUTH_INT, AUTH_INT_PRIV
+    }
+
+    public enum SaslSecurityStrength
+    {
+        LOW, MEDIUM, HIGH
+    }
+
+    public enum Krb5CredentialConfiguration
+    {
+        USE_NATIVE, OBTAIN_TGT
+    }
+
+    public enum Krb5Configuration
+    {
+        DEFAULT, FILE, MANUAL
+    }
+
     /** The unique id. */
     private String id;
 
@@ -107,6 +127,33 @@ public class ConnectionParameter
 
     /** The SASL realm. */
     private String saslRealm;
+
+    /** The SASL qualitiy of protection. */
+    private SaslQop saslQop = SaslQop.AUTH;
+
+    /** The SASL security strength. */
+    private SaslSecurityStrength saslSecurityStrength = SaslSecurityStrength.HIGH;
+
+    /** The SASL mutual authentication flag. */
+    private boolean saslMutualAuthentication = true;
+
+    /** The Kerberos credential configuration. */
+    private Krb5CredentialConfiguration krb5CredentialConfiguration = Krb5CredentialConfiguration.USE_NATIVE;
+
+    /** The Kerberos configuration. */
+    private Krb5Configuration krb5Configuration = Krb5Configuration.DEFAULT;
+
+    /** The Kerberos configuration file. */
+    private String krb5ConfigurationFile;
+
+    /** The Kerberos realm. */
+    private String krb5Realm;
+
+    /** The Kerberos KDC host. */
+    private String krb5KdcHost;
+
+    /** The Kerberos KDC port. */
+    private int krb5KdcPort = 88;
 
     /** The read only flag. */
     private boolean isReadOnly;
@@ -381,6 +428,204 @@ public class ConnectionParameter
     public void setPort( int port )
     {
         this.port = port;
+    }
+
+
+    /**
+     * Gets the SASL qualitiy of protection.
+     * 
+     * @return the SASL qualitiy of protection
+     */
+    public SaslQop getSaslQop()
+    {
+        return saslQop;
+    }
+
+
+    /**
+     * Sets the SASL qualitiy of protection.
+     * 
+     * @param saslQop the new SASL qualitiy of protection
+     */
+    public void setSaslQop( SaslQop saslQop )
+    {
+        this.saslQop = saslQop;
+    }
+
+
+    /**
+     * Gets the SASL security strength.
+     * 
+     * @return the SASL security strength
+     */
+    public SaslSecurityStrength getSaslSecurityStrength()
+    {
+        return saslSecurityStrength;
+    }
+
+
+    /**
+     * Sets the SASL security strength.
+     * 
+     * @param saslSecurityStrength the new SASL security strength
+     */
+    public void setSaslSecurityStrength( SaslSecurityStrength saslSecurityStrength )
+    {
+        this.saslSecurityStrength = saslSecurityStrength;
+    }
+
+
+    /**
+     * Checks if is SASL mutual authentication.
+     * 
+     * @return true, if is SASL mutual authentication
+     */
+    public boolean isSaslMutualAuthentication()
+    {
+        return saslMutualAuthentication;
+    }
+
+
+    /**
+     * Sets the SASL mutual authentication.
+     * 
+     * @param saslMutualAuthentication the new SASL mutual authentication
+     */
+    public void setSaslMutualAuthentication( boolean saslMutualAuthentication )
+    {
+        this.saslMutualAuthentication = saslMutualAuthentication;
+    }
+
+
+    /**
+     * Gets the Kerberos credential configuration.
+     * 
+     * @return the Kerberos credential configuration
+     */
+    public Krb5CredentialConfiguration getKrb5CredentialConfiguration()
+    {
+        return krb5CredentialConfiguration;
+    }
+
+
+    /**
+     * Sets the Kerberos credential configuration.
+     * 
+     * @param krb5CredentialConfiguration the new Kerberos credential configuration
+     */
+    public void setKrb5CredentialConfiguration( Krb5CredentialConfiguration krb5CredentialConfiguration )
+    {
+        this.krb5CredentialConfiguration = krb5CredentialConfiguration;
+    }
+
+
+    /**
+     * Gets the Kerberos configuration.
+     * 
+     * @return the Kerberos configuration
+     */
+    public Krb5Configuration getKrb5Configuration()
+    {
+        return krb5Configuration;
+    }
+
+
+    /**
+     * Sets the Kerberos configuration.
+     * 
+     * @param krb5Configuration the new Kerberos configuration
+     */
+    public void setKrb5Configuration( Krb5Configuration krb5Configuration )
+    {
+        this.krb5Configuration = krb5Configuration;
+    }
+
+
+    /**
+     * Gets the Kerberos configuration file.
+     * 
+     * @return the Kerberos configuration file
+     */
+    public String getKrb5ConfigurationFile()
+    {
+        return krb5ConfigurationFile;
+    }
+
+
+    /**
+     * Sets the Kerberos configuration file.
+     * 
+     * @param krb5ConfigurationFile the new Kerberos configuration file
+     */
+    public void setKrb5ConfigurationFile( String krb5ConfigurationFile )
+    {
+        this.krb5ConfigurationFile = krb5ConfigurationFile;
+    }
+
+
+    /**
+     * Gets the Kerberos realm.
+     * 
+     * @return the Kerberos realm
+     */
+    public String getKrb5Realm()
+    {
+        return krb5Realm;
+    }
+
+
+    /**
+     * Sets the Kerberos realm.
+     * 
+     * @param krb5Realm the new Kerberos realm
+     */
+    public void setKrb5Realm( String krb5Realm )
+    {
+        this.krb5Realm = krb5Realm;
+    }
+
+
+    /**
+     * Gets the Kerberos KDC host.
+     * 
+     * @return the Kerberos KDC host
+     */
+    public String getKrb5KdcHost()
+    {
+        return krb5KdcHost;
+    }
+
+
+    /**
+     * Sets the Kerberos KDC host.
+     * 
+     * @param krb5KdcHost the new Kerberos KDC host
+     */
+    public void setKrb5KdcHost( String krb5KdcHost )
+    {
+        this.krb5KdcHost = krb5KdcHost;
+    }
+
+
+    /**
+     * Gets the Kerberos KDC port.
+     * 
+     * @return the Kerberos KDCport
+     */
+    public int getKrb5KdcPort()
+    {
+        return krb5KdcPort;
+    }
+
+
+    /**
+     * Sets the Kerberos KDC port.
+     * 
+     * @param krb5KdcPort the new Kerberos KDC port
+     */
+    public void setKrb5KdcPort( int krb5KdcPort )
+    {
+        this.krb5KdcPort = krb5KdcPort;
     }
 
 

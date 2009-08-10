@@ -28,9 +28,13 @@ import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -45,7 +49,11 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ConnectionsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private Text jndiLdapContextProvider;
+    private Text ldapContextFactoryText;
+    private Button useKrb5SystemPropertiesButton;
+    private Label krb5LoginModuleNoteLabel;
+    private Text krb5LoginModuleText;
+    private Label krb5LoginModuleLabel;
 
 
     /**
@@ -77,20 +85,58 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        Group group = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages
-            .getString( "ConnectionsPreferencePage.ContextProvider" ), 1 ); //$NON-NLS-1$
-
+        Group ldapContextFactoryGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite,
+            1, 1 ), Messages.getString( "ConnectionsPreferencePage.ContextFactory" ), 1 ); //$NON-NLS-1$
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
         String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
         String defaultLdapCtxFactory = preferences
             .getDefaultString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
-        String note = NLS.bind(
-            Messages.getString( "ConnectionsPreferencePage.SystemDetectedContextFactory" ), defaultLdapCtxFactory ); //$NON-NLS-1$
+        String ldapCtxFactoryNote = NLS.bind( Messages
+            .getString( "ConnectionsPreferencePage.SystemDetectedContextFactory" ), defaultLdapCtxFactory ); //$NON-NLS-1$
+        ldapContextFactoryText = BaseWidgetUtils.createText( ldapContextFactoryGroup, ldapCtxFactory, 1 );
+        BaseWidgetUtils.createWrappedLabel( ldapContextFactoryGroup, ldapCtxFactoryNote, 1 );
 
-        jndiLdapContextProvider = BaseWidgetUtils.createText( group, ldapCtxFactory, 1 );
-        BaseWidgetUtils.createWrappedLabel( group, note, 1 );
+        Group krb5SettingsGroup = BaseWidgetUtils.createGroup(
+            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages
+                .getString( "ConnectionsPreferencePage.Krb5Settings" ), 1 ); //$NON-NLS-1$
 
+        boolean useKrb5SystemProperties = preferences
+            .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
+        useKrb5SystemPropertiesButton = BaseWidgetUtils.createCheckbox( krb5SettingsGroup, Messages
+            .getString( "ConnectionsPreferencePage.UseKrb5SystemProperties" ), 1 ); //$NON-NLS-1$
+        useKrb5SystemPropertiesButton.setToolTipText( Messages
+            .getString( "ConnectionsPreferencePage.UseKrb5SystemPropertiesTooltip" ) ); //$NON-NLS-1$
+        useKrb5SystemPropertiesButton.setSelection( useKrb5SystemProperties );
+
+        krb5LoginModuleLabel = BaseWidgetUtils.createLabel( krb5SettingsGroup, Messages
+            .getString( "ConnectionsPreferencePage.Krb5LoginModule" ), 1 );
+        String krb5LoginModule = preferences.getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
+        String defaultKrb5LoginModule = preferences
+            .getDefaultString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
+        String krb5LoginModuleNote = NLS.bind( Messages
+            .getString( "ConnectionsPreferencePage.SystemDetectedContextFactory" ), defaultKrb5LoginModule ); //$NON-NLS-1$
+        krb5LoginModuleText = BaseWidgetUtils.createText( krb5SettingsGroup, krb5LoginModule, 1 );
+        krb5LoginModuleNoteLabel = BaseWidgetUtils.createWrappedLabel( krb5SettingsGroup, krb5LoginModuleNote, 1 );
+
+        useKrb5SystemPropertiesButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                validate();
+            }
+        } );
+
+        validate();
+        
         return composite;
+    }
+
+
+    private void validate()
+    {
+        krb5LoginModuleLabel.setEnabled( !useKrb5SystemPropertiesButton.getSelection() );
+        krb5LoginModuleText.setEnabled( !useKrb5SystemPropertiesButton.getSelection() );
+        krb5LoginModuleNoteLabel.setEnabled( !useKrb5SystemPropertiesButton.getSelection() );
     }
 
 
@@ -99,8 +145,12 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
      */
     protected void performDefaults()
     {
-        jndiLdapContextProvider.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
+        ldapContextFactoryText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
             ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY ) );
+        krb5LoginModuleText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
+            ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE ) );
+        useKrb5SystemPropertiesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
+            .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES ) );
         super.performDefaults();
     }
 
@@ -111,7 +161,12 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
     public boolean performOk()
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, jndiLdapContextProvider.getText() );
+            ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, ldapContextFactoryText.getText() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE, krb5LoginModuleText.getText() );
+        ConnectionCorePlugin.getDefault().getPluginPreferences()
+            .setValue( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES,
+                useKrb5SystemPropertiesButton.getSelection() );
         return true;
     }
 

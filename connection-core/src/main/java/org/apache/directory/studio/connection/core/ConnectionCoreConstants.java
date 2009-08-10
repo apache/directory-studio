@@ -68,4 +68,10 @@ public interface ConnectionCoreConstants
     /** The constant used to identify the "masked attributes" preference  */
     public static final String PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES = "modificationLogsMaskedAttributes"; //$NON-NLS-1$
 
+    /** The constant used to identify the "use KRB5 system properties" preference  */
+    public static final String PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES = "useKrb5SystemProperties"; //$NON-NLS-1$
+
+    /** The constant used to identify the KRB5 login module class name */
+    public static final String PREFERENCE_KRB5_LOGIN_MODULE = "krb5LoginModule"; //$NON-NLS-1$
+
 }

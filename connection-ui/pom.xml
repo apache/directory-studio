@@ -114,6 +114,7 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.connection.ui.ConnectionUIPlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.ui,
+ org.eclipse.ui.forms,
  org.eclipse.core.runtime,
  org.eclipse.ui.workbench.texteditor,
  org.apache.directory.studio.jars,
@@ -217,6 +218,11 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>editors</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ui</groupId>
+      <artifactId>forms</artifactId>
       <scope>provided</scope>
     </dependency>
   </dependencies>
