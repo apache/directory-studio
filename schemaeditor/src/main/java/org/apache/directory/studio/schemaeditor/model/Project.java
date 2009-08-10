@@ -26,7 +26,6 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.io.SchemaConnector;
-import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
 
 
 /**
@@ -69,9 +68,6 @@ public class Project
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
 
-    /** The SchemaCheker */
-    private SchemaChecker schemaChecker;
-
     /** The backup of the Online Schema */
     private List<Schema> schemaBackup;
 
@@ -89,11 +85,7 @@ public class Project
      */
     public Project( ProjectType type, String name )
     {
-        this.type = type;
-        this.name = name;
-        this.state = ProjectState.CLOSED;
-        schemaHandler = new SchemaHandler();
-        schemaChecker = new SchemaChecker();
+        init( type, name, ProjectState.CLOSED );
     }
 
 
@@ -103,10 +95,7 @@ public class Project
      */
     public Project()
     {
-        type = ProjectType.OFFLINE;
-        this.state = ProjectState.CLOSED;
-        schemaHandler = new SchemaHandler();
-        schemaChecker = new SchemaChecker();
+        init( ProjectType.OFFLINE, null, ProjectState.CLOSED );
     }
 
 
@@ -118,10 +107,25 @@ public class Project
      */
     public Project( ProjectType type )
     {
+        init( type, null, ProjectState.CLOSED);
+    }
+    
+    /**
+     * Inits the project.
+     *
+     * @param type
+     *      the type of the project
+     * @param name
+     *      the name of the project
+     * @param state
+     *      the state of the project
+     */
+    private void init( ProjectType type, String name, ProjectState state)
+    {
         this.type = type;
-        this.state = ProjectState.CLOSED;
+        this.name = name;
+        this.state = state;
         schemaHandler = new SchemaHandler();
-        schemaChecker = new SchemaChecker();
     }
 
 
@@ -206,18 +210,6 @@ public class Project
     public SchemaHandler getSchemaHandler()
     {
         return schemaHandler;
-    }
-
-
-    /**
-     * Gets the SchemaChecker
-     *
-     * @return
-     *      the SchemaChecker
-     */
-    public SchemaChecker getSchemaChecker()
-    {
-        return schemaChecker;
     }
 
 

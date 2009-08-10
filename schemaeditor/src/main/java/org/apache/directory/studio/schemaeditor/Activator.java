@@ -84,6 +84,7 @@ public class Activator extends AbstractUIPlugin
     {
         plugin = this;
         projectsHandler = ProjectsHandler.getInstance();
+        schemaChecker = SchemaChecker.getInstance();
     }
 
 
@@ -136,14 +137,13 @@ public class Activator extends AbstractUIPlugin
                 if ( newProject == null )
                 {
                     schemaHandler = null;
-                    schemaChecker = null;
                 }
                 else
                 {
-                    // Registering the SchemaHandler and SchemaChecker
                     schemaHandler = newProject.getSchemaHandler();
-                    schemaChecker = newProject.getSchemaChecker();
                 }
+
+                schemaChecker.reload();
 
                 PluginUtils.saveProjects();
             }
@@ -331,9 +331,8 @@ public class Activator extends AbstractUIPlugin
             {
                 // We can't use the PLUGIN_ID constant since loading the plugin.properties file has failed,
                 // So we're using a default plugin id.
-                getLog().log(
-                    new Status( Status.ERROR, "org.apache.directory.studio.schemaeditor", Status.OK, //$NON-NLS-1$
-                        Messages.getString("Activator.UnablePluginProperties"), e ) ); //$NON-NLS-1$
+                getLog().log( new Status( Status.ERROR, "org.apache.directory.studio.schemaeditor", Status.OK, //$NON-NLS-1$
+                    Messages.getString( "Activator.UnablePluginProperties" ), e ) ); //$NON-NLS-1$
             }
         }
 

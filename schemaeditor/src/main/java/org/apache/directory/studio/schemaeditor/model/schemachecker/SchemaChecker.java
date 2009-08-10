@@ -29,12 +29,14 @@ import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.SchemaObject;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
+import org.apache.directory.studio.schemaeditor.controller.ProjectsHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
+import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.NonExistingMatchingRuleError.NonExistingMatchingRuleErrorEnum;
@@ -54,8 +56,8 @@ import org.eclipse.core.runtime.jobs.Job;
  */
 public class SchemaChecker
 {
-    /** The SchemaHandler */
-    private SchemaHandler schemaHandler;
+    /** The SchemaChecker instance */
+    private static SchemaChecker instance;
 
     /** The errors List */
     private List<SchemaError> errorsList;
@@ -86,129 +88,153 @@ public class SchemaChecker
     {
         public void attributeTypeAdded( AttributeTypeImpl at )
         {
-            List<?> deps = getAndDeleteDependencies( at );
+            synchronized ( this )
+            {
+                List<?> deps = getAndDeleteDependencies( at );
 
-            checkAttributeType( at );
+                checkAttributeType( at );
 
-            checkDependencies( deps );
+                checkDependencies( deps );
 
-            notifyListeners();
+                notifyListeners();
+            }
         }
 
 
         public void attributeTypeModified( AttributeTypeImpl at )
         {
-            List<Object> deps = new ArrayList<Object>();
-            List<?> atDeps = ( List<?> ) dependenciesMap.get( at );
-            if ( atDeps != null )
+            synchronized ( this )
             {
-                deps.addAll( atDeps );
+                List<Object> deps = new ArrayList<Object>();
+                List<?> atDeps = ( List<?> ) dependenciesMap.get( at );
+                if ( atDeps != null )
+                {
+                    deps.addAll( atDeps );
+                }
+
+                checkAttributeType( at );
+
+                checkDependencies( deps );
+
+                notifyListeners();
             }
-
-            checkAttributeType( at );
-
-            checkDependencies( deps );
-
-            notifyListeners();
         }
 
 
         public void attributeTypeRemoved( AttributeTypeImpl at )
         {
-            List<Object> deps = new ArrayList<Object>();
-            List<?> atDeps = ( List<?> ) dependenciesMap.get( at );
-            if ( atDeps != null )
+            synchronized ( this )
             {
-                deps.addAll( atDeps );
+                List<Object> deps = new ArrayList<Object>();
+                List<?> atDeps = ( List<?> ) dependenciesMap.get( at );
+                if ( atDeps != null )
+                {
+                    deps.addAll( atDeps );
+                }
+
+                removeSchemaObject( at );
+
+                checkDependencies( deps );
+
+                notifyListeners();
             }
-
-            removeSchemaObject( at );
-
-            checkDependencies( deps );
-
-            notifyListeners();
         }
 
 
         public void objectClassAdded( ObjectClassImpl oc )
         {
-            List<?> deps = getAndDeleteDependencies( oc );
+            synchronized ( this )
+            {
+                List<?> deps = getAndDeleteDependencies( oc );
 
-            checkObjectClass( oc );
+                checkObjectClass( oc );
 
-            checkDependencies( deps );
+                checkDependencies( deps );
 
-            notifyListeners();
+                notifyListeners();
+            }
         }
 
 
         public void objectClassModified( ObjectClassImpl oc )
         {
-            List<Object> deps = new ArrayList<Object>();
-            List<?> ocDeps = ( List<?> ) dependenciesMap.get( oc );
-            if ( ocDeps != null )
+            synchronized ( this )
             {
-                deps.addAll( ocDeps );
+                List<Object> deps = new ArrayList<Object>();
+                List<?> ocDeps = ( List<?> ) dependenciesMap.get( oc );
+                if ( ocDeps != null )
+                {
+                    deps.addAll( ocDeps );
+                }
+
+                checkObjectClass( oc );
+
+                checkDependencies( deps );
+
+                notifyListeners();
             }
-
-            checkObjectClass( oc );
-
-            checkDependencies( deps );
-
-            notifyListeners();
         }
 
 
         public void objectClassRemoved( ObjectClassImpl oc )
         {
-            List<Object> deps = new ArrayList<Object>();
-            List<?> ocDeps = ( List<?> ) dependenciesMap.get( oc );
-            if ( ocDeps != null )
+            synchronized ( this )
             {
-                deps.addAll( ocDeps );
+                List<Object> deps = new ArrayList<Object>();
+                List<?> ocDeps = ( List<?> ) dependenciesMap.get( oc );
+                if ( ocDeps != null )
+                {
+                    deps.addAll( ocDeps );
+                }
+
+                removeSchemaObject( oc );
+
+                checkDependencies( deps );
+
+                notifyListeners();
             }
-
-            removeSchemaObject( oc );
-
-            checkDependencies( deps );
-
-            notifyListeners();
         }
 
 
         public void schemaAdded( Schema schema )
         {
-            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-            for ( AttributeTypeImpl at : ats )
+            synchronized ( this )
             {
-                checkAttributeType( at );
-            }
+                List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+                for ( AttributeTypeImpl at : ats )
+                {
+                    checkAttributeType( at );
+                }
 
-            List<ObjectClassImpl> ocs = schema.getObjectClasses();
-            for ( ObjectClassImpl oc : ocs )
-            {
-                checkObjectClass( oc );
-            }
+                List<ObjectClassImpl> ocs = schema.getObjectClasses();
+                for ( ObjectClassImpl oc : ocs )
+                {
+                    checkObjectClass( oc );
+                }
 
-            notifyListeners();
+                notifyListeners();
+            }
         }
 
 
         public void schemaRemoved( Schema schema )
         {
-            List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-            for ( AttributeTypeImpl at : ats )
+            synchronized ( this )
             {
-                removeSchemaObject( at );
-            }
+                List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+                for ( AttributeTypeImpl at : ats )
+                {
+                    removeSchemaObject( at );
+                }
 
-            List<ObjectClassImpl> ocs = schema.getObjectClasses();
-            for ( ObjectClassImpl oc : ocs )
-            {
-                removeSchemaObject( oc );
-            }
+                List<ObjectClassImpl> ocs = schema.getObjectClasses();
+                for ( ObjectClassImpl oc : ocs )
+                {
+                    removeSchemaObject( oc );
+                }
 
-            notifyListeners();
+                notifyListeners();
+            }
         }
     };
 
@@ -216,9 +242,8 @@ public class SchemaChecker
     /**
      * Creates a new instance of SchemaChecker.
      */
-    public SchemaChecker()
+    private SchemaChecker()
     {
-        schemaHandler = Activator.getDefault().getSchemaHandler();
         errorsList = new ArrayList<SchemaError>();
         errorsMap = new MultiValueMap();
         warningsList = new ArrayList<SchemaWarning>();
@@ -226,6 +251,39 @@ public class SchemaChecker
         dependenciesMap = new MultiValueMap();
         dependsOnMap = new MultiValueMap();
         listeners = new ArrayList<SchemaCheckerListener>();
+
+        Activator.getDefault().getProjectsHandler().addListener( new ProjectsHandlerAdapter()
+        {
+            public void openProjectChanged( Project oldProject, Project newProject )
+            {
+                if ( oldProject != null )
+                {
+                    oldProject.getSchemaHandler().removeListener( schemaHandlerListener );
+                }
+
+                if ( newProject != null )
+                {
+                    newProject.getSchemaHandler().addListener( schemaHandlerListener );
+                }
+            }
+        } );
+    }
+
+
+    /**
+     * Gets the singleton instance of the ProjectsHandler.
+     *
+     * @return
+     *      the singleton instance of the ProjectsHandler
+     */
+    public static SchemaChecker getInstance()
+    {
+        if ( instance == null )
+        {
+            instance = new SchemaChecker();
+        }
+
+        return instance;
     }
 
 
@@ -234,12 +292,15 @@ public class SchemaChecker
      */
     public void enableModificationsListening()
     {
-        if ( !listeningToModifications )
+        synchronized ( this )
         {
-            schemaHandler = Activator.getDefault().getSchemaHandler();
-            schemaHandler.addListener( schemaHandlerListener );
-            listeningToModifications = true;
-            checkWholeSchema();
+            if ( !listeningToModifications )
+            {
+                Activator.getDefault().getSchemaHandler().addListener( schemaHandlerListener );
+                listeningToModifications = true;
+                checkWholeSchema();
+                notifyListeners();
+            }
         }
     }
 
@@ -249,11 +310,27 @@ public class SchemaChecker
      */
     public void disableModificationsListening()
     {
-        if ( listeningToModifications )
+        synchronized ( this )
         {
-            schemaHandler.removeListener( schemaHandlerListener );
-            listeningToModifications = false;
+            if ( listeningToModifications )
+            {
+                Activator.getDefault().getSchemaHandler().removeListener( schemaHandlerListener );
+                listeningToModifications = false;
+                clearErrorsAndWarnings();
+            }
+        }
+    }
+
+
+    /**
+     * Reloads the content of the schema checker
+     */
+    public void reload()
+    {
+        synchronized ( this )
+        {
             clearErrorsAndWarnings();
+            checkWholeSchema();
         }
     }
 
@@ -289,30 +366,39 @@ public class SchemaChecker
     /**
      * Checks the whole schema.
      */
-    private void checkWholeSchema()
+    private synchronized void checkWholeSchema()
     {
-        Job job = new Job( "Checking the Schema" )
+        Job job = new Job( "Checking Schema" )
         {
             protected IStatus run( IProgressMonitor monitor )
             {
-                List<Schema> schemas = schemaHandler.getSchemas();
-                monitor.beginTask( "Checking schemas: ", schemas.size() );
-                for ( Schema schema : schemas )
+                SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
+                if ( schemaHandler != null )
                 {
-                    monitor.subTask( schema.getName() );
-                    List<AttributeTypeImpl> ats = schema.getAttributeTypes();
-                    for ( AttributeTypeImpl at : ats )
-                    {
-                        checkAttributeType( at );
-                    }
+                    List<Schema> schemas = schemaHandler.getSchemas();
 
-                    List<ObjectClassImpl> ocs = schema.getObjectClasses();
-                    for ( ObjectClassImpl oc : ocs )
+                    monitor.beginTask( "Checking schemas: ", schemas.size() );
+
+                    for ( Schema schema : schemas )
                     {
-                        checkObjectClass( oc );
+                        monitor.subTask( schema.getName() );
+
+                        List<AttributeTypeImpl> ats = schema.getAttributeTypes();
+                        for ( AttributeTypeImpl at : ats )
+                        {
+                            checkAttributeType( at );
+                        }
+
+                        List<ObjectClassImpl> ocs = schema.getObjectClasses();
+                        for ( ObjectClassImpl oc : ocs )
+                        {
+                            checkObjectClass( oc );
+                        }
+
+                        monitor.worked( 1 );
                     }
-                    monitor.worked( 1 );
                 }
+
                 notifyListeners();
                 monitor.done();
 
@@ -321,7 +407,6 @@ public class SchemaChecker
         };
 
         job.setUser( true );
-        //        job.setPriority( Job.SHORT );
         job.schedule();
     }
 
@@ -389,7 +474,7 @@ public class SchemaChecker
         String superior = at.getSuperiorName();
         if ( ( superior != null ) && ( !"".equals( superior ) ) )
         {
-            AttributeTypeImpl superiorAT = schemaHandler.getAttributeType( superior );
+            AttributeTypeImpl superiorAT = Activator.getDefault().getSchemaHandler().getAttributeType( superior );
             if ( superiorAT == null )
             {
                 SchemaError error = new NonExistingATSuperiorError( at, superior );
@@ -429,7 +514,7 @@ public class SchemaChecker
         String syntaxOid = at.getSyntaxOid();
         if ( ( syntaxOid != null ) && ( !"".equals( syntaxOid ) ) )
         {
-            SyntaxImpl syntax = schemaHandler.getSyntax( syntaxOid );
+            SyntaxImpl syntax = Activator.getDefault().getSchemaHandler().getSyntax( syntaxOid );
             if ( syntax == null )
             {
                 SchemaError error = new NonExistingSyntaxError( at, syntaxOid );
@@ -449,7 +534,7 @@ public class SchemaChecker
         String equality = at.getEqualityName();
         if ( ( equality != null ) && ( !"".equals( equality ) ) )
         {
-            MatchingRuleImpl equalityMR = schemaHandler.getMatchingRule( equality );
+            MatchingRuleImpl equalityMR = Activator.getDefault().getSchemaHandler().getMatchingRule( equality );
             if ( equalityMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, equality,
@@ -470,7 +555,7 @@ public class SchemaChecker
         String ordering = at.getOrderingName();
         if ( ( ordering != null ) && ( !"".equals( ordering ) ) )
         {
-            MatchingRuleImpl orderingMR = schemaHandler.getMatchingRule( ordering );
+            MatchingRuleImpl orderingMR = Activator.getDefault().getSchemaHandler().getMatchingRule( ordering );
             if ( orderingMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, ordering,
@@ -491,7 +576,7 @@ public class SchemaChecker
         String substring = at.getSubstrName();
         if ( ( substring != null ) && ( !"".equals( substring ) ) )
         {
-            MatchingRuleImpl substringMR = schemaHandler.getMatchingRule( substring );
+            MatchingRuleImpl substringMR = Activator.getDefault().getSchemaHandler().getMatchingRule( substring );
             if ( substringMR == null )
             {
                 SchemaError error = new NonExistingMatchingRuleError( at, substring,
@@ -577,7 +662,7 @@ public class SchemaChecker
 
             for ( String superior : superiors )
             {
-                ObjectClassImpl superiorOC = schemaHandler.getObjectClass( superior );
+                ObjectClassImpl superiorOC = Activator.getDefault().getSchemaHandler().getObjectClass( superior );
                 if ( superiorOC == null )
                 {
                     SchemaError error = new NonExistingOCSuperiorError( oc, superior );
@@ -628,7 +713,8 @@ public class SchemaChecker
         {
             for ( String mandatoryATName : mandatoryATNames )
             {
-                AttributeTypeImpl mandatoryAT = schemaHandler.getAttributeType( mandatoryATName );
+                AttributeTypeImpl mandatoryAT = Activator.getDefault().getSchemaHandler().getAttributeType(
+                    mandatoryATName );
                 if ( mandatoryAT == null )
                 {
                     SchemaError error = new NonExistingMandatoryATError( oc, mandatoryATName );
@@ -646,7 +732,8 @@ public class SchemaChecker
 
             for ( String optionalATName : optionalATNames )
             {
-                AttributeTypeImpl optionalAT = schemaHandler.getAttributeType( optionalATName );
+                AttributeTypeImpl optionalAT = Activator.getDefault().getSchemaHandler().getAttributeType(
+                    optionalATName );
                 if ( optionalAT == null )
                 {
                     SchemaError error = new NonExistingOptionalATError( oc, optionalATName );
@@ -712,14 +799,14 @@ public class SchemaChecker
         List results = new ArrayList<Object>();
 
         // Attribute types
-        List<?> atList = schemaHandler.getAttributeTypeList( id );
+        List<?> atList = Activator.getDefault().getSchemaHandler().getAttributeTypeList( id );
         if ( ( atList != null ) && ( atList.size() >= 1 ) )
         {
             results.addAll( atList );
         }
 
         // Object classes
-        List<?> ocList = schemaHandler.getObjectClassList( id );
+        List<?> ocList = Activator.getDefault().getSchemaHandler().getObjectClassList( id );
         if ( ( ocList != null ) && ( ocList.size() >= 1 ) )
         {
             results.addAll( ocList );

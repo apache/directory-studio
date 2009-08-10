@@ -25,8 +25,6 @@ import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
-import org.apache.directory.studio.schemaeditor.model.Project;
-import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaCheckerListener;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor;
@@ -74,28 +72,6 @@ public class ProblemsViewController
         }
     };
 
-    /** The ProjectHandlerListener */
-    private ProjectsHandlerListener projectsHandlerListener = new ProjectsHandlerAdapter()
-    {
-        public void openProjectChanged( Project oldProject, Project newProject )
-        {
-            if ( oldProject != null )
-            {
-                removeSchemaCheckerListener( oldProject );
-            }
-
-            if ( newProject != null )
-            {
-                addSchemaCheckerListener( newProject );
-            }
-            else
-            {
-                view.setErrorsAndWarningsCount( 0, 0 );
-                view.getViewer().setInput( null );
-            }
-        }
-    };
-
 
     /**
      * Creates a new instance of SchemasViewController.
@@ -107,51 +83,10 @@ public class ProblemsViewController
     {
         this.view = view;
 
-        // ProjectsHandlerListener
-        Activator.getDefault().getProjectsHandler().addListener( projectsHandlerListener );
-
         // SchemaCheckerListener
-        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
-        if ( project != null )
-        {
-            addSchemaCheckerListener( project );
-        }
+        Activator.getDefault().getSchemaChecker().addListener( schemaCheckerListener );
 
         initDoubleClickListener();
-    }
-
-
-    /**
-     * Adds the SchemaCheckerListener.
-     *
-     * @param project
-     *      the project
-     */
-    private void addSchemaCheckerListener( Project project )
-    {
-        SchemaChecker schemaChecker = project.getSchemaChecker();
-        if ( schemaChecker != null )
-        {
-            schemaChecker.addListener( schemaCheckerListener );
-            schemaChecker.enableModificationsListening();
-        }
-    }
-
-
-    /**
-     * Removes the SchemaCheckerListener.
-     *
-     * @param project
-     *      the project
-     */
-    private void removeSchemaCheckerListener( Project project )
-    {
-        SchemaChecker schemaChecker = project.getSchemaChecker();
-        if ( schemaChecker != null )
-        {
-            schemaChecker.removeListener( schemaCheckerListener );
-            schemaChecker.disableModificationsListening();
-        }
     }
 
 
@@ -237,14 +172,7 @@ public class ProblemsViewController
      */
     public void dispose()
     {
-        // ProjectsHandlerListener
-        Activator.getDefault().getProjectsHandler().removeListener( projectsHandlerListener );
-
         // SchemaCheckerListener
-        Project project = Activator.getDefault().getProjectsHandler().getOpenProject();
-        if ( project != null )
-        {
-            removeSchemaCheckerListener( project );
-        }
+        Activator.getDefault().getSchemaChecker().removeListener( schemaCheckerListener );
     }
 }

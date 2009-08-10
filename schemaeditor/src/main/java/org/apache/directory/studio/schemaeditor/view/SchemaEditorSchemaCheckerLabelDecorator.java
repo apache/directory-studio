@@ -40,7 +40,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 
 /**
  * This class is the Schemas Editor Schema Checker Label Decorator. 
- * It displays specific icons overlays for attribute types and object classes.
+ * It displays specific icons overlays for attribute types and object classes 
+ * based on their state in the schema checker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -159,37 +160,40 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
      */
     public boolean childrenHasWarnings( List<TreeNode> children, SchemaChecker schemaChecker )
     {
-        for ( TreeNode child : children )
+        if ( children != null )
         {
-            if ( child instanceof AttributeTypeWrapper )
+            for ( TreeNode child : children )
             {
-                AttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
+                if ( child instanceof AttributeTypeWrapper )
+                {
+                    AttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
 
-                if ( schemaChecker.hasWarnings( at ) )
-                {
-                    return true;
-                }
-                else
-                {
-                    if ( childrenHasWarnings( child.getChildren(), schemaChecker ) )
+                    if ( schemaChecker.hasWarnings( at ) )
                     {
                         return true;
                     }
+                    else
+                    {
+                        if ( childrenHasWarnings( child.getChildren(), schemaChecker ) )
+                        {
+                            return true;
+                        }
+                    }
                 }
-            }
-            else if ( child instanceof ObjectClassWrapper )
-            {
-                ObjectClassImpl oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
+                else if ( child instanceof ObjectClassWrapper )
+                {
+                    ObjectClassImpl oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
 
-                if ( schemaChecker.hasWarnings( oc ) )
-                {
-                    return true;
-                }
-                else
-                {
-                    if ( childrenHasWarnings( child.getChildren(), schemaChecker ) )
+                    if ( schemaChecker.hasWarnings( oc ) )
                     {
                         return true;
+                    }
+                    else
+                    {
+                        if ( childrenHasWarnings( child.getChildren(), schemaChecker ) )
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -211,37 +215,40 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
     */
     public boolean childrenHasErrors( List<TreeNode> children, SchemaChecker schemaChecker )
     {
-        for ( TreeNode child : children )
+        if ( children != null )
         {
-            if ( child instanceof AttributeTypeWrapper )
+            for ( TreeNode child : children )
             {
-                AttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
+                if ( child instanceof AttributeTypeWrapper )
+                {
+                    AttributeTypeImpl at = ( ( AttributeTypeWrapper ) child ).getAttributeType();
 
-                if ( schemaChecker.hasErrors( at ) )
-                {
-                    return true;
-                }
-                else
-                {
-                    if ( childrenHasErrors( child.getChildren(), schemaChecker ) )
+                    if ( schemaChecker.hasErrors( at ) )
                     {
                         return true;
                     }
+                    else
+                    {
+                        if ( childrenHasErrors( child.getChildren(), schemaChecker ) )
+                        {
+                            return true;
+                        }
+                    }
                 }
-            }
-            else if ( child instanceof ObjectClassWrapper )
-            {
-                ObjectClassImpl oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
+                else if ( child instanceof ObjectClassWrapper )
+                {
+                    ObjectClassImpl oc = ( ( ObjectClassWrapper ) child ).getObjectClass();
 
-                if ( schemaChecker.hasErrors( oc ) )
-                {
-                    return true;
-                }
-                else
-                {
-                    if ( childrenHasErrors( child.getChildren(), schemaChecker ) )
+                    if ( schemaChecker.hasErrors( oc ) )
                     {
                         return true;
+                    }
+                    else
+                    {
+                        if ( childrenHasErrors( child.getChildren(), schemaChecker ) )
+                        {
+                            return true;
+                        }
                     }
                 }
             }

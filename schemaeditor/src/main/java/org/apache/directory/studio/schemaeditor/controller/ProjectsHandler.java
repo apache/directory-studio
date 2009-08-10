@@ -187,7 +187,7 @@ public class ProjectsHandler
         Project oldOpenProject = openProject;
         if ( oldOpenProject != null )
         {
-            openProject.setState( ProjectState.CLOSED );
+            oldOpenProject.setState( ProjectState.CLOSED );
         }
 
         openProject = project;
