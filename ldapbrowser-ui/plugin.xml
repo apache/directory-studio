@@ -17,8 +17,9 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<?eclipse version="3.0"?>
+<?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="org.apache.directory.studio.entryeditors" name="Entry Editors" schema="src/main/resources/entryEditors.exsd"/>
 
    <extension
          point="org.eclipse.ui.perspectives">
@@ -424,6 +425,19 @@
           %Decorator_BrowserViewLabelDecorator_description
        </description>
     </decorator>
+ </extension>
+ <extension
+       point="org.apache.directory.studio.entryeditors">
+    <entryEditor
+          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
+          description="Example Entry Editor"
+          editorId="%Editor_EntryEditor_id"
+          icon="resources/icons/browser_entryeditor.gif"
+          id="org.apache.directory.studio.exampleentryeditor"
+          name="Example Entry Editor"
+          priority="5"
+          multiWindow="false">
+    </entryEditor>
  </extension>
 
 </plugin>

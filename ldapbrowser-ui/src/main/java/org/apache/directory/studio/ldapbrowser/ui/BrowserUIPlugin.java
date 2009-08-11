@@ -23,10 +23,18 @@ package org.apache.directory.studio.ldapbrowser.ui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.PropertyResourceBundle;
 
+import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -61,6 +69,14 @@ public class BrowserUIPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+
+        // TODO: remove
+        Collection<EntryEditorExtension> entryEditorExtensions = getEntryEditorExtensions();
+        System.out.println( "Registered Entry Editors:" + entryEditorExtensions.size() );
+        for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
+        {
+            System.out.println( entryEditorExtension.toString() );
+        }
     }
 
 
@@ -175,5 +191,49 @@ public class BrowserUIPlugin extends AbstractUIPlugin
         }
 
         return properties;
+    }
+
+
+    /**
+     * Gets the entry editor extensions.
+     * 
+     * @return the entry editor extensions
+     */
+    public Collection<EntryEditorExtension> getEntryEditorExtensions()
+    {
+        Collection<EntryEditorExtension> entryEditorExtensions = new ArrayList<EntryEditorExtension>();
+
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+        IExtensionPoint extensionPoint = registry.getExtensionPoint( BrowserUIConstants.ENTRY_EDITOR_EXTENSION_POINT );
+        IConfigurationElement[] members = extensionPoint.getConfigurationElements();
+
+        // For each extension:
+        for ( int m = 0; m < members.length; m++ )
+        {
+            EntryEditorExtension bean = new EntryEditorExtension();
+            entryEditorExtensions.add( bean );
+
+            IConfigurationElement member = members[m];
+            IExtension extension = member.getDeclaringExtension();
+            String extendingPluginId = extension.getNamespaceIdentifier();
+
+            //proxy.member = member;
+            bean.setId( member.getAttribute( "id" ) );
+            bean.setName( member.getAttribute( "name" ) );
+            bean.setDescription( member.getAttribute( "description" ) );
+            String iconPath = member.getAttribute( "icon" );
+            ImageDescriptor icon = AbstractUIPlugin.imageDescriptorFromPlugin( extendingPluginId, iconPath );
+            if ( icon == null )
+            {
+                icon = ImageDescriptor.getMissingImageDescriptor();
+            }
+            bean.setIcon( icon );
+            bean.setClassName( member.getAttribute( "class" ) );
+            bean.setEditorId( member.getAttribute( "editorId" ) );
+            bean.setMultiWindow( "true".equalsIgnoreCase( member.getAttribute( "multiWindow" ) ) );
+            bean.setPriority( Integer.parseInt( member.getAttribute( "priority" ) ) );
+        }
+
+        return entryEditorExtensions;
     }
 }
