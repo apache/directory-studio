@@ -330,6 +330,7 @@ public class ServersHandler
                 // Saving the servers to the temp servers file
                 OutputStream outputStream = new FileOutputStream( store );
                 ServersHandlerIO.write( serversList, outputStream );
+                outputStream.close();
             }
             catch ( FileNotFoundException e )
             {
