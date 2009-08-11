@@ -346,7 +346,8 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        monitor.beginTask( Messages.getString("ServerConfigurationEditor.SavingTheServerConfiguration"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
+        monitor.beginTask(
+            Messages.getString( "ServerConfigurationEditor.SavingTheServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
 
         // Saving the editor pages
         saveEditorPages();
@@ -397,8 +398,9 @@ public class ServerConfigurationEditor extends FormEditor
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( Messages.getString("ServerConfigurationEditor.Error") ); //$NON-NLS-1$
-            messageBox.setMessage( Messages.getString("ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk") + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
+            messageBox.setText( Messages.getString( "ServerConfigurationEditor.Error" ) ); //$NON-NLS-1$
+            messageBox
+                .setMessage( Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
             messageBox.open();
             setDirty( true );
             monitor.done();
@@ -503,7 +505,9 @@ public class ServerConfigurationEditor extends FormEditor
                 {
                     try
                     {
-                        monitor.beginTask( Messages.getString("ServerConfigurationEditor.SavingTheServerConfiguration"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
+                        monitor
+                            .beginTask(
+                                Messages.getString( "ServerConfigurationEditor.SavingTheServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
                         saveEditorPages();
                         boolean success = doSaveAs( monitor );
                         setDirty( !success );
@@ -513,8 +517,9 @@ public class ServerConfigurationEditor extends FormEditor
                     {
                         MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
                             .getShell(), SWT.OK | SWT.ICON_ERROR );
-                        messageBox.setText( Messages.getString("ServerConfigurationEditor.Error") ); //$NON-NLS-1$
-                        messageBox.setMessage( Messages.getString("ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk") + "\n" //$NON-NLS-1$ //$NON-NLS-2$
+                        messageBox.setText( Messages.getString( "ServerConfigurationEditor.Error" ) ); //$NON-NLS-1$
+                        messageBox.setMessage( Messages
+                            .getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$
                             + e.getMessage() );
                         messageBox.open();
                         setDirty( true );
@@ -528,8 +533,9 @@ public class ServerConfigurationEditor extends FormEditor
         {
             MessageBox messageBox = new MessageBox( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 SWT.OK | SWT.ICON_ERROR );
-            messageBox.setText( Messages.getString("ServerConfigurationEditor.Error") ); //$NON-NLS-1$
-            messageBox.setMessage( Messages.getString("ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk") + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
+            messageBox.setText( Messages.getString( "ServerConfigurationEditor.Error" ) ); //$NON-NLS-1$
+            messageBox
+                .setMessage( Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" + e.getMessage() ); //$NON-NLS-1$ //$NON-NLS-2$
             messageBox.open();
             return;
         }
@@ -602,8 +608,10 @@ public class ServerConfigurationEditor extends FormEditor
                 final File externalFile = new File( path );
                 if ( externalFile.exists() )
                 {
-                    String question = NLS.bind( Messages.getString("ServerConfigurationEditor.TheFileAlreadyExistsReplace" ), path ); //$NON-NLS-1$
-                    MessageDialog overwriteDialog = new MessageDialog( shell, Messages.getString("ServerConfigurationEditor.Question"), null, question, //$NON-NLS-1$
+                    String question = NLS.bind( Messages
+                        .getString( "ServerConfigurationEditor.TheFileAlreadyExistsReplace" ), path ); //$NON-NLS-1$
+                    MessageDialog overwriteDialog = new MessageDialog( shell, Messages
+                        .getString( "ServerConfigurationEditor.Question" ), null, question, //$NON-NLS-1$
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
                     int overwrite = overwriteDialog.open();
