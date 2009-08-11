@@ -264,6 +264,13 @@
             name="%PrefPage_SearchLogsPreferencePage_name">
          <keywordReference id="%Keyword_LDAP_id"/>
       </page>
+      <page
+            category="%PrefPage_MainPreferencePage_id"
+            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.EntryEditorsPreferencePage"
+            id="%PrefPage_EntryEditorsPreferencePage_id"
+            name="%PrefPage_EntryEditorsPreferencePage_name">
+         <keywordReference id="%Keyword_LDAP_id"/>
+      </page>
    </extension>
 
 	<extension
@@ -402,9 +409,6 @@
              style="push"/>
     </actionSet>
  </extension>
-
-
-
  <extension
        point="org.eclipse.ui.decorators">
     <decorator
