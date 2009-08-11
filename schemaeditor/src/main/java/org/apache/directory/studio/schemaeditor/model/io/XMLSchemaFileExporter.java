@@ -20,17 +20,13 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
-import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.AttributeTypeImpl;
 import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
@@ -40,8 +36,8 @@ import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 
 /**
@@ -96,8 +92,9 @@ public class XMLSchemaFileExporter
      *      the schema to convert
      * @return
      *      the corresponding source code representation
+     * @throws IOException 
      */
-    public static String toXml( Schema schema )
+    public static String toXml( Schema schema ) throws IOException
     {
         // Creating the Document
         Document document = DocumentHelper.createDocument();
@@ -105,7 +102,18 @@ public class XMLSchemaFileExporter
         // Adding the schema
         addSchema( schema, document );
 
-        return styleDocument( document ).asXML();
+        // Creating the output stream we're going to put the XML in
+        OutputStream os = new ByteArrayOutputStream();
+        OutputFormat outformat = OutputFormat.createPrettyPrint();
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
+
+        // Writing the XML.
+        XMLWriter writer = new XMLWriter( os, outformat );
+        writer.write( document );
+        writer.flush();
+        writer.close();
+
+        return os.toString();
     }
 
 
@@ -117,15 +125,27 @@ public class XMLSchemaFileExporter
      *      the array of schemas to convert
      * @return
      *      the corresponding source code representation
+     * @throws IOException 
      */
-    public static String toXml( Schema[] schemas )
+    public static String toXml( Schema[] schemas ) throws IOException
     {
         // Creating the Document and the 'root' Element
         Document document = DocumentHelper.createDocument();
 
         addSchemas( schemas, document );
 
-        return styleDocument( document ).asXML();
+        // Creating the output stream we're going to put the XML in
+        OutputStream os = new ByteArrayOutputStream();
+        OutputFormat outformat = OutputFormat.createPrettyPrint();
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
+
+        // Writing the XML.
+        XMLWriter writer = new XMLWriter( os, outformat );
+        writer.write( document );
+        writer.flush();
+        writer.close();
+
+        return os.toString();
     }
 
 
@@ -552,45 +572,5 @@ public class XMLSchemaFileExporter
         {
             syntaxNode.addAttribute( HUMAN_READABLE_TAG, BOOLEAN_FALSE );
         }
-    }
-
-
-    /**
-     * XML Pretty Printer XSLT Transformation
-     * 
-     * @param document
-     *      the Dom4j Document
-     * @return
-     */
-    private static Document styleDocument( Document document )
-    {
-        // load the transformer using JAXP
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-        try
-        {
-            transformer = factory.newTransformer( new StreamSource( Activator.class
-                .getResourceAsStream( "XmlFileFormat.xslt" ) ) );
-        }
-        catch ( TransformerConfigurationException e1 )
-        {
-            // Will never occur
-        }
-
-        // now lets style the given document
-        DocumentSource source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        try
-        {
-            transformer.transform( source, result );
-        }
-        catch ( TransformerException e )
-        {
-            // Will never occur
-        }
-
-        // return the transformed document
-        Document transformedDoc = result.getDocument();
-        return transformedDoc;
     }
 }
