@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.model;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -79,6 +80,8 @@ public interface ServerXmlIO
      *      the server configuration
      * @return
      *      the corresponding XML representation
+     * @throws IOException 
+     *      if an error occurs when converting the server configuration as XML
      */
-    public String toXml( ServerConfiguration serverConfiguration );
+    public String toXml( ServerConfiguration serverConfiguration ) throws IOException;
 }

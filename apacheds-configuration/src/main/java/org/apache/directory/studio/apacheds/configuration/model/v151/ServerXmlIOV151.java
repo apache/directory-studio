@@ -20,7 +20,10 @@
 package org.apache.directory.studio.apacheds.configuration.model.v151;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +33,6 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
-import javax.xml.transform.TransformerException;
 
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.apache.directory.studio.apacheds.configuration.model.AbstractServerXmlIO;
@@ -40,7 +42,9 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOExcep
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 
 /**
@@ -888,7 +892,7 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
     /* (non-Javadoc)
      * @see org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO#toXml(org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration)
      */
-    public String toXml( ServerConfiguration serverConfiguration )
+    public String toXml( ServerConfiguration serverConfiguration ) throws IOException
     {
         Document document = DocumentHelper.createDocument();
         Element root = document.addElement( "beans" ); //$NON-NLS-1$
@@ -925,21 +929,23 @@ public class ServerXmlIOV151 extends AbstractServerXmlIO implements ServerXmlIO
 
         // CustomEditors Bean
         createCustomEditorsBean( root );
-
-        Document stylizedDocument = null;
-        try
-        {
-            stylizedDocument = styleDocument( document );
-        }
-        catch ( TransformerException e )
-        {
-            // Will never occur
-        }
-
-        stylizedDocument.addDocType( "beans", "-//SPRING//DTD BEAN//EN", //$NON-NLS-1$ //$NON-NLS-2$
+        
+        // Adding specific doctype
+        document.addDocType( "beans", "-//SPRING//DTD BEAN//EN", //$NON-NLS-1$ //$NON-NLS-2$
             "http://www.springframework.org/dtd/spring-beans.dtd" ); //$NON-NLS-1$
 
-        return stylizedDocument.asXML();
+        // Creating the output stream we're going to put the XML in
+        OutputStream os = new ByteArrayOutputStream();
+        OutputFormat outformat = OutputFormat.createPrettyPrint();
+        outformat.setEncoding( "UTF-8" ); //$NON-NLS-1$
+        
+        // Writing the XML.
+        XMLWriter writer = new XMLWriter( os, outformat );
+        writer.write( document );
+        writer.flush();
+        writer.close();
+
+        return os.toString();
     }
 
 

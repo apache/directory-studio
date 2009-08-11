@@ -482,8 +482,9 @@ public class ServerConfigurationEditor extends FormEditor
      *      the {@link FileEditorInput}
      * @throws ServerConfigurationWriterException 
      * @throws CoreException 
+     * @throws IOException 
      */
-    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor ) throws CoreException
+    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor ) throws CoreException, IOException
     {
         String xml = serverXmlIO.toXml( serverConfiguration );
         fei.getFile().setContents( new ByteArrayInputStream( xml.getBytes() ), true, true, monitor );

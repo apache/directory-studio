@@ -30,19 +30,12 @@ import java.util.Iterator;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.shared.ldap.ldif.LdifReader;
 import org.apache.directory.shared.ldap.util.StringTools;
-import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
 import org.apache.directory.studio.apacheds.configuration.StudioEntityResolver;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
 import org.dom4j.io.SAXReader;
 import org.eclipse.osgi.util.NLS;
 
@@ -251,36 +244,6 @@ public abstract class AbstractServerXmlIO implements ServerXmlIO
         }
 
         return attributes;
-    }
-
-
-    /**
-     * XML Pretty Printer XSLT Tranformation
-     * 
-     * @param document
-     *      the Dom4j Document
-     * @return
-     *      the stylized Document
-     * @throws TransformerException 
-     */
-    public static Document styleDocument( Document document ) throws TransformerException
-    {
-        // load the transformer using JAXP
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = null;
-
-        transformer = factory.newTransformer( new StreamSource( ApacheDSConfigurationPlugin.class
-            .getResourceAsStream( "template.xslt" ) ) ); //$NON-NLS-1$
-
-        // now lets style the given document
-        DocumentSource source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-
-        transformer.transform( source, result );
-
-        // return the transformed document
-        Document transformedDoc = result.getDocument();
-        return transformedDoc;
     }
 
 
