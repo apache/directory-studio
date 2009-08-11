@@ -54,7 +54,7 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
 
 
     /**
-     * Creates a new instance of SearchResultEditorPreferencePage.
+     * Creates a new instance of ModificationLogsPreferencePage.
      */
     public ModificationLogsPreferencePage()
     {
