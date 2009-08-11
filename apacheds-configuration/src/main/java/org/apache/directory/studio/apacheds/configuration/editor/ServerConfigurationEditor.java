@@ -448,7 +448,6 @@ public class ServerConfigurationEditor extends FormEditor
                     break;
                 case VERSION_1_5_0:
                     generalPage.save();
-                    authenticationPage.save();
                     partitionsPage.save();
                     interceptorsPage.save();
                     extendedOperationsPage.save();
