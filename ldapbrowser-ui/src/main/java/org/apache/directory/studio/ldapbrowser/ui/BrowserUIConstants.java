@@ -56,7 +56,13 @@ public interface BrowserUIConstants
     public static final String PREFERENCEPAGEID_SEARCHLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_SearchLogsPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_TEXTFORMATS = BrowserUIPlugin.getDefault().getPluginProperties()
-    .getString( "PrefPage_TextFormatsPreferencePage_id" ); //$NON-NLS-1$
+        .getString( "PrefPage_TextFormatsPreferencePage_id" ); //$NON-NLS-1$
+
+    /** The constant used to identify the "user user priorities" preference  */
+    public static final String PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES = "useUserPriorities"; //$NON-NLS-1$
+
+    /** The constant used to identify the "user user priorities" preference  */
+    public static final String PREFERENCE_ENTRYEDITORS_USER_PRIORITIES = "userPriorities"; //$NON-NLS-1$
 
     public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif"; //$NON-NLS-1$
     public static final String IMG_BATCH = "resources/icons/batch.gif"; //$NON-NLS-1$
@@ -194,7 +200,7 @@ public interface BrowserUIConstants
     public static final String WIZARD_EXPORT_EXCEL = BrowserUIPlugin.getDefault().getPluginProperties().getString(
         "ExportWizard_ExportExcelWizard_id" ); //$NON-NLS-1$
     public static final String WIZARD_EXPORT_ODF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-    "ExportWizard_ExportOdfWizard_id" ); //$NON-NLS-1$
+        "ExportWizard_ExportOdfWizard_id" ); //$NON-NLS-1$
     public static final String WIZARD_EXPORT_LDIF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
         "ExportWizard_ExportLdifWizard_id" ); //$NON-NLS-1$
     public static final String WIZARD_IMPORT_CONNECTIONS = BrowserUIPlugin.getDefault().getPluginProperties()

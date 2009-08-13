@@ -46,6 +46,10 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         // Search Result Editor
         store.setDefault( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN, true );
         store.setDefault( BrowserUIConstants.PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS, true );
+
+        // Entry Editors
+        store.setDefault( BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES, false );
+        store.setDefault( BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES, "" );
     }
 
 }

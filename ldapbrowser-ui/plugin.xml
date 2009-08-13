@@ -442,6 +442,16 @@
           priority="5"
           multiWindow="false">
     </entryEditor>
+    <entryEditor
+          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
+          description="Example Entry Editor"
+          editorId="%Editor_EntryEditor_id"
+          icon="resources/icons/browser_entryeditor.gif"
+          id="org.apache.directory.studio.exampleentryeditorsuperior"
+          name="Example Entry Editor Superior"
+          priority="1"
+          multiWindow="false">
+    </entryEditor>
  </extension>
 
 </plugin>
