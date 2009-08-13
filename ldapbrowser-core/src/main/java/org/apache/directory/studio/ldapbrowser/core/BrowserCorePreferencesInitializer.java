@@ -93,7 +93,8 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
                 new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.23" ), // Fax //$NON-NLS-1$
                 new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.28" ), // JPEG //$NON-NLS-1$
                 new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.40" ), // Octet String //$NON-NLS-1$
-                new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.49" ) // Supported Algorithm //$NON-NLS-1$
+                new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.49" ), // Supported Algorithm //$NON-NLS-1$
+                new BinarySyntax( "1.3.6.1.1.16.1" ), // UUID //$NON-NLS-1$
             };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultBinarySyntaxes( defaultBinarySyntaxes );
     }

@@ -20,12 +20,12 @@
 
 package org.apache.directory.studio.valueeditors.uuid;
 
+
 import java.util.UUID;
 
+import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor;
-
-
+import org.apache.directory.studio.valueeditors.HexValueEditor;
 
 
 /**
@@ -38,33 +38,35 @@ import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class InPlaceUuidValueEditor extends AbstractInPlaceStringValueEditor
+public class InPlaceUuidValueEditor extends HexValueEditor
 {
+    private static final String UUID_REGEX = "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"; //$NON-NLS-1$
+
 
     /**
      * {@inheritDoc}
      */
     public String getDisplayValue( IValue value )
     {
-    	// OpenLDAP returns entryUUID as a String instead of byte[]
-    	if( value.getRawValue() instanceof String )
-    	{
-    		return ( String ) value.getRawValue();	
-    	}
-    	
-        byte[] displayValue = value.getBinaryValue();
-
         if ( !showRawValues() )
         {
-        	if( displayValue == null )
-        	{
-        		return "NULL";
-        	}
-        	
-        	return UUID.nameUUIDFromBytes( displayValue ).toString(); //$NON-NLS-1$ //$NON-NLS-2$
+            Object rawValue = super.getRawValue( value );
+            if ( rawValue instanceof byte[] )
+            {
+                byte[] bytes = ( byte[] ) rawValue;
+                String string = StringTools.utf8ToString( bytes );
+                if ( string.matches( UUID_REGEX ) || StringTools.isEmpty( string ) )
+                {
+                    return string;
+                }
+                else
+                {
+                    return UUID.nameUUIDFromBytes( bytes ).toString();
+                }
+            }
         }
 
-        return "Binay entryUUID value";
+        return super.getDisplayValue( value );
     }
 
 }
