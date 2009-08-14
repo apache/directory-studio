@@ -42,7 +42,11 @@ import org.eclipse.ui.PlatformUI;
 
 public class EntryEditorMenuManager extends MenuManager implements IMenuListener
 {
-    protected ISelectionProvider selectionProvider;
+    /** The selection provider */
+    private ISelectionProvider selectionProvider;
+
+    /** The OpenEntryEditorsPreferencePageAction */
+    private OpenEntryEditorsPreferencePageAction openEntryEditorsPreferencePageAction;
 
 
     /**
@@ -53,6 +57,7 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
     {
         super( "Open With" );
         this.selectionProvider = selectionProvider;
+        openEntryEditorsPreferencePageAction = new OpenEntryEditorsPreferencePageAction();
         addMenuListener( this );
     }
 
@@ -78,9 +83,7 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
         add( new Separator() );
 
         // Preferences Action
-        add( new Action( "Preferences..." )
-        {
-        } );
+        add( openEntryEditorsPreferencePageAction );
     }
 
 

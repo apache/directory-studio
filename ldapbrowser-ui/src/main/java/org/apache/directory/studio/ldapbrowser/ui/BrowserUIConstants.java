@@ -49,6 +49,8 @@ public interface BrowserUIConstants
         "PrefPage_BrowserPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_ENTRYEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_EntryEditorPreferencePage_id" ); //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_ENTRYEDITORS = BrowserUIPlugin.getDefault().getPluginProperties()
+    .getString( "PrefPage_EntryEditorsPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_SEARCHRESULTEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_SearchResultEditorPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_MODIFICATIONLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
