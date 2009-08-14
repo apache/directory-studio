@@ -21,16 +21,12 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
+import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.preference.PreferencePage;
@@ -63,56 +59,12 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class EntryEditorsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
-    /** The priorities separator */
-    private static final String PRIORITIES_SEPARATOR = ",";
 
     /** A flag indicating whether or not to use the user's priority for entry editors */
     private boolean useUserPriority = false;
 
     /** The ordered list of entry editors */
     private List<EntryEditorExtension> sortedEntryEditorsList;
-
-    /** */
-    private Comparator<EntryEditorExtension> entryEditorComparator = new Comparator<EntryEditorExtension>()
-    {
-        public int compare( EntryEditorExtension o1, EntryEditorExtension o2 )
-        {
-            if ( o1 == null )
-            {
-                return ( o2 == null ) ? 0 : -1;
-            }
-
-            if ( o2 == null )
-            {
-                return 1;
-            }
-
-            // Getting priorities
-            int o1Priority = o1.getPriority();
-            int o2Priority = o2.getPriority();
-
-            if ( o1Priority != o2Priority )
-            {
-                return ( o1Priority > o2Priority ) ? -1 : 1;
-            }
-
-            // Getting names
-            String o1Name = o1.getName();
-            String o2Name = o2.getName();
-
-            if ( o1Name == null )
-            {
-                return ( o2Name == null ) ? 0 : -1;
-            }
-
-            if ( o2 == null )
-            {
-                return 1;
-            }
-
-            return o1Name.compareTo( o2Name );
-        }
-    };
 
     // UI fields
     private TableViewer entryEditorsTableViewer;
@@ -253,70 +205,12 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     private void sortEntryEditorsByUserPriority()
     {
-        // Getting the user's priorities
-        String userPriorities = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES );
-        if ( ( userPriorities != null ) && ( !"".equals( userPriorities ) ) )
-        {
-            // Getting all entry editors
-            Collection<EntryEditorExtension> entryEditorExtensions = BrowserUIPlugin.getDefault()
-                .getEntryEditorManager().getEntryEditorExtensions();
+        // Getting the entry editors sorted by user's priority
+        sortedEntryEditorsList = new ArrayList<EntryEditorExtension>( BrowserUIPlugin.getDefault()
+            .getEntryEditorManager().getEntryEditorExtensionsSortedByUserPriority() );
 
-            String[] splittedUserPriorities = userPriorities.split( PRIORITIES_SEPARATOR );
-            if ( ( splittedUserPriorities != null ) && ( splittedUserPriorities.length > 0 ) )
-            {
-
-                // Creating a map where entry editors are accessible via their ID
-                Map<String, EntryEditorExtension> entryEditorsMap = new HashMap<String, EntryEditorExtension>();
-                for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
-                {
-                    entryEditorsMap.put( entryEditorExtension.getId(), entryEditorExtension );
-                }
-
-                // Creating the sorted entry editors list
-                sortedEntryEditorsList = new ArrayList<EntryEditorExtension>( entryEditorExtensions.size() );
-
-                // Adding the entry editors according to the user's priority
-                for ( String entryEditorId : splittedUserPriorities )
-                {
-                    // Verifying the entry editor is present in the map
-                    if ( entryEditorsMap.containsKey( entryEditorId ) )
-                    {
-                        // Adding it to the sorted list
-                        sortedEntryEditorsList.add( entryEditorsMap.get( entryEditorId ) );
-                    }
-                }
-            }
-
-            // If some new plugins have been added recently, their new 
-            // entry editors may not be present in the string stored in 
-            // the preferences.
-            // We are then adding them at the end of the sorted list.
-
-            // Creating a list of remaining entry editors
-            List<EntryEditorExtension> remainingEntryEditors = new ArrayList<EntryEditorExtension>();
-            for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
-            {
-                // Verifying the entry editor is present in the sorted list
-                if ( !sortedEntryEditorsList.contains( entryEditorExtension ) )
-                {
-                    // Adding it to the remaining list
-                    remainingEntryEditors.add( entryEditorExtension );
-                }
-            }
-
-            // Sorting the remaining entry editors based on their priority
-            Collections.sort( remainingEntryEditors, entryEditorComparator );
-
-            // Adding the remaining entry editors
-            for ( EntryEditorExtension entryEditorExtension : remainingEntryEditors )
-            {
-                sortedEntryEditorsList.add( entryEditorExtension );
-            }
-
-            // Assigning the sorted editors to the viewer
-            entryEditorsTableViewer.setInput( sortedEntryEditorsList );
-        }
+        // Assigning the sorted editors to the viewer
+        entryEditorsTableViewer.setInput( sortedEntryEditorsList );
     }
 
 
@@ -325,21 +219,9 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     private void sortEntryEditorsByDefaultPriority()
     {
-        // Getting all entry editors
-        Collection<EntryEditorExtension> entryEditorExtensions = BrowserUIPlugin.getDefault().getEntryEditorManager()
-            .getEntryEditorExtensions();
-
-        // Creating the sorted entry editors list
-        sortedEntryEditorsList = new ArrayList<EntryEditorExtension>( entryEditorExtensions.size() );
-
-        // Adding the remaining entry editors
-        for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
-        {
-            sortedEntryEditorsList.add( entryEditorExtension );
-        }
-
-        // Sorting the remaining entry editors based on their priority
-        Collections.sort( sortedEntryEditorsList, entryEditorComparator );
+        // Getting the entry editors sorted by default priority
+        sortedEntryEditorsList = new ArrayList<EntryEditorExtension>( BrowserUIPlugin.getDefault()
+            .getEntryEditorManager().getEntryEditorExtensionsSortedByDefaultPriority() );
 
         // Assigning the sorted editors to the viewer
         entryEditorsTableViewer.setInput( sortedEntryEditorsList );
@@ -427,6 +309,22 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         }
     }
 
+
+    /**
+     * Updates the state of the buttons.
+     */
+    private void updateButtonsState()
+    {
+        StructuredSelection selection = ( StructuredSelection ) entryEditorsTableViewer.getSelection();
+        if ( selection.size() == 1 )
+        {
+            EntryEditorExtension entryEditor = ( EntryEditorExtension ) selection.getFirstElement();
+
+            // Updating the state of the buttons
+            updateButtonsState( entryEditor );
+        }
+    }
+
     /**
      * This enum is used to determine in which direction the entry editor
      * should be moved.
@@ -453,7 +351,7 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
             StringBuilder sb = new StringBuilder();
             for ( EntryEditorExtension entryEditor : sortedEntryEditorsList )
             {
-                sb.append( entryEditor.getId() + PRIORITIES_SEPARATOR );
+                sb.append( entryEditor.getId() + EntryEditorManager.PRIORITIES_SEPARATOR );
             }
 
             if ( sb.length() > 0 )
@@ -485,6 +383,8 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         {
             sortEntryEditorsByDefaultPriority();
         }
+
+        updateButtonsState();
 
         super.performDefaults();
     }
