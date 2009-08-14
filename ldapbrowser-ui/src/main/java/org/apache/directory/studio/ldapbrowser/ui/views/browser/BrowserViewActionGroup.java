@@ -33,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.CopyDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsCsvAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyEntryAsLdifAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.CopyUrlAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.EntryEditorMenuManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.LocateEntryInDitAction;
@@ -41,6 +42,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.OpenEntryEditorAction;
 import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -162,9 +164,12 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
     /** The Constant exportOdfAction. */
     private static final String exportOdfAction = "exportOdfAction"; //$NON-NLS-1$
-    
+
     /** The Constant fetchOperationalAttributesAction. */
     private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction"; //$NON-NLS-1$
+
+    /** The Constant openEntryEditorAction. */
+    private static final String openEntryEditorAction = "openEntryEditor"; //$NON-NLS-1$
 
 
     /**
@@ -240,6 +245,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         browserActionMap.put( fetchOperationalAttributesAction, new BrowserViewActionProxy( viewer,
             new FetchOperationalAttributesAction() ) );
+
+        browserActionMap.put( openEntryEditorAction, new BrowserViewActionProxy( viewer, new OpenEntryEditorAction() ) );
     }
 
 
@@ -311,6 +318,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // navigation
+        menuManager.add( browserActionMap.get( openEntryEditorAction ) );
+        MenuManager openWithEntryEditorMenuManager = new EntryEditorMenuManager( mainWidget.getViewer() );
+        menuManager.add( openWithEntryEditorMenuManager );
         BrowserViewActionProxy leid = ( BrowserViewActionProxy ) browserActionMap.get( locateEntryInDitAction );
         leid.setImageDescriptor( leid.getAction().getImageDescriptor() );
         menuManager.add( leid );
