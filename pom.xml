@@ -449,6 +449,11 @@
       <version>3.5.0.I20090514-0808</version>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.compare</groupId>
+      <artifactId>core</artifactId>
+      <version>3.5.0.I20090430-0408</version>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>boot</artifactId>
       <version>3.1.100.v20080218</version>
@@ -649,37 +654,37 @@
       <type>zip</type>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2.artifact</groupId>
+      <groupId>org.eclipse.equinox.p2.artifact</groupId>
       <artifactId>repository</artifactId>
       <version>1.0.100.v20090527-1812</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2</groupId>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>core</artifactId>
       <version>1.0.100.v20090520-1905</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2</groupId>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>engine</artifactId>
       <version>1.0.100.v20090525</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2</groupId>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>jarprocessor</artifactId>
       <version>1.0.100.v20090520-1905</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2</groupId>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>metadata</artifactId>
       <version>1.0.100.v20090525</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2.metadata</groupId>
+      <groupId>org.eclipse.equinox.p2.metadata</groupId>
       <artifactId>repository</artifactId>
       <version>1.0.100.v20090525</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.p2</groupId>
+      <groupId>org.eclipse.equinox.p2</groupId>
       <artifactId>repository</artifactId>
       <version>1.0.0.v20090601-1921</version>
     </dependency>
