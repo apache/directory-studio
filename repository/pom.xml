@@ -211,6 +211,18 @@
       <artifactId>ui</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse</groupId>
+      <artifactId>ecf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ecf</groupId>
+      <artifactId>filetransfer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.ecf</groupId>
+      <artifactId>identity</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.equinox</groupId>
       <artifactId>app</artifactId>
     </dependency>
