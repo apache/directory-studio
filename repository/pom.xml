@@ -110,6 +110,10 @@
       <artifactId>compare</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.compare</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>boot</artifactId>
     </dependency>
