@@ -130,6 +130,14 @@
       <artifactId>databinding</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.core.databinding</groupId>
+      <artifactId>observable</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core.databinding</groupId>
+      <artifactId>property</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>expressions</artifactId>
     </dependency>
@@ -253,6 +261,34 @@
       <groupId>org.eclipse.equinox.launcher.win32.win32</groupId>
       <artifactId>x86</artifactId>
       <type>zip</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.artifact</groupId>
+      <artifactId>repository</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>engine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>jarprocessor</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>metadata</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2.metadata</groupId>
+      <artifactId>repository</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.equinox.p2</groupId>
+      <artifactId>repository</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.equinox</groupId>
