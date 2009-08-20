@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.equinox.p2.metadata</groupId>
+  <artifactId>repository</artifactId>
+  <version>1.0.100.v20090525</version>
+  <versioning>
+    <versions>
+      <version>1.0.100.v20090525</version>
+    </versions>
+    <lastUpdated>20090819134204</lastUpdated>
+  </versioning>
+</metadata>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.ui.views.properties</groupId>
+  <artifactId>tabbed</artifactId>
+  <version>3.5.0.I20090429-1800</version>
+</project>

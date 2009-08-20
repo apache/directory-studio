@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+  <groupId>org.eclipse.equinox.p2</groupId>
+  <artifactId>jarprocessor</artifactId>
+  <version>1.0.100.v20090520-1905</version>
+  <versioning>
+    <versions>
+      <version>1.0.100.v20090520-1905</version>
+    </versions>
+    <lastUpdated>20090819134201</lastUpdated>
+  </versioning>
+</metadata>

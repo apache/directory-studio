@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.apache.directory.studio</groupId>
-  <artifactId>launcher-macosx</artifactId>
-  <packaging>tar.gz</packaging>
-  <version>1.4.0</version>
-</project>

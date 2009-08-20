@@ -63,11 +63,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.directory.studio</groupId>
-      <artifactId>launcher-linux-ppc</artifactId>
-      <type>tar.gz</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.studio</groupId>
       <artifactId>launcher-macosx</artifactId>
       <type>tar.gz</type>
     </dependency>
@@ -141,10 +136,6 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>filesystem</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.core.filesystem.linux</groupId>
-      <artifactId>ppc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.core.filesystem.linux</groupId>
@@ -242,11 +233,6 @@
     <dependency>
       <groupId>org.eclipse.equinox.launcher.carbon</groupId>
       <artifactId>macosx</artifactId>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.equinox.launcher.gtk.linux</groupId>
-      <artifactId>ppc</artifactId>
       <type>zip</type>
     </dependency>
     <dependency>
@@ -380,10 +366,6 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.swt.gtk.linux</groupId>
-      <artifactId>ppc</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.swt.gtk.linux</groupId>
       <artifactId>x86</artifactId>
     </dependency>
     <dependency>
@@ -492,8 +474,12 @@
       <artifactId>ui</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.mortbay</groupId>
-      <artifactId>jetty</artifactId>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>util</artifactId>
     </dependency>
     
     <!-- Eclipse language packs -->
