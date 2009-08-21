@@ -981,13 +981,13 @@
     <dependency>
       <groupId>org.eclipse.languagepack</groupId>
       <artifactId>BabelLanguagePack-eclipse-de</artifactId>
-      <version>3.4.0.v20090208043401</version>
+      <version>3.5.0.v20090620043401</version>
       <type>zip</type>
     </dependency>
     <dependency>
       <groupId>org.eclipse.languagepack</groupId>
       <artifactId>BabelLanguagePack-eclipse-fr</artifactId>
-      <version>3.4.0.v20090208043401</version>
+      <version>3.5.0.v20090620043401</version>
       <type>zip</type>
     </dependency>
     
