@@ -908,7 +908,7 @@
     <dependency>
       <groupId>org.eclipse.ui.navigator</groupId>
       <artifactId>resources</artifactId>
-      <version>3.4.0.I20090525-2000</version>
+      <version>3.4.0.I20090525-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
@@ -918,7 +918,7 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>views</artifactId>
-      <version>3.4.0.I20090525-2000</version>
+      <version>3.4.0.I20090525-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.views.properties</groupId>
