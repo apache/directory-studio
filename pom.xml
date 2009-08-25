@@ -888,12 +888,12 @@
     <dependency>
       <groupId>org.eclipse.ui</groupId>
       <artifactId>ide</artifactId>
-      <version>3.5.0.I20090525-2000</version>
+      <version>3.5.0.I20090525-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui.ide</groupId>
       <artifactId>application</artifactId>
-      <version>1.0.100.I20090525-2000</version>
+      <version>1.0.100.I20090525-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.ui</groupId>
