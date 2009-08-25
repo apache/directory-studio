@@ -2,5 +2,5 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.team</groupId>
   <artifactId>ui</artifactId>
-  <version>3.5.0.I20090430-0408</version>
+  <version>3.5.0.I20090430-0408-studio</version>
 </project>
