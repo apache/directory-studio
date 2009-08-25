@@ -818,7 +818,7 @@
     <dependency>
       <groupId>org.eclipse</groupId>
       <artifactId>search</artifactId>
-      <version>3.5.0.v20090526-2000</version>
+      <version>3.5.0.v20090526-2000-studio</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse</groupId>
