@@ -111,6 +111,8 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
             Messages.getString("EntryEditorPreferencePage.ShowOperationalAttributes"), 1 ); //$NON-NLS-1$
         showOperationalAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
+        BaseWidgetUtils.createWrappedLabel( visibleAttributesComposite, Messages
+            .getString( "EntryEditorPreferencePage.ShowOperationalAttributesToolTip" ), 1 );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
