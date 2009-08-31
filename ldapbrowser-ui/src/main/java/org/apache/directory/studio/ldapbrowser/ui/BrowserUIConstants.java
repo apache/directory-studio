@@ -50,7 +50,7 @@ public interface BrowserUIConstants
     public static final String PREFERENCEPAGEID_ENTRYEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_EntryEditorPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_ENTRYEDITORS = BrowserUIPlugin.getDefault().getPluginProperties()
-    .getString( "PrefPage_EntryEditorsPreferencePage_id" ); //$NON-NLS-1$
+        .getString( "PrefPage_EntryEditorsPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_SEARCHRESULTEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_SearchResultEditorPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_MODIFICATIONLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
@@ -65,6 +65,11 @@ public interface BrowserUIConstants
 
     /** The constant used to identify the "user user priorities" preference  */
     public static final String PREFERENCE_ENTRYEDITORS_USER_PRIORITIES = "userPriorities"; //$NON-NLS-1$
+
+    /** The constant used to identify the "open mode" preference  */
+    public static final String PREFERENCE_ENTRYEDITORS_OPEN_MODE = "openMode"; //$NON-NLS-1$
+    public static final int PREFERENCE_ENTRYEDITORS_OPEN_MODE_HISTORICAL_BEHAVIOR = 0; //$NON-NLS-1$
+    public static final int PREFERENCE_ENTRYEDITORS_OPEN_MODE_APPLICATION_WIDE = 1; //$NON-NLS-1$
 
     public static final String IMG_LINK_WITH_EDITOR = "resources/icons/link_with_editor.gif"; //$NON-NLS-1$
     public static final String IMG_BATCH = "resources/icons/batch.gif"; //$NON-NLS-1$

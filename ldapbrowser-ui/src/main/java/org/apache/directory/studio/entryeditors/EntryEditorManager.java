@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -177,7 +176,7 @@ public class EntryEditorManager
      */
     public Collection<EntryEditorExtension> getSortedEntryEditorExtensions()
     {
-        boolean useUserPriority = ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
+        boolean useUserPriority = BrowserUIPlugin.getDefault().getPluginPreferences().getBoolean(
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES );
 
         if ( useUserPriority )
@@ -236,7 +235,7 @@ public class EntryEditorManager
             entryEditorExtensions.size() );
 
         // Getting the user's priorities
-        String userPriorities = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+        String userPriorities = BrowserUIPlugin.getDefault().getPluginPreferences().getString(
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES );
         if ( ( userPriorities != null ) && ( !"".equals( userPriorities ) ) )
         {

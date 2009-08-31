@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
@@ -45,9 +44,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 
 /**
@@ -59,17 +61,22 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class EntryEditorsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
-
     /** A flag indicating whether or not to use the user's priority for entry editors */
     private boolean useUserPriority = false;
+
+    /** The open mode setting value */
+    private int openMode = 0;
 
     /** The ordered list of entry editors */
     private List<EntryEditorExtension> sortedEntryEditorsList;
 
     // UI fields
+    private Button historicalBehaviorButton;
+    private Button useApplicationWideOpenModeButton;
     private TableViewer entryEditorsTableViewer;
-    private Button upButton;
-    private Button downButton;
+    private Button upEntryEditorButton;
+    private Button downEntryEditorButton;
+    private Button restoreDefaultsEntryEditorsButton;
 
 
     /**
@@ -77,9 +84,9 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public EntryEditorsPreferencePage()
     {
-        super( "Entry Editors" );
+        super( Messages.getString("EntryEditorsPreferencePage.EntryEditorsPrefPageTitle") ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserUIPlugin.getDefault().getPreferenceStore() );
-        super.setDescription( "Description" );
+        super.setDescription( Messages.getString("EntryEditorsPreferencePage.EntryEditorsPrefPageDescription") ); //$NON-NLS-1$
     }
 
 
@@ -88,7 +95,10 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public void init( IWorkbench workbench )
     {
-        useUserPriority = ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
+        openMode = BrowserUIPlugin.getDefault().getPluginPreferences().getInt(
+            BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE );
+
+        useUserPriority = BrowserUIPlugin.getDefault().getPluginPreferences().getBoolean(
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES );
     }
 
@@ -102,11 +112,55 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         composite.setLayout( new GridLayout() );
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        // Entry Editors Label
-        BaseWidgetUtils.createLabel( composite, "Entry Editors:", 1 );
+        // Open Mode Group
+        Group openModeGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("EntryEditorsPreferencePage.OpenMode"), 1 ); //$NON-NLS-1$
+        openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Historical Behavior Button
+        historicalBehaviorButton = BaseWidgetUtils.createRadiobutton( openModeGroup,
+            Messages.getString("EntryEditorsPreferencePage.HistoricalBehavior"), 1 ); //$NON-NLS-1$
+        Composite historicalBehaviorComposite = BaseWidgetUtils.createColumnContainer( openModeGroup, 2, 1 );
+        BaseWidgetUtils.createRadioIndent( historicalBehaviorComposite, 1 );
+        BaseWidgetUtils.createWrappedLabel( historicalBehaviorComposite,
+            Messages.getString("EntryEditorsPreferencePage.HistoricalBehaviorTooltip"), 1 ); //$NON-NLS-1$
+
+        // Use Application Wide Open Mode Button
+        useApplicationWideOpenModeButton = BaseWidgetUtils.createRadiobutton( openModeGroup,
+            Messages.getString("EntryEditorsPreferencePage.ApplicationWideSetting"), 1 ); //$NON-NLS-1$
+        Composite useApplicationWideOpenModeComposite = BaseWidgetUtils.createColumnContainer( openModeGroup, 2, 1 );
+        BaseWidgetUtils.createRadioIndent( useApplicationWideOpenModeComposite, 1 );
+        Link link = BaseWidgetUtils
+            .createLink(
+                useApplicationWideOpenModeComposite,
+                Messages.getString("EntryEditorsPreferencePage.ApplicationWideSettingTooltip"), //$NON-NLS-1$
+                1 );
+        link.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                PreferencesUtil.createPreferenceDialogOn( getShell(),
+                    "org.eclipse.ui.preferencePages.Workbench", null, null ); //$NON-NLS-1$
+            }
+        } );
+
+        // Initializing the UI from the preferences value
+        if ( openMode == BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_HISTORICAL_BEHAVIOR )
+        {
+            historicalBehaviorButton.setSelection( true );
+            useApplicationWideOpenModeButton.setSelection( false );
+        }
+        else if ( openMode == BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_APPLICATION_WIDE )
+        {
+            historicalBehaviorButton.setSelection( false );
+            useApplicationWideOpenModeButton.setSelection( true );
+        }
+
+        // Entry Editors Group
+        Group entryEditorsGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("EntryEditorsPreferencePage.EntryEditors"), 1 ); //$NON-NLS-1$
+        openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Entry Editors Composite
-        Composite entryEditorsComposite = new Composite( composite, SWT.NONE );
+        Composite entryEditorsComposite = new Composite( entryEditorsGroup, SWT.NONE );
         GridLayout gl = new GridLayout( 2, false );
         gl.marginHeight = gl.marginWidth = 0;
         entryEditorsComposite.setLayout( gl );
@@ -114,7 +168,7 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
 
         // SchemaConnectors TableViewer
         entryEditorsTableViewer = new TableViewer( entryEditorsComposite, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION );
-        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 3 );
         gridData.heightHint = 125;
         entryEditorsTableViewer.getTable().setLayoutData( gridData );
         entryEditorsTableViewer.setContentProvider( new ArrayContentProvider() );
@@ -131,15 +185,14 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
                 return ( ( EntryEditorExtension ) element ).getIcon().createImage();
             }
         } );
-
         entryEditorsTableViewer.setInput( BrowserUIPlugin.getDefault().getEntryEditorManager()
             .getEntryEditorExtensions() );
 
         // Up Button
-        upButton = BaseWidgetUtils.createButton( entryEditorsComposite, "Up", 1 );
-        upButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        upButton.setEnabled( false );
-        upButton.addSelectionListener( new SelectionAdapter()
+        upEntryEditorButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages.getString("EntryEditorsPreferencePage.Up"), 1 ); //$NON-NLS-1$
+        upEntryEditorButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        upEntryEditorButton.setEnabled( false );
+        upEntryEditorButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -148,10 +201,10 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
 
         // Down Button
-        downButton = BaseWidgetUtils.createButton( entryEditorsComposite, "Down", 1 );
-        downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        downButton.setEnabled( false );
-        downButton.addSelectionListener( new SelectionAdapter()
+        downEntryEditorButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages.getString("EntryEditorsPreferencePage.Down"), 1 ); //$NON-NLS-1$
+        downEntryEditorButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        downEntryEditorButton.setEnabled( false );
+        downEntryEditorButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
@@ -159,16 +212,26 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
             }
         } );
 
+        // Restore Defaults Button
+        restoreDefaultsEntryEditorsButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages.getString("EntryEditorsPreferencePage.RestoreDefaults"), 1 ); //$NON-NLS-1$
+        restoreDefaultsEntryEditorsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        restoreDefaultsEntryEditorsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                performDefaultsEntryEditors();
+            }
+        } );
+
         // Description Label
-        BaseWidgetUtils.createLabel( composite, "Description:", 1 );
+        BaseWidgetUtils.createLabel( entryEditorsGroup, Messages.getString("EntryEditorsPreferencePage.DescriptionColon"), 1 ); //$NON-NLS-1$
 
         // Description Text
-        final Text descriptionText = new Text( composite, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY );
+        final Text descriptionText = new Text( entryEditorsGroup, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY );
         descriptionText.setEditable( false );
         gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         gridData.heightHint = 27;
         descriptionText.setLayoutData( gridData );
-
         entryEditorsTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -289,24 +352,10 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         int index = sortedEntryEditorsList.indexOf( entryEditor );
 
         // Updating up button state
-        if ( index > 0 )
-        {
-            upButton.setEnabled( true );
-        }
-        else
-        {
-            upButton.setEnabled( false );
-        }
+        upEntryEditorButton.setEnabled( index > 0 );
 
         // Updating down button state
-        if ( index <= sortedEntryEditorsList.size() - 2 )
-        {
-            downButton.setEnabled( true );
-        }
-        else
-        {
-            downButton.setEnabled( false );
-        }
+        downEntryEditorButton.setEnabled( index <= ( sortedEntryEditorsList.size() - 2 ) );
     }
 
 
@@ -343,7 +392,20 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public boolean performOk()
     {
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+        if ( historicalBehaviorButton.getSelection() )
+        {
+            BrowserUIPlugin.getDefault().getPluginPreferences().setValue(
+                BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE,
+                BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_HISTORICAL_BEHAVIOR );
+        }
+        else if ( useApplicationWideOpenModeButton.getSelection() )
+        {
+            BrowserUIPlugin.getDefault().getPluginPreferences().setValue(
+                BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE,
+                BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_APPLICATION_WIDE );
+        }
+
+        BrowserUIPlugin.getDefault().getPluginPreferences().setValue(
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES, useUserPriority );
 
         if ( useUserPriority )
@@ -359,7 +421,7 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
                 sb.deleteCharAt( sb.length() - 1 );
             }
 
-            ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
+            BrowserUIPlugin.getDefault().getPluginPreferences().setValue(
                 BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES, sb.toString() );
         }
 
@@ -372,7 +434,32 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     protected void performDefaults()
     {
-        useUserPriority = ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultBoolean(
+        openMode = BrowserUIPlugin.getDefault().getPluginPreferences().getDefaultInt(
+            BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE );
+
+        if ( openMode == BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_HISTORICAL_BEHAVIOR )
+        {
+            historicalBehaviorButton.setSelection( true );
+            useApplicationWideOpenModeButton.setSelection( false );
+        }
+        else if ( openMode == BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_APPLICATION_WIDE )
+        {
+            historicalBehaviorButton.setSelection( false );
+            useApplicationWideOpenModeButton.setSelection( true );
+        }
+
+        performDefaultsEntryEditors();
+
+        super.performDefaults();
+    }
+
+
+    /**
+     * Restore defaults to the entry editors part of the UI.
+     */
+    private void performDefaultsEntryEditors()
+    {
+        useUserPriority = BrowserUIPlugin.getDefault().getPluginPreferences().getDefaultBoolean(
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES );
 
         if ( useUserPriority )
@@ -385,7 +472,5 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         }
 
         updateButtonsState();
-
-        super.performDefaults();
     }
 }

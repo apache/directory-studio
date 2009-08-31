@@ -50,6 +50,8 @@ public class BrowserUIPreferencesInitializer extends AbstractPreferenceInitializ
         // Entry Editors
         store.setDefault( BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES, false );
         store.setDefault( BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES, "" );
+        store.setDefault( BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE,
+            BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_HISTORICAL_BEHAVIOR );
     }
 
 }
