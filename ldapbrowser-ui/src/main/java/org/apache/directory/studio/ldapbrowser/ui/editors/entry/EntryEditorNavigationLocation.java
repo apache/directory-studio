@@ -24,6 +24,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.entryeditors.EntryEditorExtension;
+import org.apache.directory.studio.entryeditors.EntryEditorInput;
+import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -31,8 +34,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.NavigationLocation;
@@ -118,6 +121,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
         EntryEditorInput eei = getEntryEditorInput();
         if ( eei != null )
         {
+            memento.putString( "EXTENSION", eei.getExtension().getId() ); //$NON-NLS-1$
             if ( eei.getEntryInput() != null )
             {
                 IEntry entry = eei.getEntryInput();
@@ -142,7 +146,6 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 memento.putString( "CONNECTION", bookmark.getBrowserConnection().getConnection().getId() ); //$NON-NLS-1$
             }
         }
-
     }
 
 
@@ -154,13 +157,16 @@ public class EntryEditorNavigationLocation extends NavigationLocation
         try
         {
             String type = memento.getString( "TYPE" ); //$NON-NLS-1$
+            String extensionId = memento.getString( "EXTENSION" ); //$NON-NLS-1$
+            EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
+            EntryEditorExtension entryEditorExtension = entryEditorManager.getEntryEditorExtension( extensionId );
             if ( "IEntry".equals( type ) ) //$NON-NLS-1$
             {
                 IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
                     .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
                 LdapDN dn = new LdapDN( memento.getString( "DN" ) ); //$NON-NLS-1$
                 IEntry entry = connection.getEntryFromCache( dn );
-                super.setInput( new EntryEditorInput( entry ) );
+                super.setInput( new EntryEditorInput( entry, entryEditorExtension ) );
             }
             else if ( "ISearchResult".equals( type ) ) //$NON-NLS-1$
             {
@@ -173,7 +179,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 {
                     if ( dn.equals( searchResults[i].getDn() ) )
                     {
-                        super.setInput( new EntryEditorInput( searchResults[i] ) );
+                        super.setInput( new EntryEditorInput( searchResults[i], entryEditorExtension ) );
                         break;
                     }
                 }
@@ -183,14 +189,13 @@ public class EntryEditorNavigationLocation extends NavigationLocation
                 IBrowserConnection connection = BrowserCorePlugin.getDefault().getConnectionManager()
                     .getBrowserConnectionById( memento.getString( "CONNECTION" ) ); //$NON-NLS-1$
                 IBookmark bookmark = connection.getBookmarkManager().getBookmark( memento.getString( "BOOKMARK" ) ); //$NON-NLS-1$
-                super.setInput( new EntryEditorInput( bookmark ) );
+                super.setInput( new EntryEditorInput( bookmark, entryEditorExtension ) );
             }
         }
         catch ( InvalidNameException e )
         {
             e.printStackTrace();
         }
-
     }
 
 
@@ -199,12 +204,6 @@ public class EntryEditorNavigationLocation extends NavigationLocation
      */
     public void restoreLocation()
     {
-        IEditorPart editorPart = getEditorPart();
-        if ( editorPart != null && editorPart instanceof EntryEditor )
-        {
-            EntryEditor entryEditor = ( EntryEditor ) editorPart;
-            entryEditor.setInput( ( EntryEditorInput ) getInput() );
-        }
     }
 
 
@@ -257,7 +256,6 @@ public class EntryEditorNavigationLocation extends NavigationLocation
      */
     private EntryEditorInput getEntryEditorInput()
     {
-
         Object editorInput = getInput();
         if ( editorInput != null && editorInput instanceof EntryEditorInput )
         {

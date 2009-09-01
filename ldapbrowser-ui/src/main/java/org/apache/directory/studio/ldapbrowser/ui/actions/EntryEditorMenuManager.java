@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 import java.util.Collection;
 
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
+import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -34,10 +35,8 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.ui.PlatformUI;
 
 
 public class EntryEditorMenuManager extends MenuManager implements IMenuListener
@@ -95,16 +94,19 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
      * @return
      *      an action associated with the entry editor
      */
-    private IAction createAction( EntryEditorExtension entryEditorExtension )
+    private IAction createAction( final EntryEditorExtension entryEditorExtension )
     {
-        final EntryEditorExtension entryEditorExtension2 = entryEditorExtension;
         Action action = new Action( entryEditorExtension.getName() )
         {
             public void run()
             {
-                MessageDialog.openInformation( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    entryEditorExtension2.getName(), "Instead of this window, the \"" + entryEditorExtension2.getName()
-                        + "\" entry editor should be opened." );
+                EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
+                ISelection selection = selectionProvider.getSelection();
+                IEntry[] selectedEntries = BrowserSelectionUtils.getEntries( selection );
+                ISearchResult[] selectedSearchResults = BrowserSelectionUtils.getSearchResults( selection );
+                IBookmark[] selectedBookMarks = BrowserSelectionUtils.getBookmarks( selection );
+                entryEditorManager.openEntryEditor( entryEditorExtension, selectedEntries, selectedSearchResults,
+                    selectedBookMarks );
             }
         };
 

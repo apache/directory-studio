@@ -18,14 +18,12 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
+package org.apache.directory.studio.entryeditors;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -33,19 +31,6 @@ import org.eclipse.ui.IPersistableElement;
 
 /**
  * The input for the entry editor.
- * 
- * There is a trick to provide a single instance of the entry editor:
- * <ul>
- * <li>If oneInstanceHackEnabled is true the equals method returns always 
- *     true as long as the compared object is also of type EntryEditorInput. 
- *     With this trick only one instance of the entry editor is opened
- *     by the eclipse editor framework.
- * <li>If oneInstanceHackEnabled is false the equals method returns 
- *     true only if the wrapped objects (IEntry, ISearchResult or 
- *     IBookmark) are equal. This is necessary for the history navigation
- *     because it must be able to distinguish the different 
- *     input objects.
- * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -62,8 +47,8 @@ public class EntryEditorInput implements IEditorInput
     /** The bookmark input */
     private IBookmark bookmark;
 
-    /** One instance hack flag */
-    private static boolean oneInstanceHackEnabled = true;
+    /** The entry editor extension. */
+    private EntryEditorExtension extension;
 
 
     /**
@@ -72,11 +57,9 @@ public class EntryEditorInput implements IEditorInput
      *
      * @param entry the entry input
      */
-    public EntryEditorInput( IEntry entry )
+    public EntryEditorInput( IEntry entry, EntryEditorExtension extension )
     {
-        this.entry = entry;
-        this.searchResult = null;
-        this.bookmark = null;
+        this( entry, null, null, extension );
     }
 
 
@@ -86,11 +69,9 @@ public class EntryEditorInput implements IEditorInput
      *
      * @param searchResult the search result input
      */
-    public EntryEditorInput( ISearchResult searchResult )
+    public EntryEditorInput( ISearchResult searchResult, EntryEditorExtension extension )
     {
-        this.entry = null;
-        this.searchResult = searchResult;
-        this.bookmark = null;
+        this( null, searchResult, null, extension );
     }
 
 
@@ -100,11 +81,19 @@ public class EntryEditorInput implements IEditorInput
      *
      * @param bookmark the bookmark input
      */
-    public EntryEditorInput( IBookmark bookmark )
+    public EntryEditorInput( IBookmark bookmark, EntryEditorExtension extension )
     {
-        this.entry = null;
-        this.searchResult = null;
+        this( null, null, bookmark, extension );
+    }
+
+
+    private EntryEditorInput( IEntry entry, ISearchResult searchResult, IBookmark bookmark,
+        EntryEditorExtension extension )
+    {
+        this.entry = entry;
+        this.searchResult = searchResult;
         this.bookmark = bookmark;
+        this.extension = extension;
     }
 
 
@@ -126,7 +115,7 @@ public class EntryEditorInput implements IEditorInput
      */
     public ImageDescriptor getImageDescriptor()
     {
-        return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ATTRIBUTE );
+        return extension.getIcon();
     }
 
 
@@ -135,7 +124,7 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return Messages.getString( "EntryEditorInput.EntryEditor" ); //$NON-NLS-1$
+        return getResolvedEntry() != null ? getResolvedEntry().getDn().getUpName() : ""; //$NON-NLS-1$
     }
 
 
@@ -144,7 +133,7 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return ""; //$NON-NLS-1$
+        return getResolvedEntry() != null ? getResolvedEntry().getDn().getUpName() : ""; //$NON-NLS-1$
     }
 
 
@@ -165,6 +154,17 @@ public class EntryEditorInput implements IEditorInput
     public Object getAdapter( Class adapter )
     {
         return null;
+    }
+
+
+    /**
+     * Gets the entry editor extension.
+     * 
+     * @return the entry editor extension
+     */
+    public EntryEditorExtension getExtension()
+    {
+        return extension;
     }
 
 
@@ -260,7 +260,14 @@ public class EntryEditorInput implements IEditorInput
      */
     public int hashCode()
     {
-        return getToolTipText().hashCode();
+        if ( extension != null && extension.isMultiWindow() )
+        {
+            return getResolvedEntry() == null ? 0 : getResolvedEntry().getDn().hashCode();
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 
@@ -271,50 +278,35 @@ public class EntryEditorInput implements IEditorInput
      */
     public boolean equals( Object obj )
     {
-        boolean equal;
-
-        if ( oneInstanceHackEnabled )
+        if ( !( obj instanceof EntryEditorInput ) )
         {
-            equal = ( obj instanceof EntryEditorInput );
+            return false;
+        }
+
+        EntryEditorInput other = ( EntryEditorInput ) obj;
+
+        if ( extension == null && other.extension == null )
+        {
+            return true;
+        }
+
+        if ( this.getExtension() != other.getExtension() )
+        {
+            return false;
+        }
+
+        if ( this.getInput() == null && other.getInput() == null )
+        {
+            return true;
+        }
+        else if ( this.getInput() == null || other.getInput() == null )
+        {
+            return false;
         }
         else
         {
-            if ( obj instanceof EntryEditorInput )
-            {
-                EntryEditorInput other = ( EntryEditorInput ) obj;
-                if ( this.getInput() == null && other.getInput() == null )
-                {
-                    return true;
-                }
-                else if ( this.getInput() == null || other.getInput() == null )
-                {
-                    return false;
-                }
-                else
-                {
-                    equal = other.getInput().equals( this.getInput() );
-                }
-            }
-            else
-            {
-                equal = false;
-            }
+            return other.getInput().equals( this.getInput() );
         }
-
-        return equal;
-    }
-
-
-    /**
-     * Enables or disabled the one instance hack.
-     *
-     * @param b 
-     *      true to enable the one instance hack,
-     *      false to disable the one instance hack
-     */
-    public static void enableOneInstanceHack( boolean b )
-    {
-        oneInstanceHackEnabled = b;
     }
 
 }

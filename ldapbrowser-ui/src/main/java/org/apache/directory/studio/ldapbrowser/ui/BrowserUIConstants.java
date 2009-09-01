@@ -177,8 +177,10 @@ public interface BrowserUIConstants
     public static final String PERSPECTIVE_SCHEMA_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "Perspective_SchemaEditor_id" ); //$NON-NLS-1$
 
-    public static final String EDITOR_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "Editor_EntryEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_SINGLE_TAB_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Editor_SingleTabEntryEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_MULTI_TAB_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Editor_MultiTabEntryEditor_id" ); //$NON-NLS-1$
     public static final String EDITOR_SCHEMA_BROWSER = BrowserUIPlugin.getDefault().getPluginProperties().getString(
         "Editor_SchemaBrowser_id" ); //$NON-NLS-1$
     public static final String EDITOR_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties().getString(

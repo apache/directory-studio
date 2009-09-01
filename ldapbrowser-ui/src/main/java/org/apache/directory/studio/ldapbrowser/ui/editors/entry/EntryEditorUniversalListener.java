@@ -67,32 +67,33 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
         {
             if ( entryEditor != null && part != null )
             {
-                if ( entryEditor.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
-                {
-                    IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
-                    ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
-                    IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
-                    Object[] objects = BrowserSelectionUtils.getObjects( selection );
-                    if ( entries.length + searchResults.length + bookmarks.length == 1 && objects.length == 1 )
-                    {
-                        if ( entries.length == 1 )
-                        {
-                            entryEditor.setInput( new EntryEditorInput( entries[0] ) );
-                        }
-                        else if ( searchResults.length == 1 )
-                        {
-                            entryEditor.setInput( new EntryEditorInput( searchResults[0] ) );
-                        }
-                        else if ( bookmarks.length == 1 )
-                        {
-                            entryEditor.setInput( new EntryEditorInput( bookmarks[0] ) );
-                        }
-                    }
-                    else
-                    {
-                        entryEditor.setInput( new EntryEditorInput( ( IEntry ) null ) );
-                    }
-                }
+                // TODO: should be removed, opening the editor and changing input will be completely managed by the browser view 
+//                if ( entryEditor.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
+//                {
+//                    IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+//                    ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+//                    IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+//                    Object[] objects = BrowserSelectionUtils.getObjects( selection );
+//                    if ( entries.length + searchResults.length + bookmarks.length == 1 && objects.length == 1 )
+//                    {
+//                        if ( entries.length == 1 )
+//                        {
+//                            entryEditor.setInput( new EntryEditorInput( entries[0] ) );
+//                        }
+//                        else if ( searchResults.length == 1 )
+//                        {
+//                            entryEditor.setInput( new EntryEditorInput( searchResults[0] ) );
+//                        }
+//                        else if ( bookmarks.length == 1 )
+//                        {
+//                            entryEditor.setInput( new EntryEditorInput( bookmarks[0] ) );
+//                        }
+//                    }
+//                    else
+//                    {
+//                        entryEditor.setInput( new EntryEditorInput( ( IEntry ) null ) );
+//                    }
+//                }
             }
         }
     };

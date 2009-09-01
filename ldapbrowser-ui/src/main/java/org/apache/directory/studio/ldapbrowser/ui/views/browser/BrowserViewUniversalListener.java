@@ -52,7 +52,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
-import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
@@ -226,7 +225,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
          */
         public void selectionChanged( SelectionChangedEvent event )
         {
-            ensureEditorsVisible( event.getSelection() );
+            //ensureEditorsVisible( event.getSelection() );
         }
     };
 
@@ -259,70 +258,71 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     }
 
 
-    /**
-     * Ensures that the entry editor or the search result editor are
-     * opended and ready to show the given selection.
-     *
-     * @param selection the browser's selection.
-     */
-    private void ensureEditorsVisible( ISelection selection )
-    {
-        if ( view != null )
-        {
-            IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
-            ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
-            IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
-            ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
-
-            if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
-            {
-                if ( entries.length == 1 )
-                {
-                    try
-                    {
-                        EntryEditorInput input = new EntryEditorInput( entries[0] );
-                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
-                    }
-                    catch ( PartInitException e )
-                    {
-                    }
-                }
-                else if ( searchResults.length == 1 )
-                {
-                    try
-                    {
-                        EntryEditorInput input = new EntryEditorInput( searchResults[0] );
-                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
-                    }
-                    catch ( PartInitException e )
-                    {
-                    }
-                }
-                else if ( bookmarks.length == 1 )
-                {
-                    try
-                    {
-                        EntryEditorInput input = new EntryEditorInput( bookmarks[0] );
-                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
-                    }
-                    catch ( PartInitException e )
-                    {
-                    }
-                }
-                else if ( searches.length == 1 )
-                {
-                    try
-                    {
-                        SearchResultEditorInput input = new SearchResultEditorInput( searches[0] );
-                        view.getSite().getPage().openEditor( input, SearchResultEditor.getId(), false );
-                    }
-                    catch ( PartInitException e )
-                    {
-                    }
-                }
-            }
-        }
-    }
+    // TODO: remove this, use "open mode" instead
+//    /**
+//     * Ensures that the entry editor or the search result editor are
+//     * opended and ready to show the given selection.
+//     *
+//     * @param selection the browser's selection.
+//     */
+//    private void ensureEditorsVisible( ISelection selection )
+//    {
+//        if ( view != null )
+//        {
+//            IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+//            ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+//            IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+//            ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+//
+//            if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
+//            {
+//                if ( entries.length == 1 )
+//                {
+//                    try
+//                    {
+//                        EntryEditorInput input = new EntryEditorInput( entries[0] );
+//                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
+//                    }
+//                    catch ( PartInitException e )
+//                    {
+//                    }
+//                }
+//                else if ( searchResults.length == 1 )
+//                {
+//                    try
+//                    {
+//                        EntryEditorInput input = new EntryEditorInput( searchResults[0] );
+//                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
+//                    }
+//                    catch ( PartInitException e )
+//                    {
+//                    }
+//                }
+//                else if ( bookmarks.length == 1 )
+//                {
+//                    try
+//                    {
+//                        EntryEditorInput input = new EntryEditorInput( bookmarks[0] );
+//                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
+//                    }
+//                    catch ( PartInitException e )
+//                    {
+//                    }
+//                }
+//                else if ( searches.length == 1 )
+//                {
+//                    try
+//                    {
+//                        SearchResultEditorInput input = new SearchResultEditorInput( searches[0] );
+//                        view.getSite().getPage().openEditor( input, SearchResultEditor.getId(), false );
+//                    }
+//                    catch ( PartInitException e )
+//                    {
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     /**

@@ -20,10 +20,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
+import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
-import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorInput;
 import org.eclipse.jface.action.Action;
@@ -94,7 +94,6 @@ public class LinkWithEditorAction extends Action
          */
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
-            linkViewWithEditor( partRef.getPart( false ) );
         }
 
 
@@ -111,6 +110,7 @@ public class LinkWithEditorAction extends Action
          */
         public void partVisible( IWorkbenchPartReference partRef )
         {
+            linkViewWithEditor( partRef.getPart( false ) );
         }
     };
 

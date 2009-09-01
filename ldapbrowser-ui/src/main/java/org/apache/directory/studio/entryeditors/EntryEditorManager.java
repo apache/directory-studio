@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -36,6 +39,9 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 
@@ -64,7 +70,7 @@ public class EntryEditorManager
     public static final String PRIORITIES_SEPARATOR = ",";
 
     /** The list of entry editors */
-    private Collection<EntryEditorExtension> entryEditorExtensions = new ArrayList<EntryEditorExtension>();
+    private Map<String, EntryEditorExtension> entryEditorExtensions = new HashMap<String, EntryEditorExtension>();
 
     /** The comparator for entry editors */
     private Comparator<EntryEditorExtension> entryEditorComparator = new Comparator<EntryEditorExtension>()
@@ -123,7 +129,7 @@ public class EntryEditorManager
      */
     private void initEntryEditorExtensions()
     {
-        entryEditorExtensions = new ArrayList<EntryEditorExtension>();
+        entryEditorExtensions = new HashMap<String, EntryEditorExtension>();
 
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint extensionPoint = registry.getExtensionPoint( BrowserUIConstants.ENTRY_EDITOR_EXTENSION_POINT );
@@ -133,7 +139,6 @@ public class EntryEditorManager
         for ( int m = 0; m < members.length; m++ )
         {
             EntryEditorExtension bean = new EntryEditorExtension();
-            entryEditorExtensions.add( bean );
 
             IConfigurationElement member = members[m];
             IExtension extension = member.getDeclaringExtension();
@@ -153,6 +158,8 @@ public class EntryEditorManager
             bean.setEditorId( member.getAttribute( EDITOR_ID_ATTR ) );
             bean.setMultiWindow( "true".equalsIgnoreCase( member.getAttribute( MULTI_WINDOW_ATTR ) ) );
             bean.setPriority( Integer.parseInt( member.getAttribute( PRIORITY_ATTR ) ) );
+
+            entryEditorExtensions.put( bean.getId(), bean );
         }
     }
 
@@ -164,7 +171,20 @@ public class EntryEditorManager
      */
     public Collection<EntryEditorExtension> getEntryEditorExtensions()
     {
-        return entryEditorExtensions;
+        return entryEditorExtensions.values();
+    }
+
+
+    /**
+     * Gets the entry editor extension.
+     * 
+     * @param id the entry editor extension id
+     * 
+     * @return the entry editor extension, null if none found
+     */
+    public EntryEditorExtension getEntryEditorExtension( String id )
+    {
+        return entryEditorExtensions.get( id );
     }
 
 
@@ -291,5 +311,36 @@ public class EntryEditorManager
         }
 
         return sortedEntryEditorsList;
+    }
+
+
+    public void openEntryEditor( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
+        IBookmark[] bookmarks )
+    {
+        IEditorInput input = null;
+        if ( entries.length == 1 )
+        {
+            input = new EntryEditorInput( entries[0], extension );
+        }
+        else if ( searchResults.length == 1 )
+        {
+            input = new EntryEditorInput( searchResults[0], extension );
+        }
+        else if ( bookmarks.length == 1 )
+        {
+            input = new EntryEditorInput( bookmarks[0], extension );
+        }
+
+        String editorId = extension.getEditorId();
+
+        try
+        {
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor( input, editorId, false );
+        }
+        catch ( PartInitException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

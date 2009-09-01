@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -33,7 +34,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.INavigationHistory;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
 import org.eclipse.ui.IReusableEditor;
@@ -52,33 +52,32 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class EntryEditor extends EditorPart implements INavigationLocationProvider, IReusableEditor
+public abstract class EntryEditor extends EditorPart implements INavigationLocationProvider, IReusableEditor
 {
 
     /** The editor configuration. */
-    private EntryEditorConfiguration configuration;
+    protected EntryEditorConfiguration configuration;
 
     /** The action group. */
-    private EntryEditorActionGroup actionGroup;
+    protected EntryEditorActionGroup actionGroup;
 
     /** The main widget. */
-    private EntryEditorWidget mainWidget;
+    protected EntryEditorWidget mainWidget;
 
     /** The universal listener. */
-    private EntryEditorUniversalListener universalListener;
+    protected EntryEditorUniversalListener universalListener;
 
     /** The outline page. */
-    private EntryEditorOutlinePage outlinePage;
+    protected EntryEditorOutlinePage outlinePage;
 
 
     /**
-     * Gets the ID of the EntryEditor.
-     * 
-     * @return the id of the EntryEditor
+     * {@inheritDoc}
      */
-    public static String getId()
+    public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
-        return BrowserUIConstants.EDITOR_ENTRY_EDITOR;
+        setSite( site );
+        setInput( input );
     }
 
 
@@ -97,46 +96,12 @@ public class EntryEditor extends EditorPart implements INavigationLocationProvid
             // inform listener
             universalListener.setInput( entry );
 
-            // mark location for back/forward history navigation
-            if ( entry != null )
-            {
-                // disable one instance hack before fireing the input change event 
-                // otherwise the navigation history is cleared.
-                // Note: seems this behavior has been changed with Eclipse 3.3
-                EntryEditorInput.enableOneInstanceHack( false );
-                firePropertyChange( IEditorPart.PROP_INPUT );
-
-                // enable one instance hack for marking the location
-                // Note: seems this behavior has been changed with Eclipse 3.3
-                EntryEditorInput.enableOneInstanceHack( true );
-                getSite().getPage().getNavigationHistory().markLocation( this );
-            }
-
             // refresh outline
             if ( outlinePage != null )
             {
                 outlinePage.refresh();
             }
-
-            // finally enable the one instance hack 
-            EntryEditorInput.enableOneInstanceHack( true );
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void init( IEditorSite site, IEditorInput input ) throws PartInitException
-    {
-        super.setSite( site );
-
-        // mark dummy location, necessary because the first marked
-        // location doesn't appear in history
-        setInput( new EntryEditorInput( ( IEntry ) null ) );
-        getSite().getPage().getNavigationHistory().markLocation( this );
-
-        setInput( input );
     }
 
 

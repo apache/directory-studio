@@ -21,10 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
+import java.util.Collection;
+
+import org.apache.directory.studio.entryeditors.EntryEditorExtension;
+import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -49,8 +52,12 @@ public class OpenEntryEditorAction extends BrowserAction
      */
     public void run()
     {
-        MessageDialog.openInformation( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            "Open Entry Editor", "Instead of this window, the entry editor should be opened." );
+        EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
+        Collection<EntryEditorExtension> entryEditors = entryEditorManager.getSortedEntryEditorExtensions();
+        // TODO: check if the entry editor can "handle" the entry 
+        EntryEditorExtension next = entryEditors.iterator().next();
+        entryEditorManager.openEntryEditor( next, getSelectedEntries(), getSelectedSearchResults(),
+            getSelectedBookmarks() );
     }
 
 

@@ -39,11 +39,19 @@
  <extension
        point="org.eclipse.ui.editors">
 	<editor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
-          default="true"
-          icon="resources/icons/browser_entryeditor.gif"
-          id="%Editor_EntryEditor_id"
-          name="%Editor_EntryEditor_name"/>
+       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
+       default="true"
+       icon="resources/icons/browser_entryeditor.gif"
+       id="%Editor_SingleTabEntryEditor_id"
+       matchingStrategy="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditorMatchingStrategy"
+       name="%Editor_SingleTabEntryEditor_shortname"/>
+ <editor
+       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
+       default="true"
+       icon="resources/icons/browser_entryeditor.gif"
+       id="%Editor_MultiTabEntryEditor_id"
+       name="%Editor_MultiTabEntryEditor_shortname">
+ </editor>
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
        default="true"
@@ -433,24 +441,24 @@
  <extension
        point="org.apache.directory.studio.entryeditors">
     <entryEditor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
-          description="Example Entry Editor"
-          editorId="%Editor_EntryEditor_id"
+          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
+          description="%Editor_SingleTabEntryEditor_description"
+          editorId="%Editor_SingleTabEntryEditor_id"
           icon="resources/icons/browser_entryeditor.gif"
-          id="org.apache.directory.studio.exampleentryeditor"
-          name="Example Entry Editor"
+          id="%Editor_SingleTabEntryEditor_id"
+          name="%Editor_SingleTabEntryEditor_fullname"
           priority="5"
           multiWindow="false">
     </entryEditor>
     <entryEditor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor"
-          description="Example Entry Editor"
-          editorId="%Editor_EntryEditor_id"
+          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
+          description="%Editor_MultiTabEntryEditor_description"
+          editorId="%Editor_MultiTabEntryEditor_id"
           icon="resources/icons/browser_entryeditor.gif"
-          id="org.apache.directory.studio.exampleentryeditorsuperior"
-          name="Example Entry Editor Superior"
+          id="%Editor_MultiTabEntryEditor_id"
+          name="%Editor_MultiTabEntryEditor_fullname"
           priority="1"
-          multiWindow="false">
+          multiWindow="true">
     </entryEditor>
  </extension>
 
