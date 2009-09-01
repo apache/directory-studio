@@ -167,6 +167,11 @@ public class BrowserQuickSearchWidget
         gl.marginHeight = 2;
         gl.marginWidth = 2;
         composite.setLayout( gl );
+        // Setting the default width and height of the composite to 0
+        GridData compositeGridData = new GridData( SWT.NONE, SWT.NONE, false, false );
+        compositeGridData.heightHint = 0;
+        compositeGridData.widthHint = 0;
+        composite.setLayoutData( compositeGridData );
 
         innerComposite = null;
     }
@@ -178,6 +183,10 @@ public class BrowserQuickSearchWidget
     private void create()
     {
         this.browserWidget.getViewer().addPostSelectionChangedListener( selectionListener );
+
+        // Reseting the layout of the composite to be displayed correctly
+        GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        composite.setLayoutData( compositeGridData );
 
         innerComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 1 );
 
@@ -357,6 +366,12 @@ public class BrowserQuickSearchWidget
     private void destroy()
     {
         browserWidget.getViewer().removePostSelectionChangedListener( selectionListener );
+
+        // Reseting the layout of the composite with a width and height set to 0
+        GridData compositeGridData = new GridData( SWT.NONE, SWT.NONE, false, false );
+        compositeGridData.heightHint = 0;
+        compositeGridData.widthHint = 0;
+        composite.setLayoutData( compositeGridData );
 
         innerComposite.dispose();
         innerComposite = null;
