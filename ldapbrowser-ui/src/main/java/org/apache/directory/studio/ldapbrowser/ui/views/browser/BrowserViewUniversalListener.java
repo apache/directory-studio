@@ -21,12 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.entryeditors.EntryEditorExtension;
+import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
@@ -51,13 +54,19 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.OpenStrategy;
+import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -80,7 +89,6 @@ import org.eclipse.ui.contexts.IContextService;
 public class BrowserViewUniversalListener extends BrowserUniversalListener implements SearchUpdateListener,
     BookmarkUpdateListener
 {
-
     /** This map contains all expanded elements for a particular connection */
     private Map<IBrowserConnection, Object[]> connectionToExpandedElementsMap;
 
@@ -225,7 +233,32 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
          */
         public void selectionChanged( SelectionChangedEvent event )
         {
-            //ensureEditorsVisible( event.getSelection() );
+            openEditor( event.getSelection() );
+        }
+    };
+
+    /** This listerner is used to listen on the preference settings modifications, especially 
+     * the open mode preference value change. */
+    private IPropertyChangeListener preferencePropertyChangeListener = new IPropertyChangeListener()
+    {
+        /**
+         * {@inheritDoc}
+         */
+        public void propertyChange( org.eclipse.jface.util.PropertyChangeEvent event )
+        {
+            if ( BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE.equals( event.getProperty() ) )
+            {
+                setupOpenModeListeners();
+            }
+        };
+    };
+
+    /** The open mode listener */
+    private IOpenListener openListener = new IOpenListener()
+    {
+        public void open( OpenEvent event )
+        {
+            openEditor( event.getSelection() );
         }
     };
 
@@ -250,79 +283,77 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         EventRegistry.addEntryUpdateListener( this, BrowserCommonActivator.getDefault().getEventRunner() );
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
 
+        // listener for shortcuts activation/deactivation
         view.getSite().getPage().addPartListener( partListener );
+
+        // listener for connections
         view.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( ConnectionView.getId(),
             connectionSelectionListener );
 
-        viewer.addSelectionChangedListener( viewerSelectionListener );
+        // listener for open mode
+        BrowserUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( preferencePropertyChangeListener );
+        setupOpenModeListeners();
     }
 
 
-    // TODO: remove this, use "open mode" instead
-//    /**
-//     * Ensures that the entry editor or the search result editor are
-//     * opended and ready to show the given selection.
-//     *
-//     * @param selection the browser's selection.
-//     */
-//    private void ensureEditorsVisible( ISelection selection )
-//    {
-//        if ( view != null )
-//        {
-//            IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
-//            ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
-//            IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
-//            ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
-//
-//            if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
-//            {
-//                if ( entries.length == 1 )
-//                {
-//                    try
-//                    {
-//                        EntryEditorInput input = new EntryEditorInput( entries[0] );
-//                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
-//                    }
-//                    catch ( PartInitException e )
-//                    {
-//                    }
-//                }
-//                else if ( searchResults.length == 1 )
-//                {
-//                    try
-//                    {
-//                        EntryEditorInput input = new EntryEditorInput( searchResults[0] );
-//                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
-//                    }
-//                    catch ( PartInitException e )
-//                    {
-//                    }
-//                }
-//                else if ( bookmarks.length == 1 )
-//                {
-//                    try
-//                    {
-//                        EntryEditorInput input = new EntryEditorInput( bookmarks[0] );
-//                        view.getSite().getPage().openEditor( input, EntryEditor.getId(), false );
-//                    }
-//                    catch ( PartInitException e )
-//                    {
-//                    }
-//                }
-//                else if ( searches.length == 1 )
-//                {
-//                    try
-//                    {
-//                        SearchResultEditorInput input = new SearchResultEditorInput( searches[0] );
-//                        view.getSite().getPage().openEditor( input, SearchResultEditor.getId(), false );
-//                    }
-//                    catch ( PartInitException e )
-//                    {
-//                    }
-//                }
-//            }
-//        }
-//    }
+    /**
+     * Sets up the open mode listeners according the preferences.
+     */
+    private void setupOpenModeListeners()
+    {
+        int openMode = BrowserUIPlugin.getDefault().getPluginPreferences().getInt(
+            BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE );
+
+        if ( openMode == BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_HISTORICAL_BEHAVIOR )
+        {
+            // Historical Behavior
+            viewer.removeOpenListener( openListener );
+            viewer.addSelectionChangedListener( viewerSelectionListener );
+        }
+        else if ( openMode == BrowserUIConstants.PREFERENCE_ENTRYEDITORS_OPEN_MODE_APPLICATION_WIDE )
+        {
+            // Application Wide Setting
+            viewer.removeSelectionChangedListener( viewerSelectionListener );
+            viewer.addOpenListener( openListener );
+        }
+    }
+
+
+    /**
+     * Opens an editor to show the given selection.
+     *
+     * @param selection the browser's selection.
+     */
+    private void openEditor( ISelection selection )
+    {
+        if ( view != null )
+        {
+            IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
+            ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
+            IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
+            ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+
+            if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
+            {
+                if ( ( entries.length == 1 ) || ( searchResults.length == 1 ) || ( bookmarks.length == 1 ) )
+                {
+                    EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
+                    entryEditorManager.openEntryEditor( entries, searchResults, bookmarks );
+                }
+                else if ( searches.length == 1 )
+                {
+                    try
+                    {
+                        SearchResultEditorInput input = new SearchResultEditorInput( searches[0] );
+                        view.getSite().getPage().openEditor( input, SearchResultEditor.getId(), false );
+                    }
+                    catch ( PartInitException e )
+                    {
+                    }
+                }
+            }
+        }
+    }
 
 
     /**
@@ -340,6 +371,9 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             view.getSite().getPage().removePartListener( partListener );
             view.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
                 ConnectionView.getId(), connectionSelectionListener );
+
+            viewer.removeOpenListener( openListener );
+            viewer.removeSelectionChangedListener( viewerSelectionListener );
 
             view = null;
             connectionToExpandedElementsMap.clear();

@@ -259,7 +259,6 @@ public class EntryEditorManager
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES );
         if ( ( userPriorities != null ) && ( !"".equals( userPriorities ) ) )
         {
-
             String[] splittedUserPriorities = userPriorities.split( PRIORITIES_SEPARATOR );
             if ( ( splittedUserPriorities != null ) && ( splittedUserPriorities.length > 0 ) )
             {
@@ -314,6 +313,19 @@ public class EntryEditorManager
     }
 
 
+    /**
+     * Opens an entry editor with the given entry editor extension and one of 
+     * the given entries, search results or bookmarks.
+     *
+     * @param extension
+     *      the entry editor extension
+     * @param entries
+     *      an array of entries
+     * @param searchResults
+     *      an array of search results
+     * @param bookmarks
+     *      an arrays of bookmarks
+     */
     public void openEntryEditor( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
         IBookmark[] bookmarks )
     {
@@ -342,5 +354,26 @@ public class EntryEditorManager
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Opens an entry editor with one of the given entries, search results or bookmarks.
+     *
+     * @param extension
+     *      the entry editor extension
+     * @param entries
+     *      an array of entries
+     * @param searchResults
+     *      an array of search results
+     * @param bookmarks
+     *      an arrays of bookmarks
+     */
+    public void openEntryEditor( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
+    {
+        Collection<EntryEditorExtension> entryEditors = getSortedEntryEditorExtensions();
+        // TODO: check if the entry editor can "handle" the entry 
+        EntryEditorExtension next = entryEditors.iterator().next();
+        openEntryEditor( next, entries, searchResults, bookmarks );
     }
 }
