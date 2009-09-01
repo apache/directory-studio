@@ -95,6 +95,11 @@ public class SearchResultEditorQuickFilterWidget
         gl.marginHeight = 2;
         gl.marginWidth = 2;
         composite.setLayout( gl );
+        // Setting the default width and height of the composite to 0
+        GridData compositeGridData = new GridData( SWT.NONE, SWT.NONE, false, false );
+        compositeGridData.heightHint = 0;
+        compositeGridData.widthHint = 0;
+        composite.setLayoutData( compositeGridData );
 
         innerComposite = null;
     }
@@ -105,6 +110,10 @@ public class SearchResultEditorQuickFilterWidget
      */
     private void create()
     {
+        // Reseting the layout of the composite to be displayed correctly
+        GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        composite.setLayoutData( compositeGridData );
+        
         innerComposite = BaseWidgetUtils.createColumnContainer( this.composite, 2, 1 );
 
         quickFilterValueText = new Text( innerComposite, SWT.BORDER );
@@ -164,6 +173,12 @@ public class SearchResultEditorQuickFilterWidget
      */
     private void destroy()
     {
+        // Reseting the layout of the composite with a width and height set to 0
+        GridData compositeGridData = new GridData( SWT.NONE, SWT.NONE, false, false );
+        compositeGridData.heightHint = 0;
+        compositeGridData.widthHint = 0;
+        composite.setLayoutData( compositeGridData );
+        
         if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
         {
             quickFilterValueText.setText( "" ); //$NON-NLS-1$
