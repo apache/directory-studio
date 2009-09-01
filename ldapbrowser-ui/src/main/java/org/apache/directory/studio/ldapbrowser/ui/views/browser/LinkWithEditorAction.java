@@ -94,6 +94,7 @@ public class LinkWithEditorAction extends Action
          */
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
+            linkViewWithEditor( partRef.getPart( false ) );
         }
 
 

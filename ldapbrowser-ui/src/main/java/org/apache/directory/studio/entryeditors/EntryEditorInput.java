@@ -260,7 +260,11 @@ public class EntryEditorInput implements IEditorInput
      */
     public int hashCode()
     {
-        if ( extension != null && extension.isMultiWindow() )
+        if ( extension == null )
+        {
+            return 0;
+        }
+        else if ( extension.isMultiWindow() )
         {
             return getResolvedEntry() == null ? 0 : getResolvedEntry().getDn().hashCode();
         }
