@@ -60,7 +60,7 @@ public class StudioConsoleAppender extends AppenderSkeleton
         {
             public void propertyChange( PropertyChangeEvent event )
             {
-                if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN.equalsIgnoreCase( event.getProperty() ) )
+                if ( ApacheDsPluginConstants.PREFS_SERVER_LOGS_PATTERN.equals( event.getProperty() ) )
                 {
                     // We need to set the layout asynchronously to avoid UI thread exception
                     Display.getDefault().asyncExec( new Runnable()

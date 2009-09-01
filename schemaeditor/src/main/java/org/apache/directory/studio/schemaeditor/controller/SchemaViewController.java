@@ -559,8 +559,8 @@ public class SchemaViewController
             {
                 if ( authorizedPrefs.contains( event.getProperty() ) )
                 {
-                    if ( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING == event.getProperty()
-                        || PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION == event.getProperty() )
+                    if ( PluginConstants.PREFS_SCHEMA_VIEW_GROUPING.equals( event.getProperty() )
+                        || PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION.equals( event.getProperty() ) )
                     {
                         view.reloadViewer();
                     }
