@@ -104,6 +104,11 @@ public class EntryEditorWidgetQuickFilterWidget
         gl.marginHeight = 2;
         gl.marginWidth = 2;
         composite.setLayout( gl );
+        // Setting the default width and height of the composite to 0
+        GridData compositeGridData = new GridData( SWT.NONE, SWT.NONE, false, false );
+        compositeGridData.heightHint = 0;
+        compositeGridData.widthHint = 0;
+        composite.setLayoutData( compositeGridData );
 
         innerComposite = null;
     }
@@ -114,6 +119,10 @@ public class EntryEditorWidgetQuickFilterWidget
      */
     private void create()
     {
+        // Reseting the layout of the composite to be displayed correctly
+        GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        composite.setLayoutData( compositeGridData );
+        
         innerComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
 
         quickFilterAttributeText = new Text( innerComposite, SWT.BORDER );
@@ -210,6 +219,12 @@ public class EntryEditorWidgetQuickFilterWidget
      */
     private void destroy()
     {
+        // Reseting the layout of the composite with a width and height set to 0
+        GridData compositeGridData = new GridData( SWT.NONE, SWT.NONE, false, false );
+        compositeGridData.heightHint = 0;
+        compositeGridData.widthHint = 0;
+        composite.setLayoutData( compositeGridData );
+        
         if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
         {
             quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
