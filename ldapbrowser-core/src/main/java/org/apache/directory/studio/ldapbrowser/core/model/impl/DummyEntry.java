@@ -33,7 +33,6 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
-import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -67,12 +66,9 @@ public class DummyEntry implements IEntry
     /** The DN. */
     private LdapDN dn;
 
-    /** The dummy connection. */
-    private DummyConnection dummyConnection;
-
-    /** The connection id. */
-    private String connectionId;
-
+    /** The browser connection. */
+    private IBrowserConnection browserConnection;
+    
     /** The attribute map. */
     private Map<String, IAttribute> attributeMap;
 
@@ -90,17 +86,8 @@ public class DummyEntry implements IEntry
      */
     public DummyEntry( LdapDN dn, IBrowserConnection browserConnection )
     {
-        if ( browserConnection instanceof DummyConnection )
-        {
-            this.dummyConnection = ( DummyConnection ) browserConnection;
-        }
-        else
-        {
-            this.connectionId = browserConnection.getConnection() != null ? browserConnection.getConnection().getId()
-                : null;
-        }
-
         this.dn = dn;
+        this.browserConnection = browserConnection;
         attributeMap = new LinkedHashMap<String, IAttribute>();
     }
 
@@ -214,12 +201,6 @@ public class DummyEntry implements IEntry
      */
     public IBrowserConnection getBrowserConnection()
     {
-        IBrowserConnection browserConnection = dummyConnection != null ? dummyConnection : BrowserCorePlugin
-            .getDefault().getConnectionManager().getBrowserConnectionById( this.connectionId );
-        if ( browserConnection == null )
-        {
-            throw new IllegalStateException( "Connection " + connectionId + " does not exist." );
-        }
         return browserConnection;
     }
 

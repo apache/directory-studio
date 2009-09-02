@@ -503,7 +503,7 @@ public class Utils
 
         // check for changes: if there are no changes the record does not include
         // any modifications and so it is not valid.
-        return record.isValid() ? record : null;
+        return record.isValid() && record.getModSpecs().length > 0 ? record : null;
     }
 
 }
