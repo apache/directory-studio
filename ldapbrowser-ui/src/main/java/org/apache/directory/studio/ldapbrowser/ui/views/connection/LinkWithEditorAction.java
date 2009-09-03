@@ -26,8 +26,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
-import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorInput;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -102,6 +100,7 @@ public class LinkWithEditorAction extends Action
          */
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
+            linkViewWithEditor( partRef.getPart( false ) );
         }
 
 
@@ -203,9 +202,9 @@ public class LinkWithEditorAction extends Action
         {
             Object objectToSelect = null;
 
-            if ( part instanceof EntryEditor )
+            if ( part instanceof IEditorPart )
             {
-                EntryEditor editor = ( EntryEditor ) part;
+                IEditorPart editor = ( IEditorPart ) part;
                 IEditorInput input = editor.getEditorInput();
                 if ( input != null && input instanceof EntryEditorInput )
                 {
@@ -216,12 +215,7 @@ public class LinkWithEditorAction extends Action
                         objectToSelect = entry.getBrowserConnection().getConnection();
                     }
                 }
-            }
-            else if ( part instanceof SearchResultEditor )
-            {
-                SearchResultEditor editor = ( SearchResultEditor ) part;
-                IEditorInput input = editor.getEditorInput();
-                if ( input != null && input instanceof SearchResultEditorInput )
+                else if ( input != null && input instanceof SearchResultEditorInput )
                 {
                     SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
                     ISearch search = srei.getSearch();
