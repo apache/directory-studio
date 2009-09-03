@@ -53,6 +53,13 @@
        name="%Editor_MultiTabEntryEditor_shortname">
  </editor>
  <editor
+       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
+       default="true"
+       icon="resources/icons/browser_entryeditor.gif"
+       id="%Editor_MultiTabLdifEntryEditor_id"
+       name="%Editor_MultiTabLdifEntryEditor_shortname">
+ </editor>
+ <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
        default="true"
        icon="resources/icons/browser_searchresulteditor.gif"
@@ -459,6 +466,16 @@
           name="%Editor_MultiTabEntryEditor_fullname"
           priority="1"
           multiWindow="true">
+    </entryEditor>
+    <entryEditor
+          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
+          description="%Editor_MultiTabLdifEntryEditor_description"
+          editorId="%Editor_MultiTabLdifEntryEditor_id"
+          icon="resources/icons/browser_entryeditor.gif"
+          id="%Editor_MultiTabLdifEntryEditor_id"
+          multiWindow="true"
+          name="%Editor_MultiTabLdifEntryEditor_fullname"
+          priority="1">
     </entryEditor>
  </extension>
 
