@@ -21,8 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
@@ -43,8 +41,6 @@ import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRe
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.IEditorInput;
 
 
@@ -136,19 +132,10 @@ public class MultiTabEntryEditor extends EntryEditor
             LdifChangeModifyRecord diff = getDiff();
             if ( diff != null )
             {
-                IRunnableContext runnableContext = new IRunnableContext()
-                {
-                    public void run( boolean fork, boolean cancelable, IRunnableWithProgress runnable )
-                        throws InvocationTargetException, InterruptedException
-                    {
-                        runnable.run( monitor );
-                    }
-                };
-
                 // save
                 ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff
                     .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
-                IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
+                IStatus status = RunnableContextRunner.execute( runnable, null, true );
                 if ( status.isOK() )
                 {
                     // set new input and refresh the dirty state
