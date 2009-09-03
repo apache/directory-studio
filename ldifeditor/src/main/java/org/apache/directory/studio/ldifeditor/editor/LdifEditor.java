@@ -139,6 +139,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
     private ValueEditorPreferencesAction valueEditorPreferencesAction;
 
+    protected boolean showToolBar = true;
 
     /**
      * Creates a new instance of LdifEditor.
@@ -158,7 +159,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
 
         setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
-
+    
 
     /**
      * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#handlePreferenceStoreChanged(org.eclipse.jface.util.PropertyChangeEvent)
@@ -387,10 +388,13 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         setAction( "ContentAssistProposal", action ); //$NON-NLS-1$
 
         // add execute action (for tool bar)
-        ExecuteLdifAction executeLdifAction = new ExecuteLdifAction( this );
-        actionToolBarManager.add( executeLdifAction );
-        setAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF, executeLdifAction );
-        actionToolBarManager.update( true );
+        if ( actionToolBarManager != null )
+        {
+            ExecuteLdifAction executeLdifAction = new ExecuteLdifAction( this );
+            actionToolBarManager.add( executeLdifAction );
+            setAction( LdifEditorConstants.ACTION_ID_EXECUTE_LDIF, executeLdifAction );
+            actionToolBarManager.update( true );
+        }
 
         // add context menu edit actions
         EditLdifAttributeAction editLdifAttributeAction = new EditLdifAttributeAction( this );
@@ -449,50 +453,57 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
     {
         setHelpContextId( LdifEditorConstants.PLUGIN_ID + "." + "tools_ldif_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-        Composite composite = new Composite( parent, SWT.NONE );
-        composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-        GridLayout layout = new GridLayout();
-        layout.marginWidth = 0;
-        layout.marginHeight = 0;
-        // layout.horizontalSpacing = 0;
-        layout.verticalSpacing = 0;
-        composite.setLayout( layout );
-
-        control = new ViewForm( composite, SWT.NONE );
-        control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-
-        Composite browserConnectionWidgetControl = BaseWidgetUtils.createColumnContainer( control, 2, 1 );
-        browserConnectionWidget = new BrowserConnectionWidget();
-        browserConnectionWidget.createWidget( browserConnectionWidgetControl );
-        connectionUpdated( null );
-        browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
+        if(showToolBar)
         {
-            public void widgetModified( WidgetModifyEvent event )
+            // create the toolbar (including connection widget and execute button) on top of the editor 
+            Composite composite = new Composite( parent, SWT.NONE );
+            composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+            GridLayout layout = new GridLayout();
+            layout.marginWidth = 0;
+            layout.marginHeight = 0;
+            layout.verticalSpacing = 0;
+            composite.setLayout( layout );
+    
+            control = new ViewForm( composite, SWT.NONE );
+            control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+    
+            Composite browserConnectionWidgetControl = BaseWidgetUtils.createColumnContainer( control, 2, 1 );
+            browserConnectionWidget = new BrowserConnectionWidget();
+            browserConnectionWidget.createWidget( browserConnectionWidgetControl );
+            connectionUpdated( null );
+            browserConnectionWidget.addWidgetModifyListener( new WidgetModifyListener()
             {
-                IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
-                setConnection( browserConnection );
-            }
-        } );
-        control.setTopLeft( browserConnectionWidgetControl );
-
-        // tool bar
-        actionToolBar = new ToolBar( control, SWT.FLAT | SWT.RIGHT );
-        actionToolBar.setLayoutData( new GridData( SWT.END, SWT.NONE, true, false ) );
-        actionToolBarManager = new ToolBarManager( actionToolBar );
-        control.setTopCenter( actionToolBar );
-
-        // local menu
-        control.setTopRight( null );
-
-        // content
-        Composite editorComposite = new Composite( control, SWT.NONE );
-        editorComposite.setLayout( new FillLayout() );
-        GridData data = new GridData( GridData.FILL_BOTH );
-        data.widthHint = 450;
-        data.heightHint = 250;
-        editorComposite.setLayoutData( data );
-        super.createPartControl( editorComposite );
-        control.setContent( editorComposite );
+                public void widgetModified( WidgetModifyEvent event )
+                {
+                    IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
+                    setConnection( browserConnection );
+                }
+            } );
+            control.setTopLeft( browserConnectionWidgetControl );
+    
+            // tool bar
+            actionToolBar = new ToolBar( control, SWT.FLAT | SWT.RIGHT );
+            actionToolBar.setLayoutData( new GridData( SWT.END, SWT.NONE, true, false ) );
+            actionToolBarManager = new ToolBarManager( actionToolBar );
+            control.setTopCenter( actionToolBar );
+    
+            // local menu
+            control.setTopRight( null );
+    
+            // content
+            Composite editorComposite = new Composite( control, SWT.NONE );
+            editorComposite.setLayout( new FillLayout() );
+            GridData data = new GridData( GridData.FILL_BOTH );
+            data.widthHint = 450;
+            data.heightHint = 250;
+            editorComposite.setLayoutData( data );
+            super.createPartControl( editorComposite );
+            control.setContent( editorComposite );
+        }
+        else
+        {
+            super.createPartControl( parent );
+        }
 
         ProjectionViewer projectionViewer = ( ProjectionViewer ) getSourceViewer();
         projectionSupport = new ProjectionSupport( projectionViewer, getAnnotationAccess(), getSharedColors() );
@@ -566,7 +577,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      * @param browserConnection
      *      the browser connection to set
      */
-    private void setConnection( IBrowserConnection browserConnection )
+    protected void setConnection( IBrowserConnection browserConnection )
     {
         this.browserConnection = browserConnection;
         getEditorSite().getActionBars().getStatusLineManager().setMessage(

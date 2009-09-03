@@ -322,7 +322,7 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
      * 
      * @param document the new document
      */
-    private void setupDocument( IDocument document )
+    protected void setupDocument( IDocument document )
     {
 
         // setup document partitioning
