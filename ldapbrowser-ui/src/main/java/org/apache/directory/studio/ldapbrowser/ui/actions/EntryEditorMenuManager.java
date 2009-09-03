@@ -96,7 +96,7 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
      */
     private IAction createAction( final EntryEditorExtension entryEditorExtension )
     {
-        Action action = new Action( entryEditorExtension.getName() )
+        Action action = new Action( entryEditorExtension.getName(), entryEditorExtension.getIcon() )
         {
             public void run()
             {
