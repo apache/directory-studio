@@ -84,9 +84,9 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
      */
     public EntryEditorsPreferencePage()
     {
-        super( Messages.getString("EntryEditorsPreferencePage.EntryEditorsPrefPageTitle") ); //$NON-NLS-1$
+        super( Messages.getString( "EntryEditorsPreferencePage.EntryEditorsPrefPageTitle" ) ); //$NON-NLS-1$
         super.setPreferenceStore( BrowserUIPlugin.getDefault().getPreferenceStore() );
-        super.setDescription( Messages.getString("EntryEditorsPreferencePage.EntryEditorsPrefPageDescription") ); //$NON-NLS-1$
+        super.setDescription( Messages.getString( "EntryEditorsPreferencePage.EntryEditorsPrefPageDescription" ) ); //$NON-NLS-1$
     }
 
 
@@ -113,27 +113,26 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Open Mode Group
-        Group openModeGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("EntryEditorsPreferencePage.OpenMode"), 1 ); //$NON-NLS-1$
+        Group openModeGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "EntryEditorsPreferencePage.OpenMode" ), 1 ); //$NON-NLS-1$
         openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Historical Behavior Button
-        historicalBehaviorButton = BaseWidgetUtils.createRadiobutton( openModeGroup,
-            Messages.getString("EntryEditorsPreferencePage.HistoricalBehavior"), 1 ); //$NON-NLS-1$
+        historicalBehaviorButton = BaseWidgetUtils.createRadiobutton( openModeGroup, Messages
+            .getString( "EntryEditorsPreferencePage.HistoricalBehavior" ), 1 ); //$NON-NLS-1$
         Composite historicalBehaviorComposite = BaseWidgetUtils.createColumnContainer( openModeGroup, 2, 1 );
         BaseWidgetUtils.createRadioIndent( historicalBehaviorComposite, 1 );
-        BaseWidgetUtils.createWrappedLabel( historicalBehaviorComposite,
-            Messages.getString("EntryEditorsPreferencePage.HistoricalBehaviorTooltip"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createWrappedLabel( historicalBehaviorComposite, Messages
+            .getString( "EntryEditorsPreferencePage.HistoricalBehaviorTooltip" ), 1 ); //$NON-NLS-1$
 
         // Use Application Wide Open Mode Button
-        useApplicationWideOpenModeButton = BaseWidgetUtils.createRadiobutton( openModeGroup,
-            Messages.getString("EntryEditorsPreferencePage.ApplicationWideSetting"), 1 ); //$NON-NLS-1$
+        useApplicationWideOpenModeButton = BaseWidgetUtils.createRadiobutton( openModeGroup, Messages
+            .getString( "EntryEditorsPreferencePage.ApplicationWideSetting" ), 1 ); //$NON-NLS-1$
         Composite useApplicationWideOpenModeComposite = BaseWidgetUtils.createColumnContainer( openModeGroup, 2, 1 );
         BaseWidgetUtils.createRadioIndent( useApplicationWideOpenModeComposite, 1 );
-        Link link = BaseWidgetUtils
-            .createLink(
-                useApplicationWideOpenModeComposite,
-                Messages.getString("EntryEditorsPreferencePage.ApplicationWideSettingTooltip"), //$NON-NLS-1$
-                1 );
+        Link link = BaseWidgetUtils.createLink( useApplicationWideOpenModeComposite, Messages
+            .getString( "EntryEditorsPreferencePage.ApplicationWideSettingTooltip" ), //$NON-NLS-1$
+            1 );
         link.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -156,7 +155,8 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         }
 
         // Entry Editors Group
-        Group entryEditorsGroup = BaseWidgetUtils.createGroup( composite, Messages.getString("EntryEditorsPreferencePage.EntryEditors"), 1 ); //$NON-NLS-1$
+        Group entryEditorsGroup = BaseWidgetUtils.createGroup( composite, Messages
+            .getString( "EntryEditorsPreferencePage.EntryEditors" ), 1 ); //$NON-NLS-1$
         openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Entry Editors Composite
@@ -189,7 +189,8 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
             .getEntryEditorExtensions() );
 
         // Up Button
-        upEntryEditorButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages.getString("EntryEditorsPreferencePage.Up"), 1 ); //$NON-NLS-1$
+        upEntryEditorButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages
+            .getString( "EntryEditorsPreferencePage.Up" ), 1 ); //$NON-NLS-1$
         upEntryEditorButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         upEntryEditorButton.setEnabled( false );
         upEntryEditorButton.addSelectionListener( new SelectionAdapter()
@@ -201,7 +202,8 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
 
         // Down Button
-        downEntryEditorButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages.getString("EntryEditorsPreferencePage.Down"), 1 ); //$NON-NLS-1$
+        downEntryEditorButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages
+            .getString( "EntryEditorsPreferencePage.Down" ), 1 ); //$NON-NLS-1$
         downEntryEditorButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         downEntryEditorButton.setEnabled( false );
         downEntryEditorButton.addSelectionListener( new SelectionAdapter()
@@ -213,7 +215,8 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
 
         // Restore Defaults Button
-        restoreDefaultsEntryEditorsButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages.getString("EntryEditorsPreferencePage.RestoreDefaults"), 1 ); //$NON-NLS-1$
+        restoreDefaultsEntryEditorsButton = BaseWidgetUtils.createButton( entryEditorsComposite, Messages
+            .getString( "EntryEditorsPreferencePage.RestoreDefaults" ), 1 ); //$NON-NLS-1$
         restoreDefaultsEntryEditorsButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         restoreDefaultsEntryEditorsButton.addSelectionListener( new SelectionAdapter()
         {
@@ -224,7 +227,8 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         } );
 
         // Description Label
-        BaseWidgetUtils.createLabel( entryEditorsGroup, Messages.getString("EntryEditorsPreferencePage.DescriptionColon"), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( entryEditorsGroup, Messages
+            .getString( "EntryEditorsPreferencePage.DescriptionColon" ), 1 ); //$NON-NLS-1$
 
         // Description Text
         final Text descriptionText = new Text( entryEditorsGroup, SWT.BORDER | SWT.MULTI | SWT.READ_ONLY );
@@ -257,6 +261,12 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         else
         {
             sortEntryEditorsByDefaultPriority();
+        }
+
+        // Selecting the first entry editor
+        if ( sortedEntryEditorsList.size() > 0 )
+        {
+            entryEditorsTableViewer.setSelection( new StructuredSelection( sortedEntryEditorsList.get( 0 ) ) );
         }
 
         return parent;
