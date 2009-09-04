@@ -23,10 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -71,14 +69,6 @@ public class BrowserUIPlugin extends AbstractUIPlugin
         if ( entryEditorManager == null )
         {
             entryEditorManager = new EntryEditorManager();
-        }
-
-        // TODO: remove
-        Collection<EntryEditorExtension> entryEditorExtensions = entryEditorManager.getEntryEditorExtensions();
-        System.out.println( "Registered Entry Editors:" + entryEditorExtensions.size() );
-        for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
-        {
-            System.out.println( entryEditorExtension.toString() );
         }
     }
 
