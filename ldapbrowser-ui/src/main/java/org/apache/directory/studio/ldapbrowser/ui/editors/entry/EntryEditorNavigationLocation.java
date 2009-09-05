@@ -27,15 +27,14 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
+import org.apache.directory.studio.entryeditors.EntryEditorUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.NavigationLocation;
@@ -66,50 +65,8 @@ public class EntryEditorNavigationLocation extends NavigationLocation
      */
     public String getText()
     {
-        EntryEditorInput eei = getEntryEditorInput();
-        if ( eei != null )
-        {
-            if ( eei.getEntryInput() != null )
-            {
-                if ( eei.getEntryInput() instanceof IRootDSE )
-                {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
-                }
-                else
-                {
-                    return NLS
-                        .bind(
-                            Messages.getString( "EntryEditorNavigationLocation.Entry" ), new String[] { eei.getEntryInput().getDn().getUpName() } ); //$NON-NLS-1$
-                }
-            }
-            else if ( eei.getSearchResultInput() != null )
-            {
-                if ( eei.getSearchResultInput() instanceof IRootDSE )
-                {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
-                }
-                else
-                {
-                    return NLS
-                        .bind(
-                            Messages.getString( "EntryEditorNavigationLocation.SearchResult" ), new String[] { eei.getSearchResultInput().getDn().getUpName() } ); //$NON-NLS-1$
-                }
-            }
-            else if ( eei.getBookmarkInput() != null )
-            {
-                if ( eei.getBookmarkInput() instanceof IRootDSE )
-                {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
-                }
-                else
-                {
-                    return NLS
-                        .bind(
-                            Messages.getString( "EntryEditorNavigationLocation.Bookmark" ), new String[] { eei.getBookmarkInput().getDn().getUpName() } ); //$NON-NLS-1$
-                }
-            }
-        }
-        return super.getText();
+        String text = EntryEditorUtils.getHistoryNavigationText( getEntryEditorInput() );
+        return text != null ? text : super.getText();
     }
 
 

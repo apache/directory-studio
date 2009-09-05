@@ -23,6 +23,8 @@ package org.apache.directory.studio.entryeditors;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
+import org.eclipse.osgi.util.NLS;
 
 public class EntryEditorUtils
 {
@@ -44,4 +46,55 @@ public class EntryEditorUtils
         }
     }
     
+    /**
+     * Gets the text used in the history navigation list.
+     * 
+     * @param input the input
+     * 
+     * @return the text
+     */
+    public static String getHistoryNavigationText( EntryEditorInput input )
+    {
+        if ( input != null )
+        {
+            if ( input.getEntryInput() != null )
+            {
+                if ( input.getEntryInput() instanceof IRootDSE )
+                {
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
+                }
+                else
+                {
+                    return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Entry" ), //$NON-NLS-1$
+                        input.getEntryInput().getDn().getUpName() );
+                }
+            }
+            else if ( input.getSearchResultInput() != null )
+            {
+                if ( input.getSearchResultInput() instanceof IRootDSE )
+                {
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
+                }
+                else
+                {
+                    return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.SearchResult" ), //$NON-NLS-1$
+                        input.getSearchResultInput().getDn().getUpName() );
+                }
+            }
+            else if ( input.getBookmarkInput() != null )
+            {
+                if ( input.getBookmarkInput() instanceof IRootDSE )
+                {
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
+                }
+                else
+                {
+                    return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Bookmark" ), //$NON-NLS-1$
+                        input.getBookmarkInput().getDn().getUpName() );
+                }
+            }
+        }
+        
+        return null;
+    }
 }

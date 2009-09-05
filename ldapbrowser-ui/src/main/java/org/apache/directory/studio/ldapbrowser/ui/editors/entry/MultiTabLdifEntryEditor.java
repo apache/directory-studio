@@ -21,8 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.INavigationLocation;
 
 
 /**
@@ -39,7 +41,18 @@ public class MultiTabLdifEntryEditor extends LdifEditor
         super();
 
         // use our own document provider that saves changes to the directory
-        setDocumentProvider( new MultiTabLdifEntryEditorDocumentProvider() );
+        setDocumentProvider( new LdifEntryEditorDocumentProvider() );
+    }
+
+
+    /**
+     * Gets the ID of the MultiTabLdifEntryEditor.
+     * 
+     * @return the id of the MultiTabLdifEntryEditor
+     */
+    public static String getId()
+    {
+        return BrowserUIConstants.EDITOR_MULTI_TAB_LDIF_ENTRY_EDITOR;
     }
 
 
@@ -59,6 +72,20 @@ public class MultiTabLdifEntryEditor extends LdifEditor
         // Allowing "Save As..." requires an IPathEditorInput.
         // Would makes things much more complex, maybe we could add this later.
         return false;
+    }
+
+
+    @Override
+    public INavigationLocation createNavigationLocation()
+    {
+        return new LdifEntryEditorNavigationLocation( this, true );
+    }
+
+
+    @Override
+    public INavigationLocation createEmptyNavigationLocation()
+    {
+        return new LdifEntryEditorNavigationLocation( this, false );
     }
 
 }

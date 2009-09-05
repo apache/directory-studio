@@ -43,7 +43,7 @@
        default="true"
        icon="resources/icons/browser_entryeditor.gif"
        id="%Editor_SingleTabEntryEditor_id"
-       matchingStrategy="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditorMatchingStrategy"
+       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
        name="%Editor_SingleTabEntryEditor_shortname"/>
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
@@ -53,9 +53,17 @@
        name="%Editor_MultiTabEntryEditor_shortname">
  </editor>
  <editor
+       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
+       default="false"
+       icon="resources/icons/ldifeditor_new.gif"
+       id="%Editor_SingleTabLdifEntryEditor_id"
+       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
+       name="%Editor_SingleTabLdifEntryEditor_shortname">
+ </editor>
+ <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
        default="true"
-       icon="resources/icons/browser_entryeditor.gif"
+       icon="resources/icons/ldifeditor_new.gif"
        id="%Editor_MultiTabLdifEntryEditor_id"
        name="%Editor_MultiTabLdifEntryEditor_shortname">
  </editor>
@@ -464,18 +472,28 @@
           icon="resources/icons/browser_entryeditor.gif"
           id="%Editor_MultiTabEntryEditor_id"
           name="%Editor_MultiTabEntryEditor_fullname"
-          priority="1"
+          priority="3"
           multiWindow="true">
+    </entryEditor>
+    <entryEditor
+          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
+          description="%Editor_SingleTabLdifEntryEditor_description"
+          editorId="%Editor_SingleTabLdifEntryEditor_id"
+          icon="resources/icons/ldifeditor_new.gif"
+          id="%Editor_SingleTabLdifEntryEditor_id"
+          multiWindow="false"
+          name="%Editor_SingleTabLdifEntryEditor_fullname"
+          priority="1">
     </entryEditor>
     <entryEditor
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
           description="%Editor_MultiTabLdifEntryEditor_description"
           editorId="%Editor_MultiTabLdifEntryEditor_id"
-          icon="resources/icons/browser_entryeditor.gif"
+          icon="resources/icons/ldifeditor_new.gif"
           id="%Editor_MultiTabLdifEntryEditor_id"
           multiWindow="true"
           name="%Editor_MultiTabLdifEntryEditor_fullname"
-          priority="1">
+          priority="2">
     </entryEditor>
  </extension>
 

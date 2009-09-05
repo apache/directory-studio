@@ -181,6 +181,10 @@ public interface BrowserUIConstants
         .getString( "Editor_SingleTabEntryEditor_id" ); //$NON-NLS-1$
     public static final String EDITOR_MULTI_TAB_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "Editor_MultiTabEntryEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_SINGLE_TAB_LDIF_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Editor_SingleTabLdifEntryEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_MULTI_TAB_LDIF_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Editor_MultiTabLdifEntryEditor_id" ); //$NON-NLS-1$
     public static final String EDITOR_SCHEMA_BROWSER = BrowserUIPlugin.getDefault().getPluginProperties().getString(
         "Editor_SchemaBrowser_id" ); //$NON-NLS-1$
     public static final String EDITOR_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties().getString(

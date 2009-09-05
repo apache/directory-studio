@@ -18,17 +18,16 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
+package org.apache.directory.studio.entryeditors;
 
 
-import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorMatchingStrategy;
 import org.eclipse.ui.IEditorReference;
 
 
 /**
- * Matching strategy for the single tab entry editor.
+ * Matching strategy for a single tab entry editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -37,20 +36,15 @@ public class SingleTabEntryEditorMatchingStrategy implements IEditorMatchingStra
 {
 
     /**
-     * Returns true if the given editor is the {@link SingleTabEntryEditor} and
-     * the input is not multi-window.
+     * Returns true if the given editor is single-tab and the input refers
+     * the same editor. 
      */
     public boolean matches( IEditorReference editorRef, IEditorInput input )
     {
-        if ( !editorRef.getId().equals( SingleTabEntryEditor.getId() ) )
-        {
-            return false;
-        }
         if ( !( input instanceof EntryEditorInput ) )
         {
             return false;
         }
-
         EntryEditorInput entryEditorInput = ( EntryEditorInput ) input;
 
         if ( entryEditorInput.getExtension() == null )
@@ -58,6 +52,10 @@ public class SingleTabEntryEditorMatchingStrategy implements IEditorMatchingStra
             return false;
         }
         if ( entryEditorInput.getExtension().isMultiWindow() )
+        {
+            return false;
+        }
+        if ( !editorRef.getId().equals( entryEditorInput.getExtension().getEditorId() ) )
         {
             return false;
         }

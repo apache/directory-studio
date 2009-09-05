@@ -52,7 +52,7 @@ import org.eclipse.jface.text.IDocument;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class MultiTabLdifEntryEditorDocumentProvider extends LdifDocumentProvider
+public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
 {
 
     @Override
@@ -80,6 +80,22 @@ public class MultiTabLdifEntryEditorDocumentProvider extends LdifDocumentProvide
         LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
         String content = record.toFormattedString( Utils.getLdifFormatParameters() );
         getDocument( element ).set( content );
+    }
+
+
+    public IDocument getDocument( Object element )
+    {
+        if ( element instanceof EntryEditorInput )
+        {
+            EntryEditorInput input = ( EntryEditorInput ) element;
+            if ( input.getExtension() == null )
+            {
+                // this is a performance optimization
+                return null;
+            }
+        }
+
+        return super.getDocument( element );
     }
 
 
