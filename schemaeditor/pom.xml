@@ -115,6 +115,7 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.schemaeditor.Activator</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
  org.eclipse.jface.text,
  org.eclipse.search,
  org.eclipse.ui,
@@ -196,6 +197,11 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>expressions</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -118,6 +118,7 @@
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin</Bundle-Activator>
             <Require-Bundle>org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
  org.eclipse.core.filesystem,
  org.eclipse.search,
  org.eclipse.ui,
@@ -232,6 +233,11 @@
     <dependency>
       <groupId>org.eclipse.core</groupId>
       <artifactId>runtime</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.core</groupId>
+      <artifactId>expressions</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
