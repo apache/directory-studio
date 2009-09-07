@@ -98,7 +98,7 @@
     <valueeditors.version>1.5.0-SNAPSHOT</valueeditors.version>
 
     <!-- Set versions for depending projects -->
-    <org.apache.directory.shared.version>0.9.15-SNAPSHOT</org.apache.directory.shared.version>
+    <org.apache.directory.shared.version>0.9.15</org.apache.directory.shared.version>
     <skin.version>1.0.0</skin.version>
   </properties>
 
