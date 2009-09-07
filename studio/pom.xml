@@ -191,7 +191,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+          <!-- plugin>
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
@@ -206,14 +206,14 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-x86</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <!-- generatePom>false</generatePom -->
+                  <!- generatePom>false</generatePom ->
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin -->
         </plugins>
       </build>
     </profile>
@@ -354,7 +354,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+          <!-- plugin>
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
@@ -369,14 +369,14 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-linux-x86_64</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <!-- generatePom>false</generatePom -->
+                  <!- generatePom>false</generatePom ->
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin -->
         </plugins>
       </build>
     </profile>
@@ -516,7 +516,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+          <!-- plugin>
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
@@ -531,14 +531,14 @@
                   <packaging>zip</packaging>
                   <version>${pom.version}-win32</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <!-- generatePom>false</generatePom -->
+                  <!- generatePom>false</generatePom ->
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin -->
         </plugins>
       </build>
     </profile>
@@ -624,7 +624,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+          <!-- plugin>
             <artifactId>maven-deploy-plugin</artifactId>
             <executions>
               <execution>
@@ -639,14 +639,14 @@
                   <packaging>tar.gz</packaging>
                   <version>${pom.version}-macosx</version>
                   <uniqueVersion>false</uniqueVersion>
-                  <!-- generatePom>false</generatePom -->
+                  <!- generatePom>false</generatePom ->
                 </configuration>
                 <goals>
                   <goal>deploy-file</goal>
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin -->
           <plugin>
             <groupId>org.apache.directory.studio</groupId>
             <artifactId>studio-maven-plugin</artifactId>
