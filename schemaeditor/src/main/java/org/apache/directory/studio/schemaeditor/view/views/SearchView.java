@@ -182,7 +182,7 @@ public class SearchView extends ViewPart
         searchFieldLabel.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // Search Text Field
-        searchField = new Text( searchFieldInnerComposite, SWT.BORDER );
+        searchField = new Text( searchFieldInnerComposite, SWT.BORDER | SWT.SEARCH | SWT.CANCEL );
         if ( searchString != null )
         {
             searchField.setText( searchString );

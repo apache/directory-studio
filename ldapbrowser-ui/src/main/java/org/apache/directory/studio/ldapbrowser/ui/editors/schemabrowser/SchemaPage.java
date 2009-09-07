@@ -225,7 +225,7 @@ public abstract class SchemaPage
 
         // create filter field
         toolkit.createLabel( client, Messages.getString( "SchemaPage.Filter" ) ); //$NON-NLS-1$
-        this.filterText = toolkit.createText( client, "", SWT.NONE ); //$NON-NLS-1$
+        this.filterText = toolkit.createText( client, "", SWT.NONE | SWT.SEARCH | SWT.CANCEL ); //$NON-NLS-1$
         this.filterText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         this.filterText.setData( FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER );
         this.filterText.addModifyListener( new ModifyListener()
