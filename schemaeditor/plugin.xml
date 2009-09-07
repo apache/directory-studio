@@ -206,6 +206,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.apache.directory.studio.schemaeditor.view.preferences.PluginPreferencePage"
+            category="%PrefPage_StudioPage_id"
             id="%PrefPage_SchemaEditor_id"
             name="%PrefPage_SchemaEditor_name"/>
 	  <page

@@ -274,14 +274,14 @@
          <keywordReference id="%Keyword_LDAP_id"/>
       </page>
       <page
-            category="%PrefPage_MainPreferencePage_id"
+            category="%PrefPage_ViewsPreferencePage_id"
             class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.ModificationLogsPreferencePage"
             id="%PrefPage_ModificationLogsPreferencePage_id"
             name="%PrefPage_ModificationLogsPreferencePage_name">
          <keywordReference id="%Keyword_LDAP_id"/>
       </page>
       <page
-            category="%PrefPage_MainPreferencePage_id"
+            category="%PrefPage_ViewsPreferencePage_id"
             class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchLogsPreferencePage"
             id="%PrefPage_SearchLogsPreferencePage_id"
             name="%PrefPage_SearchLogsPreferencePage_name">

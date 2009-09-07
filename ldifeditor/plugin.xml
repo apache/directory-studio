@@ -52,6 +52,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="%PrefPage_StudioPage_id"
             class="org.apache.directory.studio.ldifeditor.dialogs.preferences.LdifEditorPreferencePage"
             id="%PrefPage_LdifEditorPreferencePage_id"
             name="%PrefPage_LdifEditorPreferencePage_name">

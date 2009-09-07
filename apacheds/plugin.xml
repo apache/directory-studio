@@ -22,19 +22,20 @@
       <page
             class="org.apache.directory.studio.apacheds.prefs.MainPage"
             id="%Pref_MainPage_id"
-            name="%Pref_MainPage_name">
-      </page>
-      <page
-            class="org.apache.directory.studio.apacheds.prefs.ColorsAndFontsPage"
-            id="%Pref_ColorsAndFontsPage_id"
-            name="%Pref_ColorsAndFontsPage_name"
-            category="%Pref_MainPage_id">
+            name="%Pref_MainPage_name"
+            category="%Pref_StudioPage_id">
       </page>
       <page
             class="org.apache.directory.studio.apacheds.prefs.ServerLogsPage"
             id="%Pref_ServerLogsPage_id"
             name="%Pref_ServerLogsPage_name"
             category="%Pref_MainPage_id">
+      </page>
+      <page
+            class="org.apache.directory.studio.apacheds.prefs.ColorsAndFontsPage"
+            id="%Pref_ColorsAndFontsPage_id"
+            name="%Pref_ColorsAndFontsPage_name"
+            category="%Pref_ServerLogsPage_id">
       </page>
    </extension>
    <extension

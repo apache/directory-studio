@@ -60,7 +60,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="%PrefPage_MainPreferencePage_id"
+            category="%PrefPage_StudioPage_id"
             class="org.apache.directory.studio.connection.ui.preferences.ConnectionsPreferencePage"
             id="%PrefPage_ConnectionsPreferencePage_id"
             name="%PrefPage_ConnectionsPreferencePage_name">

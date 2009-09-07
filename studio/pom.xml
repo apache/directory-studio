@@ -1009,6 +1009,10 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.apache.directory.studio</groupId>
+                  <artifactId>common.ui</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.directory.studio</groupId>
                   <artifactId>connection.core</artifactId>
                 </artifactItem>
                 <artifactItem>
