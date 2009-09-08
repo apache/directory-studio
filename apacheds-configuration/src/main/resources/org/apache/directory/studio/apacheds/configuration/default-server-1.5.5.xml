@@ -20,18 +20,20 @@
 -->
 
 
-<spring:beans xmlns:spring="http://xbean.apache.org/schemas/spring/1.0" 
-			  xmlns:s="http://www.springframework.org/schema/beans"
-			  xmlns="http://apacheds.org/config/1.0">
+<spring:beans xmlns="http://apacheds.org/config/1.5.5"
+       xmlns:spring="http://xbean.apache.org/schemas/spring/1.0"
+       xmlns:s="http://www.springframework.org/schema/beans">
 
   <defaultDirectoryService id="directoryService" instanceId="default"
+                           replicaId="1"
                            workingDirectory="example.com"
                            allowAnonymousAccess="true"
                            accessControlEnabled="false"
-                           denormalizeOpAttrsEnabled="false">
+                           denormalizeOpAttrsEnabled="false"
+                           syncPeriodMillis="15000"
+                           maxPDUSize="2000000">
     <systemPartition>
-      <!-- use the following partitionConfiguration to override defaults for
--->
+      <!-- use the following partitionConfiguration to override defaults for -->
       <!-- the system partition                                              -->
       <jdbmPartition id="system" cacheSize="100" suffix="ou=system" optimizerEnabled="true" syncOnWrite="true">
         <indexedAttributes>
@@ -51,8 +53,7 @@
 
     <partitions>
       <!-- NOTE: when specifying new partitions you need not include those   -->
-      <!-- attributes below with OID's which are the system indices, if left
--->
+      <!-- attributes below with OID's which are the system indices, if left -->
       <!-- out they will be automatically configured for you with defaults.  -->
       <jdbmPartition id="example" cacheSize="100" suffix="dc=example,dc=com" optimizerEnabled="true"
                      syncOnWrite="true">
@@ -76,6 +77,7 @@
     <interceptors>
       <normalizationInterceptor/>
       <authenticationInterceptor/>
+      <referralInterceptor/>
       <aciAuthorizationInterceptor/>
       <defaultAuthorizationInterceptor/>
       <exceptionInterceptor/>
@@ -104,58 +106,114 @@
       </replicationInterceptor>
       -->
     </interceptors>
+
+    <!-- Uncomment to enable replication configuration -->
+    <!--replicationConfiguration>
+      <providers>
+        <provider id="1 type="refreshAndPersist" timeLimit="1000" sizeLimit="1000">
+          <url>
+            ldap://ldap1.acme.com:10389/ou=data,dc=acme,dc=com?*, +?sub?(objectClass=*)
+          </url>
+          <connection bindMethod="simple">
+            <principal> 
+              uid=admin,ou=system 
+            </principal> 
+            <credentials>secret</credentials>
+          </bind>
+        </provider>
+        <provider id="2 type="refreshAndPersist" timeLimit="1000" sizeLimit="1000">
+          <url>
+            ldaps://ldap2.acme.com:10389/ou=data,dc=acme,dc=com?*, +?sub?(objectClass=*)
+          </url>
+          <connection bindMethod="simple">
+            <principal> 
+              uid=admin,ou=system 
+            </principal> 
+            <credentials>secret</credentials>
+          </bind>
+        </provider>
+      </providers>
+    </replicationConfiguration-->
+
   </defaultDirectoryService>
 
-  <standardThreadPool id="standardThreadPool" maxThreads="8"/>
-  <datagramAcceptor id="datagramAcceptor" logicExecutor="#standardThreadPool"/>
-  <socketAcceptor id="socketAcceptor" logicExecutor="#standardThreadPool"/>
 
-<!--  missing  atou=users,dc=example,dc=com
-  <changePasswordServer ipPort="60464">
+  <!-- 
+  +============================================================+
+  | ChangePassword server configuration                        |
+  +============================================================+
+  -->
+  <!--  missing  atou=users,dc=example,dc=com
+  <changePasswordServer id="changePasswordServer">
+    <transports>
+      <tcpTransport port="60464" nbThreads="2" backLog="50"/>
+      <udpTransport port="60464" nbThreads="2" backLog="50"/>
+    </transports>
     <directoryService>#directoryService</directoryService>
-    <datagramAcceptor>#datagramAcceptor</datagramAcceptor>
-    <socketAcceptor>#socketAcceptor</socketAcceptor>
   </changePasswordServer>
 -->
-<!--  missing atou=users,dc=example,dc=com
-  <kdcServer ipPort="60088">
+
+  <!-- 
+  +============================================================+
+  | Kerberos server configuration                              |
+  +============================================================+
+  -->
+  <!--  missing atou=users,dc=example,dc=com
+  <kdcServer id="kdcServer">
+    <transports>
+      <tcpTransport port="60088" nbThreads="4" backLog="50"/>
+      <udpTransport port="60088" nbThreads="4" backLog="50"/>
+    </transports>
     <directoryService>#directoryService</directoryService>
-    <datagramAcceptor>#datagramAcceptor</datagramAcceptor>
-    <socketAcceptor>#socketAcceptor</socketAcceptor>
   </kdcServer>
 -->
-  <ntpServer ipPort="60123">
-    <datagramAcceptor>#datagramAcceptor</datagramAcceptor>
-    <socketAcceptor>#socketAcceptor</socketAcceptor>
-  </ntpServer>
-<!--  missing atou=users,dc=example,dc=com
-  <dnsServer ipPort="8053">
+
+  <!-- 
+  +============================================================+
+  | NtpServer configuration                                    |
+  +============================================================+
+  -->
+  <!--ntpServer>
+    <transports>
+      <tcpTransport port="60123"/>
+      <udpTransport port="60123" nbThreads="1"/>
+    </transports>
+  </ntpServer-->
+
+  <!-- 
+  +============================================================+
+  | DnsServer configuration                                    |
+  +============================================================+
+  -->
+  <!--  missing atou=users,dc=example,dc=com
+  <dnsServer>
+    <transports>
+      <tcpTransport port="8053"/>
+      <udpTransport port="8053"/>
+    </transports>
     <directoryService>#directoryService</directoryService>
-    <datagramAcceptor>#datagramAcceptor</datagramAcceptor>
-    <socketAcceptor>#socketAcceptor</socketAcceptor>
   </dnsServer>
 -->
 
-  <ldapService id="ldapsService"
-              enabled="true"
-              ipPort="10636"
-              enableLdaps="true">
+  <!-- 
+  +============================================================+
+  | LDAP Service configuration                                 |
+  +============================================================+
+  -->
+  
+  <ldapServer id="ldapServer"
+            allowAnonymousAccess="false"
+            saslHost="ldap.example.com"
+            saslPrincipal="ldap/ldap.example.com@EXAMPLE.COM"
+            searchBaseDn="ou=users,ou=system"
+            maxTimeLimit="15000"
+            maxSizeLimit="1000">
+    <transports>
+      <tcpTransport address="0.0.0.0" port="10389" nbThreads="8" backLog="50" enableSSL="false"/>
+      <tcpTransport address="localhost" port="10686" enableSSL="true"/>
+    </transports>
+
     <directoryService>#directoryService</directoryService>
-    <socketAcceptor>#socketAcceptor</socketAcceptor>
-  </ldapService>
-
-
-  <ldapService id="ldapService"
-              ipPort="10389"
-              allowAnonymousAccess="false"
-              saslHost="ldap.example.com"
-              saslPrincipal="ldap/ldap.example.com@EXAMPLE.COM"
-              searchBaseDn="ou=users,ou=system"
-              maxTimeLimit="15000"
-              maxSizeLimit="1000">
-
-    <directoryService>#directoryService</directoryService>
-    <socketAcceptor>#socketAcceptor</socketAcceptor>
 
     <!-- The list of supported authentication mechanisms.                   -->
     <saslMechanismHandlers>
@@ -167,15 +225,7 @@
       <ntlmMechanismHandler mech-name="GSS-SPNEGO" ntlmProviderFqcn="com.foo.Bar"/>
     </saslMechanismHandlers>
 
-    <!-- The desired quality-of-protection, used by DIGEST-MD5 and GSSAPI.  -->
-    <saslQop>
-      <s:value>auth</s:value>
-      <s:value>auth-int</s:value>
-      <s:value>auth-conf</s:value>
-    </saslQop>
-
-    <!-- The realms serviced by this SASL host, used by DIGEST-MD5 and GSSAPI.
--->
+    <!-- The realms serviced by this SASL host, used by DIGEST-MD5 and GSSAPI. -->
     <saslRealms>
       <s:value>example.com</s:value>
       <s:value>apache.org</s:value>
@@ -189,26 +239,21 @@
       <!-- The Stored Procedure Extended Operation is not stable yet and it may cause security risks.-->
       <!--storedProcedureExtendedOperationHandler/-->
     </extendedOperationHandlers>
-  </ldapService>
+  </ldapServer>
 
-
-  <apacheDS id="apacheDS"
-            synchPeriodMillis="15000"
-            allowAnonymousAccess="false">
-
-    <directoryService>#directoryService</directoryService>
-    <ldapService>#ldapService</ldapService>
-    <ldapsService>#ldapsService</ldapsService>
+  <apacheDS id="apacheDS">
+    <ldapServer>#ldapServer</ldapServer>
   </apacheDS>
-
-  <!-- another bean I didn't convert -->
-  <spring:bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-    <spring:property name="customEditors">
-      <spring:map>
-        <spring:entry key="javax.naming.directory.Attributes">
-          <spring:bean class="org.apache.directory.server.core.configuration.AttributesPropertyEditor"/>
-        </spring:entry>
-      </spring:map>
-    </spring:property>
-  </spring:bean>
+  
+  <!-- uncomment the below line to start the jetty(v6.1.14) http server
+       This can be used to provide access to the data present in DIT via http
+       using a web application
+  -->
+  <!-- 
+   <httpServer id="httpServer" port="7009" >
+   <webApps>
+    <webApp warFile="/path/to/war/file" contextPath="/myApp"/>
+   </webApps>
+  </httpServer>
+   -->
 </spring:beans>

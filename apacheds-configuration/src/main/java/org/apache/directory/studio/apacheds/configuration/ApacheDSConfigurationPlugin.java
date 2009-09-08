@@ -44,6 +44,7 @@ import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIO
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
+import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 
 
 /**
@@ -61,7 +62,7 @@ public class ApacheDSConfigurationPlugin extends AbstractUIPlugin
     private PropertyResourceBundle properties;
 
     private ServerXmlIO[] serverXmlIOs = new ServerXmlIO[]
-        { new ServerXmlIOV154(), new ServerXmlIOV153(), new ServerXmlIOV152(), new ServerXmlIOV151(),
+        { new ServerXmlIOV155(), new ServerXmlIOV154(), new ServerXmlIOV153(), new ServerXmlIOV152(), new ServerXmlIOV151(),
             new ServerXmlIOV150(), };
 
 

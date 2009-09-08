@@ -41,6 +41,7 @@ import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIO
 import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
+import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -144,6 +145,9 @@ public class ServerConfigurationEditor extends FormEditor
             // Setting the ServerXmlIO class
             switch ( serverConfiguration.getVersion() )
             {
+                case VERSION_1_5_5:
+                    serverXmlIO = new ServerXmlIOV155();
+                    break;
                 case VERSION_1_5_4:
                     serverXmlIO = new ServerXmlIOV154();
                     break;
@@ -232,6 +236,27 @@ public class ServerConfigurationEditor extends FormEditor
             {
                 switch ( serverConfiguration.getVersion() )
                 {
+                    case VERSION_1_5_5:
+                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.GeneralPage(
+                            this );
+                        addPage( generalPage );
+
+                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.AuthenticationPage(
+                            this );
+                        addPage( authenticationPage );
+
+                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.PartitionsPage(
+                            this );
+                        addPage( partitionsPage );
+
+                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.InterceptorsPage(
+                            this );
+                        addPage( interceptorsPage );
+
+                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.ExtendedOperationsPage(
+                            this );
+                        addPage( extendedOperationsPage );
+                        break;
                     case VERSION_1_5_4:
                         generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v154.GeneralPage(
                             this );
@@ -421,6 +446,13 @@ public class ServerConfigurationEditor extends FormEditor
         {
             switch ( serverConfiguration.getVersion() )
             {
+                case VERSION_1_5_5:
+                    generalPage.save();
+                    authenticationPage.save();
+                    partitionsPage.save();
+                    interceptorsPage.save();
+                    extendedOperationsPage.save();
+                    break;
                 case VERSION_1_5_4:
                     generalPage.save();
                     authenticationPage.save();

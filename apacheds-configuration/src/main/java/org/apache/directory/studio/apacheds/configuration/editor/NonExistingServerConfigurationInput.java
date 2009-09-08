@@ -90,6 +90,8 @@ public class NonExistingServerConfigurationInput implements IEditorInput
     {
         switch ( serverConfiguration.getVersion() )
         {
+            case VERSION_1_5_5:
+                return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS155Configuration"); //$NON-NLS-1$
             case VERSION_1_5_4:
                 return Messages.getString("NonExistingServerConfigurationInput.NewApacheDS154Configuration"); //$NON-NLS-1$
             case VERSION_1_5_3:
