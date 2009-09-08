@@ -103,13 +103,7 @@ public interface BrowserCommonConstants
     public static final String PREFERENCE_MAYATTRIBUTE_FONT = "mayAttributeFont"; //$NON-NLS-1$
     public static final String PREFERENCE_OPERATIONALATTRIBUTE_COLOR = "operationalAttributeColor"; //$NON-NLS-1$
     public static final String PREFERENCE_OPERATIONALATTRIBUTE_FONT = "operationalAttributeFont"; //$NON-NLS-1$
-    public static final String PREFERENCE_QUICKFILTER_BACKGROUND_COLOR = "quickfilterBackgroundColor"; //$NON-NLS-1$
-    public static final String PREFERENCE_QUICKFILTER_FOREGROUND_COLOR = "quickfilterForegroundColor"; //$NON-NLS-1$
-    public static final String PREFERENCE_QUICKFILTER_FONT = "quickfilterFont"; //$NON-NLS-1$
-    public static final String PREFERENCE_ERROR_FONT = "errorFont"; //$NON-NLS-1$
-    public static final String PREFERENCE_ERROR_COLOR = "errorColor"; //$NON-NLS-1$
-    public static final String PREFERENCE_WARNING_FONT = "warningFont"; //$NON-NLS-1$
-    public static final String PREFERENCE_WARNING_COLOR = "warningColor"; //$NON-NLS-1$
+
     public static final int SHOW_DN = 0;
     public static final int SHOW_RDN = 1;
     public static final int SHOW_RDN_VALUE = 2;

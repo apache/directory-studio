@@ -63,8 +63,6 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
 
         // Colors and Fonts
         RGB rgbBlack = Display.getDefault().getSystemColor( SWT.COLOR_BLACK ).getRGB();
-        RGB rgbRed = Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB();
-        RGB rgbYellow = Display.getDefault().getSystemColor( SWT.COLOR_YELLOW ).getRGB();
         FontData[] fontData = Display.getDefault().getSystemFont().getFontData();
         FontData fontDataNormal = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.NORMAL );
         FontData fontDataItalic = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.ITALIC );
@@ -80,15 +78,6 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_FONT, fontDataNormal );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR, rgbBlack );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT, fontDataItalic );
-        // Error/Warning colors and fonts
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_WARNING_FONT, fontDataBoldItalic );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_WARNING_COLOR, rgbYellow );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_ERROR_FONT, fontDataBoldItalic );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_ERROR_COLOR, rgbRed );
-        // Quick filter background colors and fonts
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_QUICKFILTER_FONT, fontDataBold );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_QUICKFILTER_BACKGROUND_COLOR, rgbYellow );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR, rgbBlack );
 
         // Attributes
         store.setDefault( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES, false );

@@ -24,16 +24,11 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -122,7 +117,7 @@ public class EntryEditorWidgetQuickFilterWidget
         // Reseting the layout of the composite to be displayed correctly
         GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         composite.setLayoutData( compositeGridData );
-        
+
         innerComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
 
         quickFilterAttributeText = new Text( innerComposite, SWT.BORDER );
@@ -134,25 +129,6 @@ public class EntryEditorWidgetQuickFilterWidget
                 filter.setQuickFilterAttribute( quickFilterAttributeText.getText() );
                 clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() ) //$NON-NLS-1$
                     || !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
-                if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
-                {
-                    RGB fgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                        BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
-                    RGB bgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                        BrowserCommonConstants.PREFERENCE_QUICKFILTER_BACKGROUND_COLOR );
-                    Color fgColor = BrowserCommonActivator.getDefault().getColor( fgRgb );
-                    Color bgColor = BrowserCommonActivator.getDefault().getColor( bgRgb );
-                    quickFilterAttributeText.setForeground( fgColor );
-                    quickFilterAttributeText.setBackground( bgColor );
-                    FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                        .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_QUICKFILTER_FONT );
-                    Font font = BrowserCommonActivator.getDefault().getFont( fontData );
-                    quickFilterAttributeText.setFont( font );
-                }
-                else
-                {
-                    quickFilterAttributeText.setBackground( null );
-                }
             }
         } );
 
@@ -165,30 +141,12 @@ public class EntryEditorWidgetQuickFilterWidget
                 filter.setQuickFilterValue( quickFilterValueText.getText() );
                 clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() ) //$NON-NLS-1$
                     || !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
-                if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
-                {
-                    RGB fgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                        BrowserCommonConstants.PREFERENCE_QUICKFILTER_FOREGROUND_COLOR );
-                    RGB bgRgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                        BrowserCommonConstants.PREFERENCE_QUICKFILTER_BACKGROUND_COLOR );
-                    Color fgColor = BrowserCommonActivator.getDefault().getColor( fgRgb );
-                    Color bgColor = BrowserCommonActivator.getDefault().getColor( bgRgb );
-                    quickFilterValueText.setForeground( fgColor );
-                    quickFilterValueText.setBackground( bgColor );
-                    FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                        .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_QUICKFILTER_FONT );
-                    Font font = BrowserCommonActivator.getDefault().getFont( fontData );
-                    quickFilterValueText.setFont( font );
-                }
-                else
-                {
-                    quickFilterValueText.setBackground( null );
-                }
             }
         } );
 
         clearQuickFilterButton = new Button( innerComposite, SWT.PUSH );
-        clearQuickFilterButton.setToolTipText( Messages.getString("EntryEditorWidgetQuickFilterWidget.ClearQuickFilter") ); //$NON-NLS-1$
+        clearQuickFilterButton.setToolTipText( Messages
+            .getString( "EntryEditorWidgetQuickFilterWidget.ClearQuickFilter" ) ); //$NON-NLS-1$
         clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault()
             .getImage( BrowserCommonConstants.IMG_CLEAR ) );
         clearQuickFilterButton.setEnabled( false );
@@ -224,7 +182,7 @@ public class EntryEditorWidgetQuickFilterWidget
         compositeGridData.heightHint = 0;
         compositeGridData.widthHint = 0;
         composite.setLayoutData( compositeGridData );
-        
+
         if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
         {
             quickFilterAttributeText.setText( "" ); //$NON-NLS-1$

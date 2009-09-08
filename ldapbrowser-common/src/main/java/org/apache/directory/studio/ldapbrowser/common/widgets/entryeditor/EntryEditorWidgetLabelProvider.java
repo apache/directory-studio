@@ -33,11 +33,13 @@ import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -106,7 +108,9 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
             IAttribute attribute = ( IAttribute ) obj;
             if ( index == EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX )
             {
-                return NLS.bind( Messages.getString("EntryEditorWidgetLabelProvider.AttributeLabel"), attribute.getDescription(), attribute.getValueSize() ); //$NON-NLS-1$
+                return NLS
+                    .bind(
+                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), attribute.getDescription(), attribute.getValueSize() ); //$NON-NLS-1$
             }
             else
             {
@@ -151,18 +155,22 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( value.isEmpty() )
             {
-                FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                    .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_ERROR_FONT );
-                return BrowserCommonActivator.getDefault().getFont( fontData );
+                FontData[] fontData = Display.getDefault().getSystemFont().getFontData();
+                FontData fontDataBoldItalic = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD
+                    | SWT.ITALIC );
+                return BrowserCommonActivator.getDefault().getFont( new FontData[]
+                    { fontDataBoldItalic } );
             }
         }
         if ( attribute != null && value == null )
         {
             if ( !attribute.isConsistent() )
             {
-                FontData[] fontData = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                    .getPreferenceStore(), BrowserCommonConstants.PREFERENCE_ERROR_FONT );
-                return BrowserCommonActivator.getDefault().getFont( fontData );
+                FontData[] fontData = Display.getDefault().getSystemFont().getFontData();
+                FontData fontDataBoldItalic = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD
+                    | SWT.ITALIC );
+                return BrowserCommonActivator.getDefault().getFont( new FontData[]
+                    { fontDataBoldItalic } );
             }
         }
 
@@ -223,18 +231,16 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( value.isEmpty() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_ERROR_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return BrowserCommonActivator.getDefault().getColor(
+                    Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB() );
             }
         }
         if ( attribute != null && value == null )
         {
             if ( !attribute.isConsistent() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_ERROR_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return BrowserCommonActivator.getDefault().getColor(
+                    Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB() );
             }
         }
 

@@ -66,15 +66,6 @@
          <keywordReference id="%Keyword_LDAP_id"/>
       </page>
       <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ColorsAndFontsPreferencePage"
-            id="%PrefPage_ColorsAndFontsPreferencePage_id"
-            name="%PrefPage_ColorsAndFontsPreferencePage_name">
-         <keywordReference id="%Keyword_Colors_id"/>
-         <keywordReference id="%Keyword_Fonts_id"/>
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
             category="%PrefPage_AttributesPreferencePage_id"
             class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
             id="%PrefPage_BinaryAttributesAndSyntaxesPreferencePage_id"
