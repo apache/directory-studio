@@ -30,8 +30,7 @@
                            accessControlEnabled="false"
                            denormalizeOpAttrsEnabled="false">
     <systemPartition>
-      <!-- use the following partitionConfiguration to override defaults for
--->
+      <!-- use the following partitionConfiguration to override defaults for -->
       <!-- the system partition                                              -->
       <jdbmPartition id="system" cacheSize="100" suffix="ou=system" optimizerEnabled="true" syncOnWrite="true">
         <indexedAttributes>
@@ -51,8 +50,7 @@
 
     <partitions>
       <!-- NOTE: when specifying new partitions you need not include those   -->
-      <!-- attributes below with OID's which are the system indices, if left
--->
+      <!-- attributes below with OID's which are the system indices, if left -->
       <!-- out they will be automatically configured for you with defaults.  -->
       <jdbmPartition id="example" cacheSize="100" suffix="dc=example,dc=com" optimizerEnabled="true"
                      syncOnWrite="true">
@@ -174,8 +172,7 @@
       <s:value>auth-conf</s:value>
     </saslQop>
 
-    <!-- The realms serviced by this SASL host, used by DIGEST-MD5 and GSSAPI.
--->
+    <!-- The realms serviced by this SASL host, used by DIGEST-MD5 and GSSAPI. -->
     <saslRealms>
       <s:value>example.com</s:value>
       <s:value>apache.org</s:value>
