@@ -32,6 +32,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
@@ -181,9 +182,9 @@ public class ModificationLogsViewUniversalListener implements EntryUpdateListene
      */
     public void entryUpdated( EntryModificationEvent event )
     {
-        // performance optimization: refresh only once per second
+        // performance optimization: refresh only once per second, but always at the end of bulk modifications
         long now = System.currentTimeMillis();
-        if ( lastRefreshTimestamp + 1000 < now )
+        if ( lastRefreshTimestamp + 1000 < now || event instanceof BulkModificationEvent )
         {
             if ( !( event instanceof AttributesInitializedEvent ) && !( event instanceof ChildrenInitializedEvent ) )
             {
