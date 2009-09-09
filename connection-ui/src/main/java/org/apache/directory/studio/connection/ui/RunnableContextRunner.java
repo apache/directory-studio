@@ -32,10 +32,9 @@ import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgre
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -60,7 +59,7 @@ public class RunnableContextRunner
     {
         if ( runnableContext == null )
         {
-            runnableContext = new ProgressMonitorDialog( Display.getDefault().getActiveShell() );
+            runnableContext = PlatformUI.getWorkbench().getProgressService();
         }
 
         final StudioProgressMonitor[] spm = new StudioProgressMonitor[1];
