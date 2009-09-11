@@ -265,7 +265,7 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 
             // select the added value and start editing
             viewer.setSelection( new StructuredSelection( evaEvent.getAddedValue() ), true );
-            if ( startEditAction.isEnabled() )
+            if ( startEditAction.isEnabled() && viewer.getControl().isFocusControl() )
             {
                 startEditAction.run();
             }
@@ -302,13 +302,12 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
      */
     public void setInput( IEntry entry )
     {
-        if ( entry != viewer.getInput() )
+        // if ( entry != viewer.getInput() )
         {
             viewer.setInput( entry );
             actionGroup.setInput( entry );
             expandFoldedAttributes();
         }
-
     }
 
 

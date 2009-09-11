@@ -229,7 +229,7 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        return attributeHierarchy.getEntry().isDirectoryEntry() ? attributeHierarchy.getEntry() : null;
+        return attributeHierarchy.getEntry();
     }
 
 
@@ -240,7 +240,7 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value.getAttribute().getEntry().isDirectoryEntry() ? value.getAttribute().getEntry() : null;
+        return value.getAttribute().getEntry();
     }
 
 

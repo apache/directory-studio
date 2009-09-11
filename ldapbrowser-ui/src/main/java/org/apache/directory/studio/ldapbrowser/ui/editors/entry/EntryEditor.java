@@ -22,11 +22,16 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
+import org.apache.directory.studio.entryeditors.EntryEditorUtils;
+import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
+import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -37,6 +42,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
 import org.eclipse.ui.IReusableEditor;
+import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -52,7 +58,8 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class EntryEditor extends EditorPart implements INavigationLocationProvider, IReusableEditor
+public abstract class EntryEditor extends EditorPart implements IEntryEditor, INavigationLocationProvider,
+    IReusableEditor, IShowEditorInput
 {
 
     /** The editor configuration. */
@@ -88,19 +95,14 @@ public abstract class EntryEditor extends EditorPart implements INavigationLocat
     {
         super.setInput( input );
 
-        if ( input instanceof EntryEditorInput && universalListener != null )
+        EntryEditorInput eei = getEntryEditorInput();
+        setEntryEditorWidgetInput( eei );
+        setEditorName( eei );
+
+        // refresh outline
+        if ( outlinePage != null )
         {
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getResolvedEntry();
-
-            // inform listener
-            universalListener.setInput( entry );
-
-            // refresh outline
-            if ( outlinePage != null )
-            {
-                outlinePage.refresh();
-            }
+            outlinePage.refresh();
         }
     }
 
@@ -218,8 +220,13 @@ public abstract class EntryEditor extends EditorPart implements INavigationLocat
     /**
      * {@inheritDoc}
      */
-    public void doSave( IProgressMonitor monitor )
+    public void doSave( final IProgressMonitor monitor )
     {
+        if ( !isAutoSave() )
+        {
+            EntryEditorInput eei = getEntryEditorInput();
+            eei.saveSharedWorkingCopy( true, this );
+        }
     }
 
 
@@ -236,7 +243,7 @@ public abstract class EntryEditor extends EditorPart implements INavigationLocat
      */
     public boolean isDirty()
     {
-        return false;
+        return getEntryEditorInput().isSharedWorkingCopyDirty( this );
     }
 
 
@@ -319,6 +326,107 @@ public abstract class EntryEditor extends EditorPart implements INavigationLocat
     public INavigationLocation createNavigationLocation()
     {
         return new EntryEditorNavigationLocation( this );
+    }
+
+
+    /**
+     * Sets the editor name.
+     * 
+     * @param input the new editor name
+     */
+    protected abstract void setEditorName( EntryEditorInput input );
+
+
+    /**
+     * This implementation returns always true.
+     * 
+     * {@inheritDoc}
+     */
+    public boolean canHandle( IEntry entry )
+    {
+        return true;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public EntryEditorInput getEntryEditorInput()
+    {
+        return EntryEditorUtils.getEntryEditorInput( getEditorInput() );
+    }
+
+
+    public void workingCopyModified()
+    {
+        if ( isAutoSave() )
+        {
+            setEntryEditorWidgetInput( getEntryEditorInput() );
+        }
+        if ( !isAutoSave() )
+        {
+            // mark as dirty only
+            firePropertyChange( PROP_DIRTY );
+        }
+    }
+
+
+    /**
+     * Sets the entry editor widget input. A clone of the real entry
+     * with a read-only connection is used for that.
+     * @param eei 
+     */
+    private void setEntryEditorWidgetInput( EntryEditorInput eei )
+    {
+        if ( mainWidget != null )
+        {
+            // set input, remember old selection and set it afterwards
+            ISelection selection = mainWidget.getViewer().getSelection();
+            universalListener.setInput( getEntryEditorInput().getSharedWorkingCopy( this ) );
+            mainWidget.getViewer().setSelection( selection );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void showEditorInput( IEditorInput input )
+    {
+        if ( input instanceof EntryEditorInput )
+        {
+            /*
+             * Workaround to make link-with-editor working for the single-tab editor:
+             * The call of firePropertyChange is used to inform the link-with-editor action.
+             * However firePropertyChange also modifies the navigation history.
+             * Thus, a dummy input with the real entry but a null extension is set.
+             * This avoids to modification of the navigation history.
+             * Afterwards the real input is set.
+             */
+            EntryEditorInput eei = ( EntryEditorInput ) input;
+            IEntry entry = eei.getEntryInput();
+            ISearchResult searchResult = eei.getSearchResultInput();
+            IBookmark bookmark = eei.getBookmarkInput();
+            EntryEditorInput dummyInput;
+            if ( entry != null )
+            {
+                dummyInput = new EntryEditorInput( entry, null );
+            }
+            else if ( searchResult != null )
+            {
+                dummyInput = new EntryEditorInput( searchResult, null );
+            }
+            else
+            {
+                dummyInput = new EntryEditorInput( bookmark, null );
+            }
+            setInput( dummyInput );
+            firePropertyChange( IEditorPart.PROP_INPUT );
+
+            // now set the real input and mark history location
+            setInput( input );
+            getSite().getPage().getNavigationHistory().markLocation( this );
+        }
     }
 
 }

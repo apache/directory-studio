@@ -889,6 +889,15 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
+    public int hashCode()
+    {
+        return getDn().hashCode();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean equals( Object o )
     {
         // check argument

@@ -21,14 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +34,6 @@ import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
 import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteEntriesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -49,6 +46,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.ISharedImages;
@@ -188,23 +186,7 @@ public class DeleteAction extends BrowserAction
                 }
                 if ( values.size() > 0 )
                 {
-                    List<IValue> valueList = new ArrayList<IValue>( values );
-
-                    // filter empty attributes and values
-                    for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
-                    {
-                        IValue value = it.next();
-                        if ( value.isEmpty() )
-                        {
-                            value.getAttribute().deleteEmptyValue();
-                            it.remove();
-                        }
-                    }
-
-                    if ( !valueList.isEmpty() )
-                    {
-                        deleteValues( valueList.toArray( new IValue[valueList.size()] ) );
-                    }
+                    deleteValues( values );
                 }
             }
         }
@@ -591,43 +573,9 @@ public class DeleteAction extends BrowserAction
      * @param values
      *      the Values to delete
      */
-    protected void deleteValues( IValue[] values )
+    protected void deleteValues( Collection<IValue> values )
     {
-        // check if all values of an attribute should be removed
-        List<IAttribute> attributeList = new ArrayList<IAttribute>();
-        Map<String, Integer> attributeDescriptionToSelectedValuesCountMap = new HashMap<String, Integer>();
-        for ( IValue value : values )
-        {
-            if ( !attributeDescriptionToSelectedValuesCountMap.containsKey( value.getAttribute().getDescription() ) )
-            {
-                attributeDescriptionToSelectedValuesCountMap.put( value.getAttribute().getDescription(),
-                    new Integer( 0 ) );
-            }
-            int count = ( ( Integer ) attributeDescriptionToSelectedValuesCountMap.get( value.getAttribute()
-                .getDescription() ) ).intValue() + 1;
-            attributeDescriptionToSelectedValuesCountMap.put( value.getAttribute().getDescription(),
-                new Integer( count ) );
-            if ( count >= value.getAttribute().getValueSize() )
-            {
-                IAttribute attribute = value.getAttribute();
-                if ( attribute != null && !attributeList.contains( attribute ) )
-                {
-                    attributeList.add( attribute );
-                }
-            }
-        }
-
-        // add selected values, but not if there attributes are also selected
-        List<IValue> valueList = new ArrayList<IValue>();
-        for ( IValue value : values )
-        {
-            if ( !attributeList.contains( value.getAttribute() ) )
-            {
-                valueList.add( value );
-            }
-        }
-
-        new DeleteAttributesValueJob( attributeList.toArray( new IAttribute[attributeList.size()] ), valueList
-            .toArray( new IValue[valueList.size()] ) ).execute();
+        new CompoundModification().deleteValues( values );
     }
+
 }

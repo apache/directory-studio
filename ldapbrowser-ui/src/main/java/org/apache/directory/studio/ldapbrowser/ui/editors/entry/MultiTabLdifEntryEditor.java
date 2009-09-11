@@ -22,9 +22,6 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.INavigationLocation;
 
 
 /**
@@ -33,17 +30,8 @@ import org.eclipse.ui.INavigationLocation;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class MultiTabLdifEntryEditor extends LdifEditor
+public class MultiTabLdifEntryEditor extends LdifEntryEditor
 {
-
-    public MultiTabLdifEntryEditor()
-    {
-        super();
-
-        // use our own document provider that saves changes to the directory
-        setDocumentProvider( new LdifEntryEditorDocumentProvider() );
-    }
-
 
     /**
      * Gets the ID of the MultiTabLdifEntryEditor.
@@ -53,39 +41,6 @@ public class MultiTabLdifEntryEditor extends LdifEditor
     public static String getId()
     {
         return BrowserUIConstants.EDITOR_MULTI_TAB_LDIF_ENTRY_EDITOR;
-    }
-
-
-    @Override
-    public void createPartControl( Composite parent )
-    {
-        // don't show the tool bar
-        showToolBar = false;
-
-        super.createPartControl( parent );
-    }
-
-
-    @Override
-    public boolean isSaveAsAllowed()
-    {
-        // Allowing "Save As..." requires an IPathEditorInput.
-        // Would makes things much more complex, maybe we could add this later.
-        return false;
-    }
-
-
-    @Override
-    public INavigationLocation createNavigationLocation()
-    {
-        return new LdifEntryEditorNavigationLocation( this, true );
-    }
-
-
-    @Override
-    public INavigationLocation createEmptyNavigationLocation()
-    {
-        return new LdifEntryEditorNavigationLocation( this, false );
     }
 
 }

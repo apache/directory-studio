@@ -82,6 +82,7 @@ public class BrowserUIPlugin extends AbstractUIPlugin
 
         if ( entryEditorManager != null )
         {
+            entryEditorManager.dispose();
             entryEditorManager = null;
         }
 

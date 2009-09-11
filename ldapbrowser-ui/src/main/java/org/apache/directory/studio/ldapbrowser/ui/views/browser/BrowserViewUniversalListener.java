@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +52,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor;
@@ -573,7 +573,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             }
             viewer.refresh( event.getModifiedEntry(), true );
         }
-        else
+        else if ( !( event.getModifiedEntry() instanceof DummyEntry ) )
         {
             viewer.refresh( event.getModifiedEntry(), true );
         }

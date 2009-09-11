@@ -23,19 +23,15 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
-import org.apache.directory.studio.entryeditors.EntryEditorUtils;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
-import org.apache.directory.studio.ldifparser.LdifFormatParameters;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.core.runtime.CoreException;
@@ -43,6 +39,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 
 
@@ -55,31 +52,95 @@ import org.eclipse.jface.text.IDocument;
 public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
 {
 
+    private EntryEditorInput input;
+    private boolean inSetContent = false;
+
+    private LdifEntryEditor editor;
+
+
+    public LdifEntryEditorDocumentProvider( LdifEntryEditor editor )
+    {
+        this.editor = editor;
+    }
+
+
     @Override
     protected void doSaveDocument( IProgressMonitor monitor, Object element, IDocument document, boolean overwrite )
         throws CoreException
     {
-        IEntry entry = getResolvedEntry( element );
-        IBrowserConnection browserConnection = entry.getBrowserConnection();
-
-        LdifChangeModifyRecord diff = getDiff( entry );
-        if ( diff != null )
+        EntryEditorInput input = getEntryEditorInput( element );
+        IStatus status = input.saveSharedWorkingCopy( false, editor );
+        if ( status != null && !status.isOK() )
         {
-            // save by executing the LDIF
-            ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff
-                .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
-            IStatus status = RunnableContextRunner.execute( runnable, null, true );
-            if ( !status.isOK() )
-            {
-                return;
-            }
+            throw new CoreException( status );
+        }
+    }
+
+
+    @Override
+    public void documentChanged( DocumentEvent event )
+    {
+        super.documentChanged( event );
+
+        if ( input == null )
+        {
+            return;
+        }
+        LdifRecord[] records = getLdifModel().getRecords();
+        if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) || !records[0].isValid() )
+        {
+            // can't continue
+            return;
         }
 
-        // if no difference or if saved successful: refresh input and clean dirty state
-        entry = getResolvedEntry( element );
-        LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
-        String content = record.toFormattedString( Utils.getLdifFormatParameters() );
-        getDocument( element ).set( content );
+        // the document change was caused by the model update
+        // no need to update the model again, don't fire more events
+        if ( inSetContent )
+        {
+            return;
+        }
+
+        // update shared working copy
+        try
+        {
+            LdifContentRecord modifiedRecord = ( LdifContentRecord ) records[0];
+            IBrowserConnection browserConnection = input.getSharedWorkingCopy( editor ).getBrowserConnection();
+            DummyEntry modifiedEntry = ModelConverter.ldifContentRecordToEntry( modifiedRecord, browserConnection );
+            new CompoundModification().replaceAttributes( modifiedEntry, input.getSharedWorkingCopy( editor ) );
+        }
+        catch ( InvalidNameException e )
+        {
+            throw new RuntimeException( "Failed to set input", e );
+        }
+    }
+
+
+    public void setContent( EntryEditorInput input )
+    {
+        IEntry sharedWorkingCopy = input.getSharedWorkingCopy( editor );
+        LdifContentRecord record = ModelConverter.entryToLdifContentRecord( sharedWorkingCopy );
+        String newContent = record.toFormattedString( Utils.getLdifFormatParameters() );
+
+        IDocument document = getDocument( input );
+        if ( document != null )
+        {
+            inSetContent = true;
+            document.set( newContent );
+
+            // reset dirty state
+            if ( !input.isSharedWorkingCopyDirty( editor ) )
+            {
+                try
+                {
+                    doResetDocument( input, null );
+                }
+                catch ( CoreException e )
+                {
+                    throw new RuntimeException( e );
+                }
+            }
+            inSetContent = false;
+        }
     }
 
 
@@ -99,39 +160,12 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     }
 
 
-    /**
-     * Gets the difference between the original entry and the modified entry.
-     * 
-     * @return the difference
-     */
-    private LdifChangeModifyRecord getDiff( IEntry originalEntry ) throws CoreException
-    {
-        LdifRecord[] records = getLdifModel().getRecords();
-        if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) )
-        {
-            throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID,
-                "Expected exactly one LDIF content record." ) );
-        }
-
-        try
-        {
-            LdifContentRecord modifiedRecord = ( LdifContentRecord ) records[0];
-            DummyEntry modifiedEntry = ModelConverter.ldifContentRecordToEntry( modifiedRecord, originalEntry
-                .getBrowserConnection() );
-            LdifChangeModifyRecord record = Utils.computeDiff( originalEntry, modifiedEntry );
-            return record;
-        }
-        catch ( InvalidNameException e )
-        {
-            throw new RuntimeException( "Failed to set input", e );
-        }
-    }
-
-
     @Override
     protected IDocument createDocument( Object element ) throws CoreException
     {
-        IEntry entry = getResolvedEntry( element );
+        input = getEntryEditorInput( element );
+
+        IEntry entry = getEntryEditorInput( element ).getSharedWorkingCopy( editor );
         LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
         String content = record.toFormattedString( Utils.getLdifFormatParameters() );
 
@@ -142,14 +176,12 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     }
 
 
-    private IEntry getResolvedEntry( Object element ) throws CoreException
+    private EntryEditorInput getEntryEditorInput( Object element ) throws CoreException
     {
         if ( element instanceof EntryEditorInput )
         {
             EntryEditorInput input = ( EntryEditorInput ) element;
-            IEntry entry = input.getResolvedEntry();
-            EntryEditorUtils.ensureAttributesInitialized( entry );
-            return entry;
+            return input;
         }
         else
         {

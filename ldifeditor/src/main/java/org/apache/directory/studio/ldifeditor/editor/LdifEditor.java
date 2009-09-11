@@ -240,7 +240,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         getSite().getPage().addPartListener( this );
 
-        this.valueEditorManager = new ValueEditorManager( getSite().getShell() );
+        this.valueEditorManager = new ValueEditorManager( getSite().getShell(), false );
     }
 
 
@@ -600,9 +600,12 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
      */
     public final void connectionUpdated( Connection connection )
     {
-        IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
-        setConnection( browserConnection );
-        browserConnectionWidget.setBrowserConnection( browserConnection );
+        if ( browserConnectionWidget != null )
+        {
+            IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
+            setConnection( browserConnection );
+            browserConnectionWidget.setBrowserConnection( browserConnection );
+        }
     }
 
 

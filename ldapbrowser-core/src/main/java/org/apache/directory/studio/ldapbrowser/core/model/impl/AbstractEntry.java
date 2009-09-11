@@ -67,6 +67,8 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
 public abstract class AbstractEntry implements IEntry
 {
 
+    private static final long serialVersionUID = -2431637532526418774L;
+
     private static final int HAS_CHILDREN_HINT_FLAG = 1;
 
     private static final int IS_DIRECTORY_ENTRY_FLAG = 2;
@@ -786,6 +788,15 @@ public abstract class AbstractEntry implements IEntry
     public String toString()
     {
         return getDn().getUpName();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int hashCode()
+    {
+        return getDn().hashCode();
     }
 
 

@@ -149,10 +149,12 @@ public class RefreshAction extends BrowserAction
 
         if ( entryInput != null )
         {
-            boolean foa = entryInput.getBrowserConnection().isFetchOperationalAttributes()
-                || entryInput.isOperationalAttributesInitialized();
+            // the entry input is usually a cloned entry, lookup the real entry from connection
+            IEntry entry = entryInput.getBrowserConnection().getEntryFromCache( entryInput.getDn() );
+            boolean foa = entry.getBrowserConnection().isFetchOperationalAttributes()
+                || entry.isOperationalAttributesInitialized();
             new StudioBrowserJob( new InitializeAttributesRunnable( new IEntry[]
-                { entryInput }, foa ) ).execute();
+                { entry }, foa ) ).execute();
         }
         if ( searchInput != null )
         {

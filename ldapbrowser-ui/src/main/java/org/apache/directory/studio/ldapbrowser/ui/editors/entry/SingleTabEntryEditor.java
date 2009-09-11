@@ -22,14 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
-import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IShowEditorInput;
-
 
 
 /**
@@ -38,7 +31,7 @@ import org.eclipse.ui.IShowEditorInput;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SingleTabEntryEditor extends EntryEditor implements IShowEditorInput
+public class SingleTabEntryEditor extends EntryEditor
 {
 
     /**
@@ -52,45 +45,16 @@ public class SingleTabEntryEditor extends EntryEditor implements IShowEditorInpu
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    public void showEditorInput( IEditorInput input )
+    public boolean isAutoSave()
     {
-        if ( input instanceof EntryEditorInput )
-        {
-            /*
-             * Workaround to make link-with-editor working for the single-tab editor:
-             * The call of firePropertyChange is used to inform the link-with-editor action.
-             * However firePropertyChange also modifies the navigation history.
-             * Thus, a dummy input with the real entry but a null extension is set.
-             * This avoids to modification of the navigation history.
-             * Afterwards the real input is set.
-             */
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getEntryInput();
-            ISearchResult searchResult = eei.getSearchResultInput();
-            IBookmark bookmark = eei.getBookmarkInput();
-            EntryEditorInput dummyInput; 
-            if(entry != null)
-            {
-                dummyInput = new EntryEditorInput( entry, null );
-            }
-            else if(searchResult != null)
-            {
-                dummyInput = new EntryEditorInput( searchResult, null );
-            }
-            else
-            {
-                dummyInput = new EntryEditorInput( bookmark, null );
-            }
-            setInput( dummyInput );
-            firePropertyChange( IEditorPart.PROP_INPUT );
-            
-            // now set the real input and mark history location
-            setInput( input );
-            getSite().getPage().getNavigationHistory().markLocation( this );
-        }
+        return true;
+    }
+
+
+    @Override
+    protected void setEditorName( EntryEditorInput eei )
+    {
+        // nothing, keep the default
     }
 
 }

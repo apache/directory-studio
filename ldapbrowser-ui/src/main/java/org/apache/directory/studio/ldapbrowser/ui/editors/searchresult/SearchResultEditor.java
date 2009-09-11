@@ -21,11 +21,26 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.entryeditors.EntryEditorUtils;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchResult;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelection;
@@ -70,6 +85,69 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     /** The universal listener. */
     private SearchResultEditorUniversalListener universalListener;
 
+    private ISearch workingCopy;
+    
+    protected EntryUpdateListener entryUpdateListener = new EntryUpdateListener()
+    {
+        public void entryUpdated( EntryModificationEvent event )
+        {
+            if ( workingCopy == null || mainWidget.getViewer() == null || mainWidget.getViewer().getInput() == null )
+            {
+                return;
+            }
+
+            IEntry modifiedEntry = event.getModifiedEntry();
+            
+            if(workingCopy != null)
+            {
+                for(ISearchResult sr : workingCopy.getSearchResults() )
+                {
+                    // check on object identity, nothing should be done for equal objects from other editors
+                    if( modifiedEntry == sr.getEntry())
+                    {
+                        // TODO: save
+                        System.out.println("save()");
+                        // doSaveEntry( sr.getEntry(), modifiedEntry );
+                        
+                        IEntry originalEntry = modifiedEntry.getBrowserConnection().getEntryFromCache( modifiedEntry.getDn() );
+                        LdifChangeModifyRecord diff = Utils.computeDiff(originalEntry, modifiedEntry );
+                        if ( diff != null )
+                        {
+                            // save
+                            ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( originalEntry
+                                .getBrowserConnection(), diff.toFormattedString( LdifFormatParameters.DEFAULT ), false,
+                                false );
+                            IStatus status = RunnableContextRunner.execute( runnable, null, true );
+                            if ( status.isOK() )
+                            {
+                                EntryEditorUtils.ensureAttributesInitialized( originalEntry );
+                                setSearchResultEditorWidgetInput( ( SearchResultEditorInput ) getEditorInput() );
+                            }
+                        }
+                        
+                        return;
+                    }
+                }
+                
+            
+            
+                IEditorInput input = getEditorInput();
+                if ( input instanceof SearchResultEditorInput )
+                {
+                    SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
+                    for(ISearchResult sr : srei.getSearch().getSearchResults() )
+                    {
+                        if(modifiedEntry == sr.getEntry())
+                        {
+                            // original entry has been updated, update widget input
+                            setSearchResultEditorWidgetInput( srei );
+                        }
+                    }
+                }
+
+            }
+        }
+    };
 
     /**
      * Gets the ID of the SearchResultEditor.
@@ -93,7 +171,8 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         {
             SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
             ISearch search = srei.getSearch();
-            universalListener.setInput( search );
+            
+            setSearchResultEditorWidgetInput( srei );
 
             if ( search != null )
             {
@@ -112,6 +191,31 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
 
         // finally enable the one instance hack 
         SearchResultEditorInput.enableOneInstanceHack( true );
+    }
+
+
+    private void setSearchResultEditorWidgetInput(SearchResultEditorInput srei)
+    {
+        // clone search, search results, entries
+        ISearch search = srei.getSearch();
+        workingCopy = search != null ? ( ISearch ) search.clone() : search;
+        if ( search != null && search.getSearchResults() != null  )
+        {
+            ISearchResult[] searchResults = search.getSearchResults();
+            ISearchResult[] clonedSearchResults = new ISearchResult[searchResults.length];
+            for ( int i = 0; i < searchResults.length; i++ )
+            {
+                IEntry entry = searchResults[i].getEntry();
+                IEntry clonedEntry = new CompoundModification().cloneEntry( entry );
+                clonedSearchResults[i] = new SearchResult( clonedEntry, workingCopy );
+            }
+
+            EventRegistry.suspendEventFiringInCurrentThread();
+            workingCopy.setSearchResults( clonedSearchResults );
+            EventRegistry.resumeEventFiringInCurrentThread();
+        }
+
+        universalListener.setInput( workingCopy );
     }
 
 
@@ -140,6 +244,9 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         getSite().getPage().getNavigationHistory().markLocation( this );
 
         setInput( input );
+        
+        EventRegistry
+            .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
 
@@ -199,6 +306,8 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     {
         if ( configuration != null )
         {
+            EventRegistry.removeEntryUpdateListener( entryUpdateListener );
+            workingCopy = null;
             actionGroup.dispose();
             actionGroup = null;
             universalListener.dispose();

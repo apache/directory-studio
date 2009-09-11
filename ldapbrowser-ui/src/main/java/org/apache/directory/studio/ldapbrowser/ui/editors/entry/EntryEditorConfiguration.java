@@ -23,6 +23,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetConfiguration;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetFilter;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.viewers.TreeViewer;
 
 
 /**
@@ -55,6 +57,24 @@ public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
         }
 
         return filter;
+    }
+
+
+    /**
+     * Gets the value editor manager.
+     * 
+     * @param viewer the viewer
+     * 
+     * @return the value editor manager
+     */
+    public ValueEditorManager getValueEditorManager( TreeViewer viewer )
+    {
+        if ( valueEditorManager == null )
+        {
+            valueEditorManager = new ValueEditorManager( viewer.getTree(), true );
+        }
+
+        return valueEditorManager;
     }
 
 }

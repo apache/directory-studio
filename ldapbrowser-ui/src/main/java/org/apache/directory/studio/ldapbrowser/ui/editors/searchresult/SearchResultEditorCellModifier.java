@@ -21,10 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -146,15 +151,23 @@ public class SearchResultEditorCellModifier implements ICellModifier
             // switch operation:
             if ( ah == null && newRawValue != null )
             {
-                valueEditorManager.createValue( result.getEntry(), property, newRawValue );
+                new CompoundModification().createValue( result.getEntry(), property, newRawValue );
             }
             else if ( ah != null && newRawValue == null )
             {
-                valueEditorManager.deleteAttribute( ah );
+                List<IValue> values = new ArrayList<IValue>(); 
+                for(IAttribute attribute : ah.getAttributes())
+                {
+                    for ( IValue value : attribute.getValues() )
+                    {
+                        values.add(value);
+                    }
+                }
+                new CompoundModification().deleteValues( values );
             }
             else if ( ah != null && ah.size() == 1 && ah.getAttribute().getValueSize() == 1 && newRawValue != null )
             {
-                valueEditorManager.modifyValue( ah.getAttribute().getValues()[0], newRawValue );
+                new CompoundModification().modifyValue( ah.getAttribute().getValues()[0], newRawValue );
             }
         }
     }

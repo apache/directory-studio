@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.common.dnd.EntryTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.SearchTransfer;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.jobs.CopyEntriesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
@@ -37,6 +36,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch.SearchScope;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Search;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -281,7 +281,7 @@ public class PasteAction extends BrowserAction
 
         if ( entry != null )
         {
-            new CreateValuesJob( entry, values ).execute();
+            new CompoundModification().createValues( entry, values );
         }
     }
 

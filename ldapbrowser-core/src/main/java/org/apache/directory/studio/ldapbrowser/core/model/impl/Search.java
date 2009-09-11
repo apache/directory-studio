@@ -34,11 +34,11 @@ import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithPr
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
-import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.search.ui.ISearchPageScoreComputer;
 
@@ -411,7 +411,7 @@ public class Search implements ISearch
     public void setSearchResults( ISearchResult[] searchResults )
     {
         this.searchResults = searchResults;
-        if ( searchResults != null )
+        if ( searchResults != null && getName() != null )
         {
             fireSearchUpdated( SearchUpdateEvent.EventDetail.SEARCH_PERFORMED );
         }
@@ -559,6 +559,59 @@ public class Search implements ISearch
         }
 
         return null;
+    }
+
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( connection == null ) ? 0 : connection.hashCode() );
+        result = prime * result + ( ( searchParameter == null ) ? 0 : searchParameter.getName().hashCode() );
+        return result;
+    }
+
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null )
+        {
+            return false;
+        }
+        if ( !( obj instanceof Search ) )
+        {
+            return false;
+        }
+        Search other = ( Search ) obj;
+        if ( connection == null )
+        {
+            if ( other.connection != null )
+            {
+                return false;
+            }
+        }
+        else if ( !connection.equals( other.connection ) )
+        {
+            return false;
+        }
+        if ( searchParameter == null )
+        {
+            if ( other.searchParameter != null )
+            {
+                return false;
+            }
+        }
+        else if ( !searchParameter.getName().equals( other.searchParameter.getName() ) )
+        {
+            return false;
+        }
+        return true;
     }
 
 }

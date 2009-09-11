@@ -26,8 +26,8 @@ import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.EntryEditorActionProxy;
 import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
-import org.apache.directory.studio.ldapbrowser.core.jobs.RenameValuesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.Viewer;
@@ -123,19 +123,16 @@ public class EditAttributeDescriptionAction extends BrowserAction
      */
     private void renameValues( final IValue[] values )
     {
-        AttributeWizard wizard = new AttributeWizard( Messages.getString("EditAttributeDescriptionAction.EditAttributeDescription"), true, false, values[0] //$NON-NLS-1$
-            .getAttribute().getDescription(), values[0].getAttribute().getEntry() );
+        AttributeWizard wizard = new AttributeWizard( Messages
+            .getString( "EditAttributeDescriptionAction.EditAttributeDescription" ), true, false, //$NON-NLS-1$
+            values[0].getAttribute().getDescription(), values[0].getAttribute().getEntry() );
         WizardDialog dialog = new WizardDialog( Display.getDefault().getActiveShell(), wizard );
         dialog.setBlockOnOpen( true );
         dialog.create();
         if ( dialog.open() == Dialog.OK )
         {
-            String newAttributeName = wizard.getAttributeDescription();
-            if ( newAttributeName != null && !"".equals( newAttributeName ) //$NON-NLS-1$
-                && !newAttributeName.equals( values[0].getAttribute().getDescription() ) )
-            {
-                new RenameValuesJob( values[0].getAttribute().getEntry(), values, newAttributeName ).execute();
-            }
+            String newAttributeDescription = wizard.getAttributeDescription();
+            new CompoundModification().renameValues( values, newAttributeDescription );
         }
     }
 

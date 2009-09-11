@@ -23,11 +23,11 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
-import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 
 
 /**
@@ -92,7 +92,7 @@ public class SearchResultEditorPasteAction extends PasteAction
                 newValues[v] = new Value( attribute, values[v].getRawValue() );
             }
 
-            new CreateValuesJob( entry, newValues ).execute();
+            new CompoundModification().createValues( entry, newValues );
         }
     }
 

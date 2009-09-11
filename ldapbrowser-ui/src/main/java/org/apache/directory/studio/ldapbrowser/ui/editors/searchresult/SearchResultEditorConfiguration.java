@@ -242,7 +242,7 @@ public class SearchResultEditorConfiguration
     {
         if ( valueEditorManager == null )
         {
-            valueEditorManager = new ValueEditorManager( viewer.getTable() );
+            valueEditorManager = new ValueEditorManager( viewer.getTable(), true );
         }
         return valueEditorManager;
     }

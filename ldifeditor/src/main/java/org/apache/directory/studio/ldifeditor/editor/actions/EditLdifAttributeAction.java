@@ -44,7 +44,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifValueLineBase;
-import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -55,15 +54,10 @@ import org.eclipse.swt.widgets.Display;
 public class EditLdifAttributeAction extends AbstractLdifAction
 {
 
-    ValueEditorManager manager;
-
-
     public EditLdifAttributeAction( LdifEditor editor )
     {
         super( Messages.getString("EditLdifAttributeAction.EditAttributeDescription"), editor ); //$NON-NLS-1$
         super.setActionDefinitionId( BrowserCommonConstants.ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION );
-
-        manager = new ValueEditorManager( editor.getSite().getShell() );
     }
 
 

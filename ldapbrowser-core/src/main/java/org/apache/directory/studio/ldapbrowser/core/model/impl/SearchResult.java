@@ -168,4 +168,57 @@ public class SearchResult implements ISearchResult
         this.search = search;
     }
 
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ( ( entry == null ) ? 0 : entry.getDn().hashCode() );
+        result = prime * result + ( ( search == null ) ? 0 : search.hashCode() );
+        return result;
+    }
+
+
+    @Override
+    public boolean equals( Object obj )
+    {
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( obj == null )
+        {
+            return false;
+        }
+        if ( !( obj instanceof SearchResult ) )
+        {
+            return false;
+        }
+        SearchResult other = ( SearchResult ) obj;
+        if ( entry == null )
+        {
+            if ( other.entry != null )
+            {
+                return false;
+            }
+        }
+        else if ( !entry.getDn().equals( other.entry.getDn() ) )
+        {
+            return false;
+        }
+        if ( search == null )
+        {
+            if ( other.search != null )
+            {
+                return false;
+            }
+        }
+        else if ( !search.equals( other.search ) )
+        {
+            return false;
+        }
+        return true;
+    }
+
 }

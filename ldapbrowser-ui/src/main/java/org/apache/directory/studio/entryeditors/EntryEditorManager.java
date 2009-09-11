@@ -25,21 +25,43 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
+import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -121,6 +143,9 @@ public class EntryEditorManager
     public EntryEditorManager()
     {
         initEntryEditorExtensions();
+        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( partListener );
+        EventRegistry
+            .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
     }
 
 
@@ -161,6 +186,13 @@ public class EntryEditorManager
 
             entryEditorExtensions.put( bean.getId(), bean );
         }
+    }
+
+
+    public void dispose()
+    {
+        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().removePartListener( partListener );
+        EventRegistry.removeEntryUpdateListener( entryUpdateListener );
     }
 
 
@@ -351,8 +383,7 @@ public class EntryEditorManager
         }
         catch ( PartInitException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException( e );
         }
     }
 
@@ -376,4 +407,491 @@ public class EntryEditorManager
         EntryEditorExtension next = entryEditors.iterator().next();
         openEntryEditor( next, entries, searchResults, bookmarks );
     }
+
+    /** The shared reference copies for open-save-close editors; original entry -> reference copy */
+    private Map<IEntry, IEntry> oscSharedReferenceCopies = new HashMap<IEntry, IEntry>();
+
+    /** The shared working copies for open-save-close editors; original entry -> working copy */
+    private Map<IEntry, IEntry> oscSharedWorkingCopies = new HashMap<IEntry, IEntry>();
+
+    /** The shared reference copies for auto-save editors; original entry -> reference copy */
+    private Map<IEntry, IEntry> autoSaveSharedReferenceCopies = new HashMap<IEntry, IEntry>();
+
+    /** The shared working copies for auto-save editors; original entry -> working copy */
+    private Map<IEntry, IEntry> autoSaveSharedWorkingCopies = new HashMap<IEntry, IEntry>();
+
+
+    //    IEntry getSharedReferenceCopy( IEntry entry )
+    //    {
+    //        EntryEditorUtils.ensureAttributesInitialized( entry );
+    //
+    //        if ( !oscSharedReferenceCopies.containsKey( entry ) )
+    //        {
+    //            oscSharedReferenceCopies.put( entry, new CompoundModification().cloneEntry( entry ) );
+    //        }
+    //        return oscSharedReferenceCopies.get( entry );
+    //    }
+    //
+    //
+    private void updateOscSharedReferenceCopy( IEntry entry )
+    {
+        EntryEditorUtils.ensureAttributesInitialized( entry );
+        IEntry referenceEntry = oscSharedReferenceCopies.get( entry );
+        EventRegistry.suspendEventFiringInCurrentThread();
+        new CompoundModification().replaceAttributes( entry, referenceEntry );
+        EventRegistry.resumeEventFiringInCurrentThread();
+    }
+
+
+    private void updateOscSharedWorkingCopy( IEntry entry )
+    {
+        EntryEditorUtils.ensureAttributesInitialized( entry );
+        IEntry workingCopy = oscSharedWorkingCopies.get( entry );
+        new CompoundModification().replaceAttributes( entry, workingCopy );
+    }
+
+
+    private void updateAutoSaveSharedReferenceCopy( IEntry entry )
+    {
+        EntryEditorUtils.ensureAttributesInitialized( entry );
+        IEntry workingCopy = autoSaveSharedReferenceCopies.get( entry );
+        EventRegistry.suspendEventFiringInCurrentThread();
+        new CompoundModification().replaceAttributes( entry, workingCopy );
+        EventRegistry.resumeEventFiringInCurrentThread();
+    }
+
+
+    private void updateAutoSaveSharedWorkingCopy( IEntry entry )
+    {
+        EntryEditorUtils.ensureAttributesInitialized( entry );
+        IEntry workingCopy = autoSaveSharedWorkingCopies.get( entry );
+        new CompoundModification().replaceAttributes( entry, workingCopy );
+    }
+
+
+    private List<IEntryEditor> getOscEditors( IEntry workingCopy )
+    {
+        List<IEntryEditor> oscEditors = new ArrayList<IEntryEditor>();
+        IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .getEditorReferences();
+        for ( IEditorReference ref : editorReferences )
+        {
+            IEntryEditor editor = getEntryEditor( ref );
+            if ( editor != null && !editor.isAutoSave()
+                && ( workingCopy == null || editor.getEntryEditorInput().getSharedWorkingCopy( editor ) == workingCopy ) )
+            {
+                oscEditors.add( editor );
+            }
+        }
+        return oscEditors;
+    }
+
+
+    private List<IEntryEditor> getAutoSaveEditors( IEntry workingCopy )
+    {
+        List<IEntryEditor> autoSaveEditors = new ArrayList<IEntryEditor>();
+        IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .getEditorReferences();
+        for ( IEditorReference ref : editorReferences )
+        {
+            IEntryEditor editor = getEntryEditor( ref );
+            if ( editor != null && editor.isAutoSave()
+                && editor.getEntryEditorInput().getSharedWorkingCopy( editor ) == workingCopy )
+            {
+                autoSaveEditors.add( editor );
+            }
+        }
+        return autoSaveEditors;
+    }
+
+
+    private IEntryEditor getEntryEditor( IWorkbenchPartReference partRef )
+    {
+        IWorkbenchPart part = partRef.getPart( false );
+        if ( part != null && part instanceof IEntryEditor )
+        {
+            IEntryEditor entryEditor = ( IEntryEditor ) part;
+            return entryEditor;
+        }
+        return null;
+    }
+
+
+    IEntry getSharedWorkingCopy( IEntry originalEntry, IEntryEditor editor )
+    {
+        EntryEditorUtils.ensureAttributesInitialized( originalEntry );
+        if ( editor.isAutoSave() )
+        {
+            if ( !autoSaveSharedReferenceCopies.containsKey( originalEntry ) )
+            {
+                autoSaveSharedReferenceCopies
+                    .put( originalEntry, new CompoundModification().cloneEntry( originalEntry ) );
+            }
+            if ( !autoSaveSharedWorkingCopies.containsKey( originalEntry ) )
+            {
+                IEntry referenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
+                autoSaveSharedWorkingCopies.put( originalEntry, new CompoundModification().cloneEntry( referenceCopy ) );
+            }
+            return autoSaveSharedWorkingCopies.get( originalEntry );
+        }
+        else
+        {
+            if ( !oscSharedReferenceCopies.containsKey( originalEntry ) )
+            {
+                oscSharedReferenceCopies.put( originalEntry, new CompoundModification().cloneEntry( originalEntry ) );
+            }
+            if ( !oscSharedWorkingCopies.containsKey( originalEntry ) )
+            {
+                IEntry referenceCopy = oscSharedReferenceCopies.get( originalEntry );
+                oscSharedWorkingCopies.put( originalEntry, new CompoundModification().cloneEntry( referenceCopy ) );
+            }
+            return oscSharedWorkingCopies.get( originalEntry );
+        }
+    }
+
+
+    boolean isSharedWorkingCopyDirty( IEntry originalEntry, IEntryEditor editor )
+    {
+        if ( editor.isAutoSave() )
+        {
+            return false;
+        }
+        else
+        {
+            IEntry referenceCopy = oscSharedReferenceCopies.get( originalEntry );
+            IEntry workingCopy = oscSharedWorkingCopies.get( originalEntry );
+            if ( referenceCopy != null && workingCopy != null )
+            {
+                LdifChangeModifyRecord diff = Utils.computeDiff( referenceCopy, workingCopy );
+                return diff != null;
+            }
+            return false;
+        }
+    }
+
+
+    IStatus saveSharedWorkingCopyDirty( IEntry originalEntry, boolean handleError, IEntryEditor editor )
+    {
+        if ( editor == null || !editor.isAutoSave() )
+        {
+            IEntry referenceCopy = oscSharedReferenceCopies.get( originalEntry );
+            IEntry workingCopy = oscSharedWorkingCopies.get( originalEntry );
+            if ( referenceCopy != null && workingCopy != null )
+            {
+                LdifChangeModifyRecord diff = Utils.computeDiff( referenceCopy, workingCopy );
+                if ( diff != null )
+                {
+                    // save by executing the LDIF
+                    ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( originalEntry.getBrowserConnection(), diff
+                        .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
+                    IStatus status = RunnableContextRunner.execute( runnable, null, handleError );
+                    if ( status.isOK() )
+                    {
+                        updateOscSharedReferenceCopy( originalEntry );
+                        updateOscSharedWorkingCopy( originalEntry );
+                    }
+                    return status;
+                }
+            }
+        }
+        return null;
+    }
+
+    private IPartListener2 partListener = new IPartListener2()
+    {
+        public void partActivated( IWorkbenchPartReference partRef )
+        {
+
+            partClosed( partRef );
+
+            IEntryEditor editor = getEntryEditor( partRef );
+            if ( editor != null )
+            {
+                EntryEditorInput eei = editor.getEntryEditorInput();
+                IEntry originalEntry = eei.getResolvedEntry();
+                IEntry oscSharedReferenceCopy = oscSharedReferenceCopies.get( originalEntry );
+                IEntry oscSharedWorkingCopy = oscSharedWorkingCopies.get( originalEntry );
+                if ( editor.isAutoSave() )
+                {
+                    // check if the same entry is used in an OSC editor and is dirty -> should save first?
+                    if ( oscSharedReferenceCopy != null && oscSharedWorkingCopy != null )
+                    {
+                        LdifChangeModifyRecord diff = Utils.computeDiff( oscSharedReferenceCopy, oscSharedWorkingCopy );
+                        if ( diff != null )
+                        {
+                            MessageDialog dialog = new MessageDialog( partRef.getPart( false ).getSite().getShell(),
+                                "Save Changes", null, "Entry has been modified in another entry editor. Save changes?",
+                                MessageDialog.QUESTION, new String[]
+                                    { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+                            int result = dialog.open();
+                            if ( result == 0 )
+                            {
+                                saveSharedWorkingCopyDirty( originalEntry, true, null );
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // check if original entry was updated
+                    if ( oscSharedReferenceCopy != null && oscSharedWorkingCopy != null )
+                    {
+                        LdifChangeModifyRecord refDiff = Utils.computeDiff( originalEntry, oscSharedReferenceCopy );
+                        if ( refDiff != null )
+                        {
+                            // check if we could just update the working copy
+                            LdifChangeModifyRecord workDiff = Utils.computeDiff( oscSharedReferenceCopy,
+                                oscSharedWorkingCopy );
+                            if ( workDiff != null )
+                            {
+                                MessageDialog dialog = new MessageDialog(
+                                    partRef.getPart( false ).getSite().getShell(),
+                                    "Entry Changed",
+                                    null,
+                                    "The entry has been changed in the directory server. Do you want to replace the editor contents with these changes?",
+                                    MessageDialog.QUESTION, new String[]
+                                        { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+                                int result = dialog.open();
+                                if ( result == 0 )
+                                {
+                                    // update reference copy and working copy
+                                    updateOscSharedReferenceCopy( originalEntry );
+                                    updateOscSharedWorkingCopy( originalEntry );
+
+                                    // inform all OSC editors
+                                    List<IEntryEditor> oscEditors = getOscEditors( oscSharedWorkingCopy );
+                                    for ( IEntryEditor oscEditor : oscEditors )
+                                    {
+                                        oscEditor.workingCopyModified();
+                                    }
+                                }
+                                else
+                                {
+                                    // only update the reference copy
+                                    updateOscSharedReferenceCopy( originalEntry );
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+        public void partOpened( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        public void partClosed( IWorkbenchPartReference partRef )
+        {
+            // cleanup unused copies (OSC + auto-save)
+            Set<IEntry> oscEntries = new HashSet<IEntry>();
+            Set<IEntry> autoSaveEntries = new HashSet<IEntry>();
+            IEditorReference[] editorReferences = partRef.getPage().getEditorReferences();
+            for ( IEditorReference ref : editorReferences )
+            {
+                IEntryEditor editor = getEntryEditor( ref );
+                if ( editor != null )
+                {
+                    EntryEditorInput input = editor.getEntryEditorInput();
+                    if ( input != null )
+                    {
+                        IEntry entry = input.getResolvedEntry();
+                        if ( editor.isAutoSave() )
+                        {
+                            autoSaveEntries.add( entry );
+                        }
+                        else
+                        {
+                            oscEntries.add( entry );
+                        }
+                    }
+                }
+            }
+            for ( Iterator<IEntry> it = oscSharedReferenceCopies.keySet().iterator(); it.hasNext(); )
+            {
+                IEntry entry = it.next();
+                if ( !oscEntries.contains( entry ) )
+                {
+                    it.remove();
+                    oscSharedWorkingCopies.remove( entry );
+                }
+            }
+            for ( Iterator<IEntry> it = oscSharedWorkingCopies.keySet().iterator(); it.hasNext(); )
+            {
+                IEntry entry = it.next();
+                if ( !oscEntries.contains( entry ) )
+                {
+                    it.remove();
+                }
+            }
+            for ( Iterator<IEntry> it = autoSaveSharedReferenceCopies.keySet().iterator(); it.hasNext(); )
+            {
+                IEntry entry = it.next();
+                if ( !autoSaveEntries.contains( entry ) )
+                {
+                    it.remove();
+                }
+            }
+            for ( Iterator<IEntry> it = autoSaveSharedWorkingCopies.keySet().iterator(); it.hasNext(); )
+            {
+                IEntry entry = it.next();
+                if ( !autoSaveEntries.contains( entry ) )
+                {
+                    it.remove();
+                }
+            }
+        }
+
+
+        public void partInputChanged( IWorkbenchPartReference partRef )
+        {
+            partClosed( partRef );
+        }
+
+
+        public void partHidden( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        public void partDeactivated( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        public void partBroughtToTop( IWorkbenchPartReference partRef )
+        {
+        }
+
+
+        public void partVisible( IWorkbenchPartReference partRef )
+        {
+        }
+
+    };
+
+    private EntryUpdateListener entryUpdateListener = new EntryUpdateListener()
+    {
+
+        public void entryUpdated( EntryModificationEvent event )
+        {
+            IEntry modifiedEntry = event.getModifiedEntry();
+            IBrowserConnection browserConnection = modifiedEntry.getBrowserConnection();
+            IEntry originalEntry = browserConnection.getEntryFromCache( modifiedEntry.getDn() );
+
+            if ( modifiedEntry == originalEntry )
+            {
+                // an original entry has been modified, check if we could update the editors
+
+                // if the OSC editor is not dirty we could update the working copy
+                IEntry oscSharedReferenceCopy = oscSharedReferenceCopies.get( originalEntry );
+                IEntry oscSharedWorkingCopy = oscSharedWorkingCopies.get( originalEntry );
+                if ( oscSharedReferenceCopy != null && oscSharedWorkingCopy != null )
+                {
+                    LdifChangeModifyRecord refDiff = Utils.computeDiff( originalEntry, oscSharedReferenceCopy );
+                    if ( refDiff != null )
+                    {
+                        // diff between original entry and reference copy
+                        LdifChangeModifyRecord workDiff = Utils.computeDiff( oscSharedReferenceCopy,
+                            oscSharedWorkingCopy );
+                        if ( workDiff == null )
+                        {
+                            // no changes on working copy, update
+                            updateOscSharedReferenceCopy( originalEntry );
+                            updateOscSharedWorkingCopy( originalEntry );
+
+                            // inform all OSC editors
+                            List<IEntryEditor> oscEditors = getOscEditors( oscSharedWorkingCopy );
+                            for ( IEntryEditor editor : oscEditors )
+                            {
+                                editor.workingCopyModified();
+                            }
+                        }
+                    }
+                }
+
+                // always update auto-save working copies, if necessary
+                IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
+                IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
+                if ( autoSaveSharedReferenceCopy != null && autoSaveSharedWorkingCopy != null )
+                {
+                    LdifChangeModifyRecord diff = Utils.computeDiff( originalEntry, autoSaveSharedReferenceCopy );
+                    if ( diff != null )
+                    {
+                        updateAutoSaveSharedReferenceCopy( originalEntry );
+                        updateAutoSaveSharedWorkingCopy( originalEntry );
+                        List<IEntryEditor> editors = getAutoSaveEditors( autoSaveSharedWorkingCopy );
+                        for ( IEntryEditor editor : editors )
+                        {
+                            editor.workingCopyModified();
+                        }
+                    }
+                }
+
+                // check all editors: if the input does not exist any more then close the editor
+                IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+                    .getActivePage().getEditorReferences();
+                for ( IEditorReference ref : editorReferences )
+                {
+                    IEntryEditor editor = getEntryEditor( ref );
+                    if ( editor != null )
+                    {
+                        IBrowserConnection bc = editor.getEntryEditorInput().getResolvedEntry().getBrowserConnection();
+                        LdapDN dn = editor.getEntryEditorInput().getResolvedEntry().getDn();
+                        if ( bc.getEntryFromCache( dn ) == null )
+                        {
+                            ref.getPage().closeEditor( ref.getEditor( false ), false );
+                        }
+                    }
+                }
+            }
+
+            else if ( oscSharedWorkingCopies.containsKey( originalEntry )
+                && oscSharedWorkingCopies.get( originalEntry ) == modifiedEntry )
+            {
+                // OSC working copy has been modified: inform OSC editors
+                IEntry oscSharedWorkingCopy = oscSharedWorkingCopies.get( originalEntry );
+                List<IEntryEditor> oscEditors = getOscEditors( oscSharedWorkingCopy );
+                for ( IEntryEditor editor : oscEditors )
+                {
+                    editor.workingCopyModified();
+                }
+            }
+
+            else if ( autoSaveSharedWorkingCopies.containsValue( originalEntry )
+                && autoSaveSharedWorkingCopies.get( originalEntry ) == modifiedEntry )
+            {
+                // auto-save working copy has been modified: save and inform all auto-save editors
+                IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
+                IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
+                LdifChangeModifyRecord diff = getDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
+                if ( diff != null )
+                {
+                    ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff
+                        .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
+                    RunnableContextRunner.execute( runnable, null, true );
+                    // don't care if status is ok or not: always update
+                    EntryEditorUtils.ensureAttributesInitialized( originalEntry );
+                    //                    updateAutoSaveSharedReferenceCopy( originalEntry );
+                    //                    updateAutoSaveSharedWorkingCopy( originalEntry );
+                    //
+                    //                    List<IEntryEditor> editors = getAutoSaveEditors( autoSaveSharedWorkingCopy );
+                    //                    for ( IEntryEditor editor : editors )
+                    //                    {
+                    //                        editor.workingCopyModified();
+                    //                    }
+                }
+            }
+        }
+
+
+        private LdifChangeModifyRecord getDiff( IEntry originalEntry, IEntry modifiedEntry )
+        {
+            LdifChangeModifyRecord record = Utils.computeDiff( originalEntry, modifiedEntry );
+            return record;
+        }
+    };
 }

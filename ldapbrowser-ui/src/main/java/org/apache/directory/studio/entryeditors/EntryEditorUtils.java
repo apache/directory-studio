@@ -20,11 +20,14 @@
 
 package org.apache.directory.studio.entryeditors;
 
+
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.IEditorInput;
+
 
 public class EntryEditorUtils
 {
@@ -39,13 +42,36 @@ public class EntryEditorUtils
     {
         if ( !entry.isAttributesInitialized() )
         {
-            boolean foa = entry.getBrowserConnection().isFetchOperationalAttributes();
+            boolean foa = entry.getBrowserConnection().isFetchOperationalAttributes()
+                || entry.isOperationalAttributesInitialized();
             InitializeAttributesRunnable iar = new InitializeAttributesRunnable( new IEntry[]
                 { entry }, foa );
             RunnableContextRunner.execute( iar, null, true );
         }
     }
-    
+
+
+    /**
+     * Gets the entry editor input from the editor input.
+     * 
+     * @param input the input
+     * 
+     * @return the entry editor input
+     */
+    public static EntryEditorInput getEntryEditorInput( IEditorInput input )
+    {
+        if ( input instanceof EntryEditorInput )
+        {
+            EntryEditorInput eei = ( EntryEditorInput ) input;
+            return eei;
+        }
+        else
+        {
+            throw new IllegalArgumentException( "Expected an EntryEditorInput" ); //$NON-NLS-1$
+        }
+    }
+
+
     /**
      * Gets the text used in the history navigation list.
      * 
@@ -94,7 +120,7 @@ public class EntryEditorUtils
                 }
             }
         }
-        
+
         return null;
     }
 }

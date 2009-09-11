@@ -25,7 +25,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
 
 /**
- * An Entry Editor is used to display and edit and LDAP entry.  
+ * An Entry Editor is used to display and edit an LDAP entry.  
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -40,5 +40,28 @@ public interface IEntryEditor
      * @return true if this editor can handle the entry, false otherwise.
      */
     public boolean canHandle( IEntry entry );
+
+    
+    /**
+     * Informs the entry editor that the working copy was modified
+     */
+    public void workingCopyModified();
+    
+
+    /**
+     * Gets the entry editor input.
+     * 
+     * @return the entry editor input, null if no input was set
+     */
+    public EntryEditorInput getEntryEditorInput();
+
+
+    /**
+     * Checks if the editor uses auto save, i.e. if each modification is
+     * automatically committed to the directory server.
+     * 
+     * @return true, if the editor uses auto save
+     */
+    public boolean isAutoSave();
 
 }

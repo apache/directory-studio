@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.swt.widgets.Item;
@@ -125,13 +126,13 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             element = ( ( Item ) element ).getData();
         }
 
-        if ( element != null && element instanceof IValue && valueEditorManager != null )
+        if ( newRawValue != null && element != null && element instanceof IValue && valueEditorManager != null )
         {
             IValue oldValue = ( IValue ) element;
 
             if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                valueEditorManager.modifyValue( oldValue, newRawValue );
+                new CompoundModification().modifyValue( oldValue, newRawValue );
             }
         }
     }

@@ -24,6 +24,8 @@ package org.apache.directory.studio.entryeditors;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -31,6 +33,10 @@ import org.eclipse.ui.IPersistableElement;
 
 /**
  * The input for the entry editor.
+ * 
+ * This class also manages the shared reference copy and the shared working copy
+ * of the original entry. Each manual-save editor <b>must</b> use these entry 
+ * copies!
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -193,6 +199,50 @@ public class EntryEditorInput implements IEditorInput
         {
             return null;
         }
+    }
+
+
+    /**
+     * Gets the shared working copy of the shared reference entry.
+     * This is used by all manual-save entry editors.
+     *
+     * @return the shared working copy of the shared reference entry 
+     */
+    public IEntry getSharedWorkingCopy( IEntryEditor editor )
+    {
+        IEntry workingCopy = BrowserUIPlugin.getDefault().getEntryEditorManager().getSharedWorkingCopy(
+            getResolvedEntry(), editor );
+        return workingCopy;
+    }
+
+
+    /**
+     * Checks if the shared working copy is dirty.
+     * @param entryEditor 
+     * 
+     * @return true, if the shared working copy is dirty
+     */
+    public boolean isSharedWorkingCopyDirty( IEntryEditor editor )
+    {
+        boolean dirty = BrowserUIPlugin.getDefault().getEntryEditorManager().isSharedWorkingCopyDirty(
+            getResolvedEntry(), editor );
+        return dirty;
+    }
+
+
+    /**
+     * Save the difference between the shared reference copy and the shared working copy
+     * to the directory server.
+     * 
+     * @param handleError the handle error
+     * 
+     * @return the status or null if there was nothing to save
+     */
+    public IStatus saveSharedWorkingCopy( boolean handleError, IEntryEditor editor )
+    {
+        IStatus status = BrowserUIPlugin.getDefault().getEntryEditorManager().saveSharedWorkingCopyDirty(
+            getResolvedEntry(), handleError, editor );
+        return status;
     }
 
 

@@ -21,27 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldifparser.LdifFormatParameters;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
-import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.ui.IEditorInput;
 
 
 /**
@@ -57,21 +38,6 @@ import org.eclipse.ui.IEditorInput;
 public class MultiTabEntryEditor extends EntryEditor
 {
 
-    private EntryUpdateListener entryUpdateListener = new EntryUpdateListener()
-    {
-        public void entryUpdated( EntryModificationEvent event )
-        {
-            if ( mainWidget.getViewer() == null || mainWidget.getViewer().getInput() == null
-                || event.getModifiedEntry() != mainWidget.getViewer().getInput() )
-            {
-                return;
-            }
-
-            firePropertyChange( PROP_DIRTY );
-        }
-    };
-
-
     /**
      * Gets the ID of the MultiTabEntryEditor.
      * 
@@ -83,157 +49,15 @@ public class MultiTabEntryEditor extends EntryEditor
     }
 
 
-    @Override
-    public void setInput( IEditorInput input )
+    public boolean isAutoSave()
     {
-        super.setInput( input );
-
-        setEntryEditorWidgetInput();
-
-        // make the editor dirty when the entry is modified
-        EventRegistry
-            .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
-
-        // use the entry's DN as tab label
-        if ( input instanceof EntryEditorInput )
-        {
-            EntryEditorInput entryEditorInput = ( EntryEditorInput ) input;
-            setPartName( entryEditorInput.getName() );
-        }
+        return false;
     }
 
 
-    @Override
-    public boolean isDirty()
+    protected void setEditorName( EntryEditorInput eei )
     {
-        LdifChangeModifyRecord diff = getDiff();
-        if ( diff != null )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
-    @Override
-    public void doSave( final IProgressMonitor monitor )
-    {
-        IEditorInput input = getEditorInput();
-        if ( input instanceof EntryEditorInput && mainWidget != null )
-        {
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getResolvedEntry();
-            initAttributes( entry );
-            IBrowserConnection browserConnection = entry.getBrowserConnection();
-
-            LdifChangeModifyRecord diff = getDiff();
-            if ( diff != null )
-            {
-                // save
-                ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff
-                    .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
-                IStatus status = RunnableContextRunner.execute( runnable, null, true );
-                if ( status.isOK() )
-                {
-                    // set new input and refresh the dirty state
-                    setEntryEditorWidgetInput();
-                    firePropertyChange( PROP_DIRTY );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Sets the entry editor widget input. A clone of the real entry
-     * with a read-only connection is used for that.
-     */
-    private void setEntryEditorWidgetInput()
-    {
-        IEditorInput input = getEditorInput();
-        if ( input instanceof EntryEditorInput && universalListener != null )
-        {
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getResolvedEntry();
-            initAttributes( entry );
-            IBrowserConnection browserConnection = entry.getBrowserConnection();
-
-            try
-            {
-                EventRegistry.suspendEventFiringInCurrentThread();
-
-                // clone connection and set read-only
-                Connection readOnlyConnection = ( Connection ) browserConnection.getConnection().clone();
-                readOnlyConnection.getConnectionParameter().setReadOnly( true );
-                BrowserConnection readOnlyBrowserConnection = new BrowserConnection( readOnlyConnection );
-
-                // clone entry
-                LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
-                IEntry clonedEntry = ModelConverter.ldifContentRecordToEntry( record, readOnlyBrowserConnection );
-
-                // set input
-                universalListener.setInput( clonedEntry );
-            }
-            catch ( Exception e )
-            {
-                throw new RuntimeException( "Failed to set input", e );
-            }
-            finally
-            {
-                EventRegistry.resumeEventFiringInCurrentThread();
-            }
-        }
-    }
-
-
-    /**
-     * Gets the difference between the original entry and the modified entry.
-     * 
-     * @return the difference
-     */
-    private LdifChangeModifyRecord getDiff()
-    {
-        IEditorInput input = getEditorInput();
-        if ( input instanceof EntryEditorInput && mainWidget != null )
-        {
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry originalEntry = eei.getResolvedEntry();
-            initAttributes( originalEntry );
-            IEntry modifiedEntry = ( IEntry ) mainWidget.getViewer().getInput();
-
-            LdifChangeModifyRecord record = Utils.computeDiff( originalEntry, modifiedEntry );
-            return record;
-        }
-        return null;
-    }
-
-
-    /**
-     * Initializes the attributes.
-     * 
-     * @param entry the entry
-     */
-    private void initAttributes( IEntry entry )
-    {
-        if ( !entry.isAttributesInitialized() )
-        {
-            boolean foa = entry.getBrowserConnection().isFetchOperationalAttributes();
-            InitializeAttributesRunnable iar = new InitializeAttributesRunnable( new IEntry[]
-                { entry }, foa );
-            RunnableContextRunner.execute( iar, null, true );
-        }
-    }
-
-
-    @Override
-    public void dispose()
-    {
-        // remove the listener
-        EventRegistry.removeEntryUpdateListener( entryUpdateListener );
-        super.dispose();
+        setPartName( eei.getName() );
     }
 
 }

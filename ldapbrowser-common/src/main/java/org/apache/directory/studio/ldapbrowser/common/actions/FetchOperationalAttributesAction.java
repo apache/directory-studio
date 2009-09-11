@@ -144,7 +144,13 @@ public class FetchOperationalAttributesAction extends BrowserAction
         }
         if ( getInput() != null && getInput() instanceof IEntry )
         {
-            entriesList.add( ( IEntry ) getInput() );
+            // the entry input is usually a cloned entry, lookup the real entry from connection
+            IEntry input = ( IEntry ) getInput();
+            IEntry entry = input.getBrowserConnection().getEntryFromCache( input.getDn() );
+            if ( entry != null )
+            {
+                entriesList.add( entry );
+            }
         }
         return entriesList;
     }

@@ -21,21 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
-import org.apache.directory.studio.connection.ui.RunnableContextRunner;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.apache.directory.studio.ldifparser.LdifFormatParameters;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
-import org.eclipse.core.runtime.IStatus;
 
 
 /**
@@ -56,22 +48,11 @@ public class EditEntryWizard extends NewEntryWizard
      */
     public EditEntryWizard( IEntry entry )
     {
-        setWindowTitle( Messages.getString("EditEntryWizard.EditEntry") ); //$NON-NLS-1$
+        setWindowTitle( Messages.getString( "EditEntryWizard.EditEntry" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( true );
 
         selectedEntry = entry;
         selectedConnection = entry.getBrowserConnection();
-        if ( selectedConnection.getConnection() != null )
-        {
-            originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
-            selectedConnection.getConnection().setReadOnly( true );
-        }
-
-        // ensure the attributes of the entry are initialized
-        if ( !selectedEntry.isAttributesInitialized() )
-        {
-            initAttributes();
-        }
 
         try
         {
@@ -81,21 +62,12 @@ public class EditEntryWizard extends NewEntryWizard
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
+            throw new RuntimeException( e );
         }
         finally
         {
             EventRegistry.resumeEventFiringInCurrentThread();
         }
-    }
-
-
-    private void initAttributes()
-    {
-        boolean foa = selectedEntry.getBrowserConnection().isFetchOperationalAttributes();
-        InitializeAttributesRunnable iar = new InitializeAttributesRunnable( new IEntry[]
-            { selectedEntry }, foa );
-        RunnableContextRunner.execute( iar, getContainer(), true );
     }
 
 
@@ -117,11 +89,6 @@ public class EditEntryWizard extends NewEntryWizard
      */
     public boolean performCancel()
     {
-        if ( selectedConnection.getConnection() != null )
-        {
-            selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
-        }
-
         return true;
     }
 
@@ -131,45 +98,8 @@ public class EditEntryWizard extends NewEntryWizard
      */
     public boolean performFinish()
     {
-        try
-        {
-            if ( selectedConnection.getConnection() != null )
-            {
-                selectedConnection.getConnection().setReadOnly( originalReadOnlyFlag );
-
-                LdifChangeModifyRecord record = Utils.computeDiff( selectedEntry, prototypeEntry );
-                if ( record != null )
-                {
-                    ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( selectedConnection, record
-                        .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
-                    IStatus status = RunnableContextRunner.execute( runnable, getContainer(), true );
-                    if ( !status.isOK() )
-                    {
-                        selectedConnection.getConnection().setReadOnly( true );
-                        return false;
-                    }
-                    else
-                    {
-                        initAttributes();
-                        return true;
-                    }
-                }
-                else
-                {
-                    // no changes
-                    return true;
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
-        catch ( Throwable t )
-        {
-            t.printStackTrace();
-            return false;
-        }
+        new CompoundModification().replaceAttributes( prototypeEntry, selectedEntry );
+        return true;
     }
 
 

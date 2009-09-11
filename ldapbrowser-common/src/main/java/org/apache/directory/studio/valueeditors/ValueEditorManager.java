@@ -33,19 +33,12 @@ import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.schema.parsers.LdapSyntaxDescription;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.CreateValuesJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.DeleteAttributesValueJob;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ModifyValueJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
-import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -116,7 +109,7 @@ public class ValueEditorManager
     /** The default binary editor */
     private IValueEditor defaultBinaryValueEditor;
 
-    /** A Map wich all available value editors. */
+    /** A map containing all available value editors. */
     private Map<String, IValueEditor> class2ValueEditors;
 
 
@@ -125,7 +118,7 @@ public class ValueEditorManager
      *
      * @param parent the composite used to create the value editors
      */
-    public ValueEditorManager( Composite parent )
+    public ValueEditorManager( Composite parent, boolean useEntryValueEditor )
     {
         this.parent = parent;
         userSelectedValueEditor = null;
@@ -145,10 +138,13 @@ public class ValueEditorManager
             BrowserCommonConstants.IMG_MULTIVALUEDEDITOR ) );
 
         // special case: entry editor
-        entryValueEditor = new EntryValueEditor( this.parent, this );
-        entryValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.EntryEditor" ) ); //$NON-NLS-1$
-        entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
-            BrowserCommonConstants.IMG_ENTRY ) );
+        if ( useEntryValueEditor )
+        {
+            entryValueEditor = new EntryValueEditor( this.parent, this );
+            entryValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.EntryEditor" ) ); //$NON-NLS-1$
+            entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+                BrowserCommonConstants.IMG_ENTRY ) );
+        }
 
         // special case: rename editor
         renameValueEditor = new RenameValueEditor( this.parent, this );
@@ -172,7 +168,10 @@ public class ValueEditorManager
         {
             userSelectedValueEditor = null;
             multiValuedValueEditor.dispose();
-            entryValueEditor.dispose();
+            if ( entryValueEditor != null )
+            {
+                entryValueEditor.dispose();
+            }
             renameValueEditor.dispose();
             defaultStringSingleLineValueEditor.dispose();
             defaultStringMultiLineValueEditor.dispose();
@@ -305,7 +304,7 @@ public class ValueEditorManager
 
         // special case objectClass: always return entry editor
         if ( userSelectedValueEditor == null && value.getAttribute().isObjectClassAttribute()
-            && value.getAttribute().getEntry().isDirectoryEntry() )
+            && entryValueEditor != null )
         {
             return entryValueEditor;
         }
@@ -347,12 +346,12 @@ public class ValueEditorManager
             return null;
         }
         else if ( userSelectedValueEditor == null && attributeHierarchy.getAttribute().isObjectClassAttribute()
-            && attributeHierarchy.getEntry().isDirectoryEntry() )
+            && entryValueEditor != null )
         {
             // special case objectClass: always return entry editor
             return entryValueEditor;
         }
-        else if ( userSelectedValueEditor == entryValueEditor )
+        else if ( userSelectedValueEditor == entryValueEditor && entryValueEditor != null )
         {
             // special case objectClass: always return entry editor
             return entryValueEditor;
@@ -480,14 +479,17 @@ public class ValueEditorManager
 
         // special case RDN: no alternative to the MV editor, except the entry editor
         // perhaps this should be moved somewhere else
-        for ( IAttribute attribute : ah )
+        if ( entryValueEditor != null )
         {
-            for ( IValue value : attribute.getValues() )
+            for ( IAttribute attribute : ah )
             {
-                if ( value.isRdnPart() )
+                for ( IValue value : attribute.getValues() )
                 {
-                    return new IValueEditor[]
-                        { entryValueEditor };
+                    if ( value.isRdnPart() )
+                    {
+                        return new IValueEditor[]
+                            { entryValueEditor };
+                    }
                 }
             }
         }
@@ -537,7 +539,10 @@ public class ValueEditorManager
         list.addAll( class2ValueEditors.values() );
 
         list.add( multiValuedValueEditor );
-        list.add( entryValueEditor );
+        if ( entryValueEditor != null )
+        {
+            list.add( entryValueEditor );
+        }
         list.add( renameValueEditor );
 
         return list.toArray( new IValueEditor[list.size()] );
@@ -585,139 +590,6 @@ public class ValueEditorManager
     public EntryValueEditor getEntryValueEditor()
     {
         return entryValueEditor;
-    }
-
-
-    /**
-     * Creates the attribute with the given value at the entry.
-     * 
-     * It is called from a ICellModifier if no attribute of value exists and
-     * the raw value returned by the CellEditor isn't null.
-     * 
-     * @param newRawValue the new raw value
-     * @param entry the entry
-     * @param attributeDescription the attribute description
-     * 
-     * @throws ModelModificationException the model modification exception
-     */
-    public void createValue( IEntry entry, String attributeDescription, Object newRawValue )
-    {
-        if ( entry != null && attributeDescription != null && newRawValue != null
-            && ( newRawValue instanceof byte[] || newRawValue instanceof String ) )
-        {
-            if ( entry.getAttribute( attributeDescription ) != null )
-            {
-                IAttribute attribute = entry.getAttribute( attributeDescription );
-                if ( attribute != null )
-                {
-                    if ( attribute.getValueSize() == 0 )
-                    {
-                        new CreateValuesJob( attribute, newRawValue ).execute();
-                    }
-                    else if ( attribute.getValueSize() == 1 )
-                    {
-                        this.modifyValue( attribute.getValues()[0], newRawValue );
-                    }
-                }
-            }
-            else
-            {
-                EventRegistry.suspendEventFiringInCurrentThread();
-                IAttribute attribute = new Attribute( entry, attributeDescription );
-                entry.addAttribute( attribute );
-                EventRegistry.resumeEventFiringInCurrentThread();
-
-                Object newValue;
-                if ( SchemaUtils.isString( entry.getBrowserConnection().getSchema().getAttributeTypeDescription(
-                    attributeDescription ), entry.getBrowserConnection().getSchema() ) )
-                {
-                    if ( newRawValue instanceof String )
-                    {
-                        newValue = ( String ) newRawValue;
-                    }
-                    else
-                    {
-                        newValue = LdifUtils.utf8decode( ( byte[] ) newRawValue );
-                    }
-                }
-                else
-                {
-                    if ( newRawValue instanceof String )
-                    {
-                        newValue = LdifUtils.utf8encode( ( String ) newRawValue );
-                    }
-                    else
-                    {
-                        newValue = ( byte[] ) newRawValue;
-                    }
-                }
-
-                new CreateValuesJob( attribute, newValue ).execute();
-            }
-        }
-    }
-
-
-    /**
-     * Modifies the value and sets the given raw value
-     * 
-     * It is called from a ICellModfier if the value exists and the raw
-     * value returned by the CellEditor isn't null.
-     * 
-     * @param oldValue the old value
-     * @param newRawValue the new raw value
-     */
-    public void modifyValue( IValue oldValue, Object newRawValue )
-    {
-        IAttribute attribute = oldValue.getAttribute();
-
-        boolean modify = false;
-        if ( oldValue != null && newRawValue != null && newRawValue instanceof byte[] )
-        {
-            byte[] newValue = ( byte[] ) newRawValue;
-            if ( !Utils.equals( oldValue.getBinaryValue(), newValue ) )
-            {
-                modify = true;
-            }
-        }
-        else if ( oldValue != null && newRawValue != null && newRawValue instanceof String )
-        {
-
-            String newValue = ( String ) newRawValue;
-            if ( !oldValue.getStringValue().equals( newValue ) )
-            {
-                modify = true;
-            }
-        }
-
-        if ( modify )
-        {
-            if ( oldValue.isEmpty() )
-            {
-                EventRegistry.suspendEventFiringInCurrentThread();
-                attribute.deleteEmptyValue();
-                EventRegistry.resumeEventFiringInCurrentThread();
-                new CreateValuesJob( attribute, newRawValue ).execute();
-            }
-            else
-            {
-                new ModifyValueJob( oldValue, newRawValue ).execute();
-            }
-        }
-    }
-
-
-    /**
-     * Deletes the attributes.
-     * 
-     * It is called from a ICellModfier if the attribute exists and the raw
-     * value returned by the CellEditor is null.
-     * 
-     * @param ah the attribute hierarchy
-     */
-    public void deleteAttribute( AttributeHierarchy ah )
-    {
-        new DeleteAttributesValueJob( ah ).execute();
     }
 
 
