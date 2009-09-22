@@ -939,6 +939,11 @@
       <artifactId>connection.core</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.directory.studio</groupId>
+      <artifactId>apacheds-launcher</artifactId>
+      <scope>provided</scope>
+    </dependency>
     
 	<!-- Eclipse plugins dependencies -->
     <dependency>
