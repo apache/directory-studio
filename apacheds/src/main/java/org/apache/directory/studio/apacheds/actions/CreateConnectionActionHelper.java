@@ -24,6 +24,7 @@ import org.apache.directory.studio.apacheds.ApacheDsPlugin;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
+import org.apache.directory.studio.apacheds.configuration.model.v155.ServerConfigurationV155;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
@@ -62,7 +63,21 @@ public class CreateConnectionActionHelper
         connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
 
         // Encryption method and port
-        if ( serverConfiguration instanceof ServerConfigurationV154 )
+        if ( serverConfiguration instanceof ServerConfigurationV155 )
+        {
+            ServerConfigurationV155 serverConfiguration155 = ( ServerConfigurationV155 ) serverConfiguration;
+            if ( serverConfiguration155.isEnableLdap() )
+            {
+                connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
+                connectionParameter.setPort( serverConfiguration155.getLdapPort() );
+            }
+            else if ( serverConfiguration155.isEnableLdaps() )
+            {
+                connectionParameter.setEncryptionMethod( EncryptionMethod.LDAPS );
+                connectionParameter.setPort( serverConfiguration155.getLdapsPort() );
+            }
+        }
+        else if ( serverConfiguration instanceof ServerConfigurationV154 )
         {
             ServerConfigurationV154 serverConfiguration154 = ( ServerConfigurationV154 ) serverConfiguration;
             if ( serverConfiguration154.isEnableLdap() )

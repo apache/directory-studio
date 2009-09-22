@@ -24,13 +24,17 @@ import java.io.File;
 
 import org.apache.directory.daemon.DaemonApplication;
 import org.apache.directory.daemon.InstallationLayout;
+import org.apache.directory.server.changepw.ChangePasswordServer;
 import org.apache.directory.server.configuration.ApacheDS;
 import org.apache.directory.server.core.DefaultDirectoryService;
 import org.apache.directory.server.core.DirectoryService;
+import org.apache.directory.server.dns.DnsServer;
+import org.apache.directory.server.integration.http.HttpServer;
+import org.apache.directory.server.kerberos.kdc.KdcServer;
 import org.apache.directory.server.ldap.LdapServer;
-import org.apache.directory.server.protocol.shared.SocketAcceptor;
+import org.apache.directory.server.ntp.NtpServer;
+import org.apache.directory.server.protocol.shared.transport.TcpTransport;
 import org.apache.xbean.spring.context.FileSystemXmlApplicationContext;
-import org.eclipse.osgi.util.NLS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,103 +48,312 @@ import org.slf4j.LoggerFactory;
 public class Service implements DaemonApplication
 {
     private static final Logger LOG = LoggerFactory.getLogger( Service.class );
-    private Thread workerThread;
-    private SynchWorker worker = new SynchWorker();
+
+    /** The LDAP server instance */
+    private LdapServer ldapServer;
+
+    /** The NTP server instance */
+    private NtpServer ntpServer;
+
+    /** The DNS server instance */
+    private DnsServer dnsServer;
+
+    /** The Change Password server instance */
+    private ChangePasswordServer changePwdServer;
+
+    /** The Kerberos server instance */
+    private KdcServer kdcServer;
+
     private ApacheDS apacheDS;
+
+    private HttpServer httpServer;
+
     private FileSystemXmlApplicationContext factory;
 
 
     public void init( InstallationLayout install, String[] args ) throws Exception
     {
+        // Initialize the LDAP server
+        initLdap( install, args );
+
+        // Initialize the NTP server
+        initNtp( install, args );
+
+        // Initialize the DNS server (Not ready yet)
+        // initDns( install, args );
+
+        // Initialize the DHCP server (Not ready yet)
+        // initDhcp( install, args );
+
+        // Initialize the ChangePwd server (Not ready yet)
+        initChangePwd( install, args );
+
+        // Initialize the Kerberos server
+        initKerberos( install, args );
+
+        // initialize the jetty http server
+        initHttpServer();
+    }
+
+
+    /**
+     * Initialize the LDAP server
+     */
+    private void initLdap( InstallationLayout install, String[] args ) throws Exception
+    {
+        LOG.info( "Starting the LDAP server" );
+
+        printBanner( BANNER_LDAP );
         long startTime = System.currentTimeMillis();
 
-        if ( args.length > 0 && new File( args[0] ).exists() ) // hack that takes server.xml file argument
+        if ( ( args != null ) && ( args.length > 0 ) && new File( args[0] ).exists() ) // hack that takes server.xml file argument
         {
-            LOG.info( Messages.getString( "Service.LoadingSettings" ), args[0] ); //$NON-NLS-1$
+            LOG.info( "server: loading settings from ", args[0] );
             factory = new FileSystemXmlApplicationContext( new File( args[0] ).toURI().toURL().toString() );
-            apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" ); //$NON-NLS-1$
+            ldapServer = ( LdapServer ) factory.getBean( "ldapServer" );
+            apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" );
         }
         else
         {
-            LOG.info( Messages.getString( "Service.UsingDefaultSettings" ) ); //$NON-NLS-1$
+            LOG.info( "server: using default settings ..." );
             DirectoryService directoryService = new DefaultDirectoryService();
             directoryService.startup();
-            SocketAcceptor socketAcceptor = new SocketAcceptor( null );
-            LdapServer ldapServer = new LdapServer();
-            ldapServer.setSocketAcceptor( socketAcceptor );
+            ldapServer = new LdapServer();
             ldapServer.setDirectoryService( directoryService );
-            ldapServer.start();
-            LdapServer ldapsServer = new LdapServer();
-            ldapsServer.setEnableLdaps( true );
-            ldapsServer.setSocketAcceptor( socketAcceptor );
-            ldapsServer.setDirectoryService( directoryService );
-            ldapsServer.start();
-            apacheDS = new ApacheDS( directoryService, ldapServer, ldapsServer );
+            TcpTransport tcpTransportSsl = new TcpTransport( 10636 );
+            tcpTransportSsl.enableSSL( true );
+            ldapServer.setTransports( new TcpTransport( 10389 ), tcpTransportSsl );
+            apacheDS = new ApacheDS( ldapServer );
         }
 
         if ( install != null )
         {
-            apacheDS.getDirectoryService().setWorkingDirectory( install.getPartitionsDirectory() );
+            ldapServer.getDirectoryService().setWorkingDirectory( install.getPartitionsDirectory() );
         }
 
+        // And start the server now
         apacheDS.startup();
-
-        if ( apacheDS.getSynchPeriodMillis() > 0 )
-        {
-            workerThread = new Thread( worker, "SynchWorkerThread" ); //$NON-NLS-1$
-        }
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( NLS.bind(
-                Messages.getString( "Service.Started" ), new long[] { ( System.currentTimeMillis() - startTime ) } ) ); //$NON-NLS-1$
+            LOG.info( "LDAP server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+        }
+    }
+
+
+    /**
+     * Initialize the NTP server
+     */
+    private void initNtp( InstallationLayout install, String[] args ) throws Exception
+    {
+        if ( factory == null )
+        {
+            return;
+        }
+
+        try
+        {
+            ntpServer = ( NtpServer ) factory.getBean( "ntpServer" );
+        }
+        catch ( Exception e )
+        {
+            LOG
+                .info( "Cannot find any reference to the NTP Server in the server.xml file : the server won't be started" );
+            return;
+        }
+
+        System.out.println( "Starting the NTP server" );
+        LOG.info( "Starting the NTP server" );
+
+        printBanner( BANNER_NTP );
+        long startTime = System.currentTimeMillis();
+
+        ntpServer.start();
+        System.out.println( "NTP Server started" );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "NTP server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+        }
+    }
+
+
+    /**
+     * Initialize the DNS server
+     */
+    private void initDns( InstallationLayout install, String[] args ) throws Exception
+    {
+        if ( factory == null )
+        {
+            return;
+        }
+
+        try
+        {
+            dnsServer = ( DnsServer ) factory.getBean( "dnsServer" );
+        }
+        catch ( Exception e )
+        {
+            LOG
+                .info( "Cannot find any reference to the DNS Server in the server.xml file : the server won't be started" );
+            return;
+        }
+
+        System.out.println( "Starting the DNS server" );
+        LOG.info( "Starting the DNS server" );
+
+        printBanner( BANNER_DNS );
+        long startTime = System.currentTimeMillis();
+
+        dnsServer.start();
+        System.out.println( "DNS Server started" );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "DNS server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+        }
+    }
+
+
+    /**
+     * Initialize the KERBEROS server
+     */
+    private void initKerberos( InstallationLayout install, String[] args ) throws Exception
+    {
+        if ( factory == null )
+        {
+            return;
+        }
+
+        try
+        {
+            kdcServer = ( KdcServer ) factory.getBean( "kdcServer" );
+        }
+        catch ( Exception e )
+        {
+            LOG
+                .info( "Cannot find any reference to the Kerberos Server in the server.xml file : the server won't be started" );
+            return;
+        }
+
+        System.out.println( "Starting the Kerberos server" );
+        LOG.info( "Starting the Kerberos server" );
+
+        printBanner( BANNER_KERBEROS );
+        long startTime = System.currentTimeMillis();
+
+        kdcServer.start();
+
+        System.out.println( "Kerberos server started" );
+
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Kerberos server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+        }
+    }
+
+
+    /**
+     * Initialize the Change Password server
+     */
+    private void initChangePwd( InstallationLayout install, String[] args ) throws Exception
+    {
+        if ( factory == null )
+        {
+            return;
+        }
+
+        try
+        {
+            changePwdServer = ( ChangePasswordServer ) factory.getBean( "changePasswordServer" );
+        }
+        catch ( Exception e )
+        {
+            LOG
+                .info( "Cannot find any reference to the Change Password Server in the server.xml file : the server won't be started" );
+            return;
+        }
+
+        System.out.println( "Starting the Change Password server" );
+        LOG.info( "Starting the Change Password server" );
+
+        printBanner( BANNER_CHANGE_PWD );
+        long startTime = System.currentTimeMillis();
+
+        changePwdServer.start();
+
+        System.out.println( "Change Password server started" );
+        if ( LOG.isInfoEnabled() )
+        {
+            LOG.info( "Change Password server: started in {} milliseconds", ( System.currentTimeMillis() - startTime )
+                + "" );
+        }
+    }
+
+
+    private void initHttpServer() throws Exception
+    {
+        if ( factory == null )
+        {
+            return;
+        }
+
+        try
+        {
+            httpServer = ( HttpServer ) factory.getBean( "httpServer" );
+        }
+        catch ( Exception e )
+        {
+            LOG
+                .info( "Cannot find any reference to the HTTP Server in the server.xml file : the server won't be started" );
+            return;
+        }
+
+        if ( httpServer != null )
+        {
+            httpServer.start();
         }
     }
 
 
     public DirectoryService getDirectoryService()
     {
-        return apacheDS.getDirectoryService();
+        return ldapServer.getDirectoryService();
     }
 
 
     public void synch() throws Exception
     {
-        apacheDS.getDirectoryService().sync();
+        ldapServer.getDirectoryService().sync();
     }
 
 
     public void start()
     {
-        if ( workerThread != null )
+        try
         {
-            workerThread.start();
+            ldapServer.start();
+        }
+        catch ( Exception e )
+        {
+            LOG.error( "Cannot start the server : " + e.getMessage() );
         }
     }
 
 
     public void stop( String[] args ) throws Exception
     {
-        if ( workerThread != null )
-        {
-            worker.stop = true;
-            synchronized ( worker.lock )
-            {
-                worker.lock.notify();
-            }
-
-            while ( workerThread.isAlive() )
-            {
-                LOG.info( Messages.getString( "Service.WaitingForSynchWorkerThread" ) ); //$NON-NLS-1$
-                workerThread.join( 500 );
-            }
-        }
 
         if ( factory != null )
         {
             factory.close();
         }
-        apacheDS.shutdown();
+
+        // Stops the server
+        ldapServer.stop();
+
+        // We now have to stop the underlaying DirectoryService
+        ldapServer.getDirectoryService().shutdown();
     }
 
 
@@ -148,37 +361,54 @@ public class Service implements DaemonApplication
     {
     }
 
-    class SynchWorker implements Runnable
+    private static final String BANNER_LDAP = "           _                     _          ____  ____   \n"
+        + "          / \\   _ __    ___  ___| |__   ___|  _ \\/ ___|  \n"
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | \\___ \\  \n"
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| |___) | \n"
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|____/  \n"
+        + "               |_|                                       \n";
+
+    private static final String BANNER_NTP = "           _                     _          _   _ _____ _ __    \n"
+        + "          / \\   _ __    ___  ___| |__   ___| \\ | |_  __| '_ \\   \n"
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ .\\| | | | | |_) |  \n"
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |\\  | | | | .__/   \n"
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|_| \\_| |_| |_|      \n"
+        + "               |_|                                              \n";
+
+    private static final String BANNER_KERBEROS = "           _                     _          _  __ ____   ___    \n"
+        + "          / \\   _ __    ___  ___| |__   ___| |/ /|  _ \\ / __|   \n"
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ ' / | | | / /      \n"
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ . \\ | |_| \\ \\__    \n"
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|_|\\_\\|____/ \\___|   \n"
+        + "               |_|                                              \n";
+
+    private static final String BANNER_DNS = "           _                     _          ____  _   _ ____    \n"
+        + "          / \\   _ __    ___  ___| |__   ___|  _ \\| \\ | / ___|   \n"
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | |  \\| \\__  \\   \n"
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| | . ' |___) |  \n"
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|_|\\__|____/   \n"
+        + "               |_|                                              \n";
+
+    private static final String BANNER_DHCP = "           _                     _          ____  _   _  ___ ____  \n"
+        + "          / \\   _ __    ___  ___| |__   ___|  _ \\| | | |/ __|  _ \\ \n"
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | | |_| / /  | |_) )\n"
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| |  _  \\ \\__|  __/ \n"
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|_| |_|\\___|_|    \n"
+        + "               |_|                                                 \n";
+
+    private static final String BANNER_CHANGE_PWD = "         ___                              ___ __  __ __  ______    \n"
+        + "        / __|_       ___ _ __   ____  ___|  _ \\ \\ \\ / / / |  _ \\   \n"
+        + "       / /  | |__  / _` | '  \\ / ___\\/ _ \\ |_) \\ \\ / /\\/ /| | | |  \n"
+        + "       \\ \\__| '_  \\ (_| | |\\  | |___ | __/  __/ \\ ' /   / | |_| |  \n"
+        + "        \\___|_| |_|\\__,_|_| |_|\\__. |\\___| |     \\_/ \\_/  |____/   \n"
+        + "                                  |_|    |_|                       \n";
+
+
+    /**
+     * Print the banner for a server
+     */
+    public static void printBanner( String bannerConstant )
     {
-        final Object lock = new Object();
-        boolean stop;
-
-
-        public void run()
-        {
-            while ( !stop )
-            {
-                synchronized ( lock )
-                {
-                    try
-                    {
-                        lock.wait( apacheDS.getSynchPeriodMillis() );
-                    }
-                    catch ( InterruptedException e )
-                    {
-                        LOG.warn( Messages.getString( "Service.SynchWorkerFailedToWait" ), e ); //$NON-NLS-1$
-                    }
-                }
-
-                try
-                {
-                    synch();
-                }
-                catch ( Exception e )
-                {
-                    LOG.error( Messages.getString( "Service.SynchWorkerFailedToSynch" ), e ); //$NON-NLS-1$
-                }
-            }
-        }
+        System.out.println( bannerConstant );
     }
 }

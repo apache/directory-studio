@@ -123,7 +123,11 @@ public class ServersHandlerIO
         Attribute versionAttribute = element.attribute( SERVER_VERSION_ATTRIBUTE );
         if ( versionAttribute != null )
         {
-            if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.4" ) ) //$NON-NLS-1$
+            if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.5" ) ) //$NON-NLS-1$
+            {
+                server.setVersion( ServerVersion.VERSION_1_5_5 );
+            }
+            else if ( versionAttribute.getValue().equalsIgnoreCase( "1.5.4" ) ) //$NON-NLS-1$
             {
                 server.setVersion( ServerVersion.VERSION_1_5_4 );
             }

@@ -31,6 +31,7 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurat
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
+import org.apache.directory.studio.apacheds.configuration.model.v155.ServerConfigurationV155;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.views.ServersView;
 import org.eclipse.core.runtime.Platform;
@@ -192,7 +193,12 @@ public class CreateConnectionAction extends Action implements IWorkbenchWindowAc
      */
     private boolean isEnableLdapOrLdaps( ServerConfiguration serverConfiguration )
     {
-        if ( serverConfiguration instanceof ServerConfigurationV154 )
+        if ( serverConfiguration instanceof ServerConfigurationV155 )
+        {
+            ServerConfigurationV155 serverConfiguration155 = ( ServerConfigurationV155 ) serverConfiguration;
+            return ( serverConfiguration155.isEnableLdap() ) || ( serverConfiguration155.isEnableLdaps() );
+        }
+        else if ( serverConfiguration instanceof ServerConfigurationV154 )
         {
             ServerConfigurationV154 serverConfiguration154 = ( ServerConfigurationV154 ) serverConfiguration;
             return ( serverConfiguration154.isEnableLdap() ) || ( serverConfiguration154.isEnableLdaps() );

@@ -33,6 +33,7 @@ import org.apache.directory.studio.apacheds.LogMessageConsole;
 import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerConfigurationV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerConfigurationV154;
+import org.apache.directory.studio.apacheds.configuration.model.v155.ServerConfigurationV155;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.apache.directory.studio.apacheds.model.ServerStateEnum;
 import org.apache.log4j.net.SocketServer;
@@ -233,7 +234,11 @@ public class LaunchServerJob extends Job
              */
             private int getTestingPort( ServerConfiguration configuration )
             {
-                if ( configuration instanceof ServerConfigurationV154 )
+                if ( configuration instanceof ServerConfigurationV155 )
+                {
+                    return getTestingPortVersion155( ( ServerConfigurationV155 ) configuration );
+                }
+                else if ( configuration instanceof ServerConfigurationV154 )
                 {
                     return getTestingPortVersion154( ( ServerConfigurationV154 ) configuration );
                 }
@@ -304,6 +309,53 @@ public class LaunchServerJob extends Job
              *      the testing port
              */
             private int getTestingPortVersion154( ServerConfigurationV154 configuration )
+            {
+                // LDAP
+                if ( configuration.isEnableLdap() )
+                {
+                    return configuration.getLdapPort();
+                }
+                // LDAPS
+                else if ( configuration.isEnableLdaps() )
+                {
+                    return configuration.getLdapsPort();
+                }
+                // Kerberos
+                else if ( configuration.isEnableKerberos() )
+                {
+                    return configuration.getKerberosPort();
+                }
+                // DNS
+                else if ( configuration.isEnableDns() )
+                {
+                    return configuration.getDnsPort();
+                }
+                // NTP
+                else if ( configuration.isEnableNtp() )
+                {
+                    return configuration.getNtpPort();
+                }
+                // ChangePassword
+                else if ( configuration.isEnableChangePassword() )
+                {
+                    return configuration.getChangePasswordPort();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+
+
+            /**
+             * Gets the testing port.
+             *
+             * @param configuration
+             *      the 1.5.5 server configuration
+             * @return
+             *      the testing port
+             */
+            private int getTestingPortVersion155( ServerConfigurationV155 configuration )
             {
                 // LDAP
                 if ( configuration.isEnableLdap() )

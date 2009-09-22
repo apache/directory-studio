@@ -42,25 +42,22 @@ public class Launcher
      */
     public static void main( String[] args ) throws Exception
     {
-        Service server = new Service();
+        Service service = new Service();
 
         if ( args.length > 0 && new File( args[0] ).isDirectory() )
         {
             InstallationLayout layout = new InstallationLayout( args[0] );
             String confFile = layout.getConfigurationFile().getAbsolutePath();
-            server.init( layout, new String[]
+            service.init( layout, new String[]
                 { confFile } );
-            server.start();
         }
         else if ( args.length > 0 && new File( args[0] ).isFile() )
         {
-            server.init( null, args );
-            server.start();
+            service.init( null, args );
         }
         else
         {
-            server.init( null, null );
-            server.start();
+            service.init( null, null );
         }
     }
 }

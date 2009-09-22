@@ -32,6 +32,7 @@ import org.apache.directory.studio.apacheds.configuration.model.ServerConfigurat
 import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
 import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
 import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
+import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
 import org.apache.directory.studio.apacheds.model.Server;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -124,8 +125,31 @@ public class ApacheDsPluginUtils
         {
             switch ( server.getVersion() )
             {
+                case VERSION_1_5_5:
+                    return new String[]
+                        { "antlr-2.7.7.jar", "apacheds-bootstrap-extract-1.5.5.jar",
+                            "apacheds-bootstrap-partition-1.5.5.jar", "apacheds-core-1.5.5.jar",
+                            "apacheds-core-avl-1.5.5.jar", "apacheds-core-constants-1.5.5.jar",
+                            "apacheds-core-entry-1.5.5.jar", "apacheds-core-jndi-1.5.5.jar",
+                            "apacheds-core-shared-1.5.5.jar", "apacheds-interceptor-kerberos-1.5.5.jar",
+                            "apacheds-jdbm-1.5.5.jar", "apacheds-jdbm-store-1.5.5.jar",
+                            "apacheds-kerberos-shared-1.5.5.jar", "apacheds-launcher-1.5.0.jar",
+                            "apacheds-protocol-changepw-1.5.5.jar", "apacheds-protocol-dns-1.5.5.jar",
+                            "apacheds-protocol-kerberos-1.5.5.jar", "apacheds-protocol-ldap-1.5.5.jar",
+                            "apacheds-protocol-ntp-1.5.5.jar", "apacheds-protocol-shared-1.5.5.jar",
+                            "apacheds-schema-bootstrap-1.5.5.jar", "apacheds-schema-extras-1.5.5.jar",
+                            "apacheds-schema-registries-1.5.5.jar", "apacheds-server-jndi-1.5.5.jar",
+                            "apacheds-server-xml-1.5.5.jar", "apacheds-utils-1.5.5.jar",
+                            "apacheds-xbean-spring-1.5.5.jar", "apacheds-xdbm-base-1.5.5.jar",
+                            "apacheds-xdbm-search-1.5.5.jar", "apacheds-xdbm-tools-1.5.5.jar", "bcprov-jdk15-140.jar",
+                            "commons-cli-1.2.jar", "commons-collections-3.2.1.jar", "commons-daemon-1.0.1.jar",
+                            "commons-io-1.4.jar", "commons-lang-2.4.jar", "daemon-bootstrappers-1.1.6.jar",
+                            "jcl-over-slf4j-1.5.6.jar", "log4j-1.2.14.jar", "mina-core-2.0.0-M6.jar",
+                            "shared-asn1-0.9.15.jar", "shared-asn1-codec-0.9.15.jar", "shared-cursor-0.9.15.jar",
+                            "shared-ldap-0.9.15.jar", "shared-ldap-constants-0.9.15.jar", "slf4j-api-1.5.6.jar",
+                            "slf4j-log4j12-1.5.6.jar", "spring-beans-2.5.6.SEC01.jar",
+                            "spring-context-2.5.6.SEC01.jar", "spring-core-2.5.6.SEC01.jar", "xbean-spring-3.5.jar" };
                 case VERSION_1_5_4:
-                    // TODO modify this
                     return new String[]
                         { "antlr-2.7.7.jar", "xbean-spring-3.3.jar", "apacheds-bootstrap-extract-1.5.4.jar",
                             "apacheds-bootstrap-partition-1.5.4.jar", "apacheds-core-1.5.4.jar",
@@ -292,7 +316,7 @@ public class ApacheDsPluginUtils
 
             // Copying server.xml file
             File serverXmlFile = new File( confFolder, "server.xml" );
-            copyConfigurationFile( "server-1.5.4.xml", serverXmlFile );
+            copyConfigurationFile( "server-1.5.5.xml", serverXmlFile );
 
             // Creating log4j.properties file to the serverSocket folder
             File log4jPropertiesServerSocketFile = new File( serverSocketFolder, "log4j.properties" );
@@ -521,7 +545,8 @@ public class ApacheDsPluginUtils
             { IDialogConstants.OK_LABEL }, MessageDialog.OK );
         dialog.open();
     }
-    
+
+
     /**
      * Gets the server configuration.
      *
@@ -541,6 +566,9 @@ public class ApacheDsPluginUtils
         // Parsing and returning the server configuration
         switch ( server.getVersion() )
         {
+            case VERSION_1_5_5:
+                ServerXmlIOV155 serverXmlIOV155 = new ServerXmlIOV155();
+                return serverXmlIOV155.parse( fis );
             case VERSION_1_5_4:
                 ServerXmlIOV154 serverXmlIOV154 = new ServerXmlIOV154();
                 return serverXmlIOV154.parse( fis );
