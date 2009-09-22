@@ -101,21 +101,21 @@ public class Service implements DaemonApplication
      */
     private void initLdap( InstallationLayout install, String[] args ) throws Exception
     {
-        LOG.info( "Starting the LDAP server" );
+        LOG.info( "Starting the LDAP server" ); //$NON-NLS-1$
 
         printBanner( BANNER_LDAP );
         long startTime = System.currentTimeMillis();
 
         if ( ( args != null ) && ( args.length > 0 ) && new File( args[0] ).exists() ) // hack that takes server.xml file argument
         {
-            LOG.info( "server: loading settings from ", args[0] );
+            LOG.info( "server: loading settings from ", args[0] ); //$NON-NLS-1$
             factory = new FileSystemXmlApplicationContext( new File( args[0] ).toURI().toURL().toString() );
-            ldapServer = ( LdapServer ) factory.getBean( "ldapServer" );
-            apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" );
+            ldapServer = ( LdapServer ) factory.getBean( "ldapServer" ); //$NON-NLS-1$
+            apacheDS = ( ApacheDS ) factory.getBean( "apacheDS" ); //$NON-NLS-1$
         }
         else
         {
-            LOG.info( "server: using default settings ..." );
+            LOG.info( "server: using default settings ..." ); //$NON-NLS-1$
             DirectoryService directoryService = new DefaultDirectoryService();
             directoryService.startup();
             ldapServer = new LdapServer();
@@ -136,7 +136,7 @@ public class Service implements DaemonApplication
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "LDAP server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+            LOG.info( "LDAP server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -153,27 +153,27 @@ public class Service implements DaemonApplication
 
         try
         {
-            ntpServer = ( NtpServer ) factory.getBean( "ntpServer" );
+            ntpServer = ( NtpServer ) factory.getBean( "ntpServer" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
             LOG
-                .info( "Cannot find any reference to the NTP Server in the server.xml file : the server won't be started" );
+                .info( "Cannot find any reference to the NTP Server in the server.xml file : the server won't be started" ); //$NON-NLS-1$
             return;
         }
 
-        System.out.println( "Starting the NTP server" );
-        LOG.info( "Starting the NTP server" );
+        System.out.println( "Starting the NTP server" ); //$NON-NLS-1$
+        LOG.info( "Starting the NTP server" ); //$NON-NLS-1$
 
         printBanner( BANNER_NTP );
         long startTime = System.currentTimeMillis();
 
         ntpServer.start();
-        System.out.println( "NTP Server started" );
+        System.out.println( "NTP Server started" ); //$NON-NLS-1$
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "NTP server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+            LOG.info( "NTP server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -190,27 +190,27 @@ public class Service implements DaemonApplication
 
         try
         {
-            dnsServer = ( DnsServer ) factory.getBean( "dnsServer" );
+            dnsServer = ( DnsServer ) factory.getBean( "dnsServer" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
             LOG
-                .info( "Cannot find any reference to the DNS Server in the server.xml file : the server won't be started" );
+                .info( "Cannot find any reference to the DNS Server in the server.xml file : the server won't be started" ); //$NON-NLS-1$
             return;
         }
 
-        System.out.println( "Starting the DNS server" );
-        LOG.info( "Starting the DNS server" );
+        System.out.println( "Starting the DNS server" ); //$NON-NLS-1$
+        LOG.info( "Starting the DNS server" ); //$NON-NLS-1$
 
         printBanner( BANNER_DNS );
         long startTime = System.currentTimeMillis();
 
         dnsServer.start();
-        System.out.println( "DNS Server started" );
+        System.out.println( "DNS Server started" ); //$NON-NLS-1$
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "DNS server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+            LOG.info( "DNS server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -227,28 +227,28 @@ public class Service implements DaemonApplication
 
         try
         {
-            kdcServer = ( KdcServer ) factory.getBean( "kdcServer" );
+            kdcServer = ( KdcServer ) factory.getBean( "kdcServer" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
             LOG
-                .info( "Cannot find any reference to the Kerberos Server in the server.xml file : the server won't be started" );
+                .info( "Cannot find any reference to the Kerberos Server in the server.xml file : the server won't be started" ); //$NON-NLS-1$
             return;
         }
 
-        System.out.println( "Starting the Kerberos server" );
-        LOG.info( "Starting the Kerberos server" );
+        System.out.println( "Starting the Kerberos server" ); //$NON-NLS-1$
+        LOG.info( "Starting the Kerberos server" ); //$NON-NLS-1$
 
         printBanner( BANNER_KERBEROS );
         long startTime = System.currentTimeMillis();
 
         kdcServer.start();
 
-        System.out.println( "Kerberos server started" );
+        System.out.println( "Kerberos server started" ); //$NON-NLS-1$
 
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Kerberos server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" );
+            LOG.info( "Kerberos server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) + "" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
@@ -265,28 +265,28 @@ public class Service implements DaemonApplication
 
         try
         {
-            changePwdServer = ( ChangePasswordServer ) factory.getBean( "changePasswordServer" );
+            changePwdServer = ( ChangePasswordServer ) factory.getBean( "changePasswordServer" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
             LOG
-                .info( "Cannot find any reference to the Change Password Server in the server.xml file : the server won't be started" );
+                .info( "Cannot find any reference to the Change Password Server in the server.xml file : the server won't be started" ); //$NON-NLS-1$
             return;
         }
 
-        System.out.println( "Starting the Change Password server" );
-        LOG.info( "Starting the Change Password server" );
+        System.out.println( "Starting the Change Password server" ); //$NON-NLS-1$
+        LOG.info( "Starting the Change Password server" ); //$NON-NLS-1$
 
         printBanner( BANNER_CHANGE_PWD );
         long startTime = System.currentTimeMillis();
 
         changePwdServer.start();
 
-        System.out.println( "Change Password server started" );
+        System.out.println( "Change Password server started" ); //$NON-NLS-1$
         if ( LOG.isInfoEnabled() )
         {
-            LOG.info( "Change Password server: started in {} milliseconds", ( System.currentTimeMillis() - startTime )
-                + "" );
+            LOG.info( "Change Password server: started in {} milliseconds", ( System.currentTimeMillis() - startTime ) //$NON-NLS-1$
+                + "" ); //$NON-NLS-1$
         }
     }
 
@@ -300,12 +300,12 @@ public class Service implements DaemonApplication
 
         try
         {
-            httpServer = ( HttpServer ) factory.getBean( "httpServer" );
+            httpServer = ( HttpServer ) factory.getBean( "httpServer" ); //$NON-NLS-1$
         }
         catch ( Exception e )
         {
             LOG
-                .info( "Cannot find any reference to the HTTP Server in the server.xml file : the server won't be started" );
+                .info( "Cannot find any reference to the HTTP Server in the server.xml file : the server won't be started" ); //$NON-NLS-1$
             return;
         }
 
@@ -336,7 +336,7 @@ public class Service implements DaemonApplication
         }
         catch ( Exception e )
         {
-            LOG.error( "Cannot start the server : " + e.getMessage() );
+            LOG.error( "Cannot start the server : " + e.getMessage() ); //$NON-NLS-1$
         }
     }
 
@@ -361,47 +361,47 @@ public class Service implements DaemonApplication
     {
     }
 
-    private static final String BANNER_LDAP = "           _                     _          ____  ____   \n"
-        + "          / \\   _ __    ___  ___| |__   ___|  _ \\/ ___|  \n"
-        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | \\___ \\  \n"
-        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| |___) | \n"
-        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|____/  \n"
-        + "               |_|                                       \n";
+    private static final String BANNER_LDAP = "           _                     _          ____  ____   \n" //$NON-NLS-1$
+        + "          / \\   _ __    ___  ___| |__   ___|  _ \\/ ___|  \n" //$NON-NLS-1$
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | \\___ \\  \n" //$NON-NLS-1$
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| |___) | \n" //$NON-NLS-1$
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|____/  \n" //$NON-NLS-1$
+        + "               |_|                                       \n"; //$NON-NLS-1$
 
-    private static final String BANNER_NTP = "           _                     _          _   _ _____ _ __    \n"
-        + "          / \\   _ __    ___  ___| |__   ___| \\ | |_  __| '_ \\   \n"
-        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ .\\| | | | | |_) |  \n"
-        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |\\  | | | | .__/   \n"
-        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|_| \\_| |_| |_|      \n"
-        + "               |_|                                              \n";
+    private static final String BANNER_NTP = "           _                     _          _   _ _____ _ __    \n" //$NON-NLS-1$
+        + "          / \\   _ __    ___  ___| |__   ___| \\ | |_  __| '_ \\   \n" //$NON-NLS-1$
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ .\\| | | | | |_) |  \n" //$NON-NLS-1$
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |\\  | | | | .__/   \n" //$NON-NLS-1$
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|_| \\_| |_| |_|      \n" //$NON-NLS-1$
+        + "               |_|                                              \n"; //$NON-NLS-1$
 
-    private static final String BANNER_KERBEROS = "           _                     _          _  __ ____   ___    \n"
-        + "          / \\   _ __    ___  ___| |__   ___| |/ /|  _ \\ / __|   \n"
-        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ ' / | | | / /      \n"
-        + "        / ___ \\| |_) | (_| | (__| | | |  __/ . \\ | |_| \\ \\__    \n"
-        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|_|\\_\\|____/ \\___|   \n"
-        + "               |_|                                              \n";
+    private static final String BANNER_KERBEROS = "           _                     _          _  __ ____   ___    \n" //$NON-NLS-1$
+        + "          / \\   _ __    ___  ___| |__   ___| |/ /|  _ \\ / __|   \n" //$NON-NLS-1$
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ ' / | | | / /      \n" //$NON-NLS-1$
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ . \\ | |_| \\ \\__    \n" //$NON-NLS-1$
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|_|\\_\\|____/ \\___|   \n" //$NON-NLS-1$
+        + "               |_|                                              \n"; //$NON-NLS-1$
 
-    private static final String BANNER_DNS = "           _                     _          ____  _   _ ____    \n"
-        + "          / \\   _ __    ___  ___| |__   ___|  _ \\| \\ | / ___|   \n"
-        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | |  \\| \\__  \\   \n"
-        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| | . ' |___) |  \n"
-        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|_|\\__|____/   \n"
-        + "               |_|                                              \n";
+    private static final String BANNER_DNS = "           _                     _          ____  _   _ ____    \n" //$NON-NLS-1$
+        + "          / \\   _ __    ___  ___| |__   ___|  _ \\| \\ | / ___|   \n" //$NON-NLS-1$
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | |  \\| \\__  \\   \n" //$NON-NLS-1$
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| | . ' |___) |  \n" //$NON-NLS-1$
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|_|\\__|____/   \n" //$NON-NLS-1$
+        + "               |_|                                              \n"; //$NON-NLS-1$
 
-    private static final String BANNER_DHCP = "           _                     _          ____  _   _  ___ ____  \n"
-        + "          / \\   _ __    ___  ___| |__   ___|  _ \\| | | |/ __|  _ \\ \n"
-        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | | |_| / /  | |_) )\n"
-        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| |  _  \\ \\__|  __/ \n"
-        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|_| |_|\\___|_|    \n"
-        + "               |_|                                                 \n";
+    private static final String BANNER_DHCP = "           _                     _          ____  _   _  ___ ____  \n" //$NON-NLS-1$
+        + "          / \\   _ __    ___  ___| |__   ___|  _ \\| | | |/ __|  _ \\ \n" //$NON-NLS-1$
+        + "         / _ \\ | '_ \\ / _` |/ __| '_ \\ / _ \\ | | | |_| / /  | |_) )\n" //$NON-NLS-1$
+        + "        / ___ \\| |_) | (_| | (__| | | |  __/ |_| |  _  \\ \\__|  __/ \n" //$NON-NLS-1$
+        + "       /_/   \\_\\ .__/ \\__,_|\\___|_| |_|\\___|____/|_| |_|\\___|_|    \n" //$NON-NLS-1$
+        + "               |_|                                                 \n"; //$NON-NLS-1$
 
-    private static final String BANNER_CHANGE_PWD = "         ___                              ___ __  __ __  ______    \n"
-        + "        / __|_       ___ _ __   ____  ___|  _ \\ \\ \\ / / / |  _ \\   \n"
-        + "       / /  | |__  / _` | '  \\ / ___\\/ _ \\ |_) \\ \\ / /\\/ /| | | |  \n"
-        + "       \\ \\__| '_  \\ (_| | |\\  | |___ | __/  __/ \\ ' /   / | |_| |  \n"
-        + "        \\___|_| |_|\\__,_|_| |_|\\__. |\\___| |     \\_/ \\_/  |____/   \n"
-        + "                                  |_|    |_|                       \n";
+    private static final String BANNER_CHANGE_PWD = "         ___                              ___ __  __ __  ______    \n" //$NON-NLS-1$
+        + "        / __|_       ___ _ __   ____  ___|  _ \\ \\ \\ / / / |  _ \\   \n" //$NON-NLS-1$
+        + "       / /  | |__  / _` | '  \\ / ___\\/ _ \\ |_) \\ \\ / /\\/ /| | | |  \n" //$NON-NLS-1$
+        + "       \\ \\__| '_  \\ (_| | |\\  | |___ | __/  __/ \\ ' /   / | |_| |  \n" //$NON-NLS-1$
+        + "        \\___|_| |_|\\__,_|_| |_|\\__. |\\___| |     \\_/ \\_/  |____/   \n" //$NON-NLS-1$
+        + "                                  |_|    |_|                       \n"; //$NON-NLS-1$
 
 
     /**
