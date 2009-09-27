@@ -867,7 +867,7 @@ public class EntryEditorManager
                 // auto-save working copy has been modified: save and inform all auto-save editors
                 IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
                 IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
-                LdifChangeModifyRecord diff = getDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
+                LdifChangeModifyRecord diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )
                 {
                     ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff
@@ -888,10 +888,5 @@ public class EntryEditorManager
         }
 
 
-        private LdifChangeModifyRecord getDiff( IEntry originalEntry, IEntry modifiedEntry )
-        {
-            LdifChangeModifyRecord record = Utils.computeDiff( originalEntry, modifiedEntry );
-            return record;
-        }
     };
 }
