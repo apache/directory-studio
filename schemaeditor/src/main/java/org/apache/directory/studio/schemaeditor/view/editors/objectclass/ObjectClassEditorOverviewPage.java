@@ -35,6 +35,9 @@ import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
+import org.apache.directory.studio.schemaeditor.model.alias.Alias;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.AttributeTypeSelectionDialog;
 import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
@@ -237,7 +240,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
     };
 
     // UI fields
-    private Label aliasesLabel;
+    private Text aliasesText;
     private Button aliasesButton;
     private Text oidText;
     private Hyperlink schemaLink;
@@ -259,6 +262,29 @@ public class ObjectClassEditorOverviewPage extends FormPage
     private Button removeButtonOptionalTable;
 
     // Listeners
+
+    /** The listener for the Aliases Text Widget */
+    private ModifyListener aliasesTextModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            AliasesStringParser parser = new AliasesStringParser();
+            parser.parse( aliasesText.getText() );
+            List<Alias> parsedAliases = parser.getAliases();
+            modifiedObjectClass.setNames( new String[0] );
+            List<String> aliasesList = new ArrayList<String>();
+            for ( Alias parsedAlias : parsedAliases )
+            {
+                if ( !( parsedAlias instanceof AliasWithError ) )
+                {
+                    aliasesList.add( parsedAlias.getAlias() );
+                }
+            }
+            modifiedObjectClass.setNames( aliasesList.toArray( new String[0] ) );
+            setEditorDirty();
+        }
+    };
+
     /** The listener for Aliases Button Widget */
     private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
     {
@@ -274,11 +300,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
                 modifiedObjectClass.setNames( editDialog.getAliases() );
                 if ( ( modifiedObjectClass.getNamesRef() != null ) && ( modifiedObjectClass.getNamesRef().length != 0 ) )
                 {
-                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
+                    aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
                 }
                 else
                 {
-                    aliasesLabel.setText( Messages.getString( "ObjectClassEditorOverviewPage.None" ) );
+                    aliasesText.setText( "" );
                 }
                 setEditorDirty();
             }
@@ -870,7 +896,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
     private void createGeneralInformationSection( Composite parent, FormToolkit toolkit )
     {
         // General Information Section
-        Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
+        Section section_general_information = toolkit.createSection( parent, Section.DESCRIPTION | Section.EXPANDED
+            | Section.TITLE_BAR );
         section_general_information.setDescription( Messages
             .getString( "ObjectClassEditorOverviewPage.SpecifyGeneralInformation" ) );
         section_general_information.setText( Messages.getString( "ObjectClassEditorOverviewPage.GeneralInformation" ) );
@@ -878,56 +905,71 @@ public class ObjectClassEditorOverviewPage extends FormPage
 
         // Creating the layout of the section
         Composite client_general_information = toolkit.createComposite( section_general_information );
-        client_general_information.setLayout( new GridLayout( 3, false ) );
+        client_general_information.setLayout( new GridLayout( 2, false ) );
         toolkit.paintBordersFor( client_general_information );
         section_general_information.setClient( client_general_information );
+        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Adding elements to the section
 
         // ALIASES Button
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassEditorOverviewPage.Aliases" ) );
-        aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        aliasesButton = toolkit.createButton( client_general_information, Messages
+        Composite aliasComposite = toolkit.createComposite( client_general_information );
+        GridLayout aliasCompositeGridLayout = new GridLayout( 2, false );
+        aliasCompositeGridLayout.horizontalSpacing = 0;
+        aliasCompositeGridLayout.verticalSpacing = 0;
+        aliasCompositeGridLayout.marginHeight = 0;
+        aliasCompositeGridLayout.marginWidth = 0;
+        aliasComposite.setLayout( aliasCompositeGridLayout );
+        aliasComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        aliasesText = toolkit.createText( aliasComposite, "" ); //$NON-NLS-1$
+        aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        aliasesButton = toolkit.createButton( aliasComposite, Messages
             .getString( "ObjectClassEditorOverviewPage.EditAliases" ), SWT.PUSH );
-        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassEditorOverviewPage.OID" ) );
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        oidText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SCHEMA Field
         schemaLink = toolkit.createHyperlink( client_general_information, Messages
             .getString( "ObjectClassEditorOverviewPage.Schema" ), SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassEditorOverviewPage.Description" ) );
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
-        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
         // SUPERIORS Table
         toolkit.createLabel( client_general_information, Messages
             .getString( "ObjectClassEditorOverviewPage.SuperiorClasses" ) );
-        superiorsTable = toolkit.createTable( client_general_information, SWT.SINGLE | SWT.FULL_SELECTION
-            | SWT.H_SCROLL | SWT.V_SCROLL );
-        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        Composite superiorsComposite = toolkit.createComposite( client_general_information );
+        GridLayout superiorsCompositeGridLayout = new GridLayout( 2, false );
+        superiorsCompositeGridLayout.horizontalSpacing = 0;
+        superiorsCompositeGridLayout.verticalSpacing = 0;
+        superiorsCompositeGridLayout.marginHeight = 0;
+        superiorsCompositeGridLayout.marginWidth = 0;
+        superiorsComposite.setLayout( superiorsCompositeGridLayout );
+        superiorsComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        superiorsTable = toolkit.createTable( superiorsComposite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
+            | SWT.V_SCROLL );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
         gridData.heightHint = 45;
         gridData.minimumHeight = 45;
         superiorsTable.setLayoutData( gridData );
         superiorsTableViewer = new TableViewer( superiorsTable );
         superiorsTableViewer.setContentProvider( new ObjectClassEditorSuperiorsTableContentProvider() );
         superiorsTableViewer.setLabelProvider( new ObjectClassEditorSuperiorsTableLabelProvider() );
-        Composite superiorsButtonComposite = toolkit.createComposite( client_general_information );
-        superiorsButtonComposite.setLayout( new GridLayout() );
-        addButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages
+        addButtonSuperiorsTable = toolkit.createButton( superiorsComposite, Messages
             .getString( "ObjectClassEditorOverviewPage.Add" ), SWT.PUSH );
         addButtonSuperiorsTable.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
-        removeButtonSuperiorsTable = toolkit.createButton( superiorsButtonComposite, Messages
+        removeButtonSuperiorsTable = toolkit.createButton( superiorsComposite, Messages
             .getString( "ObjectClassEditorOverviewPage.Remove" ), SWT.PUSH );
         removeButtonSuperiorsTable.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
 
@@ -935,14 +977,14 @@ public class ObjectClassEditorOverviewPage extends FormPage
         toolkit
             .createLabel( client_general_information, Messages.getString( "ObjectClassEditorOverviewPage.ClassType" ) );
         classTypeCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        classTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        classTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initClassTypeCombo();
 
         // OBSOLETE Checkbox
         toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
         obsoleteCheckbox = toolkit.createButton( client_general_information, Messages
-            .getString( "ObjectClassEditorOverviewPage.Obesolete" ), SWT.CHECK );
-        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+            .getString( "ObjectClassEditorOverviewPage.Obsolete" ), SWT.CHECK );
+        obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -1050,11 +1092,11 @@ public class ObjectClassEditorOverviewPage extends FormPage
         // ALIASES Label
         if ( ( modifiedObjectClass.getNamesRef() != null ) && ( modifiedObjectClass.getNamesRef().length != 0 ) )
         {
-            aliasesLabel.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
+            aliasesText.setText( ViewUtils.concateAliases( modifiedObjectClass.getNamesRef() ) );
         }
         else
         {
-            aliasesLabel.setText( Messages.getString( "ObjectClassEditorOverviewPage.None" ) );
+            aliasesText.setText( "" ); //$NON-NLS-1$
         }
 
         // OID Field
@@ -1151,6 +1193,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void addListeners()
     {
+        aliasesText.addModifyListener( aliasesTextModifyListener );
         aliasesButton.addSelectionListener( aliasesButtonListener );
         oidText.addModifyListener( oidTextModifyListener );
         oidText.addVerifyListener( oidTextVerifyListener );
@@ -1175,6 +1218,7 @@ public class ObjectClassEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
+        aliasesText.removeModifyListener( aliasesTextModifyListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         oidText.removeModifyListener( oidTextModifyListener );
         oidText.removeVerifyListener( oidTextVerifyListener );

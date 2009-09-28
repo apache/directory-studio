@@ -729,7 +729,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         client_general_information.setLayout( new GridLayout( 2, false ) );
         toolkit.paintBordersFor( client_general_information );
         section_general_information.setClient( client_general_information );
-        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Adding elements to the section
 
@@ -744,7 +744,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         aliasCompositeGridLayout.marginWidth = 0;
         aliasComposite.setLayout( aliasCompositeGridLayout );
         aliasComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
         aliasesText = toolkit.createText( aliasComposite, "" ); //$NON-NLS-1$
         aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         aliasesButton = toolkit.createButton( aliasComposite, Messages
