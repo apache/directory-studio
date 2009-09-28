@@ -54,6 +54,7 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
     public void decorate( Object element, IDecoration decoration )
     {
         SchemaChecker schemaChecker = Activator.getDefault().getSchemaChecker();
+        ElementState state = ElementState.NONE;
 
         if ( element instanceof AttributeTypeWrapper )
         {
@@ -61,16 +62,13 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
             if ( schemaChecker.hasErrors( at ) )
             {
-                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
-                    IDecoration.BOTTOM_LEFT );
+                decorateState( ElementState.ERROR, decoration );
                 return;
             }
 
             if ( schemaChecker.hasWarnings( at ) )
             {
-                decoration.addOverlay(
-                    Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_WARNING ),
-                    IDecoration.BOTTOM_LEFT );
+                state = ElementState.WARNING;
             }
         }
         else if ( element instanceof ObjectClassWrapper )
@@ -79,16 +77,13 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
             if ( schemaChecker.hasErrors( oc ) )
             {
-                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
-                    IDecoration.BOTTOM_LEFT );
+                decorateState( ElementState.ERROR, decoration );
                 return;
             }
 
             if ( schemaChecker.hasWarnings( oc ) )
             {
-                decoration.addOverlay(
-                    Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_WARNING ),
-                    IDecoration.BOTTOM_LEFT );
+                state = ElementState.WARNING;
             }
         }
         else if ( element instanceof SchemaWrapper )
@@ -99,15 +94,13 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( schemaChecker.hasErrors( at ) )
                 {
-                    decoration.addOverlay( Activator.getDefault()
-                        .getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                    decorateState( ElementState.ERROR, decoration );
                     return;
                 }
 
                 if ( schemaChecker.hasWarnings( at ) )
                 {
-                    decoration.addOverlay( Activator.getDefault().getImageDescriptor(
-                        PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                    state = ElementState.WARNING;
                 }
             }
 
@@ -115,15 +108,13 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             {
                 if ( schemaChecker.hasErrors( oc ) )
                 {
-                    decoration.addOverlay( Activator.getDefault()
-                        .getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ), IDecoration.BOTTOM_LEFT );
+                    decorateState( ElementState.ERROR, decoration );
                     return;
                 }
 
                 if ( schemaChecker.hasWarnings( oc ) )
                 {
-                    decoration.addOverlay( Activator.getDefault().getImageDescriptor(
-                        PluginConstants.IMG_OVERLAY_WARNING ), IDecoration.BOTTOM_LEFT );
+                    state = ElementState.WARNING;
                 }
             }
         }
@@ -133,17 +124,41 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
 
             if ( childrenHasErrors( folder.getChildren(), schemaChecker ) )
             {
-                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
-                    IDecoration.BOTTOM_LEFT );
+                decorateState( ElementState.ERROR, decoration );
                 return;
             }
 
             if ( childrenHasWarnings( folder.getChildren(), schemaChecker ) )
             {
+                state = ElementState.WARNING;
+            }
+        }
+
+        decorateState( state, decoration );
+    }
+
+
+    /**
+     * Decorates the element from the value of its state.
+     *
+     * @param state
+     *      the state
+     * @param decoration
+     *      the decoration
+     */
+    private void decorateState( ElementState state, IDecoration decoration )
+    {
+        switch ( state )
+        {
+            case WARNING:
                 decoration.addOverlay(
                     Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_WARNING ),
                     IDecoration.BOTTOM_LEFT );
-            }
+                break;
+            case ERROR:
+                decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
+                    IDecoration.BOTTOM_LEFT );
+                break;
         }
     }
 
@@ -255,5 +270,16 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
         }
 
         return false;
+    }
+
+    /**
+     * This enum defines the state of an element.
+     * 
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    private enum ElementState
+    {
+        NONE, WARNING, ERROR;
     }
 }
