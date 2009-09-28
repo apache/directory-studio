@@ -36,6 +36,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.name.AttributeTypeAndValue;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
+import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -46,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
@@ -380,119 +382,168 @@ public class Utils
      */
     public static LdifChangeModifyRecord computeDiff( IEntry t0, IEntry t1 )
     {
-        LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t0.getDn().getUpName() );
+        Set<String> attributesToDelAdd = new HashSet<String>();
+        Set<String> attributesToReplace = new HashSet<String>();
 
-        // check which attributes/values must be deleted
+        // check attributes of old entry
         for ( IAttribute oldAttr : t0.getAttributes() )
         {
-            String oldAttrDesc = oldAttr.getDescription();
-            IAttribute newAttr = t1.getAttribute( oldAttrDesc );
-            if ( newAttr == null )
+            String attributeDescription = oldAttr.getDescription();
+
+            Schema schema = oldAttr.getEntry().getBrowserConnection().getSchema();
+            AttributeTypeDescription atd = schema.getAttributeTypeDescription( oldAttr.getType() );
+            String emr = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema );
+            boolean hasEMR = emr != null;
+            if ( hasEMR )
             {
-                // delete whole attribute
-                LdifModSpec modSpec = LdifModSpec.createDelete( oldAttrDesc );
-                modSpec.finish( LdifModSpecSepLine.create() );
-                record.addModSpec( modSpec );
-            }
-            else if ( oldAttr.getValueSize() == 1 && newAttr.getValueSize() == 1 )
-            {
-                // check later: replace
+                attributesToDelAdd.add( attributeDescription );
             }
             else
             {
-                Set<String> newValues = new HashSet<String>( Arrays.asList( newAttr.getStringValues() ) );
-                for ( IValue oldValue : oldAttr.getValues() )
-                {
-                    if ( !newValues.contains( oldValue.getStringValue() ) && !oldValue.isEmpty() )
-                    {
-                        LdifModSpec modSpec = LdifModSpec.createDelete( oldAttrDesc );
-                        if ( oldAttr.isBinary() )
-                        {
-                            modSpec.addAttrVal( LdifAttrValLine.create( oldAttrDesc, oldValue.getBinaryValue() ) );
-                        }
-                        else
-                        {
-                            modSpec.addAttrVal( LdifAttrValLine.create( oldAttrDesc, oldValue.getStringValue() ) );
-                        }
-                        modSpec.finish( LdifModSpecSepLine.create() );
-                        record.addModSpec( modSpec );
-                    }
-                }
+                attributesToReplace.add( attributeDescription );
             }
         }
 
-        // check which attributes/values must be added
+        // check attributes of new entry
         for ( IAttribute newAttr : t1.getAttributes() )
         {
-            String newAttrDesc = newAttr.getDescription();
-            IAttribute oldAttr = t0.getAttribute( newAttrDesc );
-            if ( oldAttr == null )
+            String attributeDescription = newAttr.getDescription();
+
+            Schema schema = newAttr.getEntry().getBrowserConnection().getSchema();
+            AttributeTypeDescription atd = schema.getAttributeTypeDescription( newAttr.getType() );
+            String emr = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, schema );
+            boolean hasEMR = emr != null;
+
+            if ( hasEMR )
             {
-                // add whole attribute
-                LdifModSpec modSpec = LdifModSpec.createAdd( newAttrDesc );
-                for ( IValue newValue : newAttr.getValues() )
+                attributesToDelAdd.add( attributeDescription );
+            }
+            else
+            {
+                attributesToReplace.add( attributeDescription );
+            }
+        }
+
+        LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t0.getDn().getUpName() );
+
+        for ( String attributeDescription : attributesToDelAdd )
+        {
+            IAttribute oldAttribute = t0.getAttribute( attributeDescription );
+            IAttribute newAttribute = t1.getAttribute( attributeDescription );
+
+            Set<String> oldValues = new HashSet<String>();
+            if ( oldAttribute != null )
+            {
+                oldValues.addAll( Arrays.asList( oldAttribute.getStringValues() ) );
+            }
+            Set<String> newValues = new HashSet<String>();
+            if ( newAttribute != null )
+            {
+                newValues.addAll( Arrays.asList( newAttribute.getStringValues() ) );
+            }
+
+            if ( oldAttribute != null )
+            {
+                LdifModSpec modSpec = LdifModSpec.createDelete( attributeDescription );
+                for ( IValue oldValue : oldAttribute.getValues() )
                 {
-                    if ( !newValue.isEmpty() )
+                    if ( oldValue.isEmpty() )
                     {
-                        if ( newAttr.isBinary() )
+                        return null;
+                    }
+
+                    if ( !newValues.contains( oldValue.getStringValue() ) )
+                    {
+                        if ( oldAttribute.isBinary() )
                         {
-                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getBinaryValue() ) );
+                            modSpec.addAttrVal( LdifAttrValLine
+                                .create( attributeDescription, oldValue.getBinaryValue() ) );
                         }
                         else
                         {
-                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getStringValue() ) );
+                            modSpec.addAttrVal( LdifAttrValLine
+                                .create( attributeDescription, oldValue.getStringValue() ) );
                         }
                     }
                 }
                 modSpec.finish( LdifModSpecSepLine.create() );
-                if ( modSpec.isValid() )
+                if ( modSpec.getAttrVals().length > 0 )
                 {
                     record.addModSpec( modSpec );
                 }
             }
-            else if ( oldAttr.getValueSize() == 1 && newAttr.getValueSize() == 1 )
+
+            if ( newAttribute != null )
             {
-                // check later: replace
-            }
-            else
-            {
-                Set<String> oldValues = new HashSet<String>( Arrays.asList( oldAttr.getStringValues() ) );
-                for ( IValue newValue : newAttr.getValues() )
+                LdifModSpec modSpec = LdifModSpec.createAdd( attributeDescription );
+                for ( IValue newValue : newAttribute.getValues() )
                 {
-                    if ( !oldValues.contains( newValue.getStringValue() ) && !newValue.isEmpty() )
+                    if ( newValue.isEmpty() )
                     {
-                        LdifModSpec modSpec = LdifModSpec.createAdd( newAttrDesc );
-                        if ( newAttr.isBinary() )
+                        return null;
+                    }
+
+                    if ( !oldValues.contains( newValue.getStringValue() ) )
+                    {
+                        if ( newAttribute.isBinary() )
                         {
-                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getBinaryValue() ) );
+                            modSpec.addAttrVal( LdifAttrValLine
+                                .create( attributeDescription, newValue.getBinaryValue() ) );
                         }
                         else
                         {
-                            modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newValue.getStringValue() ) );
+                            modSpec.addAttrVal( LdifAttrValLine
+                                .create( attributeDescription, newValue.getStringValue() ) );
                         }
-                        modSpec.finish( LdifModSpecSepLine.create() );
-                        record.addModSpec( modSpec );
                     }
+                }
+                modSpec.finish( LdifModSpecSepLine.create() );
+                if ( modSpec.getAttrVals().length > 0 )
+                {
+                    record.addModSpec( modSpec );
                 }
             }
         }
 
-        // check which attributes/values must be replaced
-        for ( IAttribute newAttr : t1.getAttributes() )
+        for ( String attributeDescription : attributesToReplace )
         {
-            String newAttrDesc = newAttr.getDescription();
-            IAttribute oldAttr = t0.getAttribute( newAttrDesc );
-            if ( oldAttr != null && oldAttr.getValueSize() == 1 && newAttr.getValueSize() == 1
-                && !oldAttr.getValues()[0].getStringValue().equals( newAttr.getValues()[0].getStringValue() ) )
+            IAttribute oldAttribute = t0.getAttribute( attributeDescription );
+            IAttribute newAttribute = t1.getAttribute( attributeDescription );
+
+            Set<String> oldValues = new HashSet<String>();
+            if ( oldAttribute != null )
             {
-                LdifModSpec modSpec = LdifModSpec.createReplace( newAttrDesc );
-                if ( newAttr.isBinary() )
+                oldValues.addAll( Arrays.asList( oldAttribute.getStringValues() ) );
+            }
+            Set<String> newValues = new HashSet<String>();
+            if ( newAttribute != null )
+            {
+                newValues.addAll( Arrays.asList( newAttribute.getStringValues() ) );
+            }
+
+            if ( !newValues.equals( oldValues ) )
+            {
+                LdifModSpec modSpec = LdifModSpec.createReplace( attributeDescription );
+                if ( newAttribute != null )
                 {
-                    modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newAttr.getValues()[0].getBinaryValue() ) );
-                }
-                else
-                {
-                    modSpec.addAttrVal( LdifAttrValLine.create( newAttrDesc, newAttr.getValues()[0].getStringValue() ) );
+                    for ( IValue newValue : newAttribute.getValues() )
+                    {
+                        if ( newValue.isEmpty() )
+                        {
+                            return null;
+                        }
+
+                        if ( newAttribute.isBinary() )
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine
+                                .create( attributeDescription, newValue.getBinaryValue() ) );
+                        }
+                        else
+                        {
+                            modSpec.addAttrVal( LdifAttrValLine
+                                .create( attributeDescription, newValue.getStringValue() ) );
+                        }
+                    }
                 }
                 modSpec.finish( LdifModSpecSepLine.create() );
                 record.addModSpec( modSpec );
