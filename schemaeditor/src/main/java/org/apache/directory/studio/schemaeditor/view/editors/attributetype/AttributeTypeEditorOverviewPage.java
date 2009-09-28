@@ -21,6 +21,9 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.shared.asn1.primitives.OID;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -32,6 +35,9 @@ import org.apache.directory.studio.schemaeditor.model.MatchingRuleImpl;
 import org.apache.directory.studio.schemaeditor.model.ObjectClassImpl;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.SyntaxImpl;
+import org.apache.directory.studio.schemaeditor.model.alias.Alias;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasWithError;
+import org.apache.directory.studio.schemaeditor.model.alias.AliasesStringParser;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.dialogs.EditAliasesDialog;
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingAttributeType;
@@ -229,7 +235,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     };
 
     // UI Fields
-    private Label aliasesLabel;
+    private Text aliasesText;
     private Button aliasesButton;
     private Text oidText;
     private Hyperlink schemaLink;
@@ -254,6 +260,29 @@ public class AttributeTypeEditorOverviewPage extends FormPage
     private ComboViewer substringComboViewer;
 
     // Listeners
+
+    /** The listener for the Aliases Text Widget */
+    private ModifyListener aliasesTextModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            AliasesStringParser parser = new AliasesStringParser();
+            parser.parse( aliasesText.getText() );
+            List<Alias> parsedAliases = parser.getAliases();
+            modifiedAttributeType.setNames( new String[0] );
+            List<String> aliasesList = new ArrayList<String>();
+            for ( Alias parsedAlias : parsedAliases )
+            {
+                if ( !( parsedAlias instanceof AliasWithError ) )
+                {
+                    aliasesList.add( parsedAlias.getAlias() );
+                }
+            }
+            modifiedAttributeType.setNames( aliasesList.toArray( new String[0] ) );
+            setEditorDirty();
+        }
+    };
+    
     /** The listener for the Edit Aliases Button Widget */
     private SelectionAdapter aliasesButtonListener = new SelectionAdapter()
     {
@@ -270,11 +299,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
                 if ( ( modifiedAttributeType.getNamesRef() != null )
                     && ( modifiedAttributeType.getNamesRef().length != 0 ) )
                 {
-                    aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
+                    aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
                 }
                 else
                 {
-                    aliasesLabel.setText( Messages.getString( "AttributeTypeEditorOverviewPage.None" ) );
+                    aliasesText.setText( "" ); //$NON-NLS-1$
                 }
                 setEditorDirty();
             }
@@ -697,34 +726,40 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // Creating the layout of the section
         Composite client_general_information = toolkit.createComposite( section_general_information );
-        GridLayout layout_general_information = new GridLayout();
-        layout_general_information.numColumns = 3;
-        client_general_information.setLayout( layout_general_information );
+        client_general_information.setLayout( new GridLayout( 2, false ) );
         toolkit.paintBordersFor( client_general_information );
         section_general_information.setClient( client_general_information );
         section_general_information.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // Adding elements to the section
-        // ALIASES Button
+
+        // ALIASES Field
         toolkit
             .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Aliases" ) );
-        aliasesLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        aliasesLabel.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
-        toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        aliasesButton = toolkit.createButton( client_general_information, Messages
+        Composite aliasComposite = toolkit.createComposite( client_general_information );
+        GridLayout aliasCompositeGridLayout = new GridLayout( 2, false );
+        aliasCompositeGridLayout.horizontalSpacing = 0;
+        aliasCompositeGridLayout.verticalSpacing = 0;
+        aliasCompositeGridLayout.marginHeight = 0;
+        aliasCompositeGridLayout.marginWidth = 0;
+        aliasComposite.setLayout( aliasCompositeGridLayout );
+        aliasComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        aliasesText = toolkit.createText( aliasComposite, "" ); //$NON-NLS-1$
+        aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        aliasesButton = toolkit.createButton( aliasComposite, Messages
             .getString( "AttributeTypeEditorOverviewPage.EditAliases" ), SWT.PUSH );
-        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.OID" ) );
         oidText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false, 2, 1 ) );
+        oidText.setLayoutData( new GridData( SWT.FILL, 0, true, false ) );
 
         // DESCRIPTION Field
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeEditorOverviewPage.Description" ) );
         descriptionText = toolkit.createText( client_general_information, "", SWT.MULTI | SWT.V_SCROLL ); //$NON-NLS-1$
-        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 );
+        GridData descriptionGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         descriptionGridData.heightHint = 42;
         descriptionText.setLayoutData( descriptionGridData );
 
@@ -732,13 +767,13 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         schemaLink = toolkit.createHyperlink( client_general_information, Messages
             .getString( "AttributeTypeEditorOverviewPage.Schema" ), SWT.WRAP );
         schemaLabel = toolkit.createLabel( client_general_information, "" ); //$NON-NLS-1$
-        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        schemaLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SUP Combo
         supLabel = toolkit.createHyperlink( client_general_information, Messages
             .getString( "AttributeTypeEditorOverviewPage.SuperiorType" ), SWT.WRAP );
         supCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        supCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         supComboViewer = new ComboViewer( supCombo );
         supComboViewer.setContentProvider( new ATESuperiorComboContentProvider() );
         supComboViewer.setLabelProvider( new ATESuperiorComboLabelProvider() );
@@ -746,14 +781,14 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // USAGE Combo
         toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Usage" ) );
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initUsageCombo();
 
         // SYNTAX Combo
         toolkit
             .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Syntax" ) );
         syntaxCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
-        syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        syntaxCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         syntaxComboViewer = new ComboViewer( syntaxCombo );
         syntaxComboViewer.setContentProvider( new ATESyntaxComboContentProvider() );
         syntaxComboViewer.setLabelProvider( new ATESyntaxComboLabelProvider() );
@@ -762,28 +797,37 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         toolkit.createLabel( client_general_information, Messages
             .getString( "AttributeTypeEditorOverviewPage.SyntaxLength" ) );
         syntaxLengthText = toolkit.createText( client_general_information, "" ); //$NON-NLS-1$
-        syntaxLengthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        syntaxLengthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // PROPERTIES composite
+        toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
+        Composite propertiesComposite = toolkit.createComposite( client_general_information );
+        GridLayout propertiesCompositeGridLayout = new GridLayout( 2, true );
+        propertiesCompositeGridLayout.horizontalSpacing = 0;
+        propertiesCompositeGridLayout.verticalSpacing = 0;
+        propertiesCompositeGridLayout.marginHeight = 0;
+        propertiesCompositeGridLayout.marginWidth = 0;
+        propertiesComposite.setLayout( propertiesCompositeGridLayout );
+        propertiesComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // OBSOLETE Checkbox
-        toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
-        obsoleteCheckbox = toolkit.createButton( client_general_information, Messages
+        obsoleteCheckbox = toolkit.createButton( propertiesComposite, Messages
             .getString( "AttributeTypeEditorOverviewPage.Obsolete" ), SWT.CHECK );
         obsoleteCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SINGLE-VALUE Checkbox
-        singleValueCheckbox = toolkit.createButton( client_general_information, Messages
+        singleValueCheckbox = toolkit.createButton( propertiesComposite, Messages
             .getString( "AttributeTypeEditorOverviewPage.SingleValue" ), SWT.CHECK );
         singleValueCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // COLLECTIVE Checkbox
         toolkit.createLabel( client_general_information, "" ); // Filling the first column //$NON-NLS-1$
-        collectiveCheckbox = toolkit.createButton( client_general_information, Messages
+        collectiveCheckbox = toolkit.createButton( propertiesComposite, Messages
             .getString( "AttributeTypeEditorOverviewPage.Collective" ), SWT.CHECK );
         collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // NO-USER-MODIFICATION Checkbox
-        noUserModificationCheckbox = toolkit.createButton( client_general_information,
-            "No-User-Modification", SWT.CHECK ); //$NON-NLS-1$
+        noUserModificationCheckbox = toolkit.createButton( propertiesComposite, "No-User-Modification", SWT.CHECK ); //$NON-NLS-1$
         noUserModificationCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -860,11 +904,11 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         // ALIASES Label
         if ( ( modifiedAttributeType.getNamesRef() != null ) && ( modifiedAttributeType.getNamesRef().length != 0 ) )
         {
-            aliasesLabel.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
+            aliasesText.setText( ViewUtils.concateAliases( modifiedAttributeType.getNamesRef() ) );
         }
         else
         {
-            aliasesLabel.setText( "(None)" ); //$NON-NLS-1$
+            aliasesText.setText( "" ); //$NON-NLS-1$
         }
 
         // OID Field
@@ -1125,6 +1169,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     private void addListeners()
     {
+        aliasesText.addModifyListener( aliasesTextModifyListener );
         aliasesButton.addSelectionListener( aliasesButtonListener );
         oidText.addModifyListener( oidTextModifyListener );
         oidText.addVerifyListener( oidTextVerifyListener );
@@ -1151,6 +1196,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
      */
     private void removeListeners()
     {
+        aliasesText.removeModifyListener( aliasesTextModifyListener );
         aliasesButton.removeSelectionListener( aliasesButtonListener );
         oidText.removeModifyListener( oidTextModifyListener );
         oidText.removeVerifyListener( oidTextVerifyListener );
