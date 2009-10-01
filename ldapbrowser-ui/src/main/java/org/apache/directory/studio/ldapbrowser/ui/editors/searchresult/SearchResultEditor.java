@@ -86,7 +86,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     private SearchResultEditorUniversalListener universalListener;
 
     private ISearch workingCopy;
-    
+
     protected EntryUpdateListener entryUpdateListener = new EntryUpdateListener()
     {
         public void entryUpdated( EntryModificationEvent event )
@@ -97,20 +97,17 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
             }
 
             IEntry modifiedEntry = event.getModifiedEntry();
-            
-            if(workingCopy != null)
+
+            if ( workingCopy != null )
             {
-                for(ISearchResult sr : workingCopy.getSearchResults() )
+                for ( ISearchResult sr : workingCopy.getSearchResults() )
                 {
                     // check on object identity, nothing should be done for equal objects from other editors
-                    if( modifiedEntry == sr.getEntry())
+                    if ( modifiedEntry == sr.getEntry() )
                     {
-                        // TODO: save
-                        System.out.println("save()");
-                        // doSaveEntry( sr.getEntry(), modifiedEntry );
-                        
-                        IEntry originalEntry = modifiedEntry.getBrowserConnection().getEntryFromCache( modifiedEntry.getDn() );
-                        LdifChangeModifyRecord diff = Utils.computeDiff(originalEntry, modifiedEntry );
+                        IEntry originalEntry = modifiedEntry.getBrowserConnection().getEntryFromCache(
+                            modifiedEntry.getDn() );
+                        LdifChangeModifyRecord diff = Utils.computeDiff( originalEntry, modifiedEntry );
                         if ( diff != null )
                         {
                             // save
@@ -124,30 +121,28 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
                                 setSearchResultEditorWidgetInput( ( SearchResultEditorInput ) getEditorInput() );
                             }
                         }
-                        
+
                         return;
                     }
                 }
-                
-            
-            
+
                 IEditorInput input = getEditorInput();
                 if ( input instanceof SearchResultEditorInput )
                 {
                     SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
-                    for(ISearchResult sr : srei.getSearch().getSearchResults() )
+                    for ( ISearchResult sr : srei.getSearch().getSearchResults() )
                     {
-                        if(modifiedEntry == sr.getEntry())
+                        if ( modifiedEntry == sr.getEntry() )
                         {
                             // original entry has been updated, update widget input
                             setSearchResultEditorWidgetInput( srei );
                         }
                     }
                 }
-
             }
         }
     };
+
 
     /**
      * Gets the ID of the SearchResultEditor.
@@ -171,7 +166,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         {
             SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
             ISearch search = srei.getSearch();
-            
+
             setSearchResultEditorWidgetInput( srei );
 
             if ( search != null )
@@ -194,12 +189,12 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     }
 
 
-    private void setSearchResultEditorWidgetInput(SearchResultEditorInput srei)
+    private void setSearchResultEditorWidgetInput( SearchResultEditorInput srei )
     {
         // clone search, search results, entries
         ISearch search = srei.getSearch();
         workingCopy = search != null ? ( ISearch ) search.clone() : search;
-        if ( search != null && search.getSearchResults() != null  )
+        if ( search != null && search.getSearchResults() != null )
         {
             ISearchResult[] searchResults = search.getSearchResults();
             ISearchResult[] clonedSearchResults = new ISearchResult[searchResults.length];
@@ -244,7 +239,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         getSite().getPage().getNavigationHistory().markLocation( this );
 
         setInput( input );
-        
+
         EventRegistry
             .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
     }
