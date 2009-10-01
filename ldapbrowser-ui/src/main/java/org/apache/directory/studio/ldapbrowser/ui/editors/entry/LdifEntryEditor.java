@@ -140,16 +140,9 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     /**
      * {@inheritDoc}
      */
-    public void workingCopyModified()
+    public void workingCopyModified( Object source )
     {
-        if ( getSite().getPage().getActivePart() == LdifEntryEditor.this )
-        {
-            // This editor instance is the active editor.
-            // Don't apply its own modifications.
-            return;
-        }
-
-        ( ( LdifEntryEditorDocumentProvider ) getDocumentProvider() ).setContent( getEntryEditorInput() );
+        ( ( LdifEntryEditorDocumentProvider ) getDocumentProvider() ).workingCopyModified( getEntryEditorInput(), source );
     }
 
 

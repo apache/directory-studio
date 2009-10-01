@@ -43,9 +43,11 @@ public interface IEntryEditor
 
     
     /**
-     * Informs the entry editor that the working copy was modified
+     * Informs the entry editor that the working copy was modified.
+     * 
+     * @param source the source of the modification, may be null
      */
-    public void workingCopyModified();
+    public void workingCopyModified( Object source );
     
 
     /**

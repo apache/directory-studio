@@ -357,7 +357,10 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     }
 
 
-    public void workingCopyModified()
+    /**
+     * {@inheritDoc}
+     */
+    public void workingCopyModified( Object source )
     {
         if ( isAutoSave() )
         {

@@ -33,6 +33,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  */
 public abstract class EntryModificationEvent
 {
+    /** The event source */
+    protected Object source;
 
     /** The connection. */
     protected IBrowserConnection connection;
@@ -73,6 +75,28 @@ public abstract class EntryModificationEvent
     public IEntry getModifiedEntry()
     {
         return modifiedEntry;
+    }
+
+
+    /**
+     * Gets the event source.
+     * 
+     * @return the event source, may be null
+     */
+    public Object getSource()
+    {
+        return source;
+    }
+
+
+    /**
+     * Sets the source.
+     * 
+     * @param source the new source
+     */
+    public void setSource( Object source )
+    {
+        this.source = source;
     }
 
 }

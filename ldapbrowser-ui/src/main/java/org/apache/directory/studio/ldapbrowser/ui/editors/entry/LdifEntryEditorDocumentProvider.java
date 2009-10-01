@@ -53,6 +53,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
 {
 
     private EntryEditorInput input;
+
     private boolean inSetContent = false;
 
     private LdifEntryEditor editor;
@@ -106,7 +107,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             LdifContentRecord modifiedRecord = ( LdifContentRecord ) records[0];
             IBrowserConnection browserConnection = input.getSharedWorkingCopy( editor ).getBrowserConnection();
             DummyEntry modifiedEntry = ModelConverter.ldifContentRecordToEntry( modifiedRecord, browserConnection );
-            new CompoundModification().replaceAttributes( modifiedEntry, input.getSharedWorkingCopy( editor ) );
+            new CompoundModification().replaceAttributes( modifiedEntry, input.getSharedWorkingCopy( editor ), this );
         }
         catch ( InvalidNameException e )
         {
@@ -115,31 +116,55 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     }
 
 
-    public void setContent( EntryEditorInput input )
+    @Override
+    protected void doResetDocument( Object element, IProgressMonitor monitor ) throws CoreException
     {
-        IEntry sharedWorkingCopy = input.getSharedWorkingCopy( editor );
-        LdifContentRecord record = ModelConverter.entryToLdifContentRecord( sharedWorkingCopy );
-        String newContent = record.toFormattedString( Utils.getLdifFormatParameters() );
+        // reset working copy first
+        if ( input != null )
+        {
+            input.resetSharedWorkingCopy( editor );
+        }
+
+        super.doResetDocument( element, monitor );
+    }
+
+
+    public void workingCopyModified( EntryEditorInput input, Object source )
+    {
+        // the model change was caused by the document change
+        // no need to set the content again, don't fire more events
+        if ( source == this )
+        {
+            return;
+        }
 
         IDocument document = getDocument( input );
         if ( document != null )
         {
-            inSetContent = true;
-            document.set( newContent );
-
-            // reset dirty state
-            if ( !input.isSharedWorkingCopyDirty( editor ) )
+            try
             {
-                try
+                inSetContent = true;
+
+                // set content
+                IEntry sharedWorkingCopy = input.getSharedWorkingCopy( editor );
+                LdifContentRecord record = ModelConverter.entryToLdifContentRecord( sharedWorkingCopy );
+                String newContent = record.toFormattedString( Utils.getLdifFormatParameters() );
+                document.set( newContent );
+
+                // reset dirty state
+                if ( !input.isSharedWorkingCopyDirty( editor ) )
                 {
-                    doResetDocument( input, null );
-                }
-                catch ( CoreException e )
-                {
-                    throw new RuntimeException( e );
+                    super.doResetDocument( input, null );
                 }
             }
-            inSetContent = false;
+            catch ( CoreException e )
+            {
+                throw new RuntimeException( e );
+            }
+            finally
+            {
+                inSetContent = false;
+            }
         }
     }
 

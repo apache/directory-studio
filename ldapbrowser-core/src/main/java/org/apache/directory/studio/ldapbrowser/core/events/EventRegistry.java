@@ -226,6 +226,7 @@ public class EventRegistry extends ConnectionEventRegistry
      */
     public static void fireEntryUpdated( final EntryModificationEvent entryUpdateEvent, final Object source )
     {
+        entryUpdateEvent.setSource( source );
         EventRunnableFactory<EntryUpdateListener> factory = new EventRunnableFactory<EntryUpdateListener>()
         {
             public EventRunnable createEventRunnable( final EntryUpdateListener listener )

@@ -98,7 +98,7 @@ public class EditEntryWizard extends NewEntryWizard
      */
     public boolean performFinish()
     {
-        new CompoundModification().replaceAttributes( prototypeEntry, selectedEntry );
+        new CompoundModification().replaceAttributes( prototypeEntry, selectedEntry, this );
         return true;
     }
 

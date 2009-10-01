@@ -314,7 +314,7 @@ public class CompoundModification
      * @param fromEntry
      * @param toEntry
      */
-    public void replaceAttributes( IEntry fromEntry, IEntry toEntry )
+    public void replaceAttributes( IEntry fromEntry, IEntry toEntry, Object source )
     {
         EventRegistry.suspendEventFiringInCurrentThread();
         for ( IAttribute attribute : toEntry.getAttributes() )
@@ -336,7 +336,7 @@ public class CompoundModification
         EventRegistry.resumeEventFiringInCurrentThread();
 
         EntryModificationEvent event = new AttributesInitializedEvent( toEntry );
-        EventRegistry.fireEntryUpdated( event, this );
+        EventRegistry.fireEntryUpdated( event, source );
     }
 
 

@@ -235,14 +235,26 @@ public class EntryEditorInput implements IEditorInput
      * to the directory server.
      * 
      * @param handleError the handle error
+     * @param editor the entry editor
      * 
      * @return the status or null if there was nothing to save
      */
     public IStatus saveSharedWorkingCopy( boolean handleError, IEntryEditor editor )
     {
-        IStatus status = BrowserUIPlugin.getDefault().getEntryEditorManager().saveSharedWorkingCopyDirty(
+        IStatus status = BrowserUIPlugin.getDefault().getEntryEditorManager().saveSharedWorkingCopy(
             getResolvedEntry(), handleError, editor );
         return status;
+    }
+
+
+    /**
+     * Resets the shared reference copy and the shared working copy.
+     * 
+     * @param editor the entry editor
+     */
+    public void resetSharedWorkingCopy( IEntryEditor editor )
+    {
+        BrowserUIPlugin.getDefault().getEntryEditorManager().resetSharedWorkingCopy( getResolvedEntry(), editor );
     }
 
 
