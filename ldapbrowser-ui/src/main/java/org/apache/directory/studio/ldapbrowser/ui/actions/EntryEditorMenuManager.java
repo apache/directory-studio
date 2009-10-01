@@ -54,7 +54,7 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
      */
     public EntryEditorMenuManager( ISelectionProvider selectionProvider )
     {
-        super( "Open With" );
+        super( Messages.getString("EntryEditorMenuManager.OpenWith") ); //$NON-NLS-1$
         this.selectionProvider = selectionProvider;
         openEntryEditorsPreferencePageAction = new OpenEntryEditorsPreferencePageAction();
         addMenuListener( this );
