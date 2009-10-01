@@ -22,6 +22,7 @@ package org.apache.directory.studio.entryeditors;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -139,7 +140,22 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        return getResolvedEntry() != null ? getResolvedEntry().getDn().getUpName() : ""; //$NON-NLS-1$
+        if ( getResolvedEntry() != null )
+        {
+            IEntry entry = getResolvedEntry();
+            IBrowserConnection connection = entry.getBrowserConnection();
+            if ( connection != null )
+            {
+                return entry.getDn().getUpName() + " - " + connection.getConnection().getName();//$NON-NLS-1$
+            }
+            else
+            {
+                return entry.getDn().getUpName();
+            }
+        }
+
+        return ""; //$NON-NLS-1$
+
     }
 
 

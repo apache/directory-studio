@@ -60,7 +60,8 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
         if ( search != null )
         {
             return NLS.bind(
-                Messages.getString( "SearchResultEditorNavigationLocation.Search" ), new String[] { search.getName() } ); //$NON-NLS-1$
+                Messages.getString( "SearchResultEditorNavigationLocation.Search" ), new String[] { search.getName() } ) //$NON-NLS-1$
+                + " - " + search.getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ 
         }
         else
         {

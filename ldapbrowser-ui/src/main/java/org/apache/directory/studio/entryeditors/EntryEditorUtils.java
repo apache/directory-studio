@@ -87,36 +87,39 @@ public class EntryEditorUtils
             {
                 if ( input.getEntryInput() instanceof IRootDSE )
                 {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Entry" ), //$NON-NLS-1$
-                        input.getEntryInput().getDn().getUpName() );
+                        input.getEntryInput().getDn().getUpName() )
+                        + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 }
             }
             else if ( input.getSearchResultInput() != null )
             {
                 if ( input.getSearchResultInput() instanceof IRootDSE )
                 {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.SearchResult" ), //$NON-NLS-1$
-                        input.getSearchResultInput().getDn().getUpName() );
+                        input.getSearchResultInput().getDn().getUpName() )
+                        + " - " + input.getSearchResultInput().getEntry().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 }
             }
             else if ( input.getBookmarkInput() != null )
             {
                 if ( input.getBookmarkInput() instanceof IRootDSE )
                 {
-                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
+                    return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ) + " - " + input.getEntryInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Bookmark" ), //$NON-NLS-1$
-                        input.getBookmarkInput().getDn().getUpName() );
+                        input.getBookmarkInput().getDn().getUpName() )
+                        + " - " + input.getBookmarkInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 }
             }
         }

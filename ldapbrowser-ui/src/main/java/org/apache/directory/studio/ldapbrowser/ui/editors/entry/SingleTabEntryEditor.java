@@ -54,7 +54,7 @@ public class SingleTabEntryEditor extends EntryEditor
     @Override
     protected void setEditorName( EntryEditorInput eei )
     {
-        // nothing, keep the default
+        setPartName( eei.getName() );
     }
 
 }
