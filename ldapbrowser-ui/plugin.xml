@@ -41,14 +41,14 @@
 	<editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
        default="true"
-       icon="resources/icons/browser_entryeditor.gif"
+       icon="resources/icons/browser_singletab_entry_editor.gif"
        id="%Editor_SingleTabEntryEditor_id"
        matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
        name="%Editor_SingleTabEntryEditor_shortname"/>
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
        default="true"
-       icon="resources/icons/browser_entryeditor.gif"
+       icon="resources/icons/browser_multitab_entry_editor.gif"
        id="%Editor_MultiTabEntryEditor_id"
        matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
        name="%Editor_MultiTabEntryEditor_shortname">
@@ -56,7 +56,7 @@
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
        default="false"
-       icon="resources/icons/ldifeditor_new.gif"
+       icon="resources/icons/browser_singletab_ldif_editor.gif"
        id="%Editor_SingleTabLdifEntryEditor_id"
        matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
        name="%Editor_SingleTabLdifEntryEditor_shortname">
@@ -64,7 +64,7 @@
  <editor
        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
        default="true"
-       icon="resources/icons/ldifeditor_new.gif"
+       icon="resources/icons/browser_multitab_ldif_editor.gif"
        id="%Editor_MultiTabLdifEntryEditor_id"
        matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
        name="%Editor_MultiTabLdifEntryEditor_shortname">
@@ -461,7 +461,7 @@
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
           description="%Editor_SingleTabEntryEditor_description"
           editorId="%Editor_SingleTabEntryEditor_id"
-          icon="resources/icons/browser_entryeditor.gif"
+          icon="resources/icons/browser_singletab_entry_editor.gif"
           id="%Editor_SingleTabEntryEditor_id"
           name="%Editor_SingleTabEntryEditor_fullname"
           priority="5"
@@ -471,7 +471,7 @@
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
           description="%Editor_MultiTabEntryEditor_description"
           editorId="%Editor_MultiTabEntryEditor_id"
-          icon="resources/icons/browser_entryeditor.gif"
+          icon="resources/icons/browser_multitab_entry_editor.gif"
           id="%Editor_MultiTabEntryEditor_id"
           name="%Editor_MultiTabEntryEditor_fullname"
           priority="3"
@@ -481,7 +481,7 @@
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
           description="%Editor_SingleTabLdifEntryEditor_description"
           editorId="%Editor_SingleTabLdifEntryEditor_id"
-          icon="resources/icons/ldifeditor_new.gif"
+          icon="resources/icons/browser_singletab_ldif_editor.gif"
           id="%Editor_SingleTabLdifEntryEditor_id"
           multiWindow="false"
           name="%Editor_SingleTabLdifEntryEditor_fullname"
@@ -491,7 +491,7 @@
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
           description="%Editor_MultiTabLdifEntryEditor_description"
           editorId="%Editor_MultiTabLdifEntryEditor_id"
-          icon="resources/icons/ldifeditor_new.gif"
+          icon="resources/icons/browser_multitab_ldif_editor.gif"
           id="%Editor_MultiTabLdifEntryEditor_id"
           multiWindow="true"
           name="%Editor_MultiTabLdifEntryEditor_fullname"
