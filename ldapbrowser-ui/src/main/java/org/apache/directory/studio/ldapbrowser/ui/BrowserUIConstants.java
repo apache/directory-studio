@@ -32,7 +32,7 @@ public interface BrowserUIConstants
     /** The plug-in ID */
     public static final String PLUGIN_ID = BrowserUIPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
 
-    public static final String ENTRY_EDITOR_EXTENSION_POINT = "org.apache.directory.studio.entryeditors";
+    public static final String ENTRY_EDITOR_EXTENSION_POINT = "org.apache.directory.studio.entryeditors"; //$NON-NLS-1$
 
     public static final String DN = "DN"; //$NON-NLS-1$
 

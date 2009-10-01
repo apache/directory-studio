@@ -153,7 +153,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     private static final String showLsdAction = "showLsdAction"; //$NON-NLS-1$
 
     /** The Constant fetchOperationalAttributesAction. */
-    private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction";
+    private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction"; //$NON-NLS-1$
 
 
     /**

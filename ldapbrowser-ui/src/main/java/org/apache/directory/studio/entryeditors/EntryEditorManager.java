@@ -90,7 +90,7 @@ public class EntryEditorManager
     private static final String PRIORITY_ATTR = "priority"; //$NON-NLS-1$
 
     /** The priorities separator */
-    public static final String PRIORITIES_SEPARATOR = ",";
+    public static final String PRIORITIES_SEPARATOR = ","; //$NON-NLS-1$
 
     /** The list of entry editors */
     private Map<String, EntryEditorExtension> entryEditorExtensions = new HashMap<String, EntryEditorExtension>();
@@ -182,7 +182,7 @@ public class EntryEditorManager
             bean.setIcon( icon );
             bean.setClassName( member.getAttribute( CLASS_ATTR ) );
             bean.setEditorId( member.getAttribute( EDITOR_ID_ATTR ) );
-            bean.setMultiWindow( "true".equalsIgnoreCase( member.getAttribute( MULTI_WINDOW_ATTR ) ) );
+            bean.setMultiWindow( "true".equalsIgnoreCase( member.getAttribute( MULTI_WINDOW_ATTR ) ) ); //$NON-NLS-1$
             bean.setPriority( Integer.parseInt( member.getAttribute( PRIORITY_ATTR ) ) );
 
             entryEditorExtensions.put( bean.getId(), bean );
@@ -290,7 +290,7 @@ public class EntryEditorManager
         // Getting the user's priorities
         String userPriorities = BrowserUIPlugin.getDefault().getPluginPreferences().getString(
             BrowserUIConstants.PREFERENCE_ENTRYEDITORS_USER_PRIORITIES );
-        if ( ( userPriorities != null ) && ( !"".equals( userPriorities ) ) )
+        if ( ( userPriorities != null ) && ( !"".equals( userPriorities ) ) ) //$NON-NLS-1$
         {
             String[] splittedUserPriorities = userPriorities.split( PRIORITIES_SEPARATOR );
             if ( ( splittedUserPriorities != null ) && ( splittedUserPriorities.length > 0 ) )
@@ -608,9 +608,9 @@ public class EntryEditorManager
     {
         MessageDialog dialog = new MessageDialog(
             partRef.getPart( false ).getSite().getShell(),
-            "Entry Changed",
+            Messages.getString("EntryEditorManager.EntryChanged"), //$NON-NLS-1$
             null,
-            "The entry has been changed in the directory server. Do you want to replace the editor contents with these changes?",
+            Messages.getString("EntryEditorManager.EntryChangedDescription"), //$NON-NLS-1$
             MessageDialog.QUESTION, new String[]
                 { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
         int result = dialog.open();
@@ -718,7 +718,7 @@ public class EntryEditorManager
                         if ( diff != null )
                         {
                             MessageDialog dialog = new MessageDialog( partRef.getPart( false ).getSite().getShell(),
-                                "Save Changes", null, "Entry has been modified in another entry editor. Save changes?",
+                                Messages.getString("EntryEditorManager.SaveChanges"), null, Messages.getString("EntryEditorManager.SaveChangesDescription"), //$NON-NLS-1$ //$NON-NLS-2$
                                 MessageDialog.QUESTION, new String[]
                                     { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
                             int result = dialog.open();
