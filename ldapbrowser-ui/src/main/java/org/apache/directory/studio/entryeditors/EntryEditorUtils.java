@@ -42,10 +42,7 @@ public class EntryEditorUtils
     {
         if ( !entry.isAttributesInitialized() )
         {
-            boolean foa = entry.getBrowserConnection().isFetchOperationalAttributes()
-                || entry.isOperationalAttributesInitialized();
-            InitializeAttributesRunnable iar = new InitializeAttributesRunnable( new IEntry[]
-                { entry }, foa );
+            InitializeAttributesRunnable iar = new InitializeAttributesRunnable( entry );
             RunnableContextRunner.execute( iar, null, true );
         }
     }

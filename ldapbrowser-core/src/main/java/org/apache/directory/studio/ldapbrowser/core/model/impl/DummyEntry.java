@@ -336,7 +336,7 @@ public class DummyEntry implements IEntry
     /**
      * This implementation always returns true.
      */
-    public boolean isOperationalAttributesInitialized()
+    public boolean isInitOperationalAttributes()
     {
         return true;
     }
@@ -399,7 +399,7 @@ public class DummyEntry implements IEntry
     /**
      * This implementation does nothing.
      */
-    public void setOperationalAttributesInitialized( boolean b )
+    public void setInitOperationalAttributes( boolean b )
     {
     }
 

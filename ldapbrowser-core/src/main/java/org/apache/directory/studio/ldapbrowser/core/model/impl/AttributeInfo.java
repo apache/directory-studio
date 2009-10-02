@@ -42,9 +42,6 @@ public class AttributeInfo implements Serializable
     /** The attributes initialized flag. */
     protected volatile boolean attributesInitialized = false;
 
-    /** The operational attributes initialized flag. */
-    protected volatile boolean operationalAttributesInitialized = false;
-    
     /** The attribute map. */
     protected volatile Map<String, IAttribute> attributeMap = new LinkedHashMap<String, IAttribute>();
 

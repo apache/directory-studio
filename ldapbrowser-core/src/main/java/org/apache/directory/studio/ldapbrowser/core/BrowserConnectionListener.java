@@ -115,7 +115,7 @@ public class BrowserConnectionListener implements IConnectionListener
         ReloadSchemaRunnable.reloadSchema( false, browserConnection, monitor );
 
         IRootDSE rootDSE = browserConnection.getRootDSE();
-        InitializeAttributesRunnable.initializeAttributes( rootDSE, true, monitor );
+        InitializeAttributesRunnable.initializeAttributes( rootDSE, monitor );
     }
 
 

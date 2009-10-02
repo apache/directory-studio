@@ -99,7 +99,7 @@ public class FetchOperationalAttributesAction extends BrowserAction
         {
             for ( IEntry entry : entries )
             {
-                if ( !entry.isOperationalAttributesInitialized() )
+                if ( !entry.isInitOperationalAttributes() )
                 {
                     checked = false;
                 }
@@ -113,14 +113,12 @@ public class FetchOperationalAttributesAction extends BrowserAction
     public void run()
     {
         IEntry[] entries = getEntries().toArray( new IEntry[0] );
-        if ( isChecked() )
+        boolean init = !isChecked();
+        for ( IEntry entry : entries )
         {
-            new StudioBrowserJob( new InitializeAttributesRunnable( entries, false ) ).execute();
+            entry.setInitOperationalAttributes( init );
         }
-        else
-        {
-            new StudioBrowserJob( new InitializeAttributesRunnable( entries, true ) ).execute();
-        }
+        new StudioBrowserJob( new InitializeAttributesRunnable( entries ) ).execute();
     }
 
 

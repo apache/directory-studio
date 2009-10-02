@@ -143,7 +143,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
         {
             final IBrowserConnection browserConnection = entryWidget.getBrowserConnection();
             final LdapDN dn = entryWidget.getDn();
-            final IEntry[] templateEntries = new IEntry[1];
+            IEntry templateEntry = null;
 
             if ( browserConnection == null )
             {
@@ -171,8 +171,8 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             // check if selected DN exists
             ReadEntryRunnable readEntryRunnable = new ReadEntryRunnable( browserConnection, dn );
             RunnableContextRunner.execute( readEntryRunnable, getContainer(), false );
-            templateEntries[0] = readEntryRunnable.getReadEntry();
-            if ( templateEntries[0] == null )
+            templateEntry = readEntryRunnable.getReadEntry();
+            if ( templateEntry == null )
             {
                 getShell().getDisplay().syncExec( new Runnable()
                 {
@@ -185,11 +185,10 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             }
 
             // init attributes
-            if ( !templateEntries[0].isAttributesInitialized() )
+            if ( !templateEntry.isAttributesInitialized() )
             {
-                InitializeAttributesRunnable initializeAttributesRunnable = new InitializeAttributesRunnable(
-                    templateEntries, false );
-                RunnableContextRunner.execute( initializeAttributesRunnable, getContainer(), true );
+                InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( templateEntry );
+                RunnableContextRunner.execute( runnable, getContainer(), true );
             }
 
             // clone entry and remove non-modifiable attributes
@@ -197,7 +196,7 @@ public class NewEntryTypeWizardPage extends WizardPage implements WidgetModifyLi
             {
                 EventRegistry.suspendEventFiringInCurrentThread();
 
-                LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntries[0] );
+                LdifContentRecord record = ModelConverter.entryToLdifContentRecord( templateEntry );
                 DummyEntry prototypeEntry = ModelConverter.ldifContentRecordToEntry( record, browserConnection );
                 IAttribute[] attributes = prototypeEntry.getAttributes();
                 for ( int i = 0; i < attributes.length; i++ )

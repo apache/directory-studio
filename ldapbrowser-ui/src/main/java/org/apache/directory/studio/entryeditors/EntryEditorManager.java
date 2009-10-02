@@ -627,11 +627,11 @@ public class EntryEditorManager
                 oscEditor.workingCopyModified( source );
             }
         }
-        else
-        {
-            // only update the reference copy
-            updateOscSharedReferenceCopy( originalEntry );
-        }
+//        else
+//        {
+//            // only update the reference copy
+//            updateOscSharedReferenceCopy( originalEntry );
+//        }
     }
 
 

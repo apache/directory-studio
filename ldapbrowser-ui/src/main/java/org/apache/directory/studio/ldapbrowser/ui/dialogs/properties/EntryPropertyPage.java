@@ -244,8 +244,8 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     private void reloadOperationalAttributes()
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
-        InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( new IEntry[]
-            { entry }, true );
+        entry.setInitOperationalAttributes( true );
+        InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
         RunnableContextRunner.execute( runnable, null, true );
         entryUpdated( entry );
     }
@@ -257,10 +257,10 @@ public class EntryPropertyPage extends PropertyPage implements IWorkbenchPropert
     private void reloadEntry()
     {
         IEntry entry = EntryPropertyPage.getEntry( getElement() );
+        entry.setInitOperationalAttributes( true );
         InitializeChildrenRunnable runnable1 = new InitializeChildrenRunnable( new IEntry[]
             { entry }, false );
-        InitializeAttributesRunnable runnable2 = new InitializeAttributesRunnable( new IEntry[]
-            { entry }, true );
+        InitializeAttributesRunnable runnable2 = new InitializeAttributesRunnable( entry );
         RunnableContextRunner.execute( runnable1, null, true );
         RunnableContextRunner.execute( runnable2, null, true );
         entryUpdated( entry );

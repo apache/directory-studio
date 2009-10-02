@@ -58,9 +58,6 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
     /** The entries. */
     private IEntry[] entries;
 
-    /** The flag if operational attributes should be initialized. */
-    private boolean initOperationalAttributes;
-
 
     /**
      * Creates a new instance of InitializeAttributesRunnable.
@@ -68,10 +65,9 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
      * @param entries the entries
      * @param initOperationalAttributes true if operational attributes should be initialized
      */
-    public InitializeAttributesRunnable( IEntry[] entries, boolean initOperationalAttributes )
+    public InitializeAttributesRunnable( IEntry... entries )
     {
         this.entries = entries;
-        this.initOperationalAttributes = initOperationalAttributes;
     }
 
 
@@ -134,7 +130,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
             monitor.worked( 1 );
             if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
             {
-                initializeAttributes( entries[pi], initOperationalAttributes, monitor );
+                initializeAttributes( entries[pi], monitor );
             }
         }
     }
@@ -159,16 +155,16 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
      * Initializes the attributes.
      * 
      * @param entry the entry
-     * @param initOperationalAttributes true if operational attributes should be initialized
      * @param monitor the progress monitor
      */
-    public static synchronized void initializeAttributes( IEntry entry, boolean initOperationalAttributes,
-        StudioProgressMonitor monitor )
+    public static synchronized void initializeAttributes( IEntry entry, StudioProgressMonitor monitor )
     {
         // get user attributes or both user and operational attributes
         String[] returningAttributes = null;
         LinkedHashSet<String> raSet = new LinkedHashSet<String>();
         raSet.add( SchemaConstants.ALL_USER_ATTRIBUTES );
+        boolean initOperationalAttributes = entry.getBrowserConnection().isFetchOperationalAttributes()
+            || entry.isInitOperationalAttributes();
         if ( initOperationalAttributes )
         {
             if ( entry.getBrowserConnection().getRootDSE().isFeatureSupported(
@@ -191,8 +187,6 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
         returningAttributes = ( String[] ) raSet.toArray( new String[raSet.size()] );
 
         initializeAttributes( entry, returningAttributes, true, monitor );
-
-        entry.setOperationalAttributesInitialized( initOperationalAttributes );
     }
 
 

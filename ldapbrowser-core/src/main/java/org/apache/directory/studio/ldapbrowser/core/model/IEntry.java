@@ -215,27 +215,19 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates whether this entry's operational attributes are initialized.
+     * Indicates whether this entry's operational attributes should be initialized.
      * 
-     * True means that the entry's operational attributes are completely 
-     * initialized and getAttributes() will return all operational attributes 
-     * (additionally to the non-operational attributes).
-     * 
-     * False means that the operational attributes are not or only partially
-     * initialized. The getAttributes() method will return none
-     * or only a part of the entry's operational attributes.  
-     * 
-     * @return true if this entry's attributes are initialized
+     * @return true if this entry's attributes should be initialized
      */
-    public abstract boolean isOperationalAttributesInitialized();
+    public abstract boolean isInitOperationalAttributes();
 
 
     /**
-     * Sets a flag whether this entry's operational attributes are initialized.
+     * Sets a flag whether this entry's operational attributes should be initialized.
      * 
-     * @param b the operational attributes initialized flag
+     * @param b the initialize operational attributes flag
      */
-    public abstract void setOperationalAttributesInitialized( boolean b );
+    public abstract void setInitOperationalAttributes( boolean b );
 
 
     /**

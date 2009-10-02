@@ -202,7 +202,7 @@ public abstract class CopyEntryAsAction extends BrowserAction
             IEntry[] uninitializedEntries = ( IEntry[] ) uninitializedEntryList
                 .toArray( new IEntry[uninitializedEntryList.size()] );
 
-            InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( uninitializedEntries, false );
+            InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( uninitializedEntries );
             RunnableContextRunner.execute( runnable, null, true );
 
             // SyncInitializeEntryJob job = new

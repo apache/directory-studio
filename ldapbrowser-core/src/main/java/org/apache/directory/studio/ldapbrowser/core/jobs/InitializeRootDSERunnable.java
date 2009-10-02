@@ -294,7 +294,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
         // set flags
         browserConnection.getRootDSE().setHasMoreChildren( false );
         browserConnection.getRootDSE().setAttributesInitialized( true );
-        browserConnection.getRootDSE().setOperationalAttributesInitialized( true );
+        browserConnection.getRootDSE().setInitOperationalAttributes( true );
         browserConnection.getRootDSE().setChildrenInitialized( true );
         browserConnection.getRootDSE().setHasChildrenHint( true );
         browserConnection.getRootDSE().setDirectoryEntry( true );

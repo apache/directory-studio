@@ -78,6 +78,8 @@ public abstract class AbstractEntry implements IEntry
     private static final int IS_REFERRAL_FLAG = 8;
 
     private static final int IS_SUBENTRY_FLAG = 16;
+    
+    private static final int IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG = 32;
 
     private volatile int flags;
 
@@ -371,7 +373,7 @@ public abstract class AbstractEntry implements IEntry
 
 
     /**
-     * Triggers firering of the modification event.
+     * Triggers firing of the modification event.
      * 
      * @param event
      */
@@ -431,28 +433,24 @@ public abstract class AbstractEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public boolean isOperationalAttributesInitialized()
+    public boolean isInitOperationalAttributes()
     {
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        return ai != null && ai.operationalAttributesInitialized;
+        return ( flags & IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG ) != 0;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setOperationalAttributesInitialized( boolean b )
+    public void setInitOperationalAttributes( boolean b )
     {
-        AttributeInfo ai = getBrowserConnectionImpl().getAttributeInfo( this );
-        if ( ai == null && b )
+        if ( b )
         {
-            ai = new AttributeInfo();
-            getBrowserConnectionImpl().setAttributeInfo( this, ai );
+            flags = flags | IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG;
         }
-
-        if ( ai != null )
+        else
         {
-            ai.operationalAttributesInitialized = b;
+            flags = flags & ~IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG;
         }
     }
 
