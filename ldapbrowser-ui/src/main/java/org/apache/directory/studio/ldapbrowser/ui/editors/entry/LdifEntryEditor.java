@@ -67,6 +67,16 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
 
 
     @Override
+    protected void doSetInput( IEditorInput input ) throws CoreException
+    {
+        super.doSetInput( input );
+
+        EntryEditorInput eei = getEntryEditorInput();
+        setConnection( eei.getResolvedEntry().getBrowserConnection() );
+    }
+
+
+    @Override
     public void createPartControl( Composite parent )
     {
         // don't show the tool bar
@@ -142,7 +152,8 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
      */
     public void workingCopyModified( Object source )
     {
-        ( ( LdifEntryEditorDocumentProvider ) getDocumentProvider() ).workingCopyModified( getEntryEditorInput(), source );
+        ( ( LdifEntryEditorDocumentProvider ) getDocumentProvider() ).workingCopyModified( getEntryEditorInput(),
+            source );
     }
 
 
@@ -160,7 +171,7 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
              */
             return;
         }
-        
+
         try
         {
             inShowEditorInput = true;
@@ -177,7 +188,7 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
                 {
                     return;
                 }
-                
+
                 /*
                  * Workaround to make link-with-editor working for the single-tab editor:
                  * The call of firePropertyChange is used to inform the link-with-editor action.
