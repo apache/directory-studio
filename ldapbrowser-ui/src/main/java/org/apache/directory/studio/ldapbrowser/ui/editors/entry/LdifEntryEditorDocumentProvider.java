@@ -21,12 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import java.util.Arrays;
+
 import javax.naming.InvalidNameException;
 
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
+import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
@@ -34,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -144,12 +148,8 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             try
             {
                 inSetContent = true;
-
-                // set content
                 IEntry sharedWorkingCopy = input.getSharedWorkingCopy( editor );
-                LdifContentRecord record = ModelConverter.entryToLdifContentRecord( sharedWorkingCopy );
-                String newContent = record.toFormattedString( Utils.getLdifFormatParameters() );
-                document.set( newContent );
+                setDocumentInput( document, sharedWorkingCopy );
 
                 // reset dirty state
                 if ( !input.isSharedWorkingCopyDirty( editor ) )
@@ -166,6 +166,29 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
                 inSetContent = false;
             }
         }
+    }
+
+
+    private void setDocumentInput( IDocument document, IEntry entry )
+    {
+        LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
+
+        // sort attribute-value lines
+        AttributeComparator comparator = new AttributeComparator( entry );
+        LdifAttrValLine[] attrValLines = record.getAttrVals();
+        Arrays.sort( attrValLines, comparator );
+        LdifContentRecord newRecord = new LdifContentRecord( record.getDnLine() );
+        for ( LdifAttrValLine attrValLine : attrValLines )
+        {
+            newRecord.addAttrVal( attrValLine );
+        }
+        newRecord.finish( record.getSepLine() );
+
+        // format
+        String newContent = newRecord.toFormattedString( Utils.getLdifFormatParameters() );
+
+        // set content
+        document.set( newContent );
     }
 
 
@@ -189,13 +212,9 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     protected IDocument createDocument( Object element ) throws CoreException
     {
         input = getEntryEditorInput( element );
-
         IEntry entry = getEntryEditorInput( element ).getSharedWorkingCopy( editor );
-        LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
-        String content = record.toFormattedString( Utils.getLdifFormatParameters() );
-
         IDocument document = new Document();
-        document.set( content );
+        setDocumentInput( document, entry );
         setupDocument( document );
         return document;
     }
