@@ -202,30 +202,65 @@ public class RootDSEPropertyPage extends PropertyPage implements IWorkbenchPrope
         if ( vnAttribute != null && vnAttribute.getStringValues().length > 0 && vvAttribute != null
             && vvAttribute.getStringValues().length > 0 )
         {
-            if ( vnAttribute.getStringValues()[0].indexOf( "Apache Software Foundation" ) > -1 ) //$NON-NLS-1$
+
+            String vendorName = vnAttribute.getStringValues()[0];
+            String vendorVersion = vvAttribute.getStringValues()[0];
+
+            if ( vendorName.indexOf( "Apache Software Foundation" ) > -1 ) //$NON-NLS-1$
             {
                 result = Messages.getString( "RootDSEPropertyPage.ApacheDirectoryServer" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "Novell" ) > -1 //$NON-NLS-1$
-                || vvAttribute.getStringValues()[0].indexOf( "eDirectory" ) > -1 ) //$NON-NLS-1$
+            if ( vendorName.indexOf( "Novell" ) > -1 //$NON-NLS-1$
+                || vendorVersion.indexOf( "eDirectory" ) > -1 ) //$NON-NLS-1$
             {
                 result = Messages.getString( "RootDSEPropertyPage.NovellEDirectory" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 //$NON-NLS-1$
-                || vvAttribute.getStringValues()[0].indexOf( "Sun" ) > -1 ) //$NON-NLS-1$
+            if ( vendorName.indexOf( "Sun" ) > -1 //$NON-NLS-1$
+                || vendorVersion.indexOf( "Sun" ) > -1 ) //$NON-NLS-1$
             {
                 result = Messages.getString( "RootDSEPropertyPage.SunDirectoryServer" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 //$NON-NLS-1$
-                || vvAttribute.getStringValues()[0].indexOf( "Netscape" ) > -1 ) //$NON-NLS-1$
+            if ( vendorName.indexOf( "Netscape" ) > -1 //$NON-NLS-1$
+                || vendorVersion.indexOf( "Netscape" ) > -1 ) //$NON-NLS-1$
             {
                 result = Messages.getString( "RootDSEPropertyPage.NetscapeDirectoryServer" ); //$NON-NLS-1$
             }
-            if ( vnAttribute.getStringValues()[0].indexOf( "International Business Machines" ) > -1 //$NON-NLS-1$
-                && ( ( vvAttribute.getStringValues()[0].indexOf( "6.0" ) > -1 ) || ( vvAttribute.getStringValues()[0] //$NON-NLS-1$
-                    .indexOf( "5.2" ) > -1 ) ) ) //$NON-NLS-1$
-            {
-                result = Messages.getString( "RootDSEPropertyPage.IBMTivoli" ); //$NON-NLS-1$
+
+            // IBM
+            if ( vendorName.indexOf( "International Business Machines" ) > -1 ) { //$NON-NLS-1$
+
+                // IBM SecureWay Directory
+                String[] iswVersions =
+                    { "3.2", "3.2.1", "3.2.2" }; //$NON-NLS-1$
+                for ( String version : iswVersions )
+                {
+                    if ( vendorVersion.indexOf( version ) > -1 )
+                    {
+                        result = Messages.getString( "RootDSEPropertyPage.IBMSecureWay" ); //$NON-NLS-1$
+                    }
+                }
+
+                // IBM Directory Server
+                String[] idsVersions =
+                    { "4.1", "5.1" }; //$NON-NLS-1$
+                for ( String version : idsVersions )
+                {
+                    if ( vendorVersion.indexOf( version ) > -1 )
+                    {
+                        result = Messages.getString( "RootDSEPropertyPage.IBMDirectory" ); //$NON-NLS-1$
+                    }
+                }
+
+                // IBM Tivoli Directory Server
+                String[] tdsVersions =
+                    { "5.2", "6.0", "6.1", "6.2" }; //$NON-NLS-1$
+                for ( String version : tdsVersions )
+                {
+                    if ( vendorVersion.indexOf( version ) > -1 )
+                    {
+                        result = Messages.getString( "RootDSEPropertyPage.IBMTivoli" ); //$NON-NLS-1$
+                    }
+                }
             }
         }
 
