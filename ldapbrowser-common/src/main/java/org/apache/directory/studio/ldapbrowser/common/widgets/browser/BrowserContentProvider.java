@@ -308,7 +308,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         {
             final IRootDSE rootDSE = ( IRootDSE ) parent;
 
-            if ( !rootDSE.isChildrenInitialized() && rootDSE.isDirectoryEntry() )
+            if ( !rootDSE.isChildrenInitialized() )
             {
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
                     { rootDSE }, false ) ).execute();
@@ -336,7 +336,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         {
             final IEntry parentEntry = ( IEntry ) parent;
 
-            if ( !parentEntry.isChildrenInitialized() && parentEntry.isDirectoryEntry() )
+            if ( !parentEntry.isChildrenInitialized() )
             {
                 new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
                     { parentEntry }, false ) ).execute();

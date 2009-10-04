@@ -144,7 +144,8 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
                     Rdn newRdn = renameDialog.getRdn();
                     if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
                     {
-                        new RenameEntryJob( entry, newRdn, new SimulateRenameDialogImpl( parent.getShell() ) )
+                        IEntry originalEntry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+                        new RenameEntryJob( originalEntry, newRdn, new SimulateRenameDialogImpl( parent.getShell() ) )
                             .execute();
                     }
                 }
@@ -237,7 +238,7 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        return attributeHierarchy.getEntry().isDirectoryEntry() ? attributeHierarchy.getEntry() : null;
+        return attributeHierarchy.getEntry();
     }
 
 
@@ -248,7 +249,7 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value.getAttribute().getEntry().isDirectoryEntry() ? value.getAttribute().getEntry() : null;
+        return value.getAttribute().getEntry();
     }
 
 

@@ -38,11 +38,15 @@ import org.eclipse.jface.viewers.TreeViewer;
 public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
 {
 
+    private EntryEditor entryEditor;
+    
+    
     /**
      * Creates a new instance of EntryEditorConfiguration.
      */
-    public EntryEditorConfiguration()
+    public EntryEditorConfiguration( EntryEditor entryEditor )
     {
+        this.entryEditor = entryEditor;
     }
 
 
@@ -71,7 +75,7 @@ public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
     {
         if ( valueEditorManager == null )
         {
-            valueEditorManager = new ValueEditorManager( viewer.getTree(), true );
+            valueEditorManager = new ValueEditorManager( viewer.getTree(), true, entryEditor.isAutoSave() );
         }
 
         return valueEditorManager;

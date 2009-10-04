@@ -239,15 +239,6 @@ public abstract class AbstractEntry implements IEntry
     /**
      * {@inheritDoc}
      */
-    public boolean isDirectoryEntry()
-    {
-        return ( flags & IS_DIRECTORY_ENTRY_FLAG ) != 0;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void setDirectoryEntry( boolean isDirectoryEntry )
     {
         if ( isDirectoryEntry )

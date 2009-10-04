@@ -134,8 +134,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             IEntry entry = ( IEntry ) inputElement;
 
-            boolean ai = entry.isAttributesInitialized();
-            if ( !ai && entry.isDirectoryEntry() )
+            if ( !entry.isAttributesInitialized() )
             {
                 InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
                 StudioBrowserJob job = new StudioBrowserJob( runnable );

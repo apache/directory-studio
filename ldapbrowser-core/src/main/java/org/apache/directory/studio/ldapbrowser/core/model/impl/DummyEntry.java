@@ -343,15 +343,6 @@ public class DummyEntry implements IEntry
 
 
     /**
-     * This implementation always returns false.
-     */
-    public boolean isDirectoryEntry()
-    {
-        return false;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public boolean isReferral()

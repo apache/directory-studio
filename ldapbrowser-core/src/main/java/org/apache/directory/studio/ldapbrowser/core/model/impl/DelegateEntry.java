@@ -255,22 +255,6 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
     /**
      * {@inheritDoc}
      */
-    public boolean isDirectoryEntry()
-    {
-        if ( getDelegate() != null )
-        {
-            return getDelegate().isDirectoryEntry();
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void addAttribute( IAttribute attributeToAdd )
     {
         if ( getDelegate() != null )

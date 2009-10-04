@@ -240,7 +240,7 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionUIPlugin.getDefault().getEventRunner() );
         getSite().getPage().addPartListener( this );
 
-        this.valueEditorManager = new ValueEditorManager( getSite().getShell(), false );
+        this.valueEditorManager = new ValueEditorManager( getSite().getShell(), false, false );
     }
 
 

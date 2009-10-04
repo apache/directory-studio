@@ -86,15 +86,6 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
-     * Indicates whether this entry exists in directory. Otherwise it
-     * is a new entry created from the user and not still written to directory.
-     * 
-     * @return true it this entry is a directory entry
-     */
-    public abstract boolean isDirectoryEntry();
-
-
-    /**
      * Sets whether this entry exists in directory.
      * 
      * @param isDirectoryEntry

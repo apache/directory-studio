@@ -152,7 +152,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
             monitor.worked( 1 );
 
             IBrowserConnection browserConnection = entry.getBrowserConnection();
-            if ( browserConnection != null && entry.isDirectoryEntry() )
+            if ( browserConnection != null )
             {
                 if ( entry instanceof IRootDSE )
                 {
@@ -180,7 +180,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     {
         for ( IEntry entry : entries )
         {
-            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() && entry.isChildrenInitialized() )
+            if ( entry.getBrowserConnection() != null && entry.isChildrenInitialized() )
             {
                 EventRegistry.fireEntryUpdated( new ChildrenInitializedEvent( entry ), this );
             }

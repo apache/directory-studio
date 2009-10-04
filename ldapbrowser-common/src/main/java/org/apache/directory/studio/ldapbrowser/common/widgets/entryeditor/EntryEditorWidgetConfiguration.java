@@ -188,7 +188,7 @@ public class EntryEditorWidgetConfiguration
     {
         if ( valueEditorManager == null )
         {
-            valueEditorManager = new ValueEditorManager( viewer.getTree(), false );
+            valueEditorManager = new ValueEditorManager( viewer.getTree(), false, false );
         }
 
         return valueEditorManager;

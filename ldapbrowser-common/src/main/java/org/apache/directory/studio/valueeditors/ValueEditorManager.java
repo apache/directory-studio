@@ -118,7 +118,7 @@ public class ValueEditorManager
      *
      * @param parent the composite used to create the value editors
      */
-    public ValueEditorManager( Composite parent, boolean useEntryValueEditor )
+    public ValueEditorManager( Composite parent, boolean useEntryValueEditor, boolean useRenameValueEditor )
     {
         this.parent = parent;
         userSelectedValueEditor = null;
@@ -147,10 +147,13 @@ public class ValueEditorManager
         }
 
         // special case: rename editor
-        renameValueEditor = new RenameValueEditor( this.parent, this );
-        renameValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.RenameEditor" ) ); //$NON-NLS-1$
-        renameValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
-            BrowserCommonConstants.IMG_RENAME ) );
+        if ( useRenameValueEditor )
+        {
+            renameValueEditor = new RenameValueEditor( this.parent, this );
+            renameValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.RenameEditor" ) ); //$NON-NLS-1$
+            renameValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+                BrowserCommonConstants.IMG_RENAME ) );
+        }
 
         // get default editors from value editor map
         defaultStringSingleLineValueEditor = class2ValueEditors.get( InPlaceTextValueEditor.class.getName() );
@@ -172,7 +175,10 @@ public class ValueEditorManager
             {
                 entryValueEditor.dispose();
             }
-            renameValueEditor.dispose();
+            if ( renameValueEditor != null )
+            {
+                renameValueEditor.dispose();
+            }
             defaultStringSingleLineValueEditor.dispose();
             defaultStringMultiLineValueEditor.dispose();
             defaultBinaryValueEditor.dispose();
@@ -310,7 +316,7 @@ public class ValueEditorManager
         }
 
         // special case RDN attribute: always return rename editor
-        if ( userSelectedValueEditor == null && value.isRdnPart() && value.getAttribute().getEntry().isDirectoryEntry() )
+        if ( userSelectedValueEditor == null && value.isRdnPart() && renameValueEditor != null )
         {
             return renameValueEditor;
         }
@@ -543,7 +549,10 @@ public class ValueEditorManager
         {
             list.add( entryValueEditor );
         }
-        list.add( renameValueEditor );
+        if ( renameValueEditor != null )
+        {
+            list.add( renameValueEditor );
+        }
 
         return list.toArray( new IValueEditor[list.size()] );
     }

@@ -72,15 +72,7 @@ public class BrowserViewLabelDecorator extends LabelProvider implements ILightwe
 
         if ( entry != null )
         {
-            if ( !entry.isDirectoryEntry() )
-            {
-                decoration.addOverlay( BrowserUIPlugin.getDefault().getImageDescriptor(
-                    BrowserUIConstants.IMG_OVR_WARNING ), IDecoration.BOTTOM_LEFT );
-            }
-            else
-            {
-                decoration.addOverlay( null, IDecoration.BOTTOM_LEFT );
-            }
+            decoration.addOverlay( null, IDecoration.BOTTOM_LEFT );
         }
     }
 

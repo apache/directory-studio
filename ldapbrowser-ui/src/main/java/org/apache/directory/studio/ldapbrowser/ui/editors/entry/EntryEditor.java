@@ -124,7 +124,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
             BrowserUIConstants.PLUGIN_ID + "." + "tools_entry_editor" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // create configuration
-        configuration = new EntryEditorConfiguration();
+        configuration = new EntryEditorConfiguration( this );
 
         // create main widget
         mainWidget = new EntryEditorWidget( this.configuration );

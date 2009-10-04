@@ -128,7 +128,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
             monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task, new String[]
                 { this.entries[pi].getDn().getUpName() } ) );
             monitor.worked( 1 );
-            if ( entries[pi].getBrowserConnection() != null && entries[pi].isDirectoryEntry() )
+            if ( entries[pi].getBrowserConnection() != null )
             {
                 initializeAttributes( entries[pi], monitor );
             }
@@ -143,7 +143,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
     {
         for ( IEntry entry : entries )
         {
-            if ( entry.getBrowserConnection() != null && entry.isDirectoryEntry() && entry.isAttributesInitialized() )
+            if ( entry.getBrowserConnection() != null && entry.isAttributesInitialized() )
             {
                 EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( entry ), this );
             }
