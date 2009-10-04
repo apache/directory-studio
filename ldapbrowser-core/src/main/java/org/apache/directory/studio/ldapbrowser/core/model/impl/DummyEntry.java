@@ -480,13 +480,17 @@ public class DummyEntry implements IEntry
     public Collection<ObjectClassDescription> getObjectClassDescriptions()
     {
         Collection<ObjectClassDescription> ocds = new ArrayList<ObjectClassDescription>();
-        String[] ocNames = getAttribute( SchemaConstants.OBJECT_CLASS_AT ).getStringValues();
-        Schema schema = getBrowserConnection().getSchema();
-        for ( String ocName : ocNames )
+        IAttribute ocAttribute = getAttribute( SchemaConstants.OBJECT_CLASS_AT );
+        if ( ocAttribute != null )
         {
-            ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
-            ocds.add( ocd );
-        }
+            String[] ocNames = ocAttribute.getStringValues();
+            Schema schema = getBrowserConnection().getSchema();
+            for ( String ocName : ocNames )
+            {
+                ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
+                ocds.add( ocd );
+            }
+        }        
         return ocds;
     }
 

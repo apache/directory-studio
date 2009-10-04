@@ -852,7 +852,7 @@ public abstract class AbstractEntry implements IEntry
         IAttribute ocAttribute = getAttribute( SchemaConstants.OBJECT_CLASS_AT );
         if ( ocAttribute != null )
         {
-            String[] ocNames = getAttribute( SchemaConstants.OBJECT_CLASS_AT ).getStringValues();
+            String[] ocNames = ocAttribute.getStringValues();
             Schema schema = getBrowserConnection().getSchema();
             for ( String ocName : ocNames )
             {
