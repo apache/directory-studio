@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
+import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
@@ -47,7 +48,9 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -424,20 +427,26 @@ public class EntryEditorManager
 
     private void updateOscSharedReferenceCopy( IEntry entry )
     {
-        IEntry referenceEntry = oscSharedReferenceCopies.remove( entry );
-        EntryEditorUtils.ensureAttributesInitialized( entry );
-        EventRegistry.suspendEventFiringInCurrentThread();
-        new CompoundModification().replaceAttributes( entry, referenceEntry, this );
-        EventRegistry.resumeEventFiringInCurrentThread();
-        oscSharedReferenceCopies.put( entry, referenceEntry );
+        IEntry referenceCopy = oscSharedReferenceCopies.remove( entry );
+        if ( referenceCopy != null )
+        {
+            EntryEditorUtils.ensureAttributesInitialized( entry );
+            EventRegistry.suspendEventFiringInCurrentThread();
+            new CompoundModification().replaceAttributes( entry, referenceCopy, this );
+            EventRegistry.resumeEventFiringInCurrentThread();
+            oscSharedReferenceCopies.put( entry, referenceCopy );
+        }
     }
 
 
     private void updateOscSharedWorkingCopy( IEntry entry )
     {
-        EntryEditorUtils.ensureAttributesInitialized( entry );
         IEntry workingCopy = oscSharedWorkingCopies.get( entry );
-        new CompoundModification().replaceAttributes( entry, workingCopy, this );
+        if ( workingCopy != null )
+        {
+            EntryEditorUtils.ensureAttributesInitialized( entry );
+            new CompoundModification().replaceAttributes( entry, workingCopy, this );
+        }
     }
 
 
@@ -552,7 +561,7 @@ public class EntryEditorManager
             IEntry workingCopy = oscSharedWorkingCopies.get( originalEntry );
             if ( referenceCopy != null && workingCopy != null )
             {
-                LdifChangeModifyRecord diff = Utils.computeDiff( referenceCopy, workingCopy );
+                LdifFile diff = Utils.computeDiff( referenceCopy, workingCopy );
                 return diff != null;
             }
             return false;
@@ -568,7 +577,7 @@ public class EntryEditorManager
             IEntry workingCopy = oscSharedWorkingCopies.get( originalEntry );
             if ( referenceCopy != null && workingCopy != null )
             {
-                LdifChangeModifyRecord diff = Utils.computeDiff( referenceCopy, workingCopy );
+                LdifFile diff = Utils.computeDiff( referenceCopy, workingCopy );
                 if ( diff != null )
                 {
                     // save by executing the LDIF
@@ -579,6 +588,17 @@ public class EntryEditorManager
                     {
                         updateOscSharedReferenceCopy( originalEntry );
                         updateOscSharedWorkingCopy( originalEntry );
+
+                        // check if the entry was renamed, fire an appropriate event in that case
+                        for ( LdifRecord record : diff.getRecords() )
+                        {
+                            if ( record instanceof LdifChangeModDnRecord )
+                            {
+                                IEntry newEntry = originalEntry.getBrowserConnection().getEntryFromCache(
+                                    workingCopy.getDn() );
+                                EventRegistry.fireEntryUpdated( new EntryRenamedEvent( originalEntry, newEntry ), this );
+                            }
+                        }
                     }
                     return status;
                 }
@@ -606,13 +626,10 @@ public class EntryEditorManager
     private void askUpdateSharedWorkingCopy( IWorkbenchPartReference partRef, IEntry originalEntry,
         IEntry oscSharedWorkingCopy, Object source )
     {
-        MessageDialog dialog = new MessageDialog(
-            partRef.getPart( false ).getSite().getShell(),
-            Messages.getString("EntryEditorManager.EntryChanged"), //$NON-NLS-1$
-            null,
-            Messages.getString("EntryEditorManager.EntryChangedDescription"), //$NON-NLS-1$
-            MessageDialog.QUESTION, new String[]
-                { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
+        MessageDialog dialog = new MessageDialog( partRef.getPart( false ).getSite().getShell(), Messages
+            .getString( "EntryEditorManager.EntryChanged" ), null, Messages //$NON-NLS-1$
+            .getString( "EntryEditorManager.EntryChangedDescription" ), MessageDialog.QUESTION, new String[] //$NON-NLS-1$
+            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
         int result = dialog.open();
         if ( result == 0 )
         {
@@ -627,11 +644,6 @@ public class EntryEditorManager
                 oscEditor.workingCopyModified( source );
             }
         }
-//        else
-//        {
-//            // only update the reference copy
-//            updateOscSharedReferenceCopy( originalEntry );
-//        }
     }
 
 
@@ -714,11 +726,12 @@ public class EntryEditorManager
                     // check if the same entry is used in an OSC editor and is dirty -> should save first?
                     if ( oscSharedReferenceCopy != null && oscSharedWorkingCopy != null )
                     {
-                        LdifChangeModifyRecord diff = Utils.computeDiff( oscSharedReferenceCopy, oscSharedWorkingCopy );
+                        LdifFile diff = Utils.computeDiff( oscSharedReferenceCopy, oscSharedWorkingCopy );
                         if ( diff != null )
                         {
                             MessageDialog dialog = new MessageDialog( partRef.getPart( false ).getSite().getShell(),
-                                Messages.getString("EntryEditorManager.SaveChanges"), null, Messages.getString("EntryEditorManager.SaveChangesDescription"), //$NON-NLS-1$ //$NON-NLS-2$
+                                Messages.getString( "EntryEditorManager.SaveChanges" ), null,//$NON-NLS-1$ 
+                                Messages.getString( "EntryEditorManager.SaveChangesDescription" ), //$NON-NLS-1$ 
                                 MessageDialog.QUESTION, new String[]
                                     { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0 );
                             int result = dialog.open();
@@ -734,12 +747,11 @@ public class EntryEditorManager
                     // check if original entry was updated
                     if ( oscSharedReferenceCopy != null && oscSharedWorkingCopy != null )
                     {
-                        LdifChangeModifyRecord refDiff = Utils.computeDiff( originalEntry, oscSharedReferenceCopy );
+                        LdifFile refDiff = Utils.computeDiff( originalEntry, oscSharedReferenceCopy );
                         if ( refDiff != null )
                         {
                             // check if we could just update the working copy
-                            LdifChangeModifyRecord workDiff = Utils.computeDiff( oscSharedReferenceCopy,
-                                oscSharedWorkingCopy );
+                            LdifFile workDiff = Utils.computeDiff( oscSharedReferenceCopy, oscSharedWorkingCopy );
                             if ( workDiff != null )
                             {
                                 askUpdateSharedWorkingCopy( partRef, originalEntry, oscSharedWorkingCopy, null );
@@ -808,12 +820,11 @@ public class EntryEditorManager
                 IEntry oscSharedWorkingCopy = oscSharedWorkingCopies.get( originalEntry );
                 if ( oscSharedReferenceCopy != null && oscSharedWorkingCopy != null )
                 {
-                    LdifChangeModifyRecord refDiff = Utils.computeDiff( originalEntry, oscSharedReferenceCopy );
+                    LdifFile refDiff = Utils.computeDiff( originalEntry, oscSharedReferenceCopy );
                     if ( refDiff != null )
                     {
                         // diff between original entry and reference copy
-                        LdifChangeModifyRecord workDiff = Utils.computeDiff( oscSharedReferenceCopy,
-                            oscSharedWorkingCopy );
+                        LdifFile workDiff = Utils.computeDiff( oscSharedReferenceCopy, oscSharedWorkingCopy );
                         if ( workDiff == null )
                         {
                             // no changes on working copy, update
@@ -850,7 +861,7 @@ public class EntryEditorManager
                 IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
                 if ( autoSaveSharedReferenceCopy != null && autoSaveSharedWorkingCopy != null )
                 {
-                    LdifChangeModifyRecord diff = Utils.computeDiff( originalEntry, autoSaveSharedReferenceCopy );
+                    LdifFile diff = Utils.computeDiff( originalEntry, autoSaveSharedReferenceCopy );
                     if ( diff != null )
                     {
                         updateAutoSaveSharedReferenceCopy( originalEntry );
@@ -899,8 +910,7 @@ public class EntryEditorManager
                 // auto-save working copy has been modified: save and inform all auto-save editors
                 IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
                 IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
-                LdifChangeModifyRecord diff = Utils
-                    .computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
+                LdifFile diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )
                 {
                     ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff

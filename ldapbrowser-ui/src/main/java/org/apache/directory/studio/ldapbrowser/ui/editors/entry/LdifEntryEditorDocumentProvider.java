@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import javax.naming.InvalidNameException;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -35,7 +36,9 @@ import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
+import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifInvalidContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.eclipse.core.runtime.CoreException;
@@ -45,6 +48,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.osgi.util.NLS;
 
 
 /**
@@ -73,6 +77,32 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     protected void doSaveDocument( IProgressMonitor monitor, Object element, IDocument document, boolean overwrite )
         throws CoreException
     {
+        LdifRecord[] records = getLdifModel().getRecords();
+        if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) )
+        {
+            throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
+                .getString( "LdifEntryEditorDocumentProvider.InvalidRecordType" ) ) ); //$NON-NLS-1$
+        }
+        if ( !LdapDN.isValid( records[0].getDnLine().getRawDn() ) )
+        {
+            throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
+                .getString( "LdifEntryEditorDocumentProvider.InvalidDN" ) ) ); //$NON-NLS-1$
+        }
+        if ( !records[0].isValid() )
+        {
+            throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
+                .getString( "LdifEntryEditorDocumentProvider.InvalidLdif" ), records[0].getInvalidString() ) ) ); //$NON-NLS-1$
+        }
+        for ( LdifContainer ldifContainer : getLdifModel().getContainers() )
+        {
+            if ( ldifContainer instanceof LdifInvalidContainer )
+            {
+                LdifInvalidContainer cont = ( LdifInvalidContainer ) ldifContainer;
+                throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
+                    .getString( "LdifEntryEditorDocumentProvider.InvalidLdif" ), cont.getInvalidString() ) ) ); //$NON-NLS-1$
+            }
+        }
+
         EntryEditorInput input = getEntryEditorInput( element );
         IStatus status = input.saveSharedWorkingCopy( false, editor );
         if ( status != null && !status.isOK() )
@@ -87,22 +117,26 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     {
         super.documentChanged( event );
 
-        if ( input == null )
-        {
-            return;
-        }
-        LdifRecord[] records = getLdifModel().getRecords();
-        if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) || !records[0].isValid() )
-        {
-            // can't continue
-            return;
-        }
-
         // the document change was caused by the model update
         // no need to update the model again, don't fire more events
         if ( inSetContent )
         {
             return;
+        }
+
+        // only continue if the LDIF model is valid
+        LdifRecord[] records = getLdifModel().getRecords();
+        if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) || !records[0].isValid()
+            || !LdapDN.isValid( records[0].getDnLine().getRawDn() ) )
+        {
+            return;
+        }
+        for ( LdifContainer ldifContainer : getLdifModel().getContainers() )
+        {
+            if ( ldifContainer instanceof LdifInvalidContainer )
+            {
+                return;
+            }
         }
 
         // update shared working copy
@@ -111,11 +145,12 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             LdifContentRecord modifiedRecord = ( LdifContentRecord ) records[0];
             IBrowserConnection browserConnection = input.getSharedWorkingCopy( editor ).getBrowserConnection();
             DummyEntry modifiedEntry = ModelConverter.ldifContentRecordToEntry( modifiedRecord, browserConnection );
+            ( ( DummyEntry ) input.getSharedWorkingCopy( editor ) ).setDn( modifiedEntry.getDn() );
             new CompoundModification().replaceAttributes( modifiedEntry, input.getSharedWorkingCopy( editor ), this );
         }
         catch ( InvalidNameException e )
         {
-            throw new RuntimeException( "Failed to set input", e );
+            throw new RuntimeException( e );
         }
     }
 
@@ -230,7 +265,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         else
         {
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID,
-                "Expected MultiTabLdifEntryEditorInput, was " + element ) );
+                "Expected EntryEditorInput, was " + element ) ); //$NON-NLS-1$
         }
     }
 

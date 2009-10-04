@@ -38,7 +38,7 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -107,7 +107,7 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
                     {
                         IEntry originalEntry = modifiedEntry.getBrowserConnection().getEntryFromCache(
                             modifiedEntry.getDn() );
-                        LdifChangeModifyRecord diff = Utils.computeDiff( originalEntry, modifiedEntry );
+                        LdifFile diff = Utils.computeDiff( originalEntry, modifiedEntry );
                         if ( diff != null )
                         {
                             // save

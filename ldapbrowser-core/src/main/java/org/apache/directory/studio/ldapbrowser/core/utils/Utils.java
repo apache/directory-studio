@@ -38,6 +38,7 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
+import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -50,10 +51,15 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.Preferences;
 
@@ -380,12 +386,24 @@ public class Utils
      * @return the change modify record or null if there is no difference
      *         between the two entries
      */
-    public static LdifChangeModifyRecord computeDiff( IEntry t0, IEntry t1 )
+    public static LdifFile computeDiff( IEntry t0, IEntry t1 )
     {
-        Set<String> attributesToDelAdd = new HashSet<String>();
-        Set<String> attributesToReplace = new HashSet<String>();
+        LdifFile model = new LdifFile();
+
+        // check if entry needs to be renamed
+        if ( !t0.getDn().equals( t1.getDn() ) )
+        {
+            LdifChangeModDnRecord modDnRecord = LdifChangeModDnRecord.create( t0.getDn().getUpName() );
+            modDnRecord.setNewrdn( LdifNewrdnLine.create( t1.getRdn().getUpName() ) );
+            modDnRecord.setNewsuperior( LdifNewsuperiorLine.create( DnUtils.getParent( t1.getDn() ).getUpName() ) );
+            modDnRecord.setDeloldrdn( LdifDeloldrdnLine.create1() );
+            modDnRecord.finish( LdifSepLine.create() );
+            model.addContainer( modDnRecord );
+        }
 
         // check attributes of old entry
+        Set<String> attributesToDelAdd = new HashSet<String>();
+        Set<String> attributesToReplace = new HashSet<String>();
         for ( IAttribute oldAttr : t0.getAttributes() )
         {
             String attributeDescription = oldAttr.getDescription();
@@ -424,8 +442,9 @@ public class Utils
             }
         }
 
-        LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t0.getDn().getUpName() );
+        LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t1.getDn().getUpName() );
 
+        // determine attributes to delete and/or add
         for ( String attributeDescription : attributesToDelAdd )
         {
             IAttribute oldAttribute = t0.getAttribute( attributeDescription );
@@ -505,6 +524,7 @@ public class Utils
             }
         }
 
+        // determine attributes to replace
         for ( String attributeDescription : attributesToReplace )
         {
             IAttribute oldAttribute = t0.getAttribute( attributeDescription );
@@ -551,10 +571,12 @@ public class Utils
         }
 
         record.finish( LdifSepLine.create() );
+        if ( record.isValid() && record.getModSpecs().length > 0 )
+        {
+            model.addContainer( record );
+        }
 
-        // check for changes: if there are no changes the record does not include
-        // any modifications and so it is not valid.
-        return record.isValid() && record.getModSpecs().length > 0 ? record : null;
+        return model.getRecords().length > 0 ? model : null;
     }
 
 }
