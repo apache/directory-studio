@@ -56,6 +56,7 @@ import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -463,6 +464,15 @@ public class EntryEditorManager
             bean.setMultiWindow( "true".equalsIgnoreCase( member.getAttribute( MULTI_WINDOW_ATTR ) ) ); //$NON-NLS-1$
             bean.setPriority( Integer.parseInt( member.getAttribute( PRIORITY_ATTR ) ) );
 
+            try
+            {
+                bean.setEditorInstance( ( IEntryEditor ) member.createExecutableExtension( CLASS_ATTR ) );
+            }
+            catch ( CoreException e )
+            {
+               // Will never happen
+            }
+
             entryEditorExtensions.put( bean.getId(), bean );
         }
     }
@@ -717,10 +727,36 @@ public class EntryEditorManager
      */
     public void openEntryEditor( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
     {
-        Collection<EntryEditorExtension> entryEditors = getSortedEntryEditorExtensions();
-        // TODO: check if the entry editor can "handle" the entry 
-        EntryEditorExtension next = entryEditors.iterator().next();
-        openEntryEditor( next, entries, searchResults, bookmarks );
+        // Looking for the entry to test the editor on
+        IEntry entry = null;
+        if ( entries.length == 1 )
+        {
+            entry = entries[0];
+        }
+        else if ( searchResults.length == 1 )
+        {
+            entry = searchResults[0].getEntry();
+        }
+        else if ( bookmarks.length == 1 )
+        {
+            entry = bookmarks[0].getEntry();
+        }
+
+        // Checking if we've found the entry
+        if ( entry != null )
+        {
+            // Looking for the correct entry editor
+            for ( EntryEditorExtension entryEditor : getSortedEntryEditorExtensions() )
+            {
+                // Verifying that the editor can handle the entry
+                if ( entryEditor.getEditorInstance().canHandle( entry ) )
+                {
+                    // The correct editor has been found, let's open the entry in the editor
+                    openEntryEditor( entryEditor, entries, searchResults, bookmarks );
+                    return;
+                }
+            }
+        }
     }
 
 

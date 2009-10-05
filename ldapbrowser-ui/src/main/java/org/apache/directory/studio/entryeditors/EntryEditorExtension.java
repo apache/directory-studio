@@ -33,7 +33,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
  */
 public class EntryEditorExtension
 {
-
     /** The ID. */
     private String id = null;
 
@@ -60,6 +59,9 @@ public class EntryEditorExtension
 
     /** The configuration element. */
     private IConfigurationElement member = null;
+
+    /** The editor instance */
+    private IEntryEditor editorInstance = null;
 
 
     /**
@@ -260,6 +262,30 @@ public class EntryEditorExtension
     }
 
 
+    /**
+     * Gets the editor instance.
+     *
+     * @return
+     *      the editor instance
+     */
+    public IEntryEditor getEditorInstance()
+    {
+        return editorInstance;
+    }
+
+
+    /**
+     * Sets the editor instance
+     *
+     * @param editorInstance
+     *      the editor instance
+     */
+    public void setEditorInstance( IEntryEditor editorInstance )
+    {
+        this.editorInstance = editorInstance;
+    }
+
+
     @Override
     public String toString()
     {
@@ -267,6 +293,4 @@ public class EntryEditorExtension
             + editorId + ", icon=" + icon + ", id=" + id + ", member=" + member + ", name=" + name + ", priority="
             + priority + ", multiWindow=" + multiWindow + "]";
     }
-
-    
 }

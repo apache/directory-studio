@@ -37,6 +37,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 
 
 public class EntryEditorMenuManager extends MenuManager implements IMenuListener
@@ -54,7 +55,7 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
      */
     public EntryEditorMenuManager( ISelectionProvider selectionProvider )
     {
-        super( Messages.getString("EntryEditorMenuManager.OpenWith") ); //$NON-NLS-1$
+        super( Messages.getString( "EntryEditorMenuManager.OpenWith" ) ); //$NON-NLS-1$
         this.selectionProvider = selectionProvider;
         openEntryEditorsPreferencePageAction = new OpenEntryEditorsPreferencePageAction();
         addMenuListener( this );
@@ -70,12 +71,23 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
         // remove all the previously added actions
         removeAll();
 
-        // Getting the entry editors and creating an action for each
-        Collection<EntryEditorExtension> entryEditors = BrowserUIPlugin.getDefault().getEntryEditorManager()
-            .getSortedEntryEditorExtensions();
-        for ( EntryEditorExtension entryEditorExtension : entryEditors )
+        // Getting the currently selected entry
+        IEntry selectedEntry = getCurrentSelection();
+        if ( selectedEntry != null )
         {
-            add( createAction( entryEditorExtension ) );
+            // Getting the entry editors and creating an action for each one
+            // that can handle the entry
+            Collection<EntryEditorExtension> entryEditors = BrowserUIPlugin.getDefault().getEntryEditorManager()
+                .getSortedEntryEditorExtensions();
+            for ( EntryEditorExtension entryEditor : entryEditors )
+            {
+                // Verifying that the editor can handle the entry
+                if ( entryEditor.getEditorInstance().canHandle( selectedEntry ) )
+                {
+                    // Creating the action associated with the entry editor
+                    add( createAction( entryEditor ) );
+                }
+            }
         }
 
         // Separator
@@ -83,6 +95,36 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
 
         // Preferences Action
         add( openEntryEditorsPreferencePageAction );
+    }
+
+
+    /**
+     * Gets the currently selected entry.
+     *
+     * @return
+     *      the currently selected entry
+     */
+    private IEntry getCurrentSelection()
+    {
+        StructuredSelection structuredSelection = ( StructuredSelection ) selectionProvider.getSelection();
+        if ( !structuredSelection.isEmpty() )
+        {
+            Object selection = structuredSelection.getFirstElement();
+            if ( selection instanceof IEntry )
+            {
+                return ( IEntry ) selection;
+            }
+            else if ( selection instanceof ISearchResult )
+            {
+                return ( ( ISearchResult ) selection ).getEntry();
+            }
+            else if ( selection instanceof IBookmark )
+            {
+                return ( ( IBookmark ) selection ).getEntry();
+            }
+        }
+
+        return null;
     }
 
 
@@ -109,10 +151,6 @@ public class EntryEditorMenuManager extends MenuManager implements IMenuListener
                     selectedBookMarks );
             }
         };
-
-        // TODO Add enable/disable action if the entry editor can "handle" the entry.
-        // TODO Or do include this entry editor in the list of available entry editors.
-        //action.setEnabled( false );
 
         return action;
     }
