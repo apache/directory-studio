@@ -33,7 +33,7 @@ public class OpenDefaultValueEditorAction extends AbstractLdifAction
 
     public OpenDefaultValueEditorAction( LdifEditor editor, OpenBestValueEditorAction proxy )
     {
-        super( Messages.getString("OpenDefaultValueEditorAction.EditValue"), editor ); //$NON-NLS-1$
+        super( Messages.getString( "OpenDefaultValueEditorAction.EditValue" ), editor ); //$NON-NLS-1$
         super.setActionDefinitionId( BrowserCommonConstants.ACTION_ID_EDIT_VALUE );
         this.proxy = proxy;
     }
@@ -41,14 +41,15 @@ public class OpenDefaultValueEditorAction extends AbstractLdifAction
 
     public void update()
     {
-        this.proxy.update();
-        super.setEnabled( this.proxy.isEnabled() );
+        proxy.update();
+        setEnabled( proxy.isEnabled() );
+        setImageDescriptor( proxy.getImageDescriptor() );
     }
 
 
     protected void doRun()
     {
-        this.proxy.run();
+        proxy.run();
     }
 
 }
