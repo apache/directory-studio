@@ -65,7 +65,6 @@ public class UpdateEntryRunnable extends ExecuteLdifRunnable
      */
     public void runNotification()
     {
-        super.runNotification();
         EventRegistry.fireEntryUpdated( new EntryModificationEvent( entry.getBrowserConnection(), entry ), this );
     }
 }

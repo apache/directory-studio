@@ -516,6 +516,22 @@ public class EntryEditorManager
     }
 
 
+    private IWorkbenchPartReference getActivePartRef( List<IEntryEditor> editors )
+    {
+        for ( IEntryEditor editor : editors )
+        {
+            IWorkbenchPart part = ( IWorkbenchPart ) editor;
+            IEditorPart activeEditor = part.getSite().getPage().getActiveEditor();
+            if ( part == activeEditor )
+            {
+                IWorkbenchPartReference reference = part.getSite().getPage().getReference( part );
+                return reference;
+            }
+        }
+        return null;
+    }
+
+
     IEntry getSharedWorkingCopy( IEntry originalEntry, IEntryEditor editor )
     {
         EntryEditorUtils.ensureAttributesInitialized( originalEntry );
@@ -580,10 +596,16 @@ public class EntryEditorManager
                 LdifFile diff = Utils.computeDiff( referenceCopy, workingCopy );
                 if ( diff != null )
                 {
+                    // remove entry from map, reduces number of fired events
+                    oscSharedReferenceCopies.remove( originalEntry );
+                    oscSharedWorkingCopies.remove( originalEntry );
                     // save by executing the LDIF
                     UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
                         .toFormattedString( LdifFormatParameters.DEFAULT ) );
                     IStatus status = RunnableContextRunner.execute( runnable, null, handleError );
+                    // put entry back to map
+                    oscSharedReferenceCopies.put( originalEntry, referenceCopy );
+                    oscSharedWorkingCopies.put( originalEntry, workingCopy );
                     if ( status.isOK() )
                     {
                         updateOscSharedReferenceCopy( originalEntry );
@@ -840,17 +862,27 @@ public class EntryEditorManager
                         }
                         else
                         {
-                            List<IEntryEditor> oscEditors = getOscEditors( oscSharedWorkingCopy );
-                            for ( IEntryEditor entryEditor : oscEditors )
+                            // changes on working copy, ask before update
+                            IWorkbenchPartReference reference = getActivePartRef( getOscEditors( oscSharedWorkingCopy ) );
+                            if ( reference != null )
                             {
-                                IWorkbenchPart part = ( IWorkbenchPart ) entryEditor;
-                                IEditorPart activeEditor = part.getSite().getPage().getActiveEditor();
-                                if ( part == activeEditor )
-                                {
-                                    IWorkbenchPartReference reference = part.getSite().getPage().getReference( part );
-                                    askUpdateSharedWorkingCopy( reference, originalEntry, oscSharedWorkingCopy, event
-                                        .getSource() );
-                                }
+                                askUpdateSharedWorkingCopy( reference, originalEntry, oscSharedWorkingCopy, event
+                                    .getSource() );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // no diff betweeen original entry and reference copy, check if editor is dirty
+                        LdifFile workDiff = Utils.computeDiff( oscSharedReferenceCopy, oscSharedWorkingCopy );
+                        if ( workDiff != null )
+                        {
+                            // changes on working copy, ask before update
+                            IWorkbenchPartReference reference = getActivePartRef( getOscEditors( oscSharedWorkingCopy ) );
+                            if ( reference != null )
+                            {
+                                askUpdateSharedWorkingCopy( reference, originalEntry, oscSharedWorkingCopy, event
+                                    .getSource() );
                             }
                         }
                     }
@@ -913,9 +945,15 @@ public class EntryEditorManager
                 LdifFile diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )
                 {
+                    // remove entry from map, reduces number of fired events
+                    autoSaveSharedReferenceCopies.remove( originalEntry );
+                    autoSaveSharedWorkingCopies.remove( originalEntry );
                     UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
                         .toFormattedString( LdifFormatParameters.DEFAULT ) );
                     RunnableContextRunner.execute( runnable, null, true );
+                    // put entry back to map
+                    autoSaveSharedReferenceCopies.put( originalEntry, autoSaveSharedReferenceCopy );
+                    autoSaveSharedWorkingCopies.put( originalEntry, autoSaveSharedWorkingCopy );
                     // don't care if status is ok or not: always update
                     updateAutoSaveSharedReferenceCopy( originalEntry );
                     updateAutoSaveSharedWorkingCopy( originalEntry );
