@@ -239,6 +239,12 @@ public class EventRegistry extends ConnectionEventRegistry
                     }
                 };
             }
+
+
+            public String toString()
+            {
+                return "EventRunnableFactory [entryUpdateEvent=" + entryUpdateEvent + "]";
+            }
         };
         entryUpdateEventManager.fire( factory );
     }
