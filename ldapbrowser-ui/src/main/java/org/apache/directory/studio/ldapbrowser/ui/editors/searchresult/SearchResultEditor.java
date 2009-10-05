@@ -27,7 +27,7 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
@@ -111,9 +111,8 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
                         if ( diff != null )
                         {
                             // save
-                            ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( originalEntry
-                                .getBrowserConnection(), diff.toFormattedString( LdifFormatParameters.DEFAULT ), false,
-                                false );
+                            UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
+                                .toFormattedString( LdifFormatParameters.DEFAULT ) );
                             IStatus status = RunnableContextRunner.execute( runnable, null, true );
                             if ( status.isOK() )
                             {

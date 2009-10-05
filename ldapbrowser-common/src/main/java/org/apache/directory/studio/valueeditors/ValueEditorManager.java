@@ -373,9 +373,16 @@ public class ValueEditorManager
                 attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
             // special case RDN: always return MV-editor
-            if ( attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
+            if ( userSelectedValueEditor == null && attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
             {
-                return multiValuedValueEditor;
+                if ( renameValueEditor != null )
+                {
+                    return renameValueEditor;
+                }
+                else
+                {
+                    return multiValuedValueEditor;
+                }
             }
 
             return getCurrentValueEditor( attributeHierarchy.getAttribute().getValues()[0] );
@@ -483,9 +490,9 @@ public class ValueEditorManager
             return new IValueEditor[0];
         }
 
-        // special case RDN: no alternative to the MV editor, except the entry editor
+        // special case RDN: no alternative to the rename editor, except the MV editor
         // perhaps this should be moved somewhere else
-        if ( entryValueEditor != null )
+        if ( multiValuedValueEditor != null )
         {
             for ( IAttribute attribute : ah )
             {
@@ -494,7 +501,7 @@ public class ValueEditorManager
                     if ( value.isRdnPart() )
                     {
                         return new IValueEditor[]
-                            { entryValueEditor };
+                            { multiValuedValueEditor };
                     }
                 }
             }
@@ -599,6 +606,17 @@ public class ValueEditorManager
     public EntryValueEditor getEntryValueEditor()
     {
         return entryValueEditor;
+    }
+
+
+    /**
+     * Returns the rename value editor.
+     *
+     * @return the rename value editor
+     */
+    public RenameValueEditor getRenameValueEditor()
+    {
+        return renameValueEditor;
     }
 
 

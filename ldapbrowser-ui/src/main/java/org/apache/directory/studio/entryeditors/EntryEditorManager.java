@@ -38,7 +38,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEven
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -581,8 +581,8 @@ public class EntryEditorManager
                 if ( diff != null )
                 {
                     // save by executing the LDIF
-                    ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( originalEntry.getBrowserConnection(), diff
-                        .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
+                    UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
+                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
                     IStatus status = RunnableContextRunner.execute( runnable, null, handleError );
                     if ( status.isOK() )
                     {
@@ -913,8 +913,8 @@ public class EntryEditorManager
                 LdifFile diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )
                 {
-                    ExecuteLdifRunnable runnable = new ExecuteLdifRunnable( browserConnection, diff
-                        .toFormattedString( LdifFormatParameters.DEFAULT ), false, false );
+                    UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
+                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
                     RunnableContextRunner.execute( runnable, null, true );
                     // don't care if status is ok or not: always update
                     updateAutoSaveSharedReferenceCopy( originalEntry );

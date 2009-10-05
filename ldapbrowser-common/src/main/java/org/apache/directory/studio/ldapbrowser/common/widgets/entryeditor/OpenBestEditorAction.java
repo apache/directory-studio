@@ -172,10 +172,17 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             // validate non-modifiable attributes
             if ( !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
             {
-                message
-                    .append( NLS
-                        .bind(
-                            Messages.getString( "OpenBestEditorAction.ValueNotModifiable" ), value.getAttribute().getDescription() ) ); //$NON-NLS-1$
+                message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueNotModifiable" ), //$NON-NLS-1$ 
+                    value.getAttribute().getDescription() ) );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+                message.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+
+            // validate modification of RDN
+            if ( value.isRdnPart() && cellEditor != valueEditorManager.getRenameValueEditor() )
+            {
+                message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueIsRdnPart" ), //$NON-NLS-1$ 
+                    value.getAttribute().getDescription() ) );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }

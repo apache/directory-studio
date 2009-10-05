@@ -31,7 +31,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public abstract class EntryModificationEvent
+public class EntryModificationEvent
 {
     /** The event source */
     protected Object source;

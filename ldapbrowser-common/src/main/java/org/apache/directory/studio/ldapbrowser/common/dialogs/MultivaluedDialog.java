@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 import java.util.Iterator;
 
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
@@ -34,17 +35,21 @@ import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
+import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
+import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.LdifFile;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -66,13 +71,13 @@ public class MultivaluedDialog extends Dialog
 {
 
     /** The dialog title. */
-    private static final String DIALOG_TITLE = Messages.getString("MultivaluedDialog.MultivaluedEditor"); //$NON-NLS-1$
+    private static final String DIALOG_TITLE = Messages.getString( "MultivaluedDialog.MultivaluedEditor" ); //$NON-NLS-1$
 
-    /** The attribute hierarchie to edit. */
-    private AttributeHierarchy attributeHierarchie;
+    /** The attribute hierarchy to edit. */
+    private AttributeHierarchy attributeHierarchy;
 
     /** The entry editor widget configuration. */
-    private EntryEditorWidgetConfiguration configuration;
+    private MultiValuedEntryEditorConfiguration configuration;
 
     /** The entry edtior widget action group. */
     private EntryEditorWidgetActionGroup actionGroup;
@@ -91,13 +96,18 @@ public class MultivaluedDialog extends Dialog
      * Creates a new instance of MultivaluedDialog.
      * 
      * @param parentShell the parent shell
-     * @param attributeHierarchie the attribute hierarchie
+     * @param attributeHierarchy the attribute hierarchy
      */
-    public MultivaluedDialog( Shell parentShell, AttributeHierarchy attributeHierarchie )
+    public MultivaluedDialog( Shell parentShell, AttributeHierarchy attributeHierarchy )
     {
         super( parentShell );
         setShellStyle( getShellStyle() | SWT.RESIZE );
-        this.attributeHierarchie = attributeHierarchie;
+
+        // clone the entry and attribute hierarchy
+        IEntry entry = attributeHierarchy.getEntry();
+        String attributeDescription = attributeHierarchy.getAttributeDescription();
+        IEntry clone = new CompoundModification().cloneEntry( entry );
+        this.attributeHierarchy = clone.getAttributeWithSubtypes( attributeDescription );
     }
 
 
@@ -112,29 +122,26 @@ public class MultivaluedDialog extends Dialog
     }
 
 
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
-     */
-    protected void createButtonsForButtonBar( Composite parent )
+    @Override
+    protected void okPressed()
     {
-        createButton( parent, IDialogConstants.CLOSE_ID, IDialogConstants.CLOSE_LABEL, false );
-        getShell().update();
-        getShell().layout( true, true );
-    }
-
-
-    /**
-     * @see org.eclipse.jface.dialogs.Dialog#buttonPressed(int)
-     */
-    protected void buttonPressed( int buttonId )
-    {
-        if ( IDialogConstants.CLOSE_ID == buttonId )
+        IEntry modifiedEntry = attributeHierarchy.getEntry();
+        IEntry originalEntry = modifiedEntry.getBrowserConnection().getEntryFromCache( modifiedEntry.getDn() );
+        LdifFile diff = Utils.computeDiff( originalEntry, modifiedEntry );
+        if ( diff != null )
         {
-            close();
+            // save
+            UpdateEntryRunnable runnable = new UpdateEntryRunnable( originalEntry, diff
+                .toFormattedString( LdifFormatParameters.DEFAULT ) );
+            IStatus status = RunnableContextRunner.execute( runnable, null, true );
+            if ( status.isOK() )
+            {
+                super.okPressed();
+            }
         }
         else
         {
-            super.buttonPressed( buttonId );
+            super.okPressed();
         }
     }
 
@@ -144,9 +151,9 @@ public class MultivaluedDialog extends Dialog
      */
     public int open()
     {
-        if ( attributeHierarchie.getAttribute().getValueSize() == 0 )
+        if ( attributeHierarchy.getAttribute().getValueSize() == 0 )
         {
-            attributeHierarchie.getAttribute().addEmptyValue();
+            attributeHierarchy.getAttribute().addEmptyValue();
         }
 
         return super.open();
@@ -164,7 +171,7 @@ public class MultivaluedDialog extends Dialog
             dispose();
 
             // cleanup attribute hierarchy after editing
-            for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
+            for ( Iterator<IAttribute> it = attributeHierarchy.iterator(); it.hasNext(); )
             {
                 IAttribute attribute = it.next();
                 if ( attribute != null )
@@ -227,7 +234,7 @@ public class MultivaluedDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
 
         // create configuration
-        configuration = new EntryEditorWidgetConfiguration();
+        configuration = new MultiValuedEntryEditorConfiguration();
 
         // create main widget
         mainWidget = new EntryEditorWidget( configuration );
@@ -247,10 +254,10 @@ public class MultivaluedDialog extends Dialog
         // create the listener
         universalListener = new MultiValuedEntryEditorUniversalListener( mainWidget.getViewer(), configuration,
             actionGroup, actionGroup.getOpenDefaultEditorAction() );
-        universalListener.setInput( attributeHierarchie );
+        universalListener.setInput( attributeHierarchy );
 
         // start edit mode if an empty value exists
-        for ( Iterator<IAttribute> it = attributeHierarchie.iterator(); it.hasNext(); )
+        for ( Iterator<IAttribute> it = attributeHierarchy.iterator(); it.hasNext(); )
         {
             IAttribute attribute = it.next();
             IValue[] values = attribute.getValues();
@@ -310,21 +317,6 @@ public class MultivaluedDialog extends Dialog
                 viewer.cancelEditing();
             }
 
-            // set new input because attributes are newly created after a
-            // modification
-            IEntry entry = attributeHierarchie.getEntry();
-            String attributeDescription = attributeHierarchie.getAttributeDescription();
-            attributeHierarchie = entry.getAttributeWithSubtypes( attributeDescription );
-            if ( attributeHierarchie == null )
-            {
-                EventRegistry.suspendEventFiringInCurrentThread();
-                IAttribute attribute = new Attribute( entry, attributeDescription );
-                entry.addAttribute( attribute );
-                attribute.addEmptyValue();
-                EventRegistry.resumeEventFiringInCurrentThread();
-                attributeHierarchie = entry.getAttributeWithSubtypes( attributeDescription );
-            }
-            viewer.setInput( attributeHierarchie );
             viewer.refresh();
 
             // select added/modified value
@@ -369,4 +361,20 @@ public class MultivaluedDialog extends Dialog
         }
     }
 
+    /**
+     * A special configuration for the {@link MultivaluedDialog}.
+     */
+    class MultiValuedEntryEditorConfiguration extends EntryEditorWidgetConfiguration
+    {
+        @Override
+        public ValueEditorManager getValueEditorManager( TreeViewer viewer )
+        {
+            if ( valueEditorManager == null )
+            {
+                valueEditorManager = new ValueEditorManager( viewer.getTree(), false, false );
+            }
+
+            return valueEditorManager;
+        }
+    }
 }
