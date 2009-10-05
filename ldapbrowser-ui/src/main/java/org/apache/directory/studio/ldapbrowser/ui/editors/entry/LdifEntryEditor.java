@@ -24,11 +24,20 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorUtils;
 import org.apache.directory.studio.entryeditors.IEntryEditor;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldifeditor.editor.LdifEditor;
+import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -36,6 +45,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 
 
 /**
@@ -47,7 +57,82 @@ import org.eclipse.ui.PartInitException;
 public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor, IShowEditorInput
 {
 
+    private static final String REFRESH_ACTION = "RefreshAction"; //$NON-NLS-1$
+
+    private static final String FETCH_OPERATIONAL_ATTRIBUTES_ACTION = "FetchOperationalAttributesAction"; //$NON-NLS-1$
+
     private boolean inShowEditorInput = false;
+
+    private IAction refreshAction = new Action()
+    {
+        @Override
+        public ImageDescriptor getImageDescriptor()
+        {
+            return BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_REFRESH );
+        }
+
+
+        @Override
+        public String getText()
+        {
+            return org.apache.directory.studio.ldapbrowser.common.actions.Messages
+                .getString( "RefreshAction.RelaodAttributes" ); //$NON-NLS-1$
+        }
+
+
+        @Override
+        public String getActionDefinitionId()
+        {
+            return "org.eclipse.ui.file.refresh"; //$NON-NLS-1$
+        }
+
+
+        @Override
+        public void run()
+        {
+            IEntry entry = getEntryEditorInput().getResolvedEntry();
+            new StudioBrowserJob( new InitializeAttributesRunnable( entry ) ).execute();
+        }
+    };
+
+    private IAction fetchOperationalAttributesAction = new Action()
+    {
+        @Override
+        public int getStyle()
+        {
+            return Action.AS_CHECK_BOX;
+        }
+
+
+        @Override
+        public String getText()
+        {
+            return org.apache.directory.studio.ldapbrowser.common.actions.Messages
+                .getString( "FetchOperationalAttributesAction.FetchOperationalAttributes" ); //$NON-NLS-1$
+        }
+
+
+        @Override
+        public boolean isEnabled()
+        {
+            IEntry entry = getEntryEditorInput().getResolvedEntry();
+            entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+
+            return !entry.getBrowserConnection().isFetchOperationalAttributes();
+        }
+
+
+        @Override
+        public void run()
+        {
+            IEntry entry = getEntryEditorInput().getResolvedEntry();
+            entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+
+            boolean init = !entry.isInitOperationalAttributes();
+            entry.setInitOperationalAttributes( init );
+            new StudioBrowserJob( new InitializeAttributesRunnable( entry ) ).execute();
+        }
+    };
 
 
     public LdifEntryEditor()
@@ -99,6 +184,42 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     public void dispose()
     {
         super.dispose();
+    }
+
+
+    @Override
+    protected void createActions()
+    {
+        super.createActions();
+
+        setAction( REFRESH_ACTION, refreshAction );
+        setAction( FETCH_OPERATIONAL_ATTRIBUTES_ACTION, fetchOperationalAttributesAction );
+    }
+
+
+    @Override
+    protected void editorContextMenuAboutToShow( IMenuManager menu )
+    {
+        super.editorContextMenuAboutToShow( menu );
+
+        fetchOperationalAttributesAction.setChecked( getEntryEditorInput().getResolvedEntry()
+            .isInitOperationalAttributes() );
+        addAction( menu, ITextEditorActionConstants.GROUP_REST, REFRESH_ACTION );
+        addAction( menu, ITextEditorActionConstants.GROUP_REST, FETCH_OPERATIONAL_ATTRIBUTES_ACTION );
+    }
+
+
+    @Override
+    public void activateGlobalActionHandlers()
+    {
+        ActionUtils.activateActionHandler( refreshAction );
+    }
+
+
+    @Override
+    public void deactivateGlobalActionHandlers()
+    {
+        ActionUtils.deactivateActionHandler( refreshAction );
     }
 
 
