@@ -83,7 +83,12 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
     public BrowserConnectionManager()
     {
         this.connectionMap = new HashMap<String, IBrowserConnection>();
+
+        // no need to fire events while loading connections
+        EventRegistry.suspendEventFiringInCurrentThread();
         loadBrowserConnections();
+        EventRegistry.resumeEventFiringInCurrentThread();
+
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
         EventRegistry.addSearchUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
         EventRegistry.addBookmarkUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
