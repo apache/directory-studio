@@ -130,12 +130,15 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
                 if ( input instanceof SearchResultEditorInput )
                 {
                     SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
-                    for ( ISearchResult sr : srei.getSearch().getSearchResults() )
+                    if ( srei.getSearch() != null && srei.getSearch().getSearchResults() != null )
                     {
-                        if ( modifiedEntry == sr.getEntry() )
+                        for ( ISearchResult sr : srei.getSearch().getSearchResults() )
                         {
-                            // original entry has been updated, update widget input
-                            setSearchResultEditorWidgetInput( srei );
+                            if ( modifiedEntry == sr.getEntry() )
+                            {
+                                // original entry has been updated, update widget input
+                                setSearchResultEditorWidgetInput( srei );
+                            }
                         }
                     }
                 }
