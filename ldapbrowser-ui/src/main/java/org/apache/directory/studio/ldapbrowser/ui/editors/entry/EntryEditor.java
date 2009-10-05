@@ -334,7 +334,10 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      * 
      * @param input the new editor name
      */
-    protected abstract void setEditorName( EntryEditorInput input );
+    protected void setEditorName( EntryEditorInput input )
+    {
+        setPartName( input.getName() );
+    }
 
 
     /**

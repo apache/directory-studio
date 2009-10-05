@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 
 
@@ -48,13 +47,6 @@ public class SingleTabEntryEditor extends EntryEditor
     public boolean isAutoSave()
     {
         return true;
-    }
-
-
-    @Override
-    protected void setEditorName( EntryEditorInput eei )
-    {
-        setPartName( eei.getName() );
     }
 
 }

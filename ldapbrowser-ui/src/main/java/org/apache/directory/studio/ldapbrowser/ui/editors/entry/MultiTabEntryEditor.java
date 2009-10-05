@@ -21,7 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 
 
@@ -52,12 +51,6 @@ public class MultiTabEntryEditor extends EntryEditor
     public boolean isAutoSave()
     {
         return false;
-    }
-
-
-    protected void setEditorName( EntryEditorInput eei )
-    {
-        setPartName( eei.getName() );
     }
 
 }
