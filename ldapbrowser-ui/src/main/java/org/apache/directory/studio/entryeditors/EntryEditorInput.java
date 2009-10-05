@@ -25,6 +25,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.impl.RootDSE;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -131,22 +132,12 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getName()
     {
-        return getResolvedEntry() != null ? getResolvedEntry().getDn().getUpName() : ""; //$NON-NLS-1$
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getToolTipText()
-    {
-        if ( getResolvedEntry() != null )
+        IEntry entry = getResolvedEntry();
+        if ( entry != null )
         {
-            IEntry entry = getResolvedEntry();
-            IBrowserConnection connection = entry.getBrowserConnection();
-            if ( connection != null )
+            if ( entry instanceof RootDSE )
             {
-                return entry.getDn().getUpName() + " - " + connection.getConnection().getName();//$NON-NLS-1$
+                return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
             }
             else
             {
@@ -155,7 +146,29 @@ public class EntryEditorInput implements IEditorInput
         }
 
         return ""; //$NON-NLS-1$
+    }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getToolTipText()
+    {
+        IEntry entry = getResolvedEntry();
+        if ( entry != null )
+        {
+            IBrowserConnection connection = entry.getBrowserConnection();
+            if ( connection != null )
+            {
+                return getName() + " - " + connection.getConnection().getName();//$NON-NLS-1$
+            }
+            else
+            {
+                return getName();
+            }
+        }
+
+        return ""; //$NON-NLS-1$
     }
 
 
