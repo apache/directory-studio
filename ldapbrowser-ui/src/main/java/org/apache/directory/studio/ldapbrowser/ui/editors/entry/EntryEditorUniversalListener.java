@@ -235,6 +235,11 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
      */
     public void entryUpdated( EntryModificationEvent event )
     {
+        if ( viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed() || viewer.getInput() == null )
+        {
+            return;
+        }
+
         super.entryUpdated( event );
         expandFoldedAttributes();
 
