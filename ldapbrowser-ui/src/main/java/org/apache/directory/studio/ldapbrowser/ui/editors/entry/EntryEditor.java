@@ -24,6 +24,8 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorUtils;
 import org.apache.directory.studio.entryeditors.IEntryEditor;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -31,6 +33,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -77,6 +80,22 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /** The outline page. */
     protected EntryEditorOutlinePage outlinePage;
 
+    IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
+    {
+        public void propertyChange( org.eclipse.jface.util.PropertyChangeEvent event )
+        {
+            // set the input again if the auto-save option has been changed
+            if ( event.getProperty() != null )
+            {
+                if ( event.getProperty().equals( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB )
+                    || event.getProperty().equals( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB ) )
+                {
+                    setInput( getEditorInput() );
+                }
+            }
+        }
+    };
+
 
     /**
      * {@inheritDoc}
@@ -85,6 +104,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     {
         setSite( site );
         setInput( input );
+        BrowserCommonActivator.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
     }
 
 
@@ -211,6 +231,8 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
             configuration.dispose();
             configuration = null;
             getSite().setSelectionProvider( null );
+            BrowserCommonActivator.getDefault().getPreferenceStore().removePropertyChangeListener(
+                propertyChangeListener );
         }
 
         super.dispose();
@@ -388,7 +410,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
         {
             // set input, remember old selection and set it afterwards
             ISelection selection = mainWidget.getViewer().getSelection();
-            universalListener.setInput( getEntryEditorInput().getSharedWorkingCopy( this ) );
+            universalListener.setInput( eei.getSharedWorkingCopy( this ) );
             mainWidget.getViewer().setSelection( selection );
         }
     }

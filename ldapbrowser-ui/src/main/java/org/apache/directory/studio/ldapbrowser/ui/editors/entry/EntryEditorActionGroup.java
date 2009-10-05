@@ -68,6 +68,9 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     /** The show operational attributes action. */
     private ShowOperationalAttributesAction showOperationalAttributesAction;
 
+    /** The toggle auto save action */
+    private ToggleAutosaveAction toggleAutosaveAction;
+    
     /** The open entry value editor action. */
     private EntryEditorActionProxy openEntryValueEditorActionProxy;
 
@@ -176,6 +179,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
                 .getValueEditorManager( viewer ).getEntryValueEditor(), this ) );
 
         showOperationalAttributesAction = new ShowOperationalAttributesAction();
+        toggleAutosaveAction = new ToggleAutosaveAction( entryEditor );
         openEntryEditorPreferencePage = new OpenEntryEditorPreferencePageAction();
         collapseAllAction = new CollapseAllAction( viewer );
         expandAllAction = new ExpandAllAction( viewer );
@@ -246,6 +250,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             openEntryValueEditorActionProxy = null;
             openEntryEditorPreferencePage = null;
             showOperationalAttributesAction = null;
+            toggleAutosaveAction = null;
             expandAllAction.dispose();
             expandAllAction = null;
             collapseAllAction.dispose();
@@ -288,6 +293,8 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         menuManager.add( showOperationalAttributesAction );
         menuManager.add( showDecoratedValuesAction );
         menuManager.add( new Separator() );
+        menuManager.add( toggleAutosaveAction );
+        menuManager.add( new Separator() );
         menuManager.add( openEntryEditorPreferencePage );
         menuManager.addMenuListener( new IMenuListener()
         {
@@ -297,6 +304,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
                     .getBoolean( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );
                 showOperationalAttributesAction.setChecked( BrowserCommonActivator.getDefault().getPreferenceStore()
                     .getBoolean( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
+                toggleAutosaveAction.updateSetChecked();
             }
         } );
         menuManager.update( true );

@@ -163,7 +163,7 @@ public class EntryEditorManager
     {
         public void partActivated( IWorkbenchPartReference partRef )
         {
-            cleanupCopies( partRef );
+            cleanupCopies( partRef.getPage() );
 
             IEntryEditor editor = getEntryEditor( partRef );
             if ( editor != null )
@@ -222,13 +222,13 @@ public class EntryEditorManager
 
         public void partClosed( IWorkbenchPartReference partRef )
         {
-            cleanupCopies( partRef );
+            cleanupCopies( partRef.getPage() );
         }
 
 
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
-            cleanupCopies( partRef );
+            cleanupCopies( partRef.getPage() );
         }
 
 
@@ -833,6 +833,8 @@ public class EntryEditorManager
 
     IEntry getSharedWorkingCopy( IEntry originalEntry, IEntryEditor editor )
     {
+        cleanupCopies( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() );
+
         EntryEditorUtils.ensureAttributesInitialized( originalEntry );
         if ( editor.isAutoSave() )
         {
@@ -968,12 +970,12 @@ public class EntryEditorManager
     }
 
 
-    private void cleanupCopies( IWorkbenchPartReference partRef )
+    private void cleanupCopies( IWorkbenchPage page )
     {
         // cleanup unused copies (OSC + auto-save)
         Set<IEntry> oscEntries = new HashSet<IEntry>();
         Set<IEntry> autoSaveEntries = new HashSet<IEntry>();
-        IEditorReference[] editorReferences = partRef.getPage().getEditorReferences();
+        IEditorReference[] editorReferences = page.getEditorReferences();
         for ( IEditorReference ref : editorReferences )
         {
             IEntryEditor editor = getEntryEditor( ref );

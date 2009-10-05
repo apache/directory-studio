@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 
 
@@ -46,7 +48,8 @@ public class SingleTabEntryEditor extends EntryEditor
 
     public boolean isAutoSave()
     {
-        return true;
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB );
     }
 
 }

@@ -88,6 +88,8 @@ public interface BrowserCommonConstants
     public static final String PREFERENCE_ENTRYEDITOR_SHOW_MUST_ATTRIBUTES = "entryeditorShowMustAttributes"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_SHOW_OBJECTCLASS_ATTRIBUTES = "entryeditorShowObjectClassAttribute"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES = "entryeditorShowOperationalAttributes"; //$NON-NLS-1$
+    public static final String PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB = "entryeditorAutoSaveSingleTab"; //$NON-NLS-1$
+    public static final String PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB = "entryeditorAutoSaveMultiTab"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING = "entryeditorEnableFolding"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD = "entryeditorFoldingThreshold"; //$NON-NLS-1$
     public static final String PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES = "entryeditorAutoExpandFoldedAttributes"; //$NON-NLS-1$

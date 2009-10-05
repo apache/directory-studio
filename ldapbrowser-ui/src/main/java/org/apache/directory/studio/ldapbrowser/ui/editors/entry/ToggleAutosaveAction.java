@@ -23,37 +23,57 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
+import org.eclipse.jface.action.Action;
 
 
 /**
- * An entry editor the opens a new editor tab for each entry.
- * 
- * TODO: Configurable modificaton mode
- * Right now the modification mode is fixed: no immediate commit of changes, 
- * instead the editor follows the open-save-close lifecycle.
+ * This action is used to toggle the "auto-save" preference.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class MultiTabEntryEditor extends EntryEditor
+public class ToggleAutosaveAction extends Action
 {
 
+    private EntryEditor entryEditor;
+
+
     /**
-     * Gets the ID of the MultiTabEntryEditor.
-     * 
-     * @return the id of the MultiTabEntryEditor
+     * Creates a new instance of ToggleAutosaveAction.
      */
-    public static String getId()
+    public ToggleAutosaveAction( EntryEditor entryEditor )
     {
-        return BrowserUIConstants.EDITOR_MULTI_TAB_ENTRY_EDITOR;
+        super( Messages.getString( "ToggleAutosaveAction.Autosave" ), AS_CHECK_BOX ); //$NON-NLS-1$
+        setToolTipText( getText() );
+        setEnabled( true );
+        this.entryEditor = entryEditor;
     }
 
 
-    public boolean isAutoSave()
+    @Override
+    public void run()
     {
-        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
-            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB );
+        BrowserCommonActivator.getDefault().getPreferenceStore().setValue( getConstant(), super.isChecked() );
+    }
+
+
+    private String getConstant()
+    {
+        boolean multiTab = entryEditor.getEntryEditorInput().getExtension().isMultiWindow();
+        if ( multiTab )
+        {
+            return BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB;
+        }
+        else
+        {
+            return BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB;
+        }
+    }
+
+
+    public void updateSetChecked()
+    {
+        setChecked( BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean( getConstant() ) );
     }
 
 }

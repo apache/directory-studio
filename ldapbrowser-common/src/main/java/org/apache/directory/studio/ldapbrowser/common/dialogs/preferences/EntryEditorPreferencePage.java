@@ -56,6 +56,10 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
 
     private Button showOperationalAttributesButton;
 
+    private Button autosaveSingleTabButton;
+
+    private Button autosaveMultiTabButton;
+
     private Button enableFoldingButton;
 
     private Label foldingThresholdLabel;
@@ -160,6 +164,20 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         autoExpandFoldedAttributesButton.setSelection( getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES ) );
 
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        BaseWidgetUtils.createSpacer( composite, 1 );
+        Group autosaveGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            Messages.getString( "EntryEditorPreferencePage.Autosave" ), 1 ); //$NON-NLS-1$
+        Composite autosaveComposite = BaseWidgetUtils.createColumnContainer( autosaveGroup, 1, 1 );
+        autosaveSingleTabButton = BaseWidgetUtils.createCheckbox( autosaveComposite, Messages
+            .getString( "EntryEditorPreferencePage.AutosaveSingleTab" ), 1 ); //$NON-NLS-1$
+        autosaveSingleTabButton.setSelection( getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB ) );
+        autosaveMultiTabButton = BaseWidgetUtils.createCheckbox( autosaveComposite, Messages
+            .getString( "EntryEditorPreferencePage.AutosaveMultiTab" ), 1 ); //$NON-NLS-1$
+        autosaveMultiTabButton.setSelection( getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB ) );
+
         updateEnabled();
 
         applyDialogFont( composite );
@@ -190,6 +208,11 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES,
             showOperationalAttributesButton.getSelection() );
 
+        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB,
+            autosaveSingleTabButton.getSelection() );
+        getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB,
+            autosaveMultiTabButton.getSelection() );
+
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING,
             enableFoldingButton.getSelection() );
         getPreferenceStore().setValue( BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD,
@@ -214,6 +237,11 @@ public class EntryEditorPreferencePage extends PreferencePage implements IWorkbe
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_MAY_ATTRIBUTES ) );
         showOperationalAttributesButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_SHOW_OPERATIONAL_ATTRIBUTES ) );
+
+        autosaveSingleTabButton.setSelection( getPreferenceStore().getDefaultBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB ) );
+        autosaveMultiTabButton.setSelection( getPreferenceStore().getDefaultBoolean(
+            BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_MULTI_TAB ) );
 
         enableFoldingButton.setSelection( getPreferenceStore().getDefaultBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING ) );
