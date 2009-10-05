@@ -32,6 +32,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateAdapter;
+import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
@@ -140,6 +145,21 @@ public class EntryEditorManager
         }
     };
 
+    /** The listener for connection update */
+    private ConnectionUpdateListener connectionUpdateListener = new ConnectionUpdateAdapter()
+    {
+        public void connectionClosed( Connection connection )
+        {
+            closeEditorsBelongingToConnection( connection );
+        };
+
+
+        public void connectionRemoved( Connection connection )
+        {
+            closeEditorsBelongingToConnection( connection );
+        };
+    };
+
 
     /**
      * Creates a new instance of EntryEditorManager.
@@ -150,6 +170,9 @@ public class EntryEditorManager
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( partListener );
         EventRegistry
             .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
+        ConnectionEventRegistry.addConnectionUpdateListener( connectionUpdateListener, ConnectionUIPlugin.getDefault()
+            .getEventRunner() );
+
     }
 
 
@@ -346,6 +369,34 @@ public class EntryEditorManager
         }
 
         return sortedEntryEditorsList;
+    }
+
+
+    /**
+     * Closes the open editors belonging to the given connection.
+     *
+     * @param connection
+     *      the connection
+     */
+    private void closeEditorsBelongingToConnection( Connection connection )
+    {
+        if ( connection != null )
+        {
+            IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .getEditorReferences();
+            for ( IEditorReference ref : editorReferences )
+            {
+                IEntryEditor editor = getEntryEditor( ref );
+                if ( editor != null )
+                {
+                    IBrowserConnection bc = editor.getEntryEditorInput().getResolvedEntry().getBrowserConnection();
+                    if ( connection.equals( bc.getConnection() ) )
+                    {
+                        ref.getPage().closeEditor( ref.getEditor( false ), false );
+                    }
+                }
+            }
+        }
     }
 
 
@@ -826,7 +877,6 @@ public class EntryEditorManager
 
     private EntryUpdateListener entryUpdateListener = new EntryUpdateListener()
     {
-
         public void entryUpdated( EntryModificationEvent event )
         {
             IEntry modifiedEntry = event.getModifiedEntry();
