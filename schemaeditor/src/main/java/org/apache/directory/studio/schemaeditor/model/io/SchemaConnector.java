@@ -47,13 +47,6 @@ public interface SchemaConnector
      *      true if the SchemaConnector is suitable for the given connection,
      *      false if not
      */
-    /**
-     * TODO isSuitableConnector.
-     *
-     * @param connection
-     * @param monitor
-     * @return
-     */
     public boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor );
 
 
