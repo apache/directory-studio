@@ -66,7 +66,10 @@
     <distMgmtSiteUrl>scpexe://vm094.oxylos.org/var/www/html/projects/studio/</distMgmtSiteUrl>
     <!-- Set versions for subprojects -->
     <aciitemeditor.version>1.5.0-SNAPSHOT</aciitemeditor.version>
-    <apacheds.launcher.version>1.5.0-SNAPSHOT</apacheds.launcher.version>
+    <!-- <!> <!> <!> WARNING <!> <!> <!> -->
+    <!-- The version for the Apache DS launcher needs to be set to a final version. -->
+    <!-- Make sure to add the "-SNAPSHOT" string to the version before releasing. -->
+    <apacheds.launcher.version>1.5.0</apacheds.launcher.version>
     <apacheds.version>1.5.0-SNAPSHOT</apacheds.version>
     <apacheds.feature.version>1.5.0-SNAPSHOT</apacheds.feature.version>
     <apacheds.help.version>1.5.0-SNAPSHOT</apacheds.help.version>
