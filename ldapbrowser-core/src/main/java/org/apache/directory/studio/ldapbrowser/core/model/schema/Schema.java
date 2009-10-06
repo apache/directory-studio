@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.schema.UsageEnum;
@@ -48,6 +49,7 @@ import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleUseDescriptio
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
@@ -235,6 +237,17 @@ public class Schema
         setSchemaRecord( schemaRecord );
         setDn( new LdapDN( schemaRecord.getDnLine().getValueAsString() ) );
 
+        ObjectClassDescriptionSchemaParser ocdPparser = new ObjectClassDescriptionSchemaParser();
+        ocdPparser.setQuirksMode( true );
+        AttributeTypeDescriptionSchemaParser atdParser = new AttributeTypeDescriptionSchemaParser();
+        atdParser.setQuirksMode( true );
+        LdapSyntaxDescriptionSchemaParser lsdParser = new LdapSyntaxDescriptionSchemaParser();
+        lsdParser.setQuirksMode( true );
+        MatchingRuleDescriptionSchemaParser mrdParser = new MatchingRuleDescriptionSchemaParser();
+        mrdParser.setQuirksMode( true );
+        MatchingRuleUseDescriptionSchemaParser mrudParser = new MatchingRuleUseDescriptionSchemaParser();
+        mrudParser.setQuirksMode( true );
+
         LdifAttrValLine[] lines = schemaRecord.getAttrVals();
         for ( int i = 0; i < lines.length; i++ )
         {
@@ -248,49 +261,44 @@ public class Schema
             {
                 if ( attributeName.equalsIgnoreCase( SchemaConstants.OBJECT_CLASSES_AT ) )
                 {
-                    ObjectClassDescriptionSchemaParser parser = new ObjectClassDescriptionSchemaParser();
-                    parser.setQuirksMode( true );
-                    ObjectClassDescription ocd = parser.parseObjectClassDescription( value );
+                    ObjectClassDescription ocd = ocdPparser.parseObjectClassDescription( value );
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addObjectClassDescription( ocd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.ATTRIBUTE_TYPES_AT ) )
                 {
-                    AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
-                    parser.setQuirksMode( true );
-                    AttributeTypeDescription atd = parser.parseAttributeTypeDescription( value );
+                    AttributeTypeDescription atd = atdParser.parseAttributeTypeDescription( value );
                     atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addAttributeTypeDescription( atd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.LDAP_SYNTAXES_AT ) )
                 {
-                    LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
-                    parser.setQuirksMode( true );
-                    LdapSyntaxDescription lsd = parser.parseLdapSyntaxDescription( value );
+                    LdapSyntaxDescription lsd = lsdParser.parseLdapSyntaxDescription( value );
+                    if ( StringUtils.isEmpty( lsd.getDescription() )
+                        && Utils.getOidDescription( lsd.getNumericOid() ) != null )
+                    {
+                        lsd.setDescription( Utils.getOidDescription( lsd.getNumericOid() ) );
+                    }
                     lsd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addLdapSyntaxDescription( lsd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULES_AT ) )
                 {
-                    MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
-                    parser.setQuirksMode( true );
-                    MatchingRuleDescription mrd = parser.parseMatchingRuleDescription( value );
+                    MatchingRuleDescription mrd = mrdParser.parseMatchingRuleDescription( value );
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleDescription( mrd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULE_USE_AT ) )
                 {
-                    MatchingRuleUseDescriptionSchemaParser parser = new MatchingRuleUseDescriptionSchemaParser();
-                    parser.setQuirksMode( true );
-                    MatchingRuleUseDescription mrud = parser.parseMatchingRuleUseDescription( value );
+                    MatchingRuleUseDescription mrud = mrudParser.parseMatchingRuleUseDescription( value );
                     mrud.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleUseDescription( mrud );
                 }
-                else if ( attributeName.equalsIgnoreCase(  SchemaConstants.CREATE_TIMESTAMP_AT ) )
+                else if ( attributeName.equalsIgnoreCase( SchemaConstants.CREATE_TIMESTAMP_AT ) )
                 {
                     setCreateTimestamp( value );
                 }
-                else if ( attributeName.equalsIgnoreCase(  SchemaConstants.MODIFY_TIMESTAMP_AT ) )
+                else if ( attributeName.equalsIgnoreCase( SchemaConstants.MODIFY_TIMESTAMP_AT ) )
                 {
                     setModifyTimestamp( value );
                 }
@@ -303,6 +311,25 @@ public class Schema
             }
         }
 
+        for ( AttributeTypeDescription atd : getAttributeTypeDescriptions() )
+        {
+            // assume all received syntaxes in attributes are valid -> create pseudo syntaxes if missing
+            String syntaxOid = atd.getSyntax();
+            if ( syntaxOid != null && !hasLdapSyntaxDescription( syntaxOid ) )
+            {
+                LdapSyntaxDescription lsd = new LdapSyntaxDescription();
+                lsd.setNumericOid( syntaxOid );
+                lsd.setDescription( Utils.getOidDescription( syntaxOid ) );
+                addLdapSyntaxDescription( lsd );
+            }
+
+            // assume all received matching rules in attributes are valid -> create pseudo matching rules if missing
+            String emr = atd.getEqualityMatchingRule();
+            String omr = atd.getOrderingMatchingRule();
+            String smr = atd.getSubstringsMatchingRule();
+            checkMatchingRules( emr, omr, smr );
+        }
+
         // set extensibleObject may attributes
         ObjectClassDescription extensibleObjectOcd = this
             .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
@@ -310,6 +337,21 @@ public class Schema
         Collection<String> atdNames = SchemaUtils.getNames( userAtds );
         List<String> atdNames2 = new ArrayList<String>( atdNames );
         extensibleObjectOcd.setMayAttributeTypes( atdNames2 );
+    }
+
+
+    private void checkMatchingRules( String... matchingRules )
+    {
+        for ( String matchingRule : matchingRules )
+        {
+            if ( matchingRule != null && !hasMatchingRuleDescription( matchingRule ) )
+            {
+                MatchingRuleDescription mrd = new MatchingRuleDescription();
+                mrd.setNumericOid( matchingRule );
+                mrd.getNames().add( matchingRule );
+                addMatchingRuleDescription( mrd );
+            }
+        }
     }
 
 
@@ -563,7 +605,7 @@ public class Schema
             AttributeTypeDescription atd = new AttributeTypeDescription();
             atd.setNumericOid( attributeType );
             atd.setNames( attributeTypes );
-            atd.setUserModifiable( false );
+            atd.setUserModifiable( true );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );
             atd.setExtensions( DUMMY_EXTENSIONS );
             return atd;

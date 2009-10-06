@@ -81,6 +81,8 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
                 new BinaryAttribute( "2.5.4.39" ), // certificateRevocationList //$NON-NLS-1$
                 new BinaryAttribute( "2.5.4.40" ), // crossCertificatePair //$NON-NLS-1$
                 new BinaryAttribute( "2.5.4.45" ), // x500UniqueIdentifier //$NON-NLS-1$
+                new BinaryAttribute( "1.2.840.113556.1.4.2" ), // objectGUID //$NON-NLS-1$
+                new BinaryAttribute( "1.2.840.113556.1.4.146" ), // objectSid //$NON-NLS-1$
             };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultBinaryAttributes( defaultBinaryAttributes );
 
@@ -95,6 +97,7 @@ public class BrowserCorePreferencesInitializer extends AbstractPreferenceInitial
                 new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.40" ), // Octet String //$NON-NLS-1$
                 new BinarySyntax( "1.3.6.1.4.1.1466.115.121.1.49" ), // Supported Algorithm //$NON-NLS-1$
                 new BinarySyntax( "1.3.6.1.1.16.1" ), // UUID //$NON-NLS-1$
+                new BinarySyntax( "2.5.5.10" ), // MS-specific: Octet,Replica-Link //$NON-NLS-1$
             };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultBinarySyntaxes( defaultBinarySyntaxes );
     }
