@@ -79,8 +79,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
      */
     protected boolean showRawValues()
     {
-        return BrowserCommonActivator.getDefault().getPreferenceStore()
-            .getBoolean( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES );
+        return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
+            BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES );
     }
 
 
@@ -140,9 +140,13 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
         {
             IValue.EmptyValue emptyValue = ( IValue.EmptyValue ) value;
             if ( emptyValue.isBinary() )
+            {
                 value = emptyValue.getBinaryValue();
+            }
             else
+            {
                 value = emptyValue.getStringValue();
+            }
         }
         this.value = value;
     }
@@ -206,9 +210,8 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
         }
 
         List<IValue> valueList = new ArrayList<IValue>();
-        for ( Iterator it = attributeHierarchy.iterator(); it.hasNext(); )
+        for ( IAttribute attribute : attributeHierarchy )
         {
-            IAttribute attribute = ( IAttribute ) it.next();
             valueList.addAll( Arrays.asList( attribute.getValues() ) );
         }
 
@@ -218,7 +221,9 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
             IValue value = it.next();
             sb.append( getDisplayValue( value ) );
             if ( it.hasNext() )
+            {
                 sb.append( ", " ); //$NON-NLS-1$
+            }
         }
         return sb.toString();
     }
