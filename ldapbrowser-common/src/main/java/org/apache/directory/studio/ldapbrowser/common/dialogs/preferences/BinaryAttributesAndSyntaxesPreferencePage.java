@@ -38,6 +38,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.BinaryAttribute
 import org.apache.directory.studio.ldapbrowser.core.model.schema.BinarySyntax;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -500,6 +501,10 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                                 .get( attribute.getAttributeNumericOidOrName() );
                             return SchemaUtils.toString( atd );
                         }
+                        else if ( Utils.getOidDescription( attribute.getAttributeNumericOidOrName() ) != null )
+                        {
+                            return Utils.getOidDescription( attribute.getAttributeNumericOidOrName() );
+                        }
                     }
                 }
             }
@@ -533,6 +538,10 @@ public class BinaryAttributesAndSyntaxesPreferencePage extends PreferencePage im
                             LdapSyntaxDescription lsd = ( LdapSyntaxDescription ) syntaxOid2LsdMap.get( syntax
                                 .getSyntaxNumericOid() );
                             return SchemaUtils.toString( lsd );
+                        }
+                        else if ( Utils.getOidDescription( syntax.getSyntaxNumericOid() ) != null )
+                        {
+                            return Utils.getOidDescription( syntax.getSyntaxNumericOid() );
                         }
                     }
                 }
