@@ -656,7 +656,7 @@ public class EntryEditorManager
             for ( IEditorReference ref : activePage.getEditorReferences() )
             {
                 IEntryEditor editor = getEntryEditor( ref );
-                if ( editor != null )
+                if ( editor != null && editor.getEntryEditorInput().getResolvedEntry() != null )
                 {
                     IBrowserConnection bc = editor.getEntryEditorInput().getResolvedEntry().getBrowserConnection();
                     if ( connection.equals( bc.getConnection() ) )
