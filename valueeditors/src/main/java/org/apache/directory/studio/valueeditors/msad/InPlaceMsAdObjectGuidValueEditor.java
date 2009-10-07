@@ -18,32 +18,37 @@
  *  
  */
 
-package org.apache.directory.studio.valueeditors.uuid;
+package org.apache.directory.studio.valueeditors.msad;
 
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.HexValueEditor;
 
 
 /**
- * Implementation of IValueEditor for syntax 1.3.6.1.1.16.1 (UUID), e.g. used by entryUUID.
+ * Implementation of IValueEditor for Microsoft Active Directory attribute 'objectGUID'.
  * 
  * Currently only the getDisplayValue() method is implemented.
  * For modification the raw string must be edited.
- *
+ * 
+ * There are two special characteristics compared to the default UUID editor:
+ * <ul>
+ * <li>The first 64 bit of the MS AD GUID are little-endian, so we must reorder the bytes.
+ *     See <a href="http://msdn.microsoft.com/en-us/library/dd302644(PROT.10).aspx">
+ *     http://msdn.microsoft.com/en-us/library/dd302644(PROT.10).aspx</a> or
+ *     <a href="http://en.wikipedia.org/wiki/Globally_Unique_Identifier">
+ *     http://en.wikipedia.org/wiki/Globally_Unique_Identifier</a>.
+ * <li>The Curly Braced GUID String Syntax is used.
+ *     See <a href="http://msdn.microsoft.com/en-us/library/cc230316(PROT.10).aspx">
+ *     http://msdn.microsoft.com/en-us/library/cc230316(PROT.10).aspx</a>.
+ * </ul>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class InPlaceUuidValueEditor extends HexValueEditor
+public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
 {
-    private static final String UUID_REGEX = "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$"; //$NON-NLS-1$
-
-
-    /**
-     * {@inheritDoc}
-     */
     public String getDisplayValue( IValue value )
     {
         if ( !showRawValues() )
@@ -52,15 +57,7 @@ public class InPlaceUuidValueEditor extends HexValueEditor
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
-                String string = StringTools.utf8ToString( bytes );
-                if ( string.matches( UUID_REGEX ) || StringTools.isEmpty( string ) )
-                {
-                    return string;
-                }
-                else
-                {
-                    return convertToString( bytes );
-                }
+                return convertToString( bytes );
             }
         }
 
@@ -72,20 +69,28 @@ public class InPlaceUuidValueEditor extends HexValueEditor
     {
         if ( bytes == null || bytes.length != 16 )
         {
-            return "Invalid UUID";
+            return "Invalid GUID";
         }
 
         char[] hex = Hex.encodeHex( bytes );
         StringBuffer sb = new StringBuffer();
-        sb.append( hex, 0, 8 );
+        sb.append( '{' );
+        sb.append( hex, 6, 2 );
+        sb.append( hex, 4, 2 );
+        sb.append( hex, 2, 2 );
+        sb.append( hex, 0, 2 );
         sb.append( '-' );
-        sb.append( hex, 8, 4 );
+        sb.append( hex, 10, 2 );
+        sb.append( hex, 8, 2 );
         sb.append( '-' );
-        sb.append( hex, 12, 4 );
+        sb.append( hex, 14, 2 );
+        sb.append( hex, 12, 2 );
         sb.append( '-' );
         sb.append( hex, 16, 4 );
         sb.append( '-' );
         sb.append( hex, 20, 12 );
+        sb.append( '}' );
         return sb.toString().toLowerCase();
     }
+
 }

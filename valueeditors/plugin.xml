@@ -82,11 +82,23 @@
     </valueEditor>
     <valueEditor
           class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
-          icon="resources/icons/passwordeditor.gif"
+          icon="resources/icons/entryuuideditor.gif"
           name="%ValueEditor_InPlaceEntryUUIDValueEditor_name">
        <syntax
              syntaxOID="1.3.6.1.1.16.1">
        </syntax>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.msad.InPlaceMsAdObjectGuidValueEditor"
+          icon="resources/icons/msadobjectguideditor.gif"
+          name="%ValueEditor_InPlaceMsAdObjectGuidValueEditor_name">
+      <attribute attributeType="objectGUID"/>
+    </valueEditor>
+    <valueEditor
+          class="org.apache.directory.studio.valueeditors.msad.InPlaceMsAdObjectSidValueEditor"
+          icon="resources/icons/msadobjectsideditor.gif"
+          name="%ValueEditor_InPlaceMsAdObjectSidValueEditor_name">
+      <attribute attributeType="objectSid"/>
     </valueEditor>
     <valueEditor
           class="org.apache.directory.studio.valueeditors.certificate.CertificateValueEditor"
