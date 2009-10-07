@@ -29,19 +29,6 @@ import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.events.AttributeAddedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.AttributeDeletedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ChildrenInitializedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueDeletedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
-import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ValueModifiedEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.ValueRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -59,7 +46,7 @@ import org.eclipse.search.ui.ISearchPageScoreComputer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DelegateEntry implements IEntry, EntryUpdateListener
+public class DelegateEntry implements IEntry
 {
 
     private static final long serialVersionUID = -4488685394817691963L;
@@ -95,7 +82,6 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         this.dn = dn;
         this.entryDoesNotExist = false;
         this.delegate = null;
-        EventRegistry.addEntryUpdateListener( this, BrowserCorePlugin.getDefault().getEventRunner() );
     }
 
 
@@ -759,91 +745,6 @@ public class DelegateEntry implements IEntry, EntryUpdateListener
         if ( getDelegate() != null )
         {
             getDelegate().setSubentry( b );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void entryUpdated( EntryModificationEvent event )
-    {
-        IBrowserConnection conn = BrowserCorePlugin.getDefault().getConnectionManager().getBrowserConnectionById(
-            connectionId );
-        if ( conn == null )
-        {
-            EventRegistry.removeEntryUpdateListener( this );
-            return;
-        }
-
-        if ( event.getModifiedEntry() == getDelegate() )
-        {
-            if ( event instanceof AttributeAddedEvent )
-            {
-                AttributeAddedEvent e = ( AttributeAddedEvent ) event;
-                AttributeAddedEvent delegateEvent = new AttributeAddedEvent( e.getConnection(), this, e
-                    .getAddedAttribute() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof AttributeDeletedEvent )
-            {
-                AttributeDeletedEvent e = ( AttributeDeletedEvent ) event;
-                AttributeDeletedEvent delegateEvent = new AttributeDeletedEvent( e.getConnection(), this, e
-                    .getDeletedAttribute() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof AttributesInitializedEvent )
-            {
-                AttributesInitializedEvent delegateEvent = new AttributesInitializedEvent( this );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof EmptyValueAddedEvent )
-            {
-                EmptyValueAddedEvent e = ( EmptyValueAddedEvent ) event;
-                EmptyValueAddedEvent delegateEvent = new EmptyValueAddedEvent( e.getConnection(), this, e
-                    .getModifiedAttribute(), e.getAddedValue() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof EmptyValueDeletedEvent )
-            {
-                EmptyValueDeletedEvent e = ( EmptyValueDeletedEvent ) event;
-                EmptyValueDeletedEvent delegateEvent = new EmptyValueDeletedEvent( e.getConnection(), this, e
-                    .getModifiedAttribute(), e.getDeletedValue() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof ChildrenInitializedEvent )
-            {
-                ChildrenInitializedEvent delegateEvent = new ChildrenInitializedEvent( this );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof ValueAddedEvent )
-            {
-                ValueAddedEvent e = ( ValueAddedEvent ) event;
-                ValueAddedEvent delegateEvent = new ValueAddedEvent( e.getConnection(), this, e.getModifiedAttribute(),
-                    e.getAddedValue() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof ValueDeletedEvent )
-            {
-                ValueDeletedEvent e = ( ValueDeletedEvent ) event;
-                ValueDeletedEvent delegateEvent = new ValueDeletedEvent( e.getConnection(), this, e
-                    .getModifiedAttribute(), e.getDeletedValue() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof ValueModifiedEvent )
-            {
-                ValueModifiedEvent e = ( ValueModifiedEvent ) event;
-                ValueModifiedEvent delegateEvent = new ValueModifiedEvent( e.getConnection(), this, e
-                    .getModifiedAttribute(), e.getOldValue(), e.getNewValue() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
-            else if ( event instanceof ValueRenamedEvent )
-            {
-                ValueRenamedEvent e = ( ValueRenamedEvent ) event;
-                ValueRenamedEvent delegateEvent = new ValueRenamedEvent( e.getConnection(), this, e.getOldValue(), e
-                    .getNewValue() );
-                EventRegistry.fireEntryUpdated( delegateEvent, this );
-            }
         }
     }
 
