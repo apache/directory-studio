@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?><metadata>
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xsi:schemaLocation="http://maven.apache.org/METADATA/1.0.0 http://maven.apache.org/xsd/metadata-1.0.0.xsd" xmlns="http://maven.apache.org/METADATA/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <groupId>org.eclipse.ui</groupId>
   <artifactId>ide</artifactId>
   <version>3.3.2.M20080207-0800-studio</version>
@@ -11,6 +13,6 @@
       <version>3.5.0.I20090525-2000</version>
       <version>3.5.0.I20090525-2000-studio</version>
     </versions>
-    <lastUpdated>20090825122810</lastUpdated>
+    <lastUpdated>20091007153106</lastUpdated>
   </versioning>
 </metadata>
