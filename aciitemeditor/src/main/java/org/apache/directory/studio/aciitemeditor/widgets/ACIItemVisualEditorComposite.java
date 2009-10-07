@@ -26,7 +26,11 @@ import java.util.Collection;
 import org.apache.directory.shared.ldap.aci.ACIItem;
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.ItemFirstACIItem;
+import org.apache.directory.shared.ldap.aci.ItemPermission;
+import org.apache.directory.shared.ldap.aci.ProtectedItem;
+import org.apache.directory.shared.ldap.aci.UserClass;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
+import org.apache.directory.shared.ldap.aci.UserPermission;
 import org.apache.directory.shared.ldap.constants.AuthenticationLevel;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.eclipse.swt.SWT;
@@ -220,15 +224,15 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
         ACIItem aciItem = null;
         if ( generalComposite.isUserFirst() )
         {
-            Collection userClasses = userFirstUserClassesComposite.getUserClasses();
-            Collection userPermissions = userFirstUserPermissionsComposite.getUserPermissions();
+            Collection<UserClass> userClasses = userFirstUserClassesComposite.getUserClasses();
+            Collection<UserPermission> userPermissions = userFirstUserPermissionsComposite.getUserPermissions();
             aciItem = new UserFirstACIItem( identificationTag, precedence, authenticationLevel, userClasses,
                 userPermissions );
         }
         else if ( generalComposite.isItemFirst() )
         {
-            Collection protectedItems = itemFirstProtectedItemsComposite.getProtectedItems();
-            Collection itemPermissions = itemFirstItemPermissionsComposite.getItemPermissions();
+            Collection<ProtectedItem> protectedItems = itemFirstProtectedItemsComposite.getProtectedItems();
+            Collection<ItemPermission> itemPermissions = itemFirstItemPermissionsComposite.getItemPermissions();
             aciItem = new ItemFirstACIItem( identificationTag, precedence, authenticationLevel, protectedItems,
                 itemPermissions );
         }
