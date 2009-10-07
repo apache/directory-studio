@@ -343,7 +343,7 @@ public class EntryEditorManager
                 for ( IEditorReference ref : activePage.getEditorReferences() )
                 {
                     IEntryEditor editor = getEntryEditor( ref );
-                    if ( editor != null )
+                    if ( editor != null && editor.getEntryEditorInput().getResolvedEntry() != null )
                     {
                         IBrowserConnection bc = editor.getEntryEditorInput().getResolvedEntry().getBrowserConnection();
                         LdapDN dn = editor.getEntryEditorInput().getResolvedEntry().getDn();
@@ -1023,7 +1023,7 @@ public class EntryEditorManager
             if ( editor != null )
             {
                 EntryEditorInput input = editor.getEntryEditorInput();
-                if ( input != null )
+                if ( input != null && input.getResolvedEntry() != null  )
                 {
                     IEntry entry = input.getResolvedEntry();
                     if ( editor.isAutoSave() )
