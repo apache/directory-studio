@@ -72,7 +72,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
      * @param entries the entries
      * @param purgeAllCaches true to purge all caches
      */
-    public InitializeChildrenRunnable( IEntry[] entries, boolean purgeAllCaches )
+    public InitializeChildrenRunnable( boolean purgeAllCaches, IEntry... entries )
     {
         this.entries = entries;
         this.purgeAllCaches = purgeAllCaches;

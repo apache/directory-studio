@@ -53,9 +53,9 @@ public class UnfilterChildrenAction extends BrowserAction
     {
         if ( getSelectedEntries().length == 1 )
         {
-            getSelectedEntries()[0].setChildrenFilter( null );
-            new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
-                { getSelectedEntries()[0] }, true ) ).execute();
+            IEntry entry = getSelectedEntries()[0];
+            entry.setChildrenFilter( null );
+            new StudioBrowserJob( new InitializeChildrenRunnable( true, entry ) ).execute();
         }
     }
 

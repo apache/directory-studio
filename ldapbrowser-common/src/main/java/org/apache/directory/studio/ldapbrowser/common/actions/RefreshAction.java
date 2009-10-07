@@ -134,8 +134,8 @@ public class RefreshAction extends BrowserAction
 
         if ( entries.size() > 0 )
         {
-            InitializeChildrenRunnable initializeChildrenRunnable = new InitializeChildrenRunnable( entries
-                .toArray( new IEntry[0] ), true );
+            InitializeChildrenRunnable initializeChildrenRunnable = new InitializeChildrenRunnable( true, entries
+                .toArray( new IEntry[0] ) );
             new StudioBrowserJob( initializeChildrenRunnable ).execute();
         }
         if ( searches.length > 0 )

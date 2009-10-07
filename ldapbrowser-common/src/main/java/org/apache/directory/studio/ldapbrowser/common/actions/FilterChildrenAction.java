@@ -58,23 +58,23 @@ public class FilterChildrenAction extends BrowserAction
     {
         if ( getSelectedEntries().length == 1 )
         {
-            FilterWidgetDialog dialog = new FilterWidgetDialog( getShell(), Messages.getString("FilterChildrenAction.FilterChildren"), getSelectedEntries()[0] //$NON-NLS-1$
-                .getChildrenFilter(), getSelectedEntries()[0].getBrowserConnection() );
+            IEntry entry = getSelectedEntries()[0];
+            FilterWidgetDialog dialog = new FilterWidgetDialog( getShell(), Messages
+                .getString( "FilterChildrenAction.FilterChildren" ), //$NON-NLS-1$
+                entry.getChildrenFilter(), entry.getBrowserConnection() );
             if ( dialog.open() == Dialog.OK )
             {
                 String newFilter = dialog.getFilter();
 
                 if ( newFilter == null || "".equals( newFilter.trim() ) ) //$NON-NLS-1$
                 {
-                    getSelectedEntries()[0].setChildrenFilter( null );
+                    entry.setChildrenFilter( null );
                 }
                 else
                 {
-                    getSelectedEntries()[0].setChildrenFilter( newFilter.trim() );
+                    entry.setChildrenFilter( newFilter.trim() );
                 }
-                new StudioBrowserJob( new InitializeChildrenRunnable( new IEntry[]
-                    { getSelectedEntries()[0] }, true ) ).execute();
-
+                new StudioBrowserJob( new InitializeChildrenRunnable( true, entry ) ).execute();
             }
         }
     }
