@@ -170,12 +170,12 @@ class ExclusionDialog extends Dialog
         typeCombo.setLayoutData( gridData );
 
         BaseWidgetUtils.createLabel( composite, Messages.getString( "ExclusionValueEditor.label.rdn" ), 1 ); //$NON-NLS-1$
-        entryWidget = new EntryWidget( connection, null, base );
+        entryWidget = new EntryWidget( connection, null, base, true );
         entryWidget.createWidget( composite );
         try
         {
             LdapDN dn = new LdapDN( initalDN );
-            entryWidget.setInput( connection, dn, base );
+            entryWidget.setInput( connection, dn, base, true );
         }
         catch ( InvalidNameException e )
         {

@@ -31,8 +31,8 @@ import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecificationParser;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.connection.core.DnUtils;
-import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
@@ -84,6 +84,9 @@ class SubtreeSpecificationDialog extends Dialog
     /** Flag indicating if the refinement or filter widget should be visible */
     private boolean refinementOrFilterVisible;
 
+    /** Flag indicating if a local name should be used for the base */
+    private boolean useLocalName;
+
     /** The initial SubtreeSpecification */
     private SubtreeSpecification subtreeSpecification;
 
@@ -120,14 +123,17 @@ class SubtreeSpecificationDialog extends Dialog
      *      the initial SubtreeSpecification
      * @param refinementOrFilterVisible
      *      true if the refinement of filter widget should be visible
+     * @param useLocalName 
+     *      true to use local name for the base
      */
     SubtreeSpecificationDialog( Shell shell, IBrowserConnection connection, LdapDN subentryDN,
-        String initialSubtreeSpecification, boolean refinementOrFilterVisible )
+        String initialSubtreeSpecification, boolean refinementOrFilterVisible, boolean useLocalName )
     {
         super( shell );
         this.connection = connection;
         this.subentryDN = subentryDN;
         this.refinementOrFilterVisible = refinementOrFilterVisible;
+        this.useLocalName = useLocalName;
 
         // parse
         try
@@ -146,17 +152,15 @@ class SubtreeSpecificationDialog extends Dialog
         }
 
         exclusions = new ArrayList<String>();
-        Set chopBeforeExclusions = subtreeSpecification.getChopBeforeExclusions();
-        for ( Object chopBeforeExclusion : chopBeforeExclusions )
+        Set<LdapDN> chopBeforeExclusions = subtreeSpecification.getChopBeforeExclusions();
+        for ( LdapDN dn : chopBeforeExclusions )
         {
-            LdapDN dn = ( LdapDN ) chopBeforeExclusion;
             exclusions.add( "chopBefore: \"" + dn.toNormName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
-        Set chopAfterExclusions = subtreeSpecification.getChopAfterExclusions();
-        for ( Object chopAfterExclusion : chopAfterExclusions )
+        Set<LdapDN> chopAfterExclusions = subtreeSpecification.getChopAfterExclusions();
+        for ( LdapDN dn : chopAfterExclusions )
         {
-            LdapDN dn = ( LdapDN ) chopAfterExclusion;
             exclusions.add( "chopAfter: \"" + dn.toNormName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
@@ -213,7 +217,7 @@ class SubtreeSpecificationDialog extends Dialog
 
         LdapDN base = subtreeSpecification.getBase();
         LdapDN suffix = subentryDN != null ? DnUtils.getParent( subentryDN ) : null;
-        entryWidget = new EntryWidget( connection, base, suffix );
+        entryWidget = new EntryWidget( connection, base, suffix, useLocalName );
         entryWidget.createWidget( composite );
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()
         {
@@ -648,7 +652,7 @@ class SubtreeSpecificationDialog extends Dialog
     private void addValueExclusionsTable()
     {
         LdapDN chopBase = subtreeSpecification.getBase();
-        if ( subentryDN != null && DnUtils.getParent( subentryDN ) != null )
+        if ( useLocalName && subentryDN != null && DnUtils.getParent( subentryDN ) != null )
         {
             LdapDN suffix = subentryDN != null ? DnUtils.getParent( subentryDN ) : null;
             chopBase = DnUtils.composeDn( chopBase, suffix );
@@ -675,7 +679,7 @@ class SubtreeSpecificationDialog extends Dialog
         if ( oldValue != null )
         {
             LdapDN chopBase = subtreeSpecification.getBase();
-            if ( subentryDN != null && DnUtils.getParent( subentryDN ) != null )
+            if ( useLocalName && subentryDN != null && DnUtils.getParent( subentryDN ) != null )
             {
                 LdapDN suffix = subentryDN != null ? DnUtils.getParent( subentryDN ) : null;
                 chopBase = DnUtils.composeDn( chopBase, suffix );

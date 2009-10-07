@@ -72,7 +72,7 @@ public class UserClassWrapperFactory
                 // subtree
                 new UserClassWrapper( UserClass.Subtree.class, "", //$NON-NLS-1$
                     "", //$NON-NLS-1$
-                    new SubtreeValueEditor( false )
+                    new SubtreeValueEditor( false, false )
                 ) };
 
         return userClassWrappers;

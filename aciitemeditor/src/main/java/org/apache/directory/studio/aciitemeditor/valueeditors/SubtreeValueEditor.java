@@ -41,6 +41,8 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     static final String EMPTY = ""; //$NON-NLS-1$
 
     private boolean refinementOrFilterVisible;
+    
+    private boolean useLocalName;
 
 
     /**
@@ -49,6 +51,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     public SubtreeValueEditor()
     {
         this.refinementOrFilterVisible = true;
+        this.useLocalName = true;
     }
 
 
@@ -56,10 +59,12 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
      * Default constructor, used by the {@link ValueEditorManager}.
      *
      * @param refinementOrFilterVisible true if the refinement or filter widget should be visible
+     * @param useLocalName true to use local name for the base
      */
-    public SubtreeValueEditor( boolean refinementOrFilterVisible )
+    public SubtreeValueEditor( boolean refinementOrFilterVisible, boolean useLocalName )
     {
         this.refinementOrFilterVisible = refinementOrFilterVisible;
+        this.useLocalName = useLocalName;
     }
 
 
@@ -74,7 +79,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
             SubtreeSpecificationValueWrapper wrapper = ( SubtreeSpecificationValueWrapper ) value;
 
             SubtreeSpecificationDialog dialog = new SubtreeSpecificationDialog( shell, wrapper.connection,
-                wrapper.subentryDN, wrapper.subtreeSpecification, refinementOrFilterVisible );
+                wrapper.subentryDN, wrapper.subtreeSpecification, refinementOrFilterVisible, useLocalName );
             if ( dialog.open() == TextDialog.OK && dialog.getSubtreeSpecificationValue() != null )
             {
                 setValue( dialog.getSubtreeSpecificationValue() );

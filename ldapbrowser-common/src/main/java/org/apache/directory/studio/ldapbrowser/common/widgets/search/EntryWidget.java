@@ -80,6 +80,9 @@ public class EntryWidget extends BrowserWidget
     /** The suffix. */
     private LdapDN suffix;
 
+    /** Flag indicating if using local name for the dn */
+    boolean useLocalName;
+
 
     /**
      * Creates a new instance of EntryWidget.
@@ -99,7 +102,7 @@ public class EntryWidget extends BrowserWidget
      */
     public EntryWidget( IBrowserConnection browserConnection, LdapDN dn )
     {
-        this( browserConnection, dn, null );
+        this( browserConnection, dn, null, false );
     }
 
 
@@ -109,12 +112,14 @@ public class EntryWidget extends BrowserWidget
      * @param browserConnection the connection
      * @param dn the initial DN
      * @param suffix the suffix
+     * @param useLocalName true to use local name for the DN
      */
-    public EntryWidget( IBrowserConnection browserConnection, LdapDN dn, LdapDN suffix )
+    public EntryWidget( IBrowserConnection browserConnection, LdapDN dn, LdapDN suffix, boolean useLocalName )
     {
         this.browserConnection = browserConnection;
         this.dn = dn;
         this.suffix = suffix;
+        this.useLocalName = useLocalName;
     }
 
 
@@ -197,7 +202,7 @@ public class EntryWidget extends BrowserWidget
 
                     // calculate initial DN
                     LdapDN initialDN = dn;
-                    if( suffix != null && suffix.size() > 0 )
+                    if( useLocalName && suffix != null && suffix.size() > 0 )
                     {
                         if( initialDN != null && initialDN.size() > 0 )
                         {
@@ -227,7 +232,7 @@ public class EntryWidget extends BrowserWidget
                     if ( selectedEntry != null )
                     {
                         dn = selectedEntry.getDn();
-                        if( suffix != null && suffix.size() > 0 )
+                        if( useLocalName && suffix != null && suffix.size() > 0 )
                         {
                             dn = DnUtils.getPrefixName( dn, suffix );
                         }
@@ -334,7 +339,7 @@ public class EntryWidget extends BrowserWidget
      */
     public void setInput( IBrowserConnection browserConnection, LdapDN dn )
     {
-        setInput( browserConnection, dn, null );
+        setInput( browserConnection, dn, null, false );
     }
 
 
@@ -344,14 +349,16 @@ public class EntryWidget extends BrowserWidget
      * @param browserConnection the connection
      * @param dn the DN
      * @param suffix the suffix
+     * @param useLocalName true to use local name for the DN
      */
-    public void setInput( IBrowserConnection browserConnection, LdapDN dn, LdapDN suffix )
+    public void setInput( IBrowserConnection browserConnection, LdapDN dn, LdapDN suffix, boolean useLocalName )
     {
         if ( this.browserConnection != browserConnection || this.dn != dn || this.suffix != suffix )
         {
             this.browserConnection = browserConnection;
             this.dn = dn;
             this.suffix = suffix;
+            this.useLocalName = useLocalName;
             dnChanged();
         }
     }
