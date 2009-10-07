@@ -21,81 +21,40 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
-import org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard;
+import org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbenchWindow;
 
 
 /**
- * This action launches the New Entry Wizard.
+ * This action launches the New Context Entry Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class NewEntryAction extends BrowserAction
+public class NewContextEntryAction extends NewEntryAction
 {
-    protected IWorkbenchWindow window;
-
 
     /**
-     * Creates a new instance of NewEntryAction.
+     * Creates a new instance of NewContextEntryAction.
      */
-    public NewEntryAction()
+    public NewContextEntryAction()
     {
     }
 
 
     /**
-     * Creates a new instance of NewEntryAction.
+     * Creates a new instance of NewContextEntryAction.
      *
      * @param window
      *      the associated Window
      */
-    public NewEntryAction( IWorkbenchWindow window )
+    public NewContextEntryAction( IWorkbenchWindow window )
     {
-        super();
-        this.window = window;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void dispose()
-    {
-        super.dispose();
-        this.window = null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void init( IWorkbenchWindow window )
-    {
-        super.init( window );
-        this.window = window;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void run()
-    {
-        INewWizard wizard = getWizard();
-
-        wizard.init( window.getWorkbench(), ( IStructuredSelection ) window.getSelectionService().getSelection() );
-        WizardDialog dialog = new WizardDialog( getShell(), wizard );
-        dialog.setBlockOnOpen( true );
-        dialog.create();
-        dialog.open();
+        super( window );
     }
 
 
@@ -104,7 +63,7 @@ public class NewEntryAction extends BrowserAction
      */
     protected INewWizard getWizard()
     {
-        return new NewEntryWizard();
+        return new NewContextEntryWizard();
     }
 
 
@@ -113,7 +72,7 @@ public class NewEntryAction extends BrowserAction
      */
     public String getText()
     {
-        return Messages.getString( "NewEntryAction.NewEntry" ); //$NON-NLS-1$
+        return Messages.getString( "NewEntryAction.NewContextEntry" ); //$NON-NLS-1$
     }
 
 
@@ -123,24 +82,6 @@ public class NewEntryAction extends BrowserAction
     public ImageDescriptor getImageDescriptor()
     {
         return BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_ENTRY_ADD );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getCommandId()
-    {
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isEnabled()
-    {
-        return true;
     }
 
 }

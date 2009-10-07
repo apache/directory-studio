@@ -204,8 +204,10 @@ public interface BrowserCommonConstants
         .getString( "DnD_ValuesTransfer" ); //$NON-NLS-1$
     
     public static final String WIZARD_ATTRIBUTE_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
-    .getString( "Wizard_AttributeWizard_id" ); //$NON-NLS-1$
-   
+        .getString( "Wizard_AttributeWizard_id" ); //$NON-NLS-1$
+
     public static final String WIZARD_NEW_ENTRY_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
-    .getString( "NewWizard_NewEntryWizard_id" ); //$NON-NLS-1$
+        .getString( "NewWizard_NewEntryWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_NEW_CONTEXT_ENTRY_WIZARD = BrowserCommonActivator.getDefault()
+        .getPluginProperties().getString( "NewWizard_NewContextEntryWizard_id" ); //$NON-NLS-1$
 }

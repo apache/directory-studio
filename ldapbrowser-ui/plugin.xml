@@ -127,6 +127,14 @@
             name="%NewWizard_NewEntryWizard_name"
             project="false"/>
       <wizard
+            category="%NewWizards_Category_id"
+            class="org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard"
+            hasPages="true"
+            icon="resources/icons/entry_add.gif"
+            id="%NewWizard_NewContextEntryWizard_id"
+            name="%NewWizard_NewContextEntryWizard_name"
+            project="false"/>
+      <wizard
             canFinishEarly="true"
             category="%NewWizards_Category_id"
             class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard"

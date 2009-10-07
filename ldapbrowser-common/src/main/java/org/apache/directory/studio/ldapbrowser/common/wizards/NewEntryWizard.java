@@ -33,13 +33,11 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -87,9 +85,6 @@ public class NewEntryWizard extends Wizard implements INewWizard
     /** The prototype entry. */
     protected DummyEntry prototypeEntry;
 
-    /** The is new context entry flag. */
-    protected boolean isNewContextEntry;
-
 
     /**
      * Creates a new instance of NewEntryWizard.
@@ -120,8 +115,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
         // determine the currently selected entry
         Object o = selection.getFirstElement();
 
-        isNewContextEntry = isNewContextEntry( selection );
-        if ( isNewContextEntry )
+        if ( isNewContextEntry() )
         {
             setWindowTitle( Messages.getString("NewEntryWizard.NewContextEntry") ); //$NON-NLS-1$
         }
@@ -400,30 +394,6 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public boolean isNewContextEntry()
     {
-        return isNewContextEntry;
-    }
-
-
-    /**
-     * Checks if the current selection starts the "New Context Entry" process.
-     * This is if the selection is the Root DSE.
-     * 
-     * @param selection the selection
-     * 
-     * @return true, if is new context entry
-     */
-    public static boolean isNewContextEntry( ISelection selection )
-    {
-        if ( selection != null && selection instanceof IStructuredSelection )
-        {
-            Object object = ( ( IStructuredSelection ) selection ).getFirstElement();
-
-            if ( object instanceof IRootDSE || object instanceof BrowserCategory )
-            {
-                return true;
-            }
-        }
-
         return false;
     }
 

@@ -40,6 +40,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.LocateEntryInDitAction
 import org.apache.directory.studio.ldapbrowser.ui.actions.MoveAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.NewContextEntryAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenEntryEditorAction;
@@ -89,6 +90,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
     /** The Constant newEntryAction. */
     private static final String newEntryAction = "newEntryAction"; //$NON-NLS-1$
+
+    /** The Constant newContextEntryAction. */
+    private static final String newContextEntryAction = "newContextEntryAction"; //$NON-NLS-1$
 
     /** The Constant newSearchAction. */
     private static final String newSearchAction = "newSearchAction"; //$NON-NLS-1$
@@ -192,6 +196,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         browserActionMap.put( newEntryAction, new BrowserViewActionProxy( viewer, new NewEntryAction( view.getSite()
             .getWorkbenchWindow() ) ) );
+        browserActionMap.put( newContextEntryAction, new BrowserViewActionProxy( viewer, new NewContextEntryAction(
+            view.getSite().getWorkbenchWindow() ) ) );
         browserActionMap.put( newSearchAction, new BrowserViewActionProxy( viewer, new NewSearchAction() ) );
         browserActionMap.put( newBookmarkAction, new BrowserViewActionProxy( viewer, new NewBookmarkAction() ) );
         browserActionMap.put( newBatchOperationAction, new BrowserViewActionProxy( viewer,
@@ -311,10 +317,15 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     public void menuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( browserActionMap.get( newEntryAction ) );
-        menuManager.add( browserActionMap.get( newSearchAction ) );
-        menuManager.add( browserActionMap.get( newBookmarkAction ) );
-        menuManager.add( browserActionMap.get( newBatchOperationAction ) );
+        MenuManager newMenuManager = new MenuManager( Messages.getString( "BrowserViewActionGroup.New" ) ); //$NON-NLS-1$
+        newMenuManager.add( browserActionMap.get( newEntryAction ) );
+        newMenuManager.add( browserActionMap.get( newContextEntryAction ) );
+        newMenuManager.add( new Separator() );
+        newMenuManager.add( browserActionMap.get( newSearchAction ) );
+        newMenuManager.add( browserActionMap.get( newBookmarkAction ) );
+        newMenuManager.add( new Separator() );
+        newMenuManager.add( browserActionMap.get( newBatchOperationAction ) );
+        menuManager.add( newMenuManager );
         menuManager.add( new Separator() );
 
         // navigation

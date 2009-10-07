@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.perspective;
 
 import org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard;
 import org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
@@ -82,6 +83,7 @@ public class BrowserPerspective implements IPerspectiveFactory
         // Add "new wizards".
         layout.addNewWizardShortcut( NewConnectionWizard.getId() );
         layout.addNewWizardShortcut( NewEntryWizard.getId() );
+        layout.addNewWizardShortcut( NewContextEntryWizard.getId() );
         layout.addNewWizardShortcut( NewSearchWizard.getId() );
         layout.addNewWizardShortcut( NewBookmarkWizard.getId() );
         layout.addNewWizardShortcut( BatchOperationWizard.getId() );
