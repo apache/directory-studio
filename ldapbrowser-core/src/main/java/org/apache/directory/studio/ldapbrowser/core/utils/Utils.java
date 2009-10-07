@@ -47,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -56,7 +57,10 @@ import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRec
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
@@ -393,7 +397,15 @@ public class Utils
         // check if entry needs to be renamed
         if ( !t0.getDn().equals( t1.getDn() ) )
         {
-            LdifChangeModDnRecord modDnRecord = LdifChangeModDnRecord.create( t0.getDn().getUpName() );
+            LdifChangeModDnRecord modDnRecord = new LdifChangeModDnRecord( LdifDnLine.create( t0.getDn().getUpName() ) );
+            if ( t0.isReferral() )
+            {
+                modDnRecord.addControl( LdifControlLine
+                    .create( StudioControl.MANAGEDSAIT_CONTROL.getOid(),
+                        StudioControl.MANAGEDSAIT_CONTROL.isCritical(), StudioControl.MANAGEDSAIT_CONTROL
+                            .getControlValue() ) );
+            }
+            modDnRecord.setChangeType( LdifChangeTypeLine.createModDn() );
             modDnRecord.setNewrdn( LdifNewrdnLine.create( t1.getRdn().getUpName() ) );
             modDnRecord.setNewsuperior( LdifNewsuperiorLine.create( DnUtils.getParent( t1.getDn() ).getUpName() ) );
             modDnRecord.setDeloldrdn( LdifDeloldrdnLine.create1() );
@@ -442,7 +454,13 @@ public class Utils
             }
         }
 
-        LdifChangeModifyRecord record = LdifChangeModifyRecord.create( t1.getDn().getUpName() );
+        LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( t1.getDn().getUpName() ) );
+        if ( t1.isReferral() )
+        {
+            record.addControl( LdifControlLine.create( StudioControl.MANAGEDSAIT_CONTROL.getOid(),
+                StudioControl.MANAGEDSAIT_CONTROL.isCritical(), StudioControl.MANAGEDSAIT_CONTROL.getControlValue() ) );
+        }
+        record.setChangeType( LdifChangeTypeLine.createModify() );
 
         // determine attributes to delete and/or add
         for ( String attributeDescription : attributesToDelAdd )
