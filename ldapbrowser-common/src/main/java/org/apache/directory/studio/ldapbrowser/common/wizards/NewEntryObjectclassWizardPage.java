@@ -29,11 +29,14 @@ import java.util.List;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.jobs.ReloadSchemaRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -321,8 +324,10 @@ public class NewEntryObjectclassWizardPage extends WizardPage
 
         Composite availableObjectClassesComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        availableObjectClassesInstantSearch = new Text( availableObjectClassesComposite, SWT.NONE | SWT.BORDER
-            | SWT.SEARCH | SWT.CANCEL );
+        Composite availableObjectClassesInstantSearchComposite = BaseWidgetUtils
+            .createColumnContainer( availableObjectClassesComposite, 2, 1 );
+        availableObjectClassesInstantSearch = new Text( availableObjectClassesInstantSearchComposite, SWT.NONE
+            | SWT.BORDER | SWT.SEARCH | SWT.CANCEL );
         availableObjectClassesInstantSearch.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
         availableObjectClassesInstantSearch.addModifyListener( new ModifyListener()
         {
@@ -356,6 +361,20 @@ public class NewEntryObjectclassWizardPage extends WizardPage
             .getString( "NewEntryObjectclassWizardPage.FilterDescription" ) ); //$NON-NLS-1$
         availableObjectClassesInstantSearchDecoration.setImage( FieldDecorationRegistry.getDefault()
             .getFieldDecoration( FieldDecorationRegistry.DEC_CONTENT_PROPOSAL ).getImage() );
+        Button reloadButton = new Button( availableObjectClassesInstantSearchComposite, SWT.PUSH | SWT.FLAT );
+        reloadButton.setToolTipText( Messages.getString( "NewEntryObjectclassWizardPage.ReloadSchema" ) ); //$NON-NLS-1$
+        reloadButton.setImage( BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_REFRESH ) );
+        reloadButton.addSelectionListener( new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected( SelectionEvent e )
+            {
+                IBrowserConnection browserConnection = wizard.getSelectedConnection();
+                ReloadSchemaRunnable runnable = new ReloadSchemaRunnable( browserConnection );
+                RunnableContextRunner.execute( runnable, wizard.getContainer(), true );
+                setVisible( true );
+            }
+        } );
 
         availableObjectClassesViewer = new TableViewer( availableObjectClassesComposite );
         GridData data = new GridData( GridData.FILL_BOTH );

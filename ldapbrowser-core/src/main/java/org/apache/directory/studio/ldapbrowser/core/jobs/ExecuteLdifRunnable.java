@@ -165,7 +165,7 @@ public class ExecuteLdifRunnable implements StudioBulkRunnableWithProgress
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         EventRegistry.fireEntryUpdated( new BulkModificationEvent( browserConnection ), this );
     }

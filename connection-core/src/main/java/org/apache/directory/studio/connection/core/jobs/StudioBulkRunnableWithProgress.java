@@ -36,7 +36,9 @@ public interface StudioBulkRunnableWithProgress extends StudioRunnableWithProgre
 
     /**
      * Runs notification, called by {@link StudioConnectionJob} after the run() method.
+     * 
+     * @param monitor the monitor
      */
-    public void runNotification();
+    public void runNotification( StudioProgressMonitor monitor );
 
 }

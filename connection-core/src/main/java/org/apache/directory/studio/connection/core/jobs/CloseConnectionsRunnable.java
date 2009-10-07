@@ -125,7 +125,14 @@ public class CloseConnectionsRunnable implements StudioBulkRunnableWithProgress
                 connection.getJNDIConnectionWrapper().disconnect();
             }
         }
+    }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public void runNotification( StudioProgressMonitor monitor )
+    {
         for ( Connection connection : connections )
         {
             if ( !connection.getJNDIConnectionWrapper().isConnected() )
@@ -136,14 +143,7 @@ public class CloseConnectionsRunnable implements StudioBulkRunnableWithProgress
                 }
             }
         }
-    }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public void runNotification()
-    {
         for ( Connection connection : connections )
         {
             if ( !connection.getJNDIConnectionWrapper().isConnected() )

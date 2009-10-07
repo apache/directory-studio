@@ -80,9 +80,10 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                             {
                                 spm.fireCancelRequested();
                             }
-                            if ( spm == next && ( spm.isCanceled() || spm.done ) )
+                            if ( spm.isCanceled() || spm.done )
                             {
                                 it.remove();
+                                break;
                             }
 
                             if ( spm.getWrappedProgressMonitor() != null

@@ -144,7 +144,7 @@ public class InitializeRootDSERunnable implements StudioBulkRunnableWithProgress
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( rootDSE ), this );
     }

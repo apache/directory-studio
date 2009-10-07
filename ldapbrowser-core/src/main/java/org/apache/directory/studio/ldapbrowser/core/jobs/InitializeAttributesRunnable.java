@@ -139,7 +139,7 @@ public class InitializeAttributesRunnable implements StudioBulkRunnableWithProgr
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         for ( IEntry entry : entries )
         {

@@ -176,7 +176,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         for ( IEntry entry : entries )
         {

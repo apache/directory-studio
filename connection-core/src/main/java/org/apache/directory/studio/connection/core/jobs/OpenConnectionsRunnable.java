@@ -109,13 +109,20 @@ public class OpenConnectionsRunnable implements StudioBulkRunnableWithProgress
                 monitor.worked( 1 );
 
                 connection.getJNDIConnectionWrapper().connect( monitor );
-                if(connection.getJNDIConnectionWrapper().isConnected())
+                if ( connection.getJNDIConnectionWrapper().isConnected() )
                 {
                     connection.getJNDIConnectionWrapper().bind( monitor );
                 }
             }
         }
+    }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public void runNotification( StudioProgressMonitor monitor )
+    {
         for ( Connection connection : connections )
         {
             if ( connection.getJNDIConnectionWrapper().isConnected() )
@@ -126,14 +133,7 @@ public class OpenConnectionsRunnable implements StudioBulkRunnableWithProgress
                 }
             }
         }
-    }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public void runNotification()
-    {
         for ( Connection connection : connections )
         {
             if ( connection.getJNDIConnectionWrapper().isConnected() )

@@ -116,7 +116,7 @@ public class RunnableContextRunner
                             {
                                 ConnectionEventRegistry.resumeEventFiringInCurrentThread();
                             }
-                            bulkRunnable.runNotification();
+                            bulkRunnable.runNotification( spm[0] );
                         }
                         else
                         {

@@ -125,7 +125,7 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         if ( createdEntry != null )
         {

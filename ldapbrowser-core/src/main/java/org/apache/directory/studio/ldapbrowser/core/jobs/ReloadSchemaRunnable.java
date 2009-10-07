@@ -116,7 +116,7 @@ public class ReloadSchemaRunnable implements StudioBulkRunnableWithProgress
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         BrowserConnectionUpdateEvent browserConnectionUpdateEvent = new BrowserConnectionUpdateEvent(
             browserConnection, BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED );

@@ -104,12 +104,10 @@ public abstract class AbstractEclipseJob extends Job
             {
                 monitor.reportError( e );
             }
-            finally
-            {
-                monitor.done();
-                ipm.done();
-            }
         }
+        // always set done, even if errors were reported
+        monitor.done();
+        ipm.done();
 
         // error handling
         if ( monitor.isCanceled() )

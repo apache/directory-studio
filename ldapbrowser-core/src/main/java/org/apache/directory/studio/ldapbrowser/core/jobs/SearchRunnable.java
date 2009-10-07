@@ -267,7 +267,7 @@ public class SearchRunnable implements StudioBulkRunnableWithProgress
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         for ( int pi = 0; pi < searches.length; pi++ )
         {
