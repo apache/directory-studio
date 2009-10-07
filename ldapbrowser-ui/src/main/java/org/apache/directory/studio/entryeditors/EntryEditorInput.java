@@ -145,7 +145,7 @@ public class EntryEditorInput implements IEditorInput
             }
         }
 
-        return ""; //$NON-NLS-1$
+        return Messages.getString( "EntryEditorInput.NoEntrySelected" ); //$NON-NLS-1$
     }
 
 
@@ -168,7 +168,7 @@ public class EntryEditorInput implements IEditorInput
             }
         }
 
-        return ""; //$NON-NLS-1$
+        return Messages.getString( "EntryEditorInput.NoEntrySelected" ); //$NON-NLS-1$
     }
 
 
@@ -239,9 +239,13 @@ public class EntryEditorInput implements IEditorInput
      */
     public IEntry getSharedWorkingCopy( IEntryEditor editor )
     {
-        IEntry workingCopy = BrowserUIPlugin.getDefault().getEntryEditorManager().getSharedWorkingCopy(
-            getResolvedEntry(), editor );
-        return workingCopy;
+        IEntry resolvedEntry = getResolvedEntry();
+        if ( resolvedEntry != null )
+        {
+            return BrowserUIPlugin.getDefault().getEntryEditorManager().getSharedWorkingCopy( resolvedEntry, editor );
+        }
+
+        return null;
     }
 
 

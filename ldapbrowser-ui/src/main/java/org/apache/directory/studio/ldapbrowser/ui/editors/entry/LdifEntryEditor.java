@@ -81,6 +81,13 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
 
 
         @Override
+        public boolean isEnabled()
+        {
+            return ( getEntryEditorInput().getResolvedEntry() != null );
+        }
+
+
+        @Override
         public String getActionDefinitionId()
         {
             return "org.eclipse.ui.file.refresh"; //$NON-NLS-1$
@@ -116,9 +123,14 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
         public boolean isEnabled()
         {
             IEntry entry = getEntryEditorInput().getResolvedEntry();
-            entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+            if ( entry != null )
+            {
+                entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
 
-            return !entry.getBrowserConnection().isFetchOperationalAttributes();
+                return !entry.getBrowserConnection().isFetchOperationalAttributes();
+            }
+
+            return false;
         }
 
 
@@ -156,8 +168,11 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     {
         super.doSetInput( input );
 
-        EntryEditorInput eei = getEntryEditorInput();
-        setConnection( eei.getResolvedEntry().getBrowserConnection() );
+        IEntry entry = getEntryEditorInput().getResolvedEntry();
+        if ( entry != null )
+        {
+            setConnection( entry.getBrowserConnection() );
+        }
     }
 
 
@@ -202,8 +217,9 @@ public abstract class LdifEntryEditor extends LdifEditor implements IEntryEditor
     {
         super.editorContextMenuAboutToShow( menu );
 
-        fetchOperationalAttributesAction.setChecked( getEntryEditorInput().getResolvedEntry()
-            .isInitOperationalAttributes() );
+        IEntry entry = getEntryEditorInput().getResolvedEntry();
+        fetchOperationalAttributesAction.setChecked( ( entry != null ) ? entry.isInitOperationalAttributes() : false );
+
         addAction( menu, ITextEditorActionConstants.GROUP_REST, REFRESH_ACTION );
         addAction( menu, ITextEditorActionConstants.GROUP_REST, FETCH_OPERATIONAL_ATTRIBUTES_ACTION );
     }

@@ -249,7 +249,10 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         input = getEntryEditorInput( element );
         IEntry entry = getEntryEditorInput( element ).getSharedWorkingCopy( editor );
         IDocument document = new Document();
-        setDocumentInput( document, entry );
+        if ( entry != null )
+        {
+            setDocumentInput( document, entry );
+        }
         setupDocument( document );
         return document;
     }
@@ -273,7 +276,13 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
     @Override
     public boolean isModifiable( Object element )
     {
-        return element instanceof EntryEditorInput;
-    }
+        if ( element instanceof EntryEditorInput )
+        {
+            EntryEditorInput editorInput = ( EntryEditorInput ) element;
+            IEntry entry = editorInput.getSharedWorkingCopy( editor );
+            return ( entry != null );
+        }
 
+        return false;
+    }
 }

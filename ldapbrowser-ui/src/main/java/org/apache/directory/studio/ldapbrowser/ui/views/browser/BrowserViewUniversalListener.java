@@ -329,12 +329,12 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
             ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
             IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
             ISearch[] searches = BrowserSelectionUtils.getSearches( selection );
+            EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
 
             if ( entries.length + searchResults.length + bookmarks.length + searches.length == 1 )
             {
                 if ( ( entries.length == 1 ) || ( searchResults.length == 1 ) || ( bookmarks.length == 1 ) )
                 {
-                    EntryEditorManager entryEditorManager = BrowserUIPlugin.getDefault().getEntryEditorManager();
                     entryEditorManager.openEntryEditor( entries, searchResults, bookmarks );
                 }
                 else if ( searches.length == 1 )
@@ -348,6 +348,10 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                     {
                     }
                 }
+            }
+            else
+            {
+                entryEditorManager.openEntryEditor( new IEntry[0], new ISearchResult[0], new IBookmark[0] );
             }
         }
     }

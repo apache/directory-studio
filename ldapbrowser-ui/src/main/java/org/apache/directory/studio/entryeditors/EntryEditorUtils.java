@@ -119,6 +119,10 @@ public class EntryEditorUtils
                         + " - " + input.getBookmarkInput().getBrowserConnection().getConnection().getName(); //$NON-NLS-1$
                 }
             }
+            else
+            {
+                return Messages.getString( "EntryEditorUtils.NoEntrySelected" ); //$NON-NLS-1$
+            }
         }
 
         return null;

@@ -471,7 +471,7 @@ public class EntryEditorManager
             }
             catch ( CoreException e )
             {
-               // Will never happen
+                // Will never happen
             }
 
             entryEditorExtensions.put( bean.getId(), bean );
@@ -704,6 +704,10 @@ public class EntryEditorManager
         {
             input = new EntryEditorInput( bookmarks[0], extension );
         }
+        else
+        {
+            input = new EntryEditorInput( ( IEntry ) null, extension );
+        }
 
         String editorId = extension.getEditorId();
 
@@ -747,19 +751,15 @@ public class EntryEditorManager
             entry = bookmarks[0].getEntry();
         }
 
-        // Checking if we've found the entry
-        if ( entry != null )
+        // Looking for the correct entry editor
+        for ( EntryEditorExtension entryEditor : getSortedEntryEditorExtensions() )
         {
-            // Looking for the correct entry editor
-            for ( EntryEditorExtension entryEditor : getSortedEntryEditorExtensions() )
+            // Verifying that the editor can handle the entry
+            if ( entryEditor.getEditorInstance().canHandle( entry ) )
             {
-                // Verifying that the editor can handle the entry
-                if ( entryEditor.getEditorInstance().canHandle( entry ) )
-                {
-                    // The correct editor has been found, let's open the entry in the editor
-                    openEntryEditor( entryEditor, entries, searchResults, bookmarks );
-                    return;
-                }
+                // The correct editor has been found, let's open the entry in the editor
+                openEntryEditor( entryEditor, entries, searchResults, bookmarks );
+                return;
             }
         }
     }
