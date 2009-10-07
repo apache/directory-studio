@@ -261,7 +261,9 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == ProtectedItem.Classes.class )
         {
             ProtectedItem.Classes classes = ( ProtectedItem.Classes ) item;
-            values.add( classes.toString() );
+            StringBuilder sb = new StringBuilder();
+            classes.getClasses().printRefinementToBuffer( sb );
+            values.add( sb.toString() );
         }
 
     }
