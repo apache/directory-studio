@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.Name;
-
 import org.apache.directory.shared.ldap.aci.ACIItemParser;
 import org.apache.directory.shared.ldap.aci.UserClass;
 import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
@@ -52,10 +50,10 @@ public class UserClassWrapper
 {
 
     /** This map contains all possible user class identifiers */
-    public static final Map<Class, String> classToIdentifierMap;
+    public static final Map<Class<? extends UserClass>, String> classToIdentifierMap;
     static
     {
-        Map<Class, String> map = new HashMap<Class, String>();
+        Map<Class<? extends UserClass>, String> map = new HashMap<Class<? extends UserClass>, String>();
         map.put( UserClass.AllUsers.class, "allUsers" ); //$NON-NLS-1$
         map.put( UserClass.ThisEntry.class, "thisEntry" ); //$NON-NLS-1$
         map.put( UserClass.ParentOfEntry.class, "parentOfEntry" ); //$NON-NLS-1$
@@ -66,10 +64,10 @@ public class UserClassWrapper
     }
 
     /** This map contains all user class display values */
-    public static final Map<Class, String> classToDisplayMap;
+    public static final Map<Class<? extends UserClass>, String> classToDisplayMap;
     static
     {
-        Map<Class, String> map = new HashMap<Class, String>();
+        Map<Class<? extends UserClass>, String> map = new HashMap<Class<? extends UserClass>, String>();
         map.put( UserClass.AllUsers.class, Messages.getString( "UserClassWrapper.userClass.allUsers.label" ) ); //$NON-NLS-1$
         map.put( UserClass.ThisEntry.class, Messages.getString( "UserClassWrapper.userClass.thisEntry.label" ) ); //$NON-NLS-1$
         map.put( UserClass.ParentOfEntry.class, Messages.getString( "UserClassWrapper.userClass.parentOfEntry.label" ) ); //$NON-NLS-1$
@@ -85,7 +83,7 @@ public class UserClassWrapper
         + "userPermissions { { protectedItems { entry }, grantsAndDenials { grantRead } } } } }"; //$NON-NLS-1$
 
     /** The class of the user class, never null. */
-    private final Class clazz;
+    private final Class<? extends UserClass> clazz;
 
     /** The user class values, may be empty. */
     private List<String> values;
@@ -108,7 +106,7 @@ public class UserClassWrapper
      * @param valueSuffix the dislpay name
      * @param valueEditor the value editor
      */
-    public UserClassWrapper( Class clazz, String valuePrefix, String valueSuffix,
+    public UserClassWrapper( Class<? extends UserClass> clazz, String valuePrefix, String valueSuffix,
         AbstractDialogStringValueEditor valueEditor )
     {
         this.clazz = clazz;
@@ -293,7 +291,7 @@ public class UserClassWrapper
      * 
      * @return the class of the user class.
      */
-    public Class getClazz()
+    public Class<? extends UserClass> getClazz()
     {
         return clazz;
     }

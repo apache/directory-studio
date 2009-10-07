@@ -48,10 +48,10 @@ import org.eclipse.osgi.util.NLS;
 public class ProtectedItemWrapper
 {
     /** This map contains all possible protected item identifiers */
-    public static final Map<Class, String> classToIdentifierMap;
+    public static final Map<Class<? extends ProtectedItem>, String> classToIdentifierMap;
     static
     {
-        Map<Class, String> map = new HashMap<Class, String>();
+        Map<Class<? extends ProtectedItem>, String> map = new HashMap<Class<? extends ProtectedItem>, String>();
         map.put( ProtectedItem.Entry.class, "entry" ); //$NON-NLS-1$
         map.put( ProtectedItem.AllUserAttributeTypes.class, "allUserAttributeTypes" ); //$NON-NLS-1$
         map.put( ProtectedItem.AttributeType.class, "attributeType" ); //$NON-NLS-1$
@@ -68,10 +68,10 @@ public class ProtectedItemWrapper
     }
 
     /** This map contains all protected item display values */
-    public static final Map<Class, String> classToDisplayMap;
+    public static final Map<Class<? extends ProtectedItem>, String> classToDisplayMap;
     static
     {
-        Map<Class, String> map = new HashMap<Class, String>();
+        Map<Class<? extends ProtectedItem>, String> map = new HashMap<Class<? extends ProtectedItem>, String>();
         map.put( ProtectedItem.Entry.class, Messages.getString( "ProtectedItemWrapper.protectedItem.entry.label" ) ); //$NON-NLS-1$
         map.put( ProtectedItem.AllUserAttributeTypes.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.allUserAttributeTypes.label" ) ); //$NON-NLS-1$
@@ -103,7 +103,7 @@ public class ProtectedItemWrapper
         + "itemPermissions { { userClasses { allUsers }, grantsAndDenials { grantRead } } } } }"; //$NON-NLS-1$ 
 
     /** The class of the protected item, never null. */
-    private final Class clazz;
+    private final Class<? extends ProtectedItem> clazz;
 
     /** The protected item values, may be empty. */
     private List<String> values;
@@ -130,7 +130,7 @@ public class ProtectedItemWrapper
      * @param valueSuffix the dislpay name
      * @param valueEditor the value editor
      */
-    public ProtectedItemWrapper( Class clazz, boolean isMultivalued, String valuePrefix, String valueSuffix,
+    public ProtectedItemWrapper( Class<? extends ProtectedItem> clazz, boolean isMultivalued, String valuePrefix, String valueSuffix,
         AbstractDialogStringValueEditor valueEditor )
     {
         this.clazz = clazz;
@@ -172,7 +172,7 @@ public class ProtectedItemWrapper
                     Messages.getString( "ProtectedItemWrapper.error.message" ), new String[] { getIdentifier(), flatValue } ); //$NON-NLS-1$
             throw new ParseException( msg, 0 );
         }
-        ProtectedItem item = ( ProtectedItem ) aci.getProtectedItems().iterator().next();
+        ProtectedItem item = aci.getProtectedItems().iterator().next();
         return item;
     }
 
@@ -194,25 +194,25 @@ public class ProtectedItemWrapper
         if ( item.getClass() == ProtectedItem.AttributeType.class )
         {
             ProtectedItem.AttributeType at = ( ProtectedItem.AttributeType ) item;
-            for ( Iterator it = at.iterator(); it.hasNext(); )
+            for ( Iterator<String> it = at.iterator(); it.hasNext(); )
             {
-                values.add( it.next().toString() );
+                values.add( it.next() );
             }
         }
         else if ( item.getClass() == ProtectedItem.AllAttributeValues.class )
         {
             ProtectedItem.AllAttributeValues aav = ( ProtectedItem.AllAttributeValues ) item;
-            for ( Iterator it = aav.iterator(); it.hasNext(); )
+            for ( Iterator<String> it = aav.iterator(); it.hasNext(); )
             {
-                values.add( it.next().toString() );
+                values.add( it.next() );
             }
         }
         else if ( item.getClass() == ProtectedItem.AttributeValue.class )
         {
             ProtectedItem.AttributeValue av = ( ProtectedItem.AttributeValue ) item;
-            for ( Iterator it = av.iterator(); it.hasNext(); )
+            for ( Iterator<Attribute> it = av.iterator(); it.hasNext(); )
             {
-                Attribute attribute = ( Attribute ) it.next();
+                Attribute attribute = it.next();
                 try
                 {
                     values.add( attribute.getID() + "=" + attribute.get() ); //$NON-NLS-1$
@@ -225,9 +225,9 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == ProtectedItem.SelfValue.class )
         {
             ProtectedItem.SelfValue sv = ( ProtectedItem.SelfValue ) item;
-            for ( Iterator it = sv.iterator(); it.hasNext(); )
+            for ( Iterator<String> it = sv.iterator(); it.hasNext(); )
             {
-                values.add( it.next().toString() );
+                values.add( it.next() );
             }
         }
         else if ( item.getClass() == ProtectedItem.RangeOfValues.class )
@@ -238,9 +238,9 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == ProtectedItem.MaxValueCount.class )
         {
             ProtectedItem.MaxValueCount mvc = ( ProtectedItem.MaxValueCount ) item;
-            for ( Iterator it = mvc.iterator(); it.hasNext(); )
+            for ( Iterator<ProtectedItem.MaxValueCountItem> it = mvc.iterator(); it.hasNext(); )
             {
-                ProtectedItem.MaxValueCountItem mvci = ( ProtectedItem.MaxValueCountItem ) it.next();
+                ProtectedItem.MaxValueCountItem mvci = it.next();
                 values.add( mvci.toString() );
             }
         }
@@ -252,9 +252,9 @@ public class ProtectedItemWrapper
         else if ( item.getClass() == ProtectedItem.RestrictedBy.class )
         {
             ProtectedItem.RestrictedBy rb = ( ProtectedItem.RestrictedBy ) item;
-            for ( Iterator it = rb.iterator(); it.hasNext(); )
+            for ( Iterator<ProtectedItem.RestrictedByItem> it = rb.iterator(); it.hasNext(); )
             {
-                ProtectedItem.RestrictedByItem rbi = ( ProtectedItem.RestrictedByItem ) it.next();
+                ProtectedItem.RestrictedByItem rbi = it.next();
                 values.add( rbi.toString() );
             }
         }
@@ -367,7 +367,7 @@ public class ProtectedItemWrapper
      * 
      * @return the class of the user class.
      */
-    public Class getClazz()
+    public Class<? extends ProtectedItem> getClazz()
     {
         return clazz;
     }
