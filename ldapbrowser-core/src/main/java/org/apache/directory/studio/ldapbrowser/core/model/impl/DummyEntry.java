@@ -68,7 +68,7 @@ public class DummyEntry implements IEntry
 
     /** The browser connection. */
     private IBrowserConnection browserConnection;
-    
+
     /** The attribute map. */
     private Map<String, IAttribute> attributeMap;
 
@@ -343,6 +343,33 @@ public class DummyEntry implements IEntry
 
 
     /**
+     * This implementation always returns false.
+     */
+    public boolean isFetchAliases()
+    {
+        return false;
+    }
+
+
+    /**
+     * This implementation always returns false.
+     */
+    public boolean isFetchReferrals()
+    {
+        return false;
+    }
+
+
+    /**
+     * This implementation always returns false.
+     */
+    public boolean isFetchSubentries()
+    {
+        return false;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public boolean isReferral()
@@ -391,6 +418,30 @@ public class DummyEntry implements IEntry
      * This implementation does nothing.
      */
     public void setInitOperationalAttributes( boolean b )
+    {
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void setFetchAliases( boolean b )
+    {
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void setFetchReferrals( boolean b )
+    {
+    }
+
+
+    /**
+     * This implementation does nothing.
+     */
+    public void setFetchSubentries( boolean b )
     {
     }
 
@@ -490,7 +541,7 @@ public class DummyEntry implements IEntry
                 ObjectClassDescription ocd = schema.getObjectClassDescription( ocName );
                 ocds.add( ocd );
             }
-        }        
+        }
         return ocds;
     }
 

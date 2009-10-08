@@ -23,7 +23,10 @@ package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.DeleteAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.FetchAliasesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.FetchOperationalAttributesAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.FetchReferralsAction;
+import org.apache.directory.studio.ldapbrowser.common.actions.FetchSubentriesAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.RenameAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.BrowserActionProxy;
@@ -172,6 +175,15 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     /** The Constant fetchOperationalAttributesAction. */
     private static final String fetchOperationalAttributesAction = "fetchOperationalAttributesAction"; //$NON-NLS-1$
 
+    /** The Constant fetchAliasesAction. */
+    private static final String fetchAliasesAction = "fetchAliasesAction"; //$NON-NLS-1$
+
+    /** The Constant fetchReferralsAction. */
+    private static final String fetchReferralsAction = "fetchReferralsAction"; //$NON-NLS-1$
+
+    /** The Constant fetchSubentriesAction. */
+    private static final String fetchSubentriesAction = "fetchSubentriesAction"; //$NON-NLS-1$
+
     /** The Constant openEntryEditorAction. */
     private static final String openEntryEditorAction = "openEntryEditor"; //$NON-NLS-1$
 
@@ -251,6 +263,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         browserActionMap.put( fetchOperationalAttributesAction, new BrowserViewActionProxy( viewer,
             new FetchOperationalAttributesAction() ) );
+        browserActionMap.put( fetchAliasesAction, new BrowserViewActionProxy( viewer, new FetchAliasesAction() ) );
+        browserActionMap.put( fetchReferralsAction, new BrowserViewActionProxy( viewer, new FetchReferralsAction() ) );
+        browserActionMap.put( fetchSubentriesAction, new BrowserViewActionProxy( viewer, new FetchSubentriesAction() ) );
 
         browserActionMap.put( openEntryEditorAction, new BrowserViewActionProxy( viewer, new OpenEntryEditorAction() ) );
     }
@@ -389,10 +404,24 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         // refresh
         menuManager.add( browserActionMap.get( refreshAction ) );
+        MenuManager fetchMenuManager = new MenuManager( Messages.getString( "BrowserViewActionGroup.Fetch" ) ); //$NON-NLS-1$
         if ( browserActionMap.get( fetchOperationalAttributesAction ).isEnabled() )
         {
-            menuManager.add( browserActionMap.get( fetchOperationalAttributesAction ) );
+            fetchMenuManager.add( browserActionMap.get( fetchOperationalAttributesAction ) );
         }
+        if ( browserActionMap.get( fetchAliasesAction ).isEnabled() )
+        {
+            fetchMenuManager.add( browserActionMap.get( fetchAliasesAction ) );
+        }
+        if ( browserActionMap.get( fetchReferralsAction ).isEnabled() )
+        {
+            fetchMenuManager.add( browserActionMap.get( fetchReferralsAction ) );
+        }
+        if ( browserActionMap.get( fetchSubentriesAction ).isEnabled() )
+        {
+            fetchMenuManager.add( browserActionMap.get( fetchSubentriesAction ) );
+        }
+        menuManager.add( fetchMenuManager );
         menuManager.add( new Separator() );
 
         // additions

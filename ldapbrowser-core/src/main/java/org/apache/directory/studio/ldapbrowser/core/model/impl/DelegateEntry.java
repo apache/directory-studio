@@ -221,6 +221,66 @@ public class DelegateEntry implements IEntry
     /**
      * {@inheritDoc}
      */
+    public boolean isFetchAliases()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().isFetchAliases();
+        }
+        else if ( entryDoesNotExist )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchReferrals()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().isFetchReferrals();
+        }
+        else if ( entryDoesNotExist )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchSubentries()
+    {
+        if ( getDelegate() != null )
+        {
+            return getDelegate().isFetchSubentries();
+        }
+        else if ( entryDoesNotExist )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean isChildrenInitialized()
     {
         if ( getDelegate() != null )
@@ -556,6 +616,105 @@ public class DelegateEntry implements IEntry
             if ( getDelegate() != null )
             {
                 getDelegate().setInitOperationalAttributes( b );
+            }
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchAliases( boolean b )
+    {
+        if ( !b )
+        {
+            if ( getDelegate() != null )
+            {
+                getDelegate().setFetchAliases( b );
+            }
+            setDelegate( null );
+            entryDoesNotExist = false;
+        }
+        else
+        {
+            if ( getDelegate() == null )
+            {
+                setDelegate( getBrowserConnection().getEntryFromCache( dn ) );
+                if ( getDelegate() == null )
+                {
+                    // entry doesn't exist!
+                    entryDoesNotExist = true;
+                }
+            }
+            if ( getDelegate() != null )
+            {
+                getDelegate().setFetchAliases( b );
+            }
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchReferrals( boolean b )
+    {
+        if ( !b )
+        {
+            if ( getDelegate() != null )
+            {
+                getDelegate().setFetchReferrals( b );
+            }
+            setDelegate( null );
+            entryDoesNotExist = false;
+        }
+        else
+        {
+            if ( getDelegate() == null )
+            {
+                setDelegate( getBrowserConnection().getEntryFromCache( dn ) );
+                if ( getDelegate() == null )
+                {
+                    // entry doesn't exist!
+                    entryDoesNotExist = true;
+                }
+            }
+            if ( getDelegate() != null )
+            {
+                getDelegate().setFetchReferrals( b );
+            }
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchSubentries( boolean b )
+    {
+        if ( !b )
+        {
+            if ( getDelegate() != null )
+            {
+                getDelegate().setFetchSubentries( b );
+            }
+            setDelegate( null );
+            entryDoesNotExist = false;
+        }
+        else
+        {
+            if ( getDelegate() == null )
+            {
+                setDelegate( getBrowserConnection().getEntryFromCache( dn ) );
+                if ( getDelegate() == null )
+                {
+                    // entry doesn't exist!
+                    entryDoesNotExist = true;
+                }
+            }
+            if ( getDelegate() != null )
+            {
+                getDelegate().setFetchSubentries( b );
             }
         }
     }

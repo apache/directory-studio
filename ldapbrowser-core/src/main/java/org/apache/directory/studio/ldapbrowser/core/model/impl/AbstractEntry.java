@@ -69,17 +69,23 @@ public abstract class AbstractEntry implements IEntry
 
     private static final long serialVersionUID = -2431637532526418774L;
 
-    private static final int HAS_CHILDREN_HINT_FLAG = 1;
+    private static final int HAS_CHILDREN_HINT_FLAG = 1 << 0;
 
-    private static final int IS_DIRECTORY_ENTRY_FLAG = 2;
+    private static final int IS_DIRECTORY_ENTRY_FLAG = 1 << 1;
 
-    private static final int IS_ALIAS_FLAG = 4;
+    private static final int IS_ALIAS_FLAG = 1 << 2;
 
-    private static final int IS_REFERRAL_FLAG = 8;
+    private static final int IS_REFERRAL_FLAG = 1 << 3;
 
-    private static final int IS_SUBENTRY_FLAG = 16;
-    
-    private static final int IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG = 32;
+    private static final int IS_SUBENTRY_FLAG = 1 << 4;
+
+    private static final int IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG = 1 << 5;
+
+    private static final int IS_FETCH_ALIASES_FLAG = 1 << 6;
+
+    private static final int IS_FETCH_REFERRALS_FLAG = 1 << 7;
+
+    private static final int IS_FETCH_SUBENTRIES_FLAG = 1 << 8;
 
     private volatile int flags;
 
@@ -442,6 +448,81 @@ public abstract class AbstractEntry implements IEntry
         else
         {
             flags = flags & ~IS_INIT_OPERATIONAL_ATTRIBUTES_FLAG;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchAliases()
+    {
+        return ( flags & IS_FETCH_ALIASES_FLAG ) != 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchAliases( boolean b )
+    {
+        if ( b )
+        {
+            flags = flags | IS_FETCH_ALIASES_FLAG;
+        }
+        else
+        {
+            flags = flags & ~IS_FETCH_ALIASES_FLAG;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchReferrals()
+    {
+        return ( flags & IS_FETCH_REFERRALS_FLAG ) != 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchReferrals( boolean b )
+    {
+        if ( b )
+        {
+            flags = flags | IS_FETCH_REFERRALS_FLAG;
+        }
+        else
+        {
+            flags = flags & ~IS_FETCH_REFERRALS_FLAG;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFetchSubentries()
+    {
+        return ( flags & IS_FETCH_SUBENTRIES_FLAG ) != 0;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFetchSubentries( boolean b )
+    {
+        if ( b )
+        {
+            flags = flags | IS_FETCH_SUBENTRIES_FLAG;
+        }
+        else
+        {
+            flags = flags & ~IS_FETCH_SUBENTRIES_FLAG;
         }
     }
 

@@ -195,8 +195,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
      * @param monitor the progress monitor
      * @param pagedSearchControl the paged search control
      */
-    private void initializeChildren( IEntry parent, StudioProgressMonitor monitor,
-        StudioControl pagedSearchControl )
+    private void initializeChildren( IEntry parent, StudioProgressMonitor monitor, StudioControl pagedSearchControl )
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
             new String[]
@@ -206,7 +205,7 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         clearCaches( parent, purgeAllCaches );
 
         // create search
-        ISearch search = createSearch( parent, pagedSearchControl, false );
+        ISearch search = createSearch( parent, pagedSearchControl, false, false, false );
 
         // search
         ISearchResult[] srs = executeSearch( parent, search, monitor );
@@ -299,27 +298,40 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
         }
 
         // get sub-entries
-        ISearch subSearch = createSearch( parent, null, true );
-        if ( parent.getBrowserConnection().isFetchSubentries() )
+        ISearch subSearch = createSearch( parent, null, true, false, false );
+        if ( parent.getBrowserConnection().isFetchSubentries() || parent.isFetchSubentries() )
         {
-            ISearchResult[] subSrs = executeSearch( parent, subSearch, monitor );
+            executeSubSearch( parent, subSearch, monitor );
+        }
 
-            // fill children in search result
-            if ( subSrs != null && subSrs.length > 0 )
-            {
-                for ( ISearchResult searchResult : subSrs )
-                {
-                    parent.addChild( searchResult.getEntry() );
-                }
-            }
+        // get aliases and referrals
+        ISearch aliasOrReferralSearch = createSearch( parent, null, false, parent.isFetchAliases(), parent.isFetchReferrals() );
+        if ( parent.isFetchAliases() || parent.isFetchReferrals() )
+        {
+            executeSubSearch( parent, aliasOrReferralSearch, monitor );
         }
 
         // check exceeded limits / canceled
         parent.setHasMoreChildren( search.isCountLimitExceeded() || subSearch.isCountLimitExceeded()
-            || monitor.isCanceled() );
+            || aliasOrReferralSearch.isCountLimitExceeded() || monitor.isCanceled() );
 
         // set initialized state
         parent.setChildrenInitialized( true );
+    }
+
+
+    private void executeSubSearch( IEntry parent, ISearch subSearch, StudioProgressMonitor monitor )
+    {
+        ISearchResult[] subSrs = executeSearch( parent, subSearch, monitor );
+
+        // fill children in search result
+        if ( subSrs != null && subSrs.length > 0 )
+        {
+            for ( ISearchResult searchResult : subSrs )
+            {
+                parent.addChild( searchResult.getEntry() );
+            }
+        }
     }
 
 
@@ -334,36 +346,24 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
     }
 
 
-    private static ISearch createSearch( IEntry parent, StudioControl pagedSearchControl, boolean isSubSearch )
+    private static ISearch createSearch( IEntry parent, StudioControl pagedSearchControl, boolean isSubSearch,
+        boolean isAliasSearch, boolean isReferralsSearch )
     {
         // determine alias and referral handling
         SearchScope scope = SearchScope.ONELEVEL;
         AliasDereferencingMethod aliasesDereferencingMethod = parent.getBrowserConnection()
             .getAliasesDereferencingMethod();
-        if ( parent.isAlias() )
+        if ( parent.isAlias() || isAliasSearch )
         {
             aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
         }
         ReferralHandlingMethod referralsHandlingMethod = parent.getBrowserConnection().getReferralsHandlingMethod();
-        if ( parent.isReferral() )
+        if ( parent.isReferral() || isReferralsSearch )
         {
             referralsHandlingMethod = ReferralHandlingMethod.MANAGE;
         }
 
-        if ( !isSubSearch )
-        {
-            ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
-                .getChildrenFilter(), ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
-                parent.getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
-                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
-                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
-            if ( pagedSearchControl != null )
-            {
-                search.getSearchParameter().getControls().add( pagedSearchControl );
-            }
-            return search;
-        }
-        else
+        if ( isSubSearch )
         {
             ISearch subSearch = new Search( null, parent.getBrowserConnection(), parent.getDn(), parent
                 .getChildrenFilter() != null ? parent.getChildrenFilter() : ISearch.FILTER_SUBENTRY,
@@ -373,6 +373,33 @@ public class InitializeChildrenRunnable implements StudioBulkRunnableWithProgres
                     BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
             subSearch.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
             return subSearch;
+        }
+        else
+        {
+            String filter = parent.getChildrenFilter();
+            if ( isAliasSearch && isReferralsSearch )
+            {
+                filter = ISearch.FILTER_ALIAS_OR_REFERRAL;
+            }
+            else if ( isAliasSearch )
+            {
+                filter = ISearch.FILTER_ALIAS;
+            }
+            else if ( isReferralsSearch )
+            {
+                filter = ISearch.FILTER_REFERRAL;
+            }
+
+            ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), filter,
+                ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent
+                    .getBrowserConnection().getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod,
+                BrowserCorePlugin.getDefault().getPluginPreferences().getBoolean(
+                    BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
+            if ( pagedSearchControl != null )
+            {
+                search.getSearchParameter().getControls().add( pagedSearchControl );
+            }
+            return search;
         }
     }
 

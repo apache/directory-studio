@@ -25,27 +25,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeChildrenRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
-import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
- * This Action toggles weather to fetch operational attributes for an entry or not.
+ * This Action toggles weather to fetch referrals for an entry or not.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class FetchOperationalAttributesAction extends BrowserAction
+public class FetchReferralsAction extends BrowserAction
 {
     /**
-     * Creates a new instance of FetchOperationalAttributesAction.
+     * Creates a new instance of FetchReferralsAction.
      */
-    public FetchOperationalAttributesAction()
+    public FetchReferralsAction()
     {
     }
 
@@ -60,7 +59,7 @@ public class FetchOperationalAttributesAction extends BrowserAction
     @Override
     public String getText()
     {
-        return Messages.getString( "FetchOperationalAttributesAction.FetchOperationalAttributes" ); //$NON-NLS-1$
+        return Messages.getString( "FetchOperationalAttributesAction.FetchReferrals" ); //$NON-NLS-1$
     }
 
 
@@ -82,7 +81,8 @@ public class FetchOperationalAttributesAction extends BrowserAction
     public boolean isEnabled()
     {
         List<IEntry> entries = getEntries();
-        return !entries.isEmpty() && !entries.iterator().next().getBrowserConnection().isFetchOperationalAttributes();
+        return !entries.isEmpty()
+            && entries.iterator().next().getBrowserConnection().getReferralsHandlingMethod() != ReferralHandlingMethod.MANAGE;
     }
 
 
@@ -99,7 +99,7 @@ public class FetchOperationalAttributesAction extends BrowserAction
         {
             for ( IEntry entry : entries )
             {
-                if ( !entry.isInitOperationalAttributes() )
+                if ( !entry.isFetchReferrals() )
                 {
                     checked = false;
                 }
@@ -116,9 +116,9 @@ public class FetchOperationalAttributesAction extends BrowserAction
         boolean init = !isChecked();
         for ( IEntry entry : entries )
         {
-            entry.setInitOperationalAttributes( init );
+            entry.setFetchReferrals( init );
         }
-        new StudioBrowserJob( new InitializeAttributesRunnable( entries ) ).execute();
+        new StudioBrowserJob( new InitializeChildrenRunnable( true, entries ) ).execute();
     }
 
 
@@ -132,24 +132,6 @@ public class FetchOperationalAttributesAction extends BrowserAction
     {
         List<IEntry> entriesList = new ArrayList<IEntry>();
         entriesList.addAll( Arrays.asList( getSelectedEntries() ) );
-        for ( ISearchResult sr : getSelectedSearchResults() )
-        {
-            entriesList.add( sr.getEntry() );
-        }
-        for ( IBookmark bm : getSelectedBookmarks() )
-        {
-            entriesList.add( bm.getEntry() );
-        }
-        if ( getInput() != null && getInput() instanceof IEntry )
-        {
-            // the entry input is usually a cloned entry, lookup the real entry from connection
-            IEntry input = ( IEntry ) getInput();
-            IEntry entry = input.getBrowserConnection().getEntryFromCache( input.getDn() );
-            if ( entry != null )
-            {
-                entriesList.add( entry );
-            }
-        }
         return entriesList;
     }
 

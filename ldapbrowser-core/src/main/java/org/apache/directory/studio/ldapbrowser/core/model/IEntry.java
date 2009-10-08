@@ -222,6 +222,54 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
 
 
     /**
+     * Indicates whether this entry's alias children should be fetched.
+     * 
+     * @return true if this entry's alias children should be fetched
+     */
+    public abstract boolean isFetchAliases();
+
+
+    /**
+     * Sets a flag whether this entry's alias children should be fetched.
+     * 
+     * @param b the fetch aliases flag
+     */
+    public abstract void setFetchAliases( boolean b );
+
+
+    /**
+     * Indicates whether this entry's referral children should be fetched.
+     * 
+     * @return true if this entry's referral children should be fetched
+     */
+    public abstract boolean isFetchReferrals();
+
+
+    /**
+     * Sets a flag whether this entry's referral children should be fetched.
+     * 
+     * @param b the fetch referral flag
+     */
+    public abstract void setFetchReferrals( boolean b );
+
+
+    /**
+     * Indicates whether this entry's sub-entries should be fetched.
+     * 
+     * @return true if this entry's sub-entries should be fetched
+     */
+    public abstract boolean isFetchSubentries();
+
+
+    /**
+     * Sets a flag whether this entry's sub-entries should be fetched.
+     * 
+     * @param b the fetch sub-entries flag
+     */
+    public abstract void setFetchSubentries( boolean b );
+
+
+    /**
      * Gets the attributes of the entry.
      * 
      * If isAttributesInitialized() returns false the returned attributes 

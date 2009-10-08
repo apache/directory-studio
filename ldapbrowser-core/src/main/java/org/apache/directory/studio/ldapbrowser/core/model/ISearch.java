@@ -58,6 +58,15 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     /** Filter for fetching subentries (|(objectClass=subentry)(objectClass=ldapSubentry)) */
     public static final String FILTER_SUBENTRY = "(|(objectClass=subentry)(objectClass=ldapSubentry))"; //$NON-NLS-1$
 
+    /** Filter for fetching aliases (objectClass=alias) */
+    public static final String FILTER_ALIAS = "(objectClass=alias)"; //$NON-NLS-1$
+
+    /** Filter for fetching referrals (objectClass=referral) */
+    public static final String FILTER_REFERRAL = "(objectClass=referral)"; //$NON-NLS-1$
+    
+    /** Filter for fetching aliases and referrals (|(objectClass=alias)(objectClass=referral)) */
+    public static final String FILTER_ALIAS_OR_REFERRAL = "(|(objectClass=alias)(objectClass=referral))"; //$NON-NLS-1$
+
     /**
      * Enum for the used search scope.
      * 
