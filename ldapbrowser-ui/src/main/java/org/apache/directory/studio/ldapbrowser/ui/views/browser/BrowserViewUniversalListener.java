@@ -28,6 +28,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
+import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
@@ -67,8 +68,10 @@ import org.eclipse.jface.viewers.OpenEvent;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PartInitException;
@@ -349,11 +352,42 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
                     }
                 }
             }
-            else
+            // Checking if there's at least one entry editor open.
+            // We need to blank it
+            else if ( isOneOrMoreOpenSingleTabEntryEditors() )
             {
                 entryEditorManager.openEntryEditor( new IEntry[0], new ISearchResult[0], new IBookmark[0] );
             }
         }
+    }
+
+
+    /**
+     * Indicates when one or more single-tab entry editor is (are) open.
+     *
+     * @return
+     *      <code>true</code> if one or more single-tab entry editor is (are) open,
+     *      <code>false</code> if not.
+     */
+    private boolean isOneOrMoreOpenSingleTabEntryEditors()
+    {
+        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        for ( IEditorReference ref : activePage.getEditorReferences() )
+        {
+            IWorkbenchPart part = ref.getPart( false );
+            if ( part != null && part instanceof IEntryEditor )
+            {
+                IEntryEditor editor = ( IEntryEditor ) part;
+                if ( ( editor != null ) && ( editor.getEntryEditorInput() != null )
+                    && ( editor.getEntryEditorInput().getExtension() != null )
+                    && ( !editor.getEntryEditorInput().getExtension().isMultiWindow() ) )
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 
