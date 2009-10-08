@@ -83,7 +83,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
                 .getString( "LdifEntryEditorDocumentProvider.InvalidRecordType" ) ) ); //$NON-NLS-1$
         }
-        if ( !LdapDN.isValid( records[0].getDnLine().getRawDn() ) )
+        if ( !LdapDN.isValid( records[0].getDnLine().getUnfoldedDn() ) )
         {
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
                 .getString( "LdifEntryEditorDocumentProvider.InvalidDN" ) ) ); //$NON-NLS-1$
@@ -127,7 +127,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         // only continue if the LDIF model is valid
         LdifRecord[] records = getLdifModel().getRecords();
         if ( records.length != 1 || !( records[0] instanceof LdifContentRecord ) || !records[0].isValid()
-            || !LdapDN.isValid( records[0].getDnLine().getRawDn() ) )
+            || !LdapDN.isValid( records[0].getDnLine().getUnfoldedDn() ) )
         {
             return;
         }
