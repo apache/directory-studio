@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
+import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.AbstractOpenEditorAction;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
@@ -41,7 +42,6 @@ import org.eclipse.jface.wizard.WizardDialog;
  */
 public class OpenEntryEditorAction extends AbstractOpenEditorAction
 {
-
     /** The value editor. */
     private IValueEditor valueEditor;
 
@@ -123,7 +123,7 @@ public class OpenEntryEditorAction extends AbstractOpenEditorAction
      */
     public ImageDescriptor getImageDescriptor()
     {
-        return null;
+        return BrowserCommonActivator.getDefault().getImageDescriptor( BrowserCommonConstants.IMG_ENTRY_EDITOR );
     }
 
 

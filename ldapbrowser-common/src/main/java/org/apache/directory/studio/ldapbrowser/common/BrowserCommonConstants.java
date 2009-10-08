@@ -124,6 +124,7 @@ public interface BrowserCommonConstants
     public static final String IMG_SORT = "resources/icons/sort.gif"; //$NON-NLS-1$
     public static final String IMG_DIT = "resources/icons/dit.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY = "resources/icons/entry_default.gif"; //$NON-NLS-1$
+    public static final String IMG_ENTRY_EDITOR = "resources/icons/entry_editor.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_ROOT = "resources/icons/entry_root.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_DC = "resources/icons/entry_dc.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_ORG = "resources/icons/entry_org.gif"; //$NON-NLS-1$

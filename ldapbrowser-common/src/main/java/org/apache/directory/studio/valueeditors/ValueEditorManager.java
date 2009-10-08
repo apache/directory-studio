@@ -143,7 +143,7 @@ public class ValueEditorManager
             entryValueEditor = new EntryValueEditor( this.parent, this );
             entryValueEditor.setValueEditorName( Messages.getString( "ValueEditorManager.EntryEditor" ) ); //$NON-NLS-1$
             entryValueEditor.setValueEditorImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
-                BrowserCommonConstants.IMG_ENTRY ) );
+                BrowserCommonConstants.IMG_ENTRY_EDITOR ) );
         }
 
         // special case: rename editor
