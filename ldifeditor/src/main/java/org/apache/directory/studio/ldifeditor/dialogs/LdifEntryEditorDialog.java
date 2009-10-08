@@ -109,14 +109,14 @@ public class LdifEntryEditorDialog extends Dialog
         {
             if ( ldifRecord instanceof LdifContentRecord )
             {
-                entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) ldifRecord, browserConnection );
+                entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) this.ldifRecord,
+                    this.browserConnection );
             }
             else if ( ldifRecord instanceof LdifChangeAddRecord )
             {
-                entry = ModelConverter.ldifChangeAddRecordToEntry( ( LdifChangeAddRecord ) ldifRecord,
-                    browserConnection );
+                entry = ModelConverter.ldifChangeAddRecordToEntry( ( LdifChangeAddRecord ) this.ldifRecord,
+                    this.browserConnection );
             }
-
         }
         catch ( InvalidNameException e )
         {
