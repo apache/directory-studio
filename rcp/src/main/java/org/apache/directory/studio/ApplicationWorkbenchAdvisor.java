@@ -21,6 +21,8 @@
 package org.apache.directory.studio;
 
 
+import org.eclipse.core.net.proxy.IProxyService;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -32,6 +34,8 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceReference;
 
 
 /**
@@ -120,4 +124,28 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
         return true;
     }
 
+
+    @Override
+    public void postStartup()
+    {
+        super.postStartup();
+        activateProxyService();
+    }
+
+
+    /**
+     * Activate the proxy service, this sets the relevant system properties.
+     */
+    private void activateProxyService()
+    {
+        Bundle bundle = Platform.getBundle( "org.eclipse.ui.ide" ); //$NON-NLS-1$
+        if ( bundle != null )
+        {
+            ServiceReference ref = bundle.getBundleContext().getServiceReference( IProxyService.class.getName() );
+            if ( ref != null )
+            {
+                bundle.getBundleContext().getService( ref );
+            }
+        }
+    }
 }
