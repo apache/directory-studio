@@ -35,6 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
@@ -83,11 +84,6 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
                 .getString( "LdifEntryEditorDocumentProvider.InvalidRecordType" ) ) ); //$NON-NLS-1$
         }
-        if ( !LdapDN.isValid( records[0].getDnLine().getUnfoldedDn() ) )
-        {
-            throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
-                .getString( "LdifEntryEditorDocumentProvider.InvalidDN" ) ) ); //$NON-NLS-1$
-        }
         if ( !records[0].isValid() )
         {
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
@@ -104,9 +100,25 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         }
 
         EntryEditorInput input = getEntryEditorInput( element );
+        try
+        {
+            LdapDN newDN = new LdapDN( records[0].getDnLine().getUnfoldedDn() );
+            if(!newDN.equals( input.getResolvedEntry().getDn() ))
+            {
+                throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
+                    .getString( "LdifEntryEditorDocumentProvider.ModDnNotSupported" ), records[0].getInvalidString() ) ) ); //$NON-NLS-1$
+            }
+        }
+        catch ( InvalidNameException e )
+        {
+            throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
+                .getString( "LdifEntryEditorDocumentProvider.InvalidDN" ) ) ); //$NON-NLS-1$
+        }
+        
         IStatus status = input.saveSharedWorkingCopy( false, editor );
         if ( status != null && !status.isOK() )
         {
+            BrowserUIPlugin.getDefault().getLog().log( status );
             throw new CoreException( status );
         }
     }

@@ -38,7 +38,6 @@ import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.parsers.AttributeTypeDescription;
 import org.apache.directory.shared.ldap.util.LdapURL;
-import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -53,17 +52,13 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
-import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
-import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
-import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.Preferences;
 
@@ -393,25 +388,6 @@ public class Utils
     public static LdifFile computeDiff( IEntry t0, IEntry t1 )
     {
         LdifFile model = new LdifFile();
-
-        // check if entry needs to be renamed
-        if ( !t0.getDn().equals( t1.getDn() ) )
-        {
-            LdifChangeModDnRecord modDnRecord = new LdifChangeModDnRecord( LdifDnLine.create( t0.getDn().getUpName() ) );
-            if ( t0.isReferral() )
-            {
-                modDnRecord.addControl( LdifControlLine
-                    .create( StudioControl.MANAGEDSAIT_CONTROL.getOid(),
-                        StudioControl.MANAGEDSAIT_CONTROL.isCritical(), StudioControl.MANAGEDSAIT_CONTROL
-                            .getControlValue() ) );
-            }
-            modDnRecord.setChangeType( LdifChangeTypeLine.createModDn() );
-            modDnRecord.setNewrdn( LdifNewrdnLine.create( t1.getRdn().getUpName() ) );
-            modDnRecord.setNewsuperior( LdifNewsuperiorLine.create( DnUtils.getParent( t1.getDn() ).getUpName() ) );
-            modDnRecord.setDeloldrdn( LdifDeloldrdnLine.create1() );
-            modDnRecord.finish( LdifSepLine.create() );
-            model.addContainer( modDnRecord );
-        }
 
         // check attributes of old entry
         Set<String> attributesToDelAdd = new HashSet<String>();

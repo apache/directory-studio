@@ -40,7 +40,6 @@ import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
@@ -54,8 +53,6 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
-import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
-import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -952,17 +949,6 @@ public class EntryEditorManager
                     {
                         updateOscSharedReferenceCopy( originalEntry );
                         updateOscSharedWorkingCopy( originalEntry );
-
-                        // check if the entry was renamed, fire an appropriate event in that case
-                        for ( LdifRecord record : diff.getRecords() )
-                        {
-                            if ( record instanceof LdifChangeModDnRecord )
-                            {
-                                IEntry newEntry = originalEntry.getBrowserConnection().getEntryFromCache(
-                                    workingCopy.getDn() );
-                                EventRegistry.fireEntryUpdated( new EntryRenamedEvent( originalEntry, newEntry ), this );
-                            }
-                        }
                     }
                     return status;
                 }
