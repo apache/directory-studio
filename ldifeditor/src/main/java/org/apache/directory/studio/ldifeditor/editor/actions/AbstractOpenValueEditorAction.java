@@ -21,6 +21,8 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
+import javax.naming.InvalidNameException;
+
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
@@ -142,16 +144,26 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
     protected Object getValueEditorRawValue()
     {
         IBrowserConnection connection = getConnection();
+        String dn = getDn();
         String description = getAttributeDescription();
         Object value = getValue();
 
         Object rawValue = null;
         if ( value != null )
         {
-            DummyEntry dummyEntry = new DummyEntry( new LdapDN(), connection );
-            Attribute dummyAttribute = new Attribute( dummyEntry, description );
-            Value dummyValue = new Value( dummyAttribute, value );
-            rawValue = valueEditor.getRawValue( dummyValue );
+            try
+            {
+                // some value editors need the real DN (e.g. the password editor)
+                DummyEntry dummyEntry = new DummyEntry( LdapDN.isValid( dn ) ? new LdapDN( dn ) : new LdapDN(),
+                    connection );
+                Attribute dummyAttribute = new Attribute( dummyEntry, description );
+                Value dummyValue = new Value( dummyAttribute, value );
+                rawValue = valueEditor.getRawValue( dummyValue );
+            }
+            catch ( InvalidNameException e )
+            {
+                // should not occur, as we check with isValid()
+            }
         }
 
         return rawValue;
