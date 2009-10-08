@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldifeditor.dialogs;
 
 import javax.naming.InvalidNameException;
 
+import org.apache.directory.studio.connection.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetActionGroup;
@@ -55,7 +56,7 @@ import org.eclipse.ui.contexts.IContextService;
 public class LdifEntryEditorDialog extends Dialog
 {
 
-    public static final String DIALOG_TITLE = Messages.getString("LdifEntryEditorDialog.LDIFRecordEditor"); //$NON-NLS-1$
+    public static final String DIALOG_TITLE = Messages.getString( "LdifEntryEditorDialog.LDIFRecordEditor" ); //$NON-NLS-1$
 
     public static final int MAX_WIDTH = 450;
 
@@ -103,6 +104,24 @@ public class LdifEntryEditorDialog extends Dialog
 
         this.browserConnection = browserConnection != null ? browserConnection : new DummyConnection(
             Schema.DEFAULT_SCHEMA );
+
+        try
+        {
+            if ( ldifRecord instanceof LdifContentRecord )
+            {
+                entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) ldifRecord, browserConnection );
+            }
+            else if ( ldifRecord instanceof LdifChangeAddRecord )
+            {
+                entry = ModelConverter.ldifChangeAddRecordToEntry( ( LdifChangeAddRecord ) ldifRecord,
+                    browserConnection );
+            }
+
+        }
+        catch ( InvalidNameException e )
+        {
+            entry = null;
+        }
     }
 
 
@@ -117,7 +136,10 @@ public class LdifEntryEditorDialog extends Dialog
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        if ( entry != null )
+        {
+            createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
+        }
 
         getShell().update();
         getShell().layout( true, true );
@@ -127,7 +149,7 @@ public class LdifEntryEditorDialog extends Dialog
     protected void buttonPressed( int buttonId )
     {
 
-        if ( IDialogConstants.OK_ID == buttonId )
+        if ( IDialogConstants.OK_ID == buttonId && entry != null )
         {
             if ( this.ldifRecord instanceof LdifContentRecord )
             {
@@ -199,60 +221,46 @@ public class LdifEntryEditorDialog extends Dialog
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-
-        // create configuration
-        configuration = new EntryEditorWidgetConfiguration();
-
-        // create main widget
-        mainWidget = new EntryEditorWidget( configuration );
-        mainWidget.createWidget( composite );
-        mainWidget.getViewer().getTree().setFocus();
-
-        // create actions
-        actionGroup = new EntryEditorWidgetActionGroupWithAttribute( mainWidget, configuration );
-        actionGroup.fillToolBar( mainWidget.getToolBarManager() );
-        actionGroup.fillMenu( mainWidget.getMenuManager() );
-        actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
-        IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
-            IContextService.class );
-        contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
-        actionGroup.activateGlobalActionHandlers();
-
-        // hack to activate the action handlers when changing the selection 
-        mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+        if ( entry == null )
         {
-            public void selectionChanged( SelectionChangedEvent event )
-            {
-                actionGroup.deactivateGlobalActionHandlers();
-                actionGroup.activateGlobalActionHandlers();
-            }
-        } );
-
-        // create the listener
-        universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), configuration, actionGroup,
-            actionGroup.getOpenDefaultEditorAction() );
-
-        try
-        {
-            if ( ldifRecord instanceof LdifContentRecord )
-            {
-                entry = ModelConverter.ldifContentRecordToEntry( ( LdifContentRecord ) ldifRecord, browserConnection );
-            }
-            else if ( ldifRecord instanceof LdifChangeAddRecord )
-            {
-                entry = ModelConverter.ldifChangeAddRecordToEntry( ( LdifChangeAddRecord ) ldifRecord,
-                    browserConnection );
-            }
-
-            if ( entry != null )
-            {
-                universalListener.setInput( entry );
-            }
-
+            String message = Messages.getString( "LdifEntryEditorDialog.InvalidDnCantEditEntry" ); //$NON-NLS-1$
+            BaseWidgetUtils.createLabel( composite, message, 1 );
         }
-        catch ( InvalidNameException e )
+        else
         {
-            e.printStackTrace();
+            // create configuration
+            configuration = new EntryEditorWidgetConfiguration();
+
+            // create main widget
+            mainWidget = new EntryEditorWidget( configuration );
+            mainWidget.createWidget( composite );
+            mainWidget.getViewer().getTree().setFocus();
+
+            // create actions
+            actionGroup = new EntryEditorWidgetActionGroupWithAttribute( mainWidget, configuration );
+            actionGroup.fillToolBar( mainWidget.getToolBarManager() );
+            actionGroup.fillMenu( mainWidget.getMenuManager() );
+            actionGroup.fillContextMenu( mainWidget.getContextMenuManager() );
+            IContextService contextService = ( IContextService ) PlatformUI.getWorkbench().getAdapter(
+                IContextService.class );
+            contextActivation = contextService.activateContext( BrowserCommonConstants.CONTEXT_DIALOGS );
+            actionGroup.activateGlobalActionHandlers();
+
+            // hack to activate the action handlers when changing the selection 
+            mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
+            {
+                public void selectionChanged( SelectionChangedEvent event )
+                {
+                    actionGroup.deactivateGlobalActionHandlers();
+                    actionGroup.activateGlobalActionHandlers();
+                }
+            } );
+
+            // create the listener
+            universalListener = new EntryEditorWidgetUniversalListener( mainWidget.getViewer(), configuration,
+                actionGroup, actionGroup.getOpenDefaultEditorAction() );
+
+            universalListener.setInput( entry );
         }
 
         applyDialogFont( composite );
