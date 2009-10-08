@@ -23,6 +23,8 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.jobs.StudioBulkRunnableWithProgress;
 import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -164,8 +166,7 @@ public class ReadEntryRunnable implements StudioBulkRunnableWithProgress
 
             // search in directory
             ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT,
-                1, 0, browserConnection.getAliasesDereferencingMethod(),
-                browserConnection.getReferralsHandlingMethod(), true, null );
+                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.MANAGE, true, null );
             SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )

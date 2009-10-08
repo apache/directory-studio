@@ -115,6 +115,23 @@ public class CreateEntryRunnable implements StudioBulkRunnableWithProgress
         {
             createdEntry = ReadEntryRunnable.getEntry( browserConnection, entryToCreate.getDn(), monitor );
             createdEntry.setHasChildrenHint( false );
+
+            // set some flags at the parent
+            if ( createdEntry.hasParententry() )
+            {
+                if ( createdEntry.isAlias() )
+                {
+                    createdEntry.getParententry().setFetchAliases( true );
+                }
+                if ( createdEntry.isReferral() )
+                {
+                    createdEntry.getParententry().setFetchReferrals( true );
+                }
+                if ( createdEntry.isSubentry() )
+                {
+                    createdEntry.getParententry().setFetchSubentries( true );
+                }
+            }
         }
 
         monitor.reportProgress( " " ); //$NON-NLS-1$
