@@ -168,6 +168,8 @@ public class BrowserCoreMessages extends NLS
 
     public static String model__unsupported_hash;
 
+    public static String model__invalid_hash;
+
     public static String ldif__imported_n_entries_m_errors;
 
     public static String ldif__n_errors_see_logfile;

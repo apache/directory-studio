@@ -70,6 +70,9 @@ public class Password
 
     /** The constant used for unsupported hash methods */
     public static final String HASH_METHOD_UNSUPPORTED = BrowserCoreMessages.model__unsupported_hash;
+    
+    /** The constant used for invalid password hashes */
+    public static final String HASH_METHOD_INVALID = BrowserCoreMessages.model__invalid_hash;
 
     /** The hash method. */
     private String hashMethod;
@@ -108,43 +111,48 @@ public class Password
         }
         else if ( password.indexOf( '{' ) == 0 && password.indexOf( '}' ) > 0 )
         {
-            hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
-            String rest = password.substring( hashMethod.length() + 2 );
+            try
+            {
+                hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
+                String rest = password.substring( hashMethod.length() + 2 );
 
-            if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) )
-            {
-                hashedPassword = LdifUtils.base64decodeToByteArray( rest );
-                salt = null;
+                if ( HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) )
+                {
+                    hashedPassword = LdifUtils.base64decodeToByteArray( rest );
+                    salt = null;
+                }
+                else if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
+                {
+                    byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
+                    hashedPassword = new byte[20];
+                    salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
+                    split( hashedPasswordWithSalt, hashedPassword, salt );
+                }
+                else if ( HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
+                {
+                    byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
+                    hashedPassword = new byte[16];
+                    salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
+                    split( hashedPasswordWithSalt, hashedPassword, salt );
+                }
+                else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
+                {
+                    byte[] saltWithPassword = LdifUtils.utf8encode( rest );
+                    salt = new byte[2];
+                    hashedPassword = new byte[saltWithPassword.length - salt.length];
+                    split( saltWithPassword, salt, hashedPassword );
+                }
+                else
+                {
+                    hashMethod = HASH_METHOD_UNSUPPORTED;
+                    trash = password;
+                }
             }
-            else if ( HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) )
+            catch ( RuntimeException e )
             {
-                byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
-                hashedPassword = new byte[20];
-                salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
-                split( hashedPasswordWithSalt, hashedPassword, salt );
-            }
-            else if ( HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) )
-            {
-                byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
-                hashedPassword = new byte[16];
-                salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
-                split( hashedPasswordWithSalt, hashedPassword, salt );
-            }
-            else if ( HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) )
-            {
-                byte[] saltWithPassword = LdifUtils.utf8encode( rest );
-                salt = new byte[2];
-                hashedPassword = new byte[saltWithPassword.length - salt.length];
-                split( saltWithPassword, salt, hashedPassword );
-            }
-            else
-            {
-                // throw new IllegalArgumentException("Unsupported hash method
-                // '"+hashMethod+"'");
-                // handle as plain text?
-                hashMethod = HASH_METHOD_UNSUPPORTED;
+                // happens if 'rest' is not valid BASE64
+                hashMethod = HASH_METHOD_INVALID;
                 trash = password;
-                // salt = null;
             }
         }
         else
@@ -168,9 +176,10 @@ public class Password
      */
     public Password( String hashMethod, String passwordAsPlaintext )
     {
-        if ( !( hashMethod == null || HASH_METHOD_NO.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SHA.equalsIgnoreCase( hashMethod )
-            || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod )
-            || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_CRYPT.equalsIgnoreCase( hashMethod ) ) )
+        if ( !( hashMethod == null || HASH_METHOD_NO.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_SHA.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SSHA.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_MD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_SMD5.equalsIgnoreCase( hashMethod ) || HASH_METHOD_CRYPT
+            .equalsIgnoreCase( hashMethod ) ) )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__unsupported_hash );
         }
@@ -338,7 +347,8 @@ public class Password
     {
         StringBuffer sb = new StringBuffer();
 
-        if ( HASH_METHOD_UNSUPPORTED.equalsIgnoreCase( hashMethod ) )
+        if ( HASH_METHOD_UNSUPPORTED.equalsIgnoreCase( hashMethod )
+            || HASH_METHOD_INVALID.equalsIgnoreCase( hashMethod ) )
         {
             sb.append( trash );
         }
