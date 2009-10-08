@@ -69,7 +69,12 @@ public class MultiTabEntryEditorMatchingStrategy implements IEditorMatchingStrat
                 return false;
             }
             EntryEditorInput otherEntryEditorInput = ( EntryEditorInput ) otherInput;
-            return entryEditorInput.getResolvedEntry().equals( otherEntryEditorInput.getResolvedEntry() );
+            if ( entryEditorInput.getResolvedEntry() == null && otherEntryEditorInput.getResolvedEntry() == null )
+            {
+                return true;
+            }
+            return entryEditorInput.getResolvedEntry() != null && otherEntryEditorInput.getResolvedEntry() != null
+                && entryEditorInput.getResolvedEntry().equals( otherEntryEditorInput.getResolvedEntry() );
         }
         catch ( PartInitException e )
         {
