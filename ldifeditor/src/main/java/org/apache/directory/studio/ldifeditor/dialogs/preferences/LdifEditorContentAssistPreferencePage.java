@@ -135,7 +135,6 @@ public class LdifEditorContentAssistPreferencePage extends PreferencePage implem
             Messages.getString("LdifEditorContentAssistPreferencePage.SmartInsertAttributeName"), 1 ); //$NON-NLS-1$
         smartInsertAttributeInModspecButton.setSelection( getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_CONTENTASSIST_SMARTINSERTATTRIBUTEINMODSPEC ) );
-        BaseWidgetUtils.createLabel( caGroup, Messages.getString("LdifEditorContentAssistPreferencePage.SmartInsertMustAttributes"), 1 ); //$NON-NLS-1$
 
         checkEnabled();
 
