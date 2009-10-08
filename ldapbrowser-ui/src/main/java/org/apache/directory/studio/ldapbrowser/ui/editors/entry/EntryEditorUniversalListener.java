@@ -22,17 +22,9 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidgetUniversalListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEvent;
-import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
-import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
-import org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
@@ -48,55 +40,11 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  */
 public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalListener
 {
-
     /** The entry editor */
     private EntryEditor entryEditor;
 
     /** Token used to activate and deactivate shortcuts in the editor */
     private IContextActivation contextActivation;
-
-    /** Listener that listens for selections of IEntry, ISeachResult and IBookmark objects. */
-    private INullSelectionListener entrySelectionListener = new INullSelectionListener()
-    {
-        /**
-         * {@inheritDoc}
-         * 
-         * This implementation sets the editor's input when a entry, search result or bookmark is selected.
-         */
-        public void selectionChanged( IWorkbenchPart part, ISelection selection )
-        {
-            if ( entryEditor != null && part != null )
-            {
-                // TODO: should be removed, opening the editor and changing input will be completely managed by the browser view 
-//                if ( entryEditor.getSite().getWorkbenchWindow() == part.getSite().getWorkbenchWindow() )
-//                {
-//                    IEntry[] entries = BrowserSelectionUtils.getEntries( selection );
-//                    ISearchResult[] searchResults = BrowserSelectionUtils.getSearchResults( selection );
-//                    IBookmark[] bookmarks = BrowserSelectionUtils.getBookmarks( selection );
-//                    Object[] objects = BrowserSelectionUtils.getObjects( selection );
-//                    if ( entries.length + searchResults.length + bookmarks.length == 1 && objects.length == 1 )
-//                    {
-//                        if ( entries.length == 1 )
-//                        {
-//                            entryEditor.setInput( new EntryEditorInput( entries[0] ) );
-//                        }
-//                        else if ( searchResults.length == 1 )
-//                        {
-//                            entryEditor.setInput( new EntryEditorInput( searchResults[0] ) );
-//                        }
-//                        else if ( bookmarks.length == 1 )
-//                        {
-//                            entryEditor.setInput( new EntryEditorInput( bookmarks[0] ) );
-//                        }
-//                    }
-//                    else
-//                    {
-//                        entryEditor.setInput( new EntryEditorInput( ( IEntry ) null ) );
-//                    }
-//                }
-            }
-        }
-    };
 
     /** The part listener used to activate and deactivate the shortcuts */
     private IPartListener2 partListener = new IPartListener2()
@@ -205,8 +153,6 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
 
         // register listeners
         entryEditor.getSite().getPage().addPartListener( partListener );
-        entryEditor.getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener( BrowserView.getId(),
-            entrySelectionListener );
     }
 
 
@@ -219,8 +165,6 @@ public class EntryEditorUniversalListener extends EntryEditorWidgetUniversalList
         {
             // deregister listeners
             entryEditor.getSite().getPage().removePartListener( partListener );
-            entryEditor.getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(
-                BrowserView.getId(), entrySelectionListener );
             entryEditor = null;
         }
 
