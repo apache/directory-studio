@@ -28,6 +28,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.dialogs.PreferencesUtil;
@@ -93,8 +94,8 @@ public class PropertiesAction extends Action implements IWorkbenchWindowActionDe
                 Server server = ( Server ) selection.getFirstElement();
                 PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( view.getViewSite().getShell(),
                     server, ApacheDsPluginConstants.PROP_SERVER_PROPERTY_PAGE, null, null );
-                dialog.getShell().setText(
-                    Messages.getString( "PropertiesAction.PropertiesFor" ) + shorten( server.getName(), 30 ) + "'" ); //$NON-NLS-1$ //$NON-NLS-2$
+                dialog.getShell().setText( NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), //$NON-NLS-1$
+                    shorten( server.getName(), 30 ) ) );
                 dialog.open();
             }
         }
