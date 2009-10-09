@@ -68,8 +68,8 @@ public class CoreSchemasSelectionWidget
 
     /** The array containing the 'core' from OpenLDAP */
     private static final String[] coreSchemasFromOpenLdap = new String[]
-        { "corba", "core", "cosine", "dyngroup", "inetorgperson", "java", "misc", "nis", "openldap", "ppolicy", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
-            "system" }; //$NON-NLS-1$
+        { "collective", "corba", "core", "cosine", "dyngroup", "duaconf", "inetorgperson", "java", "misc", "nis", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+            "openldap", "ppolicy", "system" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     // UI Fields
     private Button typeApacheDSButton;

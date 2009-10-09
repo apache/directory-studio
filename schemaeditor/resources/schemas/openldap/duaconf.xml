@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="duaconf">
+   <attributetypes>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.0" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>defaultServerList</alias>
+         </aliases>
+         <description>Default LDAP server host address used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.1" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>defaultSearchBase</alias>
+         </aliases>
+         <description>Default LDAP base DN used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+         <equality>distinguishedNameMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.2" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>preferredServerList</alias>
+         </aliases>
+         <description>Preferred LDAP server host addresses to be used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.3" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>searchTimeLimit</alias>
+         </aliases>
+         <description>Maximum time in seconds a DUA should allow for a search to complete</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+         <equality>integerMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.4" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>bindTimeLimit</alias>
+         </aliases>
+         <description>Maximum time in seconds a DUA should allow for the bind operation to complete</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+         <equality>integerMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.5" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>followReferrals</alias>
+         </aliases>
+         <description>Tells DUA if it should follow referrals returned by a DSA search result</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+         <equality>booleanMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.16" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>dereferenceAliases</alias>
+         </aliases>
+         <description>Tells DUA if it should dereference aliases</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+         <equality>booleanMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.6" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>authenticationMethod</alias>
+         </aliases>
+         <description>A keystring which identifies the type of authentication method used to contact the DSA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.7" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>profileTTL</alias>
+         </aliases>
+         <description>Time to live, in seconds, before a client DUA should re-read this configuration profile</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+         <equality>integerMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.14" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>serviceSearchDescriptor</alias>
+         </aliases>
+         <description>LDAP search descriptor list used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseExactMatch</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.9" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>attributeMap</alias>
+         </aliases>
+         <description>Attribute mappings used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.10" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>credentialLevel</alias>
+         </aliases>
+         <description>Identifies type of credentials a DUA should use when binding to the LDAP server</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.11" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>objectclassMap</alias>
+         </aliases>
+         <description>Objectclass mappings used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.12" obsolete="false" singlevalue="true" collective="false" nousermodification="false">
+         <aliases>
+            <alias>defaultSearchScope</alias>
+         </aliases>
+         <description>Default search scope used by a DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.13" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>serviceCredentialLevel</alias>
+         </aliases>
+         <description>Identifies type of credentials a DUA should use when binding to the LDAP server for a specific service</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.26</syntax>
+         <equality>caseIgnoreIA5Match</equality>
+      </attributetype>
+      <attributetype oid="1.3.6.1.4.1.11.1.3.1.1.15" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
+         <aliases>
+            <alias>serviceAuthenticationMethod</alias>
+         </aliases>
+         <description>Authentication method used by a service of the DUA</description>
+         <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+         <equality>caseIgnoreMatch</equality>
+      </attributetype>
+   </attributetypes>
+   <objectclasses>
+      <objectclass oid="1.3.6.1.4.1.11.1.3.1.2.5" obsolete="false">
+         <aliases>
+            <alias>DUAConfigProfile</alias>
+         </aliases>
+         <description>Abstraction of a base configuration for a DUA</description>
+         <superiors>
+            <superior>top</superior>
+         </superiors>
+         <type>STRUCTURAL</type>
+         <mandatory>
+            <attributetype>cn</attributetype>
+         </mandatory>
+         <optional>
+            <attributetype>defaultServerList</attributetype>
+            <attributetype>preferredServerList</attributetype>
+            <attributetype>defaultSearchBase</attributetype>
+            <attributetype>defaultSearchScope</attributetype>
+            <attributetype>searchTimeLimit</attributetype>
+            <attributetype>bindTimeLimit</attributetype>
+            <attributetype>credentialLevel</attributetype>
+            <attributetype>authenticationMethod</attributetype>
+            <attributetype>followReferrals</attributetype>
+            <attributetype>dereferenceAliases</attributetype>
+            <attributetype>serviceSearchDescriptor</attributetype>
+            <attributetype>serviceCredentialLevel</attributetype>
+            <attributetype>serviceAuthenticationMethod</attributetype>
+            <attributetype>objectclassMap</attributetype>
+            <attributetype>attributeMap</attributetype>
+            <attributetype>profileTTL</attributetype>
+         </optional>
+      </objectclass>
+   </objectclasses>
+</schema>

@@ -36,9 +36,10 @@
             <alias>c</alias>
             <alias>countryName</alias>
          </aliases>
-         <description>RFC2256: ISO-3166 country 2-letter code</description>
+         <description>RFC4519: two-letter ISO-3166 country code</description>
          <superior>name</superior>
          <usage>USER_APPLICATIONS</usage>
+         <syntax>1.3.6.1.4.1.1466.115.121.1.11</syntax>
       </attributetype>
       <attributetype oid="2.5.4.7" obsolete="false" singlevalue="false" collective="false" nousermodification="false">
          <aliases>
