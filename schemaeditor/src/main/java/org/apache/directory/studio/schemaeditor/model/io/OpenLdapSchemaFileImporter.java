@@ -69,7 +69,7 @@ public class OpenLdapSchemaFileImporter
         catch ( IOException e )
         {
             throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
-                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
         }
 
         try
@@ -79,7 +79,7 @@ public class OpenLdapSchemaFileImporter
         catch ( IOException e )
         {
             throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
-                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
+                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
         }
         catch ( ParseException e )
         {
@@ -89,7 +89,7 @@ public class OpenLdapSchemaFileImporter
                 { path } ) //$NON-NLS-1$
                 + ( exceptionMessage == null ? "" : NLS.bind( Messages
                     .getString( "OpenLdapSchemaFileImporter.ErrorMessage" ), new String[]
-                    { exceptionMessage.lineNumber, exceptionMessage.columnNumber, exceptionMessage.cause } ) ) ); //$NON-NLS-1$
+                    { exceptionMessage.lineNumber, exceptionMessage.columnNumber, exceptionMessage.cause } ) ), e ); //$NON-NLS-1$
         }
 
         String schemaName = getNameFromPath( path );

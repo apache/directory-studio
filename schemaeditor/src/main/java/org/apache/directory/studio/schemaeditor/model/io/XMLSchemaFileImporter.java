@@ -109,7 +109,7 @@ public class XMLSchemaFileImporter
         catch ( DocumentException e )
         {
             throw new XMLSchemaFileImportException( NLS.bind( Messages
-                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
+                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
@@ -146,7 +146,7 @@ public class XMLSchemaFileImporter
         catch ( DocumentException e )
         {
             throw new XMLSchemaFileImportException( NLS.bind( Messages
-                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
+                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();
@@ -367,7 +367,7 @@ public class XMLSchemaFileImporter
             catch ( IllegalArgumentException e )
             {
                 throw new XMLSchemaFileImportException( Messages
-                    .getString( "XMLSchemaFileImporter.UnceonvertableAttribute" ) );
+                    .getString( "XMLSchemaFileImporter.UnceonvertableAttribute" ), e );
             }
         }
 
@@ -389,7 +389,7 @@ public class XMLSchemaFileImporter
             catch ( NumberFormatException e )
             {
                 throw new XMLSchemaFileImportException( Messages
-                    .getString( "XMLSchemaFileImporter.UnconvertableInteger" ) );
+                    .getString( "XMLSchemaFileImporter.UnconvertableInteger" ), e );
             }
         }
 
@@ -546,7 +546,7 @@ public class XMLSchemaFileImporter
             }
             catch ( IllegalArgumentException e )
             {
-                throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.UnconvertableValue" ) ); //$NON-NLS-1$
+                throw new XMLSchemaFileImportException( Messages.getString( "XMLSchemaFileImporter.UnconvertableValue" ), e ); //$NON-NLS-1$
             }
         }
 
@@ -837,7 +837,7 @@ public class XMLSchemaFileImporter
         catch ( DocumentException e )
         {
             throw new XMLSchemaFileImportException( NLS.bind( Messages
-                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ) ); //$NON-NLS-1$
+                .getString( "XMLSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
         }
 
         Element rootElement = document.getRootElement();

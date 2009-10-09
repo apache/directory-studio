@@ -23,18 +23,17 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgressAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.schemaeditor.Activator;
-import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileImportException;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileImporter;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
-import org.apache.directory.studio.schemaeditor.view.ViewUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.osgi.util.NLS;
@@ -85,73 +84,62 @@ public class ImportSchemasFromOpenLdapWizard extends Wizard implements IImportWi
         final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
         schemaChecker.disableModificationsListening();
 
-        try
+        StudioRunnableWithProgress runnable = new StudioRunnableWithProgressAdapter()
         {
-            getContainer().run( false, false, new IRunnableWithProgress()
+            public void run( StudioProgressMonitor monitor )
             {
-                public void run( IProgressMonitor monitor )
-                {
-                    monitor
-                        .beginTask(
-                            Messages.getString( "ImportSchemasFromOpenLdapWizard.ImportingSchemas" ), selectedSchemasFiles.length ); //$NON-NLS-1$
+                monitor
+                    .beginTask(
+                        Messages.getString( "ImportSchemasFromOpenLdapWizard.ImportingSchemas" ), selectedSchemasFiles.length ); //$NON-NLS-1$
 
-                    for ( File schemaFile : selectedSchemasFiles )
+                for ( File schemaFile : selectedSchemasFiles )
+                {
+                    monitor.subTask( schemaFile.getName() );
+                    try
                     {
-                        monitor.subTask( schemaFile.getName() );
-                        try
-                        {
-                            Schema schema = OpenLdapSchemaFileImporter.getSchema( new FileInputStream( schemaFile ),
-                                schemaFile.getAbsolutePath() );
-                            schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
-                            schemaHandler.addSchema( schema );
-                        }
-                        catch ( OpenLdapSchemaFileImportException e )
-                        {
-                            reportError( e, schemaFile );
-                        }
-                        catch ( FileNotFoundException e )
-                        {
-                            reportError( e, schemaFile );
-                        }
-                        monitor.worked( 1 );
+                        Schema schema = OpenLdapSchemaFileImporter.getSchema( new FileInputStream( schemaFile ),
+                            schemaFile.getAbsolutePath() );
+                        schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
+                        schemaHandler.addSchema( schema );
                     }
-
-                    monitor.done();
+                    catch ( OpenLdapSchemaFileImportException e )
+                    {
+                        reportError( e, schemaFile, monitor );
+                    }
+                    catch ( FileNotFoundException e )
+                    {
+                        reportError( e, schemaFile, monitor );
+                    }
+                    monitor.worked( 1 );
                 }
+            }
 
 
-                /**
-                 * Reports the error raised.
-                 *
-                 * @param e
-                 *      the exception
-                 * @param schemaFile
-                 *      the schema file
-                 */
-                private void reportError( Exception e, File schemaFile )
-                {
-                    PluginUtils
-                        .logError(
-                            NLS
-                                .bind(
-                                    Messages.getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchema" ), new String[] { schemaFile.getName() } ), e ); //$NON-NLS-1$
-                    ViewUtils
-                        .displayErrorMessageBox(
-                            Messages.getString( "ImportSchemasFromOpenLdapWizard.Error" ), //$NON-NLS-1$
-                            NLS
-                                .bind(
-                                    Messages.getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchemaPlus" ), new String[] { schemaFile.getName(), e.getMessage() } ) ); //$NON-NLS-1$
-                }
-            } );
-        }
-        catch ( InvocationTargetException e )
-        {
-            // Nothing to do (it will never occur)
-        }
-        catch ( InterruptedException e )
-        {
-            // Nothing to do.
-        }
+            /**
+             * Reports the error raised.
+             *
+             * @param e
+             *      the exception
+             * @param schemaFile
+             *      the schema file
+             * @param monitor
+             *      the monitor the error is reported to
+             * 
+             */
+            private void reportError( Exception e, File schemaFile, StudioProgressMonitor monitor )
+            {
+                String message = NLS.bind( Messages
+                    .getString( "ImportSchemasFromOpenLdapWizard.ErrorImportingSchema" ), schemaFile.getName() ); //$NON-NLS-1$
+                monitor.reportError( message, e );
+            }
+
+            public String getName()
+            {
+                return Messages.getString( "ImportSchemasFromOpenLdapWizard.ImportingSchemas" ); //$NON-NLS-1$
+            }
+
+        };
+        RunnableContextRunner.execute( runnable, getContainer(), true );
 
         schemaChecker.enableModificationsListening();
 

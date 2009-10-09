@@ -17,42 +17,49 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.schemaeditor.model.io;
+
+package org.apache.directory.studio.connection.core.jobs;
+
+
+import org.apache.directory.studio.connection.core.Connection;
 
 
 /**
- * This class represents the XMLSchemaFileImportException.
+ * An adapter class for StudioRunnableWithProgress.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class XMLSchemaFileImportException extends Exception
+public abstract class StudioRunnableWithProgressAdapter implements StudioRunnableWithProgress
 {
-    private static final long serialVersionUID = 1L;
+
+    private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+    private static final Connection[] EMPTY_CONNECTION_ARRAY = new Connection[0];
 
 
     /**
-     * Creates a new instance of XMLSchemaFileImportException.
-     *
-     * @param message
-     *      the message
+     * @return an empty array
      */
-    public XMLSchemaFileImportException( String message )
+    public Object[] getLockedObjects()
     {
-        super( message );
+        return EMPTY_OBJECT_ARRAY;
     }
 
 
     /**
-     * Creates a new instance of XMLSchemaFileImportException.
-     *
-     * @param message
-     *      the message
-     * @param cause
-     *      the cause
+     * @return empty string
      */
-    public XMLSchemaFileImportException( String message, Exception cause )
+    public String getErrorMessage()
     {
-        super( message, cause );
+        return "";
+    }
+
+
+    /**
+     * @return an empty array
+     */
+    public Connection[] getConnections()
+    {
+        return EMPTY_CONNECTION_ARRAY;
     }
 }

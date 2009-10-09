@@ -23,19 +23,18 @@ package org.apache.directory.studio.schemaeditor.view.wizards;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 
+import org.apache.directory.studio.connection.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgress;
+import org.apache.directory.studio.connection.core.jobs.StudioRunnableWithProgressAdapter;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.schemaeditor.Activator;
-import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImportException;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImporter;
 import org.apache.directory.studio.schemaeditor.model.io.XMLSchemaFileImporter.SchemaFileType;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
-import org.apache.directory.studio.schemaeditor.view.ViewUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.osgi.util.NLS;
@@ -85,88 +84,83 @@ public class ImportSchemasFromXmlWizard extends Wizard implements IImportWizard
         // Getting the schemas to be imported
         final File[] selectedSchemasFiles = page.getSelectedSchemaFiles();
         schemaChecker.disableModificationsListening();
-        try
+
+        StudioRunnableWithProgress runnable = new StudioRunnableWithProgressAdapter()
         {
-            getContainer().run( false, false, new IRunnableWithProgress()
+            public void run( StudioProgressMonitor monitor )
             {
-                public void run( IProgressMonitor monitor )
+                monitor.beginTask(
+                    Messages.getString( "ImportSchemasFromXmlWizard.ImportingSchemas" ), selectedSchemasFiles.length ); //$NON-NLS-1$
+
+                for ( File schemaFile : selectedSchemasFiles )
                 {
-                    monitor
-                        .beginTask(
-                            Messages.getString( "ImportSchemasFromXmlWizard.ImportingSchemas" ), selectedSchemasFiles.length ); //$NON-NLS-1$
-
-                    for ( File schemaFile : selectedSchemasFiles )
+                    monitor.subTask( schemaFile.getName() );
+                    try
                     {
-                        monitor.subTask( schemaFile.getName() );
-                        try
+                        SchemaFileType schemaFileType = XMLSchemaFileImporter.getSchemaFileType( new FileInputStream(
+                            schemaFile ), schemaFile.getAbsolutePath() );
+                        switch ( schemaFileType )
                         {
-                            SchemaFileType schemaFileType = XMLSchemaFileImporter.getSchemaFileType(
-                                new FileInputStream( schemaFile ), schemaFile.getAbsolutePath() );
-                            switch ( schemaFileType )
-                            {
-                                case SINGLE:
-                                    Schema importedSchema = XMLSchemaFileImporter.getSchema( new FileInputStream(
-                                        schemaFile ), schemaFile.getAbsolutePath() );
-                                    importedSchema.setProject( Activator.getDefault().getProjectsHandler()
-                                        .getOpenProject() );
-                                    schemaHandler.addSchema( importedSchema );
-                                    break;
-                                case MULTIPLE:
-                                    Schema[] schemas = XMLSchemaFileImporter.getSchemas( new FileInputStream(
-                                        schemaFile ), schemaFile.getAbsolutePath() );
-                                    for ( Schema schema : schemas )
-                                    {
-                                        schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
-                                        schemaHandler.addSchema( schema );
-                                    }
-                                    break;
-                            }
+                            case SINGLE:
+                                Schema importedSchema = XMLSchemaFileImporter.getSchema( new FileInputStream(
+                                    schemaFile ), schemaFile.getAbsolutePath() );
+                                importedSchema
+                                    .setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
+                                schemaHandler.addSchema( importedSchema );
+                                break;
+                            case MULTIPLE:
+                                Schema[] schemas = XMLSchemaFileImporter.getSchemas( new FileInputStream( schemaFile ),
+                                    schemaFile.getAbsolutePath() );
+                                for ( Schema schema : schemas )
+                                {
+                                    schema.setProject( Activator.getDefault().getProjectsHandler().getOpenProject() );
+                                    schemaHandler.addSchema( schema );
+                                }
+                                break;
                         }
-                        catch ( XMLSchemaFileImportException e )
-                        {
-                            PluginUtils
-                                .logError(
-                                    NLS
-                                        .bind(
-                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ), e ); //$NON-NLS-1$
-                            ViewUtils
-                                .displayErrorMessageBox(
-                                    Messages.getString( "ImportSchemasFromXmlWizard.Error" ), //$NON-NLS-1$
-                                    NLS
-                                        .bind(
-                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
-                        }
-                        catch ( FileNotFoundException e )
-                        {
-                            PluginUtils
-                                .logError(
-                                    NLS
-                                        .bind(
-                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ), e ); //$NON-NLS-1$
-                            ViewUtils
-                                .displayErrorMessageBox(
-                                    Messages.getString( "ImportSchemasFromXmlWizard.Error" ), //$NON-NLS-1$
-                                    NLS
-                                        .bind(
-                                            Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), new File[] { schemaFile } ) ); //$NON-NLS-1$
-                        }
-                        monitor.worked( 1 );
                     }
-
-                    monitor.done();
-                    schemaChecker.enableModificationsListening();
+                    catch ( XMLSchemaFileImportException e )
+                    {
+                        reportError( e, schemaFile, monitor );
+                    }
+                    catch ( FileNotFoundException e )
+                    {
+                        reportError( e, schemaFile, monitor );
+                    }
+                    monitor.worked( 1 );
                 }
-            } );
-        }
-        catch ( InvocationTargetException e )
-        {
-            // Nothing to do (it will never occur)
-        }
-        catch ( InterruptedException e )
-        {
-            // Nothing to do.
-        }
 
+                monitor.done();
+                schemaChecker.enableModificationsListening();
+            }
+
+
+            /**
+             * Reports the error raised.
+             *
+             * @param e
+             *      the exception
+             * @param schemaFile
+             *      the schema file
+             * @param monitor
+             *      the monitor the error is reported to
+             * 
+             */
+            private void reportError( Exception e, File schemaFile, StudioProgressMonitor monitor )
+            {
+                String message = NLS.bind(
+                    Messages.getString( "ImportSchemasFromXmlWizard.ErrorImportingSchema" ), schemaFile.getName() ); //$NON-NLS-1$
+                monitor.reportError( message, e );
+            }
+
+
+            public String getName()
+            {
+                return Messages.getString( "ImportSchemasFromXmlWizard.ImportingSchemas" ); //$NON-NLS-1$
+            }
+
+        };
+        RunnableContextRunner.execute( runnable, getContainer(), true );
         schemaChecker.enableModificationsListening();
 
         return true;

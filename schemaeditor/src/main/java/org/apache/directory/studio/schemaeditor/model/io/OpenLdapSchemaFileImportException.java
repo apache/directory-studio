@@ -36,9 +36,11 @@ public class OpenLdapSchemaFileImportException extends Exception
      *
      * @param message
      *      the message
+     * @param cause
+     *      the cause
      */
-    public OpenLdapSchemaFileImportException( String message )
+    public OpenLdapSchemaFileImportException( String message, Exception cause )
     {
-        super( message );
+        super( message, cause );
     }
 }
