@@ -22,6 +22,8 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.util.Arrays;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.naming.InvalidNameException;
 import javax.naming.directory.SearchControls;
@@ -44,6 +46,43 @@ public class Utils
 
     private static final String DOT_DOT_DOT = "..."; //$NON-NLS-1$
 
+    public static ResourceBundle oidDescriptions = null;
+    // Load RessourceBundle with OID descriptions
+    static
+    {
+        try
+        {
+            oidDescriptions = ResourceBundle.getBundle( "org.apache.directory.studio.connection.core.OIDDescriptions" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Gets the textual OID description for the given numeric OID.
+     * 
+     * @param oid the numeric OID
+     * 
+     * @return the OID description, null if the numeric OID is unknown
+     */
+    public static String getOidDescription( String oid )
+    {
+        if ( oidDescriptions != null )
+        {
+            try
+            {
+                String description = oidDescriptions.getString( oid );
+                return description;
+            }
+            catch ( MissingResourceException ignored )
+            {
+            }
+        }
+        return null;
+    }
 
     /**
      * Shortens the given label to the given maximum length

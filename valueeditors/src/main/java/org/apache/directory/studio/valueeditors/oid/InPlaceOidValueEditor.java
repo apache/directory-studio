@@ -21,8 +21,8 @@
 package org.apache.directory.studio.valueeditors.oid;
 
 
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor;
 
 

@@ -39,6 +39,7 @@ import org.apache.directory.shared.ldap.schema.parsers.MatchingRuleDescriptionSc
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescription;
 import org.apache.directory.shared.ldap.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
@@ -284,10 +285,10 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 SyntaxImpl impl = new SyntaxImpl( syntaxOid );
                 impl.setSchema( schema.getName() );
                 impl.setSchemaObject( schema );
-                // TODO: lookup description/name
-                impl.setDescription( "Dummy" );
+                String oidDescription = Utils.getOidDescription( syntaxOid );
+                impl.setDescription( oidDescription != null ? oidDescription : "Dummy" );
                 impl.setNames( new String[]
-                    { "Dummy" } );
+                    { impl.getDescription() } );
                 schema.addSyntax( impl );
             }
         }
@@ -339,7 +340,6 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 MatchingRuleImpl impl = new MatchingRuleImpl( matchingRuleName );
                 impl.setSchema( schema.getName() );
                 impl.setSchemaObject( schema );
-                // TODO: lookup description/name
                 impl.setDescription( "Dummy" );
                 impl.setNames( new String[]
                     { matchingRuleName } );
