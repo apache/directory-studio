@@ -79,6 +79,18 @@
        <syntax
              syntaxOID="1.3.6.1.4.1.18060.0.4.0.0.2">
        </syntax>
+       <attribute
+             attributeType="supportedControl">
+       </attribute>
+       <attribute
+             attributeType="supportedExtension">
+       </attribute>
+       <attribute
+             attributeType="supportedFeatures">
+       </attribute>
+       <attribute
+             attributeType="supportedCapabilities">
+       </attribute>
     </valueEditor>
     <valueEditor
           class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
