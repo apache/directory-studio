@@ -96,9 +96,9 @@
           class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
           icon="resources/icons/entryuuideditor.gif"
           name="%ValueEditor_InPlaceEntryUUIDValueEditor_name">
-       <syntax
-             syntaxOID="1.3.6.1.1.16.1">
-       </syntax>
+       <syntax syntaxOID="1.3.6.1.1.16.1" />
+       <!-- Explicitly list entryUUID because in ApacheDS 1.5.5 it has octetString syntax -->
+       <attribute attributeType="entryUUID"/>
     </valueEditor>
     <valueEditor
           class="org.apache.directory.studio.valueeditors.msad.InPlaceMsAdObjectGuidValueEditor"
