@@ -391,6 +391,11 @@ public class EntryEditorManager
                     // don't care if status is ok or not: always update
                     updateAutoSaveSharedReferenceCopy( originalEntry );
                     updateAutoSaveSharedWorkingCopy( originalEntry );
+                    List<IEntryEditor> editors = getAutoSaveEditors( autoSaveSharedWorkingCopy );
+                    for ( IEntryEditor editor : editors )
+                    {
+                        editor.workingCopyModified( event.getSource() );
+                    }
                 }
             }
         }

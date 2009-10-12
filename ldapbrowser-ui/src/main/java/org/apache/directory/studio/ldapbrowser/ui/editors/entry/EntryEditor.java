@@ -387,10 +387,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      */
     public void workingCopyModified( Object source )
     {
-        if ( isAutoSave() )
-        {
-            setEntryEditorWidgetInput( getEntryEditorInput() );
-        }
+        setEntryEditorWidgetInput( getEntryEditorInput() );
         if ( !isAutoSave() )
         {
             // mark as dirty only
@@ -406,7 +403,8 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      */
     private void setEntryEditorWidgetInput( EntryEditorInput eei )
     {
-        if ( mainWidget != null )
+        // don't update input if an cell editor is active
+        if ( mainWidget != null && !mainWidget.getViewer().isCellEditorActive() )
         {
             // set input, remember old selection and set it afterwards
             ISelection selection = mainWidget.getViewer().getSelection();
