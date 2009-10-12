@@ -105,7 +105,7 @@ public class ConnectionParameterPageManager
                     }
 
                     ConnectionParameterPage page = pageMap.get( dependsOnId1 );
-                    if ( page != null )
+                    if ( page != null && !page.getPageDependsOnId().equals( dependsOnId1 ) )
                     {
                         dependsOnId1 = page.getPageDependsOnId();
                     }
