@@ -387,10 +387,16 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      */
     public void workingCopyModified( Object source )
     {
-        setEntryEditorWidgetInput( getEntryEditorInput() );
+        if ( mainWidget != null && !mainWidget.getViewer().isCellEditorActive() )
+        {
+            ISelection selection = mainWidget.getViewer().getSelection();
+            mainWidget.getViewer().refresh();
+            mainWidget.getViewer().setSelection( selection );
+        }
+
         if ( !isAutoSave() )
         {
-            // mark as dirty only
+            // mark as dirty
             firePropertyChange( PROP_DIRTY );
         }
     }
@@ -403,13 +409,9 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      */
     private void setEntryEditorWidgetInput( EntryEditorInput eei )
     {
-        // don't update input if an cell editor is active
-        if ( mainWidget != null && !mainWidget.getViewer().isCellEditorActive() )
+        if ( mainWidget != null )
         {
-            // set input, remember old selection and set it afterwards
-            ISelection selection = mainWidget.getViewer().getSelection();
             universalListener.setInput( eei.getSharedWorkingCopy( this ) );
-            mainWidget.getViewer().setSelection( selection );
         }
     }
 
