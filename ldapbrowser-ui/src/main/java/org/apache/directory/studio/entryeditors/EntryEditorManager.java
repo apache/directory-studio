@@ -43,10 +43,12 @@ import org.apache.directory.studio.ldapbrowser.core.events.EntryModificationEven
 import org.apache.directory.studio.ldapbrowser.core.events.EntryUpdateListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.UpdateEntryRunnable;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -63,6 +65,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
@@ -376,6 +379,19 @@ public class EntryEditorManager
                 // auto-save working copy has been modified: save and inform all auto-save editors
                 IEntry autoSaveSharedReferenceCopy = autoSaveSharedReferenceCopies.get( originalEntry );
                 IEntry autoSaveSharedWorkingCopy = autoSaveSharedWorkingCopies.get( originalEntry );
+
+                // consistency check: don't save if there is an empty value, silently return in that case
+                for ( IAttribute attribute : autoSaveSharedWorkingCopy.getAttributes() )
+                {
+                    for ( IValue value : attribute.getValues() )
+                    {
+                        if ( value.isEmpty() )
+                        {
+                            return;
+                        }
+                    }
+                }
+
                 LdifFile diff = Utils.computeDiff( autoSaveSharedReferenceCopy, autoSaveSharedWorkingCopy );
                 if ( diff != null )
                 {
@@ -388,6 +404,7 @@ public class EntryEditorManager
                     // put entry back to map
                     autoSaveSharedReferenceCopies.put( originalEntry, autoSaveSharedReferenceCopy );
                     autoSaveSharedWorkingCopies.put( originalEntry, autoSaveSharedWorkingCopy );
+
                     // don't care if status is ok or not: always update
                     updateAutoSaveSharedReferenceCopy( originalEntry );
                     updateAutoSaveSharedWorkingCopy( originalEntry );
@@ -937,6 +954,19 @@ public class EntryEditorManager
             IEntry workingCopy = oscSharedWorkingCopies.get( originalEntry );
             if ( referenceCopy != null && workingCopy != null )
             {
+                // consistency check: don't save if there is an empty value, throw an exception as the user pressed 'save'
+                for ( IAttribute attribute : workingCopy.getAttributes() )
+                {
+                    for ( IValue value : attribute.getValues() )
+                    {
+                        if ( value.isEmpty() )
+                        {
+                            throw new RuntimeException( NLS.bind( Messages
+                                .getString( "EntryEditorManager.EmptyValueInAttribute" ), attribute.getDescription() ) ); //$NON-NLS-1$
+                        }
+                    }
+                }
+
                 LdifFile diff = Utils.computeDiff( referenceCopy, workingCopy );
                 if ( diff != null )
                 {
@@ -1014,7 +1044,7 @@ public class EntryEditorManager
             if ( editor != null )
             {
                 EntryEditorInput input = editor.getEntryEditorInput();
-                if ( input != null && input.getResolvedEntry() != null  )
+                if ( input != null && input.getResolvedEntry() != null )
                 {
                     IEntry entry = input.getResolvedEntry();
                     if ( editor.isAutoSave() )
