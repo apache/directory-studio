@@ -310,6 +310,12 @@
           description="%ConnectionParameterPage_BrowserParameterPage_description"
           id="%ConnectionParameterPage_BrowserParameterPage_id"
           name="%ConnectionParameterPage_BrowserParameterPage_name"/>
+    <connectionParameterPage
+          class="org.apache.directory.studio.ldapbrowser.common.widgets.connection.EditorParameterPage"
+          dependsOnId="%ConnectionParameterPage_BrowserParameterPage_id"
+          description="%ConnectionParameterPage_EditorParameterPage_description"
+          id="%ConnectionParameterPage_EditorParameterPage_id"
+          name="%ConnectionParameterPage_EditorParameterPage_name"/>
  </extension>
  
 </plugin>

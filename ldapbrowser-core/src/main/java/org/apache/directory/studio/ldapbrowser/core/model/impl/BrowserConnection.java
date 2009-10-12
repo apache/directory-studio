@@ -109,6 +109,15 @@ public class BrowserConnection implements IBrowserConnection, Serializable
             connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
                 true );
         }
+        if ( connection.getConnectionParameter().getExtendedProperty( CONNECTION_PARAMETER_MODIFY_MODE ) == null )
+        {
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_MODE,
+                ModifyMode.DEFAULT.getOrdinal() );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR,
+                ModifyMode.DEFAULT.getOrdinal() );
+            connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_ORDER,
+                ModifyOrder.DELETE_FIRST.getOrdinal() );
+        }
 
         this.searchManager = new SearchManager( this );
         this.bookmarkManager = new BookmarkManager( this );
@@ -401,6 +410,70 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     {
         connection.getConnectionParameter().setExtendedBoolProperty( CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE,
             pagedSearchScrollMode );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public ModifyMode getModifyMode()
+    {
+        int ordinal = connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_MODE );
+        return ModifyMode.getByOrdinal( ordinal );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setModifyMode( ModifyMode mode )
+    {
+        connection.getConnectionParameter()
+            .setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_MODE, mode.getOrdinal() );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public ModifyMode getModifyModeNoEMR()
+    {
+        int ordinal = connection.getConnectionParameter().getExtendedIntProperty(
+            CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR );
+        return ModifyMode.getByOrdinal( ordinal );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setModifyModeNoEMR( ModifyMode mode )
+    {
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR,
+            mode.getOrdinal() );
+        ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public ModifyOrder getModifyAddDeleteOrder()
+    {
+        int ordinal = connection.getConnectionParameter().getExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_ORDER );
+        return ModifyOrder.getByOrdinal( ordinal );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setModifyAddDeleteOrder( ModifyOrder mode )
+    {
+        connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_ORDER,
+            mode.getOrdinal() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
     }
 

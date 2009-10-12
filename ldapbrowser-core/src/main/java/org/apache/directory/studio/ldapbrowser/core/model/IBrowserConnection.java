@@ -47,6 +47,121 @@ import org.eclipse.core.runtime.IAdaptable;
 public interface IBrowserConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider
 {
 
+    /**
+     * Enum for the modify mode of attributes
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum ModifyMode
+    {
+        /** Default mode */
+        DEFAULT(0),
+
+        /** Always use replace operation */
+        REPLACE(1),
+
+        /** Always use add/delete operation */
+        ADD_DELETE(2);
+
+        private final int ordinal;
+
+
+        private ModifyMode( int ordinal )
+        {
+            this.ordinal = ordinal;
+        }
+
+
+        /**
+         * Gets the ordinal.
+         * 
+         * @return the ordinal
+         */
+        public int getOrdinal()
+        {
+            return ordinal;
+        }
+
+
+        /**
+         * Gets the ModifyMode by ordinal.
+         * 
+         * @param ordinal the ordinal
+         * 
+         * @return the ModifyMode
+         */
+        public static ModifyMode getByOrdinal( int ordinal )
+        {
+            switch ( ordinal )
+            {
+                case 0:
+                    return DEFAULT;
+                case 1:
+                    return REPLACE;
+                case 2:
+                    return ADD_DELETE;
+                default:
+                    return null;
+            }
+        }
+    }
+
+    /**
+     * Enum for modify order when using add/delete operations
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     * @version $Rev$, $Date$
+     */
+    public enum ModifyOrder
+    {
+        /** Delete first */
+        DELETE_FIRST(0),
+
+        /** Add first */
+        ADD_FIRST(1);
+
+        private final int ordinal;
+
+
+        private ModifyOrder( int ordinal )
+        {
+            this.ordinal = ordinal;
+        }
+
+
+        /**
+         * Gets the ordinal.
+         * 
+         * @return the ordinal
+         */
+        public int getOrdinal()
+        {
+            return ordinal;
+        }
+
+
+        /**
+         * Gets the ModifyOrder by ordinal.
+         * 
+         * @param ordinal the ordinal
+         * 
+         * @return the ModifyOrder
+         */
+        public static ModifyOrder getByOrdinal( int ordinal )
+        {
+            switch ( ordinal )
+            {
+                case 0:
+                    return DELETE_FIRST;
+                case 1:
+                    return ADD_FIRST;
+                default:
+                    return null;
+            }
+        }
+    }
+
     /** The key for the connection parameter "Get Base DNs from Root DSE". */
     public static String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns";
 
@@ -80,8 +195,14 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     /** The key for the connection parameter "Paged Search Scroll Mode". */
     public static String CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE = "ldapbrowser.pagedSearchScrollMode";
 
-    /** The MangageDsaIT control OID. */
-    public static final String CONTROL_MANAGEDSAIT = "2.16.840.1.113730.3.4.2"; //$NON-NLS-1$
+    /** The key for the connection parameter "Modify Mode for attributes with equality matching rule". */
+    public static String CONNECTION_PARAMETER_MODIFY_MODE = "ldapbrowser.modifyMode";
+
+    /** The key for the connection parameter "Modify Mode for attributes without equality matching rule". */
+    public static String CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR = "ldapbrowser.modifyModeNoEMR";
+
+    /** The key for the connection parameter "Modify add delete order". */
+    public static String CONNECTION_PARAMETER_MODIFY_ORDER = "ldapbrowser.modifyOrder";
 
 
     /**
@@ -270,6 +391,54 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @param pagedSearch true to use paged search scroll mode
      */
     public abstract void setPagedSearchScrollMode( boolean pagedSearchScrollMode );
+
+
+    /**
+     * Gets the modify mode for attributes.
+     * 
+     * @return the modify mode for attributes
+     */
+    public abstract ModifyMode getModifyMode();
+
+
+    /**
+     * Sets the modify mode for attributes.
+     * 
+     * @param mode the modify mode for attributes
+     */
+    public abstract void setModifyMode( ModifyMode mode );
+
+
+    /**
+     * Gets the modify mode for attributes without equality matching rule.
+     * 
+     * @return the modify mode for attributes without equality matching rule
+     */
+    public abstract ModifyMode getModifyModeNoEMR();
+
+
+    /**
+     * Sets the modify mode for attributes without equality matching rule.
+     * 
+     * @param mode the modify mode for attributes without equality matching rule
+     */
+    public abstract void setModifyModeNoEMR( ModifyMode mode );
+
+
+    /**
+     * Gets the modify add/delete order.
+     * 
+     * @return the modify add/delete order
+     */
+    public abstract ModifyOrder getModifyAddDeleteOrder();
+
+
+    /**
+     * Sets the modify add/delete order.
+     * 
+     * @param mode the modify add/delete order
+     */
+    public abstract void setModifyAddDeleteOrder( ModifyOrder mode );
 
 
     /**

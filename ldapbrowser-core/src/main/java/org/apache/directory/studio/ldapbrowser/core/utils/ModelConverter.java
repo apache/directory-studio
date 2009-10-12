@@ -39,6 +39,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.model.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
@@ -285,7 +286,8 @@ public class ModelConverter
     {
         if ( entry.isReferral() )
         {
-            cr.addControl( LdifControlLine.create( IBrowserConnection.CONTROL_MANAGEDSAIT, null, ( String ) null ) );
+            cr.addControl( LdifControlLine.create( StudioControl.MANAGEDSAIT_CONTROL.getOid(),
+                StudioControl.MANAGEDSAIT_CONTROL.isCritical(), StudioControl.MANAGEDSAIT_CONTROL.getControlValue() ) );
         }
     }
 

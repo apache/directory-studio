@@ -305,6 +305,57 @@ public class DummyConnection implements IBrowserConnection
     /** 
      * {@inheritDoc}
      */
+    public ModifyMode getModifyMode()
+    {
+        return ModifyMode.DEFAULT;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setModifyMode( ModifyMode mode )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public ModifyMode getModifyModeNoEMR()
+    {
+        return ModifyMode.DEFAULT;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setModifyModeNoEMR( ModifyMode mode )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public ModifyOrder getModifyAddDeleteOrder()
+    {
+        return ModifyOrder.DELETE_FIRST;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setModifyAddDeleteOrder( ModifyOrder mode )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
     public boolean isPagedSearchScrollMode()
     {
         return false;
