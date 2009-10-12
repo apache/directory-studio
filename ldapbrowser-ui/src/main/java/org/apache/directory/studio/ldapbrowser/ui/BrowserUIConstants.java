@@ -128,6 +128,7 @@ public interface BrowserUIConstants
     public static final String IMG_COPY_BASE64 = "resources/icons/copy_base64.gif"; //$NON-NLS-1$
     public static final String IMG_COPY_HEX = "resources/icons/copy_hex.gif"; //$NON-NLS-1$
     public static final String IMG_COPY_UTF8 = "resources/icons/copy_raw.gif"; //$NON-NLS-1$
+    public static final String IMG_COPY_DISPLAY = "resources/icons/copy_display.gif"; //$NON-NLS-1$
     public static final String IMG_COPY_DN = "resources/icons/copy_dn.gif"; //$NON-NLS-1$
     public static final String IMG_COPY_URL = "resources/icons/copy_url.gif"; //$NON-NLS-1$
     public static final String IMG_COPY_ATT = "resources/icons/copy_att.gif"; //$NON-NLS-1$

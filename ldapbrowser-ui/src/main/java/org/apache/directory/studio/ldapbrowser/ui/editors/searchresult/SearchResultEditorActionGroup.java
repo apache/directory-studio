@@ -126,6 +126,8 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
 
     private static final String copyAttriuteDescriptionAction = "copyAttriuteDescriptionAction"; //$NON-NLS-1$
 
+    private static final String copyDisplayValueAction = "copyDisplayValueAction"; //$NON-NLS-1$
+
     private static final String copyValueUtf8Action = "copyValueUtf8Action"; //$NON-NLS-1$
 
     private static final String copyValueBase64Action = "copyValueBase64Action"; //$NON-NLS-1$
@@ -239,7 +241,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         searchResultEditorActionMap.put( pasteAction, new SearchResultEditorActionProxy( cursor,
             new SearchResultEditorPasteAction() ) );
         searchResultEditorActionMap.put( copyAction, new SearchResultEditorActionProxy( cursor, new CopyAction(
-            ( BrowserActionProxy ) this.searchResultEditorActionMap.get( pasteAction ) ) ) );
+            ( BrowserActionProxy ) this.searchResultEditorActionMap.get( pasteAction ), valueEditorManager ) ) );
         searchResultEditorActionMap.put( deleteAction, new SearchResultEditorActionProxy( cursor,
             new SearchResultDeleteAction() ) );
 
@@ -248,14 +250,16 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
             .put( copyUrlAction, new SearchResultEditorActionProxy( cursor, new CopyUrlAction() ) );
         searchResultEditorActionMap.put( copyAttriuteDescriptionAction, new SearchResultEditorActionProxy( cursor,
             new CopyAttributeDescriptionAction() ) );
+        searchResultEditorActionMap.put( copyDisplayValueAction, new SearchResultEditorActionProxy( cursor,
+            new CopyValueAction( CopyValueAction.Mode.DISPLAY, valueEditorManager ) ) );
         searchResultEditorActionMap.put( copyValueUtf8Action, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_UTF8 ) ) );
+            new CopyValueAction( CopyValueAction.Mode.UTF8, valueEditorManager ) ) );
         searchResultEditorActionMap.put( copyValueBase64Action, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_BASE64 ) ) );
+            new CopyValueAction( CopyValueAction.Mode.BASE64, valueEditorManager ) ) );
         searchResultEditorActionMap.put( copyValueHexAction, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_HEX ) ) );
+            new CopyValueAction( CopyValueAction.Mode.HEX, valueEditorManager ) ) );
         searchResultEditorActionMap.put( copyValueAsLdifAction, new SearchResultEditorActionProxy( cursor,
-            new CopyValueAction( CopyValueAction.MODE_LDIF ) ) );
+            new CopyValueAction( CopyValueAction.Mode.LDIF, valueEditorManager ) ) );
 
         searchResultEditorActionMap.put( copySearchFilterAction, new SearchResultEditorActionProxy( cursor,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_EQUALS ) ) );
@@ -425,6 +429,7 @@ public class SearchResultEditorActionGroup implements ActionHandlerManager, IMen
         advancedMenuManager.add( new Separator() );
         advancedMenuManager.add( searchResultEditorActionMap.get( copyAttriuteDescriptionAction ) );
         advancedMenuManager.add( new Separator() );
+        advancedMenuManager.add( searchResultEditorActionMap.get( copyDisplayValueAction ) );
         advancedMenuManager.add( searchResultEditorActionMap.get( copyValueUtf8Action ) );
         advancedMenuManager.add( searchResultEditorActionMap.get( copyValueBase64Action ) );
         advancedMenuManager.add( searchResultEditorActionMap.get( copyValueHexAction ) );

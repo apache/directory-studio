@@ -41,6 +41,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.utils.ActionUtils;
 import org.apache.directory.studio.valueeditors.IValueEditor;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -122,21 +123,22 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 
         entryEditorActionMap = new HashMap<String, EntryEditorActionProxy>();
         TreeViewer viewer = mainWidget.getViewer();
+        ValueEditorManager valueEditorManager = configuration.getValueEditorManager( viewer );
 
         openSortDialogAction = new OpenSortDialogAction( configuration.getPreferences() );
         showDecoratedValuesAction = new ShowDecoratedValuesAction();
         showQuickFilterAction = new ShowQuickFilterAction( mainWidget.getQuickFilterWidget() );
 
         openBestValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenBestEditorAction( viewer,
-            configuration.getValueEditorManager( viewer ), this ) );
+            valueEditorManager, this ) );
         openDefaultValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenDefaultEditorAction( viewer,
             openBestValueEditorActionProxy ) );
-        IValueEditor[] valueEditors = configuration.getValueEditorManager( viewer ).getAllValueEditors();
+        IValueEditor[] valueEditors = valueEditorManager.getAllValueEditors();
         openValueEditorActionProxies = new EntryEditorActionProxy[valueEditors.length];
         for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
             openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, new OpenEditorAction( viewer,
-                configuration.getValueEditorManager( viewer ), valueEditors[i], this ) );
+                valueEditorManager, valueEditors[i], this ) );
         }
         openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
@@ -144,7 +146,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
 
         entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new PasteAction() ) );
         entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
-            ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ) ) ) );
+            ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ), valueEditorManager ) ) );
         entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
         entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, new SelectAllAction( viewer ) ) );
 

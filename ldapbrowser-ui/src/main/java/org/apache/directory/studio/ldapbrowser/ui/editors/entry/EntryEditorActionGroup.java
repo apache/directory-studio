@@ -43,6 +43,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
 import org.apache.directory.studio.utils.ActionUtils;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -70,7 +71,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
     /** The toggle auto save action */
     private ToggleAutosaveAction toggleAutosaveAction;
-    
+
     /** The open entry value editor action. */
     private EntryEditorActionProxy openEntryValueEditorActionProxy;
 
@@ -106,6 +107,9 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
 
     /** The Constant copyAttriuteDescriptionAction. */
     private static final String copyAttriuteDescriptionAction = "copyAttriuteDescriptionAction"; //$NON-NLS-1$
+
+    /** The Constant copyDisplayValueAction. */
+    private static final String copyDisplayValueAction = "copyDisplayValueAction"; //$NON-NLS-1$
 
     /** The Constant copyValueUtf8Action. */
     private static final String copyValueUtf8Action = "copyValueUtf8Action"; //$NON-NLS-1$
@@ -168,6 +172,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     {
         super( entryEditor.getMainWidget(), entryEditor.getConfiguration() );
         TreeViewer viewer = entryEditor.getMainWidget().getViewer();
+        ValueEditorManager valueEditorManager = entryEditor.getConfiguration().getValueEditorManager( viewer );
 
         // create OpenDefaultEditorAction with enabled rename action flag
         openDefaultValueEditorActionProxy.dispose();
@@ -175,8 +180,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
             openBestValueEditorActionProxy ) );
 
         openEntryValueEditorActionProxy = new EntryEditorActionProxy( viewer, new OpenEntryEditorAction( viewer,
-            entryEditor.getConfiguration().getValueEditorManager( viewer ), entryEditor.getConfiguration()
-                .getValueEditorManager( viewer ).getEntryValueEditor(), this ) );
+            valueEditorManager, valueEditorManager.getEntryValueEditor(), this ) );
 
         showOperationalAttributesAction = new ShowOperationalAttributesAction();
         toggleAutosaveAction = new ToggleAutosaveAction( entryEditor );
@@ -212,14 +216,16 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         entryEditorActionMap.put( copyUrlAction, new EntryEditorActionProxy( viewer, new CopyUrlAction() ) );
         entryEditorActionMap.put( copyAttriuteDescriptionAction, new EntryEditorActionProxy( viewer,
             new CopyAttributeDescriptionAction() ) );
+        entryEditorActionMap.put( copyDisplayValueAction, new EntryEditorActionProxy( viewer, new CopyValueAction(
+            CopyValueAction.Mode.DISPLAY, valueEditorManager ) ) );
         entryEditorActionMap.put( copyValueUtf8Action, new EntryEditorActionProxy( viewer, new CopyValueAction(
-            CopyValueAction.MODE_UTF8 ) ) );
+            CopyValueAction.Mode.UTF8, valueEditorManager ) ) );
         entryEditorActionMap.put( copyValueBase64Action, new EntryEditorActionProxy( viewer, new CopyValueAction(
-            CopyValueAction.MODE_BASE64 ) ) );
+            CopyValueAction.Mode.BASE64, valueEditorManager ) ) );
         entryEditorActionMap.put( copyValueHexAction, new EntryEditorActionProxy( viewer, new CopyValueAction(
-            CopyValueAction.MODE_HEX ) ) );
+            CopyValueAction.Mode.HEX, valueEditorManager ) ) );
         entryEditorActionMap.put( copyValueAsLdifAction, new EntryEditorActionProxy( viewer, new CopyValueAction(
-            CopyValueAction.MODE_LDIF ) ) );
+            CopyValueAction.Mode.LDIF, valueEditorManager ) ) );
 
         entryEditorActionMap.put( copySearchFilterAction, new EntryEditorActionProxy( viewer,
             new CopySearchFilterAction( CopySearchFilterAction.MODE_EQUALS ) ) );
@@ -352,6 +358,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         advancedMenuManager.add( new Separator() );
         advancedMenuManager.add( entryEditorActionMap.get( copyAttriuteDescriptionAction ) );
         advancedMenuManager.add( new Separator() );
+        advancedMenuManager.add( entryEditorActionMap.get( copyDisplayValueAction ) );
         advancedMenuManager.add( entryEditorActionMap.get( copyValueUtf8Action ) );
         advancedMenuManager.add( entryEditorActionMap.get( copyValueBase64Action ) );
         advancedMenuManager.add( entryEditorActionMap.get( copyValueHexAction ) );

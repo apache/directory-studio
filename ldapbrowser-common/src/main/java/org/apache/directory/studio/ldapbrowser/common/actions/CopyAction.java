@@ -37,6 +37,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.valueeditors.IValueEditor;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -57,6 +59,8 @@ public class CopyAction extends BrowserAction
 {
     private BrowserActionProxy pasteActionProxy;
 
+    private ValueEditorManager valueEditorManager;
+
 
     /**
      * Creates a new instance of CopyAction.
@@ -68,6 +72,20 @@ public class CopyAction extends BrowserAction
     {
         super();
         this.pasteActionProxy = pasteActionProxy;
+    }
+
+
+    /**
+     * Creates a new instance of CopyAction.
+     *
+     * @param pasteActionProxy
+     *      the associated Paste Action
+     */
+    public CopyAction( BrowserActionProxy pasteActionProxy, ValueEditorManager valueEditorManager )
+    {
+        super();
+        this.pasteActionProxy = pasteActionProxy;
+        this.valueEditorManager = valueEditorManager;
     }
 
 
@@ -161,7 +179,15 @@ public class CopyAction extends BrowserAction
 
             for ( int i = 0; i < values.length; i++ )
             {
-                if ( values[i].isString() )
+                IValue value = values[i];
+
+                if ( valueEditorManager != null )
+                {
+                    IValueEditor ve = valueEditorManager.getCurrentValueEditor( value );
+                    String displayValue = ve.getDisplayValue( value );
+                    text.append( displayValue );
+                }
+                else if ( values[i].isString() )
                 {
                     text.append( values[i].getStringValue() );
                 }
@@ -169,6 +195,7 @@ public class CopyAction extends BrowserAction
                 {
                     text.append( LdifUtils.base64encode( values[i].getBinaryValue() ) );
                 }
+
                 if ( i + 1 < values.length )
                 {
                     text.append( BrowserCoreConstants.LINE_SEPARATOR );
