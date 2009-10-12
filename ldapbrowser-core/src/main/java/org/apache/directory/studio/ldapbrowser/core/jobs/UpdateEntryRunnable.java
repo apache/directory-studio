@@ -63,7 +63,7 @@ public class UpdateEntryRunnable extends ExecuteLdifRunnable
     /**
      * {@inheritDoc}
      */
-    public void runNotification()
+    public void runNotification( StudioProgressMonitor monitor )
     {
         EventRegistry.fireEntryUpdated( new EntryModificationEvent( entry.getBrowserConnection(), entry ), this );
     }
