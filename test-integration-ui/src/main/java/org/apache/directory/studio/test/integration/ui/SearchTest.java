@@ -94,7 +94,7 @@ public class SearchTest
         // create a search for in connection 1
         connectionsTree.select( "SearchTest1" );
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system" );
-        browserTree.contextMenu( "New Search..." ).click();
+        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Search..." );
         bot.shell( "Search" );
         //SWTBotAssert.assertEnabled( bot.textWithLabel( "Connection:" ) );
         //SWTBotAssert.assertText( "SearchTest1", bot.textWithLabel( "Connection:" ) );
@@ -111,10 +111,10 @@ public class SearchTest
         assertEquals( 0, browserConnection2.getSearchManager().getSearches().size() );
 
         // copy/paste the created search from connection 1 to connection 2
-        browserTree.contextMenu( "Copy Search" ).click();
+        ContextMenuHelper.clickContextMenu( browserTree, "Copy Search" );
         connectionsTree.select( "SearchTest2" );
         SWTBotUtils.selectEntry( bot, browserTree, false, "Searches" );
-        browserTree.contextMenu( "Paste Search" ).click();
+        ContextMenuHelper.clickContextMenu( browserTree, "Paste Search" );
         bot.shell( "Properties for Search all persons" );
         //SWTBotAssert.assertNotEnabled( bot.textWithLabel( "Connection:" ) );
         //SWTBotAssert.assertText( "SearchTest2", bot.textWithLabel( "Connection:" ) );
