@@ -158,6 +158,7 @@ public interface BrowserCommonConstants
     public static final String IMG_ATTRIBUTE_ADD = "resources/icons/attribute_add.gif"; //$NON-NLS-1$
     public static final String IMG_DELETE_ALL = "resources/icons/delete_all.gif"; //$NON-NLS-1$
     public static final String IMG_ATD = "resources/icons/atd.png"; //$NON-NLS-1$
+    public static final String IMG_LSD = "resources/icons/lsd.png"; //$NON-NLS-1$
     public static final String IMG_OCD = "resources/icons/ocd.png"; //$NON-NLS-1$
     public static final String IMG_OCD_ABSTRACT = "resources/icons/ocd_abstract.gif"; //$NON-NLS-1$
     public static final String IMG_OCD_AUXILIARY = "resources/icons/ocd_auxiliary.gif"; //$NON-NLS-1$
@@ -168,6 +169,13 @@ public interface BrowserCommonConstants
     public static final String IMG_NEXT = "resources/icons/next.gif"; //$NON-NLS-1$
     public static final String IMG_PREVIOUS = "resources/icons/previous.gif"; //$NON-NLS-1$
     public static final String IMG_RENAME = "resources/icons/rename.gif"; //$NON-NLS-1$
+    
+    public static final String IMG_SYNTAX_CHECKER = "resources/icons/syntax_checker.png"; //$NON-NLS-1$
+    public static final String IMG_COMPARATOR = "resources/icons/comparator.png"; //$NON-NLS-1$
+    public static final String IMG_NORMALIZER = "resources/icons/normalizer.png"; //$NON-NLS-1$
+    public static final String IMG_DIT_CONTENT_RULE = "resources/icons/dit_content_rule.png"; //$NON-NLS-1$
+    public static final String IMG_DIT_STRUCTURE_RULE = "resources/icons/dit_structure_rule.png"; //$NON-NLS-1$
+    public static final String IMG_NAME_FORM = "resources/icons/name_form.png"; //$NON-NLS-1$
 
     public static final String CMD_ADD_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties().getString(
         "Cmd_AddAttribute_id" ); //$NON-NLS-1$

@@ -77,7 +77,8 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR, rgbBlack );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_FONT, fontDataNormal );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR, rgbBlack );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT, fontDataItalic );
+        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT,
+            fontDataItalic );
 
         // Attributes
         store.setDefault( BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES, false );
@@ -111,7 +112,8 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_LABEL, BrowserCommonConstants.SHOW_RDN );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_ABBREVIATE, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_ENTRY_ABBREVIATE_MAX_LENGTH, 50 );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL, BrowserCommonConstants.SHOW_DN );
+        store
+            .setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_LABEL, BrowserCommonConstants.SHOW_DN );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SEARCH_RESULT_ABBREVIATE_MAX_LENGTH, 50 );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_QUICK_SEARCH, true );
@@ -120,7 +122,8 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_BOOKMARKS, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SHOW_DIRECTORY_META_ENTRIES, false );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_BY, BrowserCoreConstants.SORT_BY_RDN_VALUE );
-        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_ORDER, BrowserCoreConstants.SORT_ORDER_ASCENDING );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_ORDER,
+            BrowserCoreConstants.SORT_ORDER_ASCENDING );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_SORT_LIMIT, 10000 );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_LEAF_ENTRIES_FIRST, true );
         store.setDefault( BrowserCommonConstants.PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST, false );
@@ -170,7 +173,21 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
                 new ObjectClassIconPair( new String[]
                     { SchemaConstants.META_ATTRIBUTE_TYPE_OC_OID }, BrowserCommonConstants.IMG_ATD ),
                 new ObjectClassIconPair( new String[]
-                    { SchemaConstants.META_MATCHING_RULE_OC_OID }, BrowserCommonConstants.IMG_MRD ), };
+                    { SchemaConstants.META_MATCHING_RULE_OC_OID }, BrowserCommonConstants.IMG_MRD ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_SYNTAX_CHECKER_OC_OID }, BrowserCommonConstants.IMG_SYNTAX_CHECKER ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_SYNTAX_OC_OID }, BrowserCommonConstants.IMG_LSD ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_COMPARATOR_OC_OID }, BrowserCommonConstants.IMG_COMPARATOR ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_NORMALIZER_OC_OID }, BrowserCommonConstants.IMG_NORMALIZER ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_DIT_CONTENT_RULE_OC_OID }, BrowserCommonConstants.IMG_DIT_CONTENT_RULE ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_DIT_STRUCTURE_RULE_OC_OID }, BrowserCommonConstants.IMG_DIT_STRUCTURE_RULE ),
+                new ObjectClassIconPair( new String[]
+                    { SchemaConstants.META_NAME_FORM_OC_OID }, BrowserCommonConstants.IMG_NAME_FORM ), };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultObjectClassIcons( objectClassIcons );
 
         // Entry Editor
@@ -194,8 +211,8 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_ATTRIBUTEDELIMITER, "\t" ); //$NON-NLS-1$
         store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_VALUEDELIMITER, "|" ); //$NON-NLS-1$
         store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_QUOTECHARACTER, "\"" ); //$NON-NLS-1$
-        store
-            .setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR, BrowserCoreConstants.LINE_SEPARATOR );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_LINESEPARATOR,
+            BrowserCoreConstants.LINE_SEPARATOR );
         store.setDefault( BrowserCommonConstants.PREFERENCE_FORMAT_TABLE_BINARYENCODING,
             BrowserCoreConstants.BINARYENCODING_IGNORE );
     }
