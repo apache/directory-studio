@@ -152,18 +152,8 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>nlog4j</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.apache.directory.shared</groupId>
       <artifactId>shared-asn1</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.shared</groupId>
@@ -172,10 +162,6 @@
         <exclusion>
           <groupId>commons-lang</groupId>
           <artifactId>commons-lang</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -187,6 +173,18 @@
       <groupId>bouncycastle</groupId>
       <artifactId>bcprov-jdk15</artifactId>
       <version>140</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
     </dependency>
   </dependencies>
 </project>
