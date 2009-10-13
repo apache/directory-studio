@@ -1414,6 +1414,10 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
         {
             interceptorsElement.addElement( ServerXmlIOV155.ELEMENT_AUTHENTICATION_INTERCEPTOR );
         }
+        if ( interceptors.contains( InterceptorEnum.REFERRAL ) )
+        {
+            interceptorsElement.addElement( ServerXmlIOV155.ELEMENT_REFERRAL_INTERCEPTOR );
+        }
         if ( interceptors.contains( InterceptorEnum.ACI_AUTHORIZATION ) )
         {
             interceptorsElement.addElement( ServerXmlIOV155.ELEMENT_ACI_AUTHORIZATION_INTERCEPTOR );
@@ -1723,10 +1727,10 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
             }
 
             // LDAPS
-            if ( serverConfiguration.isEnableLdap() )
+            if ( serverConfiguration.isEnableLdaps() )
             {
                 // Adding 'tcpTransport' element
-                Element tcpTransportElement = transportsElement.addElement( ServerXmlIOV155.ELEMENT_UDP_TRANSPORT );
+                Element tcpTransportElement = transportsElement.addElement( ServerXmlIOV155.ELEMENT_TCP_TRANSPORT );
 
                 // Address
                 tcpTransportElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ADDRESS,
@@ -1735,10 +1739,6 @@ public class ServerXmlIOV155 extends AbstractServerXmlIO implements ServerXmlIO
                 // Port
                 tcpTransportElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_PORT, "" //$NON-NLS-1$
                     + serverConfiguration.getLdapsPort() );
-
-                // NbThreads
-                tcpTransportElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_NBTHREADS,
-                    ServerXmlIOV155.VALUE_CHANGEPASSWORDSERVER_NB_THREADS );
 
                 // EnableSSL
                 tcpTransportElement.addAttribute( ServerXmlIOV155.ATTRIBUTE_ENABLESSL, "" + true ); //$NON-NLS-1$
