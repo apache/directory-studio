@@ -24,7 +24,9 @@ package org.apache.directory.studio;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -36,7 +38,7 @@ import org.apache.log4j.Logger;
 public class Messages
 {
     // The logger
-    private static Logger logger = Logger.getLogger( Messages.class );
+    private static Logger logger = LoggerFactory.getLogger( Messages.class );
 
     private static final String BUNDLE_NAME = "org.apache.directory.studio.messages"; //$NON-NLS-1$
 

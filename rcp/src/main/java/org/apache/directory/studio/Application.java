@@ -21,14 +21,13 @@
 package org.apache.directory.studio;
 
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -43,7 +42,7 @@ public class Application implements IApplication
     public static final String PLUGIN_ID = "org.apache.directory.studio.rcp"; //$NON-NLS-1$
 
     /** The logger*/
-    private static Logger logger = Logger.getLogger( Application.class );
+    private static Logger logger = LoggerFactory.getLogger( Application.class );
 
 
     /* (non-Javadoc)
@@ -51,8 +50,6 @@ public class Application implements IApplication
      */
     public Object start( IApplicationContext context ) throws Exception
     {
-        // Set up a simple configuration that logs on the console.
-        PropertyConfigurator.configure( Platform.getBundle( Application.PLUGIN_ID ).getResource( "log4j.conf" ) ); //$NON-NLS-1$
         logger.info( "Entering Apache Directory Studio." ); //$NON-NLS-1$
         Display display = PlatformUI.createDisplay();
 
