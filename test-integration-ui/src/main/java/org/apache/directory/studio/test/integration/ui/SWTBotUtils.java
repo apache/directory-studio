@@ -21,9 +21,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable.syncExec;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
-import static org.hamcrest.Matchers.anything;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,17 +35,12 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotWorkbenchPart;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.results.WidgetResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
@@ -57,11 +50,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
-import org.eclipse.ui.IEditorReference;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 
 
 /**
@@ -99,7 +87,7 @@ public class SWTBotUtils
         }
 
         // open "Open Perspective" dialog
-        SWTBotMenu windowMenu = eBot.menu( "Window" );
+        SWTBotMenu windowMenu = eBot.menu( "&Window" );
         windowMenu.click();
         SWTBotMenu perspectiveMenu = windowMenu.menu( "Open Perspective" );
         perspectiveMenu.click();
@@ -253,9 +241,8 @@ public class SWTBotUtils
     {
         SWTBotView view = bot.viewByTitle( "Search Logs" );
         view.show();
-        view.toolbarButton( "Refresh" ).click();
-        StyledText styledText = ( StyledText ) bot.widget( widgetOfType( StyledText.class ), view.getWidget() );
-        return new SWTBotStyledText( styledText );
+        // view.toolbarButton( "Refresh" ).click();
+        return view.bot().styledText();
     }
 
 
@@ -274,9 +261,8 @@ public class SWTBotUtils
     {
         SWTBotView view = bot.viewByTitle( "Modification Logs" );
         view.show();
-        view.toolbarButton( "Refresh" ).click();
-        StyledText styledText = ( StyledText ) bot.widget( widgetOfType( StyledText.class ), view.getWidget() );
-        return new SWTBotStyledText( styledText );
+        //  view.toolbarButton( "Refresh" ).click();
+        return view.bot().styledText();
     }
 
 
@@ -291,65 +277,11 @@ public class SWTBotUtils
      * @throws Exception
      *             the exception
      */
-    public static SWTBotTree getEntryEditorTree( final SWTWorkbenchBot bot ) throws Exception
+    public static SWTBotTree getEntryEditorTree( final SWTWorkbenchBot bot, String title ) throws Exception
     {
-        Tree tree = UIThreadRunnable.syncExec( new WidgetResult<Tree>()
-        {
-            public Tree run()
-            {
-                IWorkbench workbench = PlatformUI.getWorkbench();
-                IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
-                IWorkbenchPage[] pages = activeWorkbenchWindow.getPages();
-                for ( int i = 0; i < pages.length; i++ )
-                {
-                    IWorkbenchPage page = pages[i];
-                    IEditorReference[] editorReferences = page.getEditorReferences();
-                    for ( int j = 0; j < editorReferences.length; j++ )
-                    {
-                        IEditorReference editorReference = editorReferences[j];
-                        if ( editorReference.getName().equals( "Entry Editor" ) )
-                        {
-                            DummyEditor editor = new DummyEditor( editorReference, bot );
-                            Tree tree = ( Tree ) bot.widget( widgetOfType( Tree.class ), editor.widget );
-                            return tree;
-
-                        }
-                    }
-                }
-                throw new WidgetNotFoundException( "Could not find Entry Editor tree" );
-            }
-        } );
-        return new SWTBotTree( tree );
-    }
-
-    static class DummyEditor extends SWTBotWorkbenchPart<IEditorReference>
-    {
-        public Widget widget;
-
-
-        public DummyEditor( IEditorReference editorReference, SWTWorkbenchBot bot )
-        {
-            super( editorReference, bot );
-            widget = findWidget( anything() );
-        }
-
-
-        public void setFocus()
-        {
-            syncExec( new VoidResult()
-            {
-                public void run()
-                {
-                    ( ( Control ) widget ).setFocus();
-                }
-            } );
-        }
-
-
-        public boolean isActive()
-        {
-            return true;
-        }
+        SWTBotEditor editor = bot.editorByTitle( title );
+        SWTBotTree tree = editor.bot().tree();
+        return tree;
     }
 
 
@@ -503,15 +435,7 @@ public class SWTBotUtils
                 currentPath = adjustNodeName( entry, currentPath );
                 entry = entry.getNode( currentPath );
             }
-
-            final SWTBotTreeItem tempEntry = entry;
-            UIThreadRunnable.asyncExec( bot.getDisplay(), new VoidResult()
-            {
-                public void run()
-                {
-                    tempEntry.select();
-                }
-            } );
+            entry.click();
 
             if ( !pathList.isEmpty() || expandChild )
             {
@@ -522,6 +446,7 @@ public class SWTBotUtils
                 expandEntry( bot, entry, nextName );
             }
 
+            entry.select();
         }
         return entry;
     }

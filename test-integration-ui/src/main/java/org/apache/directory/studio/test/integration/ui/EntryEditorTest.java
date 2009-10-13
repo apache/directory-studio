@@ -29,7 +29,6 @@ import org.apache.directory.server.core.integ.annotations.CleanupLevel;
 import org.apache.directory.server.integ.SiRunner;
 import org.apache.directory.server.ldap.LdapServer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.junit.After;
 import org.junit.Before;
@@ -84,168 +83,45 @@ public class EntryEditorTest
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=users",
             "cn=Barbara Jensen" );
 
-        final SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot );
+        final SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot, "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorTree.setFocus();
 
         // add description attribute
         entryEditorTree.contextMenu( "New Attribute..." ).click();
         bot.comboBoxWithLabel( "Attribute type:" ).setText( "description" );
-        SWTBotUtils.asyncClick( bot, bot.button( "Finish" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.text( "" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find empty description attribute";
-            }
-        } );
+        bot.button( "Finish" ).click();
         bot.text( "" ).setText( "This is the 1st description." );
-        SWTBotUtils.asyncClick( bot, entryEditorTree.getTreeItem( "objectClass" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return entryEditorTree.cell( 6, 0 ).equals( "description" )
-                    && entryEditorTree.cell( 6, 1 ).equals( "This is the 1st description." );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find attribute 'description:This is the 1st description.'";
-            }
-        } );
+        entryEditorTree.getTreeItem( "objectClass" ).click();
 
         // add second value
         entryEditorTree.getTreeItem( "description" ).click();
-        SWTBotUtils.asyncClick( bot, entryEditorTree.contextMenu( "New Value" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.text( "" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find empty description attribute";
-            }
-        } );
+        entryEditorTree.contextMenu( "New Value" ).click();
         bot.text( "" ).setText( "This is the 2nd description." );
-        SWTBotUtils.asyncClick( bot, entryEditorTree.getTreeItem( "objectClass" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return entryEditorTree.cell( 7, 0 ).equals( "description" )
-                    && entryEditorTree.cell( 7, 1 ).equals( "This is the 2nd description." );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find attribute 'description:This is the 2nd description.'";
-            }
-        } );
+        entryEditorTree.getTreeItem( "objectClass" ).click();
 
         // edit second value
         entryEditorTree.select( 7 );
-        SWTBotUtils.asyncClick( bot, entryEditorTree.contextMenu( "Edit Value" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.text( "This is the 2nd description." ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find description 'This is the 2nd description.'";
-            }
-        } );
+        entryEditorTree.contextMenu( "Edit Value" ).click();
         bot.text( "This is the 2nd description." ).setText( "This is the 3rd description." );
-        SWTBotUtils.asyncClick( bot, entryEditorTree.getTreeItem( "objectClass" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return entryEditorTree.cell( 7, 0 ).equals( "description" )
-                    && entryEditorTree.cell( 7, 1 ).equals( "This is the 3rd description." );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find attribute 'description:This is the 3rd description.'";
-            }
-        } );
+        entryEditorTree.getTreeItem( "objectClass" ).click();
 
         // delete second value
         entryEditorTree.select( 7 );
         entryEditorTree.contextMenu( "Delete Value" ).click();
-        SWTBotUtils.asyncClick( bot, bot.button( "OK" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return !entryEditorTree.cell( 7, 0 ).equals( "description" )
-                    && entryEditorTree.cell( 6, 0 ).equals( "description" )
-                    && entryEditorTree.cell( 6, 1 ).equals( "This is the 1st description." );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Attribute 'description' is still there.";
-            }
-        } );
+        bot.shell( "Delete Value" );
+        bot.button( "OK" ).click();
 
         // edit 1st value
         entryEditorTree.select( 6 );
-        SWTBotUtils.asyncClick( bot, entryEditorTree.contextMenu( "Edit Value" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.text( "This is the 1st description." ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find description 'This is the 1st description.'";
-            }
-        } );
+        entryEditorTree.contextMenu( "Edit Value" ).click();
         bot.text( "This is the 1st description." ).setText( "This is the final description." );
-        SWTBotUtils.asyncClick( bot, entryEditorTree.getTreeItem( "objectClass" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return entryEditorTree.cell( 6, 0 ).equals( "description" )
-                    && entryEditorTree.cell( 6, 1 ).equals( "This is the final description." );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find attribute 'description:This is the final description.'";
-            }
-        } );
+        entryEditorTree.getTreeItem( "objectClass" ).click();
 
         // delete 1st value/attribute
         entryEditorTree.select( 6 );
         entryEditorTree.contextMenu( "Delete Value" ).click();
-        SWTBotUtils.asyncClick( bot, bot.button( "OK" ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return !entryEditorTree.cell( 6, 0 ).equals( "description" );
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Attribute 'description' is still there.";
-            }
-        } );
+        bot.shell( "Delete Value" );
+        bot.button( "OK" ).click();
     }
 
 
@@ -263,7 +139,8 @@ public class EntryEditorTest
             "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
         SWTBotUtils.selectEntry( bot, browserTree, false, "DIT", "Root DSE", "ou=system", "ou=groups", "cn=My Group" );
 
-        SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot );
+        SWTBotTree entryEditorTree = SWTBotUtils.getEntryEditorTree( bot, "cn=My Group,ou=groups,ou=system" );
+        entryEditorTree.setFocus();
         entryEditorTree.contextMenu( "New Attribute..." ).click();
         bot.shell( "New Attribute" );
         bot.comboBoxWithLabel( "Attribute type:" ).setText( "member" );
