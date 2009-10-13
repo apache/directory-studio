@@ -281,9 +281,9 @@ public class NewConnectionWizardTest
         // check default settings
         assertTrue( wizardBot.isGetBaseDnsFromRootDseSelected() );
         assertFalse( wizardBot.isBaseDnEnabled() );
-        // ensure "<Back" and "Finish" is enabled, "Next >" disabled
+        // ensure "<Back" and "Finish" is enabled, "Next >" enabled
         assertTrue( wizardBot.isBackButtonEnabled() );
-        assertFalse( wizardBot.isNextButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
         assertTrue( wizardBot.isFinishButtonEnabled() );
         assertTrue( wizardBot.isCancelButtonEnabled() );
 
