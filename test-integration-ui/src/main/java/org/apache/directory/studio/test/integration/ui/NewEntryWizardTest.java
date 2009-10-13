@@ -108,19 +108,7 @@ public class NewEntryWizardTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "New Entry" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
+        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -180,19 +168,7 @@ public class NewEntryWizardTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "New Entry" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
+        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -265,19 +241,7 @@ public class NewEntryWizardTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "New Entry" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
+        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -326,19 +290,7 @@ public class NewEntryWizardTest
         // to ensure that the selected parent is also upper case.
 
         // open "New Entry" wizard
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "New Entry" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
+        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
@@ -405,19 +357,7 @@ public class NewEntryWizardTest
         SWTBotUtils.selectEntry( bot, browserTree, true, "DIT", "Root DSE", "ou=system" );
 
         // open "New Entry" wizard
-        SWTBotUtils.asyncClick( bot, browserTree.contextMenu( "New Entry..." ), new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return bot.shell( "New Entry" ) != null;
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Could not find dialog 'New Entry'";
-            }
-        } );
+        ContextMenuHelper.clickContextMenu( browserTree, "New", "New Entry..." );
 
         // select entry creation method
         bot.radio( "Create entry from scratch" ).click();
