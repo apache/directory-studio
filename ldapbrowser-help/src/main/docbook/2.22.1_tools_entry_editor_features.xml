@@ -38,7 +38,7 @@
 				<guiicon>
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em" fileref="icons/sort.gif"
+							<imagedata scale="50" fileref="icons/sort.gif"
 								format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -123,7 +123,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/filter.gif"
+						<imagedata scale="50" fileref="icons/filter.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -182,7 +182,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/tools_entry_editor_9.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -195,7 +195,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/collapseall.gif"
+						<imagedata scale="50" fileref="icons/collapseall.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -204,7 +204,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/expandall.gif"
+						<imagedata scale="50" fileref="icons/expandall.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -234,7 +234,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/locate_dn_in_dit.gif"
+						<imagedata scale="50" fileref="icons/locate_dn_in_dit.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>

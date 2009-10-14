@@ -27,7 +27,7 @@
 				<emphasis role="strong">
 					Export >
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_schemas-export.gif" format="GIF" />
 					</imageobject>
 					Schemas as OpenLDAP file(s)
@@ -39,7 +39,7 @@
 				<emphasis role="strong">File > Export...</emphasis>
 				and choose
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_schemas-export.gif" format="GIF" />
 				</imageobject>
 				<emphasis role="strong">

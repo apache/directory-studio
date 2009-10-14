@@ -27,7 +27,7 @@
 				<emphasis role="strong">
 					Import >
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_schemas-import.gif" format="GIF" />
 					</imageobject>
 					Schemas from XML file(s)
@@ -39,7 +39,7 @@
 				<emphasis role="strong">File > Import...</emphasis>
 				and choose
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_schemas-import.gif" format="GIF" />
 				</imageobject>
 				<emphasis role="strong">

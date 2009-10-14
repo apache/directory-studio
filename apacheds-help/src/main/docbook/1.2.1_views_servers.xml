@@ -66,7 +66,7 @@
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_server_new.gif" format="GIF" />
 				</imageobject>
 				-
@@ -75,7 +75,7 @@
 			</listitem>
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_run.gif" format="GIF" />
 				</imageobject>
 				-
@@ -84,7 +84,7 @@
 			</listitem>
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_stop.gif" format="GIF" />
 				</imageobject>
 				-
@@ -113,7 +113,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -124,21 +124,21 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_starting1.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_starting2.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_starting3.gif"
 										format="GIF" />
 								</imageobject>
@@ -150,7 +150,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_started.gif"
 										format="GIF" />
 								</imageobject>
@@ -162,21 +162,21 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_stopping1.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_stopping2.gif"
 										format="GIF" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_stopping3.gif"
 										format="GIF" />
 								</imageobject>
@@ -188,7 +188,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_server_stopped.gif"
 										format="GIF" />
 								</imageobject>

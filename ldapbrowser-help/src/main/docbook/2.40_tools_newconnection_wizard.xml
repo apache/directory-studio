@@ -31,7 +31,7 @@
 					In the Connections view select the
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="icons/connection_add.gif" format="GIF" />
 						</imageobject>
 					</inlinemediaobject>

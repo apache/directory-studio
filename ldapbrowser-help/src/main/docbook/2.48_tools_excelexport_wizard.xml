@@ -30,7 +30,7 @@
 						Export >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/export_xls.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -47,7 +47,7 @@
 						Export >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/export_xls.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -64,7 +64,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/export_xls.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>

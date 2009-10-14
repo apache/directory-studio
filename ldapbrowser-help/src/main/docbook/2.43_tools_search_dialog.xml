@@ -40,7 +40,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/search_new.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -57,7 +57,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/search.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>

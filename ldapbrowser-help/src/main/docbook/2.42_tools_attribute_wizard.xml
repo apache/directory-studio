@@ -26,7 +26,7 @@
 		To create a new attribute select the
 		<inlinemediaobject>
 			<imageobject>
-				<imagedata contentdepth="1em" fileref="icons/attribute_add.gif"
+				<imagedata scale="50" fileref="icons/attribute_add.gif"
 					format="GIF" />
 			</imageobject>
 		</inlinemediaobject>

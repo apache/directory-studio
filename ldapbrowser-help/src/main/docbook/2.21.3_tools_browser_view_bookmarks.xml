@@ -37,7 +37,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/bookmark_add.gif"
+						<imagedata scale="50" fileref="icons/bookmark_add.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -54,7 +54,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="icons/locate_bookmark_in_dit.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>

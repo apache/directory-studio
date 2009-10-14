@@ -32,7 +32,7 @@
 					Then choose
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em" fileref="icons/batch.gif"
+							<imagedata scale="50" fileref="icons/batch.gif"
 								format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -48,7 +48,7 @@
 					drop-down menu on the New Wizard button and select
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em" fileref="icons/batch.gif"
+							<imagedata scale="50" fileref="icons/batch.gif"
 								format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -64,7 +64,7 @@
 						File > New >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em" fileref="icons/batch.gif"
+								<imagedata scale="50" fileref="icons/batch.gif"
 									format="GIF" />
 							</imageobject>
 						</inlinemediaobject>

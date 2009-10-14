@@ -202,7 +202,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_1.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -216,7 +216,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_2.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -230,7 +230,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_3.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -244,7 +244,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_4.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -258,7 +258,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_5.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -272,7 +272,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_6.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -286,7 +286,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_7.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -300,7 +300,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_8.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -314,7 +314,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_ldif_editor_9.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -346,7 +346,7 @@
 					<guiicon>
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em" fileref="icons/browser_ldifeditor.gif"
+								<imagedata scale="50" fileref="icons/browser_ldifeditor.gif"
 									format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -397,7 +397,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em" fileref="icons/execute.gif"
+											<imagedata scale="50" fileref="icons/execute.gif"
 												format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -551,7 +551,7 @@
 				<guiicon>
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="icons/error.gif" format="GIF" />
 						</imageobject>
 					</inlinemediaobject>
@@ -623,7 +623,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_default.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -636,7 +636,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_add.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -649,7 +649,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_modify.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -662,7 +662,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_delete.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -675,7 +675,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_rename.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -705,7 +705,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_attribute.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -718,7 +718,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_value.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -731,7 +731,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_mod_add.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -744,7 +744,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_mod_replace.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -757,7 +757,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/ldif_mod_delete.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>

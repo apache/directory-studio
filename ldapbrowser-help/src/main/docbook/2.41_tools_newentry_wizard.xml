@@ -29,7 +29,7 @@
 					result or bookmark. Then choose
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em" fileref="icons/entry_add.gif"
+							<imagedata scale="50" fileref="icons/entry_add.gif"
 								format="GIF" />
 						</imageobject>
 					</inlinemediaobject>

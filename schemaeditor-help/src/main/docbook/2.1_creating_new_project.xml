@@ -22,7 +22,7 @@
 		To create a new project, in the Projects view toolbar, click on
 		the
 		<imageobject>
-			<imagedata contentdepth="1em"
+			<imagedata scale="50"
 				fileref="images/icons_project-new.gif" format="GIF" />
 		</imageobject>
 		<emphasis role="strong">New Schema Project</emphasis>

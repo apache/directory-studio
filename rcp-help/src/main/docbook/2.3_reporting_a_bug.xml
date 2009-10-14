@@ -21,7 +21,7 @@
 		<emphasis role="strong">
 			Help >
 			<imageobject>
-				<imagedata contentdepth="1em" fileref="images/bug-report.png"
+				<imagedata scale="50" fileref="images/bug-report.png"
 					format="PNG" />
 			</imageobject>
 			Report a bug...

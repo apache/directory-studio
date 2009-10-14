@@ -35,7 +35,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="icons/search_new.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -51,7 +51,7 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="icons/search.gif" format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -89,7 +89,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="icons/locate_searchresult_in_dit.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -107,7 +107,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="icons/search_unperformed.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -126,7 +126,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/search.gif"
+						<imagedata scale="50" fileref="icons/search.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -161,7 +161,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="icons/ovr16/searchresult.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -176,7 +176,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/folder.gif"
+						<imagedata scale="50" fileref="icons/folder.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -205,7 +205,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/batch.gif"
+						<imagedata scale="50" fileref="icons/batch.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>

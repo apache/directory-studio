@@ -72,7 +72,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_1b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -91,7 +91,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_1a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -157,7 +157,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_3b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -271,7 +271,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_5c.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -376,7 +376,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_7b.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -416,7 +416,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_8c.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -457,7 +457,7 @@
 							By clicking
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em" fileref="icons/parent.gif"
+									<imagedata scale="50" fileref="icons/parent.gif"
 										format="GIF" />
 								</imageobject>
 							</inlinemediaobject>
@@ -503,7 +503,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_9a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>
@@ -558,7 +558,7 @@
 				<screenshot>
 					<mediaobject>
 						<imageobject>
-							<imagedata contentdepth="1em"
+							<imagedata scale="50"
 								fileref="images/tools_value_editors_9a.png" format="PNG" />
 						</imageobject>
 					</mediaobject>

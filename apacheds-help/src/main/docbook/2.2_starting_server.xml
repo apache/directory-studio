@@ -22,7 +22,7 @@
 		To start a server, in the Servers view, select the server you
 		want to start and click the
 		<imageobject>
-			<imagedata contentdepth="1em" fileref="images/icons_run.gif"
+			<imagedata scale="50" fileref="images/icons_run.gif"
 				format="GIF" />
 		</imageobject>
 		<emphasis role="strong">Run</emphasis>

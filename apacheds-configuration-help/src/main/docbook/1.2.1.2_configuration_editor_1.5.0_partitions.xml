@@ -43,13 +43,13 @@
 		You can choose the orientation of the page by clicking on the
 		appropriate button ("Horizontal Orientation"
 		<imageobject>
-			<imagedata contentdepth="1em"
+			<imagedata scale="50"
 				fileref="images/gettingstarted/horizontal_orientation.gif"
 				format="GIF" />
 		</imageobject>
 		or "Vertical Orientation"
 		<imageobject>
-			<imagedata contentdepth="1em"
+			<imagedata scale="50"
 				fileref="images/gettingstarted/vertical_orientation.gif"
 				format="GIF" />
 		</imageobject>
@@ -179,7 +179,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/gettingstarted/partition.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -190,7 +190,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/gettingstarted/partition_system.gif"
 										format="GIF" />
 								</imageobject>

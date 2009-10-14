@@ -27,7 +27,7 @@
 				<emphasis role="strong">
 					Import >
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_schemas-import.gif" format="GIF" />
 					</imageobject>
 					Core schemas file(s)
@@ -40,7 +40,7 @@
 				and choose
 				<emphasis role="strong">
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_schemas-import.gif" format="GIF" />
 					</imageobject>
 					Core schemas file(s)

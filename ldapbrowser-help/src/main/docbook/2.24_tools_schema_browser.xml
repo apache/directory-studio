@@ -136,7 +136,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em"
+												<imagedata scale="50"
 													fileref="icons/defaultschema.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>
@@ -154,7 +154,7 @@
 									<guiicon>
 										<inlinemediaobject>
 											<imageobject>
-												<imagedata contentdepth="1em"
+												<imagedata scale="50"
 													fileref="icons/refresh.gif" format="GIF" />
 											</imageobject>
 										</inlinemediaobject>

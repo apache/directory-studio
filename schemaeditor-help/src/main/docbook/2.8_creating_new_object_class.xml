@@ -27,7 +27,7 @@
 				<emphasis role="strong">
 					New >
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_object-class-new.gif" format="GIF" />
 					</imageobject>
 					New Object Class
@@ -38,7 +38,7 @@
 				In the Schema view, click the
 				<emphasis role="strong">
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_object-class-new.gif" format="GIF" />
 					</imageobject>
 					New Object Class
@@ -50,7 +50,7 @@
 				<emphasis role="strong">File > New...</emphasis>
 				and choose
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_object-class-new.gif" format="GIF" />
 				</imageobject>
 				<emphasis role="strong">New Object Class</emphasis>

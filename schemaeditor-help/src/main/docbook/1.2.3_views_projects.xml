@@ -41,7 +41,7 @@
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_project-new.gif" format="GIF" />
 				</imageobject>
 				-
@@ -70,7 +70,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_project-offline-closed.gif"
 										format="GIF" />
 								</imageobject>
@@ -82,7 +82,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_project-offline.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>

@@ -38,7 +38,7 @@
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_show-search-field.gif" format="GIF" />
 				</imageobject>
 				-
@@ -47,7 +47,7 @@
 			</listitem>
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_run-current-search-again.gif" format="GIF" />
 				</imageobject>
 				-
@@ -56,7 +56,7 @@
 			</listitem>
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_show-search-history.gif" format="GIF" />
 				</imageobject>
 				-
@@ -76,7 +76,7 @@
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_sorting.gif" format="GIF" />
 				</imageobject>
 				-
@@ -109,7 +109,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_attribute-type-operational.gif"
 										format="GIF" />
 								</imageobject>
@@ -121,7 +121,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_attribute-type-user.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -132,7 +132,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_object-class-abstract.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -143,7 +143,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_object-class-auxiliary.gif"
 										format="GIF" />
 								</imageobject>
@@ -155,7 +155,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_object-class-structural.gif"
 										format="GIF" />
 								</imageobject>

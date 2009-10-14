@@ -105,7 +105,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_entry_editor_3.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -120,7 +120,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_entry_editor_4.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -135,7 +135,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_entry_editor_5.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -150,7 +150,7 @@
 								<screenshot>
 									<mediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="images/tools_entry_editor_6.png" format="PNG" />
 										</imageobject>
 									</mediaobject>
@@ -194,7 +194,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/value_add.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -219,7 +219,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/attribute_add.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -251,7 +251,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/delete.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -270,7 +270,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/delete_all.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -290,7 +290,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/refresh.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -312,7 +312,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/expandall.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -328,7 +328,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/collapseall.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>
@@ -344,7 +344,7 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata contentdepth="1em"
+											<imagedata scale="50"
 												fileref="icons/filter.gif" format="GIF" />
 										</imageobject>
 									</inlinemediaobject>

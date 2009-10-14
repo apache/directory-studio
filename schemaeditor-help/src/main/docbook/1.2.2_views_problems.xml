@@ -53,7 +53,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_error.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>
@@ -64,7 +64,7 @@
 						<entry align="center">
 							<mediaobject>
 								<imageobject>
-									<imagedata contentdepth="1em"
+									<imagedata scale="50"
 										fileref="images/icons_warning.gif" format="GIF" />
 								</imageobject>
 							</mediaobject>

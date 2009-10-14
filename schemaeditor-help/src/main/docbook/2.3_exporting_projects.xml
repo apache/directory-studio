@@ -26,7 +26,7 @@
 				<emphasis role="strong">
 					Export >
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_project-export.gif" format="GIF" />
 					</imageobject>
 					Schema Projects
@@ -38,7 +38,7 @@
 				<emphasis role="strong">File > Export...</emphasis>
 				and choose
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_project-export.gif" format="GIF" />
 				</imageobject>
 				<emphasis role="strong">Schema Projects</emphasis>

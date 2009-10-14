@@ -32,7 +32,7 @@
 						Import >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/import_dsml.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -48,7 +48,7 @@
 						Import >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/import_dsml.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>
@@ -65,7 +65,7 @@
 					<emphasis role="strong">
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata contentdepth="1em"
+								<imagedata scale="50"
 									fileref="icons/import_dsml.gif" format="GIF" />
 							</imageobject>
 						</inlinemediaobject>

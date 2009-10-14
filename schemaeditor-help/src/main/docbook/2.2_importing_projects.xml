@@ -26,7 +26,7 @@
 				<emphasis role="strong">
 					Import >
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/icons_project-import.gif" format="GIF" />
 					</imageobject>
 					Schema Projects
@@ -38,7 +38,7 @@
 				<emphasis role="strong">File > Import...</emphasis>
 				and choose
 				<imageobject>
-					<imagedata contentdepth="1em"
+					<imagedata scale="50"
 						fileref="images/icons_project-import.gif" format="GIF" />
 				</imageobject>
 				<emphasis role="strong">Schema Projects</emphasis>

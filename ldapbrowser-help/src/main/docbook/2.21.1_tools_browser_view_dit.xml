@@ -72,7 +72,7 @@
 			<screenshot>
 				<mediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="images/tools_browser_view_7.png" format="PNG" />
 					</imageobject>
 				</mediaobject>
@@ -102,7 +102,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_person.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -115,7 +115,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_org.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -128,7 +128,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_dc.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -141,7 +141,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_alias.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -154,7 +154,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_ref.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -167,7 +167,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/browser_schemabrowsereditor.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -180,7 +180,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_root.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -193,7 +193,7 @@
 							<guiicon>
 								<inlinemediaobject>
 									<imageobject>
-										<imagedata contentdepth="1em"
+										<imagedata scale="50"
 											fileref="icons/entry_default.gif" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
@@ -219,7 +219,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="icons/entry_alias.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -237,7 +237,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em"
+						<imagedata scale="50"
 							fileref="icons/entry_ref.gif" format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -254,7 +254,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/folder.gif"
+						<imagedata scale="50" fileref="icons/folder.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
@@ -283,7 +283,7 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata contentdepth="1em" fileref="icons/filter_dit.gif"
+						<imagedata scale="50" fileref="icons/filter_dit.gif"
 							format="GIF" />
 					</imageobject>
 				</inlinemediaobject>
