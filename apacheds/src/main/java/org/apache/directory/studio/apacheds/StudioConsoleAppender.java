@@ -81,35 +81,44 @@ public class StudioConsoleAppender extends AppenderSkeleton
      */
     protected void append( LoggingEvent event )
     {
-        LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( serverId );
-        if ( console != null )
-        {
-            // Formatting the message with the layout
-            String message = layout.format( event );
+        final LoggingEvent logEvent = event;
 
-            // Switching dependening on the level
-            Level level = event.getLevel();
-            if ( level == Level.INFO )
+        // We need to print the message on console asynchronously to avoid UI thread exception
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
             {
-                console.getInfoConsoleMessageStream().print( message );
+                LogMessageConsole console = ConsolesHandler.getDefault().getLogMessageConsole( serverId );
+                if ( console != null )
+                {
+                    // Formatting the message with the layout
+                    String message = layout.format( logEvent );
+
+                    // Switching dependening on the level
+                    Level level = logEvent.getLevel();
+                    if ( level == Level.INFO )
+                    {
+                        console.getInfoConsoleMessageStream().print( message );
+                    }
+                    else if ( level == Level.DEBUG )
+                    {
+                        console.getDebugConsoleMessageStream().print( message );
+                    }
+                    else if ( level == Level.WARN )
+                    {
+                        console.getWarnConsoleMessageStream().print( message );
+                    }
+                    else if ( level == Level.ERROR )
+                    {
+                        console.getErrorConsoleMessageStream().print( message );
+                    }
+                    else if ( level == Level.FATAL )
+                    {
+                        console.getFatalConsoleMessageStream().print( message );
+                    }
+                }
             }
-            else if ( level == Level.DEBUG )
-            {
-                console.getDebugConsoleMessageStream().print( message );
-            }
-            else if ( level == Level.WARN )
-            {
-                console.getWarnConsoleMessageStream().print( message );
-            }
-            else if ( level == Level.ERROR )
-            {
-                console.getErrorConsoleMessageStream().print( message );
-            }
-            else if ( level == Level.FATAL )
-            {
-                console.getFatalConsoleMessageStream().print( message );
-            }
-        }
+        } );
     }
 
 
