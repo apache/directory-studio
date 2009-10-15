@@ -161,7 +161,7 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Entry Editors Label
-        BaseWidgetUtils.createLabel( entryEditorsGroup, Messages
+        BaseWidgetUtils.createWrappedLabel( entryEditorsGroup, Messages
             .getString( "EntryEditorsPreferencePage.EntryEditorsLabel" ), 1 ); //$NON-NLS-1$
 
         // Entry Editors Composite
