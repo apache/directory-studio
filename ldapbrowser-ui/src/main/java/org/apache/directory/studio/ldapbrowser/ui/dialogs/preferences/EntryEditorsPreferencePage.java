@@ -45,6 +45,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
@@ -158,6 +159,10 @@ public class EntryEditorsPreferencePage extends PreferencePage implements IWorkb
         Group entryEditorsGroup = BaseWidgetUtils.createGroup( composite, Messages
             .getString( "EntryEditorsPreferencePage.EntryEditors" ), 1 ); //$NON-NLS-1$
         openModeGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // Entry Editors Label
+        BaseWidgetUtils.createLabel( entryEditorsGroup, Messages
+            .getString( "EntryEditorsPreferencePage.EntryEditorsLabel" ), 1 ); //$NON-NLS-1$
 
         // Entry Editors Composite
         Composite entryEditorsComposite = new Composite( entryEditorsGroup, SWT.NONE );
