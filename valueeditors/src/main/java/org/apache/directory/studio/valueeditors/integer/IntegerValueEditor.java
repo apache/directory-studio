@@ -46,6 +46,7 @@ public class IntegerValueEditor extends AbstractDialogStringValueEditor
         {
             String stringValue = ( String ) value;
             int intValue;
+            boolean isNewOrMalformedValue = false;
             try
             {
                 intValue = Integer.valueOf( stringValue );
@@ -53,9 +54,10 @@ public class IntegerValueEditor extends AbstractDialogStringValueEditor
             catch ( NumberFormatException e )
             {
                 intValue = 0;
+                isNewOrMalformedValue = true;
             }
             IntegerDialog dialog = new IntegerDialog( shell, intValue );
-            if ( dialog.open() == IntegerDialog.OK && dialog.getInteger() != -1 )
+            if ( dialog.open() == IntegerDialog.OK && ( dialog.isDirty() || isNewOrMalformedValue ) )
             {
                 setValue( Integer.toString( dialog.getInteger() ) );
                 return true;
@@ -63,5 +65,4 @@ public class IntegerValueEditor extends AbstractDialogStringValueEditor
         }
         return false;
     }
-
 }

@@ -74,7 +74,7 @@ public class IntegerDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("IntegerDialog.IntegerEditor") ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "IntegerDialog.IntegerEditor" ) ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_INTEGEREDITOR ) );
     }
 
@@ -111,7 +111,7 @@ public class IntegerDialog extends Dialog
         composite.setLayoutData( gd );
 
         spinner = new Spinner( composite, SWT.BORDER );
-        spinner.setMinimum( 0 );
+        spinner.setMinimum( Integer.MIN_VALUE );
         spinner.setMaximum( Integer.MAX_VALUE );
         spinner.setDigits( 0 );
         spinner.setIncrement( 1 );
@@ -132,5 +132,18 @@ public class IntegerDialog extends Dialog
     public int getInteger()
     {
         return returnValue;
+    }
+
+
+    /**
+     * Indicates if the dialog is dirty.
+     *
+     * @return
+     *      <code>true</code> if the dialog is dirty,
+     *      <code>false</code> if not.
+     */
+    public boolean isDirty()
+    {
+        return initialValue != returnValue;
     }
 }
