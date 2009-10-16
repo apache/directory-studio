@@ -47,10 +47,10 @@
 		dialog.
 	</para>
 
-	&help;
+    &apache_directory_studio;
+    &general;
+    &help;
 	&install_update;
 	&installed_jres;
-	&network_connections;
-	&text_editors;
 
 </section>

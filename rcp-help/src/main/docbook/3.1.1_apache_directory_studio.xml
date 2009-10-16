@@ -1,0 +1,38 @@
+
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<section id="apache_directory_studio">
+	<title>Apache Directory Studio</title>
+	<para>
+		The
+		<emphasis role="strong">Apache Directory Studio</emphasis>
+		preferences page is the root for all the preferences settings for the
+		Apache Directory Studio specific plugins.
+	</para>
+	<para>Here is what the Apache Directory Studio preferences page looks
+		like:</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/apache_directory_studio_screen.png" format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+
+</section>

@@ -1,0 +1,115 @@
+
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+<section id="general">
+	<title>General</title>
+	<para>
+		On the
+		<emphasis role="strong">Help</emphasis>
+		preferences page, you can indicate how to display help
+		information.
+	</para>
+	<para>The following preferences can be changed on the General
+		preference page.</para>
+	<para>
+		<informaltable>
+			<tgroup cols="3">
+				<colspec colname="Option" colwidth="1* " />
+				<colspec colname="Description" colwidth="2*" />
+				<colspec colname="Default" colwidth="1*" />
+				<thead>
+					<row>
+						<entry>Option</entry>
+						<entry>Description</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>Always run in background</entry>
+						<entry>
+							Turn this option on to perform long running operations in
+							the background without blocking you from doing other work.
+						</entry>
+						<entry>Off</entry>
+					</row>
+					<row>
+						<entry>Keep next/previous part dialog open</entry>
+						<entry>
+							If this option is turned on then the editor and view cycle
+							dialogs will remain open when their activation key is let go.
+							Normally the dialog closes as soon as the key combination is
+							release.
+						</entry>
+						<entry>Off</entry>
+					</row>
+					<row>
+						<entry>Show Heap Status</entry>
+						<entry>
+							Turn this option on to display an indicator showing
+							information about current Java heap usage.
+						</entry>
+						<entry>Off</entry>
+					</row>
+					<row>
+						<entry>Open mode...</entry>
+						<entry>
+							You can select one of the following methods for opening
+							resources:
+							<itemizedlist spacing="normal" mark="bullet">
+								<listitem>Double click - Single clicking on a resource will
+									select it and
+									double clicking on it will open it in an editor.
+								</listitem>
+								<listitem>
+									Single click (Select on hover) - Hovering the mouse
+									cursor over
+									the resource will select it and clicking on it once
+									will open it
+									in an editor.</listitem>
+
+								<listitem>Single click (Open when using arrow keys) - Selecting
+									a resource
+									with the arrow keys will open it in an editor.
+								</listitem>
+							</itemizedlist>
+							<emphasis role="strong">Note:</emphasis>
+							Depending on
+							which view has focus, selecting and opening a
+							resource may have
+							different behavior.
+						</entry>
+						<entry>Double click</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</para>
+	<para>Here is what the General preferences page looks like:</para>
+	<para>
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50" fileref="images/general_screen.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	
+    &network_connections;
+
+</section>

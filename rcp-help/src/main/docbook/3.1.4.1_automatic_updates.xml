@@ -80,7 +80,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/automatic-updates_screen.png" format="PNG" />
+						fileref="images/automatic_updates_screen.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>

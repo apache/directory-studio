@@ -16,12 +16,11 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="quick_diff">
-	<title>Quick Diff</title>
+<section id="install_update">
+	<title>Install/Update</title>
 	<para>
-		The following preferences can be changed on the
-		<emphasis role="strong">Text Editors > Quick Diff</emphasis>
-		preference page.
+		The following preferences can be changed on the Install/Update
+		page:
 	</para>
 	<para>
 		<informaltable>
@@ -38,80 +37,85 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>Enable quick diff</entry>
 						<entry>
-							This option will enable or disable the quick
-							diff option.
+							Maximum number of 'History' configurations
+						</entry>
+						<entry>
+							Maximum number of configurations you want
+							maintained in the configuration history.
+							These configurations are maintained to allow
+							you to revert to a previous configuration of
+							installed feature versions.
+						</entry>
+						<entry>100</entry>
+					</row>
+					<row>
+						<entry>
+							Check digital signatures of downloaded
+							archives
+						</entry>
+						<entry>
+							This option will check for digital
+							signatures of downloaded archives.
 						</entry>
 						<entry>On</entry>
 					</row>
 					<row>
+						<entry>Valid updates</entry>
 						<entry>
-							Show differences in overview ruler
-						</entry>
-						<entry>
-							This option will show differences in the
-							overview ruler.
-						</entry>
-						<entry>Off</entry>
-					</row>
-					<row>
-						<entry>Colors - Changes</entry>
-						<entry>
-							This option controls the color of changes.
-						</entry>
-						<entry>-</entry>
-					</row>
-					<row>
-						<entry>Colors - Additions</entry>
-						<entry>
-							This option controls the color of additions.
-						</entry>
-						<entry>-</entry>
-					</row>
-					<row>
-						<entry>Colors - Deletions</entry>
-						<entry>
-							This option controls the color of deletions.
-						</entry>
-						<entry>-</entry>
-					</row>
-					<row>
-						<entry>Use this reference source</entry>
-						<entry>
-							This option sets which reference to use as
-							the base for generating quick diff
-							comparisons. Options are:
+							Assuming that feature versions use the form
+							'major.minor.service', you can select what
+							update level you want to choose from:
 							<itemizedlist>
 								<listitem>
-									Version on Disk: Current file is
-									compared against the last saved
-									version on disk.
+									equivalent : Only service updates
+									will be displayed.
 								</listitem>
 								<listitem>
-									Latest CVS Revision: Current file is
-									compared against the latest CVS
-									revision for the file.
+									compatible : Service updates and
+									minor updates will be displayed.
 								</listitem>
 							</itemizedlist>
 						</entry>
-						<entry>Version on Disk</entry>
+						<entry>equivalent</entry>
+					</row>
+					<row>
+						<entry>Update Policy</entry>
+						<entry>
+							The update policy URL that controls the
+							redirection of update sites within an
+							organization.
+						</entry>
+						<entry>No policy</entry>
+					</row>
+					<row>
+						<entry>Proxy settings</entry>
+						<entry>
+							Allows connection to the remote server from
+							behind the firewall. When enabled, proxy
+							host address (required) and port number
+							(optional) can be specified.
+						</entry>
+						<entry>No proxy</entry>
 					</row>
 				</tbody>
 			</tgroup>
 		</informaltable>
 	</para>
 	<para>
-		Here is what the Quick Diff preferences page looks like:
+		Here is what the Install/Update preferences page looks like:
 	</para>
 	<para>
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/quick-diff_screen.png" format="PNG" />
+						fileref="images/install_update_screen.png" format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
 	</para>
+
+	&automatic_updates;
+
 </section>
