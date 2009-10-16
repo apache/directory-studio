@@ -130,8 +130,8 @@ public interface BrowserCommonConstants
     public static final String IMG_ENTRY_ORG = "resources/icons/entry_org.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_PERSON = "resources/icons/entry_person.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_GROUP = "resources/icons/entry_group.gif"; //$NON-NLS-1$
-    public static final String IMG_ENTRY_REF = "resources/icons/entry_ref.gif"; //$NON-NLS-1$
-    public static final String IMG_ENTRY_ALIAS = "resources/icons/entry_alias.gif"; //$NON-NLS-1$
+    public static final String IMG_ENTRY_REF = "resources/icons/entry_ref.png"; //$NON-NLS-1$
+    public static final String IMG_ENTRY_ALIAS = "resources/icons/entry_alias.png"; //$NON-NLS-1$
     public static final String IMG_SEARCHES = "resources/icons/searches.gif"; //$NON-NLS-1$
     public static final String IMG_SEARCH = "resources/icons/search.gif"; //$NON-NLS-1$
     public static final String IMG_QUICKSEARCH = "resources/icons/quicksearch.gif"; //$NON-NLS-1$

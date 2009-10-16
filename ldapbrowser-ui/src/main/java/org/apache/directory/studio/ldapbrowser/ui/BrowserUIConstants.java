@@ -106,8 +106,8 @@ public interface BrowserUIConstants
     public static final String IMG_ENTRY_ORG = "resources/icons/entry_org.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_PERSON = "resources/icons/entry_person.gif"; //$NON-NLS-1$
     public static final String IMG_ENTRY_GROUP = "resources/icons/entry_group.gif"; //$NON-NLS-1$
-    public static final String IMG_ENTRY_REF = "resources/icons/entry_ref.gif"; //$NON-NLS-1$
-    public static final String IMG_ENTRY_ALIAS = "resources/icons/entry_alias.gif"; //$NON-NLS-1$
+    public static final String IMG_ENTRY_REF = "resources/icons/entry_ref.png"; //$NON-NLS-1$
+    public static final String IMG_ENTRY_ALIAS = "resources/icons/entry_alias.png"; //$NON-NLS-1$
     public static final String IMG_ENTRY_ADD = "resources/icons/entry_add.gif"; //$NON-NLS-1$
     public static final String IMG_LOCATE_DN_IN_DIT = "resources/icons/locate_dn_in_dit.gif"; //$NON-NLS-1$
     public static final String IMG_LOCATE_SEARCHRESULT_IN_DIT = "resources/icons/locate_searchresult_in_dit.gif"; //$NON-NLS-1$
@@ -159,6 +159,7 @@ public interface BrowserUIConstants
     public static final String IMG_MRD_SUBSTRING = "resources/icons/mrd_substring.png"; //$NON-NLS-1$
     public static final String IMG_MRD_ORDERING = "resources/icons/mrd_ordering.png"; //$NON-NLS-1$
     public static final String IMG_OVR_FILTERED = "resources/icons/ovr16/filtered.gif"; //$NON-NLS-1$
+    public static final String IMG_OVR_REF = "resources/icons/ovr16/ref.gif"; //$NON-NLS-1$
     public static final String IMG_OVR_SEARCHRESULT = "resources/icons/ovr16/searchresult.gif"; //$NON-NLS-1$
     public static final String IMG_OVR_ERROR = "resources/icons/ovr16/error.gif"; //$NON-NLS-1$
     public static final String IMG_OVR_WARNING = "resources/icons/ovr16/warning.gif"; //$NON-NLS-1$

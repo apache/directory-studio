@@ -115,7 +115,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_alias.gif" format="GIF" />
+											fileref="icons/entry_alias.png" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -123,7 +123,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_ref.gif" format="GIF" />
+											fileref="icons/entry_ref.png" format="GIF" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
