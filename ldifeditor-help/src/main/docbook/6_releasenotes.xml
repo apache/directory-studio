@@ -26,6 +26,9 @@
         <para>
             <itemizedlist spacing="normal" mark="bullet">
                 <listitem>
+                    <para>[DIRSTUDIO-557] - Edit value and edit entry are not working if DN is invalid</para>
+                </listitem>
+                <listitem>
                     <para>[DIRSTUDIO-514] - Unable to restore last opened ldif-editors on restart</para>
                 </listitem>
             </itemizedlist>
@@ -37,19 +40,6 @@
             <itemizedlist spacing="normal" mark="bullet">
                 <listitem>
                     <para>[DIRSTUDIO-534] - Re-order the preference pages for better understanding</para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            <emphasis>New Feature</emphasis>
-        </para>
-        <para>
-            <itemizedlist spacing="normal" mark="bullet">
-                <listitem>
-                    <para>[DIRSTUDIO-557] - Edit value and edit entry are not working if DN is invalid</para>
-                </listitem>
-                <listitem>
-                    <para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
                 </listitem>
             </itemizedlist>
         </para>
