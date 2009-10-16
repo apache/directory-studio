@@ -19,41 +19,112 @@
 <chapter id="release_notes">
 	<title>Release notes</title>
 	<simplesect>
-		<title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
-		<para>
-			<emphasis>Bug</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-466] - Incorrect error message when importing a bad XML schema file</para>
-				</listitem>
-				<listitem>
-					<para>[DIRSTUDIO-442] - Typo in a warning of the New ObjectClass wizard ('attribute type' instead of 'object class')</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-		<para>
-			<emphasis>Improvement</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-		<para>
-			<emphasis>New Feature</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-	</simplesect>
+        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-565] - Inconsistent handling of the 'modified schemas' flag</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-506] - Export Schemas for ApacheDS: object classes must be sorted by hierarchy</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-497] - LdapSchema plugin 'Save' is erratic</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-473] - Import OpenLDAP core schema</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-443] - The warning and error overlay for OCs and ATs sometimes (often) lacks forgets some items</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-441] - New ObjectClass and AttributeType wizards always show a warning indicating that the item does not have any name</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-429] - Meaningless error message on importing schema</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-331] - Instant error when importing schema in a new schema-project</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-282] - Save failed: null , when adding an attribute to a class, if attribute is also open in gui</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Improvement</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-535] - Use SWT.SEARCH and SWT.CANCEL style bits on search text field for a native search field on Mac OS X</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-534] - Re-order the preference pages for better understanding</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-521] - Replace the XSLT transformation by the use of the Dom4J OutputFormat class for XML pretty print</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-509] - Load schema from the directory server</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-444] - Allow the user to enter the names of an item inline (using ',' as separator) in the OC and AT Editors</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>New Feature</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-510] - Add functionality to copy/merge schema elements between schema projects</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-466] - Incorrect error message when importing a bad XML schema file</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-442] - Typo in a warning of the New ObjectClass wizard ('attribute type' instead of 'object class')</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Improvement</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-426] - Overwritten hashCode() method should not use super.hashCode()</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>New Feature</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
 	<simplesect>
 		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
@@ -77,6 +148,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
@@ -93,6 +165,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>Apache Directory Studio 1.1.0 - (2008, march 31st)</title>
 		<para>
@@ -205,6 +278,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>Apache Directory Studio 1.0.1 - (2007, september 10)</title>
 		<para>
@@ -228,8 +302,10 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>Apache Directory Studio 1.0.0 - (2007, september 3rd)</title>
 		<para>Initial release.</para>
 	</simplesect>
+	
 </chapter>
