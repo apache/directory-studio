@@ -18,39 +18,87 @@
 -->
 <chapter id="releasenotes">
 	<title>Release notes</title>
-	<simplesect>
-		<title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
-		<para>
-			<emphasis>Bug</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-468] - The LDIF parser does not correctly parse changes</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-		<para>
-			<emphasis>New Feature</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-		<para>
-			<emphasis>Task</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-451] - [I18n] Templates not I18ned in LdifEditor</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-	</simplesect>
+    <simplesect>
+        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-514] - Unable to restore last opened ldif-editors on restart</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Improvement</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-534] - Re-order the preference pages for better understanding</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>New Feature</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-557] - Edit value and edit entry are not working if DN is invalid</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Sub-task</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-519] - Create a new LDIF Entry Editor</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-468] - The LDIF parser does not correctly parse changes</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>New Feature</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Task</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-451] - [I18n] Templates not I18ned in LdifEditor</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
 	<simplesect>
 		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
@@ -77,18 +125,21 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
 			Various small bug fixes and improvements.
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>Apache Directory Studio 1.1.0 - (2008, march 31st)</title>
 		<para>
 			Various small bug fixes and improvements.
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>Apache Directory Studio 1.0.0 - (2007, september 3rd)</title>
 		<para>
