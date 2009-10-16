@@ -41,6 +41,9 @@
                 <listitem>
                     <para>[DIRSTUDIO-541] - Add support for version 1.5.5 of the Apache DS</para>
                 </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-534] - Re-order the preference pages for better understanding</para>
+                </listitem>
             </itemizedlist>
         </para>
     </simplesect>
