@@ -19,18 +19,46 @@
 <chapter id="releasenotes">
 	<title>Release notes</title>
 	<simplesect>
-		<title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
-		<para>
-			<emphasis>New Feature</emphasis>
-		</para>
-		<para>
-			<itemizedlist spacing="normal" mark="bullet">
-				<listitem>
-					<para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
-				</listitem>
-			</itemizedlist>
-		</para>
-	</simplesect>
+        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-569] - Exceptions showing up in the log when starting a server in the Apache DS plugin</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-537] - Error in the title of the Properties window of a server in the Apache DS plugin</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Improvement</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-541] - Add support for version 1.5.5 of the Apache DS</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
+    <simplesect>
+        <title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
+        <para>
+            <emphasis>New Feature</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-397] - Request for multi-language GUI</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
 	<simplesect>
 		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
@@ -70,8 +98,10 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>Initial release.</para>
 	</simplesect>
+	
 </chapter>
