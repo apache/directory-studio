@@ -18,6 +18,16 @@
 -->
 <chapter id="whats_new">
 	<title>What's new</title>
+    
+    <simplesect>
+        <title>What's new in 1.5.0</title>
+        <para>
+            <emphasis role="strong">Eclipse 3.5 Galileo dependencies</emphasis>
+        </para>
+        <para>
+            Apache Directory Studio now uses the latest and greatest Eclipse 3.5 Galileo dependencies.            
+        </para>
+    </simplesect>
 	
 	<simplesect>
 		<title>What's new in 1.4.0</title>

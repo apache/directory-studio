@@ -18,6 +18,40 @@
 -->
 <chapter id="release_notes">
 	<title>Release notes</title>
+	
+	<simplesect>
+        <title>Apache Directory Studio 1.5.0 - (2009, October XXxx)</title>
+        <para>
+            <emphasis>Bug</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-514] - Unable to restore last opened ldif-editors on restart</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-499] - SOCKS proxy settings not used on startup</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-370] - Welcome screen subpages mouse-over images displays red crosses</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            <emphasis>Task</emphasis>
+        </para>
+        <para>
+            <itemizedlist spacing="normal" mark="bullet">
+                <listitem>
+                    <para>[DIRSTUDIO-525] - Remove support for the Linux PPC distribution</para>
+                </listitem>
+                <listitem>
+                    <para>[DIRSTUDIO-523] - Update Eclipse dependencies to version 3.5 Galileo</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </simplesect>
+    
 	<simplesect>
 		<title>Apache Directory Studio 1.4.0 - (2009, April 7th)</title>
 		<para>
@@ -57,6 +91,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>Apache Directory Studio 1.3.0 - (2008, November 24th)</title>
 		<para>
@@ -83,6 +118,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
         <title>Apache Directory Studio 1.2.0 - (2008, august 18th)</title>
 		<para>
@@ -144,6 +180,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>
 			Apache Directory Studio 1.1.0 - (2008, march 31st)
@@ -159,6 +196,7 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+	
 	<simplesect>
 		<title>
 			Apache Directory Studio 1.0.0 (2007, september 3rd) :
@@ -185,4 +223,5 @@
 			</itemizedlist>
 		</para>
 	</simplesect>
+
 </chapter>
