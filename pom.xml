@@ -88,15 +88,15 @@
     <rcp.version>1.4.0.v20090407</rcp.version>
     <rcp.feature.version>1.4.0.v20090407</rcp.feature.version>
     <rcp.help.version>1.4.0.v20090407</rcp.help.version>
-    <repository.version>1.4.0-SNAPSHOT</repository.version>
+    <repository.version>1.4.0.v20090407</repository.version>
     <schemaeditor.version>1.4.0.v20090407</schemaeditor.version>
     <schemaeditor.feature.version>1.4.0.v20090407</schemaeditor.feature.version>
     <schemaeditor.help.version>1.4.0.v20090407</schemaeditor.help.version>
-    <studio.dsml.parser.version>0.4.5-SNAPSHOT</studio.dsml.parser.version>
-    <updatesite.version>1.4.0-SNAPSHOT</updatesite.version>
+    <studio.dsml.parser.version>0.4.5</studio.dsml.parser.version>
+    <updatesite.version>1.4.0.v20090407</updatesite.version>
     <valueeditors.version>1.4.0.v20090407</valueeditors.version>
-    <test.integration.core.version>1.4.0-SNAPSHOT</test.integration.core.version>
-    <test.integration.ui.version>1.4.0-SNAPSHOT</test.integration.ui.version>
+    <test.integration.core.version>1.4.0.v20090407</test.integration.core.version>
+    <test.integration.ui.version>1.4.0.v20090407</test.integration.ui.version>
 
     <!-- Set versions for depending projects -->
     <org.apache.directory.shared.version>0.9.14</org.apache.directory.shared.version>
@@ -163,15 +163,6 @@
       -Pintegration-tests
       to the commandline to launch them.
     -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
-    -->
-    <!--
     <profile>
       <id>integration-tests</id>
       <modules>
@@ -179,22 +170,12 @@
         <module>test-integration-ui</module>
       </modules>
     </profile>
-    -->
     <!--
       Add the dist modules as profile to force them being built
       AFTER the help modules, otherwise we run into a backlog
       of at least 1 iteration because the dist modules would be
       built before the help modules ...
     -->
-    <!--
-      NOTE:
-      This profile has been disabled for the release, and needs to be 
-      enabled again after the release is over.
-      We are disabling the build of 'updatesite' and 'studio' because we don't 
-      want to overload the maven repository with useless (heavy) packages and 
-      distributions
-    -->
-    <!--
     <profile>
       <id>build-dist-modules</id>
       <activation>
@@ -207,7 +188,6 @@
         <module>studio</module>
       </modules>
     </profile>
-    -->
   </profiles>
 
   <dependencyManagement>
