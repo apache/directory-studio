@@ -187,7 +187,22 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
                 new ObjectClassIconPair( new String[]
                     { SchemaConstants.META_DIT_STRUCTURE_RULE_OC_OID }, BrowserCommonConstants.IMG_DIT_STRUCTURE_RULE ),
                 new ObjectClassIconPair( new String[]
-                    { SchemaConstants.META_NAME_FORM_OC_OID }, BrowserCommonConstants.IMG_NAME_FORM ), };
+                    { SchemaConstants.META_NAME_FORM_OC_OID }, BrowserCommonConstants.IMG_NAME_FORM ),
+
+                // Active Directory
+                new ObjectClassIconPair( new String[]
+                    { "1.2.840.113556.1.5.9" }, BrowserCommonConstants.IMG_ENTRY_PERSON ), // User
+                new ObjectClassIconPair( new String[]
+                    { "1.2.840.113556.1.5.8" }, BrowserCommonConstants.IMG_ENTRY_GROUP ), // Group
+                new ObjectClassIconPair( new String[]
+                    { "1.2.840.113556.1.3.23" }, BrowserCommonConstants.IMG_ENTRY_ORG ), // Container 
+                new ObjectClassIconPair( new String[]
+                    { "1.2.840.113556.1.5.66", "1.2.840.113556.1.5.67" }, BrowserCommonConstants.IMG_ENTRY_DC ), // Domain, DomainDNS
+                new ObjectClassIconPair( new String[]
+                    { "1.2.840.113556.1.3.13" }, BrowserCommonConstants.IMG_OCD ), // ClassSchema
+                new ObjectClassIconPair( new String[]
+                    { "1.2.840.113556.1.3.14" }, BrowserCommonConstants.IMG_ATD ), // AttributeSchema
+            };
         BrowserCorePlugin.getDefault().getCorePreferences().setDefaultObjectClassIcons( objectClassIcons );
 
         // Entry Editor
