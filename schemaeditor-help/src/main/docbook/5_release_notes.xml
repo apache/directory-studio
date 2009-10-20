@@ -26,6 +26,9 @@
         <para>
             <itemizedlist spacing="normal" mark="bullet">
                 <listitem>
+                    <para>[DIRSTUDIO-568] - When editing an AT or OC, using the scroll wheel may trigger a combo change</para>
+                </listitem>
+                <listitem>
                     <para>[DIRSTUDIO-565] - Inconsistent handling of the 'modified schemas' flag</para>
                 </listitem>
                 <listitem>
