@@ -35,7 +35,7 @@
 		<subtitle>User's Guide</subtitle>
 		<releaseinfo>Version ${current_pom_version}</releaseinfo>
 		<copyright>
-			<year>2007</year>
+			<year>2006 - 2009</year>
 			<holder>Apache Software Foundation</holder>
 		</copyright>
 		<legalnotice>
