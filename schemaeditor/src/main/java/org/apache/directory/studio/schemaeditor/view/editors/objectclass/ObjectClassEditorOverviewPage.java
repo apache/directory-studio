@@ -67,7 +67,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
@@ -827,6 +830,19 @@ public class ObjectClassEditorOverviewPage extends FormPage
             }
         }
     };
+    
+    /** The filter listener for Mouse Wheel events */
+    private Listener mouseWheelFilter = new Listener()
+    {
+    	public void handleEvent( Event event )
+    	{
+    		// Hiding Mouse Wheel events for Combo widgets
+    		if ( event.widget instanceof Combo )
+    		{
+    			event.doit = false;
+    		}
+    	}
+    };
 
 
     /**
@@ -916,16 +932,16 @@ public class ObjectClassEditorOverviewPage extends FormPage
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassEditorOverviewPage.Aliases" ) );
         Composite aliasComposite = toolkit.createComposite( client_general_information );
         GridLayout aliasCompositeGridLayout = new GridLayout( 2, false );
-        aliasCompositeGridLayout.horizontalSpacing = 0;
-        aliasCompositeGridLayout.verticalSpacing = 0;
-        aliasCompositeGridLayout.marginHeight = 0;
-        aliasCompositeGridLayout.marginWidth = 0;
+        toolkit.paintBordersFor( aliasComposite );
+        aliasCompositeGridLayout.marginHeight = 1;
+        aliasCompositeGridLayout.marginWidth = 1;
         aliasComposite.setLayout( aliasCompositeGridLayout );
         aliasComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         aliasesText = toolkit.createText( aliasComposite, "" ); //$NON-NLS-1$
-        aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         aliasesButton = toolkit.createButton( aliasComposite, Messages
             .getString( "ObjectClassEditorOverviewPage.EditAliases" ), SWT.PUSH );
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "ObjectClassEditorOverviewPage.OID" ) );
@@ -951,14 +967,14 @@ public class ObjectClassEditorOverviewPage extends FormPage
             .getString( "ObjectClassEditorOverviewPage.SuperiorClasses" ) );
         Composite superiorsComposite = toolkit.createComposite( client_general_information );
         GridLayout superiorsCompositeGridLayout = new GridLayout( 2, false );
-        superiorsCompositeGridLayout.horizontalSpacing = 0;
-        superiorsCompositeGridLayout.verticalSpacing = 0;
-        superiorsCompositeGridLayout.marginHeight = 0;
-        superiorsCompositeGridLayout.marginWidth = 0;
+        toolkit.paintBordersFor( superiorsComposite );
+        superiorsCompositeGridLayout.marginHeight = 1;
+        superiorsCompositeGridLayout.marginWidth = 1;
         superiorsComposite.setLayout( superiorsCompositeGridLayout );
         superiorsComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         superiorsTable = toolkit.createTable( superiorsComposite, SWT.SINGLE | SWT.FULL_SELECTION | SWT.H_SCROLL
             | SWT.V_SCROLL );
+        toolkit.paintBordersFor( superiorsTable );
         GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false, 1, 2 );
         gridData.heightHint = 45;
         gridData.minimumHeight = 45;
@@ -1210,6 +1226,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         superiorsTable.addMouseListener( superiorsTableListener );
         mandatoryAttributesTable.addMouseListener( mandatoryAttributesTableListener );
         optionalAttributesTable.addMouseListener( optionalAttributesTableListener );
+        
+        Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
 
@@ -1235,6 +1253,8 @@ public class ObjectClassEditorOverviewPage extends FormPage
         optionalAttributesTable.removeMouseListener( optionalAttributesTableListener );
         addButtonOptionalTable.removeSelectionListener( addButtonOptionalTableListener );
         removeButtonOptionalTable.removeSelectionListener( removeButtonOptionalTableListener );
+        
+        Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
 

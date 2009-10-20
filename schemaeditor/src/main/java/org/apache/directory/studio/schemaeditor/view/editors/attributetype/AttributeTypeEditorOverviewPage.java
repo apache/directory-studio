@@ -63,7 +63,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -653,7 +656,20 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             setEditorDirty();
         }
     };
-
+    
+    /** The filter listener for Mouse Wheel events */
+    private Listener mouseWheelFilter = new Listener()
+    {
+    	public void handleEvent( Event event )
+    	{
+    		// Hiding Mouse Wheel events for Combo widgets
+    		if ( event.widget instanceof Combo )
+    		{
+    			event.doit = false;
+    		}
+    	}
+    };
+    
 
     /**
      * Default constructor.
@@ -690,9 +706,6 @@ public class AttributeTypeEditorOverviewPage extends FormPage
 
         // Matching Rules Section
         createMatchingRulesSection( form.getBody(), toolkit );
-
-        //        // Enabling or disabling the fields
-        //        setFieldsEditableState();
 
         // Filling the UI with values from the attribute type
         fillInUiFields();
@@ -738,16 +751,16 @@ public class AttributeTypeEditorOverviewPage extends FormPage
             .createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.Aliases" ) );
         Composite aliasComposite = toolkit.createComposite( client_general_information );
         GridLayout aliasCompositeGridLayout = new GridLayout( 2, false );
-        aliasCompositeGridLayout.horizontalSpacing = 0;
-        aliasCompositeGridLayout.verticalSpacing = 0;
-        aliasCompositeGridLayout.marginHeight = 0;
-        aliasCompositeGridLayout.marginWidth = 0;
+        toolkit.paintBordersFor( aliasComposite );
+        aliasCompositeGridLayout.marginHeight = 1;
+        aliasCompositeGridLayout.marginWidth = 1;
         aliasComposite.setLayout( aliasCompositeGridLayout );
         aliasComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         aliasesText = toolkit.createText( aliasComposite, "" ); //$NON-NLS-1$
-        aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        aliasesText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         aliasesButton = toolkit.createButton( aliasComposite, Messages
             .getString( "AttributeTypeEditorOverviewPage.EditAliases" ), SWT.PUSH );
+        aliasesButton.setLayoutData( new GridData( SWT.NONE, SWT.CENTER, false, false ) );
 
         // OID Field
         toolkit.createLabel( client_general_information, Messages.getString( "AttributeTypeEditorOverviewPage.OID" ) );
@@ -782,6 +795,7 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         usageCombo = new Combo( client_general_information, SWT.READ_ONLY | SWT.SINGLE );
         usageCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         initUsageCombo();
+
 
         // SYNTAX Combo
         toolkit
@@ -1187,6 +1201,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityComboViewer.addSelectionChangedListener( equalityComboViewerListener );
         orderingComboViewer.addSelectionChangedListener( orderingComboViewerListener );
         substringComboViewer.addSelectionChangedListener( substringComboViewerListener );
+        
+        Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
 
@@ -1214,6 +1230,8 @@ public class AttributeTypeEditorOverviewPage extends FormPage
         equalityComboViewer.removeSelectionChangedListener( equalityComboViewerListener );
         orderingComboViewer.removeSelectionChangedListener( orderingComboViewerListener );
         substringComboViewer.removeSelectionChangedListener( substringComboViewerListener );
+        
+        Display.getCurrent().removeFilter( SWT.MouseWheel, mouseWheelFilter );
     }
 
 
