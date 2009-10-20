@@ -58,7 +58,7 @@
   </distributionManagement>
 
   <properties>
-    <!-- 
+    <!--
       Set default of various URLs for deployment repositories/paths/....
       Can be overwritten in the settings.xml
     -->
