@@ -82,7 +82,8 @@ public abstract class LdifContainer implements Serializable
 
     public final LdifPart[] getParts()
     {
-        return (org.apache.directory.studio.ldifparser.model.LdifPart[] ) this.parts.toArray( new LdifPart[parts.size()] );
+        return ( org.apache.directory.studio.ldifparser.model.LdifPart[] ) this.parts.toArray( new LdifPart[parts
+            .size()] );
     }
 
 

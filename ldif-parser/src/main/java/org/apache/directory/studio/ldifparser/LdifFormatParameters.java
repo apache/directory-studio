@@ -20,8 +20,6 @@
 package org.apache.directory.studio.ldifparser;
 
 
-
-
 public class LdifFormatParameters
 {
 

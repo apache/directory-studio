@@ -310,7 +310,8 @@ public class LdifFile implements Serializable
             }
         }
 
-        return (org.apache.directory.studio.ldifparser.model.LdifPart[] ) partList.toArray( new LdifPart[partList.size()] );
+        return ( org.apache.directory.studio.ldifparser.model.LdifPart[] ) partList.toArray( new LdifPart[partList
+            .size()] );
     }
 
 

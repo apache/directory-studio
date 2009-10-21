@@ -32,9 +32,8 @@ public interface LdifParserConstants
 
     /** The system specific line separator. */
     public static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$
-    
+
     /** The default line width, value is 78. */
     public static final int LINE_WIDTH = 78;
 
-    
 }

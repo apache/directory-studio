@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.ldifparser.model;
 
+
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 
 

@@ -37,7 +37,6 @@ import org.apache.commons.codec.binary.Hex;
 public class LdifUtils
 {
 
-
     /**
      * Encodes the given string to UTF-8
      *
