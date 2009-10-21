@@ -39,8 +39,8 @@ public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
 {
 
     private EntryEditor entryEditor;
-    
-    
+
+
     /**
      * Creates a new instance of EntryEditorConfiguration.
      */

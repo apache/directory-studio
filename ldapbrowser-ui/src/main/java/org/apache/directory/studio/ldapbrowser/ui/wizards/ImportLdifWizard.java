@@ -76,7 +76,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
     public ImportLdifWizard()
     {
         super();
-        setWindowTitle( Messages.getString("ImportLdifWizard.LDIFImport") ); //$NON-NLS-1$
+        setWindowTitle( Messages.getString( "ImportLdifWizard.LDIFImport" ) ); //$NON-NLS-1$
     }
 
 
@@ -87,7 +87,7 @@ public class ImportLdifWizard extends Wizard implements IImportWizard
      */
     public ImportLdifWizard( IBrowserConnection importConnection )
     {
-        super.setWindowTitle( Messages.getString("ImportLdifWizard.LDIFImport") ); //$NON-NLS-1$
+        super.setWindowTitle( Messages.getString( "ImportLdifWizard.LDIFImport" ) ); //$NON-NLS-1$
         this.importConnection = importConnection;
     }
 

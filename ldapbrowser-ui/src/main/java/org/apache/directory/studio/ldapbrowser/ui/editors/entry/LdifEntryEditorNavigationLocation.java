@@ -20,11 +20,13 @@
 
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
+
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorUtils;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
+
 
 /**
  * Represents the text selection context marked for the user in the navigation history.
@@ -35,11 +37,12 @@ import org.eclipse.ui.texteditor.TextSelectionNavigationLocation;
 public class LdifEntryEditorNavigationLocation extends TextSelectionNavigationLocation
 {
 
-    public LdifEntryEditorNavigationLocation(ITextEditor part, boolean initialize)
+    public LdifEntryEditorNavigationLocation( ITextEditor part, boolean initialize )
     {
-        super(part, initialize);
+        super( part, initialize );
     }
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -48,7 +51,8 @@ public class LdifEntryEditorNavigationLocation extends TextSelectionNavigationLo
         String text = EntryEditorUtils.getHistoryNavigationText( getEntryEditorInput() );
         return text != null ? text : super.getText();
     }
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -81,7 +85,8 @@ public class LdifEntryEditorNavigationLocation extends TextSelectionNavigationLo
             return entry.equals( other );
         }
     }
-    
+
+
     private EntryEditorInput getEntryEditorInput()
     {
         Object editorInput = getInput();

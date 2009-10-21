@@ -103,7 +103,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
         try
         {
             LdapDN newDN = new LdapDN( records[0].getDnLine().getUnfoldedDn() );
-            if(!newDN.equals( input.getResolvedEntry().getDn() ))
+            if ( !newDN.equals( input.getResolvedEntry().getDn() ) )
             {
                 throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, NLS.bind( Messages
                     .getString( "LdifEntryEditorDocumentProvider.ModDnNotSupported" ), records[0].getInvalidString() ) ) ); //$NON-NLS-1$
@@ -114,7 +114,7 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
             throw new CoreException( new Status( IStatus.ERROR, BrowserUIConstants.PLUGIN_ID, Messages
                 .getString( "LdifEntryEditorDocumentProvider.InvalidDN" ) ) ); //$NON-NLS-1$
         }
-        
+
         IStatus status = input.saveSharedWorkingCopy( false, editor );
         if ( status != null && !status.isOK() )
         {

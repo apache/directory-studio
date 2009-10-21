@@ -106,8 +106,8 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
             ImportExportAction.TYPE_EXPORT_CSV ) ) );
         connectionActionMap.put( exportExcelAction, new ConnectionViewActionProxy( viewer, this,
             new ImportExportAction( ImportExportAction.TYPE_EXPORT_EXCEL ) ) );
-        connectionActionMap.put( exportOdfAction, new ConnectionViewActionProxy( viewer, this,
-            new ImportExportAction( ImportExportAction.TYPE_EXPORT_ODF ) ) );
+        connectionActionMap.put( exportOdfAction, new ConnectionViewActionProxy( viewer, this, new ImportExportAction(
+            ImportExportAction.TYPE_EXPORT_ODF ) ) );
         connectionActionMap.put( importConnectionsAction, new ConnectionViewActionProxy( viewer, this,
             new ImportConnectionsAction() ) );
         connectionActionMap.put( exportConnectionsAction, new ConnectionViewActionProxy( viewer, this,

@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
+
 import org.eclipse.swt.dnd.DragSourceListener;
 
 

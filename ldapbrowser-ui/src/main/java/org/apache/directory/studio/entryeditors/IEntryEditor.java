@@ -41,14 +41,14 @@ public interface IEntryEditor
      */
     public boolean canHandle( IEntry entry );
 
-    
+
     /**
      * Informs the entry editor that the working copy was modified.
      * 
      * @param source the source of the modification, may be null
      */
     public void workingCopyModified( Object source );
-    
+
 
     /**
      * Gets the entry editor input.

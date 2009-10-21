@@ -155,12 +155,12 @@ public class SearchResultEditorCellModifier implements ICellModifier
             }
             else if ( ah != null && newRawValue == null )
             {
-                List<IValue> values = new ArrayList<IValue>(); 
-                for(IAttribute attribute : ah.getAttributes())
+                List<IValue> values = new ArrayList<IValue>();
+                for ( IAttribute attribute : ah.getAttributes() )
                 {
                     for ( IValue value : attribute.getValues() )
                     {
-                        values.add(value);
+                        values.add( value );
                     }
                 }
                 new CompoundModification().deleteValues( values );

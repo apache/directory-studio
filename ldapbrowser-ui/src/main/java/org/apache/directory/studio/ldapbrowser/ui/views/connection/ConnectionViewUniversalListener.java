@@ -128,8 +128,8 @@ public class ConnectionViewUniversalListener extends ConnectionUniversalListener
 
             try
             {
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView( ModificationLogsView.getId(),
-                    null, IWorkbenchPage.VIEW_CREATE );
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+                    ModificationLogsView.getId(), null, IWorkbenchPage.VIEW_CREATE );
             }
             catch ( PartInitException e )
             {

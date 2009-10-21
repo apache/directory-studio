@@ -290,7 +290,7 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
                         fw = new FileWriter( files[i] );
                         fw.write( "" ); //$NON-NLS-1$
                     }
-    
+
                 }
                 catch ( Exception e )
                 {

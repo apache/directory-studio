@@ -108,7 +108,7 @@ public class SearchResultEditorQuickFilterWidget
         // Reseting the layout of the composite to be displayed correctly
         GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
         composite.setLayoutData( compositeGridData );
-        
+
         innerComposite = BaseWidgetUtils.createColumnContainer( this.composite, 2, 1 );
 
         quickFilterValueText = new Text( innerComposite, SWT.BORDER );
@@ -154,7 +154,7 @@ public class SearchResultEditorQuickFilterWidget
         compositeGridData.heightHint = 0;
         compositeGridData.widthHint = 0;
         composite.setLayoutData( compositeGridData );
-        
+
         if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
         {
             quickFilterValueText.setText( "" ); //$NON-NLS-1$

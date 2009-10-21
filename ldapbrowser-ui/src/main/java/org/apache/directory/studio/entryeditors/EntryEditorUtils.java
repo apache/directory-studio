@@ -91,8 +91,7 @@ public class EntryEditorUtils
                 else
                 {
                     return NLS.bind( Messages.getString( "EntryEditorNavigationLocation.Entry" ), //$NON-NLS-1$
-                        input.getEntryInput().getDn().getUpName() )
-                        + connectionName;
+                        input.getEntryInput().getDn().getUpName() ) + connectionName;
                 }
             }
             else if ( input.getSearchResultInput() != null )
