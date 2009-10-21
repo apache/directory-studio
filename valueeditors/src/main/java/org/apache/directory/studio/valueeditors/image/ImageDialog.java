@@ -421,8 +421,10 @@ public class ImageDialog extends Dialog
                     currentImageLabel.setImage( currentImage );
                     currentImageTypeText.setText( getImageType( imageData.type ) );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
-                    currentImageWidthText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.width ) ); //$NON-NLS-1$
-                    currentImageHeightText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.height ) ); //$NON-NLS-1$
+                    currentImageWidthText.setText( NLS
+                        .bind( Messages.getString( "ImageDialog.Pixel" ), imageData.width ) ); //$NON-NLS-1$
+                    currentImageHeightText.setText( NLS.bind(
+                        Messages.getString( "ImageDialog.Pixel" ), imageData.height ) ); //$NON-NLS-1$
                 }
                 catch ( SWTException swte )
                 {

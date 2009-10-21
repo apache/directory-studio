@@ -83,7 +83,7 @@ public class AdministrativeRoleDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("AdministrativeRoleDialog.AdministrativeRoleEditor") ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "AdministrativeRoleDialog.AdministrativeRoleEditor" ) ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault()
             .getImage( ValueEditorsConstants.IMG_ADMINISTRATIVEROLEEDITOR ) );
     }

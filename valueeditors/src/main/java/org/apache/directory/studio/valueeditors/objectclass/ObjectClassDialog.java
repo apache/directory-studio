@@ -86,7 +86,7 @@ public class ObjectClassDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString("ObjectClassDialog.ObjectClassEditor") ); //$NON-NLS-1$
+        shell.setText( Messages.getString( "ObjectClassDialog.ObjectClassEditor" ) ); //$NON-NLS-1$
         shell.setImage( ValueEditorsActivator.getDefault().getImage( ValueEditorsConstants.IMG_OCDEDITOR ) );
     }
 

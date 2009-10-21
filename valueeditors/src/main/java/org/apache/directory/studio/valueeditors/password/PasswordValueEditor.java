@@ -95,16 +95,16 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
                 String text;
                 if ( "".equals( password ) ) //$NON-NLS-1$
                 {
-                    text = Messages.getString("PasswordValueEditor.EmptyPassword"); //$NON-NLS-1$
+                    text = Messages.getString( "PasswordValueEditor.EmptyPassword" ); //$NON-NLS-1$
                 }
                 else if ( password.indexOf( '{' ) == 0 && password.indexOf( '}' ) > 0 )
                 {
                     String hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
-                    text = hashMethod + Messages.getString("PasswordValueEditor.HashedPassword"); //$NON-NLS-1$
+                    text = hashMethod + Messages.getString( "PasswordValueEditor.HashedPassword" ); //$NON-NLS-1$
                 }
                 else
                 {
-                    text = Messages.getString("PasswordValueEditor.PlainTextPassword"); //$NON-NLS-1$
+                    text = Messages.getString( "PasswordValueEditor.PlainTextPassword" ); //$NON-NLS-1$
                 }
                 return text;
             }
@@ -134,7 +134,6 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
         Object password = super.getRawValue( value );
         return new PasswordValueEditorRawValueWrapper( password, value.getAttribute().getEntry() );
     }
-
 
     /**
      * The PasswordValueEditorRawValueWrapper is used to pass contextual 
